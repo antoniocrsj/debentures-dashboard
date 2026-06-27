@@ -38,12 +38,25 @@ export function fmtBRLFull(n) {
   return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(n)
 }
 
-/** Display a date string — converts ISO (YYYY-MM-DD) to DD/MM/YYYY, leaves others as-is */
+/** Display a date string — handles ISO, DD/MM/YYYY, and JS Date strings */
 export function fmtDate(str) {
   if (!str) return '—'
   const s = str.trim()
+  // ISO: YYYY-MM-DD
   const iso = s.match(/^(\d{4})-(\d{2})-(\d{2})/)
   if (iso) return `${iso[3]}/${iso[2]}/${iso[1]}`
+  // BR: DD/MM/YYYY already
+  if (/^\d{2}\/\d{2}\/\d{4}$/.test(s)) return s
+  // JS Date string from GAS: "Wed Oct 03 2029 04:00:00 GMT..."
+  if (s.includes('GMT') || s.match(/^[A-Z][a-z]{2}\s/)) {
+    const d = new Date(s)
+    if (!isNaN(d)) {
+      const dd = String(d.getDate()).padStart(2, '0')
+      const mm = String(d.getMonth() + 1).padStart(2, '0')
+      const yyyy = d.getFullYear()
+      return `${dd}/${mm}/${yyyy}`
+    }
+  }
   return s
 }
 

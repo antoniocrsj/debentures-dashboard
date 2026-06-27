@@ -18,7 +18,7 @@ const FIELDS = {
   lei12431:       ['Lei 12.431', 'Lei 12431', 'Debentures Incentivadas', 'Incentivada', 'DEB_INCENT'],
   descricao:      ['Descricao', 'Descrição', 'Observacoes', 'Obs'],
   // emissores
-  empresaNome:    ['Empresa', 'Nome Empresa', 'Razao Social', 'Razão Social', 'Nome'],
+  empresaNome:    ['Emissor', 'Empresa', 'Nome Empresa', 'Razao Social', 'Razão Social', 'Nome'],
   grupo:          ['Grupo', 'Grupo Economico', 'Grupo Econômico'],
   setor:          ['Setor', 'Segmento', 'Setor Economico'],
   // fundos
