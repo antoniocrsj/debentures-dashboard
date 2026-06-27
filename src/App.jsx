@@ -2,7 +2,7 @@ import { useState, useMemo, useCallback } from 'react'
 import { useDebentures, BLC_DEFAULT_URL } from './hooks/useDebentures.js'
 import {
   buildIndexes, buildBlcIndex,
-  enrichDebenture, computeManagers, computeGroups
+  enrichDebenture, computeManagers, computeGroups, recomputeAlocByGestor
 } from './utils/data.js'
 import { isYes, dateKey } from './utils/format.js'
 import Header from './components/Header.jsx'
@@ -26,7 +26,7 @@ function saveMonths(m) {
   try { localStorage.setItem('blc-months', JSON.stringify(m)) } catch {}
 }
 
-const INIT_FILTERS = { grupo: '', setor: '', lei12431: '', ativo: '', search: '' }
+const INIT_FILTERS = { grupo: '', setor: '', gestor: '', lei12431: '', ativo: '', search: '' }
 const INIT_SORT    = { col: 'alocacao', dir: 'desc' }
 
 export default function App() {
@@ -50,31 +50,37 @@ export default function App() {
   // Enrich all debentures
   const allAssets = useMemo(() => {
     if (!raw || !indexes) return []
-    return raw.debentures.map(d => enrichDebenture(d, indexes))
+    return raw.debentures.map(d => enrichDebenture(d, { ...indexes, fundoMap: indexes.fundoMap }))
   }, [raw, indexes])
 
   // Distinct filter options (from full dataset)
   const options = useMemo(() => ({
-    grupos:      [...new Set(allAssets.map(a => a.grupo).filter(Boolean))].sort(),
-    setores:     [...new Set(allAssets.map(a => a.setor).filter(Boolean))].sort(),
-    indexadores: [...new Set(allAssets.map(a => a.indexador).filter(Boolean))].sort(),
-    ativos:      [...new Set(allAssets.map(a => a.codigoAtivo).filter(Boolean))].sort(),
+    grupos:    [...new Set(allAssets.map(a => a.grupo).filter(Boolean))].sort(),
+    setores:   [...new Set(allAssets.map(a => a.setor).filter(Boolean))].sort(),
+    gestores:  [...new Set(allAssets.flatMap(a => a.gestores))].sort(),
+    ativos:    [...new Set(allAssets.map(a => a.codigoAtivo).filter(Boolean))].sort(),
   }), [allAssets])
 
   // Apply filters
   const filteredAssets = useMemo(() => {
     const q = filters.search.toLowerCase()
-    return allAssets.filter(a => {
-      if (filters.grupo     && a.grupo     !== filters.grupo)     return false
-      if (filters.setor     && a.setor     !== filters.setor)     return false
-if (filters.lei12431 === 'Sim' && !isYes(a.lei12431Str))   return false
-      if (filters.lei12431 === 'Não' && isYes(a.lei12431Str))    return false
-      if (filters.ativo     && a.codigoAtivo !== filters.ativo)  return false
-      if (q && ![a.codigoAtivo, a.emissorNome, a.grupo, a.setor, a.indexador]
+    let assets = allAssets.filter(a => {
+      if (filters.grupo    && a.grupo           !== filters.grupo)           return false
+      if (filters.setor    && a.setor           !== filters.setor)           return false
+      if (filters.gestor   && !a.gestores.includes(filters.gestor))          return false
+      if (filters.lei12431 === 'Sim' && !isYes(a.lei12431Str))              return false
+      if (filters.lei12431 === 'Não' && isYes(a.lei12431Str))               return false
+      if (filters.ativo    && a.codigoAtivo     !== filters.ativo)           return false
+      if (q && ![a.codigoAtivo, a.emissorNome, a.grupo, a.setor]
         .some(v => v?.toLowerCase().includes(q))) return false
       return true
     })
-  }, [allAssets, filters])
+    // Quando gestor está ativo, mostra só a alocação desse gestor
+    if (filters.gestor && indexes) {
+      assets = recomputeAlocByGestor(assets, indexes.blcByAtivo, indexes.fundoMap, filters.gestor)
+    }
+    return assets
+  }, [allAssets, filters, indexes])
 
   // Sort
   const sortedAssets = useMemo(() => {
@@ -83,6 +89,7 @@ if (filters.lei12431 === 'Sim' && !isYes(a.lei12431Str))   return false
     if (!col) return arr
     const key = a => {
       if (col === 'ativo')      return (a.codigoAtivo || '').toLowerCase()
+      if (col === 'emissao')    return dateKey(a.emissao)
       if (col === 'vencimento') return dateKey(a.vencimento)
       if (col === 'taxa')       return parseFloat((a.taxa || '').replace(',', '.')) || 0
       if (col === 'vol')        return a.volumeEmitido
@@ -102,6 +109,11 @@ if (filters.lei12431 === 'Sim' && !isYes(a.lei12431Str))   return false
       ? { col, dir: s.dir === 'asc' ? 'desc' : 'asc' }
       : { col, dir: 'desc' }
     ), [])
+
+  // Toggle cross-filter: clica no mesmo valor → limpa
+  const handleFilter = useCallback((key, value) =>
+    setFilters(f => ({ ...f, [key]: f[key] === value ? '' : value }))
+  , [])
 
   // Manager ranking — only BLC rows for currently-filtered assets
   const filteredCodes = useMemo(
@@ -188,16 +200,30 @@ if (filters.lei12431 === 'Sim' && !isYes(a.lei12431Str))   return false
 
         {!loading && !error && raw && (
           <>
-            {tab === 'ativos'   && (
+            {tab === 'ativos' && (
               <AssetTable
                 assets={sortedAssets}
                 sort={sort}
                 onSort={handleSort}
-                onRowClick={setSelected}
+                activeAtivo={filters.ativo}
+                onFilter={handleFilter}
+                onInfoClick={setSelected}
               />
             )}
-            {tab === 'gestores' && <ManagerRanking managers={managers} />}
-            {tab === 'grupos'   && <GroupRanking   groups={groups}   />}
+            {tab === 'gestores' && (
+              <ManagerRanking
+                managers={managers}
+                activeGestor={filters.gestor}
+                onFilter={handleFilter}
+              />
+            )}
+            {tab === 'grupos' && (
+              <GroupRanking
+                groups={groups}
+                activeGrupo={filters.grupo}
+                onFilter={handleFilter}
+              />
+            )}
           </>
         )}
       </main>

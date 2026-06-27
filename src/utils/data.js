@@ -1,9 +1,5 @@
 import { parseNum, normCNPJ } from './format.js'
 
-/**
- * Possible column-name aliases for each logical field.
- * All keys are already trimmed by the CSV parser.
- */
 const FIELDS = {
   codigoAtivo:    ['Codigo do Ativo', 'Código do Ativo', 'Codigo Ativo', 'CODIGO_ATIVO'],
   cnpjEmissor:    ['CNPJ Emissor', 'CNPJ do Emissor', 'CNPJ_EMISSOR'],
@@ -15,7 +11,7 @@ const FIELDS = {
   indexador:      ['Indexador', 'Indice', 'Índice'],
   coordenador:    ['Coordenador Lider', 'Coordenador Líder', 'Coordenador', 'Lead Manager'],
   garantia:       ['Garantia', 'Tipo de Garantia'],
-  lei12431:       ['Lei 12.431', 'Lei 12431', 'Debentures Incentivadas', 'Incentivada', 'DEB_INCENT'],
+  lei12431:       ['Deb. Incent. (Lei 12.431)', 'Lei 12.431', 'Lei 12431', 'Debentures Incentivadas', 'Incentivada', 'DEB_INCENT'],
   descricao:      ['Descricao', 'Descrição', 'Observacoes', 'Obs'],
   // emissores
   empresaNome:    ['Emissor', 'Empresa', 'Nome Empresa', 'Razao Social', 'Razão Social', 'Nome'],
@@ -31,13 +27,11 @@ const FIELDS = {
   vlMerc:         ['VL_MERC_POS_FINAL', 'VL_MERC', 'Valor Mercado'],
 }
 
-/** Pick first matching key from a row object */
 function pick(row, keys) {
   for (const k of keys) if (k in row) return row[k]
   return ''
 }
 
-/** Build lookup indexes from raw CSV arrays */
 export function buildIndexes({ emissores, fundos }) {
   const emissorMap = {}
   emissores.forEach(e => {
@@ -54,7 +48,6 @@ export function buildIndexes({ emissores, fundos }) {
   return { emissorMap, fundoMap }
 }
 
-/** Build per-ativo BLC index */
 export function buildBlcIndex(blc) {
   const map = {}
   blc.forEach(row => {
@@ -65,8 +58,7 @@ export function buildBlcIndex(blc) {
   return map
 }
 
-/** Enrich one debenture row with joined info */
-export function enrichDebenture(deb, { emissorMap, blcByAtivo }) {
+export function enrichDebenture(deb, { emissorMap, blcByAtivo, fundoMap }) {
   const codigoAtivo = (pick(deb, FIELDS.codigoAtivo) || '').trim()
   const cnpjKey = normCNPJ(pick(deb, FIELDS.cnpjEmissor))
   const emissor = emissorMap[cnpjKey] || {}
@@ -74,12 +66,24 @@ export function enrichDebenture(deb, { emissorMap, blcByAtivo }) {
   const blcRows = (blcByAtivo || {})[codigoAtivo] || []
   const alocacao = blcRows.reduce((s, r) => s + parseNum(pick(r, FIELDS.vlMerc)), 0)
 
+  // Gestores que alocam nesse ativo
+  const gestores = []
+  if (fundoMap) {
+    const seen = new Set()
+    blcRows.forEach(r => {
+      const cnpj = normCNPJ(pick(r, FIELDS.cnpjFundoBlc))
+      const fundo = fundoMap[cnpj]
+      if (!fundo) return
+      const g = (pick(fundo, FIELDS.gestorApelido) || '').trim()
+      if (g && !seen.has(g)) { seen.add(g); gestores.push(g) }
+    })
+  }
+
   const qtd = parseNum(pick(deb, FIELDS.qtdMercado))
   const vna = parseNum(pick(deb, FIELDS.vna))
 
   return {
     ...deb,
-    // resolved fields
     codigoAtivo,
     taxa:          pick(deb, FIELDS.taxa),
     vencimento:    pick(deb, FIELDS.vencimento),
@@ -89,17 +93,15 @@ export function enrichDebenture(deb, { emissorMap, blcByAtivo }) {
     garantia:      pick(deb, FIELDS.garantia),
     lei12431Str:   pick(deb, FIELDS.lei12431),
     descricao:     pick(deb, FIELDS.descricao),
-    // joined from emissores
     emissorNome:   pick(emissor, FIELDS.empresaNome) || cnpjKey || '—',
     grupo:         pick(emissor, FIELDS.grupo) || '',
     setor:         pick(emissor, FIELDS.setor) || '',
-    // computed
+    gestores,
     alocacao,
     volumeEmitido: qtd * vna,
   }
 }
 
-/** Compute manager ranking from a set of BLC rows */
 export function computeManagers(blcRows, fundoMap) {
   const mgr = {}
   const counted = {}
@@ -120,7 +122,22 @@ export function computeManagers(blcRows, fundoMap) {
   return Object.values(mgr).filter(m => m.alocacao > 0).sort((a, b) => b.alocacao - a.alocacao)
 }
 
-/** Compute group ranking from enriched debentures */
+/** Recompute alocacao for each asset counting only the selected gestor's BLC rows */
+export function recomputeAlocByGestor(assets, blcByAtivo, fundoMap, gestor) {
+  const gestorCNPJs = new Set()
+  Object.entries(fundoMap).forEach(([cnpj, fundo]) => {
+    if ((pick(fundo, FIELDS.gestorApelido) || '').trim() === gestor) gestorCNPJs.add(cnpj)
+  })
+  return assets.map(a => {
+    const rows = blcByAtivo[a.codigoAtivo] || []
+    const alocacao = rows.reduce((s, r) => {
+      const cnpj = normCNPJ(pick(r, FIELDS.cnpjFundoBlc))
+      return gestorCNPJs.has(cnpj) ? s + parseNum(pick(r, FIELDS.vlMerc)) : s
+    }, 0)
+    return { ...a, alocacao }
+  })
+}
+
 export function computeGroups(assets) {
   const grp = {}
   assets.forEach(a => {

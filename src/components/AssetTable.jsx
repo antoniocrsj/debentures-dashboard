@@ -9,7 +9,7 @@ const COLS = [
   { id: 'alocacao',   label: 'Alocação',   sticky: false },
 ]
 
-export default function AssetTable({ assets, sort, onSort, onRowClick }) {
+export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter, onInfoClick }) {
   if (!assets.length) {
     return (
       <div className="empty-state">
@@ -48,22 +48,39 @@ export default function AssetTable({ assets, sort, onSort, onRowClick }) {
           </tr>
         </thead>
         <tbody>
-          {assets.map((a, i) => (
-            <tr key={a.codigoAtivo || i} onClick={() => onRowClick(a)} tabIndex={0}
-                onKeyDown={e => e.key === 'Enter' && onRowClick(a)}>
-              <td className="col-sticky col-ativo">
-                <span className="ativo-code">{a.codigoAtivo || '—'}</span>
-                {a.grupo && <span className="ativo-grupo">{a.grupo}</span>}
-              </td>
-              <td className="col-num">{fmtDateShort(a.emissao)}</td>
-              <td className="col-num">{fmtDateShort(a.vencimento)}</td>
-              <td className="col-num">{fmtTaxa(a.taxa)}</td>
-              <td className="col-num">{a.volumeEmitido > 0 ? fmtBRL(a.volumeEmitido) : '—'}</td>
-              <td className={`col-num col-aloc${a.alocacao > 0 ? ' has-aloc' : ''}`}>
-                {a.alocacao > 0 ? fmtBRL(a.alocacao) : '—'}
-              </td>
-            </tr>
-          ))}
+          {assets.map((a, i) => {
+            const selected = activeAtivo === a.codigoAtivo
+            return (
+              <tr
+                key={a.codigoAtivo || i}
+                className={selected ? 'row-selected' : ''}
+                onClick={() => onFilter('ativo', a.codigoAtivo)}
+                tabIndex={0}
+                onKeyDown={e => e.key === 'Enter' && onFilter('ativo', a.codigoAtivo)}
+              >
+                <td className="col-sticky col-ativo">
+                  <div className="ativo-cell">
+                    <div>
+                      <span className="ativo-code">{a.codigoAtivo || '—'}</span>
+                      {a.grupo && <span className="ativo-grupo">{a.grupo}</span>}
+                    </div>
+                    <button
+                      className="info-btn"
+                      onClick={e => { e.stopPropagation(); onInfoClick(a) }}
+                      aria-label="Ver detalhes"
+                    >ℹ</button>
+                  </div>
+                </td>
+                <td className="col-num">{fmtDateShort(a.emissao)}</td>
+                <td className="col-num">{fmtDateShort(a.vencimento)}</td>
+                <td className="col-num">{fmtTaxa(a.taxa)}</td>
+                <td className="col-num">{a.volumeEmitido > 0 ? fmtBRL(a.volumeEmitido) : '—'}</td>
+                <td className={`col-num col-aloc${a.alocacao > 0 ? ' has-aloc' : ''}`}>
+                  {a.alocacao > 0 ? fmtBRL(a.alocacao) : '—'}
+                </td>
+              </tr>
+            )
+          })}
         </tbody>
       </table>
     </div>
