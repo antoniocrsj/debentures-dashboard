@@ -1,73 +1,60 @@
 import { writeFileSync } from 'fs'
 import { deflateSync } from 'zlib'
 
-function createPNG(size) {
-  const R = 0x1e, G = 0x3a, B = 0x8a
+function makePNG(size) {
+  const R = 0x1e, G = 0x3a, B = 0x8a  // #1e3a8a azul
 
-  const pad = Math.floor(size * 0.2)
-  const charW = Math.floor(size * 0.55)
-  const charH = Math.floor(size * 0.65)
-  const startX = Math.floor((size - charW) / 2)
-  const startY = Math.floor((size - charH) / 2)
-  const stemW = Math.floor(size * 0.12)
-  const curveR = Math.floor(charH / 2)
+  // Cada linha: 1 byte filter (0) + size*3 bytes RGB
+  const rowBytes = 1 + size * 3
+  const raw = Buffer.alloc(size * rowBytes, 0)
 
-  function isWhite(x, y) {
-    if (x < startX || y < startY || y >= startY + charH) return false
-    if (x >= startX && x < startX + stemW) return true
-    const cy = startY + curveR
-    const dx = x - (startX + stemW)
-    const dy = y - cy
-    const maxR = charW - stemW
-    const minR = maxR - stemW
-    if (dx >= 0) {
-      const r = Math.sqrt(dx * dx + dy * dy)
-      if (r <= maxR && r >= minR) return true
-    }
-    return false
-  }
-
-  const rows = []
   for (let y = 0; y < size; y++) {
-    const row = [0]
+    const base = y * rowBytes
+    raw[base] = 0  // filter None
     for (let x = 0; x < size; x++) {
-      if (isWhite(x, y)) row.push(255, 255, 255)
-      else row.push(R, G, B)
+      raw[base + 1 + x * 3 + 0] = R
+      raw[base + 1 + x * 3 + 1] = G
+      raw[base + 1 + x * 3 + 2] = B
     }
-    rows.push(Buffer.from(row))
   }
-
-  const compressed = deflateSync(Buffer.concat(rows))
 
   function crc32(buf) {
-    let crc = 0xffffffff
-    for (const b of buf) {
-      crc ^= b
-      for (let i = 0; i < 8; i++) crc = (crc >>> 1) ^ (crc & 1 ? 0xedb88320 : 0)
+    const table = []
+    for (let n = 0; n < 256; n++) {
+      let c = n
+      for (let k = 0; k < 8; k++) c = (c & 1) ? 0xedb88320 ^ (c >>> 1) : c >>> 1
+      table[n] = c
     }
-    return (~crc) >>> 0
+    let crc = 0xffffffff
+    for (const byte of buf) crc = table[(crc ^ byte) & 0xff] ^ (crc >>> 8)
+    return (crc ^ 0xffffffff) >>> 0
   }
 
   function chunk(type, data) {
-    const t = Buffer.from(type)
-    const len = Buffer.alloc(4); len.writeUInt32BE(data.length)
-    const c = Buffer.alloc(4); c.writeUInt32BE(crc32(Buffer.concat([t, data])))
-    return Buffer.concat([len, t, data, c])
+    const typeBytes = Buffer.from(type, 'ascii')
+    const lenBuf = Buffer.alloc(4)
+    lenBuf.writeUInt32BE(data.length, 0)
+    const crcBuf = Buffer.alloc(4)
+    crcBuf.writeUInt32BE(crc32(Buffer.concat([typeBytes, data])), 0)
+    return Buffer.concat([lenBuf, typeBytes, data, crcBuf])
   }
 
   const ihdr = Buffer.alloc(13)
   ihdr.writeUInt32BE(size, 0)
   ihdr.writeUInt32BE(size, 4)
-  ihdr[8] = 8; ihdr[9] = 2
+  ihdr[8] = 8   // bit depth
+  ihdr[9] = 2   // RGB
+  // bytes 10-12 = 0 (compress/filter/interlace)
 
+  const sig = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])
   return Buffer.concat([
-    Buffer.from([137,80,78,71,13,10,26,10]),
+    sig,
     chunk('IHDR', ihdr),
-    chunk('IDAT', compressed),
+    chunk('IDAT', deflateSync(raw, { level: 9 })),
     chunk('IEND', Buffer.alloc(0)),
   ])
 }
 
-writeFileSync('public/icon-192.png', createPNG(192))
-writeFileSync('public/icon-512.png', createPNG(512))
-console.log('Ícones gerados!')
+writeFileSync('public/icon-192.png', makePNG(192))
+writeFileSync('public/icon-512.png', makePNG(512))
+console.log('✓ icon-192.png e icon-512.png gerados')

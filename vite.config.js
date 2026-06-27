@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { VitePWA } from 'vite-plugin-pwa'
 
 // Cookie store persists for the lifetime of the dev server.
 // The first request to a GAS URL gets the interstitial and sets cookies;
@@ -120,6 +121,32 @@ async function gasFetch(originalUrl, maxHops = 8) {
 export default defineConfig({
   plugins: [
     react(),
+    VitePWA({
+      registerType: 'autoUpdate',
+      includeAssets: ['icon.svg', 'icon-192.png', 'icon-512.png'],
+      manifest: {
+        name: 'Debêntures CR',
+        short_name: 'Deb CR',
+        description: 'Dashboard de debêntures de infraestrutura',
+        start_url: '/',
+        display: 'standalone',
+        orientation: 'portrait',
+        background_color: '#f1f5f9',
+        theme_color: '#1e3a8a',
+        icons: [
+          { src: '/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
+          { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
+        ],
+      },
+      workbox: {
+        navigateFallback: '/index.html',
+        runtimeCaching: [{
+          urlPattern: /^https:\/\/.*\/api\//,
+          handler: 'NetworkFirst',
+          options: { cacheName: 'api-cache' },
+        }],
+      },
+    }),
     {
       name: 'gas-cors-proxy',
       configureServer(server) {
