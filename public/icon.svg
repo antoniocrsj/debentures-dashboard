@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="80" fill="#1e3a8a"/>
+  <text x="50%" y="52%" dominant-baseline="middle" text-anchor="middle"
+    font-family="Arial Black, sans-serif" font-weight="900"
+    font-size="266" fill="#ffffff">D</text>
+  <text x="50%" y="82%" dominant-baseline="middle" text-anchor="middle"
+    font-family="Arial, sans-serif" font-size="82" fill="#93c5fd">CR</text>
+</svg>
