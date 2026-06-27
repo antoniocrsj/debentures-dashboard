@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react'
 import { parseCSV } from '../utils/csv.js'
+import { MOCK } from '../utils/mockData.js'
+
+// Troque para false para usar dados reais do GAS
+const USE_MOCK = true
 
 export const CADASTRO_URL =
   'https://script.google.com/macros/s/AKfycbxhTXC7FXkp9fEz0bw6Nnh_JDm4UVhRkqZF5zOW-Cb842RhFBikauGaWeChG0vQerPrBA/exec'
@@ -29,6 +33,13 @@ export function useDebentures(blcUrl) {
   useEffect(() => {
     let alive = true
     setState({ loading: true, error: null, raw: null })
+
+    if (USE_MOCK) {
+      setTimeout(() => {
+        if (alive) setState({ loading: false, error: null, raw: MOCK })
+      }, 300)
+      return () => { alive = false }
+    }
 
     Promise.all([
       fetchCSV(`${CADASTRO_URL}?sheet=emissores`),

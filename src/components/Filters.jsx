@@ -21,33 +21,25 @@ export default function Filters({ filters, options, disabled, onChange }) {
           onChange={v => set('setor', v)}
         />
         <Select
-          label="Indexador"
-          value={filters.indexador}
-          options={options.indexadores}
-          disabled={disabled}
-          onChange={v => set('indexador', v)}
-        />
-        <Select
           label="Ativo"
           value={filters.ativo}
           options={options.ativos}
           disabled={disabled}
           onChange={v => set('ativo', v)}
         />
-        <button
-          className={`chip-toggle${filters.lei12431 ? ' active' : ''}`}
-          onClick={() => set('lei12431', !filters.lei12431)}
+        <Select
+          label="Lei 12.431"
+          value={filters.lei12431}
+          options={['Sim', 'Não']}
           disabled={disabled}
-          title="Debêntures Incentivadas (Lei 12.431)"
-        >
-          Lei 12.431
-        </button>
+          onChange={v => set('lei12431', v)}
+        />
 
         {/* Clear all */}
-        {Object.values(filters).some(v => v !== '' && v !== false) && (
+        {Object.values(filters).some(v => v !== '') && (
           <button
             className="chip-clear"
-            onClick={() => onChange({ grupo: '', setor: '', indexador: '', lei12431: false, ativo: '', search: '' })}
+            onClick={() => onChange({ grupo: '', setor: '', lei12431: '', ativo: '', search: '' })}
           >
             ✕ Limpar
           </button>

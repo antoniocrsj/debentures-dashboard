@@ -26,7 +26,7 @@ function saveMonths(m) {
   try { localStorage.setItem('blc-months', JSON.stringify(m)) } catch {}
 }
 
-const INIT_FILTERS = { grupo: '', setor: '', indexador: '', lei12431: false, ativo: '', search: '' }
+const INIT_FILTERS = { grupo: '', setor: '', lei12431: '', ativo: '', search: '' }
 const INIT_SORT    = { col: 'alocacao', dir: 'desc' }
 
 export default function App() {
@@ -67,8 +67,8 @@ export default function App() {
     return allAssets.filter(a => {
       if (filters.grupo     && a.grupo     !== filters.grupo)     return false
       if (filters.setor     && a.setor     !== filters.setor)     return false
-      if (filters.indexador && a.indexador !== filters.indexador) return false
-      if (filters.lei12431  && !isYes(a.lei12431Str))            return false
+if (filters.lei12431 === 'Sim' && !isYes(a.lei12431Str))   return false
+      if (filters.lei12431 === 'Não' && isYes(a.lei12431Str))    return false
       if (filters.ativo     && a.codigoAtivo !== filters.ativo)  return false
       if (q && ![a.codigoAtivo, a.emissorNome, a.grupo, a.setor, a.indexador]
         .some(v => v?.toLowerCase().includes(q))) return false
