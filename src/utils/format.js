@@ -47,14 +47,17 @@ export function fmtDate(str) {
   return s
 }
 
-/** Short date — just MM/YY or MMM/YY */
+const MESES = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez']
+
+/** Short date — MMM/YY ex: jun/26 */
 export function fmtDateShort(str) {
   if (!str) return '—'
   const full = fmtDate(str)
   const parts = full.split('/')
   if (parts.length === 3) {
     const [, m, y] = parts
-    return `${m}/${y.slice(-2)}`
+    const mes = MESES[parseInt(m, 10) - 1] || m
+    return `${mes}/${y.slice(-2)}`
   }
   return full
 }
