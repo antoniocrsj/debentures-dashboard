@@ -114,18 +114,20 @@ a { color: var(--primary); }
 .chip-select-wrap {
   flex-shrink: 0;
   position: relative;
+  width: 88px;
 }
 .chip-select {
   appearance: none;
   background: var(--bg);
   border: 1.5px solid var(--border);
   border-radius: 99px;
-  padding: 5px 12px;
-  font-size: 12px;
+  padding: 5px 6px;
+  font-size: 11px;
   font-weight: 500;
   color: var(--text-muted);
   cursor: pointer;
   white-space: nowrap;
+  width: 88px;
   transition: border-color .15s, background .15s;
 }
 .chip-select-wrap.active .chip-select {
@@ -268,18 +270,18 @@ a { color: var(--primary); }
   scrollbar-color: var(--border) transparent;
 }
 .asset-table {
-  width: 100%;
-  min-width: 370px;
+  width: max-content;
+  min-width: 100%;
   border-collapse: collapse;
   font-size: 12.5px;
   table-layout: fixed;
 }
-/* Column widths — total ≈ 375px (fits most phones without horizontal scroll) */
 .asset-table col.c-ativo    { width: 96px; }
-.asset-table col.c-venc     { width: 52px; }
-.asset-table col.c-taxa     { width: 72px; }
-.asset-table col.c-vol      { width: 74px; }
-.asset-table col.c-aloc     { width: 74px; }
+.asset-table col.c-emis     { width: 58px; }
+.asset-table col.c-venc     { width: 58px; }
+.asset-table col.c-taxa     { width: 70px; }
+.asset-table col.c-vol      { width: 78px; }
+.asset-table col.c-aloc     { width: 78px; }
 
 .asset-table th {
   background: #f8fafc;
@@ -321,11 +323,12 @@ a { color: var(--primary); }
   left: 0;
   background: #fff;
   z-index: 2;
-  min-width: 90px;
-  box-shadow: 2px 0 4px rgba(0,0,0,.05);
+  min-width: 96px;
+  box-shadow: 3px 0 6px rgba(0,0,0,.10);
 }
 .asset-table thead .col-sticky { background: #f8fafc; z-index: 3; text-align: left; }
 .asset-table tbody tr:hover .col-sticky { background: var(--primary-light); }
+.asset-table tbody tr:active .col-sticky { background: #bfdbfe; }
 
 .col-ativo { display: flex; flex-direction: column; gap: 1px; }
 .ativo-code { font-weight: 700; font-size: 12.5px; color: var(--text); }

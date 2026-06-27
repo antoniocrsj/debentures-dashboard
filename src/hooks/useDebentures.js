@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import { parseCSV } from '../utils/csv.js'
 import { MOCK } from '../utils/mockData.js'
 
-// Troque para false para usar dados reais do GAS
 const USE_MOCK = false
+const CACHE_TTL = 4 * 60 * 60 * 1000 // 4 horas
 
 export const CADASTRO_URL =
   'https://script.google.com/macros/s/AKfycbxhTXC7FXkp9fEz0bw6Nnh_JDm4UVhRkqZF5zOW-Cb842RhFBikauGaWeChG0vQerPrBA/exec'
@@ -19,27 +19,56 @@ async function fetchCSV(rawUrl) {
     const body = await res.text().catch(() => '')
     throw new Error(`HTTP ${res.status}: ${body.slice(0, 200)}`)
   }
-  const text = await res.text()
-  return parseCSV(text)
+  return parseCSV(await res.text())
+}
+
+function cacheKey(blcUrl) {
+  return `deb-cache-${btoa(blcUrl).slice(0, 20)}`
+}
+
+function readCache(blcUrl) {
+  try {
+    const c = JSON.parse(localStorage.getItem(cacheKey(blcUrl)) || 'null')
+    if (c && Date.now() - c.ts < CACHE_TTL) return c.data
+  } catch {}
+  return null
+}
+
+function writeCache(blcUrl, data) {
+  try {
+    // Salva apenas o necessário — não salva objetos muito grandes
+    localStorage.setItem(cacheKey(blcUrl), JSON.stringify({ ts: Date.now(), data }))
+  } catch {}
 }
 
 /**
- * Fetches all four CSV sources in parallel.
- * Returns { loading, error, raw: { emissores, fundos, debentures, blc } }
+ * Carrega dados com cache localStorage.
+ * - Se houver cache válido: mostra imediatamente e atualiza em segundo plano
+ * - Se não houver: mostra spinner até carregar
+ * Retorna { loading, refreshing, error, raw, cachedAt }
  */
 export function useDebentures(blcUrl) {
-  const [state, setState] = useState({ loading: true, error: null, raw: null })
+  const cached = readCache(blcUrl)
+  const [state, setState] = useState({
+    loading: !cached,
+    refreshing: !!cached,
+    error: null,
+    raw: cached,
+    cachedAt: cached ? JSON.parse(localStorage.getItem(cacheKey(blcUrl)) || 'null')?.ts : null,
+  })
 
   useEffect(() => {
     let alive = true
-    setState({ loading: true, error: null, raw: null })
 
     if (USE_MOCK) {
       setTimeout(() => {
-        if (alive) setState({ loading: false, error: null, raw: MOCK })
+        if (alive) setState({ loading: false, refreshing: false, error: null, raw: MOCK, cachedAt: null })
       }, 300)
       return () => { alive = false }
     }
+
+    const fresh = readCache(blcUrl)
+    setState(s => ({ ...s, loading: !fresh, refreshing: !!fresh, raw: fresh ?? s.raw }))
 
     Promise.all([
       fetchCSV(`${CADASTRO_URL}?sheet=emissores`),
@@ -48,10 +77,17 @@ export function useDebentures(blcUrl) {
       fetchCSV(blcUrl),
     ])
       .then(([emissores, fundos, debentures, blc]) => {
-        if (alive) setState({ loading: false, error: null, raw: { emissores, fundos, debentures, blc } })
+        const raw = { emissores, fundos, debentures, blc }
+        writeCache(blcUrl, raw)
+        if (alive) setState({ loading: false, refreshing: false, error: null, raw, cachedAt: Date.now() })
       })
       .catch(err => {
-        if (alive) setState({ loading: false, error: err.message, raw: null })
+        if (alive) setState(s => ({
+          ...s,
+          loading: false,
+          refreshing: false,
+          error: s.raw ? null : err.message, // se tem cache, não mostra erro
+        }))
       })
 
     return () => { alive = false }

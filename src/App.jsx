@@ -39,7 +39,7 @@ export default function App() {
   const [showMonths, setShowMonths]   = useState(false)
 
   const currentMonth = months[monthIdx] ?? months[0]
-  const { loading, error, raw } = useDebentures(currentMonth.url)
+  const { loading, refreshing, error, raw } = useDebentures(currentMonth.url)
 
   // Build indexes once per raw load
   const indexes = useMemo(() => {
@@ -131,6 +131,7 @@ if (filters.lei12431 === 'Sim' && !isYes(a.lei12431Str))   return false
       {/* Fixed header */}
       <Header
         loading={loading}
+        refreshing={refreshing}
         error={!!error}
         currentMonth={currentMonth}
         onMonthClick={() => setShowMonths(true)}

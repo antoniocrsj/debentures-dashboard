@@ -75,10 +75,13 @@ export function fmtDateShort(str) {
   return full
 }
 
-/** Display a taxa/rate string */
+/** Display a taxa/rate — 2 decimal places with comma */
 export function fmtTaxa(str) {
   if (!str) return '—'
-  return str.trim()
+  const s = str.trim()
+  const n = parseFloat(s.replace(',', '.'))
+  if (!isNaN(n)) return n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+  return s
 }
 
 /** Normalize a boolean-like field (Sim/S/1/true) */

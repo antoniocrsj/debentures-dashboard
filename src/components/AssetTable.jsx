@@ -1,11 +1,12 @@
 import { fmtBRL, fmtDateShort, fmtTaxa } from '../utils/format.js'
 
 const COLS = [
-  { id: 'ativo',     label: 'Ativo',    sticky: true },
-  { id: 'vencimento',label: 'Venc.',    sticky: false },
-  { id: 'taxa',      label: 'Taxa',     sticky: false },
-  { id: 'vol',       label: 'Vol. emit.',sticky: false },
-  { id: 'alocacao',  label: 'Alocação', sticky: false },
+  { id: 'ativo',      label: 'Ativo',      sticky: true  },
+  { id: 'emissao',    label: 'Emis.',      sticky: false },
+  { id: 'vencimento', label: 'Venc.',      sticky: false },
+  { id: 'taxa',       label: 'Taxa',       sticky: false },
+  { id: 'vol',        label: 'Vol. emit.', sticky: false },
+  { id: 'alocacao',   label: 'Alocação',   sticky: false },
 ]
 
 export default function AssetTable({ assets, sort, onSort, onRowClick }) {
@@ -23,6 +24,7 @@ export default function AssetTable({ assets, sort, onSort, onRowClick }) {
       <table className="asset-table">
         <colgroup>
           <col className="c-ativo" />
+          <col className="c-emis" />
           <col className="c-venc" />
           <col className="c-taxa" />
           <col className="c-vol" />
@@ -53,8 +55,9 @@ export default function AssetTable({ assets, sort, onSort, onRowClick }) {
                 <span className="ativo-code">{a.codigoAtivo || '—'}</span>
                 {a.grupo && <span className="ativo-grupo">{a.grupo}</span>}
               </td>
+              <td className="col-num">{fmtDateShort(a.emissao)}</td>
               <td className="col-num">{fmtDateShort(a.vencimento)}</td>
-              <td className="col-taxa">{fmtTaxa(a.taxa)}</td>
+              <td className="col-num">{fmtTaxa(a.taxa)}</td>
               <td className="col-num">{a.volumeEmitido > 0 ? fmtBRL(a.volumeEmitido) : '—'}</td>
               <td className={`col-num col-aloc${a.alocacao > 0 ? ' has-aloc' : ''}`}>
                 {a.alocacao > 0 ? fmtBRL(a.alocacao) : '—'}

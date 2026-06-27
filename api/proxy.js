@@ -67,7 +67,7 @@ export default async function handler(req, res) {
     const text = await gasFetch(url)
     res.setHeader('Access-Control-Allow-Origin', '*')
     res.setHeader('Content-Type', 'text/plain; charset=utf-8')
-    res.setHeader('Cache-Control', 'public, s-maxage=300')
+    res.setHeader('Cache-Control', 'public, s-maxage=14400, stale-while-revalidate=3600')
     return res.status(200).send(text)
   } catch (err) {
     return res.status(502).json({ error: err.message })
