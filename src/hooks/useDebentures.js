@@ -3,7 +3,7 @@ import { parseCSV } from '../utils/csv.js'
 import { MOCK } from '../utils/mockData.js'
 
 // Troque para false para usar dados reais do GAS
-const USE_MOCK = true
+const USE_MOCK = false
 
 export const CADASTRO_URL =
   'https://script.google.com/macros/s/AKfycbxhTXC7FXkp9fEz0bw6Nnh_JDm4UVhRkqZF5zOW-Cb842RhFBikauGaWeChG0vQerPrBA/exec'
