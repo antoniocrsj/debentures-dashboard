@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect } from 'react'
+import { useState, useMemo, useCallback, useEffect, lazy, Suspense } from 'react'
 import { useDebentures, BLC_DEFAULT_URL } from './hooks/useDebentures.js'
 import {
   buildIndexes, buildBlcIndex,
@@ -12,6 +12,9 @@ import AssetModal from './components/AssetModal.jsx'
 import ManagerRanking from './components/ManagerRanking.jsx'
 import GroupRanking from './components/GroupRanking.jsx'
 import MonthSelector from './components/MonthSelector.jsx'
+
+// Aba Captação carregada sob demanda (Recharts só entra ao abrir a aba)
+const FluxoDashboard = lazy(() => import('./components/fluxo/FluxoDashboard.jsx'))
 
 const DEFAULT_MONTHS = [{ label: 'Fev/26', url: BLC_DEFAULT_URL }]
 
@@ -162,18 +165,21 @@ export default function App() {
 
       {/* Filters + tabs scroll together as one sticky block */}
       <div className="sticky-area">
-        <Filters
-          filters={filters}
-          options={options}
-          disabled={loading}
-          onChange={setFilters}
-        />
+        {tab !== 'captacao' && (
+          <Filters
+            filters={filters}
+            options={options}
+            disabled={loading}
+            onChange={setFilters}
+          />
+        )}
 
         <nav className="tabs" role="tablist">
           {[
             { id: 'ativos',   label: `Ativos (${filteredAssets.length})` },
             { id: 'gestores', label: 'Gestores' },
             { id: 'grupos',   label: 'Grupos' },
+            { id: 'captacao', label: 'Captação' },
           ].map(t => (
             <button
               key={t.id}
@@ -190,14 +196,23 @@ export default function App() {
 
       {/* Scrollable content */}
       <main className="content" role="tabpanel">
-        {loading && (
+        {/* Aba Captação: independente do carregamento do BLC/debêntures */}
+        {tab === 'captacao' && (
+          <Suspense fallback={
+            <div className="state-box"><div className="spinner" aria-label="Carregando" /><p>Carregando…</p></div>
+          }>
+            <FluxoDashboard />
+          </Suspense>
+        )}
+
+        {tab !== 'captacao' && loading && (
           <div className="state-box">
             <div className="spinner" aria-label="Carregando" />
             <p>Carregando dados…</p>
           </div>
         )}
 
-        {!loading && error && (
+        {tab !== 'captacao' && !loading && error && (
           <div className="state-box error">
             <span className="state-icon">⚠️</span>
             <p className="error-msg">{error}</p>
@@ -209,7 +224,7 @@ export default function App() {
           </div>
         )}
 
-        {!loading && !error && raw && (
+        {tab !== 'captacao' && !loading && !error && raw && (
           <>
             {tab === 'ativos' && (
               <>

@@ -640,3 +640,91 @@ a { color: var(--primary); }
   cursor: pointer;
 }
 .show-all-btn:active { background: #dfe7f8; }
+
+/* ═══ Aba Captação (Fluxo) ═══════════════════════════════════ */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+.fluxo { padding: 12px 12px 24px; }
+.fluxo-header { margin-bottom: 10px; }
+.fluxo-title { font-size: 18px; font-weight: 700; color: #0f172a; margin: 0; }
+.fluxo-subtitle { font-size: 13px; color: #64748b; margin: 2px 0 0; }
+
+.fluxo-mock-banner {
+  display: flex; gap: 6px; align-items: center;
+  font-size: 12.5px; color: #92400e;
+  background: #fef3c7; border: 1px solid #fcd34d; border-radius: 10px;
+  padding: 8px 10px; margin-bottom: 12px;
+}
+.fluxo-mock-banner code { background: rgba(0,0,0,.06); padding: 1px 5px; border-radius: 4px; }
+
+/* Filtros */
+.fluxo-filters { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+.fluxo-filters-row { display: flex; flex-wrap: wrap; gap: 12px; }
+.fluxo-field { display: flex; flex-direction: column; gap: 4px; }
+.fluxo-field-label { font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: .03em; }
+
+.segmented { display: inline-flex; background: #eef2fb; border: 1px solid #c7d4ef; border-radius: 10px; padding: 2px; }
+.segmented-btn {
+  border: 0; background: transparent; cursor: pointer;
+  font-size: 13px; font-weight: 600; color: #1e3a8a;
+  padding: 7px 12px; border-radius: 8px; white-space: nowrap;
+}
+.segmented-btn.active { background: #1e3a8a; color: #fff; }
+.segmented-btn:disabled { opacity: .5; cursor: default; }
+.segmented-sm .segmented-btn { font-size: 12px; padding: 5px 9px; }
+
+.period-shortcuts { display: flex; gap: 6px; flex-wrap: wrap; }
+.period-chip {
+  border: 1px solid #c7d4ef; background: #fff; color: #1e3a8a;
+  font-size: 12.5px; font-weight: 600; padding: 6px 10px; border-radius: 8px; cursor: pointer;
+}
+.period-chip.active { background: #1e3a8a; color: #fff; border-color: #1e3a8a; }
+.period-chip:disabled { opacity: .5; cursor: default; }
+
+.fluxo-dates { display: flex; align-items: flex-end; gap: 10px; flex-wrap: wrap; }
+.fluxo-date { display: flex; flex-direction: column; gap: 4px; font-size: 11px; font-weight: 600; color: #64748b; }
+.fluxo-date input {
+  font-size: 13px; padding: 7px 8px; border: 1px solid #cbd5e1; border-radius: 8px; color: #0f172a; background: #fff;
+}
+
+/* Cards */
+.fluxo-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 14px; }
+.fluxo-card {
+  display: flex; flex-direction: column; gap: 3px;
+  background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 12px;
+}
+.fluxo-card-label { font-size: 11.5px; color: #64748b; }
+.fluxo-card-value { font-size: 17px; font-weight: 700; color: #0f172a; }
+.fluxo-card-liquido.pos { background: #ecfdf5; border-color: #a7f3d0; }
+.fluxo-card-liquido.neg { background: #fef2f2; border-color: #fecaca; }
+.fluxo-card-liquido.pos .fluxo-card-value { color: #047857; }
+.fluxo-card-liquido.neg .fluxo-card-value { color: #b91c1c; }
+.liq-arrow { font-size: 13px; margin-right: 3px; }
+
+/* Gráfico */
+.fluxo-chart { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 6px 4px; margin-bottom: 16px; }
+.fluxo-tooltip { background: #fff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 10px; font-size: 12px; box-shadow: 0 4px 14px rgba(0,0,0,.12); }
+.fluxo-tooltip-title { font-weight: 700; color: #0f172a; margin-bottom: 4px; }
+.fluxo-tooltip-row { display: flex; align-items: center; gap: 6px; color: #334155; }
+.fluxo-tooltip-row .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+
+/* Seções / tabela / ranking */
+.fluxo-section-title { font-size: 15px; font-weight: 700; color: #0f172a; margin: 0; }
+.fluxo-ranking-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+.fluxo-ranking-block, .fluxo-table-block { margin-bottom: 18px; }
+.fluxo-table .col-num { text-align: right; white-space: nowrap; }
+.liq-cell.pos { color: #047857; font-weight: 600; }
+.liq-cell.neg { color: #b91c1c; font-weight: 600; }
+.fluxo-note { font-size: 11.5px; color: #94a3b8; margin: 4px 2px 0; }
+
+.btn-retry {
+  margin-top: 10px; padding: 8px 16px; font-size: 13px; font-weight: 600;
+  color: #fff; background: #1e3a8a; border: 0; border-radius: 10px; cursor: pointer;
+}
+
+@media (min-width: 520px) {
+  .fluxo-cards { grid-template-columns: repeat(3, 1fr); }
+}
