@@ -47,19 +47,29 @@ if (-not $Meses) {
 function NormCNPJ($s) { return ($s -replace '\D','') }
 function Step($m) { Write-Host "  $m" -ForegroundColor Cyan }
 
-# Le uma lista CNPJ->Gestor_Apelido, tolerante a separador/encoding/nomes de coluna.
+# Le uma lista CNPJ(fundo) -> Gestor_Apelido, tolerante a separador/encoding/nomes.
+# Regras de escolha de coluna (lista pode ter CNPJ do fundo E do gestor, gestor E apelido):
+#   CNPJ   : prefere a que cita fundo/classe; senao a que NAO cita gestor; senao a 1a com "cnpj".
+#   Gestor : prefere a que cita "apelido"; senao a que cita "gestor".
 function Load-Lista($path) {
-  if (-not (Test-Path $path)) { return @{ map = @{}; missing = $true } }
+  $blank = @{ map = @{}; missing = $true; colCnpj = ''; colGestor = '' }
+  if (-not (Test-Path $path)) { return $blank }
   $lines = [System.IO.File]::ReadAllLines($path)
-  if ($lines.Count -lt 2) { return @{ map = @{}; missing = $false } }
+  if ($lines.Count -lt 2) { $blank.missing = $false; return $blank }
   $sep = if ($lines[0] -match ';') { ';' } else { ',' }
   $hdr = $lines[0].Split($sep) | ForEach-Object { $_.Trim().Trim('"') }
-  $iC = -1; $iG = -1
-  for ($i = 0; $i -lt $hdr.Count; $i++) {
-    if ($iC -lt 0 -and $hdr[$i] -match '(?i)cnpj')           { $iC = $i }
-    if ($iG -lt 0 -and $hdr[$i] -match '(?i)gestor|apelido') { $iG = $i }
-  }
-  if ($iC -lt 0 -or $iG -lt 0) { throw ("Lista '$path': preciso de uma coluna de CNPJ e uma de Gestor. Cabecalho: " + ($hdr -join ', ')) }
+
+  $iC = -1
+  for ($i = 0; $i -lt $hdr.Count; $i++) { if ($hdr[$i] -match '(?i)cnpj' -and $hdr[$i] -match '(?i)fund|classe') { $iC = $i; break } }
+  if ($iC -lt 0) { for ($i = 0; $i -lt $hdr.Count; $i++) { if ($hdr[$i] -match '(?i)cnpj' -and $hdr[$i] -notmatch '(?i)gestor') { $iC = $i; break } } }
+  if ($iC -lt 0) { for ($i = 0; $i -lt $hdr.Count; $i++) { if ($hdr[$i] -match '(?i)cnpj') { $iC = $i; break } } }
+
+  $iG = -1
+  for ($i = 0; $i -lt $hdr.Count; $i++) { if ($hdr[$i] -match '(?i)apelido') { $iG = $i; break } }
+  if ($iG -lt 0) { for ($i = 0; $i -lt $hdr.Count; $i++) { if ($hdr[$i] -match '(?i)gestor') { $iG = $i; break } } }
+
+  if ($iC -lt 0 -or $iG -lt 0) { throw ("Lista '$path': preciso de uma coluna de CNPJ (fundo) e uma de Gestor/Apelido. Cabecalho: " + ($hdr -join ', ')) }
+
   $map = @{}
   for ($i = 1; $i -lt $lines.Count; $i++) {
     $row = $lines[$i]; if ($row.Trim() -eq '') { continue }
@@ -69,7 +79,7 @@ function Load-Lista($path) {
     $gestor = $cols[$iG].Trim().Trim('"')
     if ($cnpj -ne '' -and $gestor -ne '') { $map[$cnpj] = $gestor }
   }
-  return @{ map = $map; missing = $false }
+  return @{ map = $map; missing = $false; colCnpj = $hdr[$iC]; colGestor = $hdr[$iG] }
 }
 
 # Garante o zip do mes no cache (baixa se faltar). Retorna o caminho ou $null.
@@ -105,6 +115,8 @@ $LTrad  = Load-Lista $ListaTrad
 if ($L12431.missing) { Write-Host "    AVISO: nao achei $Lista12431" -ForegroundColor Yellow }
 if ($LTrad.missing)  { Write-Host "    AVISO: nao achei $ListaTrad"  -ForegroundColor Yellow }
 Write-Host "    12431: $($L12431.map.Count) fundos | Tradicional: $($LTrad.map.Count) fundos"
+if ($L12431.map.Count) { Write-Host "      (12431 usando colunas -> CNPJ: '$($L12431.colCnpj)' | Gestor: '$($L12431.colGestor)')" -ForegroundColor DarkGray }
+if ($LTrad.map.Count)  { Write-Host "      (Trad  usando colunas -> CNPJ: '$($LTrad.colCnpj)' | Gestor: '$($LTrad.colGestor)')" -ForegroundColor DarkGray }
 if ($L12431.map.Count -eq 0 -and $LTrad.map.Count -eq 0) {
   throw "Nenhum fundo nas listas. Crie tools\lista_12431.csv e/ou tools\lista_tradicional.csv (colunas: CNPJ, Gestor_Apelido)."
 }
