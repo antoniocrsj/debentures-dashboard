@@ -17,7 +17,8 @@ publicado na Vercel.
 5. [Como atualizar a base](#4-como-atualizar-a-base)
 6. [Como publicar na Vercel](#5-como-publicar-na-vercel)
 7. [O que fazem os `.bat`](#6-o-que-fazem-os-bat)
-8. [Notas e limitações](#notas-e-limitações)
+8. [Aba Captação (Fluxo)](#7-aba-captação-fluxo)
+9. [Notas e limitações](#notas-e-limitações)
 
 ---
 
@@ -31,21 +32,32 @@ publicado na Vercel.
 debentures-dashboard/
 ├── public/
 │   ├── BLC_tratado.csv        ← base de ALOCAÇÃO (gerada todo mês, ver seção 4)
+│   ├── data/                  ← bases da aba Captação (ver seção 7)
+│   │   ├── Fluxo_Semanal_12431.csv
+│   │   └── Fluxo_Semanal_Trad.csv
 │   └── icon-*.png / icon.svg
 ├── src/
 │   ├── App.jsx                ← orquestra estado, filtros, abas
-│   ├── hooks/useDebentures.js ← carrega as 4 fontes de dados (URLs aqui)
+│   ├── hooks/
+│   │   ├── useDebentures.js   ← carrega as 4 fontes de Mercado (URLs aqui)
+│   │   └── useFluxo.js        ← carrega as bases de Captação (origem aqui)
 │   ├── utils/
-│   │   ├── data.js            ← mapeamento de COLUNAS (objeto FIELDS) e cálculos
+│   │   ├── data.js            ← mapeamento de COLUNAS (FIELDS) e cálculos do Mercado
+│   │   ├── fluxo.js           ← funções puras da Captação (parse/agregação/format)
 │   │   ├── csv.js             ← parser de CSV
 │   │   └── format.js          ← formatação de número/data/taxa
-│   └── components/            ← tabela, rankings, filtros, modal
+│   └── components/
+│       ├── …                  ← tabela, rankings, filtros, modal (Mercado)
+│       ├── SearchSelect.jsx   ← dropdown com busca (reutilizado)
+│       └── fluxo/             ← componentes da aba Captação
+├── test/fluxo.test.js         ← testes das funções puras (npm test)
 ├── api/proxy.js               ← proxy CORS para o GAS (em produção)
 ├── vite.config.js             ← proxy CORS para o GAS (em dev) + PWA
 └── tools/
     ├── preparar-blc.ps1       ← transforma o CDA bruto da CVM no BLC_tratado.csv
     ├── preparar-blc.bat       ← atalho de 1 clique para o script acima
-    └── publicar.bat           ← sobe o BLC_tratado.csv para o ar (git push)
+    ├── publicar.bat           ← sobe arquivos de dados para o ar (git push)
+    └── fluxo_semanal.py       ← (PENDENTE) gera as bases da Captação a partir da CVM
 ```
 
 > As URLs das fontes ficam em [`src/hooks/useDebentures.js`](src/hooks/useDebentures.js).
@@ -209,6 +221,70 @@ Abre uma janela, roda alguns segundos e mostra "Pronto!". A Vercel publica em ~1
 
 ---
 
+## 7. Aba Captação (Fluxo)
+
+Mostra a **evolução semanal de captações e resgates** de fundos de crédito, com gráfico
+combinado (barras de captação/resgate + linha de líquido), cards de resumo, tabela
+semanal e ranking de gestores. É **mobile-first** e independente das demais abas (carrega
+seus próprios dados; o Recharts só baixa quando você abre a aba).
+
+### Origem dos dados
+Configurada num **único lugar**: [`src/hooks/useFluxo.js`](src/hooks/useFluxo.js).
+
+```js
+export const FLUXO_SOURCES = {
+  '12431': '/data/Fluxo_Semanal_12431.csv',   // Fundos Incentivados (Lei 12.431)
+  'trad':  '/data/Fluxo_Semanal_Trad.csv',    // Crédito Tradicional
+}
+export const FLUXO_IS_MOCK = true   // ← vire false quando os CSVs reais entrarem
+```
+
+Para trocar a origem por Google Apps Script / API no futuro, basta alterar esse arquivo —
+os componentes não mudam.
+
+> ⚠️ **Hoje os CSVs são MOCK** (dados de exemplo: "Gestora Exemplo A/B/C"). Enquanto
+> `FLUXO_IS_MOCK` for `true`, um aviso amarelo aparece no topo da aba.
+
+### Estrutura esperada dos CSVs (`public/data/`)
+Cabeçalho exato (UTF-8, separador vírgula), uma linha por **(semana, gestor)**:
+
+```
+Semana,Gestor_Apelido,Captacao,Resgate,Liquido,PL_Medio,Num_Fundos
+2026-01-05,Gestora Exemplo A,48000000,30000000,18000000,2000000000,8
+```
+
+| Coluna | Definição |
+|--------|-----------|
+| `Semana` | data inicial da semana (segunda-feira), ISO `AAAA-MM-DD` |
+| `Gestor_Apelido` | nome do gestor (chave do filtro/ranking) |
+| `Captacao` | soma das captações da semana (positivo) |
+| `Resgate` | soma dos resgates (armazenar positivo) |
+| `Liquido` | `Captacao − Resgate` (o app **recalcula**, então não depende dessa coluna) |
+| `PL_Medio` | PL médio dos fundos na semana |
+| `Num_Fundos` | nº de fundos considerados na semana |
+
+### Como atualizar (quando o script existir)
+1. Mantenha as listas de fundos `lista_12431.csv` e `lista_tradicional.csv` (CNPJ → gestor).
+2. Rode `python tools/fluxo_semanal.py` → gera `Fluxo_Semanal_12431.csv` e `Fluxo_Semanal_Trad.csv`.
+3. Copie os 2 arquivos para `public/data/`, troque `FLUXO_IS_MOCK` para `false`.
+4. Publique (`git add public/data/ src/hooks/useFluxo.js && git commit && git push`).
+
+> O `tools/fluxo_semanal.py` **ainda não foi implementado** — ver "Notas e limitações".
+> Por ora a aba roda com os CSVs mock para validar a interface.
+
+### Testar localmente
+- `npm run dev` → abra a aba **Captação**.
+- `npm test` → roda os testes das funções puras de fluxo (`test/fluxo.test.js`).
+
+### Regras de agregação (resumo)
+- `Captacao`/`Resgate` = soma; `Liquido` = soma(Captacao) − soma(Resgate).
+- `PL_Medio` = média **ponderada por `Num_Fundos`**.
+- `Num_Fundos` por semana = soma dos gestores (sem dupla contagem dentro da semana).
+- No ranking, `Num_Fundos` é a **média de fundos por semana** do gestor — a base agregada
+  não permite recuperar fundos únicos no período (limitação documentada).
+
+---
+
 ## Notas e limitações
 
 - **Carga a frio ~12s** (acima dos 10s alvo): o BLC agora é instantâneo, mas as 3
@@ -219,3 +295,11 @@ Abre uma janela, roda alguns segundos e mostra "Pronto!". A Vercel publica em ~1
   arquivo por mês.
 - **Tabela limitada a 100 linhas** por padrão (performance); o botão "ver todos"
   libera o restante.
+- **Aba Captação roda com dados MOCK** (`FLUXO_IS_MOCK = true`). Os números são de
+  exemplo até as bases reais entrarem.
+- **`tools/fluxo_semanal.py` ainda não foi implementado.** Ele deverá: ler
+  `lista_12431.csv`/`lista_tradicional.csv`, baixar os ZIPs do Informe Diário da CVM
+  (`inf_diario_fi_AAAAMM.zip`) com cache em `tools/cache_cvm/`, normalizar CNPJs,
+  calcular o fluxo semanal (seg→dom) e gerar os 2 CSVs. É o próximo passo da aba.
+- **Nº de fundos no ranking** é a média por semana (não fundos únicos no período) —
+  ver seção 7.
