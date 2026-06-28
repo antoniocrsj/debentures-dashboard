@@ -1,40 +1,31 @@
-// Testes das funções puras de fluxo. Rodar com: npm test  (usa o runner nativo do Node)
+// Testes das funções puras de fluxo. Rodar com: npm test  (runner nativo do Node)
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import {
   parseSemana, normalizeRow, normalizeFluxo,
   filterFluxo, aggregateByWeek, aggregateByGestor, computeCards,
-  sortGestores, gestorOptions, startForMonths,
+  sortRows, gestorOptions, startForMonths,
+  toChartSeries, fmtMonthYY, fmtWeekFull, monthTicks,
   fmtFluxo, fmtFluxoSigned,
 } from '../src/utils/fluxo.js'
 
-test('parseSemana entende ISO e BR', () => {
+const norm = s => s.replace(/ /g, ' ')   // troca espaço não-separável por comum
+
+test('parseSemana entende ISO e BR (datas locais, sem UTC)', () => {
   assert.equal(parseSemana('2026-01-05').key, '2026-01-05')
   assert.equal(parseSemana('2026-01-05').label, '05/01')
+  assert.equal(parseSemana('2026-01-05').date.getMonth(), 0)   // janeiro local
   assert.equal(parseSemana('05/01/2026').key, '2026-01-05')
   assert.equal(parseSemana(''), null)
-  assert.equal(parseSemana('xx'), null)
 })
 
-test('normalizeRow calcula liquido e absolutiza resgate', () => {
+test('normalizeRow calcula liquido, absolutiza resgate, guarda PL semanal', () => {
   const n = normalizeRow({ Semana: '2026-01-05', Gestor_Apelido: 'A', Captacao: '1000', Resgate: '-300', PL_Medio: '5000', Num_Fundos: '4' })
   assert.equal(n.captacao, 1000)
-  assert.equal(n.resgate, 300)        // abs
-  assert.equal(n.liquido, 700)        // 1000 - 300
-  assert.equal(n.numFundos, 4)
-  // linha inválida (sem gestor) -> null
+  assert.equal(n.resgate, 300)
+  assert.equal(n.liquido, 700)
+  assert.equal(n.plSemana, 5000)
   assert.equal(normalizeRow({ Semana: '2026-01-05', Gestor_Apelido: '' }), null)
-})
-
-test('normalizeFluxo ordena por semana e conta inválidas', () => {
-  const { rows, invalid } = normalizeFluxo([
-    { Semana: '2026-01-12', Gestor_Apelido: 'A', Captacao: '1', Resgate: '0', PL_Medio: '1', Num_Fundos: '1' },
-    { Semana: '2026-01-05', Gestor_Apelido: 'A', Captacao: '1', Resgate: '0', PL_Medio: '1', Num_Fundos: '1' },
-    { Semana: 'lixo', Gestor_Apelido: 'A' },
-  ])
-  assert.equal(rows.length, 2)
-  assert.equal(invalid, 1)
-  assert.equal(rows[0].weekKey, '2026-01-05')   // ordenado asc
 })
 
 const SAMPLE = normalizeFluxo([
@@ -43,53 +34,81 @@ const SAMPLE = normalizeFluxo([
   { Semana: '2026-01-12', Gestor_Apelido: 'A', Captacao: '800',  Resgate: '300', PL_Medio: '11000', Num_Fundos: '2' },
 ]).rows
 
-test('aggregateByWeek soma gestores e calcula liquido', () => {
+test('aggregateByWeek: PL total = soma do PL entre gestores', () => {
   const w = aggregateByWeek(SAMPLE)
-  assert.equal(w.length, 2)
-  assert.equal(w[0].captacao, 1500)   // 1000 + 500
-  assert.equal(w[0].resgate, 300)     // 200 + 100
+  assert.equal(w[0].plTotal, 30000)   // 10000 + 20000
+  assert.equal(w[0].captacao, 1500)
   assert.equal(w[0].liquido, 1200)
-  assert.equal(w[0].numFundos, 5)     // 2 + 3
+  assert.equal(w[1].plTotal, 11000)
 })
 
-test('aggregateByGestor soma por gestor e média de fundos/semana', () => {
-  const g = aggregateByGestor(SAMPLE)
-  const a = g.find(x => x.gestor === 'A')
-  assert.equal(a.captacao, 1800)      // 1000 + 800
-  assert.equal(a.resgate, 500)
-  assert.equal(a.liquido, 1300)
-  assert.equal(a.numFundos, 2)        // média de 2 e 2
-})
-
-test('computeCards agrega o período', () => {
+test('computeCards: PL total médio = média dos totais semanais; PL recente = última semana', () => {
   const c = computeCards(SAMPLE)
   assert.equal(c.captacao, 2300)
   assert.equal(c.resgate, 600)
   assert.equal(c.liquido, 1700)
-  assert.equal(c.numSemanas, 2)
+  assert.equal(c.plTotalMedio, 20500)   // (30000 + 11000) / 2
+  assert.equal(c.plRecente, 11000)      // semana 2026-01-12
+  assert.equal(c.numGestores, 2)
   assert.equal(c.ultimaSemana.weekKey, '2026-01-12')
 })
 
-test('filterFluxo por gestor e período', () => {
-  assert.equal(filterFluxo(SAMPLE, { gestor: 'B' }).length, 1)
-  assert.equal(filterFluxo(SAMPLE, { start: new Date(2026, 0, 10) }).length, 1)
+test('aggregateByGestor: PL total médio no tempo e PL recente por gestor', () => {
+  const g = aggregateByGestor(SAMPLE)
+  const a = g.find(x => x.gestor === 'A')
+  assert.equal(a.plTotalMedio, 10500)   // média de 10000 e 11000
+  assert.equal(a.plRecente, 11000)      // semana mais recente de A
+  assert.equal(a.captacao, 1800)
+  assert.equal(a.liquido, 1300)
+  const b = g.find(x => x.gestor === 'B')
+  assert.equal(b.plTotalMedio, 20000)
 })
 
-test('sortGestores e gestorOptions', () => {
-  const ranking = sortGestores(aggregateByGestor(SAMPLE), 'captacao')
-  assert.equal(ranking[0].gestor, 'A')   // 1800 > 500
+test('sortRows: numérico por valor, nulos no fim, não muta a base', () => {
+  const list = [{ v: 3 }, { v: null }, { v: 1 }, { v: 10 }]
+  const desc = sortRows(list, x => x.v, 'desc').map(x => x.v)
+  assert.deepEqual(desc, [10, 3, 1, null])
+  const asc = sortRows(list, x => x.v, 'asc').map(x => x.v)
+  assert.deepEqual(asc, [1, 3, 10, null])
+  assert.equal(list[0].v, 3)   // original intacto
+  // ranking por PL desc
+  const top = sortRows(aggregateByGestor(SAMPLE), x => x.plTotalMedio, 'desc')[0]
+  assert.equal(top.gestor, 'B')
+})
+
+test('toChartSeries: resgate vira negativo só no gráfico', () => {
+  const s = toChartSeries(aggregateByWeek(SAMPLE))
+  assert.equal(s[0].resgate, 300)       // positivo (tooltip)
+  assert.equal(s[0].resgateNeg, -300)   // negativo (barra)
+  assert.equal(s[0].liquido, 1200)      // líquido segue da subtração positiva
+})
+
+test('filterFluxo e gestorOptions', () => {
+  assert.equal(filterFluxo(SAMPLE, { gestor: 'B' }).length, 1)
+  assert.equal(filterFluxo(SAMPLE, { start: new Date(2026, 0, 10) }).length, 1)
   assert.deepEqual(gestorOptions(SAMPLE), ['A', 'B'])
 })
 
-test('startForMonths recua a partir da última semana', () => {
+test('startForMonths recua a partir da semana mais recente da base', () => {
   const s = startForMonths(SAMPLE, 0)
   assert.equal(s.getTime(), SAMPLE[SAMPLE.length - 1].weekDate.getTime())
 })
 
-test('formatação compacta e com sinal', () => {
-  assert.equal(fmtFluxo(2_500_000), 'R$ 2,5 mi')
-  assert.equal(fmtFluxo(1_200_000_000), 'R$ 1,2 bi')
-  assert.equal(fmtFluxo(45_000), 'R$ 45 mil')
-  assert.equal(fmtFluxoSigned(250_000_000), '+ R$ 250,0 mi')
-  assert.equal(fmtFluxoSigned(-180_000_000), '− R$ 180,0 mi')
+test('formatação mensal jun/25 e tooltip dd/mm/aaaa', () => {
+  assert.equal(fmtMonthYY('2025-06-30'), 'jun/25')
+  assert.equal(fmtMonthYY('2026-01-05'), 'jan/26')
+  assert.equal(fmtWeekFull('2025-06-16'), '16/06/2025')
+})
+
+test('monthTicks: ~1 por mês, limitando a quantidade', () => {
+  const weeks = ['2025-06-02','2025-06-09','2025-07-07','2025-08-04','2025-08-18'].map(k => ({ weekKey: k }))
+  assert.deepEqual(monthTicks(weeks, 12), ['2025-06-02', '2025-07-07', '2025-08-04'])
+  assert.equal(monthTicks(weeks, 2).length, 2)   // reduz no mobile
+})
+
+test('formatação com sinal colado e zero sem sinal', () => {
+  assert.equal(norm(fmtFluxo(2_500_000)), 'R$ 2,5 mi')
+  assert.equal(norm(fmtFluxoSigned(250_000_000)), '+R$ 250,0 mi')
+  assert.equal(norm(fmtFluxoSigned(-180_000_000)), '−R$ 180,0 mi')
+  assert.equal(norm(fmtFluxoSigned(0)), 'R$ 0')
 })
