@@ -1,10 +1,10 @@
 /* ─── Variables ──────────────────────────────────────────────── */
 :root {
-  --primary:        #8a05be;   /* roxo Nubank */
-  --primary-dark:   #5b0b8a;   /* roxo profundo (header / ativos) */
-  --primary-light:  #f3e8fd;   /* tinta clara (hover / selecionado) */
-  --primary-border: #e3cdf3;   /* borda clara roxa */
-  --bg:            #f5f5f7;
+  --primary:        #1f4e9c;   /* azul (acento: abas, links, botões) */
+  --primary-dark:   #14253f;   /* azul-marinho profundo (header) */
+  --primary-light:  #e9eef7;   /* azul-acinzentado claro (hover / selecionado) */
+  --primary-border: #cdd9ea;   /* borda azul-acinzentada clara */
+  --bg:            #eef1f5;     /* cinza claro de fundo */
   --card:          #ffffff;
   --text:          #0f172a;
   --text-muted:    #64748b;
@@ -351,8 +351,8 @@ a { color: var(--primary); }
 .sort-arrow { color: var(--primary); }
 
 .asset-table td {
-  padding: 8px 6px 8px 8px;
-  border-bottom: 1px solid var(--border);
+  padding: 10px 6px 10px 8px;
+  border-bottom: 1px solid #d3dbe6;   /* divisão de linhas mais evidente */
   vertical-align: middle;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -363,7 +363,7 @@ a { color: var(--primary); }
   transition: background .1s;
 }
 .asset-table tbody tr:hover { background: var(--primary-light); }
-.asset-table tbody tr:active { background: #e9d5f7; }
+.asset-table tbody tr:active { background: #d9e4f5; }
 
 /* Sticky first column */
 .col-sticky {
@@ -376,7 +376,7 @@ a { color: var(--primary); }
 }
 .asset-table thead .col-sticky { background: var(--card); z-index: 3; text-align: left; }
 .asset-table tbody tr:hover .col-sticky { background: var(--primary-light); }
-.asset-table tbody tr:active .col-sticky { background: #e9d5f7; }
+.asset-table tbody tr:active .col-sticky { background: #d9e4f5; }
 
 .asset-table tbody tr.row-selected td { background: var(--primary-light) !important; }
 .asset-table tbody tr.row-selected .col-sticky { background: var(--primary-light) !important; }
@@ -640,7 +640,7 @@ a { color: var(--primary); }
   border-radius: 10px;
   cursor: pointer;
 }
-.show-all-btn:active { background: #ead9f6; }
+.show-all-btn:active { background: #dde8f7; }
 
 /* ═══ Aba Captação (Fluxo) ═══════════════════════════════════ */
 .sr-only {

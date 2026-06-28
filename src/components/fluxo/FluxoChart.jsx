@@ -4,11 +4,11 @@ import {
 } from 'recharts'
 import { toChartSeries, fmtDayMonthYY, fmtWeekFull, fmtFluxo, fmtFluxoSigned } from '../../utils/fluxo.js'
 
-// Cores fosco (dessaturadas), legíveis sobre o card claro
-const COL_CAP = '#3f6fa3'  // captação — azul fosco
-const COL_RES = '#b5544e'  // resgate — vermelho fosco
-const COL_LIQ = '#334155'  // cap. líquida — cinza-ardósia escuro, alto contraste
-const COL_ZERO = '#64748b' // linha do zero — discreta mas visível
+// Paleta azul + cinza (vários tons), legível sobre o card claro
+const COL_CAP = '#2f6fb0'  // captação — azul
+const COL_RES = '#8593a8'  // resgate — cinza-azulado
+const COL_LIQ = '#1e293b'  // cap. líquida — azul-marinho escuro, alto contraste
+const COL_ZERO = '#94a3b8' // linha do zero — cinza discreto mas visível
 
 // Eixo Y compacto, sem "R$"
 const axisFmt = v => {
