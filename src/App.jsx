@@ -36,21 +36,28 @@ const PAGE_SIZE    = 100  // mostra os 100 mais recentes ao abrir
 export default function App() {
   const [months, setMonths]           = useState(loadMonths)
   const [monthIdx, setMonthIdx]       = useState(0)
-  const [tab, setTab]                 = useState('ativos')
+  const [tab, setTab]                 = useState(() =>
+    localStorage.getItem('view-desktop') === '1' && window.innerWidth >= 700 ? 'debentures' : 'ativos'
+  )
   const [filters, setFilters]         = useState(INIT_FILTERS)
   const [sort, setSort]               = useState(INIT_SORT)
   const [selectedAsset, setSelected]  = useState(null)
   const [showMonths, setShowMonths]   = useState(false)
   const [showAll, setShowAll]         = useState(false)
   const [desktop, setDesktop]         = useState(() => {
-    try { return localStorage.getItem('view-desktop') === '1' } catch { return false }
+    try { return localStorage.getItem('view-desktop') === '1' && window.innerWidth >= 700 } catch { return false }
   })
 
-  const toggleDesktop = useCallback(() => setDesktop(d => {
-    const next = !d
-    try { localStorage.setItem('view-desktop', next ? '1' : '0') } catch {}
-    return next
-  }), [])
+  const toggleDesktop = useCallback(() => setDesktop(d => !d), [])
+
+  useEffect(() => {
+    try { localStorage.setItem('view-desktop', desktop ? '1' : '0') } catch {}
+    setTab(t => {
+      if (desktop && (t === 'ativos' || t === 'gestores' || t === 'grupos')) return 'debentures'
+      if (!desktop && t === 'debentures') return 'ativos'
+      return t
+    })
+  }, [desktop])
 
   // Sempre que mudar filtro/busca, volta a limitar (evita renderizar tudo)
   useEffect(() => { setShowAll(false) }, [filters])
@@ -184,12 +191,18 @@ export default function App() {
         )}
 
         <nav className="tabs" role="tablist">
-          {[
-            { id: 'ativos',   label: `Ativos (${filteredAssets.length.toLocaleString('pt-BR')})` },
-            { id: 'gestores', label: `Gestores (${managers.length.toLocaleString('pt-BR')})` },
-            { id: 'grupos',   label: `Grupos (${groups.length.toLocaleString('pt-BR')})` },
-            { id: 'captacao', label: 'Captação' },
-          ].map(t => (
+          {(desktop
+            ? [
+                { id: 'debentures', label: 'Debêntures' },
+                { id: 'captacao',   label: 'Captação' },
+              ]
+            : [
+                { id: 'ativos',   label: `Ativos (${filteredAssets.length.toLocaleString('pt-BR')})` },
+                { id: 'gestores', label: `Gestores (${managers.length.toLocaleString('pt-BR')})` },
+                { id: 'grupos',   label: `Grupos (${groups.length.toLocaleString('pt-BR')})` },
+                { id: 'captacao', label: 'Captação' },
+              ]
+          ).map(t => (
             <button
               key={t.id}
               role="tab"
@@ -233,7 +246,7 @@ export default function App() {
           </div>
         )}
 
-        {tab !== 'captacao' && !loading && !error && raw && (
+        {tab !== 'captacao' && tab !== 'debentures' && !loading && !error && raw && (
           <>
             {tab === 'ativos' && (
               <>
@@ -266,6 +279,42 @@ export default function App() {
                 onFilter={handleFilter}
               />
             )}
+          </>
+        )}
+
+        {tab === 'debentures' && !loading && !error && raw && (
+          <>
+            <AssetTable
+              assets={displayedAssets}
+              sort={sort}
+              onSort={handleSort}
+              activeAtivo={filters.ativo}
+              onFilter={handleFilter}
+              onInfoClick={setSelected}
+            />
+            {!showAll && filteredAssets.length > PAGE_SIZE && (
+              <button className="show-all-btn" onClick={() => setShowAll(true)}>
+                Mostrando {PAGE_SIZE} de {filteredAssets.length.toLocaleString('pt-BR')} ativos — ver todos
+              </button>
+            )}
+            <div className="desktop-split">
+              <div className="desktop-split-col">
+                <h3 className="desktop-section-title">Gestores ({managers.length.toLocaleString('pt-BR')})</h3>
+                <ManagerRanking
+                  managers={managers}
+                  activeGestor={filters.gestor}
+                  onFilter={handleFilter}
+                />
+              </div>
+              <div className="desktop-split-col">
+                <h3 className="desktop-section-title">Grupos ({groups.length.toLocaleString('pt-BR')})</h3>
+                <GroupRanking
+                  groups={groups}
+                  activeGrupo={filters.grupo}
+                  onFilter={handleFilter}
+                />
+              </div>
+            </div>
           </>
         )}
       </main>

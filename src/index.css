@@ -769,3 +769,19 @@ a { color: var(--primary); }
   .app.desktop .fluxo-cards { grid-template-columns: repeat(6, 1fr); }
   .app.desktop .fluxo { padding: 16px 18px 28px; }
 }
+
+/* ─── Aba Debêntures (desktop): Gestores + Grupos lado a lado ── */
+.desktop-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 16px 12px 0;
+}
+.desktop-section-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 4px;
+  padding: 0 12px;
+}
+.desktop-split-col .ranking-list { padding-top: 4px; }
