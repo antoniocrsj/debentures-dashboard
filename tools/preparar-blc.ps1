@@ -25,7 +25,8 @@ param(
 $ErrorActionPreference = 'Stop'
 
 # ---- Configuracao ----------------------------------------------------------
-$DefaultFolder = 'C:\Projeto Crédito\Power BI'
+# "C:\Projeto Credito\Power BI" — [char]233 = e-acento (mantem o .ps1 lendo certo em ANSI)
+$DefaultFolder = ("C:\Projeto Cr" + [char]233 + "dito\Power BI")
 $FundosUrl = 'https://script.google.com/macros/s/AKfycbxhTXC7FXkp9fEz0bw6Nnh_JDm4UVhRkqZF5zOW-Cb842RhFBikauGaWeChG0vQerPrBA/exec?sheet=fundos'
 # ---------------------------------------------------------------------------
 

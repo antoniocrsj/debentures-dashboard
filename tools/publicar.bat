@@ -1,14 +1,14 @@
 @echo off
 chcp 65001 >nul
-REM Sobe o BLC_tratado.csv (gerado pelo preparar-blc.bat) para o ar.
+REM Sobe os arquivos de dados (BLC e Captacao) gerados em public/ para o ar.
 cd /d "%~dp0.."
 
 echo.
-echo Publicando atualizacao do BLC...
+echo Publicando atualizacao dos dados...
 echo.
 
-git add public/BLC_tratado.csv
-git commit -m "Atualiza BLC"
+git add public/
+git commit -m "Atualiza dados (BLC / Captacao)"
 git push
 
 echo.

@@ -56,8 +56,10 @@ debentures-dashboard/
 └── tools/
     ├── preparar-blc.ps1       ← transforma o CDA bruto da CVM no BLC_tratado.csv
     ├── preparar-blc.bat       ← atalho de 1 clique para o script acima
-    ├── publicar.bat           ← sobe arquivos de dados para o ar (git push)
-    └── fluxo_semanal.py       ← (PENDENTE) gera as bases da Captação a partir da CVM
+    ├── preparar-fluxo.ps1     ← gera as bases da Captação a partir do Informe Diário CVM
+    ├── preparar-fluxo.bat     ← atalho de 1 clique para o script de fluxo
+    ├── lista_*.example.csv    ← modelos das listas de fundos (CNPJ → Gestor_Apelido)
+    └── publicar.bat           ← sobe os dados de public/ para o ar (git push)
 ```
 
 > As URLs das fontes ficam em [`src/hooks/useDebentures.js`](src/hooks/useDebentures.js).
@@ -263,14 +265,23 @@ Semana,Gestor_Apelido,Captacao,Resgate,Liquido,PL_Medio,Num_Fundos
 | `PL_Medio` | PL médio dos fundos na semana |
 | `Num_Fundos` | nº de fundos considerados na semana |
 
-### Como atualizar (quando o script existir)
-1. Mantenha as listas de fundos `lista_12431.csv` e `lista_tradicional.csv` (CNPJ → gestor).
-2. Rode `python tools/fluxo_semanal.py` → gera `Fluxo_Semanal_12431.csv` e `Fluxo_Semanal_Trad.csv`.
-3. Copie os 2 arquivos para `public/data/`, troque `FLUXO_IS_MOCK` para `false`.
-4. Publique (`git add public/data/ src/hooks/useFluxo.js && git commit && git push`).
+### Como atualizar as bases (mensal)
+O gerador é o `tools/preparar-fluxo.ps1` (PowerShell, **sem instalar nada** — mesmo padrão
+do BLC). Fluxo:
 
-> O `tools/fluxo_semanal.py` **ainda não foi implementado** — ver "Notas e limitações".
-> Por ora a aba roda com os CSVs mock para validar a interface.
+1. Crie/atualize as listas de fundos em `tools/`:
+   - `lista_12431.csv` (Incentivados) e `lista_tradicional.csv` (Tradicional)
+   - colunas: `CNPJ,Gestor_Apelido` (veja os `lista_*.example.csv`). CNPJ com ou sem
+     pontuação — o script normaliza.
+2. Clique 2× em **`tools\preparar-fluxo.bat`** (sem argumentos = últimos 12 meses). Ele
+   baixa os `inf_diario_fi_AAAAMM.zip` da CVM (cache em `C:\Projeto Crédito\CVM _informe_diario`,
+   não rebaixa), calcula o fluxo semanal por gestor e grava direto em `public/data/`.
+3. Da **primeira vez**, troque `FLUXO_IS_MOCK` para `false` em `src/hooks/useFluxo.js`.
+4. Publique com **`tools\publicar.bat`** (sobe tudo de `public/`).
+
+> Para baixar meses específicos: `preparar-fluxo.bat -Meses 202504,202505`.
+> O script foi validado com dados reais da CVM; hoje a aba ainda mostra **mock** porque
+> as listas reais de fundos ainda não foram criadas.
 
 ### Testar localmente
 - `npm run dev` → abra a aba **Captação**.
@@ -295,11 +306,11 @@ Semana,Gestor_Apelido,Captacao,Resgate,Liquido,PL_Medio,Num_Fundos
   arquivo por mês.
 - **Tabela limitada a 100 linhas** por padrão (performance); o botão "ver todos"
   libera o restante.
-- **Aba Captação roda com dados MOCK** (`FLUXO_IS_MOCK = true`). Os números são de
-  exemplo até as bases reais entrarem.
-- **`tools/fluxo_semanal.py` ainda não foi implementado.** Ele deverá: ler
-  `lista_12431.csv`/`lista_tradicional.csv`, baixar os ZIPs do Informe Diário da CVM
-  (`inf_diario_fi_AAAAMM.zip`) com cache em `tools/cache_cvm/`, normalizar CNPJs,
-  calcular o fluxo semanal (seg→dom) e gerar os 2 CSVs. É o próximo passo da aba.
+- **Aba Captação roda com dados MOCK** (`FLUXO_IS_MOCK = true`) até você criar as listas
+  reais de fundos (`tools/lista_12431.csv` / `lista_tradicional.csv`) e rodar
+  `preparar-fluxo.bat`. O gerador já está pronto e validado com dados reais da CVM.
+- **Gerador em PowerShell, não Python.** O spec pedia `fluxo_semanal.py`, mas como sua
+  máquina não tem Python e todo o pipeline (BLC) já é PowerShell de 1 clique, o gerador
+  ficou em `tools/preparar-fluxo.ps1`. Posso fornecer a versão Python sob demanda.
 - **Nº de fundos no ranking** é a média por semana (não fundos únicos no período) —
   ver seção 7.

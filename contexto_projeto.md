@@ -61,12 +61,20 @@ Sem backend próprio. Duas estratégias de origem, ambas centralizadas em hooks:
   `FLUXO_IS_MOCK = true` em `useFluxo.js`).
 - Funções puras testadas (`test/fluxo.test.js`, `npm test`).
 
+### Gerador das bases de Captação — pronto
+- **`tools/preparar-fluxo.ps1`** (+ `.bat`) gera `Fluxo_Semanal_12431.csv` e `…_Trad.csv`
+  a partir do Informe Diário da CVM. Baixa os `inf_diario_fi_AAAAMM.zip` (cache em
+  `C:\Projeto Crédito\CVM _informe_diario`), junta com as listas `lista_12431.csv` /
+  `lista_tradicional.csv` (CNPJ → Gestor_Apelido), calcula o fluxo semanal (seg–dom) por
+  gestor e grava direto em `public/data/`. Validado com dados reais (maio/2026).
+- **Decisão:** o spec pedia `fluxo_semanal.py`, mas a máquina do usuário não tem Python e
+  o pipeline do BLC já é PowerShell de 1 clique — então o gerador ficou em PowerShell, no
+  mesmo padrão. Versão Python pode ser feita sob demanda.
+
 ### Pendente
-- **`tools/fluxo_semanal.py`** — script que gera as bases reais da Captação a partir do
-  Informe Diário da CVM (`inf_diario_fi_AAAAMM.zip`) + listas `lista_12431.csv` /
-  `lista_tradicional.csv`. Ainda não implementado (decidiu-se validar a UI com mock
-  primeiro). Quando existir: gerar os CSVs, copiar para `public/data/`, virar
-  `FLUXO_IS_MOCK` para `false`.
+- **Listas reais de fundos** (`tools/lista_12431.csv` / `lista_tradicional.csv`) — o
+  usuário vai criar. Enquanto não existem, a aba usa os CSVs mock.
+- **Virar `FLUXO_IS_MOCK = false`** em `useFluxo.js` quando as bases reais entrarem.
 - **Carga a frio do Mercado ~12s** — as 3 chamadas GAS ainda pesam; opção futura é
   tornar a base de debêntures estática (como o BLC).
 - **Seletor de meses (BLC)** ainda visível mas inerte: `useDebentures` lê sempre o
