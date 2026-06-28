@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { fmtFluxo, fmtFluxoSigned, sortRows, fmtWeekFull } from '../../utils/fluxo.js'
+import { fmtFluxo, fmtFluxoSigned, sortRows, fmtWeekFull, fmtInt } from '../../utils/fluxo.js'
 import SortableTh, { cycleSort } from './SortableTh.jsx'
 
 const PAGE = 16
@@ -56,7 +56,7 @@ export default function FluxoTable({ weekly }) {
       </div>
       {!showAll && sorted.length > PAGE && (
         <button className="show-all-btn" onClick={() => setShowAll(true)}>
-          Mostrando {PAGE} de {sorted.length} semanas — ver todas
+          Mostrando {PAGE} de {fmtInt(sorted.length)} semanas — ver todas
         </button>
       )}
     </div>

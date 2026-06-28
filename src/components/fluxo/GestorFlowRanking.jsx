@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { fmtFluxo, fmtFluxoSigned, sortRows } from '../../utils/fluxo.js'
+import { fmtFluxo, fmtFluxoSigned, sortRows, fmtInt } from '../../utils/fluxo.js'
 import SortableTh, { cycleSort } from './SortableTh.jsx'
 
 const LIMIT = 20
@@ -63,10 +63,10 @@ export default function GestorFlowRanking({ ranking }) {
       {!showAll && sorted.length > LIMIT
         ? (
           <button className="show-all-btn" onClick={() => setShowAll(true)}>
-            Mostrando {LIMIT} de {sorted.length} gestores — ver todos
+            Mostrando {LIMIT} de {fmtInt(sorted.length)} gestores — ver todos
           </button>
         )
-        : <p className="fluxo-note">{sorted.length} gestores no período.</p>}
+        : <p className="fluxo-note">{fmtInt(sorted.length)} gestores no período.</p>}
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { fmtFluxo, fmtFluxoSigned } from '../../utils/fluxo.js'
+import { fmtFluxo, fmtFluxoSigned, fmtInt } from '../../utils/fluxo.js'
 
 export default function FluxoSummaryCards({ cards }) {
   const liqPos = cards.liquido > 0
@@ -29,7 +29,7 @@ export default function FluxoSummaryCards({ cards }) {
         value={fmtFluxo(cards.plRecente)}
         help="Patrimônio líquido total na semana mais recente disponível"
       />
-      <Card label="Nº de fundos" sub="(média/semana)" value={cards.numFundos ? String(cards.numFundos) : '—'} />
+      <Card label="Nº de fundos" sub="(média/semana)" value={cards.numFundos ? fmtInt(cards.numFundos) : '—'} />
     </div>
   )
 }

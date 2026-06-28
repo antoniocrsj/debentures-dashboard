@@ -174,9 +174,9 @@ export default function App() {
 
         <nav className="tabs" role="tablist">
           {[
-            { id: 'ativos',   label: `Ativos (${filteredAssets.length})` },
-            { id: 'gestores', label: `Gestores (${managers.length})` },
-            { id: 'grupos',   label: `Grupos (${groups.length})` },
+            { id: 'ativos',   label: `Ativos (${filteredAssets.length.toLocaleString('pt-BR')})` },
+            { id: 'gestores', label: `Gestores (${managers.length.toLocaleString('pt-BR')})` },
+            { id: 'grupos',   label: `Grupos (${groups.length.toLocaleString('pt-BR')})` },
             { id: 'captacao', label: 'Captação' },
           ].map(t => (
             <button
@@ -236,7 +236,7 @@ export default function App() {
                 />
                 {!showAll && filteredAssets.length > PAGE_SIZE && (
                   <button className="show-all-btn" onClick={() => setShowAll(true)}>
-                    Mostrando {PAGE_SIZE} de {filteredAssets.length} ativos — ver todos
+                    Mostrando {PAGE_SIZE} de {filteredAssets.length.toLocaleString('pt-BR')} ativos — ver todos
                   </button>
                 )}
               </>

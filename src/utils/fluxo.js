@@ -256,3 +256,9 @@ export function fmtFluxoSigned(n) {
   const sign = n > 0 ? '+' : n < 0 ? '−' : ''
   return sign + fmtFluxo(Math.abs(n))
 }
+
+/** Inteiro com separador de milhares pt-BR (ex.: 1.578). */
+export function fmtInt(n) {
+  if (n == null || isNaN(n)) return '—'
+  return Math.round(n).toLocaleString('pt-BR')
+}
