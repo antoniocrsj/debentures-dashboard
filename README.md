@@ -238,14 +238,14 @@ export const FLUXO_SOURCES = {
   '12431': '/data/Fluxo_Semanal_12431.csv',   // Fundos Incentivados (Lei 12.431)
   'trad':  '/data/Fluxo_Semanal_Trad.csv',    // Crédito Tradicional
 }
-export const FLUXO_IS_MOCK = true   // ← vire false quando os CSVs reais entrarem
+export const FLUXO_IS_MOCK = false  // true mostra um aviso amarelo de "dados de exemplo"
 ```
 
 Para trocar a origem por Google Apps Script / API no futuro, basta alterar esse arquivo —
 os componentes não mudam.
 
-> ⚠️ **Hoje os CSVs são MOCK** (dados de exemplo: "Gestora Exemplo A/B/C"). Enquanto
-> `FLUXO_IS_MOCK` for `true`, um aviso amarelo aparece no topo da aba.
+> Hoje a aba roda com **dados reais da CVM** (`FLUXO_IS_MOCK = false`). Se voltar a usar
+> CSVs de exemplo, deixe `true` para exibir o aviso de mock no topo da aba.
 
 ### Estrutura esperada dos CSVs (`public/data/`)
 Cabeçalho exato (UTF-8, separador vírgula), uma linha por **(semana, gestor)**:
@@ -262,7 +262,7 @@ Semana,Gestor_Apelido,Captacao,Resgate,Liquido,PL_Medio,Num_Fundos
 | `Captacao` | soma das captações da semana (positivo) |
 | `Resgate` | soma dos resgates (armazenar positivo) |
 | `Liquido` | `Captacao − Resgate` (o app **recalcula**, então não depende dessa coluna) |
-| `PL_Medio` | PL médio dos fundos na semana |
+| `PL_Medio` | **PL total do gestor naquela semana** (soma dos fundos do gestor, suavizada nos dias) — é um estoque, não uma média entre fundos |
 | `Num_Fundos` | nº de fundos considerados na semana |
 
 ### Como atualizar as bases (mensal)
@@ -280,19 +280,42 @@ do BLC). Fluxo:
 4. Publique com **`tools\publicar.bat`** (sobe tudo de `public/`).
 
 > Para baixar meses específicos: `preparar-fluxo.bat -Meses 202504,202505`.
-> O script foi validado com dados reais da CVM; hoje a aba ainda mostra **mock** porque
-> as listas reais de fundos ainda não foram criadas.
 
 ### Testar localmente
 - `npm run dev` → abra a aba **Captação**.
 - `npm test` → roda os testes das funções puras de fluxo (`test/fluxo.test.js`).
 
-### Regras de agregação (resumo)
-- `Captacao`/`Resgate` = soma; `Liquido` = soma(Captacao) − soma(Resgate).
-- `PL_Medio` = média **ponderada por `Num_Fundos`**.
-- `Num_Fundos` por semana = soma dos gestores (sem dupla contagem dentro da semana).
-- No ranking, `Num_Fundos` é a **média de fundos por semana** do gestor — a base agregada
-  não permite recuperar fundos únicos no período (limitação documentada).
+### Indicadores e regras
+**PL (estoque — agregado por data, depois média no tempo):**
+- **PL total médio** = para cada semana soma-se o PL de todos os fundos do recorte (PL
+  total da semana); o indicador é a **média desses totais semanais** no período.
+  Não é média entre fundos, nem soma de todas as semanas.
+- **PL mais recente** = PL total do recorte na **semana mais recente** disponível.
+- Por gestor, mesma metodologia (soma dos fundos do gestor por semana → média no tempo;
+  recente = última semana do gestor).
+
+**Fluxos:** `Captacao`/`Resgate` = soma (positivos); `Liquido` = soma(Captacao) −
+soma(Resgate). No **gráfico**, o resgate é exibido **negativo** (`-Math.abs(Resgate)`)
+abaixo do zero, mas cards, tabelas e cálculos mantêm o resgate **positivo**.
+
+**Nº de fundos:** por semana = soma dos gestores (sem dupla contagem). No ranking é a
+**média de fundos por semana** do gestor — a base agregada não permite recuperar fundos
+únicos no período (limitação).
+
+**Períodos:** atalhos 1/3/6/12 meses e "Todo o histórico", calculados a partir da
+**semana mais recente da base** (não do relógio do computador). O período efetivamente
+usado é exibido como "Dados de DD/MM/AAAA a DD/MM/AAAA".
+
+**Ordenação das tabelas:** clique no cabeçalho — 1º clique decrescente, 2º crescente,
+3º volta ao padrão (ranking: PL total médio ↓). Ordena pelos **valores numéricos brutos**,
+nunca pelo texto formatado; nulos vão para o fim; `aria-sort` para acessibilidade.
+
+**Eixo do gráfico:** dados semanais, mas o eixo X mostra ~1 marca por mês no formato
+`jun/25` (menos marcas no celular). O tooltip mantém a semana exata (`DD/MM/AAAA`) e os
+sinais explícitos (Captação +, Resgate −, Líquido ±) e o PL total da semana.
+
+**Referência da base:** "Base atualizada até DD/MM/AAAA" usa a semana mais recente do
+**segmento selecionado** (12.431 ou Tradicional), não a hora de acesso.
 
 ---
 
@@ -306,9 +329,8 @@ do BLC). Fluxo:
   arquivo por mês.
 - **Tabela limitada a 100 linhas** por padrão (performance); o botão "ver todos"
   libera o restante.
-- **Aba Captação roda com dados MOCK** (`FLUXO_IS_MOCK = true`) até você criar as listas
-  reais de fundos (`tools/lista_12431.csv` / `lista_tradicional.csv`) e rodar
-  `preparar-fluxo.bat`. O gerador já está pronto e validado com dados reais da CVM.
+- **Aba Captação com dados reais da CVM** (`FLUXO_IS_MOCK = false`), 52 semanas. Atualize
+  pelo `preparar-fluxo.bat` + `publicar.bat`.
 - **Gerador em PowerShell, não Python.** O spec pedia `fluxo_semanal.py`, mas como sua
   máquina não tem Python e todo o pipeline (BLC) já é PowerShell de 1 clique, o gerador
   ficou em `tools/preparar-fluxo.ps1`. Posso fornecer a versão Python sob demanda.
