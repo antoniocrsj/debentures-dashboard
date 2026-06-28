@@ -215,6 +215,12 @@ export function fmtWeekFull(ymd) {
   return m ? `${m[3]}/${m[2]}/${m[1]}` : String(ymd || '')
 }
 
+/** 'AAAA-MM-DD' → 'DD/MM/AA' (eixo do gráfico). */
+export function fmtDayMonthYY(ymd) {
+  const m = String(ymd || '').match(/^(\d{4})-(\d{2})-(\d{2})/)
+  return m ? `${m[3]}/${m[2]}/${m[1].slice(2)}` : String(ymd || '')
+}
+
 /**
  * Escolhe os weekKeys para marcar no eixo X: ~1 por mês (primeira semana de cada mês),
  * reduzindo a frequência se passar de maxTicks (ex.: menos marcas no celular).

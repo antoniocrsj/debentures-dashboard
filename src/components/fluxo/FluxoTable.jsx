@@ -7,11 +7,9 @@ const DEFAULT_SORT = { col: 'semana', dir: 'desc' }
 
 const KEYS = {
   semana:   w => w.weekKey,
+  liquido:  w => w.liquido,
   captacao: w => w.captacao,
   resgate:  w => w.resgate,
-  liquido:  w => w.liquido,
-  pl:       w => w.plTotal,
-  fundos:   w => w.numFundos,
 }
 
 export default function FluxoTable({ weekly }) {
@@ -35,12 +33,10 @@ export default function FluxoTable({ weekly }) {
         <table className="asset-table fluxo-table">
           <thead>
             <tr>
-              <SortableTh col="semana"   label="Semana"   sort={sort} onSort={onSort} align="left" sticky />
-              <SortableTh col="captacao" label="Captação" sort={sort} onSort={onSort} />
-              <SortableTh col="resgate"  label="Resgate"  sort={sort} onSort={onSort} />
-              <SortableTh col="liquido"  label="Líquido"  sort={sort} onSort={onSort} />
-              <SortableTh col="pl"       label="PL total" sort={sort} onSort={onSort} />
-              <SortableTh col="fundos"   label="Nº fundos" sort={sort} onSort={onSort} />
+              <SortableTh col="semana"   label="Semana"      sort={sort} onSort={onSort} align="left" sticky />
+              <SortableTh col="liquido"  label="Cap. Líquida" sort={sort} onSort={onSort} />
+              <SortableTh col="captacao" label="Captação"    sort={sort} onSort={onSort} />
+              <SortableTh col="resgate"  label="Resgate"     sort={sort} onSort={onSort} />
             </tr>
           </thead>
           <tbody>
@@ -49,11 +45,9 @@ export default function FluxoTable({ weekly }) {
               return (
                 <tr key={w.weekKey}>
                   <td className="col-sticky col-ativo"><span className="ativo-code">{fmtWeekFull(w.weekKey)}</span></td>
+                  <td className={`col-num liq-cell${pos ? ' pos' : neg ? ' neg' : ''}`}>{fmtFluxoSigned(w.liquido)}</td>
                   <td className="col-num">{fmtFluxo(w.captacao)}</td>
                   <td className="col-num">{fmtFluxo(w.resgate)}</td>
-                  <td className={`col-num liq-cell${pos ? ' pos' : neg ? ' neg' : ''}`}>{fmtFluxoSigned(w.liquido)}</td>
-                  <td className="col-num">{fmtFluxo(w.plTotal)}</td>
-                  <td className="col-num">{w.numFundos || '—'}</td>
                 </tr>
               )
             })}

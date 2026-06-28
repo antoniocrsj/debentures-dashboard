@@ -1,4 +1,4 @@
-import { fmtFluxo, fmtFluxoSigned, fmtWeekFull } from '../../utils/fluxo.js'
+import { fmtFluxo, fmtFluxoSigned } from '../../utils/fluxo.js'
 
 export default function FluxoSummaryCards({ cards }) {
   const liqPos = cards.liquido > 0
@@ -6,18 +6,18 @@ export default function FluxoSummaryCards({ cards }) {
 
   return (
     <div className="fluxo-cards" aria-label="Indicadores do período">
-      <Card label="Captação acumulada" value={fmtFluxo(cards.captacao)} />
-      <Card label="Resgates acumulados" value={fmtFluxo(cards.resgate)} />
-
-      {/* Líquido: sinal textual + ícone, não depende só de cor */}
+      {/* Cap. Líquida: sinal textual + ícone, não depende só de cor */}
       <div className={`fluxo-card fluxo-card-liquido${liqPos ? ' pos' : liqNeg ? ' neg' : ''}`}>
-        <span className="fluxo-card-label">Captação líquida</span>
+        <span className="fluxo-card-label">Cap. Líquida</span>
         <span className="fluxo-card-value">
           <span className="liq-arrow" aria-hidden="true">{liqPos ? '▲' : liqNeg ? '▼' : ''}</span>
           {fmtFluxoSigned(cards.liquido)}
         </span>
         <span className="sr-only">{liqPos ? 'positiva' : liqNeg ? 'negativa' : 'neutra'}</span>
       </div>
+
+      <Card label="Captação acumulada" value={fmtFluxo(cards.captacao)} />
+      <Card label="Resgates acumulados" value={fmtFluxo(cards.resgate)} />
 
       <Card
         label="PL total médio"
@@ -30,12 +30,6 @@ export default function FluxoSummaryCards({ cards }) {
         help="Patrimônio líquido total na semana mais recente disponível"
       />
       <Card label="Nº de fundos" sub="(média/semana)" value={cards.numFundos ? String(cards.numFundos) : '—'} />
-      <Card label="Nº de gestores" value={cards.numGestores ? String(cards.numGestores) : '—'} />
-      <Card
-        label="Última semana"
-        value={cards.ultimaSemana ? cards.ultimaSemana.weekLabel : '—'}
-        help={cards.ultimaSemana ? `Semana de ${fmtWeekFull(cards.ultimaSemana.weekKey)}` : undefined}
-      />
     </div>
   )
 }
