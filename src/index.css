@@ -1,9 +1,10 @@
 /* ─── Variables ──────────────────────────────────────────────── */
 :root {
-  --primary:       #1e40af;
-  --primary-dark:  #1e3a8a;
-  --primary-light: #dbeafe;
-  --bg:            #f1f5f9;
+  --primary:        #8a05be;   /* roxo Nubank */
+  --primary-dark:   #5b0b8a;   /* roxo profundo (header / ativos) */
+  --primary-light:  #f3e8fd;   /* tinta clara (hover / selecionado) */
+  --primary-border: #e3cdf3;   /* borda clara roxa */
+  --bg:            #f5f5f7;
   --card:          #ffffff;
   --text:          #0f172a;
   --text-muted:    #64748b;
@@ -331,7 +332,7 @@ a { color: var(--primary); }
 .asset-table col.c-aloc     { width: 78px; }
 
 .asset-table th {
-  background: #f8fafc;
+  background: var(--card);
   border-bottom: 2px solid var(--border);
   padding: 8px 6px 8px 8px;
   text-align: center;
@@ -362,7 +363,7 @@ a { color: var(--primary); }
   transition: background .1s;
 }
 .asset-table tbody tr:hover { background: var(--primary-light); }
-.asset-table tbody tr:active { background: #bfdbfe; }
+.asset-table tbody tr:active { background: #e9d5f7; }
 
 /* Sticky first column */
 .col-sticky {
@@ -371,11 +372,11 @@ a { color: var(--primary); }
   background: #fff;
   z-index: 2;
   min-width: 96px;
-  box-shadow: 3px 0 6px rgba(0,0,0,.10);
+  box-shadow: 2px 0 4px rgba(0,0,0,.05);
 }
-.asset-table thead .col-sticky { background: #f8fafc; z-index: 3; text-align: left; }
+.asset-table thead .col-sticky { background: var(--card); z-index: 3; text-align: left; }
 .asset-table tbody tr:hover .col-sticky { background: var(--primary-light); }
-.asset-table tbody tr:active .col-sticky { background: #bfdbfe; }
+.asset-table tbody tr:active .col-sticky { background: #e9d5f7; }
 
 .asset-table tbody tr.row-selected td { background: var(--primary-light) !important; }
 .asset-table tbody tr.row-selected .col-sticky { background: var(--primary-light) !important; }
@@ -396,7 +397,7 @@ a { color: var(--primary); }
   display: flex; align-items: center; justify-content: center;
   transition: color .15s, background .15s;
 }
-.info-btn:hover { color: var(--primary); background: #dbeafe; }
+.info-btn:hover { color: var(--primary); background: var(--primary-light); }
 
 .col-num { text-align: center; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .col-taxa { white-space: nowrap; font-size: 12px; }
@@ -633,13 +634,13 @@ a { color: var(--primary); }
   padding: 10px 18px;
   font-size: 13px;
   font-weight: 600;
-  color: #1e3a8a;
-  background: #eef2fb;
-  border: 1px solid #c7d4ef;
+  color: var(--primary-dark);
+  background: var(--primary-light);
+  border: 1px solid var(--primary-border);
   border-radius: 10px;
   cursor: pointer;
 }
-.show-all-btn:active { background: #dfe7f8; }
+.show-all-btn:active { background: #ead9f6; }
 
 /* ═══ Aba Captação (Fluxo) ═══════════════════════════════════ */
 .sr-only {
@@ -667,22 +668,23 @@ a { color: var(--primary); }
 .fluxo-field { display: flex; flex-direction: column; gap: 4px; }
 .fluxo-field-label { font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: .03em; }
 
-.segmented { display: inline-flex; background: #eef2fb; border: 1px solid #c7d4ef; border-radius: 10px; padding: 2px; }
+.segmented { display: flex; width: 100%; background: var(--primary-light); border: 1px solid var(--primary-border); border-radius: 10px; padding: 2px; }
 .segmented-btn {
+  flex: 1 1 0;
   border: 0; background: transparent; cursor: pointer;
-  font-size: 13px; font-weight: 600; color: #1e3a8a;
-  padding: 7px 12px; border-radius: 8px; white-space: nowrap;
+  font-size: 13px; font-weight: 600; color: var(--primary-dark);
+  padding: 7px 12px; border-radius: 8px; white-space: nowrap; text-align: center;
 }
-.segmented-btn.active { background: #1e3a8a; color: #fff; }
+.segmented-btn.active { background: var(--primary-dark); color: #fff; }
 .segmented-btn:disabled { opacity: .5; cursor: default; }
 .segmented-sm .segmented-btn { font-size: 12px; padding: 5px 9px; }
 
 .period-shortcuts { display: flex; gap: 6px; flex-wrap: wrap; }
 .period-chip {
-  border: 1px solid #c7d4ef; background: #fff; color: #1e3a8a;
+  border: 1px solid var(--primary-border); background: #fff; color: var(--primary-dark);
   font-size: 12.5px; font-weight: 600; padding: 6px 10px; border-radius: 8px; cursor: pointer;
 }
-.period-chip.active { background: #1e3a8a; color: #fff; border-color: #1e3a8a; }
+.period-chip.active { background: var(--primary-dark); color: #fff; border-color: var(--primary-dark); }
 .period-chip:disabled { opacity: .5; cursor: default; }
 
 .fluxo-field-grow { flex: 1 1 auto; min-width: 0; }
@@ -736,13 +738,13 @@ a { color: var(--primary); }
 .fluxo-th-sort[style*="left"] .th-sort-btn { justify-content: flex-start; }
 .fluxo-th-sort .th-sub { color: #94a3b8; font-weight: 400; }
 .fluxo-th-sort .th-sort-arrow { font-size: 10px; color: #94a3b8; }
-.fluxo-th-sort.active { color: #1e3a8a; }
-.fluxo-th-sort.active .th-sort-arrow { color: #1e3a8a; }
-.fluxo-th-sort .th-sort-btn:focus-visible { outline: 2px solid #1e3a8a; outline-offset: -2px; border-radius: 6px; }
+.fluxo-th-sort.active { color: var(--primary-dark); }
+.fluxo-th-sort.active .th-sort-arrow { color: var(--primary-dark); }
+.fluxo-th-sort .th-sort-btn:focus-visible { outline: 2px solid var(--primary-dark); outline-offset: -2px; border-radius: 6px; }
 
 .btn-retry {
   margin-top: 10px; padding: 8px 16px; font-size: 13px; font-weight: 600;
-  color: #fff; background: #1e3a8a; border: 0; border-radius: 10px; cursor: pointer;
+  color: #fff; background: var(--primary-dark); border: 0; border-radius: 10px; cursor: pointer;
 }
 
 @media (min-width: 520px) {

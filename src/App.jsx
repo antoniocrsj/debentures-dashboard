@@ -159,8 +159,6 @@ export default function App() {
         loading={loading}
         refreshing={refreshing}
         error={!!error}
-        currentMonth={currentMonth}
-        onMonthClick={() => setShowMonths(true)}
       />
 
       {/* Filters + tabs scroll together as one sticky block */}
@@ -177,8 +175,8 @@ export default function App() {
         <nav className="tabs" role="tablist">
           {[
             { id: 'ativos',   label: `Ativos (${filteredAssets.length})` },
-            { id: 'gestores', label: 'Gestores' },
-            { id: 'grupos',   label: 'Grupos' },
+            { id: 'gestores', label: `Gestores (${managers.length})` },
+            { id: 'grupos',   label: `Grupos (${groups.length})` },
             { id: 'captacao', label: 'Captação' },
           ].map(t => (
             <button
