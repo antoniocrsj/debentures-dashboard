@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import { useDebentures, BLC_DEFAULT_URL } from './hooks/useDebentures.js'
 import {
   buildIndexes, buildBlcIndex,
@@ -27,7 +27,8 @@ function saveMonths(m) {
 }
 
 const INIT_FILTERS = { grupo: '', setor: '', gestor: '', lei12431: '', ativo: '', search: '' }
-const INIT_SORT    = { col: 'alocacao', dir: 'desc' }
+const INIT_SORT    = { col: 'emissao', dir: 'desc' }
+const PAGE_SIZE    = 100  // mostra os 100 mais recentes ao abrir
 
 export default function App() {
   const [months, setMonths]           = useState(loadMonths)
@@ -37,6 +38,10 @@ export default function App() {
   const [sort, setSort]               = useState(INIT_SORT)
   const [selectedAsset, setSelected]  = useState(null)
   const [showMonths, setShowMonths]   = useState(false)
+  const [showAll, setShowAll]         = useState(false)
+
+  // Sempre que mudar filtro/busca, volta a limitar (evita renderizar tudo)
+  useEffect(() => { setShowAll(false) }, [filters])
 
   const currentMonth = months[monthIdx] ?? months[0]
   const { loading, refreshing, error, raw } = useDebentures(currentMonth.url)
@@ -77,7 +82,7 @@ export default function App() {
     })
     // Quando gestor está ativo, mostra só a alocação desse gestor
     if (filters.gestor && indexes) {
-      assets = recomputeAlocByGestor(assets, indexes.blcByAtivo, indexes.fundoMap, filters.gestor)
+      assets = recomputeAlocByGestor(assets, indexes.blcByAtivo, filters.gestor)
     }
     return assets
   }, [allAssets, filters, indexes])
@@ -103,6 +108,12 @@ export default function App() {
     })
     return arr
   }, [filteredAssets, sort])
+
+  // Limita sempre a 100 linhas renderizadas (performance). "Ver todos" libera.
+  const displayedAssets = useMemo(
+    () => showAll ? sortedAssets : sortedAssets.slice(0, PAGE_SIZE),
+    [showAll, sortedAssets]
+  )
 
   const handleSort = useCallback(col =>
     setSort(s => s.col === col
@@ -201,14 +212,21 @@ export default function App() {
         {!loading && !error && raw && (
           <>
             {tab === 'ativos' && (
-              <AssetTable
-                assets={sortedAssets}
-                sort={sort}
-                onSort={handleSort}
-                activeAtivo={filters.ativo}
-                onFilter={handleFilter}
-                onInfoClick={setSelected}
-              />
+              <>
+                <AssetTable
+                  assets={displayedAssets}
+                  sort={sort}
+                  onSort={handleSort}
+                  activeAtivo={filters.ativo}
+                  onFilter={handleFilter}
+                  onInfoClick={setSelected}
+                />
+                {!showAll && filteredAssets.length > PAGE_SIZE && (
+                  <button className="show-all-btn" onClick={() => setShowAll(true)}>
+                    Mostrando {PAGE_SIZE} de {filteredAssets.length} ativos — ver todos
+                  </button>
+                )}
+              </>
             )}
             {tab === 'gestores' && (
               <ManagerRanking

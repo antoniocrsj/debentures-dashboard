@@ -12,6 +12,9 @@ export const DEB_URL =
 export const BLC_DEFAULT_URL =
   'https://script.google.com/macros/s/AKfycbz8A8fAJTD7yVIQzufOUKE8x64BOruRBDmYE2DM0ierH7seKkDxSoHhARvmPO1lJC6f/exec'
 
+// BLC tratado: arquivo estatico servido pelo proprio app (public/). Sem GAS, sem proxy.
+const STATIC_BLC_URL = '/BLC_tratado.csv'
+
 async function fetchCSV(rawUrl) {
   const url = `/api/proxy?url=${encodeURIComponent(rawUrl)}`
   const res = await fetch(url)
@@ -22,22 +25,29 @@ async function fetchCSV(rawUrl) {
   return parseCSV(await res.text())
 }
 
-function cacheKey(blcUrl) {
-  return `deb-cache-${btoa(blcUrl).slice(0, 20)}`
+// Le um CSV estatico direto (sem proxy), com cache-buster opcional
+async function fetchStaticCSV(path) {
+  const res = await fetch(path)
+  if (!res.ok) throw new Error(`HTTP ${res.status} ao ler ${path}`)
+  return parseCSV(await res.text())
 }
 
-function readCache(blcUrl) {
+function cacheKey() {
+  return 'deb-cache-v2'
+}
+
+function readCache() {
   try {
-    const c = JSON.parse(localStorage.getItem(cacheKey(blcUrl)) || 'null')
+    const c = JSON.parse(localStorage.getItem(cacheKey()) || 'null')
     if (c && Date.now() - c.ts < CACHE_TTL) return c.data
   } catch {}
   return null
 }
 
-function writeCache(blcUrl, data) {
+function writeCache(data) {
   try {
     // Salva apenas o necessário — não salva objetos muito grandes
-    localStorage.setItem(cacheKey(blcUrl), JSON.stringify({ ts: Date.now(), data }))
+    localStorage.setItem(cacheKey(), JSON.stringify({ ts: Date.now(), data }))
   } catch {}
 }
 
@@ -48,13 +58,13 @@ function writeCache(blcUrl, data) {
  * Retorna { loading, refreshing, error, raw, cachedAt }
  */
 export function useDebentures(blcUrl) {
-  const cached = readCache(blcUrl)
+  const cached = readCache()
   const [state, setState] = useState({
     loading: !cached,
     refreshing: !!cached,
     error: null,
     raw: cached,
-    cachedAt: cached ? JSON.parse(localStorage.getItem(cacheKey(blcUrl)) || 'null')?.ts : null,
+    cachedAt: cached ? JSON.parse(localStorage.getItem(cacheKey()) || 'null')?.ts : null,
   })
 
   useEffect(() => {
@@ -67,18 +77,18 @@ export function useDebentures(blcUrl) {
       return () => { alive = false }
     }
 
-    const fresh = readCache(blcUrl)
+    const fresh = readCache()
     setState(s => ({ ...s, loading: !fresh, refreshing: !!fresh, raw: fresh ?? s.raw }))
 
     Promise.all([
       fetchCSV(`${CADASTRO_URL}?sheet=emissores`),
       fetchCSV(`${CADASTRO_URL}?sheet=fundos`),
       fetchCSV(DEB_URL),
-      fetchCSV(blcUrl),
+      fetchStaticCSV(STATIC_BLC_URL),
     ])
       .then(([emissores, fundos, debentures, blc]) => {
         const raw = { emissores, fundos, debentures, blc }
-        writeCache(blcUrl, raw)
+        writeCache(raw)
         if (alive) setState({ loading: false, refreshing: false, error: null, raw, cachedAt: Date.now() })
       })
       .catch(err => {

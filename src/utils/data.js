@@ -25,6 +25,9 @@ const FIELDS = {
   cdAtivo:        ['CD_ATIVO', 'Codigo do Ativo', 'Codigo Ativo'],
   cnpjFundoBlc:   ['CNPJ_FUNDO_CLASSE', 'CNPJ_FUNDO', 'CNPJ Fundo'],
   vlMerc:         ['VL_MERC_POS_FINAL', 'VL_MERC', 'Valor Mercado'],
+  // BLC tratado (ja agregado por gestor)
+  gestorBlc:      ['GESTOR', 'Gestor Apelido'],
+  vlAloc:         ['VL_ALOCADO', 'VL_MERC_POS_FINAL', 'VL_MERC', 'Valor Mercado'],
 }
 
 function pick(row, keys) {
@@ -48,12 +51,17 @@ export function buildIndexes({ emissores, fundos }) {
   return { emissorMap, fundoMap }
 }
 
+// Indexa o BLC tratado por ativo: { CD_ATIVO: [{ gestor, valor }, ...] }
 export function buildBlcIndex(blc) {
   const map = {}
-  blc.forEach(row => {
+  ;(blc || []).forEach(row => {
     const cd = (pick(row, FIELDS.cdAtivo) || '').trim()
+    if (!cd) return
     if (!map[cd]) map[cd] = []
-    map[cd].push(row)
+    map[cd].push({
+      gestor: (pick(row, FIELDS.gestorBlc) || '').trim(),
+      valor: parseNum(pick(row, FIELDS.vlAloc)),
+    })
   })
   return map
 }
@@ -64,20 +72,12 @@ export function enrichDebenture(deb, { emissorMap, blcByAtivo, fundoMap }) {
   const emissor = emissorMap[cnpjKey] || {}
 
   const blcRows = (blcByAtivo || {})[codigoAtivo] || []
-  const alocacao = blcRows.reduce((s, r) => s + parseNum(pick(r, FIELDS.vlMerc)), 0)
+  const alocacao = blcRows.reduce((s, r) => s + r.valor, 0)
 
-  // Gestores que alocam nesse ativo
-  const gestores = []
-  if (fundoMap) {
-    const seen = new Set()
-    blcRows.forEach(r => {
-      const cnpj = normCNPJ(pick(r, FIELDS.cnpjFundoBlc))
-      const fundo = fundoMap[cnpj]
-      if (!fundo) return
-      const g = (pick(fundo, FIELDS.gestorApelido) || '').trim()
-      if (g && !seen.has(g)) { seen.add(g); gestores.push(g) }
-    })
-  }
+  // Gestores que alocam nesse ativo (BLC ja vem agregado por gestor)
+  const gestores = [...new Set(
+    blcRows.filter(r => r.valor > 0 && r.gestor).map(r => r.gestor)
+  )]
 
   const qtd = parseNum(pick(deb, FIELDS.qtdMercado))
   const vna = parseNum(pick(deb, FIELDS.vna))
@@ -103,37 +103,35 @@ export function enrichDebenture(deb, { emissorMap, blcByAtivo, fundoMap }) {
 }
 
 export function computeManagers(blcRows, fundoMap) {
-  const mgr = {}
-  const counted = {}
-
-  blcRows.forEach(row => {
-    const cnpjKey = normCNPJ(pick(row, FIELDS.cnpjFundoBlc))
-    const fundo = fundoMap[cnpjKey]
-    if (!fundo) return
-    const gestor = (pick(fundo, FIELDS.gestorApelido) || 'N/A').trim()
-    if (!mgr[gestor]) { mgr[gestor] = { gestor, alocacao: 0, pl: 0 }; counted[gestor] = new Set() }
-    mgr[gestor].alocacao += parseNum(pick(row, FIELDS.vlMerc))
-    if (!counted[gestor].has(cnpjKey)) {
-      counted[gestor].add(cnpjKey)
-      mgr[gestor].pl += parseNum(pick(fundo, FIELDS.pl))
-    }
+  // PL por gestor — total dos fundos do gestor (cadastro). Fixo, nao varia com filtro.
+  const plByGestor = {}
+  Object.values(fundoMap || {}).forEach(f => {
+    const g = (pick(f, FIELDS.gestorApelido) || '').trim()
+    if (!g) return
+    plByGestor[g] = (plByGestor[g] || 0) + parseNum(pick(f, FIELDS.pl))
   })
 
-  return Object.values(mgr).filter(m => m.alocacao > 0).sort((a, b) => b.alocacao - a.alocacao)
+  // Alocacao por gestor — do BLC tratado (ja agregado por gestor)
+  const alocByGestor = {}
+  ;(blcRows || []).forEach(row => {
+    const g = (pick(row, FIELDS.gestorBlc) || '').trim()
+    if (!g) return
+    alocByGestor[g] = (alocByGestor[g] || 0) + parseNum(pick(row, FIELDS.vlAloc))
+  })
+
+  return Object.keys(alocByGestor)
+    .map(g => ({ gestor: g, alocacao: alocByGestor[g], pl: plByGestor[g] || 0 }))
+    .filter(m => m.alocacao > 0)
+    .sort((a, b) => b.alocacao - a.alocacao)
 }
 
 /** Recompute alocacao for each asset counting only the selected gestor's BLC rows */
-export function recomputeAlocByGestor(assets, blcByAtivo, fundoMap, gestor) {
-  const gestorCNPJs = new Set()
-  Object.entries(fundoMap).forEach(([cnpj, fundo]) => {
-    if ((pick(fundo, FIELDS.gestorApelido) || '').trim() === gestor) gestorCNPJs.add(cnpj)
-  })
+export function recomputeAlocByGestor(assets, blcByAtivo, gestor) {
   return assets.map(a => {
     const rows = blcByAtivo[a.codigoAtivo] || []
-    const alocacao = rows.reduce((s, r) => {
-      const cnpj = normCNPJ(pick(r, FIELDS.cnpjFundoBlc))
-      return gestorCNPJs.has(cnpj) ? s + parseNum(pick(r, FIELDS.vlMerc)) : s
-    }, 0)
+    const alocacao = rows
+      .filter(r => r.gestor === gestor)
+      .reduce((s, r) => s + r.valor, 0)
     return { ...a, alocacao }
   })
 }

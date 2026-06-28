@@ -625,3 +625,18 @@ a { color: var(--primary); }
   .content { padding-bottom: max(24px, env(safe-area-inset-bottom)); }
   .modal-body { padding-bottom: max(24px, env(safe-area-inset-bottom)); }
 }
+
+/* ─── Botão "ver todos" da tabela de ativos ──────────────────── */
+.show-all-btn {
+  display: block;
+  margin: 14px auto 8px;
+  padding: 10px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e3a8a;
+  background: #eef2fb;
+  border: 1px solid #c7d4ef;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.show-all-btn:active { background: #dfe7f8; }
