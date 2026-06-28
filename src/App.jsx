@@ -42,6 +42,15 @@ export default function App() {
   const [selectedAsset, setSelected]  = useState(null)
   const [showMonths, setShowMonths]   = useState(false)
   const [showAll, setShowAll]         = useState(false)
+  const [desktop, setDesktop]         = useState(() => {
+    try { return localStorage.getItem('view-desktop') === '1' } catch { return false }
+  })
+
+  const toggleDesktop = useCallback(() => setDesktop(d => {
+    const next = !d
+    try { localStorage.setItem('view-desktop', next ? '1' : '0') } catch {}
+    return next
+  }), [])
 
   // Sempre que mudar filtro/busca, volta a limitar (evita renderizar tudo)
   useEffect(() => { setShowAll(false) }, [filters])
@@ -152,13 +161,15 @@ export default function App() {
   }, [])
 
   return (
-    <div className="app">
+    <div className={`app${desktop ? ' desktop' : ''}`}>
 
       {/* Fixed header */}
       <Header
         loading={loading}
         refreshing={refreshing}
         error={!!error}
+        desktop={desktop}
+        onToggleView={toggleDesktop}
       />
 
       {/* Filters + tabs scroll together as one sticky block */}

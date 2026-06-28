@@ -750,3 +750,22 @@ a { color: var(--primary); }
 @media (min-width: 520px) {
   .fluxo-cards { grid-template-columns: repeat(3, 1fr); }
 }
+
+/* ─── Botão de visão Desktop / Compacto (header) ─────────────── */
+.view-toggle {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(255,255,255,.14); color: #fff;
+  border-radius: 8px; padding: 5px 10px;
+  font-size: 12px; font-weight: 600; white-space: nowrap; flex-shrink: 0;
+  transition: background .15s;
+}
+.view-toggle:hover { background: rgba(255,255,255,.26); }
+/* Só faz sentido em telas largas (notebook) — escondido no celular */
+@media (max-width: 699px) { .view-toggle { display: none; } }
+
+/* ─── Visão desktop: alarga o app e espalha melhor o conteúdo ── */
+.app.desktop { max-width: 1120px; }
+@media (min-width: 700px) {
+  .app.desktop .fluxo-cards { grid-template-columns: repeat(6, 1fr); }
+  .app.desktop .fluxo { padding: 16px 18px 28px; }
+}
