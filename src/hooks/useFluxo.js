@@ -14,7 +14,7 @@ export const FLUXO_SOURCES = {
 }
 
 // Vire false quando os CSVs REAIS substituírem os mocks em public/data/.
-export const FLUXO_IS_MOCK = true
+export const FLUXO_IS_MOCK = false
 
 export const FLUXO_TIPOS = [
   { id: '12431', label: 'Incentivados (12.431)' },
