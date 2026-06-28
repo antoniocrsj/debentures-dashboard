@@ -1,0 +1,221 @@
+# Debêntures CR
+
+Dashboard mobile-first de debêntures de infraestrutura: lista de ativos, ranking de
+gestores e grupos econômicos, com cross-filter (estilo Power BI). React + Vite,
+publicado na Vercel.
+
+🔗 **Produção:** https://debentures-dashboard-three.vercel.app
+
+---
+
+## Sumário
+
+1. [Stack e estrutura](#stack-e-estrutura)
+2. [Arquivos de dados que o app usa](#1-arquivos-de-dados-que-o-app-usa)
+3. [Colunas obrigatórias](#2-colunas-obrigatórias)
+4. [Como rodar localmente](#3-como-rodar-localmente)
+5. [Como atualizar a base](#4-como-atualizar-a-base)
+6. [Como publicar na Vercel](#5-como-publicar-na-vercel)
+7. [O que fazem os `.bat`](#6-o-que-fazem-os-bat)
+8. [Notas e limitações](#notas-e-limitações)
+
+---
+
+## Stack e estrutura
+
+- **React 18 + Vite 5**, deploy na **Vercel**
+- Sem backend próprio: os dados vêm de planilhas (via Google Apps Script) e de um
+  arquivo estático.
+
+```
+debentures-dashboard/
+├── public/
+│   ├── BLC_tratado.csv        ← base de ALOCAÇÃO (gerada todo mês, ver seção 4)
+│   └── icon-*.png / icon.svg
+├── src/
+│   ├── App.jsx                ← orquestra estado, filtros, abas
+│   ├── hooks/useDebentures.js ← carrega as 4 fontes de dados (URLs aqui)
+│   ├── utils/
+│   │   ├── data.js            ← mapeamento de COLUNAS (objeto FIELDS) e cálculos
+│   │   ├── csv.js             ← parser de CSV
+│   │   └── format.js          ← formatação de número/data/taxa
+│   └── components/            ← tabela, rankings, filtros, modal
+├── api/proxy.js               ← proxy CORS para o GAS (em produção)
+├── vite.config.js             ← proxy CORS para o GAS (em dev) + PWA
+└── tools/
+    ├── preparar-blc.ps1       ← transforma o CDA bruto da CVM no BLC_tratado.csv
+    ├── preparar-blc.bat       ← atalho de 1 clique para o script acima
+    └── publicar.bat           ← sobe o BLC_tratado.csv para o ar (git push)
+```
+
+> As URLs das fontes ficam em [`src/hooks/useDebentures.js`](src/hooks/useDebentures.js).
+> O "de-para" de nomes de coluna fica no objeto `FIELDS` em
+> [`src/utils/data.js`](src/utils/data.js) — cada campo aceita vários apelidos, então
+> pequenas variações de nome de coluna não quebram o app.
+
+---
+
+## 1. Arquivos de dados que o app usa
+
+O app carrega **4 fontes** em paralelo:
+
+| # | Fonte | Origem | Conteúdo |
+|---|-------|--------|----------|
+| 1 | **Emissores** | GAS `CADASTRO_URL?sheet=emissores` | Nome, grupo e setor de cada emissor |
+| 2 | **Fundos** | GAS `CADASTRO_URL?sheet=fundos` | Gestor, PL e CNPJ de cada fundo |
+| 3 | **Debêntures** | GAS `DEB_URL` | Cadastro das debêntures (≈4.600 ativos) |
+| 4 | **BLC (alocação)** | **estático** `public/BLC_tratado.csv` | Quanto cada gestor aloca em cada ativo |
+
+As fontes 1–3 são planilhas do Google que você mantém, expostas como CSV por um
+Apps Script (com cache de 6h). A fonte 4 é o **único arquivo que precisa de
+tratamento mensal** (ver seção 4) — é servida direto pelo app, sem Google, por isso
+abre em milissegundos.
+
+> **Por que o BLC é tratado por gestor?** O arquivo bruto da CVM (CDA) tem ~221 mil
+> linhas no nível de **fundo** (8,9 MB). O app só mostra **gestores e grupos**, nunca
+> fundos individuais, então agregamos para o nível de gestor: ~24,7 mil linhas
+> (717 KB). O PL por gestor vem da soma dos fundos no cadastro de fundos.
+
+---
+
+## 2. Colunas obrigatórias
+
+Os nomes abaixo são os "principais"; o app também aceita apelidos alternativos
+(veja `FIELDS` em `src/utils/data.js`). Maiúsculas/minúsculas e acentos importam.
+
+### Emissores (`?sheet=emissores`)
+| Coluna | Uso |
+|--------|-----|
+| `CNPJ Emissor` | chave de ligação com a debênture (**obrigatória**) |
+| `Emissor` | nome exibido do emissor |
+| `Grupo` | usado na aba **Grupos** e no filtro Grupo |
+| `Setor` | usado no filtro Setor |
+
+### Fundos (`?sheet=fundos`)
+| Coluna | Uso |
+|--------|-----|
+| `CNPJ Fundo` | chave do fundo (**obrigatória**) |
+| `Gestor Apelido` | nome do gestor exibido (cai para `Nome Gestor` se vazio) |
+| `Patrimônio Líquido (R$)` | PL somado por gestor na aba **Gestores** |
+
+### Debêntures (`DEB_URL`)
+| Coluna | Uso |
+|--------|-----|
+| `Codigo do Ativo` | chave do ativo, liga com o BLC (**obrigatória**) |
+| `CNPJ Emissor` | liga com a planilha de emissores (**obrigatória**) |
+| `Data de Emissao` | ordenação "mais recentes" + coluna Emis. |
+| `Data de Vencimento` | coluna Venc. |
+| `Juros Criterio Novo - Taxa` | coluna Taxa |
+| `Quantidade em Mercado` + `Valor Nominal Atual` | calcula o Volume emitido |
+| `Deb. Incent. (Lei 12.431)` | filtro Lei 12.431 (valor `S`/`N`) |
+| `Indexador`, `Coordenador Lider`, `Garantia` | exibidos no detalhe (opcionais) |
+
+### BLC tratado (`public/BLC_tratado.csv`) — exatamente 3 colunas
+| Coluna | Conteúdo |
+|--------|----------|
+| `CD_ATIVO` | código da debênture (liga com `Codigo do Ativo`) |
+| `GESTOR` | apelido do gestor |
+| `VL_ALOCADO` | soma alocada por aquele gestor naquele ativo |
+
+### CDA bruto da CVM (entrada do `preparar-blc`) — colunas lidas
+`CD_ATIVO`, `CNPJ_FUNDO_CLASSE`, `VL_MERC_POS_FINAL` e, se existir, `TP_APLIC`
+(usada para manter só linhas de Debêntures).
+
+---
+
+## 3. Como rodar localmente
+
+Pré-requisito: **Node.js 18+**.
+
+```bash
+cd debentures-dashboard
+npm install
+npm run dev
+```
+
+Abre em `http://localhost:5173` (também acessível na rede local, p/ testar no celular).
+
+Em dev, o Vite intercepta `/api/proxy` e busca as planilhas do Google contornando o
+CORS (lógica em `vite.config.js`). O `BLC_tratado.csv` é servido direto de `public/`.
+
+Outros comandos:
+
+```bash
+npm run build     # gera dist/ (produção)
+npm run preview   # serve o dist/ localmente
+```
+
+---
+
+## 4. Como atualizar a base
+
+### Alocação (BLC) — mensal
+É o fluxo principal. Faça **2 cliques**:
+
+1. Baixe o arquivo **CDA_FI_BLC** do mês no site da CVM (`.xlsx`) e salve na pasta de
+   sempre (padrão do script: `C:\Projeto Crédito\Power BI`).
+2. Clique 2× em **`tools\preparar-blc.bat`** → gera o `BLC_tratado.csv` direto em
+   `public/` (~3 min).
+3. Clique 2× em **`tools\publicar.bat`** → sobe pro ar (Vercel atualiza em ~1 min).
+
+> Não precisa abrir terminal nem mexer em planilha. O `preparar-blc` busca o mapa
+> fundo→gestor sozinho no GAS de cadastro.
+
+### Cadastros (emissores / fundos / debêntures)
+Esses ficam nas **planilhas do Google**. Edite a planilha normalmente — o Apps Script
+tem cache de 6h, então a mudança aparece no app no máximo em algumas horas (ou na hora
+seguinte ao cache expirar). Não precisa publicar nada.
+
+---
+
+## 5. Como publicar na Vercel
+
+O projeto está conectado ao repositório
+[`antoniocrsj/debentures-dashboard`](https://github.com/antoniocrsj/debentures-dashboard).
+**Todo push na branch `main` dispara um deploy automático** na Vercel.
+
+- Para atualizar **só o BLC**: use `tools\publicar.bat` (faz o push por você).
+- Para mudanças de **código**: `git add`/`commit`/`push` na `main` normalmente; a
+  Vercel reconstrói sozinha.
+
+A URL fixa de produção é `https://debentures-dashboard-three.vercel.app`.
+
+---
+
+## 6. O que fazem os `.bat`
+
+### `tools\preparar-blc.bat`
+Atalho que roda `preparar-blc.ps1` (PowerShell, sem instalar nada). Ele:
+1. Lê o `.xlsx` da CVM (mesmo aberto no Excel);
+2. Mantém só as linhas de Debêntures (coluna `TP_APLIC`, quando existe);
+3. Busca o mapa **fundo→gestor** no GAS de cadastro;
+4. **Soma** `VL_MERC_POS_FINAL` por (`CD_ATIVO`, `GESTOR`);
+5. Grava `public/BLC_tratado.csv` (3 colunas).
+
+Uso: arraste o `.xlsx` para cima do `.bat`, **ou** clique 2× (ele pega o
+`cda_fi_BLC*.xlsx` mais recente da pasta padrão).
+
+### `tools\publicar.bat`
+Sobe o arquivo gerado para o ar. Por dentro faz:
+```
+git add public/BLC_tratado.csv
+git commit -m "Atualiza BLC"
+git push
+```
+Abre uma janela, roda alguns segundos e mostra "Pronto!". A Vercel publica em ~1 min.
+
+> ⚠️ Rode clicando 2× no arquivo dentro de `tools\` — **não** digite o nome no
+> terminal de uma pasta qualquer.
+
+---
+
+## Notas e limitações
+
+- **Carga a frio ~12s** (acima dos 10s alvo): o BLC agora é instantâneo, mas as 3
+  chamadas ao Google (cadastros + debêntures) ainda pesam. Próximo passo possível:
+  tornar a base de debêntures estática pelo mesmo caminho do BLC. Com cache do
+  navegador, visitas seguintes são instantâneas.
+- **Um mês por vez:** hoje o app mostra o mês atual (Fev/26). Histórico exigiria um
+  arquivo por mês.
+- **Tabela limitada a 100 linhas** por padrão (performance); o botão "ver todos"
+  libera o restante.
