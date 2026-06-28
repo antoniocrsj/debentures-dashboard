@@ -1,12 +1,15 @@
+import { useState, useEffect } from 'react'
 import {
   ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid,
   Tooltip, Legend, ReferenceLine, ResponsiveContainer,
 } from 'recharts'
-import { fmtFluxo } from '../../utils/fluxo.js'
+import { toChartSeries, monthTicks, fmtMonthYY, fmtWeekFull, fmtFluxo, fmtFluxoSigned } from '../../utils/fluxo.js'
 
-const COL_CAP = '#2563eb'  // captação (azul)
-const COL_RES = '#f59e0b'  // resgate (âmbar) — fica abaixo de zero
-const COL_LIQ = '#0f766e'  // líquido (teal)
+// Cores fosco (dessaturadas), legíveis sobre o card claro
+const COL_CAP = '#3f6fa3'  // captação — azul fosco
+const COL_RES = '#b5544e'  // resgate — vermelho fosco
+const COL_LIQ = '#334155'  // líquido — cinza-ardósia escuro, alto contraste
+const COL_ZERO = '#64748b' // linha do zero — discreta mas visível
 
 // Eixo Y compacto, sem "R$"
 const axisFmt = v => {
@@ -23,42 +26,51 @@ function FluxoTooltip({ active, payload, label }) {
   if (!row) return null
   return (
     <div className="fluxo-tooltip">
-      <div className="fluxo-tooltip-title">Semana de {label}</div>
-      <div className="fluxo-tooltip-row"><span className="dot" style={{ background: COL_CAP }} />Captação: {fmtFluxo(row.captacao)}</div>
-      <div className="fluxo-tooltip-row"><span className="dot" style={{ background: COL_RES }} />Resgate: {fmtFluxo(row.resgate)}</div>
-      <div className="fluxo-tooltip-row"><span className="dot" style={{ background: COL_LIQ }} />Líquido: {fmtFluxo(row.liquido)}</div>
+      <div className="fluxo-tooltip-title">Semana de {fmtWeekFull(label)}</div>
+      <div className="fluxo-tooltip-row"><span className="dot" style={{ background: COL_CAP }} />Captação: {fmtFluxoSigned(row.captacao)}</div>
+      <div className="fluxo-tooltip-row"><span className="dot" style={{ background: COL_RES }} />Resgate: {fmtFluxoSigned(-row.resgate)}</div>
+      <div className="fluxo-tooltip-row"><span className="dot" style={{ background: COL_LIQ }} />Líquido: {fmtFluxoSigned(row.liquido)}</div>
+      <div className="fluxo-tooltip-row fluxo-tooltip-pl">PL total: {fmtFluxo(row.plTotal)}</div>
     </div>
   )
 }
 
 export default function FluxoChart({ weekly }) {
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 520px)')
+    const on = () => setIsMobile(mq.matches)
+    on()
+    mq.addEventListener('change', on)
+    return () => mq.removeEventListener('change', on)
+  }, [])
+
   if (!weekly || !weekly.length) return null
 
-  // resgate plotado negativo (abaixo de zero); guarda valor absoluto p/ tooltip
-  const data = weekly.map(w => ({
-    weekLabel: w.weekLabel,
-    captacao: w.captacao,
-    resgate: w.resgate,
-    resgateNeg: -w.resgate,
-    liquido: w.liquido,
-  }))
-
-  // não sobrecarregar o eixo X: ~8 rótulos
-  const interval = data.length > 8 ? Math.floor(data.length / 8) : 0
+  const data = toChartSeries(weekly)
+  const ticks = monthTicks(weekly, isMobile ? 5 : 12)
 
   return (
-    <div className="fluxo-chart" role="img" aria-label="Gráfico semanal de captação, resgate e fluxo líquido">
+    <div className="fluxo-chart" role="img" aria-label="Gráfico semanal de captação (acima de zero), resgate (abaixo de zero) e fluxo líquido">
       <ResponsiveContainer width="100%" height={280}>
         <ComposedChart data={data} margin={{ top: 8, right: 8, bottom: 4, left: 4 }} barGap={2}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e5e9f0" vertical={false} />
-          <XAxis dataKey="weekLabel" interval={interval} tick={{ fontSize: 11 }} tickMargin={6} />
+          <XAxis
+            dataKey="weekKey"
+            ticks={ticks}
+            interval={0}
+            tickFormatter={fmtMonthYY}
+            tick={{ fontSize: 11 }}
+            tickMargin={6}
+            minTickGap={8}
+          />
           <YAxis tickFormatter={axisFmt} tick={{ fontSize: 11 }} width={44} />
-          <ReferenceLine y={0} stroke="#94a3b8" />
+          <ReferenceLine y={0} stroke={COL_ZERO} strokeWidth={1.25} />
           <Tooltip content={<FluxoTooltip />} />
           <Legend wrapperStyle={{ fontSize: 12 }} />
-          <Bar dataKey="captacao" name="Captação" fill={COL_CAP} radius={[2, 2, 0, 0]} maxBarSize={26} />
-          <Bar dataKey="resgateNeg" name="Resgate" fill={COL_RES} radius={[0, 0, 2, 2]} maxBarSize={26} />
-          <Line dataKey="liquido" name="Líquido" stroke={COL_LIQ} strokeWidth={2} dot={{ r: 2 }} activeDot={{ r: 4 }} />
+          <Bar dataKey="captacao" name="Captação" fill={COL_CAP} fillOpacity={0.72} radius={[2, 2, 0, 0]} maxBarSize={26} />
+          <Bar dataKey="resgateNeg" name="Resgate" fill={COL_RES} fillOpacity={0.72} radius={[0, 0, 2, 2]} maxBarSize={26} />
+          <Line dataKey="liquido" name="Líquido" stroke={COL_LIQ} strokeWidth={2.75} dot={false} activeDot={{ r: 4 }} />
         </ComposedChart>
       </ResponsiveContainer>
     </div>

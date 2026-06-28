@@ -2,55 +2,55 @@ import { useState, useMemo, useCallback, lazy, Suspense } from 'react'
 import { useFluxo, FLUXO_TIPOS } from '../../hooks/useFluxo.js'
 import {
   filterFluxo, aggregateByWeek, aggregateByGestor, computeCards,
-  sortGestores, gestorOptions, startForMonths, periodBounds,
+  gestorOptions, startForMonths, periodBounds, fmtWeekFull,
 } from '../../utils/fluxo.js'
 import FluxoFilters from './FluxoFilters.jsx'
 import FluxoSummaryCards from './FluxoSummaryCards.jsx'
 import FluxoTable from './FluxoTable.jsx'
 import GestorFlowRanking from './GestorFlowRanking.jsx'
 
-// Recharts só carrega quando a aba é aberta (preserva a carga inicial do app).
+// Recharts só carrega ao abrir a aba (preserva a carga inicial do app).
 const FluxoChart = lazy(() => import('./FluxoChart.jsx'))
 
-const INIT_PERIOD = { start: null, end: null, months: 12 }
+const DEFAULT_MONTHS = 12
 
 export default function FluxoDashboard() {
   const [tipo, setTipo]     = useState('12431')
   const [gestor, setGestor] = useState('')
-  const [period, setPeriod] = useState(INIT_PERIOD)
-  const [rankBy, setRankBy] = useState('liquido')
+  const [months, setMonths] = useState(DEFAULT_MONTHS)   // null = todo o histórico
 
   const { loading, error, rows, invalid, isMock, reload } = useFluxo(tipo)
+  const tipoLabel = FLUXO_TIPOS.find(t => t.id === tipo)?.label ?? tipo
 
   const gestores = useMemo(() => gestorOptions(rows), [rows])
   const bounds   = useMemo(() => periodBounds(rows), [rows])
 
-  const effStart = useMemo(() => {
-    if (period.start) return period.start
-    if (period.months != null) return startForMonths(rows, period.months)
-    return null
-  }, [period, rows])
-  const effEnd = period.end || bounds.max
+  const effStart = useMemo(() => (months == null ? null : startForMonths(rows, months)), [rows, months])
+  const effEnd   = bounds.max
 
   const filtered = useMemo(
     () => filterFluxo(rows, { gestor, start: effStart, end: effEnd }),
     [rows, gestor, effStart, effEnd]
   )
-  const weekly = useMemo(() => aggregateByWeek(filtered), [filtered])
-  const cards  = useMemo(() => computeCards(filtered), [filtered])
-  const ranking = useMemo(
-    () => (gestor ? [] : sortGestores(aggregateByGestor(filtered), rankBy)),
-    [filtered, gestor, rankBy]
-  )
+  const weekly  = useMemo(() => aggregateByWeek(filtered), [filtered])
+  const cards   = useMemo(() => computeCards(filtered), [filtered])
+  const ranking = useMemo(() => (gestor ? [] : aggregateByGestor(filtered)), [filtered, gestor])
 
-  const changeTipo = useCallback(t => { setTipo(t); setGestor('') }, [])
-  const clearFilters = useCallback(() => { setGestor(''); setPeriod(INIT_PERIOD) }, [])
+  // Período efetivo (datas reais usadas) e data de referência da base do segmento
+  const periodLabel = weekly.length
+    ? `Dados de ${fmtWeekFull(weekly[0].weekKey)} a ${fmtWeekFull(weekly[weekly.length - 1].weekKey)}`
+    : ''
+  const refDate = rows.length ? fmtWeekFull(rows[rows.length - 1].weekKey) : null
+
+  const changeTipo   = useCallback(t => { setTipo(t); setGestor('') }, [])     // mantém o período
+  const clearFilters = useCallback(() => { setGestor(''); setMonths(DEFAULT_MONTHS) }, [])
 
   return (
     <section className="fluxo" aria-label="Captação dos fundos">
       <header className="fluxo-header">
         <h2 className="fluxo-title">Captação dos Fundos</h2>
         <p className="fluxo-subtitle">Fluxo semanal de fundos de crédito</p>
+        {refDate && <p className="fluxo-ref">Base atualizada até {refDate}</p>}
       </header>
 
       {isMock && (
@@ -66,10 +66,12 @@ export default function FluxoDashboard() {
         gestores={gestores}
         gestor={gestor}
         onGestor={setGestor}
-        period={period}
-        onPeriod={setPeriod}
+        months={months}
+        onMonths={setMonths}
+        periodLabel={periodLabel}
         onClear={clearFilters}
         disabled={loading}
+        defaultMonths={DEFAULT_MONTHS}
       />
 
       {/* Estados */}
@@ -83,7 +85,7 @@ export default function FluxoDashboard() {
       {!loading && error && (
         <div className="state-box error">
           <span className="state-icon">⚠️</span>
-          <p className="error-msg">Não foi possível carregar os dados de captação.</p>
+          <p className="error-msg">Não foi possível carregar os dados de {tipoLabel}.</p>
           <small>{error}</small>
           <button className="btn-retry" onClick={reload}>Tentar novamente</button>
         </div>
@@ -92,14 +94,17 @@ export default function FluxoDashboard() {
       {!loading && !error && rows.length === 0 && (
         <div className="empty-state">
           <span>Sem dados de captação</span>
-          <small>O arquivo desta base está vazio ou não foi encontrado.</small>
+          <small>A base de {tipoLabel} está vazia ou não foi encontrada.</small>
         </div>
       )}
 
       {!loading && !error && rows.length > 0 && filtered.length === 0 && (
         <div className="empty-state">
           <span>Nenhuma informação para os filtros</span>
-          <small>Ajuste o gestor ou o período selecionado.</small>
+          <small>
+            Não existem dados de {tipoLabel}
+            {gestor ? ` para o gestor ${gestor}` : ''} no período selecionado.
+          </small>
         </div>
       )}
 
@@ -111,9 +116,7 @@ export default function FluxoDashboard() {
             <FluxoChart weekly={weekly} />
           </Suspense>
 
-          {!gestor && (
-            <GestorFlowRanking ranking={ranking} rankBy={rankBy} onRankBy={setRankBy} />
-          )}
+          {!gestor && <GestorFlowRanking ranking={ranking} />}
 
           <FluxoTable weekly={weekly} />
 

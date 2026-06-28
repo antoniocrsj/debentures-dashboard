@@ -651,6 +651,7 @@ a { color: var(--primary); }
 .fluxo-header { margin-bottom: 10px; }
 .fluxo-title { font-size: 18px; font-weight: 700; color: #0f172a; margin: 0; }
 .fluxo-subtitle { font-size: 13px; color: #64748b; margin: 2px 0 0; }
+.fluxo-ref { font-size: 12px; color: #475569; margin: 3px 0 0; font-weight: 600; }
 
 .fluxo-mock-banner {
   display: flex; gap: 6px; align-items: center;
@@ -684,11 +685,9 @@ a { color: var(--primary); }
 .period-chip.active { background: #1e3a8a; color: #fff; border-color: #1e3a8a; }
 .period-chip:disabled { opacity: .5; cursor: default; }
 
-.fluxo-dates { display: flex; align-items: flex-end; gap: 10px; flex-wrap: wrap; }
-.fluxo-date { display: flex; flex-direction: column; gap: 4px; font-size: 11px; font-weight: 600; color: #64748b; }
-.fluxo-date input {
-  font-size: 13px; padding: 7px 8px; border: 1px solid #cbd5e1; border-radius: 8px; color: #0f172a; background: #fff;
-}
+.fluxo-field-grow { flex: 1 1 auto; min-width: 0; }
+.fluxo-period-info { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.period-effective { font-size: 12px; color: #475569; }
 
 /* Cards */
 .fluxo-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 14px; }
@@ -697,7 +696,9 @@ a { color: var(--primary); }
   background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 12px;
 }
 .fluxo-card-label { font-size: 11.5px; color: #64748b; }
-.fluxo-card-value { font-size: 17px; font-weight: 700; color: #0f172a; }
+.fluxo-card-sub { color: #94a3b8; }
+.fluxo-card-help { color: #94a3b8; cursor: help; }
+.fluxo-card-value { font-size: 17px; font-weight: 700; color: #0f172a; white-space: nowrap; }
 .fluxo-card-liquido.pos { background: #ecfdf5; border-color: #a7f3d0; }
 .fluxo-card-liquido.neg { background: #fef2f2; border-color: #fecaca; }
 .fluxo-card-liquido.pos .fluxo-card-value { color: #047857; }
@@ -710,15 +711,34 @@ a { color: var(--primary); }
 .fluxo-tooltip-title { font-weight: 700; color: #0f172a; margin-bottom: 4px; }
 .fluxo-tooltip-row { display: flex; align-items: center; gap: 6px; color: #334155; }
 .fluxo-tooltip-row .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.fluxo-tooltip-pl { margin-top: 3px; padding-top: 3px; border-top: 1px solid #e2e8f0; color: #475569; }
 
 /* Seções / tabela / ranking */
-.fluxo-section-title { font-size: 15px; font-weight: 700; color: #0f172a; margin: 0; }
-.fluxo-ranking-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+.fluxo-section-title { font-size: 15px; font-weight: 700; color: #0f172a; margin: 0 0 8px; }
+.fluxo-ranking-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+.fluxo-ranking-head .fluxo-section-title { margin: 0; }
+.fluxo-ranking-sub { font-size: 12px; color: #475569; font-weight: 600; }
 .fluxo-ranking-block, .fluxo-table-block { margin-bottom: 18px; }
 .fluxo-table .col-num { text-align: right; white-space: nowrap; }
+.fluxo-table .col-gestor { white-space: nowrap; }
+.fluxo-table .th-pos { text-align: center; width: 34px; color: #64748b; }
 .liq-cell.pos { color: #047857; font-weight: 600; }
 .liq-cell.neg { color: #b91c1c; font-weight: 600; }
 .fluxo-note { font-size: 11.5px; color: #94a3b8; margin: 4px 2px 0; }
+
+/* Cabeçalhos ordenáveis */
+.fluxo-th-sort { padding: 0; }
+.fluxo-th-sort .th-sort-btn {
+  display: inline-flex; align-items: center; gap: 4px; width: 100%;
+  background: none; border: 0; cursor: pointer; color: inherit; font: inherit; font-weight: 600;
+  padding: 8px 6px; justify-content: flex-end;
+}
+.fluxo-th-sort[style*="left"] .th-sort-btn { justify-content: flex-start; }
+.fluxo-th-sort .th-sub { color: #94a3b8; font-weight: 400; }
+.fluxo-th-sort .th-sort-arrow { font-size: 10px; color: #94a3b8; }
+.fluxo-th-sort.active { color: #1e3a8a; }
+.fluxo-th-sort.active .th-sort-arrow { color: #1e3a8a; }
+.fluxo-th-sort .th-sort-btn:focus-visible { outline: 2px solid #1e3a8a; outline-offset: -2px; border-radius: 6px; }
 
 .btn-retry {
   margin-top: 10px; padding: 8px 16px; font-size: 13px; font-weight: 600;

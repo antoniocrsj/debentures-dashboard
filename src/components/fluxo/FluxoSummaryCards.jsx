@@ -1,4 +1,4 @@
-import { fmtFluxo, fmtFluxoSigned } from '../../utils/fluxo.js'
+import { fmtFluxo, fmtFluxoSigned, fmtWeekFull } from '../../utils/fluxo.js'
 
 export default function FluxoSummaryCards({ cards }) {
   const liqPos = cards.liquido > 0
@@ -19,17 +19,34 @@ export default function FluxoSummaryCards({ cards }) {
         <span className="sr-only">{liqPos ? 'positiva' : liqNeg ? 'negativa' : 'neutra'}</span>
       </div>
 
-      <Card label="PL médio" value={fmtFluxo(cards.plMedio)} />
-      <Card label="Nº de fundos (média/semana)" value={cards.numFundos ? String(cards.numFundos) : '—'} />
-      <Card label="Última semana" value={cards.ultimaSemana ? cards.ultimaSemana.weekLabel : '—'} />
+      <Card
+        label="PL total médio"
+        value={fmtFluxo(cards.plTotalMedio)}
+        help="Média do patrimônio líquido total semanal no período selecionado"
+      />
+      <Card
+        label="PL mais recente"
+        value={fmtFluxo(cards.plRecente)}
+        help="Patrimônio líquido total na semana mais recente disponível"
+      />
+      <Card label="Nº de fundos" sub="(média/semana)" value={cards.numFundos ? String(cards.numFundos) : '—'} />
+      <Card label="Nº de gestores" value={cards.numGestores ? String(cards.numGestores) : '—'} />
+      <Card
+        label="Última semana"
+        value={cards.ultimaSemana ? cards.ultimaSemana.weekLabel : '—'}
+        help={cards.ultimaSemana ? `Semana de ${fmtWeekFull(cards.ultimaSemana.weekKey)}` : undefined}
+      />
     </div>
   )
 }
 
-function Card({ label, value }) {
+function Card({ label, sub, value, help }) {
   return (
-    <div className="fluxo-card">
-      <span className="fluxo-card-label">{label}</span>
+    <div className="fluxo-card" title={help || undefined}>
+      <span className="fluxo-card-label">
+        {label}{sub && <span className="fluxo-card-sub"> {sub}</span>}
+        {help && <span className="fluxo-card-help" aria-hidden="true"> ⓘ</span>}
+      </span>
       <span className="fluxo-card-value">{value}</span>
     </div>
   )

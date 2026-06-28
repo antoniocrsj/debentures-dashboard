@@ -1,22 +1,20 @@
 import SearchSelect from '../SearchSelect.jsx'
 
 const SHORTCUTS = [
+  { months: 1,  label: '1 mês' },
   { months: 3,  label: '3 meses' },
   { months: 6,  label: '6 meses' },
   { months: 12, label: '12 meses' },
-  { months: null, label: 'Tudo' },
+  { months: null, label: 'Todo o histórico' },
 ]
-
-const toISO = d => (d instanceof Date && !isNaN(d) ? d.toISOString().slice(0, 10) : '')
-const fromISO = s => (s ? new Date(s + 'T00:00:00') : null)
 
 export default function FluxoFilters({
   tipos, tipo, onTipo,
   gestores, gestor, onGestor,
-  period, onPeriod, onClear,
-  disabled,
+  months, onMonths, periodLabel, onClear,
+  disabled, defaultMonths = 12,
 }) {
-  const hasFilter = gestor || period.start || period.end || period.months !== 12
+  const hasFilter = gestor || months !== defaultMonths
 
   return (
     <div className="fluxo-filters" aria-label="Filtros de captação">
@@ -39,7 +37,7 @@ export default function FluxoFilters({
       <div className="fluxo-filters-row">
         {/* Gestor */}
         <div className="fluxo-field">
-          <span className="fluxo-field-label" id="lbl-gestor-fluxo">Gestor</span>
+          <span className="fluxo-field-label">Gestor</span>
           <SearchSelect
             label="Todos os gestores"
             value={gestor}
@@ -49,17 +47,17 @@ export default function FluxoFilters({
           />
         </div>
 
-        {/* Período — atalhos */}
-        <div className="fluxo-field">
+        {/* Período — só atalhos */}
+        <div className="fluxo-field fluxo-field-grow">
           <span className="fluxo-field-label">Período</span>
-          <div className="period-shortcuts" role="group" aria-label="Atalhos de período">
+          <div className="period-shortcuts" role="group" aria-label="Período">
             {SHORTCUTS.map(s => {
-              const active = !period.start && !period.end && period.months === s.months
+              const active = months === s.months
               return (
                 <button
                   key={s.label}
                   className={`period-chip${active ? ' active' : ''}`}
-                  onClick={() => onPeriod({ start: null, end: null, months: s.months })}
+                  onClick={() => onMonths(s.months)}
                   disabled={disabled}
                   aria-pressed={active}
                 >
@@ -71,26 +69,8 @@ export default function FluxoFilters({
         </div>
       </div>
 
-      {/* Período — datas explícitas */}
-      <div className="fluxo-dates">
-        <label className="fluxo-date">
-          <span>De</span>
-          <input
-            type="date"
-            value={toISO(period.start)}
-            disabled={disabled}
-            onChange={e => onPeriod({ ...period, start: fromISO(e.target.value), months: null })}
-          />
-        </label>
-        <label className="fluxo-date">
-          <span>Até</span>
-          <input
-            type="date"
-            value={toISO(period.end)}
-            disabled={disabled}
-            onChange={e => onPeriod({ ...period, end: fromISO(e.target.value), months: null })}
-          />
-        </label>
+      <div className="fluxo-period-info">
+        {periodLabel && <span className="period-effective">{periodLabel}</span>}
         {hasFilter && (
           <button className="chip-clear" onClick={onClear} aria-label="Limpar filtros">
             ✕ Limpar
