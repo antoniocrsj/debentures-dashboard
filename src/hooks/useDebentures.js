@@ -35,7 +35,7 @@ async function fetchStaticCSV(path) {
 }
 
 function cacheKey() {
-  return 'deb-cache-v3'  // v3: inclui base ANBIMA (Tx Anbima)
+  return 'deb-cache-v4'  // v4: base ANBIMA com Duration (anos)
 }
 
 function readCache() {

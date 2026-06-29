@@ -282,11 +282,14 @@ foreach ($rec in $records) {
   $seen[$rec.Ticker] = $true
   if ($stats.ContainsKey($rec.Sheet)) { $stats[$rec.Sheet]++ }
 
+  # Duration vem em DIAS UTEIS; convertemos p/ anos dividindo por 252 (uma unica vez).
+  $durDias = Parse-NumPt $rec.Duration
   $o = [ordered]@{
     ticker=$rec.Ticker; taxaAnbimaOriginal=''; tipoTaxaAnbima=$rec.Sheet; txAnbimaFormatada='—';
     indexadorAnbima=$rec.Indice; dataReferenciaAnbima=$dataRefStr;
     dataVencimento=$(if($rec.Venc){$rec.Venc.ToString('yyyy-MM-dd')}else{''});
-    durationAnbima=$(if($null -ne (Parse-NumPt $rec.Duration)){[string]$rec.Duration}else{''});
+    durationAnbimaDiasUteis=$(if($null -ne $durDias){ Fmt-Comma $durDias 2 }else{''});
+    durationAnbimaAnos=$(if($null -ne $durDias){ Fmt-Comma ($durDias / 252.0) 2 }else{''});
     percentualCdiOriginal=''; spreadCdiEquivalente=''; metodologiaConversaoCdi='';
     ntnbReferencia=''; codigoNtnbExibicao=''; taxaNtnbReferencia=''; spreadNtnbBps='';
     statusCalculoAnbima='ok'; motivoAusenciaAnbima=''; fonteAnbima='ANBIMA Mercado Secundario (publico)'
@@ -378,7 +381,7 @@ if ($appTickers) {
 
 # ---- 7. Gravar saidas ------------------------------------------------------
 Step "Gravando arquivos"
-$cols = @('ticker','taxaAnbimaOriginal','tipoTaxaAnbima','txAnbimaFormatada','indexadorAnbima','dataReferenciaAnbima','dataVencimento','durationAnbima','percentualCdiOriginal','spreadCdiEquivalente','metodologiaConversaoCdi','ntnbReferencia','codigoNtnbExibicao','taxaNtnbReferencia','spreadNtnbBps','statusCalculoAnbima','motivoAusenciaAnbima','fonteAnbima')
+$cols = @('ticker','taxaAnbimaOriginal','tipoTaxaAnbima','txAnbimaFormatada','indexadorAnbima','dataReferenciaAnbima','dataVencimento','durationAnbimaDiasUteis','durationAnbimaAnos','percentualCdiOriginal','spreadCdiEquivalente','metodologiaConversaoCdi','ntnbReferencia','codigoNtnbExibicao','taxaNtnbReferencia','spreadNtnbBps','statusCalculoAnbima','motivoAusenciaAnbima','fonteAnbima')
 $sb = New-Object System.Text.StringBuilder
 [void]$sb.AppendLine(($cols | ForEach-Object { Csv-Field $_ }) -join ',')
 foreach ($o in $out) { [void]$sb.AppendLine(($cols | ForEach-Object { Csv-Field $o.$_ }) -join ',') }

@@ -6,6 +6,7 @@ const COLS = [
   { id: 'vencimento', label: 'Venc.',      sticky: false, sortable: true  },
   { id: 'taxa',       label: 'Taxa',       sticky: false, sortable: true  },
   { id: 'txanbima',   label: 'Tx Anbima',  sticky: false, sortable: false },
+  { id: 'duration',   label: 'Duration',   sticky: false, sortable: false },
   { id: 'vol',        label: 'Vol. emit.', sticky: false, sortable: true  },
   { id: 'alocacao',   label: 'Alocação',   sticky: false, sortable: true  },
 ]
@@ -49,6 +50,7 @@ export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter
           <col className="c-venc" />
           <col className="c-taxa" />
           <col className="c-anbima" />
+          <col className="c-duration" />
           <col className="c-vol" />
           <col className="c-aloc" />
         </colgroup>
@@ -98,6 +100,7 @@ export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter
                 <td className="col-num">{fmtDateShort(a.vencimento)}</td>
                 <td className="col-num">{fmtTaxa(a.taxa)}</td>
                 <td className="col-num col-anbima" title={anbimaTooltip(a, anbimaRef)}>{a.txAnbima || '—'}</td>
+                <td className="col-num col-anbima">{a.durationAnbima || '—'}</td>
                 <td className="col-num">{a.volumeEmitido > 0 ? fmtBRL(a.volumeEmitido) : '—'}</td>
                 <td className={`col-num col-aloc${a.alocacao > 0 ? ' has-aloc' : ''}`}>
                   {a.alocacao > 0 ? fmtBRL(a.alocacao) : '—'}

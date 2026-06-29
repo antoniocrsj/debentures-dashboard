@@ -329,6 +329,7 @@ a { color: var(--primary); }
 .asset-table col.c-venc     { width: 58px; }
 .asset-table col.c-taxa     { width: 70px; }
 .asset-table col.c-anbima   { width: 92px; }
+.asset-table col.c-duration { width: 64px; }
 .asset-table col.c-vol      { width: 78px; }
 .asset-table col.c-aloc     { width: 78px; }
 

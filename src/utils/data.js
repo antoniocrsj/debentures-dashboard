@@ -112,6 +112,8 @@ export function enrichDebenture(deb, { emissorMap, blcByAtivo, fundoMap, anbimaB
     volumeEmitido: qtd * vna,
     // ANBIMA (ja calculado na etapa de preparacao). '—' quando o ticker nao consta.
     txAnbima: (anbima && anbima['txAnbimaFormatada']) ? anbima['txAnbimaFormatada'] : '—',
+    // Duration em anos (dias uteis / 252, ja convertido na preparacao).
+    durationAnbima: (anbima && anbima['durationAnbimaAnos']) ? anbima['durationAnbimaAnos'] : '—',
     anbimaInfo: anbima,
   }
 }
