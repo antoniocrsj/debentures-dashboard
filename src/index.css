@@ -875,14 +875,16 @@ a { color: var(--primary); }
     border-radius: var(--radius);
     box-shadow: var(--shadow);
   }
-  .app.desktop .asset-table { font-size: 11.5px; }
+  /* separate+spacing:0 faz a borda de 1px caber DENTRO da altura (23px exatos) */
+  .app.desktop .asset-table { font-size: 11px; border-collapse: separate; border-spacing: 0; }
   .app.desktop .asset-table th { font-size: 10px; padding: 7px 6px 7px 8px; }
-  .app.desktop .asset-table td { padding: 4px 6px 4px 8px; }
-  .app.desktop .asset-table .info-btn { width: 18px; height: 18px; font-size: 12px; }
+  /* Linhas padronizadas em TODAS as tabelas: 23px, fonte 11px, padding vertical 3px */
+  .app.desktop .asset-table td { height: 23px; padding: 3px 6px 3px 8px; font-size: 11px; line-height: 15px; }
+  .app.desktop .asset-table .info-btn { width: 14px; height: 14px; font-size: 11px; }
   .app.desktop .asset-table col.c-ativo { width: 200px; }
   .app.desktop .ativo-cell > div { flex-direction: row; align-items: baseline; gap: 6px; }
   .app.desktop .ativo-grupo { max-width: 110px; font-size: 10px; }
-  .app.desktop .ativo-code { font-size: 11.5px; }
+  .app.desktop .ativo-code { font-size: 11px; }
   .app.desktop .asset-table thead th {
     position: sticky;
     top: 0;
@@ -918,18 +920,18 @@ a { color: var(--primary); }
     flex: 0 0 auto;
     background: transparent;
     border: 0;
-    border-bottom: 1px solid #d3dbe6;
     border-radius: 0;
     box-shadow: none;
   }
-  .app.desktop .desktop-split-col .ranking-card:last-child { border-bottom: 0; }
   .app.desktop .desktop-split-col .ranking-card:hover { background: var(--primary-light); }
   .app.desktop .desktop-split-col .ranking-card.card-selected { background: var(--primary-light); }
-  .app.desktop .desktop-split-col .ranking-row { padding: 6px 12px; }
-  .app.desktop .desktop-split-col .rank-num  { font-size: 11px; }
-  .app.desktop .desktop-split-col .rank-name { font-size: 12px; }
-  .app.desktop .desktop-split-col .rank-aloc { font-size: 12px; }
-  .app.desktop .desktop-split-col .rank-pl   { font-size: 11px; }
+  /* borda na própria linha (dentro dos 23px) → pitch idêntico à tabela Ativos */
+  .app.desktop .desktop-split-col .ranking-row { height: 23px; padding: 3px 12px; line-height: 15px; border-bottom: 1px solid #d3dbe6; }
+  .app.desktop .desktop-split-col .ranking-card:last-child .ranking-row { border-bottom: 0; }
+  .app.desktop .desktop-split-col .rank-num,
+  .app.desktop .desktop-split-col .rank-name,
+  .app.desktop .desktop-split-col .rank-aloc,
+  .app.desktop .desktop-split-col .rank-pl { font-size: 11px; }
   /* remove a barra azul → linhas mais baixas e uniformes */
   .app.desktop .desktop-split-col .rank-bar-wrap { display: none; }
 }
