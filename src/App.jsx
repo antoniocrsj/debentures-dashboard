@@ -241,7 +241,7 @@ export default function App() {
           <Suspense fallback={
             <div className="state-box"><div className="spinner" aria-label="Carregando" /><p>Carregando…</p></div>
           }>
-            <FluxoDashboard />
+            <FluxoDashboard gestorFilter={filters.gestor} />
           </Suspense>
         )}
 

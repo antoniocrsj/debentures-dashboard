@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, lazy, Suspense } from 'react'
+import { useState, useMemo, useCallback, useEffect, lazy, Suspense } from 'react'
 import { useFluxo, FLUXO_TIPOS } from '../../hooks/useFluxo.js'
 import {
   filterFluxo, aggregateByWeek, aggregateByGestor, computeCards,
@@ -14,7 +14,10 @@ const FluxoChart = lazy(() => import('./FluxoChart.jsx'))
 
 const DEFAULT_MONTHS = 12
 
-export default function FluxoDashboard() {
+// Normaliza nome de gestora p/ casar entre Mercado e Captação (ignora acento/caixa).
+const normName = s => (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim()
+
+export default function FluxoDashboard({ gestorFilter = '' }) {
   const [tipo, setTipo]     = useState('12431')
   const [gestor, setGestor] = useState('')
   const [months, setMonths] = useState(DEFAULT_MONTHS)   // null = todo o histórico
@@ -24,6 +27,13 @@ export default function FluxoDashboard() {
 
   const gestores = useMemo(() => gestorOptions(rows), [rows])
   const bounds   = useMemo(() => periodBounds(rows), [rows])
+
+  // Cross-filter: ao clicar numa gestora no Mercado, o gráfico de Captação filtra
+  // pela mesma gestora (casando por nome normalizado; '' = sem filtro).
+  useEffect(() => {
+    const target = normName(gestorFilter)
+    setGestor(target ? (gestores.find(g => normName(g) === target) || '') : '')
+  }, [gestorFilter, gestores])
 
   const effStart = useMemo(() => (months == null ? null : startForMonths(rows, months)), [rows, months])
   const effEnd   = bounds.max
