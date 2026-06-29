@@ -41,7 +41,7 @@ export default function FluxoChart({ weekly }) {
 
   return (
     <div className="fluxo-chart" role="img" aria-label="Gráfico semanal de captação (acima de zero), resgate (abaixo de zero) e captação líquida">
-      <ResponsiveContainer width="100%" height={280}>
+      <ResponsiveContainer width="100%" height="100%">
         <ComposedChart data={data} margin={{ top: 8, right: 8, bottom: 4, left: 4 }} barGap={2}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e5e9f0" vertical={false} />
           <XAxis
@@ -55,7 +55,7 @@ export default function FluxoChart({ weekly }) {
           <YAxis tickFormatter={axisFmt} tick={{ fontSize: 11 }} width={44} />
           <ReferenceLine y={0} stroke={COL_ZERO} strokeWidth={1.25} />
           <Tooltip content={<FluxoTooltip />} />
-          <Legend wrapperStyle={{ fontSize: 12 }} />
+          <Legend wrapperStyle={{ fontSize: 11 }} />
           <Bar dataKey="captacao" name="Captação" fill={COL_CAP} fillOpacity={0.72} radius={[2, 2, 0, 0]} maxBarSize={26} />
           <Bar dataKey="resgateNeg" name="Resgate" fill={COL_RES} fillOpacity={0.72} radius={[0, 0, 2, 2]} maxBarSize={26} />
           <Line dataKey="liquido" name="Cap. Líquida" stroke={COL_LIQ} strokeWidth={2} dot={false} activeDot={{ r: 4 }} />

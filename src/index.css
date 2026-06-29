@@ -688,6 +688,7 @@ a { color: var(--primary); }
 .period-chip:disabled { opacity: .5; cursor: default; }
 
 .fluxo-field-grow { flex: 1 1 auto; min-width: 0; }
+.fluxo-field-tipo { flex: 1 1 100%; }   /* mobile: tipo ocupa a linha toda; desktop sobe pro lado */
 .fluxo-period-info { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
 .period-effective { font-size: 12px; color: #475569; }
 
@@ -707,8 +708,8 @@ a { color: var(--primary); }
 .fluxo-card-liquido.neg .fluxo-card-value { color: #b91c1c; }
 .liq-arrow { font-size: 13px; margin-right: 3px; }
 
-/* Gráfico */
-.fluxo-chart { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 6px 4px; margin-bottom: 16px; }
+/* Gráfico (altura fixa: o ResponsiveContainer usa height:100%) */
+.fluxo-chart { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 6px 4px; margin-bottom: 16px; height: 300px; }
 .fluxo-tooltip { background: #fff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 10px; font-size: 12px; box-shadow: 0 4px 14px rgba(0,0,0,.12); }
 .fluxo-tooltip-title { font-weight: 700; color: #0f172a; margin-bottom: 4px; }
 .fluxo-tooltip-row { display: flex; align-items: center; gap: 6px; color: #334155; }
@@ -732,7 +733,9 @@ a { color: var(--primary); }
 .fluxo-th-sort { padding: 0; }
 .fluxo-th-sort .th-sort-btn {
   display: inline-flex; align-items: center; gap: 4px; width: 100%;
-  background: none; border: 0; cursor: pointer; color: inherit; font: inherit; font-weight: 600;
+  background: none; border: 0; cursor: pointer; color: inherit; font: inherit;
+  /* Mesmo padrão do cabeçalho da tabela Ativos (700, maiúsculas, .4px) */
+  font-weight: 700; text-transform: uppercase; letter-spacing: .4px;
   padding: 8px 6px; justify-content: flex-end;
 }
 .fluxo-th-sort[style*="left"] .th-sort-btn { justify-content: flex-start; }
@@ -766,8 +769,65 @@ a { color: var(--primary); }
 /* ─── Visão desktop: alarga o app e espalha melhor o conteúdo ── */
 .app.desktop { max-width: 1120px; }
 @media (min-width: 700px) {
-  .app.desktop .fluxo-cards { grid-template-columns: repeat(6, 1fr); }
-  .app.desktop .fluxo { padding: 16px 18px 28px; }
+  /* 1. Margens padronizadas com a aba Debêntures (24px lateral) */
+  .app.desktop .fluxo { padding: 14px 24px 28px; }
+
+  /* 6. Cabeçalho compacto: título + "base atualizada" na mesma faixa */
+  .app.desktop .fluxo-header {
+    display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .app.desktop .fluxo-title { font-size: 17px; }
+  .app.desktop .fluxo-subtitle { display: none; }   /* redundante no desktop */
+  .app.desktop .fluxo-ref { margin: 0; }
+
+  /* 2. Tipo + Gestor + Período na MESMA linha; botões menores */
+  .app.desktop .fluxo-filters { gap: 6px; margin-bottom: 10px; }
+  .app.desktop .fluxo-filters-row { flex-wrap: nowrap; align-items: flex-end; gap: 16px; }
+  .app.desktop .fluxo-field-tipo { flex: 0 0 auto; }
+  .app.desktop .fluxo-field-tipo .segmented { width: auto; }
+  .app.desktop .fluxo-field-tipo .segmented-btn { font-size: 12px; padding: 5px 12px; }
+  .app.desktop .fluxo-period-info { margin-top: 0; }
+
+  /* 3. Cards mais estreitos e baixos */
+  .app.desktop .fluxo-cards { grid-template-columns: repeat(6, 1fr); gap: 8px; margin-bottom: 10px; }
+  .app.desktop .fluxo-card { padding: 7px 10px; border-radius: 10px; gap: 2px; }
+  .app.desktop .fluxo-card-label { font-size: 11px; }
+  .app.desktop .fluxo-card-value { font-size: 15px; }
+
+  /* 5. Gráfico maior (sobe com o espaço liberado pelos itens acima) */
+  .app.desktop .fluxo-chart { height: 350px; margin-bottom: 14px; padding: 10px 8px 6px; }
+
+  /* Tabelas da Captação NÃO herdam a margem lateral da aba Debêntures
+     (a aba .fluxo já tem 24px de padding). */
+  .app.desktop .fluxo .table-wrap { margin: 0; }
+  /* Mesma fonte do gráfico (ticks/legenda 11px) nas tabelas */
+  .app.desktop .fluxo .fluxo-table { font-size: 11px; }
+
+  /* Gráfico (mais estreito) à esquerda + ranking de gestores à direita */
+  .app.desktop .fluxo-main-row {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+  .app.desktop .fluxo-main-row > .fluxo-chart {
+    flex: 1.2 1 0;
+    min-width: 0;
+    height: 350px;
+    margin-bottom: 0;
+  }
+  .app.desktop .fluxo-main-row > .fluxo-ranking-block {
+    flex: 1 1 0;
+    min-width: 0;
+    margin-bottom: 0;
+  }
+  /* Ranking ao lado do gráfico: sem título e EXATAMENTE a mesma altura (350px) */
+  .app.desktop .fluxo-main-row .fluxo-ranking-head { display: none; }
+  .app.desktop .fluxo-main-row .table-wrap { max-height: none; height: 350px; }
+
+  /* Some com a linha "Dados de DD/MM a DD/MM" no desktop (mantém o botão Limpar) */
+  .app.desktop .period-effective { display: none; }
 }
 
 /* ─── Aba Debêntures (desktop): Gestores + Grupos lado a lado ── */

@@ -18,23 +18,26 @@ export default function FluxoFilters({
 
   return (
     <div className="fluxo-filters" aria-label="Filtros de captação">
-      {/* Tipo de fundo — segmented control */}
-      <div className="segmented" role="tablist" aria-label="Tipo de fundo">
-        {tipos.map(t => (
-          <button
-            key={t.id}
-            role="tab"
-            aria-selected={tipo === t.id}
-            className={`segmented-btn${tipo === t.id ? ' active' : ''}`}
-            onClick={() => onTipo(t.id)}
-            disabled={disabled}
-          >
-            {t.label}
-          </button>
-        ))}
-      </div>
-
       <div className="fluxo-filters-row">
+        {/* Tipo de fundo — segmented control */}
+        <div className="fluxo-field fluxo-field-tipo">
+          <span className="fluxo-field-label">Tipo de fundo</span>
+          <div className="segmented" role="tablist" aria-label="Tipo de fundo">
+            {tipos.map(t => (
+              <button
+                key={t.id}
+                role="tab"
+                aria-selected={tipo === t.id}
+                className={`segmented-btn${tipo === t.id ? ' active' : ''}`}
+                onClick={() => onTipo(t.id)}
+                disabled={disabled}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* Gestor */}
         <div className="fluxo-field">
           <span className="fluxo-field-label">Gestor</span>

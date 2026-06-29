@@ -112,11 +112,15 @@ export default function FluxoDashboard() {
         <>
           <FluxoSummaryCards cards={cards} />
 
-          <Suspense fallback={<div className="state-box"><div className="spinner" aria-label="Carregando gráfico" /></div>}>
-            <FluxoChart weekly={weekly} />
-          </Suspense>
+          {/* Desktop: gráfico (mais estreito) à esquerda + ranking à direita.
+              Mobile: empilhados (a classe vira bloco simples). */}
+          <div className="fluxo-main-row">
+            <Suspense fallback={<div className="state-box"><div className="spinner" aria-label="Carregando gráfico" /></div>}>
+              <FluxoChart weekly={weekly} />
+            </Suspense>
 
-          {!gestor && <GestorFlowRanking ranking={ranking} />}
+            {!gestor && <GestorFlowRanking ranking={ranking} />}
+          </div>
 
           <FluxoTable weekly={weekly} />
 
