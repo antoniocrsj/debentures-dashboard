@@ -82,17 +82,28 @@ function Load-Lista($path) {
   return @{ map = $map; missing = $false; colCnpj = $hdr[$iC]; colGestor = $hdr[$iG] }
 }
 
-# Garante o zip do mes no cache (baixa se faltar). Retorna o caminho ou $null.
+# Meses que SEMPRE rebaixam, mesmo com cache: a CVM vai acrescentando os dias
+# ao zip do mes corrente ao longo do mes (e pode revisar o anterior no inicio do
+# mes seguinte). Mantemos os 2 mais recentes "frescos" para a rotina SEMANAL.
+$script:ForceMonths = @(0, 1) | ForEach-Object { (Get-Date).AddMonths(-$_).ToString('yyyyMM') }
+
+# Garante o zip do mes no cache. Meses antigos usam cache; os 2 mais recentes
+# sao rebaixados. Se o download falhar, mantem o cache anterior (se houver).
+# Retorna o caminho ou $null.
 function Ensure-Month($yyyymm) {
   $zip = Join-Path $CvmDir "inf_diario_fi_$yyyymm.zip"
-  if (Test-Path $zip) { return $zip }
+  $mustRefresh = $script:ForceMonths -contains $yyyymm
+  if ((Test-Path $zip) -and (-not $mustRefresh)) { return $zip }
   $url = "$CVM_BASE/inf_diario_fi_$yyyymm.zip"
+  $tmp = "$zip.tmp"
   try {
-    Invoke-WebRequest -Uri $url -OutFile $zip -TimeoutSec 180 -UseBasicParsing
+    Invoke-WebRequest -Uri $url -OutFile $tmp -TimeoutSec 180 -UseBasicParsing
+    Move-Item $tmp $zip -Force
     return $zip
   } catch {
     Write-Host "    $yyyymm indisponivel (pulando): $($_.Exception.Message)" -ForegroundColor Yellow
-    if (Test-Path $zip) { Remove-Item $zip -Force }
+    if (Test-Path $tmp) { Remove-Item $tmp -Force }
+    if (Test-Path $zip) { return $zip }   # mantem o cache anterior, se houver
     return $null
   }
 }

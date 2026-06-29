@@ -6,6 +6,9 @@ publicado na Vercel.
 
 🔗 **Produção:** https://debentures-dashboard-three.vercel.app
 
+> 📅 **Para a rotina de atualização (semanal), veja o [COMO-ATUALIZAR.md](COMO-ATUALIZAR.md)** —
+> manual passo a passo, sem jargão.
+
 ---
 
 ## Sumário
@@ -265,9 +268,10 @@ Semana,Gestor_Apelido,Captacao,Resgate,Liquido,PL_Medio,Num_Fundos
 | `PL_Medio` | **PL total do gestor naquela semana** (soma dos fundos do gestor, suavizada nos dias) — é um estoque, não uma média entre fundos |
 | `Num_Fundos` | nº de fundos considerados na semana |
 
-### Como atualizar as bases (mensal)
+### Como atualizar as bases (semanal)
 O gerador é o `tools/preparar-fluxo.ps1` (PowerShell, **sem instalar nada** — mesmo padrão
-do BLC). Fluxo:
+do BLC). Roda **toda semana** (os 2 meses mais recentes são sempre rebaixados; os antigos
+ficam em cache). Fluxo:
 
 1. Crie/atualize as listas de fundos em `tools/`:
    - `lista_12431.csv` (Incentivados) e `lista_tradicional.csv` (Tradicional)
