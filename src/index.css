@@ -772,6 +772,37 @@ a { color: var(--primary); }
 /* Só faz sentido em telas largas (notebook) — escondido no celular */
 @media (max-width: 699px) { .view-toggle { display: none; } }
 
+/* ═══ Ajustes EXCLUSIVOS da versão compacta (celular) ═══════════ */
+@media (max-width: 699px) {
+  /* 1. Separação clara entre Debêntures (Ativos/Gestores/Grupos) e Captação */
+  .tabs .tab-btn.tab-captacao {
+    border-left: 2px solid var(--primary-border);
+    margin-left: 2px;
+  }
+
+  /* 3. Tabela de Ativos (e demais) com fundo branco, igual à coluna do ticker */
+  .table-wrap { background: var(--card); }
+
+  /* 4 e 5. Topo da Captação enxuto: remove título, subtítulo, "Dados de…",
+     o rótulo "Tipo de fundo", o botão "Todo o histórico" e o título "Ranking de gestores" */
+  .fluxo-title,
+  .fluxo-subtitle,
+  .period-effective,
+  .fluxo-field-tipo .fluxo-field-label,
+  .period-chip-all,
+  .fluxo-ranking-head { display: none; }
+
+  .fluxo-header { margin-bottom: 6px; }       /* sobrou só "Base atualizada até…" */
+  .fluxo { padding-top: 10px; }
+
+  /* 4. Gestor ao lado de Período (Tipo continua em cima, largura total).
+     Período usa flex-basis 0 p/ caber ao lado do Gestor; os chips quebram dentro dele. */
+  .fluxo-filters-row { align-items: flex-start; }
+  .fluxo-field-tipo { flex: 1 1 100%; }
+  .fluxo-filters-row > .fluxo-field:not(.fluxo-field-tipo):not(.fluxo-field-grow) { flex: 0 0 auto; }
+  .fluxo-field-grow { flex: 1 1 0; min-width: 0; }
+}
+
 /* ─── Visão desktop: alarga o app e espalha melhor o conteúdo ── */
 .app.desktop { max-width: 1120px; }
 @media (min-width: 700px) {

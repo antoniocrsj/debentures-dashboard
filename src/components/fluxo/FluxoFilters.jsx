@@ -56,11 +56,14 @@ export default function FluxoFilters({
           <div className="period-shortcuts" role="group" aria-label="Período">
             {SHORTCUTS.map(s => {
               const active = months === s.months
+              // Toggle: clicar no atalho ativo (que nao seja "Todo o historico") volta
+              // para null = todo o historico. No mobile o botao "Todo o historico" fica
+              // oculto, entao esse e o caminho para o estado de historico completo.
               return (
                 <button
                   key={s.label}
-                  className={`period-chip${active ? ' active' : ''}`}
-                  onClick={() => onMonths(s.months)}
+                  className={`period-chip${active ? ' active' : ''}${s.months === null ? ' period-chip-all' : ''}`}
+                  onClick={() => onMonths(months === s.months && s.months !== null ? null : s.months)}
                   disabled={disabled}
                   aria-pressed={active}
                 >
