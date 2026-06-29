@@ -38,10 +38,13 @@ export function normalizeRow(row) {
   if (!wk || !gestor) return null
   const captacao = Math.abs(parseNum(row.Captacao))
   const resgate  = Math.abs(parseNum(row.Resgate))
+  // DataBase = ultimo dia com dado naquela semana (DT_COMPTC max). Cai p/ a semana se ausente.
+  const base = parseSemana(row.DataBase ?? row.dataBase)
   return {
     weekKey: wk.key,
     weekDate: wk.date,
     weekLabel: wk.label,
+    dataBase: base ? base.key : wk.key,
     gestor,
     captacao,
     resgate,
@@ -49,6 +52,14 @@ export function normalizeRow(row) {
     plSemana: parseNum(row.PL_Medio), // PL TOTAL do gestor naquela semana
     numFundos: Math.round(parseNum(row.Num_Fundos)),
   }
+}
+
+/** Data do dado mais recente da base (max DataBase). É o "atualizada até" real. */
+export function latestBaseDate(rows) {
+  if (!rows || !rows.length) return null
+  let max = ''
+  for (const r of rows) { const d = r.dataBase || r.weekKey; if (d > max) max = d }
+  return max || null
 }
 
 /** Normaliza a base inteira. Retorna { rows (ordenadas por semana asc), invalid }. */

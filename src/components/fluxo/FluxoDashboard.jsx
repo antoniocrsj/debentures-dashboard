@@ -2,7 +2,7 @@ import { useState, useMemo, useCallback, lazy, Suspense } from 'react'
 import { useFluxo, FLUXO_TIPOS } from '../../hooks/useFluxo.js'
 import {
   filterFluxo, aggregateByWeek, aggregateByGestor, computeCards,
-  gestorOptions, startForMonths, periodBounds, fmtWeekFull,
+  gestorOptions, startForMonths, periodBounds, fmtWeekFull, latestBaseDate,
 } from '../../utils/fluxo.js'
 import FluxoFilters from './FluxoFilters.jsx'
 import FluxoSummaryCards from './FluxoSummaryCards.jsx'
@@ -40,7 +40,7 @@ export default function FluxoDashboard() {
   const periodLabel = weekly.length
     ? `Dados de ${fmtWeekFull(weekly[0].weekKey)} a ${fmtWeekFull(weekly[weekly.length - 1].weekKey)}`
     : ''
-  const refDate = rows.length ? fmtWeekFull(rows[rows.length - 1].weekKey) : null
+  const refDate = rows.length ? fmtWeekFull(latestBaseDate(rows)) : null
 
   const changeTipo   = useCallback(t => { setTipo(t); setGestor('') }, [])     // mantém o período
   const clearFilters = useCallback(() => { setGestor(''); setMonths(DEFAULT_MONTHS) }, [])

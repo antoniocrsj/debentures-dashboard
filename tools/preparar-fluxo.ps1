@@ -148,6 +148,7 @@ if ($L12431.map.Count -eq 0 -and $LTrad.map.Count -eq 0) {
 # acumuladores: agg[tipo][weekKey|gestor] = @{ cap; resg; plSum; dates(set); cnpjs(set) }
 $agg = @{ '12431' = @{}; 'trad' = @{} }
 $seen = @{ '12431' = @{}; 'trad' = @{} }   # cnpjs efetivamente vistos
+$weekMax = @{ '12431' = @{}; 'trad' = @{} } # weekKey -> data (DT_COMPTC) mais recente daquela semana
 $tipos = @{ '12431' = $L12431.map; 'trad' = $LTrad.map }
 
 $mesesOk = @(); $mesesFalha = @(); $invalidas = 0; $minDate = $null; $maxDate = $null
@@ -183,6 +184,7 @@ foreach ($mes in $Meses) {
       [datetime]$dt = [datetime]::MinValue
       if (-not [datetime]::TryParse($dtRaw, $ci, [System.Globalization.DateTimeStyles]::None, [ref]$dt)) { $invalidas++; continue }
       $wkKey = (WeekStart $dt).ToString('yyyy-MM-dd')
+      if (-not $weekMax[$tipo].ContainsKey($wkKey) -or $dt -gt $weekMax[$tipo][$wkKey]) { $weekMax[$tipo][$wkKey] = $dt }
 
       $cap = 0.0; $res = 0.0; $pl = 0.0
       [double]::TryParse($c[$iCap], [System.Globalization.NumberStyles]::Any, $ci, [ref]$cap) | Out-Null
@@ -210,19 +212,20 @@ foreach ($mes in $Meses) {
 # 4. Escreve as bases
 function Write-Base($tipo, $outFile) {
   $sb = New-Object System.Text.StringBuilder
-  [void]$sb.AppendLine('Semana,Gestor_Apelido,Captacao,Resgate,Liquido,PL_Medio,Num_Fundos')
+  [void]$sb.AppendLine('Semana,Gestor_Apelido,Captacao,Resgate,Liquido,PL_Medio,Num_Fundos,DataBase')
   $ci = [System.Globalization.CultureInfo]::InvariantCulture
   $keys = $agg[$tipo].Keys | Sort-Object
   foreach ($k in $keys) {
     $b = $agg[$tipo][$k]
     $parts = $k -split '\|', 2
     $semana = $parts[0]; $gestor = $parts[1].Replace('"', '""')
+    $dataBase = if ($weekMax[$tipo].ContainsKey($semana)) { $weekMax[$tipo][$semana].ToString('yyyy-MM-dd') } else { $semana }
     $nDates = [Math]::Max(1, $b.dates.Count)
     $plMedio = [Math]::Round($b.plSum / $nDates, 2)
     $liq = [Math]::Round($b.cap - $b.resg, 2)
-    [void]$sb.AppendLine(('{0},"{1}",{2},{3},{4},{5},{6}' -f $semana, $gestor,
+    [void]$sb.AppendLine(('{0},"{1}",{2},{3},{4},{5},{6},{7}' -f $semana, $gestor,
       ([Math]::Round($b.cap,2)).ToString($ci), ([Math]::Round($b.resg,2)).ToString($ci),
-      $liq.ToString($ci), $plMedio.ToString($ci), $b.cnpjs.Count))
+      $liq.ToString($ci), $plMedio.ToString($ci), $b.cnpjs.Count, $dataBase))
   }
   $utf8 = New-Object System.Text.UTF8Encoding($false)
   [System.IO.File]::WriteAllText($outFile, $sb.ToString(), $utf8)
