@@ -17,7 +17,7 @@ const DEFAULT_MONTHS = 12
 // Normaliza nome de gestora p/ casar entre Mercado e Captação (ignora acento/caixa).
 const normName = s => (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim()
 
-export default function FluxoDashboard({ gestorFilter = '' }) {
+export default function FluxoDashboard({ gestorFilter = '', compact = false }) {
   const [tipo, setTipo]     = useState('12431')
   const [gestor, setGestor] = useState('')
   const [months, setMonths] = useState(DEFAULT_MONTHS)   // null = todo o histórico
@@ -82,6 +82,7 @@ export default function FluxoDashboard({ gestorFilter = '' }) {
         onClear={clearFilters}
         disabled={loading}
         defaultMonths={DEFAULT_MONTHS}
+        compact={compact}
       />
 
       {/* Estados */}

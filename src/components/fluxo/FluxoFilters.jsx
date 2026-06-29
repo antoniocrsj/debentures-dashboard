@@ -1,18 +1,18 @@
 import SearchSelect from '../SearchSelect.jsx'
 
 const SHORTCUTS = [
-  { months: 1,  label: '1 mês' },
-  { months: 3,  label: '3 meses' },
-  { months: 6,  label: '6 meses' },
-  { months: 12, label: '12 meses' },
-  { months: null, label: 'Todo o histórico' },
+  { months: 1,  label: '1 mês',  short: '1m' },
+  { months: 3,  label: '3 meses', short: '3m' },
+  { months: 6,  label: '6 meses', short: '6m' },
+  { months: 12, label: '12 meses', short: '12m' },
+  { months: null, label: 'Todo o histórico', short: 'Tudo' },
 ]
 
 export default function FluxoFilters({
   tipos, tipo, onTipo,
   gestores, gestor, onGestor,
   months, onMonths, periodLabel, onClear,
-  disabled, defaultMonths = 12,
+  disabled, defaultMonths = 12, compact = false,
 }) {
   const hasFilter = gestor || months !== defaultMonths
 
@@ -66,8 +66,9 @@ export default function FluxoFilters({
                   onClick={() => onMonths(months === s.months && s.months !== null ? null : s.months)}
                   disabled={disabled}
                   aria-pressed={active}
+                  title={s.label}
                 >
-                  {s.label}
+                  {compact ? s.short : s.label}
                 </button>
               )
             })}
