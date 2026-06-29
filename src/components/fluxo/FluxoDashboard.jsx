@@ -1,16 +1,18 @@
-import { useState, useMemo, useCallback, lazy, Suspense } from 'react'
+import { useState, useMemo, useCallback, Suspense } from 'react'
 import { useFluxo, FLUXO_TIPOS } from '../../hooks/useFluxo.js'
 import {
   filterFluxo, aggregateByWeek, aggregateByGestor, computeCards,
   gestorOptions, startForMonths, periodBounds, fmtWeekFull, latestBaseDate,
 } from '../../utils/fluxo.js'
+import { lazyWithRetry } from '../../utils/lazyWithRetry.js'
 import FluxoFilters from './FluxoFilters.jsx'
 import FluxoSummaryCards from './FluxoSummaryCards.jsx'
 import FluxoTable from './FluxoTable.jsx'
 import GestorFlowRanking from './GestorFlowRanking.jsx'
 
 // Recharts só carrega ao abrir a aba (preserva a carga inicial do app).
-const FluxoChart = lazy(() => import('./FluxoChart.jsx'))
+// lazyWithRetry: re-tenta o import se o chunk do gráfico falhar.
+const FluxoChart = lazyWithRetry(() => import('./FluxoChart.jsx'))
 
 const DEFAULT_MONTHS = 12
 

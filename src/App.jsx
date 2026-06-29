@@ -1,10 +1,11 @@
-import { useState, useMemo, useCallback, useEffect, lazy, Suspense } from 'react'
+import { useState, useMemo, useCallback, useEffect, Suspense } from 'react'
 import { useDebentures, BLC_DEFAULT_URL } from './hooks/useDebentures.js'
 import {
   buildIndexes, buildBlcIndex, buildAnbimaIndex,
   enrichDebenture, computeManagers, computeGroups, recomputeAlocByGestor
 } from './utils/data.js'
 import { isYes, dateKey } from './utils/format.js'
+import { lazyWithRetry } from './utils/lazyWithRetry.js'
 import Header from './components/Header.jsx'
 import Filters from './components/Filters.jsx'
 import AssetTable from './components/AssetTable.jsx'
@@ -12,9 +13,11 @@ import AssetModal from './components/AssetModal.jsx'
 import ManagerRanking from './components/ManagerRanking.jsx'
 import GroupRanking from './components/GroupRanking.jsx'
 import MonthSelector from './components/MonthSelector.jsx'
+import ErrorBoundary from './components/ErrorBoundary.jsx'
 
-// Aba Captação carregada sob demanda (Recharts só entra ao abrir a aba)
-const FluxoDashboard = lazy(() => import('./components/fluxo/FluxoDashboard.jsx'))
+// Aba Captação carregada sob demanda (Recharts só entra ao abrir a aba).
+// lazyWithRetry: re-tenta o import se o chunk falhar (evita tela em branco).
+const FluxoDashboard = lazyWithRetry(() => import('./components/fluxo/FluxoDashboard.jsx'))
 
 const DEFAULT_MONTHS = [{ label: 'Fev/26', url: BLC_DEFAULT_URL }]
 
@@ -236,13 +239,17 @@ export default function App() {
 
       {/* Scrollable content */}
       <main className="content" role="tabpanel">
-        {/* Aba Captação: independente do carregamento do BLC/debêntures */}
+        {/* Aba Captação: independente do carregamento do BLC/debêntures.
+            ErrorBoundary garante que uma falha no import do chunk NUNCA deixe
+            a aba em branco — mostra erro + "Tentar novamente". */}
         {tab === 'captacao' && (
-          <Suspense fallback={
-            <div className="state-box"><div className="spinner" aria-label="Carregando" /><p>Carregando…</p></div>
-          }>
-            <FluxoDashboard compact={!desktop} />
-          </Suspense>
+          <ErrorBoundary label="a Captação">
+            <Suspense fallback={
+              <div className="state-box"><div className="spinner" aria-label="Carregando" /><p>Carregando…</p></div>
+            }>
+              <FluxoDashboard compact={!desktop} />
+            </Suspense>
+          </ErrorBoundary>
         )}
 
         {tab !== 'captacao' && loading && (

@@ -48,6 +48,7 @@ export function useFluxo(tipo) {
         if (id === reqId.current) setState({ loading: false, error: null, rows, invalid })
       })
       .catch(err => {
+        console.error(`[useFluxo] falha ao carregar ${src}:`, err)   // tratamento de erro (mantido)
         if (id === reqId.current) {
           setState({ loading: false, error: err.message || 'Erro ao carregar os dados.', rows: [], invalid: 0 })
         }
