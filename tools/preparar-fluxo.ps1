@@ -1,4 +1,4 @@
-<#
+﻿<#
   preparar-fluxo.ps1
   --------------------------------------------------------------------------
   Gera as bases SEMANAIS de captacao/resgate da aba "Captacao" a partir do
@@ -30,7 +30,8 @@ param(
   [string]$CvmDir   = ("C:\Projeto Cr" + [char]233 + "dito\CVM _informe_diario"),
   [string]$Lista12431,
   [string]$ListaTrad,
-  [string]$OutDir
+  [string]$OutDir,
+  [switch]$NoDownload                                 # usa apenas os zips ja baixados (nao baixa nada)
 )
 
 $ErrorActionPreference = 'Stop'
@@ -82,18 +83,30 @@ function Load-Lista($path) {
   return @{ map = $map; missing = $false; colCnpj = $hdr[$iC]; colGestor = $hdr[$iG] }
 }
 
-# Meses que SEMPRE rebaixam, mesmo com cache: a CVM vai acrescentando os dias
-# ao zip do mes corrente ao longo do mes (e pode revisar o anterior no inicio do
-# mes seguinte). Mantemos os 2 mais recentes "frescos" para a rotina SEMANAL.
-$script:ForceMonths = @(0, 1) | ForEach-Object { (Get-Date).AddMonths(-$_).ToString('yyyyMM') }
+# Meses que PODEM ter dias novos: o corrente (a CVM acrescenta dias ao longo do
+# mes) e, so nos primeiros dias, o anterior (revisoes de fim de mes). Meses
+# fechados usam cache. Use -NoDownload para nunca baixar (so cache local).
+$script:ForceMonths = @((Get-Date).ToString('yyyyMM'))
+if ((Get-Date).Day -le 5) { $script:ForceMonths += (Get-Date).AddMonths(-1).ToString('yyyyMM') }
 
-# Garante o zip do mes no cache. Meses antigos usam cache; os 2 mais recentes
-# sao rebaixados. Se o download falhar, mantem o cache anterior (se houver).
-# Retorna o caminho ou $null.
+# Garante o zip do mes. Regra:
+#   - mes fechado (nao-force): usa cache.
+#   - mes recente ja atualizado HOJE: usa o cache (nao re-baixa) -> respeita
+#     atualizacao manual e evita baixar o arquivo mensal inteiro de novo.
+#   - mes recente desatualizado: re-baixa (a menos de -NoDownload).
+# Se o download falhar, mantem o cache anterior (se houver). Retorna caminho ou $null.
 function Ensure-Month($yyyymm) {
   $zip = Join-Path $CvmDir "inf_diario_fi_$yyyymm.zip"
   $mustRefresh = $script:ForceMonths -contains $yyyymm
-  if ((Test-Path $zip) -and (-not $mustRefresh)) { return $zip }
+  if (Test-Path $zip) {
+    if (-not $mustRefresh) { return $zip }
+    if ($NoDownload) { return $zip }
+    if ((Get-Item $zip).LastWriteTime.Date -eq (Get-Date).Date) { return $zip }
+  }
+  if ($NoDownload) {
+    Write-Host "    $yyyymm sem cache e -NoDownload ativo (pulando)." -ForegroundColor Yellow
+    return $null
+  }
   $url = "$CVM_BASE/inf_diario_fi_$yyyymm.zip"
   $tmp = "$zip.tmp"
   try {
