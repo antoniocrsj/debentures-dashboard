@@ -149,6 +149,9 @@ if ($L12431.map.Count -eq 0 -and $LTrad.map.Count -eq 0) {
 $agg = @{ '12431' = @{}; 'trad' = @{} }
 $seen = @{ '12431' = @{}; 'trad' = @{} }   # cnpjs efetivamente vistos
 $weekMax = @{ '12431' = @{}; 'trad' = @{} } # weekKey -> data (DT_COMPTC) mais recente daquela semana
+# Agregacao MENSAL feita direto pela data de cada registro diario (nao pela semana),
+# para que uma semana que cruza dois meses nao gere duplicidade/erro de atribuicao.
+$aggMonth = @{ '12431' = @{}; 'trad' = @{} }  # "mesKey|gestor" -> @{ cap; resg }
 $tipos = @{ '12431' = $L12431.map; 'trad' = $LTrad.map }
 
 $mesesOk = @(); $mesesFalha = @(); $invalidas = 0; $minDate = $null; $maxDate = $null
@@ -198,6 +201,12 @@ foreach ($mes in $Meses) {
       $b.dates[$dtRaw] = $true; $b.cnpjs[$cnpj] = $true
       $seen[$tipo][$cnpj] = $true
 
+      # MENSAL: cada registro diario cai no mes da SUA data (yyyy-MM)
+      $mk = ($dt.ToString('yyyy-MM')) + '|' + $gestor
+      $mb = $aggMonth[$tipo][$mk]
+      if (-not $mb) { $mb = @{ cap = 0.0; resg = 0.0 }; $aggMonth[$tipo][$mk] = $mb }
+      $mb.cap += $cap; $mb.resg += [Math]::Abs($res)
+
       if ($null -eq $minDate -or $dt -lt $minDate) { $minDate = $dt }
       if ($null -eq $maxDate -or $dt -gt $maxDate) { $maxDate = $dt }
     }
@@ -232,10 +241,34 @@ function Write-Base($tipo, $outFile) {
   return $keys.Count
 }
 
+# Base MENSAL: uma linha por (mes, gestor). Mes = yyyy-MM. Liquido = cap - resg.
+function Write-BaseMensal($tipo, $outFile) {
+  $sb = New-Object System.Text.StringBuilder
+  [void]$sb.AppendLine('Mes,Gestor_Apelido,Captacao,Resgate,Liquido')
+  $ci = [System.Globalization.CultureInfo]::InvariantCulture
+  $keys = $aggMonth[$tipo].Keys | Sort-Object
+  foreach ($k in $keys) {
+    $b = $aggMonth[$tipo][$k]
+    $parts = $k -split '\|', 2
+    $mes = $parts[0]; $gestor = $parts[1].Replace('"', '""')
+    $liq = [Math]::Round($b.cap - $b.resg, 2)
+    [void]$sb.AppendLine(('{0},"{1}",{2},{3},{4}' -f $mes, $gestor,
+      ([Math]::Round($b.cap,2)).ToString($ci), ([Math]::Round($b.resg,2)).ToString($ci), $liq.ToString($ci)))
+  }
+  $utf8 = New-Object System.Text.UTF8Encoding($false)
+  [System.IO.File]::WriteAllText($outFile, $sb.ToString(), $utf8)
+  return $keys.Count
+}
+
 $out12431 = Join-Path $OutDir 'Fluxo_Semanal_12431.csv'
 $outTrad  = Join-Path $OutDir 'Fluxo_Semanal_Trad.csv'
 $n12431 = Write-Base '12431' $out12431
 $nTrad  = Write-Base 'trad'  $outTrad
+
+$outMes12431 = Join-Path $OutDir 'Fluxo_Mensal_12431.csv'
+$outMesTrad  = Join-Path $OutDir 'Fluxo_Mensal_Trad.csv'
+$nMes12431 = Write-BaseMensal '12431' $outMes12431
+$nMesTrad  = Write-BaseMensal 'trad'  $outMesTrad
 
 # 5. Relatorio
 $nf12431 = ($L12431.map.Keys | Where-Object { -not $seen['12431'].ContainsKey($_) }).Count
@@ -253,6 +286,8 @@ if ($minDate -and $maxDate) { Write-Host ("  Periodo coberto   : {0} a {1}" -f $
 Write-Host "  Arquivos gerados  :"
 Write-Host "    $out12431" -ForegroundColor Yellow
 Write-Host "    $outTrad"  -ForegroundColor Yellow
+Write-Host ("    $outMes12431  (mensal: $nMes12431 linhas)") -ForegroundColor Yellow
+Write-Host ("    $outMesTrad  (mensal: $nMesTrad linhas)")  -ForegroundColor Yellow
 Write-Host ""
 Write-Host "  Proximo: revise os CSVs, troque FLUXO_IS_MOCK para false em src/hooks/useFluxo.js e publique." -ForegroundColor White
 Write-Host ""

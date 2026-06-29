@@ -7,9 +7,56 @@ import {
   sortRows, gestorOptions, startForMonths,
   toChartSeries, fmtMonthYY, fmtWeekFull, monthTicks,
   fmtFluxo, fmtFluxoSigned,
+  parseMes, normalizeMonthRow, filterMensal, aggregateByMonth,
 } from '../src/utils/fluxo.js'
 
 const norm = s => s.replace(/ /g, ' ')   // troca espaço não-separável por comum
+
+test('parseMes e normalizeMonthRow (Mes/Gestor/Captacao/Resgate)', () => {
+  assert.equal(parseMes('2026-06').key, '2026-06')
+  assert.equal(parseMes('2026-06-26').key, '2026-06')
+  assert.equal(parseMes('2026-13'), null)   // mês inválido
+  assert.equal(parseMes('lixo'), null)
+  const n = normalizeMonthRow({ Mes: '2026-06', Gestor_Apelido: 'A', Captacao: '100', Resgate: '-40' })
+  assert.equal(n.captacao, 100)
+  assert.equal(n.resgate, 40)               // resgate absoluto
+  assert.equal(n.liquido, 60)
+  assert.equal(normalizeMonthRow({ Mes: '', Gestor_Apelido: 'A' }), null)
+})
+
+test('aggregateByMonth: soma gestores, zero-fill, cronológico, Líquida correta', () => {
+  const rows = [
+    { mesKey: '2026-01', gestor: 'A', captacao: 100, resgate: 40 },
+    { mesKey: '2026-01', gestor: 'B', captacao: 50,  resgate: 10 },
+    { mesKey: '2026-03', gestor: 'A', captacao: 20,  resgate: 5  },
+  ]
+  const out = aggregateByMonth(rows, null, null, rows)
+  assert.deepEqual(out.map(m => m.mesKey), ['2026-01', '2026-02', '2026-03'])   // fev preenchido
+  assert.equal(out[0].captacao, 150)   // A+B em jan (sem dupla contagem)
+  assert.equal(out[0].resgate, 50)
+  assert.equal(out[0].liquido, 100)
+  assert.equal(out[1].captacao, 0)     // fev sem movimentação = zero
+  assert.equal(out[1].liquido, 0)
+  assert.equal(out[2].captacao, 20)
+})
+
+test('aggregateByMonth: respeita o filtro de gestor', () => {
+  const rows = [
+    { mesKey: '2026-01', gestor: 'A', captacao: 100, resgate: 40 },
+    { mesKey: '2026-01', gestor: 'B', captacao: 50,  resgate: 10 },
+  ]
+  const out = aggregateByMonth(filterMensal(rows, 'A'), null, null, rows)
+  assert.equal(out.length, 1)
+  assert.equal(out[0].captacao, 100)
+  assert.equal(out[0].liquido, 60)
+})
+
+test('aggregateByMonth: intervalo de período não passa antes da base', () => {
+  const rows = [{ mesKey: '2025-07', gestor: 'A', captacao: 10, resgate: 0 }]
+  // período começa antes da base (2025-05) -> clampa para 2025-07
+  const out = aggregateByMonth(rows, new Date(2025, 4, 1), new Date(2025, 6, 31), rows)
+  assert.deepEqual(out.map(m => m.mesKey), ['2025-07'])
+})
 
 test('parseSemana entende ISO e BR (datas locais, sem UTC)', () => {
   assert.equal(parseSemana('2026-01-05').key, '2026-01-05')

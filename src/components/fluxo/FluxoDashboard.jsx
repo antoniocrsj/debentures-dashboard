@@ -3,11 +3,13 @@ import { useFluxo, FLUXO_TIPOS } from '../../hooks/useFluxo.js'
 import {
   filterFluxo, aggregateByWeek, aggregateByGestor, computeCards,
   gestorOptions, startForMonths, periodBounds, fmtWeekFull, latestBaseDate,
+  filterMensal, aggregateByMonth,
 } from '../../utils/fluxo.js'
 import { lazyWithRetry } from '../../utils/lazyWithRetry.js'
 import FluxoFilters from './FluxoFilters.jsx'
 import FluxoSummaryCards from './FluxoSummaryCards.jsx'
 import FluxoTable from './FluxoTable.jsx'
+import FluxoMonthlyTable from './FluxoMonthlyTable.jsx'
 import GestorFlowRanking from './GestorFlowRanking.jsx'
 
 // Recharts só carrega ao abrir a aba (preserva a carga inicial do app).
@@ -22,7 +24,7 @@ export default function FluxoDashboard({ compact = false }) {
   const [gestor, setGestor] = useState('')
   const [months, setMonths] = useState(DEFAULT_MONTHS)   // null = todo o histórico
 
-  const { loading, error, rows, invalid, isMock, reload } = useFluxo(tipo)
+  const { loading, error, rows, invalid, isMock, reload, monthly } = useFluxo(tipo)
   const tipoLabel = FLUXO_TIPOS.find(t => t.id === tipo)?.label ?? tipo
 
   const gestores = useMemo(() => gestorOptions(rows), [rows])
@@ -38,6 +40,11 @@ export default function FluxoDashboard({ compact = false }) {
   )
   const weekly  = useMemo(() => aggregateByWeek(filtered), [filtered])
   const cards   = useMemo(() => computeCards(filtered), [filtered])
+  // Mensal: mesmo gestor/período da seção; agregação por mês (do diário), zero-fill.
+  const monthlyAgg = useMemo(
+    () => aggregateByMonth(filterMensal(monthly, gestor), effStart, effEnd, monthly),
+    [monthly, gestor, effStart, effEnd]
+  )
   const ranking = useMemo(() => (gestor ? [] : aggregateByGestor(filtered)), [filtered, gestor])
 
   // Período efetivo (datas reais usadas) e data de referência da base do segmento
@@ -128,6 +135,8 @@ export default function FluxoDashboard({ compact = false }) {
           </div>
 
           <FluxoTable weekly={weekly} />
+
+          <FluxoMonthlyTable months={monthlyAgg} />
 
           {invalid > 0 && (
             <p className="fluxo-note">{invalid} linha(s) ignorada(s) por dados inválidos.</p>

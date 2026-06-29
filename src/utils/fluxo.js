@@ -102,6 +102,79 @@ export function filterFluxo(rows, { gestor = '', start = null, end = null } = {}
   })
 }
 
+// ───────────────────────── Mensal (agregado do diário) ─────────────────────────
+//  A base mensal vem por (mês, gestor) já agregada na preparação DIRETO do diário
+//  (não da semana), então uma semana que cruza dois meses não causa duplicidade.
+
+/** 'AAAA-MM' (ou 'AAAA-MM-DD') → { key, date, year, month } | null */
+export function parseMes(str) {
+  const m = String(str || '').trim().match(/^(\d{4})-(\d{2})/)
+  if (!m) return null
+  const year = +m[1], month = +m[2]
+  if (month < 1 || month > 12) return null
+  return { key: `${m[1]}-${m[2]}`, date: new Date(year, month - 1, 1), year, month }
+}
+
+/** Normaliza uma linha da base MENSAL (Mes, Gestor_Apelido, Captacao, Resgate). */
+export function normalizeMonthRow(row) {
+  const mes = parseMes(row.Mes ?? row.mes)
+  const gestor = String(row.Gestor_Apelido ?? row.gestor ?? '').trim()
+  if (!mes || !gestor) return null
+  const captacao = Math.abs(parseNum(row.Captacao))
+  const resgate  = Math.abs(parseNum(row.Resgate))
+  return { mesKey: mes.key, mesDate: mes.date, gestor, captacao, resgate, liquido: captacao - resgate }
+}
+
+export function normalizeMensal(rawRows) {
+  const rows = []
+  let invalid = 0
+  for (const r of rawRows || []) { const n = normalizeMonthRow(r); if (n) rows.push(n); else invalid++ }
+  return { rows, invalid }
+}
+
+/** Filtra linhas mensais por gestor (vazio = todos). */
+export function filterMensal(rows, gestor = '') {
+  return (rows || []).filter(r => !gestor || r.gestor === gestor)
+}
+
+function ymKey(d) { return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}` }
+
+/**
+ * Agrega por mês (soma os gestores do recorte) preenchendo TODOS os meses do
+ * intervalo com ZERO. Intervalo = interseção de [start,end] (período) com o
+ * intervalo real dos dados (allRows) — evita meses inteiramente antes da base.
+ * start/end são Date ou null. Ordem cronológica ascendente.
+ */
+export function aggregateByMonth(rows, start, end, allRows) {
+  const sum = new Map()
+  for (const r of rows || []) {
+    let s = sum.get(r.mesKey)
+    if (!s) { s = { captacao: 0, resgate: 0 }; sum.set(r.mesKey, s) }
+    s.captacao += r.captacao
+    s.resgate  += r.resgate
+  }
+  const pool = (allRows && allRows.length ? allRows : rows) || []
+  if (!pool.length) return []
+  const keys = pool.map(r => r.mesKey)
+  const dataMin = keys.reduce((a, b) => (a < b ? a : b))
+  const dataMax = keys.reduce((a, b) => (a > b ? a : b))
+  let startKey = start ? ymKey(start) : dataMin
+  let endKey   = end   ? ymKey(end)   : dataMax
+  if (startKey < dataMin) startKey = dataMin
+  if (endKey   > dataMax) endKey   = dataMax
+  if (startKey > endKey) return []
+  const out = []
+  let y = +startKey.slice(0, 4), m = +startKey.slice(5, 7)
+  const ey = +endKey.slice(0, 4), em = +endKey.slice(5, 7)
+  while (y < ey || (y === ey && m <= em)) {
+    const key = `${y}-${String(m).padStart(2, '0')}`
+    const s = sum.get(key) || { captacao: 0, resgate: 0 }
+    out.push({ mesKey: key, captacao: s.captacao, resgate: s.resgate, liquido: s.captacao - s.resgate })
+    m++; if (m > 12) { m = 1; y++ }
+  }
+  return out
+}
+
 // ───────────────────────── Agregações ─────────────────────────
 
 /**
