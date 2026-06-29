@@ -3,7 +3,7 @@ import SearchSelect from './SearchSelect.jsx'
 
 const EMPTY = { grupo: '', setor: '', gestor: '', lei12431: '', ativo: '', search: '' }
 
-export default function Filters({ filters, options, disabled, onChange }) {
+export default function Filters({ filters, options, disabled, onChange, tabsSlot }) {
   const set = useCallback((key, val) => onChange(f => ({ ...f, [key]: val })), [onChange])
 
   return (
@@ -20,16 +20,19 @@ export default function Filters({ filters, options, disabled, onChange }) {
         )}
       </div>
 
-      <div className="search-wrap">
-        <span className="search-icon">🔍</span>
-        <input
-          type="search"
-          className="search-input"
-          placeholder="Buscar ativo, emissor, grupo…"
-          value={filters.search}
-          disabled={disabled}
-          onChange={e => set('search', e.target.value)}
-        />
+      <div className={`filter-searchrow${tabsSlot ? ' has-tabs' : ''}`}>
+        <div className="search-wrap">
+          <span className="search-icon">🔍</span>
+          <input
+            type="search"
+            className="search-input"
+            placeholder="Buscar ativo, emissor, grupo…"
+            value={filters.search}
+            disabled={disabled}
+            onChange={e => set('search', e.target.value)}
+          />
+        </div>
+        {tabsSlot}
       </div>
     </div>
   )

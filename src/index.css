@@ -775,13 +775,131 @@ a { color: var(--primary); }
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-  padding: 16px 12px 0;
+  padding: 18px 24px 0;
 }
-.desktop-section-title {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--text);
-  margin: 0 0 4px;
-  padding: 0 12px;
+
+/* ─── Desktop: busca + abas na mesma linha (libera espaço p/ tabela) ── */
+@media (min-width: 700px) {
+  .app.desktop .filter-searchrow.has-tabs {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .app.desktop .filter-searchrow.has-tabs .search-wrap {
+    flex: 0 1 320px;
+    max-width: 320px;
+    margin: 8px 0 8px 12px;
+  }
+  .app.desktop .tabs.tabs-inline {
+    flex: 0 0 auto;
+    border-bottom: 0;
+    padding: 0;
+  }
+  .app.desktop .tabs.tabs-inline .tab-btn {
+    flex: 0 0 auto;
+    padding: 9px 18px;
+    margin-bottom: 0;
+    font-size: 13px;
+  }
 }
-.desktop-split-col .ranking-list { padding-top: 4px; }
+
+/* ─── Desktop: tabela de Ativos compacta com scroll próprio ──── */
+@media (min-width: 700px) {
+  /* Card branco arredondado, alinhado às tabelas Gestores/Grupos.
+     Margem superior ~70% das laterais (24px → ~17px) */
+  .app.desktop .table-wrap {
+    max-height: 46vh;
+    overflow: auto;
+    margin: 17px 24px 0;
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+  .app.desktop .asset-table { font-size: 11.5px; }
+  .app.desktop .asset-table th { font-size: 10px; padding: 7px 6px 7px 8px; }
+  .app.desktop .asset-table td { padding: 4px 6px 4px 8px; }
+  .app.desktop .asset-table .info-btn { width: 18px; height: 18px; font-size: 12px; }
+  .app.desktop .asset-table col.c-ativo { width: 200px; }
+  .app.desktop .ativo-cell > div { flex-direction: row; align-items: baseline; gap: 6px; }
+  .app.desktop .ativo-grupo { max-width: 110px; font-size: 10px; }
+  .app.desktop .ativo-code { font-size: 11.5px; }
+  .app.desktop .asset-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    background: var(--card);
+  }
+  .app.desktop .asset-table thead .col-sticky { z-index: 4; }
+
+  /* Rankings com a MESMA identidade da tabela de Ativos:
+     um card branco arredondado, linhas separadas por borda,
+     sem cards soltos, sem barra azul. */
+  .app.desktop .desktop-split-col .ranking-list {
+    max-height: 52vh;
+    overflow-y: auto;
+    padding: 0;
+    gap: 0;
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+  .app.desktop .desktop-split-col .ranking-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--card);
+    border-bottom: 2px solid var(--border);
+    padding: 7px 12px;
+    margin: 0;
+    font-size: 10px;
+  }
+  /* cada item vira uma linha de tabela (flex:0 0 auto evita colapso) */
+  .app.desktop .desktop-split-col .ranking-card {
+    flex: 0 0 auto;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid #d3dbe6;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .app.desktop .desktop-split-col .ranking-card:last-child { border-bottom: 0; }
+  .app.desktop .desktop-split-col .ranking-card:hover { background: var(--primary-light); }
+  .app.desktop .desktop-split-col .ranking-card.card-selected { background: var(--primary-light); }
+  .app.desktop .desktop-split-col .ranking-row { padding: 6px 12px; }
+  .app.desktop .desktop-split-col .rank-num  { font-size: 11px; }
+  .app.desktop .desktop-split-col .rank-name { font-size: 12px; }
+  .app.desktop .desktop-split-col .rank-aloc { font-size: 12px; }
+  .app.desktop .desktop-split-col .rank-pl   { font-size: 11px; }
+  /* remove a barra azul → linhas mais baixas e uniformes */
+  .app.desktop .desktop-split-col .rank-bar-wrap { display: none; }
+}
+
+/* ─── Desktop: barras de rolagem discretas ──────────────────── */
+@media (min-width: 700px) {
+  .app.desktop .table-wrap,
+  .app.desktop .desktop-split-col .ranking-list {
+    scrollbar-width: thin;
+    scrollbar-color: #c3ccda transparent;
+  }
+  .app.desktop .table-wrap::-webkit-scrollbar,
+  .app.desktop .desktop-split-col .ranking-list::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+  }
+  .app.desktop .table-wrap::-webkit-scrollbar-track,
+  .app.desktop .desktop-split-col .ranking-list::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .app.desktop .table-wrap::-webkit-scrollbar-thumb,
+  .app.desktop .desktop-split-col .ranking-list::-webkit-scrollbar-thumb {
+    background: #c3ccda;
+    border-radius: 99px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  .app.desktop .table-wrap::-webkit-scrollbar-thumb:hover,
+  .app.desktop .desktop-split-col .ranking-list::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+    background-clip: padding-box;
+  }
+}

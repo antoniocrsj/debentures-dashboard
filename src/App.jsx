@@ -128,10 +128,10 @@ export default function App() {
     return arr
   }, [filteredAssets, sort])
 
-  // Limita sempre a 100 linhas renderizadas (performance). "Ver todos" libera.
+  // No desktop a tabela tem scroll próprio → mostra tudo. No mobile limita a 100.
   const displayedAssets = useMemo(
-    () => showAll ? sortedAssets : sortedAssets.slice(0, PAGE_SIZE),
-    [showAll, sortedAssets]
+    () => (showAll || desktop) ? sortedAssets : sortedAssets.slice(0, PAGE_SIZE),
+    [showAll, sortedAssets, desktop]
   )
 
   const handleSort = useCallback(col =>
@@ -167,6 +167,33 @@ export default function App() {
     saveMonths(newMonths)
   }, [])
 
+  const tabsNav = (
+    <nav className={`tabs${desktop ? ' tabs-inline' : ''}`} role="tablist">
+      {(desktop
+        ? [
+            { id: 'debentures', label: 'Debêntures' },
+            { id: 'captacao',   label: 'Captação' },
+          ]
+        : [
+            { id: 'ativos',   label: `Ativos (${filteredAssets.length.toLocaleString('pt-BR')})` },
+            { id: 'gestores', label: `Gestores (${managers.length.toLocaleString('pt-BR')})` },
+            { id: 'grupos',   label: `Grupos (${groups.length.toLocaleString('pt-BR')})` },
+            { id: 'captacao', label: 'Captação' },
+          ]
+      ).map(t => (
+        <button
+          key={t.id}
+          role="tab"
+          aria-selected={tab === t.id}
+          className={`tab-btn${tab === t.id ? ' active' : ''}`}
+          onClick={() => setTab(t.id)}
+        >
+          {t.label}
+        </button>
+      ))}
+    </nav>
+  )
+
   return (
     <div className={`app${desktop ? ' desktop' : ''}`}>
 
@@ -187,33 +214,12 @@ export default function App() {
             options={options}
             disabled={loading}
             onChange={setFilters}
+            tabsSlot={desktop ? tabsNav : null}
           />
         )}
 
-        <nav className="tabs" role="tablist">
-          {(desktop
-            ? [
-                { id: 'debentures', label: 'Debêntures' },
-                { id: 'captacao',   label: 'Captação' },
-              ]
-            : [
-                { id: 'ativos',   label: `Ativos (${filteredAssets.length.toLocaleString('pt-BR')})` },
-                { id: 'gestores', label: `Gestores (${managers.length.toLocaleString('pt-BR')})` },
-                { id: 'grupos',   label: `Grupos (${groups.length.toLocaleString('pt-BR')})` },
-                { id: 'captacao', label: 'Captação' },
-              ]
-          ).map(t => (
-            <button
-              key={t.id}
-              role="tab"
-              aria-selected={tab === t.id}
-              className={`tab-btn${tab === t.id ? ' active' : ''}`}
-              onClick={() => setTab(t.id)}
-            >
-              {t.label}
-            </button>
-          ))}
-        </nav>
+        {/* Mobile/captação: abas standalone. Desktop c/ filtros: abas vão ao lado da busca. */}
+        {!(desktop && tab !== 'captacao') && tabsNav}
       </div>
 
       {/* Scrollable content */}
@@ -292,14 +298,8 @@ export default function App() {
               onFilter={handleFilter}
               onInfoClick={setSelected}
             />
-            {!showAll && filteredAssets.length > PAGE_SIZE && (
-              <button className="show-all-btn" onClick={() => setShowAll(true)}>
-                Mostrando {PAGE_SIZE} de {filteredAssets.length.toLocaleString('pt-BR')} ativos — ver todos
-              </button>
-            )}
             <div className="desktop-split">
               <div className="desktop-split-col">
-                <h3 className="desktop-section-title">Gestores ({managers.length.toLocaleString('pt-BR')})</h3>
                 <ManagerRanking
                   managers={managers}
                   activeGestor={filters.gestor}
@@ -307,7 +307,6 @@ export default function App() {
                 />
               </div>
               <div className="desktop-split-col">
-                <h3 className="desktop-section-title">Grupos ({groups.length.toLocaleString('pt-BR')})</h3>
                 <GroupRanking
                   groups={groups}
                   activeGrupo={filters.grupo}
