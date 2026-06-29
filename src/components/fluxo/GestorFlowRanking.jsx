@@ -13,7 +13,7 @@ const KEYS = {
 }
 const LABELS = { gestor: 'Gestor', liquido: 'Cap. Líquida', captacao: 'Captação', resgate: 'Resgate' }
 
-export default function GestorFlowRanking({ ranking }) {
+export default function GestorFlowRanking({ ranking, onSelect }) {
   const [sort, setSort] = useState(DEFAULT_SORT)
   const [showAll, setShowAll] = useState(false)
 
@@ -49,7 +49,13 @@ export default function GestorFlowRanking({ ranking }) {
             {shown.map(g => {
               const pos = g.liquido > 0, neg = g.liquido < 0
               return (
-                <tr key={g.gestor}>
+                <tr
+                  key={g.gestor}
+                  onClick={() => onSelect?.(g.gestor)}
+                  tabIndex={0}
+                  onKeyDown={e => e.key === 'Enter' && onSelect?.(g.gestor)}
+                  title={`Filtrar Captação por ${g.gestor}`}
+                >
                   <td className="col-sticky col-gestor"><span className="ativo-code">{g.gestor}</span></td>
                   <td className={`col-num liq-cell${pos ? ' pos' : neg ? ' neg' : ''}`}>{fmtFluxoSigned(g.liquido)}</td>
                   <td className="col-num">{fmtFluxo(g.captacao)}</td>
