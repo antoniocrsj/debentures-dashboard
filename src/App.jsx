@@ -1,7 +1,7 @@
 import { useState, useMemo, useCallback, useEffect, lazy, Suspense } from 'react'
 import { useDebentures, BLC_DEFAULT_URL } from './hooks/useDebentures.js'
 import {
-  buildIndexes, buildBlcIndex,
+  buildIndexes, buildBlcIndex, buildAnbimaIndex,
   enrichDebenture, computeManagers, computeGroups, recomputeAlocByGestor
 } from './utils/data.js'
 import { isYes, dateKey } from './utils/format.js'
@@ -68,7 +68,19 @@ export default function App() {
   // Build indexes once per raw load
   const indexes = useMemo(() => {
     if (!raw) return null
-    return { ...buildIndexes(raw), blcByAtivo: buildBlcIndex(raw.blc) }
+    return {
+      ...buildIndexes(raw),
+      blcByAtivo: buildBlcIndex(raw.blc),
+      anbimaByTicker: buildAnbimaIndex(raw.anbima),
+    }
+  }, [raw])
+
+  // Data de referencia da ANBIMA (vem do arquivo, nao do relogio). DD/MM/AAAA.
+  const anbimaRef = useMemo(() => {
+    const d = raw?.anbima?.find(r => r.dataReferenciaAnbima)?.dataReferenciaAnbima
+    if (!d) return ''
+    const [y, m, dd] = d.split('-')
+    return (y && m && dd) ? `${dd}/${m}/${y}` : d
   }, [raw])
 
   // Enrich all debentures
@@ -263,6 +275,7 @@ export default function App() {
                   activeAtivo={filters.ativo}
                   onFilter={handleFilter}
                   onInfoClick={setSelected}
+                  anbimaRef={anbimaRef}
                 />
                 {!showAll && filteredAssets.length > PAGE_SIZE && (
                   <button className="show-all-btn" onClick={() => setShowAll(true)}>
@@ -297,6 +310,7 @@ export default function App() {
               activeAtivo={filters.ativo}
               onFilter={handleFilter}
               onInfoClick={setSelected}
+              anbimaRef={anbimaRef}
             />
             <div className="desktop-split">
               <div className="desktop-split-col">

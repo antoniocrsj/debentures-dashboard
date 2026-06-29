@@ -14,6 +14,8 @@ export const BLC_DEFAULT_URL =
 
 // BLC tratado: arquivo estatico servido pelo proprio app (public/). Sem GAS, sem proxy.
 const STATIC_BLC_URL = '/BLC_tratado.csv'
+// Taxas ANBIMA (coluna Tx Anbima): tambem estatico em public/.
+const STATIC_ANBIMA_URL = '/Anbima_Tx.csv'
 
 async function fetchCSV(rawUrl) {
   const url = `/api/proxy?url=${encodeURIComponent(rawUrl)}`
@@ -33,7 +35,7 @@ async function fetchStaticCSV(path) {
 }
 
 function cacheKey() {
-  return 'deb-cache-v2'
+  return 'deb-cache-v3'  // v3: inclui base ANBIMA (Tx Anbima)
 }
 
 function readCache() {
@@ -85,9 +87,11 @@ export function useDebentures(blcUrl) {
       fetchCSV(`${CADASTRO_URL}?sheet=fundos`),
       fetchCSV(DEB_URL),
       fetchStaticCSV(STATIC_BLC_URL),
+      // ANBIMA e opcional: se faltar/quebrar, a coluna Tx Anbima mostra — e o app segue.
+      fetchStaticCSV(STATIC_ANBIMA_URL).catch(() => []),
     ])
-      .then(([emissores, fundos, debentures, blc]) => {
-        const raw = { emissores, fundos, debentures, blc }
+      .then(([emissores, fundos, debentures, blc, anbima]) => {
+        const raw = { emissores, fundos, debentures, blc, anbima }
         writeCache(raw)
         if (alive) setState({ loading: false, refreshing: false, error: null, raw, cachedAt: Date.now() })
       })

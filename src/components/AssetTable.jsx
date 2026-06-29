@@ -1,15 +1,36 @@
 import { fmtBRL, fmtDateShort, fmtTaxa } from '../utils/format.js'
 
 const COLS = [
-  { id: 'ativo',      label: 'Ativo',      sticky: true  },
-  { id: 'emissao',    label: 'Emis.',      sticky: false },
-  { id: 'vencimento', label: 'Venc.',      sticky: false },
-  { id: 'taxa',       label: 'Taxa',       sticky: false },
-  { id: 'vol',        label: 'Vol. emit.', sticky: false },
-  { id: 'alocacao',   label: 'Alocação',   sticky: false },
+  { id: 'ativo',      label: 'Ativo',      sticky: true,  sortable: true  },
+  { id: 'emissao',    label: 'Emis.',      sticky: false, sortable: true  },
+  { id: 'vencimento', label: 'Venc.',      sticky: false, sortable: true  },
+  { id: 'taxa',       label: 'Taxa',       sticky: false, sortable: true  },
+  { id: 'txanbima',   label: 'Tx Anbima',  sticky: false, sortable: false },
+  { id: 'vol',        label: 'Vol. emit.', sticky: false, sortable: true  },
+  { id: 'alocacao',   label: 'Alocação',   sticky: false, sortable: true  },
 ]
 
-export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter, onInfoClick }) {
+// Monta o tooltip com os dados originais da ANBIMA (auditoria) para uma debênture.
+function anbimaTooltip(a, ref) {
+  const info = a.anbimaInfo
+  if (!info || a.txAnbima === '—') {
+    return ref ? `Tx Anbima — sem dado na ANBIMA (ref ${ref})` : 'Tx Anbima — sem dado na ANBIMA'
+  }
+  const L = []
+  if (info.indexadorAnbima) L.push(`Original: ${info.indexadorAnbima}`)
+  if (info.codigoNtnbExibicao && info.taxaNtnbReferencia) {
+    L.push(`NTN-B ${info.codigoNtnbExibicao}: ${info.taxaNtnbReferencia}%`)
+    if (info.spreadNtnbBps) L.push(`Spread: ${info.spreadNtnbBps} bps`)
+  }
+  if (info.percentualCdiOriginal) L.push(`${info.percentualCdiOriginal}% do CDI → ${a.txAnbima}`)
+  if (info.dataReferenciaAnbima) {
+    const [y, m, d] = info.dataReferenciaAnbima.split('-')
+    L.push(`Ref: ${d}/${m}/${y}`)
+  }
+  return L.join('\n')
+}
+
+export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter, onInfoClick, anbimaRef }) {
   if (!assets.length) {
     return (
       <div className="empty-state">
@@ -27,6 +48,7 @@ export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter
           <col className="c-emis" />
           <col className="c-venc" />
           <col className="c-taxa" />
+          <col className="c-anbima" />
           <col className="c-vol" />
           <col className="c-aloc" />
         </colgroup>
@@ -35,12 +57,13 @@ export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter
             {COLS.map(col => (
               <th
                 key={col.id}
-                className={col.sticky ? 'col-sticky' : ''}
-                onClick={() => onSort(col.id)}
-                aria-sort={sort.col === col.id ? (sort.dir === 'asc' ? 'ascending' : 'descending') : 'none'}
+                className={`${col.sticky ? 'col-sticky' : ''}${col.sortable ? '' : ' th-nosort'}`}
+                onClick={col.sortable ? () => onSort(col.id) : undefined}
+                aria-sort={col.sortable && sort.col === col.id ? (sort.dir === 'asc' ? 'ascending' : 'descending') : undefined}
+                title={col.id === 'txanbima' && anbimaRef ? `Taxa indicativa ANBIMA — ref ${anbimaRef}` : undefined}
               >
                 {col.label}
-                {sort.col === col.id && (
+                {col.sortable && sort.col === col.id && (
                   <span className="sort-arrow">{sort.dir === 'asc' ? ' ↑' : ' ↓'}</span>
                 )}
               </th>
@@ -74,6 +97,7 @@ export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter
                 <td className="col-num">{fmtDateShort(a.emissao)}</td>
                 <td className="col-num">{fmtDateShort(a.vencimento)}</td>
                 <td className="col-num">{fmtTaxa(a.taxa)}</td>
+                <td className="col-num col-anbima" title={anbimaTooltip(a, anbimaRef)}>{a.txAnbima || '—'}</td>
                 <td className="col-num">{a.volumeEmitido > 0 ? fmtBRL(a.volumeEmitido) : '—'}</td>
                 <td className={`col-num col-aloc${a.alocacao > 0 ? ' has-aloc' : ''}`}>
                   {a.alocacao > 0 ? fmtBRL(a.alocacao) : '—'}

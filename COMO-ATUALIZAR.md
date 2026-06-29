@@ -68,6 +68,31 @@ Faça isto **uma vez por mês**, quando a CVM soltar o CDA novo (carteira dos fu
 
 ---
 
+## 📊 Coluna "Tx Anbima" (etapa separada, quando você quiser)
+
+A coluna **Tx Anbima** da tabela de Ativos usa a precificação pública diária da ANBIMA.
+É uma etapa **independente** (não entra na rotina semanal automática) — rode quando quiser
+atualizar essa coluna.
+
+**Requisito:** Microsoft Excel instalado (o arquivo da ANBIMA é um `.xls` antigo, lido pelo Excel).
+
+1. Duplo-clique em **`tools\preparar-anbima.bat`** → baixa sozinho os arquivos públicos da
+   ANBIMA (debêntures + títulos públicos da última data útil), calcula tudo e gera
+   `public\Anbima_Tx.csv` (~1–2 min).
+2. Duplo-clique em **`tools\publicar.bat`** → sobe pro ar.
+
+**Data específica:** `preparar-anbima.bat -Data 2026-06-26`
+
+**Modo manual** (se o download automático falhar): baixe os arquivos do site da ANBIMA e rode
+`preparar-anbima.bat -DebFile "caminho\d26jun26.xls" -TpfFile "caminho\ms260626.txt"`.
+
+O que cada taxa significa: `CDI + X%` (spread sobre o CDI), `B35 + N bps` (spread vs a NTN-B
+de referência), `17,30%` (prefixado), `—` (sem dado na ANBIMA). A data de referência aparece
+no tooltip do cabeçalho da coluna. Se a ANBIMA mudar uma URL ou o arquivo do dia faltar, o app
+**não quebra**: a coluna mostra `—` e a base anterior é preservada.
+
+---
+
 ## 🆘 Se der errado
 
 | O que aconteceu | O que fazer |

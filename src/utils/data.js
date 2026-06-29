@@ -66,10 +66,21 @@ export function buildBlcIndex(blc) {
   return map
 }
 
-export function enrichDebenture(deb, { emissorMap, blcByAtivo, fundoMap }) {
+// Indexa as taxas ANBIMA por ticker (normalizado em maiusculas).
+export function buildAnbimaIndex(anbima) {
+  const map = {}
+  ;(anbima || []).forEach(row => {
+    const t = (row['ticker'] || '').trim().toUpperCase()
+    if (t) map[t] = row
+  })
+  return map
+}
+
+export function enrichDebenture(deb, { emissorMap, blcByAtivo, fundoMap, anbimaByTicker }) {
   const codigoAtivo = (pick(deb, FIELDS.codigoAtivo) || '').trim()
   const cnpjKey = normCNPJ(pick(deb, FIELDS.cnpjEmissor))
   const emissor = emissorMap[cnpjKey] || {}
+  const anbima = (anbimaByTicker || {})[codigoAtivo.toUpperCase()] || null
 
   const blcRows = (blcByAtivo || {})[codigoAtivo] || []
   const alocacao = blcRows.reduce((s, r) => s + r.valor, 0)
@@ -99,6 +110,9 @@ export function enrichDebenture(deb, { emissorMap, blcByAtivo, fundoMap }) {
     gestores,
     alocacao,
     volumeEmitido: qtd * vna,
+    // ANBIMA (ja calculado na etapa de preparacao). '—' quando o ticker nao consta.
+    txAnbima: (anbima && anbima['txAnbimaFormatada']) ? anbima['txAnbimaFormatada'] : '—',
+    anbimaInfo: anbima,
   }
 }
 

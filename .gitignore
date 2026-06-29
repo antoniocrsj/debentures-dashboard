@@ -5,3 +5,8 @@ dist
 .vercel
 
 .vercel
+
+# Brutos/saidas da etapa ANBIMA (o app consome apenas public/Anbima_Tx.csv, que e versionado)
+dados-anbima/input/
+dados-anbima/output/
+dados-anbima/logs/
