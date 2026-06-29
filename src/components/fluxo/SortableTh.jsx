@@ -17,9 +17,13 @@ export default function SortableTh({ col, label, sub, sort, onSort, align = 'rig
   )
 }
 
-// Cicla a ordenação de uma coluna: nova → desc; desc → asc; asc → volta ao padrão.
+// Cicla a ordenação de uma coluna: primeira direção → oposta → volta ao padrão.
+// A "primeira direção" é a do padrão quando se clica na própria coluna-padrão
+// (ex.: tabela Meses, cujo padrão é mês ↑), senão 'desc'. Sem isso, uma coluna
+// cujo padrão já é 'asc' ficaria presa (asc → padrão = asc) e o clique não faria nada.
 export function cycleSort(prev, col, def) {
   if (prev.col !== col) return { col, dir: 'desc' }
-  if (prev.dir === 'desc') return { col, dir: 'asc' }
+  const first = col === def.col ? def.dir : 'desc'
+  if (prev.dir === first) return { col, dir: first === 'desc' ? 'asc' : 'desc' }
   return { ...def }
 }
