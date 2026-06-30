@@ -10,15 +10,18 @@
                   VL_PATRIM_LIQ, CAPTC_DIA, RESG_DIA
 
   O que faz:
-    1. Le as listas de fundos (CNPJ -> Gestor_Apelido):
-         tools\lista_12431.csv        (Fundos Incentivados - Lei 12.431)
-         tools\lista_tradicional.csv  (Credito Tradicional)
+    1. Resolve CNPJ_FUNDO -> Gestor_Apelido via ponte (ver lib-cadastro.ps1):
+         GAS sheet=Fundos_12431 / sheet=Fundos_CDI  (lista de fundos por segmento)
+         CVM cad_fi.csv                             (CNPJ_FUNDO -> CNPJ_GESTOR)
+         GAS sheet=Cadastro_Gestores                (CNPJ_GESTOR -> Apelido Gestor)
     2. Baixa os meses do Informe Diario (cache local, nao rebaixa).
     3. Calcula o fluxo SEMANAL (segunda a domingo) por gestor.
     4. Grava em public\data\:
          Fluxo_Semanal_12431.csv
          Fluxo_Semanal_Trad.csv
        Colunas: Semana,Gestor_Apelido,Captacao,Resgate,Liquido,PL_Medio,Num_Fundos
+       Tambem grava public\PL_Gestores.csv (PL mais recente por gestor, consumido
+       pela aba Gestores do app).
 
   Uso: clique 2x em preparar-fluxo.bat, ou:
        powershell -File preparar-fluxo.ps1 -Meses 202504,202505
@@ -28,21 +31,22 @@
 param(
   [string[]]$Meses,                                   # ex: 202504,202505 (default: ultimos 12 meses)
   # "C:\Projeto Credito\CVM _informe_diario" — [char]233 = e-acento (mantem o .ps1 em ASCII)
-  [string]$CvmDir   = ("C:\Projeto Cr" + [char]233 + "dito\CVM _informe_diario"),
-  [string]$Lista12431,
-  [string]$ListaTrad,
+  [string]$CvmDir    = ("C:\Projeto Cr" + [char]233 + "dito\CVM _informe_diario"),
+  [string]$CvmCadDir = ("C:\Projeto Cr" + [char]233 + "dito\CVM _cadastro_fundos"),
+  [string]$CadastroUrl = 'https://script.google.com/macros/s/AKfycbxhTXC7FXkp9fEz0bw6Nnh_JDm4UVhRkqZF5zOW-Cb842RhFBikauGaWeChG0vQerPrBA/exec',
   [string]$OutDir,
-  [switch]$NoDownload,                                # usa apenas os zips ja baixados (nao baixa nada)
+  [switch]$NoDownload,                                # usa apenas os zips/cad_fi ja baixados (nao baixa nada)
   [switch]$Incremental                                # so processa mes atual + anterior; mescla com CSV existente
 )
 
 $ErrorActionPreference = 'Stop'
 $CVM_BASE = 'https://dados.cvm.gov.br/dados/FI/DOC/INF_DIARIO/DADOS'
 
+. (Join-Path $PSScriptRoot 'lib-cadastro.ps1')
+
 # Defaults relativos ao script
-if (-not $Lista12431) { $Lista12431 = Join-Path $PSScriptRoot 'lista_12431.csv' }
-if (-not $ListaTrad)  { $ListaTrad  = Join-Path $PSScriptRoot 'lista_tradicional.csv' }
-if (-not $OutDir)     { $OutDir     = Join-Path (Split-Path $PSScriptRoot -Parent) 'public\data' }
+if (-not $OutDir) { $OutDir = Join-Path (Split-Path $PSScriptRoot -Parent) 'public\data' }
+$PublicDir = Split-Path $OutDir -Parent
 if (-not $Meses) {
   if ($Incremental) {
     # Modo rapido: apenas os 2 meses mais recentes
@@ -52,40 +56,7 @@ if (-not $Meses) {
   }
 }
 
-function NormCNPJ($s) { return ($s -replace '\D','') }
 function Step($m) { Write-Host "  $m" -ForegroundColor Cyan }
-
-# Le uma lista CNPJ(fundo) -> Gestor_Apelido, tolerante a separador/encoding/nomes.
-function Load-Lista($path) {
-  $blank = @{ map = @{}; missing = $true; colCnpj = ''; colGestor = '' }
-  if (-not (Test-Path $path)) { return $blank }
-  $lines = [System.IO.File]::ReadAllLines($path)
-  if ($lines.Count -lt 2) { $blank.missing = $false; return $blank }
-  $sep = if ($lines[0] -match ';') { ';' } else { ',' }
-  $hdr = $lines[0].Split($sep) | ForEach-Object { $_.Trim().Trim('"') }
-
-  $iC = -1
-  for ($i = 0; $i -lt $hdr.Count; $i++) { if ($hdr[$i] -match '(?i)cnpj' -and $hdr[$i] -match '(?i)fund|classe') { $iC = $i; break } }
-  if ($iC -lt 0) { for ($i = 0; $i -lt $hdr.Count; $i++) { if ($hdr[$i] -match '(?i)cnpj' -and $hdr[$i] -notmatch '(?i)gestor') { $iC = $i; break } } }
-  if ($iC -lt 0) { for ($i = 0; $i -lt $hdr.Count; $i++) { if ($hdr[$i] -match '(?i)cnpj') { $iC = $i; break } } }
-
-  $iG = -1
-  for ($i = 0; $i -lt $hdr.Count; $i++) { if ($hdr[$i] -match '(?i)apelido') { $iG = $i; break } }
-  if ($iG -lt 0) { for ($i = 0; $i -lt $hdr.Count; $i++) { if ($hdr[$i] -match '(?i)gestor') { $iG = $i; break } } }
-
-  if ($iC -lt 0 -or $iG -lt 0) { throw ("Lista '$path': preciso de uma coluna de CNPJ (fundo) e uma de Gestor/Apelido. Cabecalho: " + ($hdr -join ', ')) }
-
-  $map = @{}
-  for ($i = 1; $i -lt $lines.Count; $i++) {
-    $row = $lines[$i]; if ($row.Trim() -eq '') { continue }
-    $cols = $row.Split($sep)
-    if ($cols.Count -le [Math]::Max($iC, $iG)) { continue }
-    $cnpj = NormCNPJ ($cols[$iC].Trim().Trim('"'))
-    $gestor = $cols[$iG].Trim().Trim('"')
-    if ($cnpj -ne '' -and $gestor -ne '') { $map[$cnpj] = $gestor }
-  }
-  return @{ map = $map; missing = $false; colCnpj = $hdr[$iC]; colGestor = $hdr[$iG] }
-}
 
 # Meses que PODEM ter dias novos: o corrente e, nos primeiros dias, o anterior.
 # No modo Incremental forcamos sempre os 2 meses processados.
@@ -191,24 +162,35 @@ if ($Incremental) { Write-Host "  Modo: INCREMENTAL (apenas $($Meses -join ', ')
 New-Item -ItemType Directory -Force -Path $CvmDir | Out-Null
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
 
-# 1. Listas
-Step "Lendo listas de fundos..."
-$L12431 = Load-Lista $Lista12431
-$LTrad  = Load-Lista $ListaTrad
-if ($L12431.missing) { Write-Host "    AVISO: nao achei $Lista12431" -ForegroundColor Yellow }
-if ($LTrad.missing)  { Write-Host "    AVISO: nao achei $ListaTrad"  -ForegroundColor Yellow }
-Write-Host "    12431: $($L12431.map.Count) fundos | Tradicional: $($LTrad.map.Count) fundos"
-if ($L12431.map.Count) { Write-Host "      (12431 usando colunas -> CNPJ: '$($L12431.colCnpj)' | Gestor: '$($L12431.colGestor)')" -ForegroundColor DarkGray }
-if ($LTrad.map.Count)  { Write-Host "      (Trad  usando colunas -> CNPJ: '$($LTrad.colCnpj)' | Gestor: '$($LTrad.colGestor)')" -ForegroundColor DarkGray }
-if ($L12431.map.Count -eq 0 -and $LTrad.map.Count -eq 0) {
-  throw "Nenhum fundo nas listas. Crie tools\lista_12431.csv e/ou tools\lista_tradicional.csv (colunas: CNPJ, Gestor_Apelido)."
+# 1. Resolve CNPJ_FUNDO -> Apelido_Gestor (Fundos_12431/Fundos_CDI + cad_fi.csv + Cadastro_Gestores)
+Step "Buscando Fundos_12431 / Fundos_CDI / Cadastro_Gestores no cadastro..."
+$cnpjSet12431 = Get-FundosCnpjSet $CadastroUrl 'Fundos_12431'
+$cnpjSetCdi   = Get-FundosCnpjSet $CadastroUrl 'Fundos_CDI'
+$gestorApelidoMap = Get-GestorApelidoMap $CadastroUrl
+Write-Host "    Fundos_12431: $($cnpjSet12431.Count) | Fundos_CDI: $($cnpjSetCdi.Count) | Cadastro_Gestores: $($gestorApelidoMap.Count) gestoras"
+
+Step "Baixando/lendo cad_fi.csv da CVM (ponte CNPJ_FUNDO -> CNPJ_GESTOR)..."
+$cadFiMap = Get-CadFiFundoGestorMap $CvmCadDir -NoDownload:$NoDownload
+Write-Host "    cad_fi.csv: $($cadFiMap.Count) fundos mapeados"
+
+$bridge12431 = Build-FundoApelidoMap $cnpjSet12431 $cadFiMap $gestorApelidoMap
+$bridgeCdi   = Build-FundoApelidoMap $cnpjSetCdi   $cadFiMap $gestorApelidoMap
+Write-Host "    12431: $($bridge12431.map.Count) fundos resolvidos | Tradicional: $($bridgeCdi.map.Count) fundos resolvidos"
+if ($bridge12431.semCadFi -gt 0 -or $bridgeCdi.semCadFi -gt 0) {
+  Write-Host "      sem match no cad_fi.csv -> 12431: $($bridge12431.semCadFi) | Trad: $($bridgeCdi.semCadFi)" -ForegroundColor Yellow
+}
+if ($bridge12431.semGestorCadastrado -gt 0 -or $bridgeCdi.semGestorCadastrado -gt 0) {
+  Write-Host "      gestor sem cadastro em Cadastro_Gestores -> 12431: $($bridge12431.semGestorCadastrado) | Trad: $($bridgeCdi.semGestorCadastrado)" -ForegroundColor Yellow
+}
+if ($bridge12431.map.Count -eq 0 -and $bridgeCdi.map.Count -eq 0) {
+  throw "Nenhum fundo resolvido. Verifique as abas Fundos_12431 / Fundos_CDI / Cadastro_Gestores na planilha e o cad_fi.csv."
 }
 
 $agg      = @{ '12431' = @{}; 'trad' = @{} }
 $seen     = @{ '12431' = @{}; 'trad' = @{} }
 $weekMax  = @{ '12431' = @{}; 'trad' = @{} }
 $aggMonth = @{ '12431' = @{}; 'trad' = @{} }
-$tipos    = @{ '12431' = $L12431.map; 'trad' = $LTrad.map }
+$tipos    = @{ '12431' = $bridge12431.map; 'trad' = $bridgeCdi.map }
 
 $mesesOk = @(); $mesesFalha = @(); $invalidas = 0; $minDate = $null; $maxDate = $null
 
@@ -341,9 +323,43 @@ if ($Incremental) {
   Merge-Mensal  $oldMesTradLines  $outMesTrad  $Meses
 }
 
-# 5. Relatorio
-$nf12431 = ($L12431.map.Keys | Where-Object { -not $seen['12431'].ContainsKey($_) }).Count
-$nfTrad  = ($LTrad.map.Keys  | Where-Object { -not $seen['trad'].ContainsKey($_) }).Count
+# 5. PL_Gestores.csv — PL mais recente por gestor (12431 + Trad somados), consumido pela aba Gestores do app.
+function Get-LatestPlByGestor($tipo) {
+  $latestWk = @{}
+  foreach ($k in $agg[$tipo].Keys) {
+    $parts = $k -split '\|', 2; $wk = $parts[0]; $g = $parts[1]
+    if (-not $latestWk.ContainsKey($g) -or $wk -gt $latestWk[$g]) { $latestWk[$g] = $wk }
+  }
+  $result = @{}
+  foreach ($g in $latestWk.Keys) {
+    $b = $agg[$tipo][$latestWk[$g] + '|' + $g]
+    $nDates = [Math]::Max(1, $b.dates.Count)
+    $result[$g] = $b.plSum / $nDates
+  }
+  return $result
+}
+
+$plByGestor = @{}
+foreach ($tipo in @('12431', 'trad')) {
+  $plTipo = Get-LatestPlByGestor $tipo
+  foreach ($g in $plTipo.Keys) {
+    if ($plByGestor.ContainsKey($g)) { $plByGestor[$g] += $plTipo[$g] } else { $plByGestor[$g] = $plTipo[$g] }
+  }
+}
+
+$outPlGestores = Join-Path $PublicDir 'PL_Gestores.csv'
+$sbPl = New-Object System.Text.StringBuilder
+[void]$sbPl.AppendLine('Gestor_Apelido,PL')
+$ciPl = [System.Globalization.CultureInfo]::InvariantCulture
+foreach ($g in ($plByGestor.Keys | Sort-Object)) {
+  [void]$sbPl.AppendLine(('"{0}",{1}' -f $g.Replace('"', '""'), ([Math]::Round($plByGestor[$g], 2)).ToString($ciPl)))
+}
+$utf8Pl = New-Object System.Text.UTF8Encoding($false)
+[System.IO.File]::WriteAllText($outPlGestores, $sbPl.ToString(), $utf8Pl)
+
+# 6. Relatorio
+$nf12431 = ($bridge12431.map.Keys | Where-Object { -not $seen['12431'].ContainsKey($_) }).Count
+$nfTrad  = ($bridgeCdi.map.Keys   | Where-Object { -not $seen['trad'].ContainsKey($_) }).Count
 
 Write-Host ""
 Write-Host "=== RELATORIO ===" -ForegroundColor Green
@@ -359,6 +375,7 @@ Write-Host "    $out12431" -ForegroundColor Yellow
 Write-Host "    $outTrad"  -ForegroundColor Yellow
 Write-Host ("    $outMes12431  (mensal: $nMes12431 linhas)") -ForegroundColor Yellow
 Write-Host ("    $outMesTrad  (mensal: $nMesTrad linhas)")  -ForegroundColor Yellow
+Write-Host ("    $outPlGestores  ($($plByGestor.Count) gestoras)") -ForegroundColor Yellow
 Write-Host ""
 Write-Host "  Proximo: revise os CSVs, troque FLUXO_IS_MOCK para false em src/hooks/useFluxo.js e publique." -ForegroundColor White
 Write-Host ""

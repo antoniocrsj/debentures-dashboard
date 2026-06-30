@@ -16,6 +16,8 @@ export const BLC_DEFAULT_URL =
 const STATIC_BLC_URL = '/BLC_tratado.csv'
 // Taxas ANBIMA (coluna Tx Anbima): tambem estatico em public/.
 const STATIC_ANBIMA_URL = '/Anbima_Tx.csv'
+// PL por gestor: gerado por preparar-fluxo.ps1 a partir do Informe Diario da CVM.
+const STATIC_PL_GESTORES_URL = '/PL_Gestores.csv'
 
 async function fetchCSV(rawUrl) {
   const url = `/api/proxy?url=${encodeURIComponent(rawUrl)}`
@@ -83,15 +85,15 @@ export function useDebentures(blcUrl) {
     setState(s => ({ ...s, loading: !fresh, refreshing: !!fresh, raw: fresh ?? s.raw }))
 
     Promise.all([
-      fetchCSV(`${CADASTRO_URL}?sheet=emissores`),
-      fetchCSV(`${CADASTRO_URL}?sheet=fundos`),
+      fetchCSV(`${CADASTRO_URL}?sheet=Cadastro_Emissores`),
       fetchCSV(DEB_URL),
       fetchStaticCSV(STATIC_BLC_URL),
-      // ANBIMA e opcional: se faltar/quebrar, a coluna Tx Anbima mostra — e o app segue.
+      // ANBIMA e PL_Gestores sao opcionais: se faltar/quebrar, o app segue sem essas colunas.
       fetchStaticCSV(STATIC_ANBIMA_URL).catch(() => []),
+      fetchStaticCSV(STATIC_PL_GESTORES_URL).catch(() => []),
     ])
-      .then(([emissores, fundos, debentures, blc, anbima]) => {
-        const raw = { emissores, fundos, debentures, blc, anbima }
+      .then(([emissores, debentures, blc, anbima, plGestores]) => {
+        const raw = { emissores, debentures, blc, anbima, plGestores }
         writeCache(raw)
         if (alive) setState({ loading: false, refreshing: false, error: null, raw, cachedAt: Date.now() })
       })

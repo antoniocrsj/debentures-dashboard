@@ -7,7 +7,10 @@
   O que faz:
     1. Le o .xlsx (mesmo aberto no Excel)
     2. Mantem apenas linhas de Debentures (coluna TP_APLIC), se existir
-    3. Busca o mapa fundo->gestor no GAS de cadastro (sheet=fundos)
+    3. Resolve o mapa fundo->gestor via ponte (ver lib-cadastro.ps1):
+         GAS sheet=Fundos_12431 / sheet=Fundos_CDI  (universo de fundos)
+         CVM cad_fi.csv                             (CNPJ_FUNDO -> CNPJ_GESTOR)
+         GAS sheet=Cadastro_Gestores                (CNPJ_GESTOR -> Apelido Gestor)
     4. Agrega somando VL_MERC_POS_FINAL por (CD_ATIVO, GESTOR)
     5. Grava um CSV de 3 colunas: CD_ATIVO,GESTOR,VL_ALOCADO
 
@@ -19,7 +22,10 @@
 
 param(
   [string]$XlsxPath = '',
-  [string]$OutPath  = ''
+  [string]$OutPath  = '',
+  [string]$CadastroUrl = 'https://script.google.com/macros/s/AKfycbxhTXC7FXkp9fEz0bw6Nnh_JDm4UVhRkqZF5zOW-Cb842RhFBikauGaWeChG0vQerPrBA/exec',
+  [string]$CvmCadDir   = ("C:\Projeto Cr" + [char]233 + "dito\CVM _cadastro_fundos"),
+  [switch]$NoDownload
 )
 
 $ErrorActionPreference = 'Stop'
@@ -27,11 +33,11 @@ $ErrorActionPreference = 'Stop'
 # ---- Configuracao ----------------------------------------------------------
 # "C:\Projeto Credito\Power BI" — [char]233 = e-acento (mantem o .ps1 lendo certo em ANSI)
 $DefaultFolder = ("C:\Projeto Cr" + [char]233 + "dito\Power BI")
-$FundosUrl = 'https://script.google.com/macros/s/AKfycbxhTXC7FXkp9fEz0bw6Nnh_JDm4UVhRkqZF5zOW-Cb842RhFBikauGaWeChG0vQerPrBA/exec?sheet=fundos'
 # ---------------------------------------------------------------------------
 
+. (Join-Path $PSScriptRoot 'lib-cadastro.ps1')
+
 function Write-Step($msg) { Write-Host "  $msg" -ForegroundColor Cyan }
-function NormCNPJ($s) { return ($s -replace '\D','') }
 
 # Letra(s) da coluna de uma referencia (ex: "AB12" -> 28)
 function ColNum([string]$ref) {
@@ -172,24 +178,23 @@ finally {
 
 Write-Step "  $($rawRows.Count) linhas de debentures lidas"
 
-# ---- 3. Mapa fundo->gestor (GAS cadastro) ---------------------------------
-Write-Step "Buscando mapa fundo->gestor no cadastro..."
-$resp = Invoke-WebRequest -Uri $FundosUrl -UseBasicParsing -MaximumRedirection 10 -TimeoutSec 90
-$body = $resp.Content
-if ($body.TrimStart().StartsWith('<')) { throw "O GAS de cadastro retornou HTML em vez de CSV. Tente rodar de novo." }
-$fLines = $body -split "`n"
-$fundo2gestor = @{}
-for ($i = 1; $i -lt $fLines.Count; $i++) {
-  $line = $fLines[$i].Trim(); if ($line -eq '') { continue }
-  $cols = [regex]::Matches($line, '("([^"]*)")|([^,]+)') | ForEach-Object {
-            if ($_.Groups[2].Success) { $_.Groups[2].Value } else { $_.Groups[3].Value } }
-  $cnpj = NormCNPJ $cols[0]
-  $apelido    = if ($cols.Count -ge 7) { $cols[6].Trim() } else { '' }
-  $nomeGestor = if ($cols.Count -ge 4) { $cols[3].Trim() } else { '' }
-  $g = if ($apelido -ne '') { $apelido } elseif ($nomeGestor -ne '') { $nomeGestor } else { '(sem gestor)' }
-  if ($cnpj -ne '') { $fundo2gestor[$cnpj] = $g }
-}
-Write-Step "  $($fundo2gestor.Count) fundos mapeados"
+# ---- 3. Mapa fundo->gestor (Fundos_12431/Fundos_CDI + cad_fi.csv + Cadastro_Gestores) ---
+Write-Step "Buscando Fundos_12431 / Fundos_CDI / Cadastro_Gestores no cadastro..."
+$cnpjSet12431 = Get-FundosCnpjSet $CadastroUrl 'Fundos_12431'
+$cnpjSetCdi   = Get-FundosCnpjSet $CadastroUrl 'Fundos_CDI'
+$gestorApelidoMap = Get-GestorApelidoMap $CadastroUrl
+$todosFundos = New-Object System.Collections.Generic.HashSet[string]
+foreach ($c in $cnpjSet12431) { [void]$todosFundos.Add($c) }
+foreach ($c in $cnpjSetCdi)   { [void]$todosFundos.Add($c) }
+Write-Step "  $($todosFundos.Count) fundos (12431 + CDI) | $($gestorApelidoMap.Count) gestoras cadastradas"
+
+Write-Step "Baixando/lendo cad_fi.csv da CVM (ponte CNPJ_FUNDO -> CNPJ_GESTOR)..."
+$cadFiMap = Get-CadFiFundoGestorMap $CvmCadDir -NoDownload:$NoDownload
+$bridge = Build-FundoApelidoMap $todosFundos $cadFiMap $gestorApelidoMap
+$fundo2gestor = $bridge.map
+Write-Step "  $($fundo2gestor.Count) fundos mapeados a um gestor"
+if ($bridge.semCadFi -gt 0) { Write-Host "    sem match no cad_fi.csv: $($bridge.semCadFi)" -ForegroundColor Yellow }
+if ($bridge.semGestorCadastrado -gt 0) { Write-Host "    gestor sem cadastro em Cadastro_Gestores: $($bridge.semGestorCadastrado)" -ForegroundColor Yellow }
 
 # ---- 4. Agregar por (ativo, gestor) ---------------------------------------
 Write-Step "Agregando por (ativo, gestor)..."

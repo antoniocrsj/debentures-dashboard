@@ -17,10 +17,9 @@ const FIELDS = {
   empresaNome:    ['Emissor', 'Empresa', 'Nome Empresa', 'Razao Social', 'Razão Social', 'Nome'],
   grupo:          ['Grupo', 'Grupo Economico', 'Grupo Econômico'],
   setor:          ['Setor', 'Segmento', 'Setor Economico'],
-  // fundos
-  cnpjFundo:      ['CNPJ Fundo', 'CNPJ do Fundo', 'CNPJ_FUNDO'],
-  gestorApelido:  ['Gestor Apelido', 'Gestor', 'NM_GESTOR'],
-  pl:             ['PL', 'Patrimonio Liquido', 'Patrimônio Líquido', 'Patrimônio Líquido (R$)', 'VL_PATRIM_LIQ'],
+  // PL por gestor (PL_Gestores.csv)
+  gestorPl:       ['Gestor_Apelido', 'Gestor Apelido', 'Gestor'],
+  pl:             ['PL', 'Patrimonio Liquido', 'Patrimônio Líquido'],
   // BLC
   cdAtivo:        ['CD_ATIVO', 'Codigo do Ativo', 'Codigo Ativo'],
   cnpjFundoBlc:   ['CNPJ_FUNDO_CLASSE', 'CNPJ_FUNDO', 'CNPJ Fundo'],
@@ -35,20 +34,25 @@ function pick(row, keys) {
   return ''
 }
 
-export function buildIndexes({ emissores, fundos }) {
+export function buildIndexes({ emissores }) {
   const emissorMap = {}
   emissores.forEach(e => {
     const key = normCNPJ(pick(e, FIELDS.cnpjEmissor))
     if (key) emissorMap[key] = e
   })
 
-  const fundoMap = {}
-  fundos.forEach(f => {
-    const key = normCNPJ(pick(f, FIELDS.cnpjFundo))
-    if (key) fundoMap[key] = f
-  })
+  return { emissorMap }
+}
 
-  return { emissorMap, fundoMap }
+// PL por gestor, a partir do PL_Gestores.csv (gerado por preparar-fluxo.ps1)
+export function buildPlByGestor(plGestores) {
+  const map = {}
+  ;(plGestores || []).forEach(row => {
+    const g = (pick(row, FIELDS.gestorPl) || '').trim()
+    if (!g) return
+    map[g] = (map[g] || 0) + parseNum(pick(row, FIELDS.pl))
+  })
+  return map
 }
 
 // Indexa o BLC tratado por ativo: { CD_ATIVO: [{ gestor, valor }, ...] }
@@ -76,7 +80,7 @@ export function buildAnbimaIndex(anbima) {
   return map
 }
 
-export function enrichDebenture(deb, { emissorMap, blcByAtivo, fundoMap, anbimaByTicker }) {
+export function enrichDebenture(deb, { emissorMap, blcByAtivo, anbimaByTicker }) {
   const codigoAtivo = (pick(deb, FIELDS.codigoAtivo) || '').trim()
   const cnpjKey = normCNPJ(pick(deb, FIELDS.cnpjEmissor))
   const emissor = emissorMap[cnpjKey] || {}
@@ -118,14 +122,8 @@ export function enrichDebenture(deb, { emissorMap, blcByAtivo, fundoMap, anbimaB
   }
 }
 
-export function computeManagers(blcRows, fundoMap) {
-  // PL por gestor — total dos fundos do gestor (cadastro). Fixo, nao varia com filtro.
-  const plByGestor = {}
-  Object.values(fundoMap || {}).forEach(f => {
-    const g = (pick(f, FIELDS.gestorApelido) || '').trim()
-    if (!g) return
-    plByGestor[g] = (plByGestor[g] || 0) + parseNum(pick(f, FIELDS.pl))
-  })
+export function computeManagers(blcRows, plByGestor) {
+  // PL por gestor é passado pronto (vem do PL_Gestores.csv). Fixo, nao varia com filtro.
 
   // Alocacao por gestor — do BLC tratado (ja agregado por gestor)
   const alocByGestor = {}

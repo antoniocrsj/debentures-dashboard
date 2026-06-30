@@ -1,7 +1,7 @@
 import { useState, useMemo, useCallback, useEffect, Suspense } from 'react'
 import { useDebentures, BLC_DEFAULT_URL } from './hooks/useDebentures.js'
 import {
-  buildIndexes, buildBlcIndex, buildAnbimaIndex,
+  buildIndexes, buildBlcIndex, buildAnbimaIndex, buildPlByGestor,
   enrichDebenture, computeManagers, computeGroups, recomputeAlocByGestor
 } from './utils/data.js'
 import { isYes, dateKey } from './utils/format.js'
@@ -86,6 +86,8 @@ export default function App() {
     }
   }, [raw])
 
+  const plByGestor = useMemo(() => buildPlByGestor(raw?.plGestores), [raw])
+
   // Data de referencia da ANBIMA (vem do arquivo, nao do relogio). DD/MM/AAAA.
   const anbimaRef = useMemo(() => {
     const d = raw?.anbima?.find(r => r.dataReferenciaAnbima)?.dataReferenciaAnbima
@@ -97,7 +99,7 @@ export default function App() {
   // Enrich all debentures
   const allAssets = useMemo(() => {
     if (!raw || !indexes) return []
-    return raw.debentures.map(d => enrichDebenture(d, { ...indexes, fundoMap: indexes.fundoMap }))
+    return raw.debentures.map(d => enrichDebenture(d, indexes))
   }, [raw, indexes])
 
   // Distinct filter options (from full dataset)
@@ -179,8 +181,8 @@ export default function App() {
     const subset = raw.blc.filter(r =>
       filteredCodes.has((r['CD_ATIVO'] || r['Codigo do Ativo'] || '').trim())
     )
-    return computeManagers(subset, indexes.fundoMap)
-  }, [raw, indexes, filteredCodes])
+    return computeManagers(subset, plByGestor)
+  }, [raw, indexes, filteredCodes, plByGestor])
 
   const groups = useMemo(() => computeGroups(filteredAssets), [filteredAssets])
 
