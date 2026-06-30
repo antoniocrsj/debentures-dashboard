@@ -65,7 +65,7 @@ function Find-ColIndex($headers, [string]$mustMatch, [string]$mustNotMatch = $nu
 
 # Busca uma aba de fundos (Fundos_12431 / Fundos_CDI) e retorna o Set de CNPJ_FUNDO_CLASSE normalizados.
 function Get-FundosCnpjSet([string]$cadastroUrl, [string]$sheetName) {
-  $body = Get-GasBody "$cadastroUrl?sheet=$sheetName"
+  $body = Get-GasBody "${cadastroUrl}?sheet=$sheetName"
   $parsed = ConvertFrom-GasCsv $body
   $iCnpj = Find-ColIndex $parsed.headers '(?i)cnpj'
   if ($iCnpj -lt 0) { throw "Aba '$sheetName': nao achei coluna de CNPJ. Cabecalho: $($parsed.headers -join ', ')" }
@@ -81,7 +81,7 @@ function Get-FundosCnpjSet([string]$cadastroUrl, [string]$sheetName) {
 
 # Busca a aba Cadastro_Gestores e retorna hashtable: CNPJ_GESTOR(norm) -> Apelido Gestor.
 function Get-GestorApelidoMap([string]$cadastroUrl, [string]$sheetName = 'Cadastro_Gestores') {
-  $body = Get-GasBody "$cadastroUrl?sheet=$sheetName"
+  $body = Get-GasBody "${cadastroUrl}?sheet=$sheetName"
   $parsed = ConvertFrom-GasCsv $body
   $iCnpj = Find-ColIndex $parsed.headers '(?i)cnpj'
   $iApl  = Find-ColIndex $parsed.headers '(?i)apelido'
