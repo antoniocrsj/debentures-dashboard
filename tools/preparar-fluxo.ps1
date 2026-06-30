@@ -1,4 +1,4 @@
-﻿<#
+<#
   preparar-fluxo.ps1
   --------------------------------------------------------------------------
   Gera as bases SEMANAIS de captacao/resgate da aba "Captacao" a partir do
@@ -22,6 +22,7 @@
 
   Uso: clique 2x em preparar-fluxo.bat, ou:
        powershell -File preparar-fluxo.ps1 -Meses 202504,202505
+       powershell -File preparar-fluxo.ps1 -Incremental   # rapido: so mes atual + anterior
 #>
 
 param(
@@ -31,7 +32,8 @@ param(
   [string]$Lista12431,
   [string]$ListaTrad,
   [string]$OutDir,
-  [switch]$NoDownload                                 # usa apenas os zips ja baixados (nao baixa nada)
+  [switch]$NoDownload,                                # usa apenas os zips ja baixados (nao baixa nada)
+  [switch]$Incremental                                # so processa mes atual + anterior; mescla com CSV existente
 )
 
 $ErrorActionPreference = 'Stop'
@@ -42,16 +44,18 @@ if (-not $Lista12431) { $Lista12431 = Join-Path $PSScriptRoot 'lista_12431.csv' 
 if (-not $ListaTrad)  { $ListaTrad  = Join-Path $PSScriptRoot 'lista_tradicional.csv' }
 if (-not $OutDir)     { $OutDir     = Join-Path (Split-Path $PSScriptRoot -Parent) 'public\data' }
 if (-not $Meses) {
-  $Meses = 0..11 | ForEach-Object { (Get-Date).AddMonths(-$_).ToString('yyyyMM') }
+  if ($Incremental) {
+    # Modo rapido: apenas os 2 meses mais recentes
+    $Meses = @((Get-Date).ToString('yyyyMM'), (Get-Date).AddMonths(-1).ToString('yyyyMM'))
+  } else {
+    $Meses = 0..11 | ForEach-Object { (Get-Date).AddMonths(-$_).ToString('yyyyMM') }
+  }
 }
 
 function NormCNPJ($s) { return ($s -replace '\D','') }
 function Step($m) { Write-Host "  $m" -ForegroundColor Cyan }
 
 # Le uma lista CNPJ(fundo) -> Gestor_Apelido, tolerante a separador/encoding/nomes.
-# Regras de escolha de coluna (lista pode ter CNPJ do fundo E do gestor, gestor E apelido):
-#   CNPJ   : prefere a que cita fundo/classe; senao a que NAO cita gestor; senao a 1a com "cnpj".
-#   Gestor : prefere a que cita "apelido"; senao a que cita "gestor".
 function Load-Lista($path) {
   $blank = @{ map = @{}; missing = $true; colCnpj = ''; colGestor = '' }
   if (-not (Test-Path $path)) { return $blank }
@@ -83,18 +87,15 @@ function Load-Lista($path) {
   return @{ map = $map; missing = $false; colCnpj = $hdr[$iC]; colGestor = $hdr[$iG] }
 }
 
-# Meses que PODEM ter dias novos: o corrente (a CVM acrescenta dias ao longo do
-# mes) e, so nos primeiros dias, o anterior (revisoes de fim de mes). Meses
-# fechados usam cache. Use -NoDownload para nunca baixar (so cache local).
-$script:ForceMonths = @((Get-Date).ToString('yyyyMM'))
-if ((Get-Date).Day -le 5) { $script:ForceMonths += (Get-Date).AddMonths(-1).ToString('yyyyMM') }
+# Meses que PODEM ter dias novos: o corrente e, nos primeiros dias, o anterior.
+# No modo Incremental forcamos sempre os 2 meses processados.
+if ($Incremental) {
+  $script:ForceMonths = $Meses
+} else {
+  $script:ForceMonths = @((Get-Date).ToString('yyyyMM'))
+  if ((Get-Date).Day -le 5) { $script:ForceMonths += (Get-Date).AddMonths(-1).ToString('yyyyMM') }
+}
 
-# Garante o zip do mes. Regra:
-#   - mes fechado (nao-force): usa cache.
-#   - mes recente ja atualizado HOJE: usa o cache (nao re-baixa) -> respeita
-#     atualizacao manual e evita baixar o arquivo mensal inteiro de novo.
-#   - mes recente desatualizado: re-baixa (a menos de -NoDownload).
-# Se o download falhar, mantem o cache anterior (se houver). Retorna caminho ou $null.
 function Ensure-Month($yyyymm) {
   $zip = Join-Path $CvmDir "inf_diario_fi_$yyyymm.zip"
   $mustRefresh = $script:ForceMonths -contains $yyyymm
@@ -116,19 +117,75 @@ function Ensure-Month($yyyymm) {
   } catch {
     Write-Host "    $yyyymm indisponivel (pulando): $($_.Exception.Message)" -ForegroundColor Yellow
     if (Test-Path $tmp) { Remove-Item $tmp -Force }
-    if (Test-Path $zip) { return $zip }   # mantem o cache anterior, se houver
+    if (Test-Path $zip) { return $zip }
     return $null
   }
 }
 
-# segunda-feira da semana que contem $date
 function WeekStart([datetime]$date) {
-  $off = ([int]$date.DayOfWeek + 6) % 7   # Mon=0 .. Sun=6
+  $off = ([int]$date.DayOfWeek + 6) % 7
   return $date.AddDays(-$off)
 }
 
+# ─── Merge incremental ────────────────────────────────────────────────────────
+# Mescla historico do CSV antigo (antes do periodo reprocessado) com o CSV novo.
+
+function Merge-Semanal($oldLines, $outFile, $processedMeses) {
+  if ($oldLines.Count -lt 2) { return }
+  $sorted = $processedMeses | Sort-Object
+  # Mantemos apenas semanas onde a segunda-feira termina antes do 1o mes processado.
+  $cutoff = [datetime]::ParseExact($sorted[0] + '01', 'yyyyMMdd', $null).AddDays(-6)
+
+  $kept = [System.Collections.Generic.List[string]]::new()
+  for ($i = 1; $i -lt $oldLines.Count; $i++) {
+    $line = $oldLines[$i]; if ($line.Trim() -eq '') { continue }
+    $weekStr = $line.Split(',')[0].Trim('"')
+    $d = [datetime]::MinValue
+    if ([datetime]::TryParse($weekStr, [ref]$d) -and $d -lt $cutoff) { $kept.Add($line) }
+  }
+  if ($kept.Count -eq 0) { return }
+
+  $newLines = [System.IO.File]::ReadAllLines($outFile)
+  $merged = [System.Collections.Generic.List[string]]::new()
+  $merged.Add($newLines[0])
+  $merged.AddRange($kept)
+  for ($i = 1; $i -lt $newLines.Count; $i++) {
+    if ($newLines[$i].Trim() -ne '') { $merged.Add($newLines[$i]) }
+  }
+  $utf8 = New-Object System.Text.UTF8Encoding($false)
+  [System.IO.File]::WriteAllLines($outFile, $merged.ToArray(), $utf8)
+  Write-Host "    +$($kept.Count) linhas historicas mescladas." -ForegroundColor DarkGray
+}
+
+function Merge-Mensal($oldLines, $outFile, $processedMeses) {
+  if ($oldLines.Count -lt 2) { return }
+  $sorted = $processedMeses | Sort-Object
+  $cutoffYM = $sorted[0].Substring(0,4) + '-' + $sorted[0].Substring(4,2)
+
+  $kept = [System.Collections.Generic.List[string]]::new()
+  for ($i = 1; $i -lt $oldLines.Count; $i++) {
+    $line = $oldLines[$i]; if ($line.Trim() -eq '') { continue }
+    $mesStr = $line.Split(',')[0].Trim('"')
+    if ($mesStr -lt $cutoffYM) { $kept.Add($line) }
+  }
+  if ($kept.Count -eq 0) { return }
+
+  $newLines = [System.IO.File]::ReadAllLines($outFile)
+  $merged = [System.Collections.Generic.List[string]]::new()
+  $merged.Add($newLines[0])
+  $merged.AddRange($kept)
+  for ($i = 1; $i -lt $newLines.Count; $i++) {
+    if ($newLines[$i].Trim() -ne '') { $merged.Add($newLines[$i]) }
+  }
+  $utf8 = New-Object System.Text.UTF8Encoding($false)
+  [System.IO.File]::WriteAllLines($outFile, $merged.ToArray(), $utf8)
+  Write-Host "    +$($kept.Count) linhas historicas mescladas (mensal)." -ForegroundColor DarkGray
+}
+# ─────────────────────────────────────────────────────────────────────────────
+
 Write-Host ""
 Write-Host "=== Preparar bases de Captacao (Fluxo Semanal) ===" -ForegroundColor Green
+if ($Incremental) { Write-Host "  Modo: INCREMENTAL (apenas $($Meses -join ', '))" -ForegroundColor Cyan }
 New-Item -ItemType Directory -Force -Path $CvmDir | Out-Null
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
 
@@ -145,14 +202,11 @@ if ($L12431.map.Count -eq 0 -and $LTrad.map.Count -eq 0) {
   throw "Nenhum fundo nas listas. Crie tools\lista_12431.csv e/ou tools\lista_tradicional.csv (colunas: CNPJ, Gestor_Apelido)."
 }
 
-# acumuladores: agg[tipo][weekKey|gestor] = @{ cap; resg; plSum; dates(set); cnpjs(set) }
-$agg = @{ '12431' = @{}; 'trad' = @{} }
-$seen = @{ '12431' = @{}; 'trad' = @{} }   # cnpjs efetivamente vistos
-$weekMax = @{ '12431' = @{}; 'trad' = @{} } # weekKey -> data (DT_COMPTC) mais recente daquela semana
-# Agregacao MENSAL feita direto pela data de cada registro diario (nao pela semana),
-# para que uma semana que cruza dois meses nao gere duplicidade/erro de atribuicao.
-$aggMonth = @{ '12431' = @{}; 'trad' = @{} }  # "mesKey|gestor" -> @{ cap; resg }
-$tipos = @{ '12431' = $L12431.map; 'trad' = $LTrad.map }
+$agg      = @{ '12431' = @{}; 'trad' = @{} }
+$seen     = @{ '12431' = @{}; 'trad' = @{} }
+$weekMax  = @{ '12431' = @{}; 'trad' = @{} }
+$aggMonth = @{ '12431' = @{}; 'trad' = @{} }
+$tipos    = @{ '12431' = $L12431.map; 'trad' = $LTrad.map }
 
 $mesesOk = @(); $mesesFalha = @(); $invalidas = 0; $minDate = $null; $maxDate = $null
 
@@ -201,7 +255,6 @@ foreach ($mes in $Meses) {
       $b.dates[$dtRaw] = $true; $b.cnpjs[$cnpj] = $true
       $seen[$tipo][$cnpj] = $true
 
-      # MENSAL: cada registro diario cai no mes da SUA data (yyyy-MM)
       $mk = ($dt.ToString('yyyy-MM')) + '|' + $gestor
       $mb = $aggMonth[$tipo][$mk]
       if (-not $mb) { $mb = @{ cap = 0.0; resg = 0.0 }; $aggMonth[$tipo][$mk] = $mb }
@@ -241,7 +294,6 @@ function Write-Base($tipo, $outFile) {
   return $keys.Count
 }
 
-# Base MENSAL: uma linha por (mes, gestor). Mes = yyyy-MM. Liquido = cap - resg.
 function Write-BaseMensal($tipo, $outFile) {
   $sb = New-Object System.Text.StringBuilder
   [void]$sb.AppendLine('Mes,Gestor_Apelido,Captacao,Resgate,Liquido')
@@ -260,15 +312,32 @@ function Write-BaseMensal($tipo, $outFile) {
   return $keys.Count
 }
 
-$out12431 = Join-Path $OutDir 'Fluxo_Semanal_12431.csv'
-$outTrad  = Join-Path $OutDir 'Fluxo_Semanal_Trad.csv'
-$n12431 = Write-Base '12431' $out12431
-$nTrad  = Write-Base 'trad'  $outTrad
-
+$out12431    = Join-Path $OutDir 'Fluxo_Semanal_12431.csv'
+$outTrad     = Join-Path $OutDir 'Fluxo_Semanal_Trad.csv'
 $outMes12431 = Join-Path $OutDir 'Fluxo_Mensal_12431.csv'
 $outMesTrad  = Join-Path $OutDir 'Fluxo_Mensal_Trad.csv'
+
+# Salva conteudo antigo ANTES de sobrescrever (necessario para o merge incremental)
+$oldSem12431 = @(); $oldSemTrad = @(); $oldMes12431Lines = @(); $oldMesTradLines = @()
+if ($Incremental) {
+  if (Test-Path $out12431)    { $oldSem12431      = [System.IO.File]::ReadAllLines($out12431) }
+  if (Test-Path $outTrad)     { $oldSemTrad       = [System.IO.File]::ReadAllLines($outTrad) }
+  if (Test-Path $outMes12431) { $oldMes12431Lines = [System.IO.File]::ReadAllLines($outMes12431) }
+  if (Test-Path $outMesTrad)  { $oldMesTradLines  = [System.IO.File]::ReadAllLines($outMesTrad) }
+}
+
+$n12431    = Write-Base       '12431' $out12431
+$nTrad     = Write-Base       'trad'  $outTrad
 $nMes12431 = Write-BaseMensal '12431' $outMes12431
 $nMesTrad  = Write-BaseMensal 'trad'  $outMesTrad
+
+if ($Incremental) {
+  Step "Mesclando com historico existente..."
+  Merge-Semanal $oldSem12431      $out12431    $Meses
+  Merge-Semanal $oldSemTrad       $outTrad     $Meses
+  Merge-Mensal  $oldMes12431Lines $outMes12431 $Meses
+  Merge-Mensal  $oldMesTradLines  $outMesTrad  $Meses
+}
 
 # 5. Relatorio
 $nf12431 = ($L12431.map.Keys | Where-Object { -not $seen['12431'].ContainsKey($_) }).Count
