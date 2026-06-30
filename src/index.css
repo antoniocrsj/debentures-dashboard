@@ -448,10 +448,10 @@ a { color: var(--primary); }
   gap: 8px;
   padding: 10px 12px 6px;
 }
-.rank-num  { width: 24px; font-size: 11px; font-weight: 700; color: var(--text-muted); flex-shrink: 0; }
+.rank-num  { width: 24px; font-size: 11px; font-weight: 700; color: var(--text-muted); flex-shrink: 0; text-align: center; }
 .rank-name { flex: 1; font-size: 13px; font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.rank-aloc { width: 80px; text-align: right; font-size: 12.5px; font-weight: 700; color: var(--success); flex-shrink: 0; }
-.rank-pl   { width: 80px; text-align: right; font-size: 11.5px; color: var(--text-muted); flex-shrink: 0; }
+.rank-aloc { width: 80px; text-align: center; font-size: 12.5px; font-weight: 700; color: var(--success); flex-shrink: 0; }
+.rank-pl   { width: 80px; text-align: center; font-size: 11.5px; color: var(--text-muted); flex-shrink: 0; }
 
 .rank-bar-wrap {
   height: 3px;
@@ -750,7 +750,7 @@ a { color: var(--primary); }
 .fluxo-ranking-head .fluxo-section-title { margin: 0; }
 .fluxo-ranking-sub { font-size: 12px; color: #475569; font-weight: 600; }
 .fluxo-ranking-block, .fluxo-table-block { margin-bottom: 18px; }
-.fluxo-table .col-num { text-align: right; white-space: nowrap; }
+.fluxo-table .col-num { text-align: center; white-space: nowrap; }
 .fluxo-table .col-gestor { white-space: nowrap; }
 .fluxo-table .th-pos { text-align: center; width: 34px; color: #64748b; }
 .liq-cell.pos { color: #047857; font-weight: 600; }
@@ -764,7 +764,7 @@ a { color: var(--primary); }
   background: none; border: 0; cursor: pointer; color: inherit; font: inherit;
   /* Mesmo padrão do cabeçalho da tabela Ativos (700, maiúsculas, .4px) */
   font-weight: 700; text-transform: uppercase; letter-spacing: .4px;
-  padding: 8px 6px; justify-content: flex-end;
+  padding: 8px 6px; justify-content: center;
 }
 .fluxo-th-sort[style*="left"] .th-sort-btn { justify-content: flex-start; }
 .fluxo-th-sort .th-sub { color: #94a3b8; font-weight: 400; }
