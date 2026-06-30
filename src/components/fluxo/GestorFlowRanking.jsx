@@ -7,11 +7,12 @@ const DEFAULT_SORT = { col: 'liquido', dir: 'desc' }
 
 const KEYS = {
   gestor:   g => g.gestor,
+  pl:       g => g.plRecente,   // PL total do gestor na semana mais recente do período
   liquido:  g => g.liquido,
   captacao: g => g.captacao,
   resgate:  g => g.resgate,
 }
-const LABELS = { gestor: 'Gestor', liquido: 'Cap. Líquida', captacao: 'Captação', resgate: 'Resgate' }
+const LABELS = { gestor: 'Gestor', pl: 'PL', liquido: 'Cap. Líquida', captacao: 'Captação', resgate: 'Resgate' }
 
 export default function GestorFlowRanking({ ranking, onSelect }) {
   const [sort, setSort] = useState(DEFAULT_SORT)
@@ -43,6 +44,7 @@ export default function GestorFlowRanking({ ranking, onSelect }) {
               <SortableTh col="liquido"  label="Cap. Líquida" sort={sort} onSort={onSort} />
               <SortableTh col="captacao" label="Captação"    sort={sort} onSort={onSort} />
               <SortableTh col="resgate"  label="Resgate"     sort={sort} onSort={onSort} />
+              <SortableTh col="pl"       label="PL"          sort={sort} onSort={onSort} />
             </tr>
           </thead>
           <tbody>
@@ -60,6 +62,7 @@ export default function GestorFlowRanking({ ranking, onSelect }) {
                   <td className={`col-num liq-cell${pos ? ' pos' : neg ? ' neg' : ''}`}>{fmtFluxoSigned(g.liquido)}</td>
                   <td className="col-num">{fmtFluxo(g.captacao)}</td>
                   <td className="col-num">{fmtFluxo(g.resgate)}</td>
+                  <td className="col-num">{g.plRecente > 0 ? fmtFluxo(g.plRecente) : '—'}</td>
                 </tr>
               )
             })}
