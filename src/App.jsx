@@ -53,6 +53,14 @@ export default function App() {
 
   const toggleDesktop = useCallback(() => setDesktop(d => !d), [])
 
+  // Seção atual (compacto): 'debentures' (abas Ativos/Gestores/Grupos) ou 'captacao'.
+  const [lastDebTab, setLastDebTab] = useState('ativos')   // lembra a sub-aba ao voltar p/ Debêntures
+  const section = tab === 'captacao' ? 'captacao' : 'debentures'
+  const selectSection = useCallback(
+    s => setTab(s === 'captacao' ? 'captacao' : lastDebTab),
+    [lastDebTab]
+  )
+
   useEffect(() => {
     try { localStorage.setItem('view-desktop', desktop ? '1' : '0') } catch {}
     setTab(t => {
@@ -190,10 +198,10 @@ export default function App() {
             { id: 'captacao',   label: 'Captação' },
           ]
         : [
+            // Captação saiu daqui (virou ícone no header — GER-2); restam as sub-abas de Debêntures.
             { id: 'ativos',   label: `Ativos (${filteredAssets.length.toLocaleString('pt-BR')})` },
             { id: 'gestores', label: `Gestores (${managers.length.toLocaleString('pt-BR')})` },
             { id: 'grupos',   label: `Grupos (${groups.length.toLocaleString('pt-BR')})` },
-            { id: 'captacao', label: 'Captação' },
           ]
       ).map(t => (
         <button
@@ -201,7 +209,10 @@ export default function App() {
           role="tab"
           aria-selected={tab === t.id}
           className={`tab-btn tab-${t.id}${tab === t.id ? ' active' : ''}`}
-          onClick={() => setTab(t.id)}
+          onClick={() => {
+            setTab(t.id)
+            if (t.id === 'ativos' || t.id === 'gestores' || t.id === 'grupos') setLastDebTab(t.id)
+          }}
         >
           {t.label}
         </button>
@@ -219,6 +230,8 @@ export default function App() {
         error={!!error}
         desktop={desktop}
         onToggleView={toggleDesktop}
+        section={section}
+        onSection={selectSection}
       />
 
       {/* Filters + tabs scroll together as one sticky block */}
@@ -233,8 +246,9 @@ export default function App() {
           />
         )}
 
-        {/* Mobile/captação: abas standalone. Desktop c/ filtros: abas vão ao lado da busca. */}
-        {!(desktop && tab !== 'captacao') && tabsNav}
+        {/* Desktop: abas standalone só na Captação (nas demais vão ao lado da busca).
+            Compacto: sub-abas só na seção Debêntures (Captação não tem sub-abas). */}
+        {(desktop ? tab === 'captacao' : tab !== 'captacao') && tabsNav}
       </div>
 
       {/* Scrollable content */}
