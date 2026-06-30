@@ -86,7 +86,7 @@ export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter
                 <td className="col-sticky col-ativo">
                   <div className="ativo-cell">
                     <div>
-                      <span className="ativo-code">{a.codigoAtivo || '—'}</span>
+                      <span className="ativo-code">{a.codigoAtivo || '-'}</span>
                       {a.grupo && <span className="ativo-grupo">{a.grupo}</span>}
                     </div>
                     <button
@@ -99,11 +99,11 @@ export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter
                 <td className="col-num">{fmtDateShort(a.emissao)}</td>
                 <td className="col-num">{fmtDateShort(a.vencimento)}</td>
                 <td className="col-num">{fmtTaxa(a.taxa)}</td>
-                <td className="col-num col-anbima" title={anbimaTooltip(a, anbimaRef)}>{a.txAnbima || '—'}</td>
-                <td className="col-num col-anbima">{a.durationAnbima || '—'}</td>
-                <td className="col-num">{a.volumeEmitido > 0 ? fmtBRL(a.volumeEmitido) : '—'}</td>
+                <td className="col-num col-anbima" title={anbimaTooltip(a, anbimaRef)}>{(a.txAnbima && a.txAnbima !== '—') ? a.txAnbima : '-'}</td>
+                <td className="col-num col-anbima">{(a.durationAnbima && a.durationAnbima !== '—') ? a.durationAnbima : '-'}</td>
+                <td className="col-num">{a.volumeEmitido > 0 ? fmtBRL(a.volumeEmitido) : '-'}</td>
                 <td className={`col-num col-aloc${a.alocacao > 0 ? ' has-aloc' : ''}`}>
-                  {a.alocacao > 0 ? fmtBRL(a.alocacao) : '—'}
+                  {a.alocacao > 0 ? fmtBRL(a.alocacao) : '-'}
                 </td>
               </tr>
             )

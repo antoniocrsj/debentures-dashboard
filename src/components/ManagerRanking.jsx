@@ -35,7 +35,7 @@ export default function ManagerRanking({ managers, activeGestor, onFilter }) {
               <span className="rank-num">{i + 1}</span>
               <span className="rank-name">{m.gestor}</span>
               <span className="rank-aloc">{fmtBRL(m.alocacao)}</span>
-              <span className="rank-pl">{m.pl > 0 ? fmtBRL(m.pl) : '—'}</span>
+              <span className="rank-pl">{m.pl > 0 ? fmtBRL(m.pl) : '-'}</span>
             </div>
             <div className="rank-bar-wrap">
               <div className="rank-bar" style={{ width: `${(m.alocacao / maxAloc) * 100}%` }} />

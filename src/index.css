@@ -424,9 +424,9 @@ a { color: var(--primary); }
   letter-spacing: .5px;
   color: var(--text-muted);
 }
-.rank-col  { width: 24px; flex-shrink: 0; }
+.rank-col  { width: 24px; flex-shrink: 0; text-align: center; }
 .name-col  { flex: 1; }
-.val-col   { width: 80px; text-align: right; flex-shrink: 0; }
+.val-col   { width: 80px; text-align: center; flex-shrink: 0; }
 
 .ranking-card {
   background: var(--card);
@@ -723,7 +723,7 @@ a { color: var(--primary); }
 /* Cards */
 .fluxo-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 14px; }
 .fluxo-card {
-  display: flex; flex-direction: column; gap: 3px;
+  display: flex; flex-direction: column; gap: 3px; align-items: center; text-align: center;
   background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 12px;
 }
 .fluxo-card-label { font-size: 11.5px; color: #64748b; }

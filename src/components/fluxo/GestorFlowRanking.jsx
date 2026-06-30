@@ -62,7 +62,7 @@ export default function GestorFlowRanking({ ranking, onSelect }) {
                   <td className={`col-num liq-cell${pos ? ' pos' : neg ? ' neg' : ''}`}>{fmtFluxoSigned(g.liquido)}</td>
                   <td className="col-num">{fmtFluxo(g.captacao)}</td>
                   <td className="col-num">{fmtFluxo(g.resgate)}</td>
-                  <td className="col-num">{g.plRecente > 0 ? fmtFluxo(g.plRecente) : '—'}</td>
+                  <td className="col-num">{g.plRecente > 0 ? fmtFluxo(g.plRecente) : '-'}</td>
                 </tr>
               )
             })}

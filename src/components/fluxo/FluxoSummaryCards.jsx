@@ -29,7 +29,7 @@ export default function FluxoSummaryCards({ cards }) {
         value={fmtFluxo(cards.plRecente)}
         help="Patrimônio líquido total na semana mais recente disponível"
       />
-      <Card label="Nº de fundos" sub="(média/semana)" value={cards.numFundos ? fmtInt(cards.numFundos) : '—'} />
+      <Card label="Nº de fundos" value={cards.numFundos ? fmtInt(cards.numFundos) : '-'} />
     </div>
   )
 }
