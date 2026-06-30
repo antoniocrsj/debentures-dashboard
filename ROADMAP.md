@@ -43,9 +43,9 @@ O app tem **duas seções**: **Debêntures** e **Captação**. Cada tabela receb
 | ID | Item | Seção | Compl. | Custo | Relev. | Fase |
 |----|------|-------|:------:|:-----:|:------:|------|
 | **GER-1** | Nomear todas as tabelas (este glossário) | Geral | Baixa | Baixo | Alta | ✅ Concluído |
-| **CAP-3** | Coluna **PL** na **C1** (Gestores da Captação) | Captação | Baixa | Baixo | Média | 🟢 Fase 1 (quick win) |
-| **DEB-1** | Enriquecer o **Modal do Ativo** (janela (i)) | Debêntures | Baixa–Média | Baixo | Média–Alta | 🟢 Fase 1 |
-| **GER-2** | Navegação por **ícones** entre seções no app compacto | Geral | Média | Baixo–Médio | Média–Alta | 🟢 Fase 1 |
+| **CAP-3** | Coluna **PL** na **C1** (Gestores da Captação) | Captação | Baixa | Baixo | Média | ✅ Concluído |
+| **GER-2** | Navegação por **ícones** entre seções no app compacto | Geral | Média | Baixo–Médio | Média–Alta | ✅ Concluído |
+| **DEB-1** | Enriquecer o **Modal do Ativo** (janela (i)) | Debêntures | Baixa–Média | Baixo | Média–Alta | ⏸️ Pausado |
 | **CAP-2** | Regra de seleção do universo de fundos via dados **CVM** | Captação | Alta | Alto | Alta | 🔵 Fase 2 (fundacional) |
 | **CAP-1** | **Performance** dos fundos | Captação | Alta | Médio–Alto | Alta | 🟣 Fase 3 (depende de CAP-2) |
 
@@ -67,7 +67,7 @@ Glossário na seção 1. Base para todos os comandos e para este roadmap.
 
 ---
 
-### CAP-3 · Coluna PL na C1 (Gestores da Captação) — 🟢 quick win
+### CAP-3 · Coluna PL na C1 (Gestores da Captação) — ✅ Concluído
 **O quê:** exibir o Patrimônio Líquido por gestor na tabela **C1**, como já existe na **D2**.
 
 **Estado atual:** `aggregateByGestor` (em `src/utils/fluxo.js`) já calcula:
@@ -79,12 +79,12 @@ Falta apenas exibir: adicionar a coluna em `GestorFlowRanking.jsx` (cabeçalho
 
 - **Complexidade:** Baixa · **Custo:** Baixo · **Relevância:** Média
 - **Risco:** baixo (nenhuma fonte de dados nova).
-- **🟡 A definir:** mostrar **PL recente** ou **PL médio** (ou ambos)? Sugestão:
-  **PL recente** (consistente com a leitura "foto atual" do ranking), com tooltip.
+- **Decidido:** usa **PL recente** (PL na semana mais recente do período) e a coluna
+  ficou como **última** da tabela, à direita do Resgate.
 
 ---
 
-### DEB-1 · Enriquecer o Modal do Ativo (janela (i)) — 🟢 Fase 1
+### DEB-1 · Enriquecer o Modal do Ativo (janela (i)) — ⏸️ Pausado
 **O quê:** ampliar e organizar melhor as informações exibidas na janela aberta pelo
 ícone **(i)** de cada debênture na **D1**. Hoje o modal mostra: Emissor (emissor,
 grupo, setor), Características (emissão, vencimento, indexador, taxa, Lei 12.431,
@@ -102,7 +102,7 @@ pagamento/repactuação), liquidez, etc.
 
 ---
 
-### GER-2 · Navegação por ícones entre seções (app compacto) — 🟢 Fase 1
+### GER-2 · Navegação por ícones entre seções (app compacto) — ✅ Concluído
 **O quê:** no **app compacto (mobile)**, criar uma navegação de **seção** por ícones,
 posicionada **no topo, ao lado do título "BI - Crédito Privado"**. Dois botões —
 **Debêntures** e **Captação** — alternam entre as duas seções. O botão **Captação**
@@ -116,12 +116,11 @@ adaptados à identidade do nosso app.
 - **Complexidade:** Média (reorganiza o cabeçalho/abas no compacto e cria os ícones)
 - **Custo:** Baixo–Médio · **Relevância:** Média–Alta (clareza de navegação no mobile,
   que é o uso principal)
-- **🟡 A definir:**
-  - **Quais ícones** representam cada seção? (ex.: Debêntures = documento/título "%";
-    Captação = fluxo/setas entrada-saída). Posso propor 2–3 opções de cada.
-  - No compacto, como ficam as **sub-abas de Debêntures** (Ativos / Gestores / Grupos)
-    depois que a troca de seção vira ícone no topo? (sugestão: viram abas secundárias
-    logo abaixo, aparecendo só quando a seção Debêntures está ativa).
+- **Decidido:**
+  - Ícones: **Debêntures = documento/título**; **Captação = fluxo entra/sai** (line icons).
+  - As **sub-abas de Debêntures** (Ativos / Gestores / Grupos) aparecem logo abaixo,
+    só quando a seção Debêntures está ativa; o app lembra a última sub-aba usada.
+  - Ícone da seção atual fica **preenchido**; o outro, em **contorno**. Desktop inalterado.
 
 ---
 
@@ -164,11 +163,11 @@ captação / resgate / cap. líquida e PL).
 
 ## 4. Roadmap por fases
 
-- **Fase 1 — Fundações, UX e quick wins** *(agora)*
+- **Fase 1 — Fundações, UX e quick wins** *(concluída, exceto DEB-1 pausado)*
   - ✅ GER-1 · Glossário de tabelas
-  - 🟢 CAP-3 · Coluna PL na C1
-  - 🟢 DEB-1 · Enriquecer o Modal do Ativo
-  - 🟢 GER-2 · Navegação por ícones no app compacto
+  - ✅ CAP-3 · Coluna PL na C1
+  - ✅ GER-2 · Navegação por ícones no app compacto
+  - ⏸️ DEB-1 · Enriquecer o Modal do Ativo *(pausado a pedido)*
 - **Fase 2 — Qualidade de dados** *(fundacional)*
   - 🔵 CAP-2 · Pipeline CVM + regra de seleção de fundos
 - **Fase 3 — Inteligência** *(depende da Fase 2)*
