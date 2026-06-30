@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { fmtBRL, fmtDate, isYes } from '../utils/format.js'
+import { anbimaUrl } from '../utils/anbima.js'
 
 export default function AssetModal({ asset, onClose }) {
   // Close on Escape
@@ -10,6 +11,7 @@ export default function AssetModal({ asset, onClose }) {
   }, [onClose])
 
   const lei = isYes(asset.lei12431Str) ? 'Sim' : (asset.lei12431Str || '—')
+  const anbimaHref = anbimaUrl(asset.codigoAtivo)   // null quando sem ticker → botão não aparece
 
   return (
     <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
@@ -23,6 +25,29 @@ export default function AssetModal({ asset, onClose }) {
         </div>
 
         <div className="modal-body">
+          {anbimaHref && (
+            <div className="modal-actions">
+              <a
+                className="btn-anbima"
+                href={anbimaHref}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Ver na ANBIMA
+                <svg
+                  className="btn-anbima-icon"
+                  viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"
+                  fill="none" stroke="currentColor" strokeWidth="2"
+                  strokeLinecap="round" strokeLinejoin="round"
+                >
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg>
+              </a>
+            </div>
+          )}
+
           <Section title="Emissor">
             <Row label="Emissor"    value={asset.emissorNome} />
             <Row label="Grupo"      value={asset.grupo} />
