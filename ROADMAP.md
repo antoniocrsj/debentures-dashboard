@@ -26,6 +26,12 @@ O app tem **duas seções**: **Debêntures** e **Captação**. Cada tabela receb
 | **D2** | Gestores (Debêntures) | `src/components/ManagerRanking.jsx` | # · Gestor · Alocação · PL |
 | **D3** | Grupos | `src/components/GroupRanking.jsx` | # · Grupo Econômico · Alocação |
 
+### Seção Mercado Secundário
+| Código | Nome | Componente | Colunas hoje |
+|--------|------|------------|--------------|
+| **M1** | Negociações | *(a criar)* | Data · Ativo · PU · Quantidade · Volume · Contraparte |
+| **M2** | Evolução de Preço | *(a criar)* | Gráfico de linha: PU ao longo do tempo por ativo |
+
 ### Seção Captação
 | Código | Nome | Componente | Colunas hoje |
 |--------|------|------------|--------------|
@@ -35,6 +41,7 @@ O app tem **duas seções**: **Debêntures** e **Captação**. Cada tabela receb
 
 > **Uso:** *"adiciona coluna X na **C1**"* ou *"ordena a **C3** por Captação"*.
 > A janela aberta pelo ícone **(i)** na **D1** é chamada de **Modal do Ativo**.
+> Tabelas da seção Mercado Secundário: *"filtra a **M1** por ativo"* ou *"gráfico **M2** do PETR21"*.
 
 ---
 
@@ -48,6 +55,8 @@ O app tem **duas seções**: **Debêntures** e **Captação**. Cada tabela receb
 | **DEB-1** | Enriquecer o **Modal do Ativo** (janela (i)) | Debêntures | Baixa–Média | Baixo | Média–Alta | ⏸️ Pausado |
 | **CAP-2** | Regra de seleção do universo de fundos via dados **CVM** | Captação | Alta | Alto | Alta | 🔵 Fase 2 (fundacional) |
 | **CAP-1** | **Performance** dos fundos | Captação | Alta | Médio–Alto | Alta | 🟣 Fase 3 (depende de CAP-2) |
+| **MER-1** | **Mercado Secundário** — ingestão de dados de negociação | Mercado Sec. | Alta | Médio–Alto | Alta | 🟡 A definir |
+| **MER-2** | **Evolução de preço** — gráfico de PU por ativo | Mercado Sec. | Média | Médio | Alta | 🟡 A definir (depende de MER-1) |
 
 **Lógica da ordem**
 - **CAP-3, DEB-1 e GER-2** são entregas de **Fase 1**: alto valor percebido, baixo
@@ -147,6 +156,41 @@ Captação refletir o mercado de forma fidedigna.
 
 ---
 
+### MER-1 · Ingestão de dados de negociação — 🟡 A definir
+
+**O quê:** criar um pipeline para receber e normalizar dados de negociação do **mercado secundário de debêntures**. Cada negócio registrado (PU, quantidade, data, contraparte) alimenta a nova seção do app.
+
+**Blocos de trabalho**
+1. **Fonte de dados:** definir de onde vêm os dados (upload manual de arquivo, API pública como CETIP/B3, ou extração de relatório). Definir periodicidade (diária, sob demanda).
+2. **Formato e normalização:** padronizar os campos (ticker, data de negociação, PU, quantidade, volume financeiro, tipo de contraparte) e vinculá-los à base de debêntures existente pelo código do ativo.
+3. **Exibição tabular (M1):** tabela de negociações com filtro por ativo, período e contraparte.
+
+- **Complexidade:** Alta · **Custo:** Médio–Alto · **Relevância:** Alta
+- **Destrava:** MER-2 (gráfico de evolução de preço).
+- **🟡 A definir:**
+  - **Fonte dos dados:** upload manual (CSV/Excel), API pública (B3/CETIP) ou outro?
+  - **Campos disponíveis:** quais colunas existem no arquivo de negociação?
+  - **Periodicidade:** atualização diária automática ou manual por período?
+  - **Cobertura:** todos os ativos da carteira, ou todos os negociados no mercado?
+
+---
+
+### MER-2 · Gráfico de evolução de preço — 🟡 A definir
+
+**O quê:** a partir dos dados de negociação (MER-1), exibir a **evolução do PU unitário** de cada ativo ao longo do tempo em um **gráfico de linha**. Permite acompanhar a trajetória de preço de uma debênture e identificar tendências.
+
+**Direções possíveis:** gráfico por ativo (selecionado via filtro ou clicando na D1), múltiplos ativos sobrepostos para comparação, linha de benchmark (CDI ou NTN-B de referência), indicação de eventos relevantes (pagamento de cupom, repactuação).
+
+- **Complexidade:** Média · **Custo:** Médio · **Relevância:** Alta
+- **Depende de:** MER-1 (pipeline de negociações).
+- **🟡 A definir:**
+  - **Eixo Y:** PU absoluto, variação percentual, ou spread sobre benchmark?
+  - **Seleção de ativo:** filtro global, clique na tabela D1, ou entrada livre no gráfico?
+  - **Múltiplos ativos:** exibir um por vez ou permitir comparação lado a lado?
+  - **Onde exibir:** nova seção do app (terceira aba/seção) ou integrada ao Modal do Ativo (DEB-1)?
+
+---
+
 ### CAP-1 · Performance dos fundos — 🟣 Fase 3
 **O quê:** trazer a **rentabilidade** dos fundos para a Captação (hoje só há fluxo:
 captação / resgate / cap. líquida e PL).
@@ -170,8 +214,10 @@ captação / resgate / cap. líquida e PL).
   - ⏸️ DEB-1 · Enriquecer o Modal do Ativo *(pausado a pedido)*
 - **Fase 2 — Qualidade de dados** *(fundacional)*
   - 🔵 CAP-2 · Pipeline CVM + regra de seleção de fundos
+  - 🟡 MER-1 · Ingestão de dados de negociação do mercado secundário *(a definir)*
 - **Fase 3 — Inteligência** *(depende da Fase 2)*
   - 🟣 CAP-1 · Performance dos fundos
+  - 🟡 MER-2 · Gráfico de evolução de preço por ativo *(depende de MER-1)*
 
 ---
 
