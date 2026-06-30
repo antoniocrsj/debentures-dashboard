@@ -102,7 +102,9 @@ function Ensure-Month($yyyymm) {
   if (Test-Path $zip) {
     if (-not $mustRefresh) { return $zip }
     if ($NoDownload) { return $zip }
-    if ((Get-Item $zip).LastWriteTime.Date -eq (Get-Date).Date) { return $zip }
+    # Modo incremental: sempre re-baixa os meses forcados (CVM atualiza o zip do mes corrente ao longo do dia).
+    # Modo normal: evita re-baixar o mesmo zip mais de uma vez no dia.
+    if (-not $Incremental -and (Get-Item $zip).LastWriteTime.Date -eq (Get-Date).Date) { return $zip }
   }
   if ($NoDownload) {
     Write-Host "    $yyyymm sem cache e -NoDownload ativo (pulando)." -ForegroundColor Yellow
