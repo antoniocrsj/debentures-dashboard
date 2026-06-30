@@ -886,6 +886,20 @@ a { color: var(--primary); }
   .app.desktop .fluxo-main-row .fluxo-ranking-head { display: none; }
   .app.desktop .fluxo-main-row .table-wrap { max-height: none; height: 350px; }
 
+  /* Semanas + Meses lado a lado (há espaço na tela). No mobile o wrapper é
+     bloco simples e as tabelas empilham. */
+  .app.desktop .fluxo-tables-row {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+  .app.desktop .fluxo-tables-row > .fluxo-table-block {
+    flex: 1 1 0;
+    min-width: 0;
+    margin-bottom: 0;
+  }
+
   /* Some com a linha "Dados de DD/MM a DD/MM" no desktop (mantém o botão Limpar) */
   .app.desktop .period-effective { display: none; }
 }

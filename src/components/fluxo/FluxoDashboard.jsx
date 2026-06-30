@@ -134,9 +134,11 @@ export default function FluxoDashboard({ compact = false }) {
             {!gestor && <GestorFlowRanking ranking={ranking} onSelect={setGestor} />}
           </div>
 
-          <FluxoTable weekly={weekly} />
-
-          <FluxoMonthlyTable months={monthlyAgg} />
+          {/* Desktop: Semanas + Meses lado a lado (há espaço). Mobile: empilhadas. */}
+          <div className="fluxo-tables-row">
+            <FluxoTable weekly={weekly} />
+            <FluxoMonthlyTable months={monthlyAgg} />
+          </div>
 
           {invalid > 0 && (
             <p className="fluxo-note">{invalid} linha(s) ignorada(s) por dados inválidos.</p>
