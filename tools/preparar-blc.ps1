@@ -36,24 +36,14 @@ $DefaultFolder = ("C:\Projeto Cr" + [char]233 + "dito\Power BI")
 
 function Write-Step($msg) { Write-Host "  $msg" -ForegroundColor Cyan }
 
-# Letra(s) da coluna de uma referencia (ex: "AB12" -> 28)
-function ColNum([string]$ref) {
-  $letters = ($ref -replace '\d','')
-  $n = 0
-  foreach ($ch in $letters.ToCharArray()) { $n = $n * 26 + ([int][char]$ch - 64) }
-  return $n
-}
-
 Write-Host ""
 Write-Host "=== Preparar BLC para o app ===" -ForegroundColor Green
 
 # ---- 1. Localizar o arquivo .xlsx -----------------------------------------
 if ([string]::IsNullOrWhiteSpace($XlsxPath)) {
   Write-Step "Nenhum arquivo informado. Procurando o mais recente em: $DefaultFolder"
-  $cand = Get-ChildItem -Path $DefaultFolder -Filter 'cda_fi_BLC*.xlsx' -ErrorAction SilentlyContinue |
-          Sort-Object LastWriteTime -Descending | Select-Object -First 1
-  if (-not $cand) { throw "Nao achei nenhum 'cda_fi_BLC*.xlsx' em $DefaultFolder. Arraste o arquivo para o .bat ou informe o caminho." }
-  $XlsxPath = $cand.FullName
+  $XlsxPath = Find-LatestCdaFiBlc $DefaultFolder
+  if (-not $XlsxPath) { throw "Nao achei nenhum 'cda_fi_BLC*.xlsx' em $DefaultFolder. Arraste o arquivo para o .bat ou informe o caminho." }
 }
 if (-not (Test-Path $XlsxPath)) { throw "Arquivo nao encontrado: $XlsxPath" }
 Write-Step "Arquivo: $XlsxPath"
@@ -69,110 +59,10 @@ if ([string]::IsNullOrWhiteSpace($OutPath)) {
 }
 
 $swTotal = [System.Diagnostics.Stopwatch]::StartNew()
-$rawRows = New-Object System.Collections.Generic.List[object]
 
-# ---- 2. Abrir o xlsx (mesmo travado pelo Excel) ----------------------------
-Add-Type -AssemblyName System.IO.Compression | Out-Null
-Add-Type -AssemblyName System.IO.Compression.FileSystem | Out-Null
-$fs  = [System.IO.File]::Open($XlsxPath, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::ReadWrite)
-$zip = New-Object System.IO.Compression.ZipArchive($fs, [System.IO.Compression.ZipArchiveMode]::Read)
-
-try {
-  # ---- 2a. sharedStrings -> array indice/texto -----------------------------
-  Write-Step "Lendo textos (sharedStrings)..."
-  $ssEntry = $zip.Entries | Where-Object { $_.FullName -eq 'xl/sharedStrings.xml' }
-  $shared = New-Object System.Collections.Generic.List[string]
-  if ($ssEntry) {
-    $rd = New-Object System.IO.StreamReader($ssEntry.Open())
-    $ssXml = $rd.ReadToEnd(); $rd.Close()
-    foreach ($m in [regex]::Matches($ssXml, '<si>(.*?)</si>', 'Singleline')) {
-      $inner = $m.Groups[1].Value
-      $txt = -join ([regex]::Matches($inner, '<t[^>]*>(.*?)</t>', 'Singleline') | ForEach-Object { $_.Groups[1].Value })
-      $shared.Add([System.Net.WebUtility]::HtmlDecode($txt))
-    }
-  }
-  Write-Step "  $($shared.Count) textos carregados"
-
-  # ---- 2b. Stream da planilha ---------------------------------------------
-  $shEntry = $zip.Entries | Where-Object { $_.FullName -like 'xl/worksheets/sheet1.xml' }
-  if (-not $shEntry) { $shEntry = $zip.Entries | Where-Object { $_.FullName -like 'xl/worksheets/*.xml' } | Select-Object -First 1 }
-  $stream = $shEntry.Open()
-  $xr = [System.Xml.XmlReader]::Create($stream)
-
-  # Acumuladores
-  $headers = @{}            # colNum -> nome (linha 1)
-  $colCNPJ = 0; $colApl = 0; $colVal = 0; $colAtivo = 0
-  $headerDone = $false
-  $rowIdx = 0
-  $cellVals = @{}          # colNum -> valor (linha corrente)
-  $curCol = 0; $curType = $null
-
-  Write-Step "Lendo linhas da planilha (pode levar 1-2 min)..."
-  while ($xr.Read()) {
-    switch ($xr.NodeType) {
-      'Element' {
-        if ($xr.Name -eq 'row') {
-          $rowIdx = [int]$xr.GetAttribute('r')
-          $cellVals.Clear()
-        }
-        elseif ($xr.Name -eq 'c') {
-          $curCol  = ColNum $xr.GetAttribute('r')
-          $curType = $xr.GetAttribute('t')
-        }
-        elseif ($xr.Name -eq 'v') {
-          $v = $xr.ReadElementContentAsString()
-          if ($curType -eq 's') { $cellVals[$curCol] = $shared[[int]$v] }
-          else                  { $cellVals[$curCol] = $v }
-        }
-        elseif ($xr.Name -eq 't' -and $curType -eq 'inlineStr') {
-          $cellVals[$curCol] = $xr.ReadElementContentAsString()
-        }
-      }
-      'EndElement' {
-        if ($xr.Name -eq 'row') {
-          if ($rowIdx -eq 1) {
-            # Cabecalho: mapear nomes -> colunas
-            foreach ($k in $cellVals.Keys) { $headers[$k] = ([string]$cellVals[$k]).Trim() }
-            foreach ($k in $headers.Keys) {
-              switch ($headers[$k]) {
-                'CNPJ_FUNDO_CLASSE'  { $colCNPJ  = $k }
-                'TP_APLIC'           { $colApl   = $k }
-                'VL_MERC_POS_FINAL'  { $colVal   = $k }
-                'CD_ATIVO'           { $colAtivo = $k }
-              }
-            }
-            if ($colCNPJ -eq 0 -or $colVal -eq 0 -or $colAtivo -eq 0) {
-              throw "Colunas obrigatorias nao encontradas (CNPJ_FUNDO_CLASSE / VL_MERC_POS_FINAL / CD_ATIVO). Cabecalhos: $($headers.Values -join ', ')"
-            }
-            $headerDone = $true
-          }
-          elseif ($headerDone) {
-            # Linha de dados - guardar bruto pra agregar depois
-            $ativo = if ($cellVals.ContainsKey($colAtivo)) { ([string]$cellVals[$colAtivo]).Trim() } else { '' }
-            $cnpj  = if ($cellVals.ContainsKey($colCNPJ))  { ([string]$cellVals[$colCNPJ]).Trim() }  else { '' }
-            $aplOk = $true
-            if ($colApl -ne 0) {
-              $apl = if ($cellVals.ContainsKey($colApl)) { [string]$cellVals[$colApl] } else { '' }
-              $aplOk = ($apl -like 'Deb*')   # Debentures (sem depender de acento)
-            }
-            if ($aplOk -and $ativo -ne '' -and $cnpj -ne '') {
-              $val = 0.0
-              if ($cellVals.ContainsKey($colVal)) {
-                [double]::TryParse([string]$cellVals[$colVal], [System.Globalization.NumberStyles]::Any, [System.Globalization.CultureInfo]::InvariantCulture, [ref]$val) | Out-Null
-              }
-              $rawRows.Add([pscustomobject]@{ Ativo=$ativo; Cnpj=(NormCNPJ $cnpj); Val=$val })
-            }
-          }
-        }
-      }
-    }
-  }
-  $xr.Close(); $stream.Close()
-}
-finally {
-  $zip.Dispose(); $fs.Dispose()
-}
-
+# ---- 2. Ler o xlsx (mesmo travado pelo Excel) ------------------------------
+Write-Step "Lendo linhas da planilha (pode levar 1-2 min)..."
+$rawRows = Read-CdaFiBlcDebentures $XlsxPath
 Write-Step "  $($rawRows.Count) linhas de debentures lidas"
 
 # ---- 3. Mapa fundo->gestor (Fundos_12431/Fundos_CDI + Cadastro_Gestores) ---

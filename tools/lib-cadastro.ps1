@@ -128,3 +128,206 @@ function Build-FundoApelidoMap($fundoGestorMap, $gestorApelidoMap) {
   }
   return @{ map = $map; semGestorCadastrado = $semGestorCadastrado; gestoresFaltando = $gestoresFaltando.Keys }
 }
+
+# ─── Leitura do CDA_FI_BLC.xlsx (CVM) ──────────────────────────────────────
+# Usado por preparar-blc.ps1 e selecionar-fundos.ps1.
+
+# Acha o cda_fi_BLC*.xlsx mais recente numa pasta. Retorna $null se nao achar.
+function Find-LatestCdaFiBlc([string]$folder) {
+  $cand = Get-ChildItem -Path $folder -Filter 'cda_fi_BLC*.xlsx' -ErrorAction SilentlyContinue |
+          Sort-Object LastWriteTime -Descending | Select-Object -First 1
+  if (-not $cand) { return $null }
+  return $cand.FullName
+}
+
+# Letra(s) da coluna de uma referencia de celula (ex: "AB12" -> 28).
+function ColNum([string]$ref) {
+  $letters = ($ref -replace '\d', '')
+  $n = 0
+  foreach ($ch in $letters.ToCharArray()) { $n = $n * 26 + ([int][char]$ch - 64) }
+  return $n
+}
+
+# Le' o CDA_FI_BLC.xlsx (sem precisar do Excel, mesmo travado por ele aberto) e
+# retorna as linhas BRUTAS de debentures: lista de @{ Ativo; Cnpj; Val }.
+function Read-CdaFiBlcDebentures([string]$xlsxPath) {
+  $rawRows = New-Object System.Collections.Generic.List[object]
+  Add-Type -AssemblyName System.IO.Compression | Out-Null
+  Add-Type -AssemblyName System.IO.Compression.FileSystem | Out-Null
+  $fs  = [System.IO.File]::Open($xlsxPath, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, [System.IO.FileShare]::ReadWrite)
+  $zip = New-Object System.IO.Compression.ZipArchive($fs, [System.IO.Compression.ZipArchiveMode]::Read)
+  try {
+    $ssEntry = $zip.Entries | Where-Object { $_.FullName -eq 'xl/sharedStrings.xml' }
+    $shared = New-Object System.Collections.Generic.List[string]
+    if ($ssEntry) {
+      $rd = New-Object System.IO.StreamReader($ssEntry.Open())
+      $ssXml = $rd.ReadToEnd(); $rd.Close()
+      foreach ($m in [regex]::Matches($ssXml, '<si>(.*?)</si>', 'Singleline')) {
+        $inner = $m.Groups[1].Value
+        $txt = -join ([regex]::Matches($inner, '<t[^>]*>(.*?)</t>', 'Singleline') | ForEach-Object { $_.Groups[1].Value })
+        $shared.Add([System.Net.WebUtility]::HtmlDecode($txt))
+      }
+    }
+
+    $shEntry = $zip.Entries | Where-Object { $_.FullName -like 'xl/worksheets/sheet1.xml' }
+    if (-not $shEntry) { $shEntry = $zip.Entries | Where-Object { $_.FullName -like 'xl/worksheets/*.xml' } | Select-Object -First 1 }
+    $stream = $shEntry.Open()
+    $xr = [System.Xml.XmlReader]::Create($stream)
+
+    $headers = @{}
+    $colCNPJ = 0; $colApl = 0; $colVal = 0; $colAtivo = 0
+    $headerDone = $false
+    $rowIdx = 0
+    $cellVals = @{}
+    $curCol = 0; $curType = $null
+
+    while ($xr.Read()) {
+      switch ($xr.NodeType) {
+        'Element' {
+          if ($xr.Name -eq 'row') {
+            $rowIdx = [int]$xr.GetAttribute('r')
+            $cellVals.Clear()
+          }
+          elseif ($xr.Name -eq 'c') {
+            $curCol  = ColNum $xr.GetAttribute('r')
+            $curType = $xr.GetAttribute('t')
+          }
+          elseif ($xr.Name -eq 'v') {
+            $v = $xr.ReadElementContentAsString()
+            if ($curType -eq 's') { $cellVals[$curCol] = $shared[[int]$v] }
+            else                  { $cellVals[$curCol] = $v }
+          }
+          elseif ($xr.Name -eq 't' -and $curType -eq 'inlineStr') {
+            $cellVals[$curCol] = $xr.ReadElementContentAsString()
+          }
+        }
+        'EndElement' {
+          if ($xr.Name -eq 'row') {
+            if ($rowIdx -eq 1) {
+              foreach ($k in $cellVals.Keys) { $headers[$k] = ([string]$cellVals[$k]).Trim() }
+              foreach ($k in $headers.Keys) {
+                switch ($headers[$k]) {
+                  'CNPJ_FUNDO_CLASSE'  { $colCNPJ  = $k }
+                  'TP_APLIC'           { $colApl   = $k }
+                  'VL_MERC_POS_FINAL'  { $colVal   = $k }
+                  'CD_ATIVO'           { $colAtivo = $k }
+                }
+              }
+              if ($colCNPJ -eq 0 -or $colVal -eq 0 -or $colAtivo -eq 0) {
+                throw "Colunas obrigatorias nao encontradas (CNPJ_FUNDO_CLASSE / VL_MERC_POS_FINAL / CD_ATIVO). Cabecalhos: $($headers.Values -join ', ')"
+              }
+              $headerDone = $true
+            }
+            elseif ($headerDone) {
+              $ativo = if ($cellVals.ContainsKey($colAtivo)) { ([string]$cellVals[$colAtivo]).Trim() } else { '' }
+              $cnpj  = if ($cellVals.ContainsKey($colCNPJ))  { ([string]$cellVals[$colCNPJ]).Trim() }  else { '' }
+              $aplOk = $true
+              if ($colApl -ne 0) {
+                $apl = if ($cellVals.ContainsKey($colApl)) { [string]$cellVals[$colApl] } else { '' }
+                $aplOk = ($apl -like 'Deb*')
+              }
+              if ($aplOk -and $ativo -ne '' -and $cnpj -ne '') {
+                $val = 0.0
+                if ($cellVals.ContainsKey($colVal)) {
+                  [double]::TryParse([string]$cellVals[$colVal], [System.Globalization.NumberStyles]::Any, [System.Globalization.CultureInfo]::InvariantCulture, [ref]$val) | Out-Null
+                }
+                $rawRows.Add([pscustomobject]@{ Ativo = $ativo; Cnpj = (NormCNPJ $cnpj); Val = $val })
+              }
+            }
+          }
+        }
+      }
+    }
+    $xr.Close(); $stream.Close()
+  }
+  finally {
+    $zip.Dispose(); $fs.Dispose()
+  }
+  return $rawRows
+}
+
+# ─── Cadastro de classes/fundos da CVM (registro_fundo_classe.zip) ────────
+# Universo completo de classes ativas + PL + gestor (via ID_Registro_Fundo).
+# Usado por selecionar-fundos.ps1. Diferente do cad_fi.csv (legado, nivel
+# fundo): estes arquivos sao pos-Resolucao CVM 175, no nivel de CLASSE - a
+# mesma granularidade do CNPJ_FUNDO_CLASSE usado no Informe Diario/CDA.
+
+# Baixa/cacheia o registro_fundo_classe.zip e extrai. Re-baixa no max 1x/dia.
+function Get-RegistroFundoClasseDir([string]$registroDir, [switch]$NoDownload) {
+  New-Item -ItemType Directory -Force -Path $registroDir | Out-Null
+  $zipPath = Join-Path $registroDir 'registro_fundo_classe.zip'
+  $url = 'https://dados.cvm.gov.br/dados/FI/CAD/DADOS/registro_fundo_classe.zip'
+
+  $precisaBaixar = $true
+  if (Test-Path $zipPath) { $precisaBaixar = (Get-Item $zipPath).LastWriteTime.Date -ne (Get-Date).Date }
+  if ($precisaBaixar -and -not $NoDownload) {
+    $tmp = "$zipPath.tmp"
+    try {
+      Invoke-WebRequest -Uri $url -OutFile $tmp -TimeoutSec 300 -UseBasicParsing
+      Move-Item $tmp $zipPath -Force
+    } catch {
+      Write-Host "    AVISO: nao consegui baixar registro_fundo_classe.zip ($($_.Exception.Message))." -ForegroundColor Yellow
+      if (Test-Path $tmp) { Remove-Item $tmp -Force }
+      if (-not (Test-Path $zipPath)) { throw "registro_fundo_classe.zip indisponivel e sem cache local em $zipPath" }
+    }
+  }
+
+  $extractDir = Join-Path $registroDir 'registro_extraido'
+  Add-Type -AssemblyName System.IO.Compression.FileSystem
+  if (Test-Path $extractDir) { Remove-Item $extractDir -Recurse -Force }
+  [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $extractDir)
+  return $extractDir
+}
+
+# Le' um CSV de registro (';' separado, latin-1) e retorna @{ lines; idx }  - 
+# idx mapeia nome de coluna -> indice, pra acesso por nome nas linhas cruas.
+function Read-RegistroCsv([string]$path) {
+  $lines = [System.IO.File]::ReadAllLines($path, [System.Text.Encoding]::GetEncoding('latin1'))
+  $hdr = $lines[0].Split(';')
+  $idx = @{}
+  for ($i = 0; $i -lt $hdr.Count; $i++) { $idx[$hdr[$i].Trim()] = $i }
+  return @{ lines = $lines; idx = $idx }
+}
+
+# Le' registro_classe.csv (classes ATIVAS apenas) e retorna hashtable:
+#   CNPJ_Classe(norm) -> @{ Denom; PL; IdFundo }
+function Read-RegistroClasse([string]$path) {
+  $rc = Read-RegistroCsv $path
+  $iCnpj = $rc.idx['CNPJ_Classe']; $iId = $rc.idx['ID_Registro_Fundo']
+  $iDenom = $rc.idx['Denominacao_Social']; $iSit = $rc.idx['Situacao']; $iPL = $rc.idx['Patrimonio_Liquido']
+  if ($null -eq $iCnpj -or $null -eq $iId -or $null -eq $iDenom -or $null -eq $iSit -or $null -eq $iPL) {
+    throw "registro_classe.csv: colunas esperadas nao encontradas (CNPJ_Classe/ID_Registro_Fundo/Denominacao_Social/Situacao/Patrimonio_Liquido)."
+  }
+  $ci = [System.Globalization.CultureInfo]::InvariantCulture
+  $map = @{}
+  for ($i = 1; $i -lt $rc.lines.Count; $i++) {
+    $l = $rc.lines[$i]; if ($l.Trim() -eq '') { continue }
+    $c = $l.Split(';')
+    if ($c.Count -le $iPL) { continue }
+    if ($c[$iSit].Trim() -ne 'Em Funcionamento Normal') { continue }
+    $cnpj = NormCNPJ $c[$iCnpj]
+    if ($cnpj -eq '') { continue }
+    $pl = 0.0
+    [double]::TryParse($c[$iPL], [System.Globalization.NumberStyles]::Any, $ci, [ref]$pl) | Out-Null
+    $map[$cnpj] = @{ Denom = $c[$iDenom].Trim(); PL = $pl; IdFundo = $c[$iId].Trim() }
+  }
+  return $map
+}
+
+# Le' registro_fundo.csv e retorna hashtable: ID_Registro_Fundo -> CNPJ_Gestor(norm).
+function Read-RegistroFundoGestor([string]$path) {
+  $rf = Read-RegistroCsv $path
+  $iId = $rf.idx['ID_Registro_Fundo']; $iGestor = $rf.idx['CPF_CNPJ_Gestor']
+  if ($null -eq $iId -or $null -eq $iGestor) {
+    throw "registro_fundo.csv: colunas esperadas nao encontradas (ID_Registro_Fundo/CPF_CNPJ_Gestor)."
+  }
+  $map = @{}
+  for ($i = 1; $i -lt $rf.lines.Count; $i++) {
+    $l = $rf.lines[$i]; if ($l.Trim() -eq '') { continue }
+    $c = $l.Split(';')
+    if ($c.Count -le $iGestor) { continue }
+    $g = NormCNPJ $c[$iGestor]
+    if ($g -ne '') { $map[$c[$iId].Trim()] = $g }
+  }
+  return $map
+}
