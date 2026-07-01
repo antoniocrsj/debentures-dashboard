@@ -11,8 +11,8 @@
 
   O que faz:
     1. Resolve CNPJ_FUNDO_CLASSE -> Gestor_Apelido (ver lib-cadastro.ps1):
-         GAS sheet=Fundos_12431 / sheet=Fundos_CDI  (CNPJ_FUNDO_CLASSE -> CNPJ Gestor)
-         GAS sheet=Cadastro_Gestores                (CNPJ Gestor -> Apelido Gestor)
+         tools\Fundos_12431.csv / tools\Fundos_CDI.csv (local, CNPJ_FUNDO_CLASSE -> CNPJ Gestor)
+         GAS sheet=Cadastro_Gestores                    (CNPJ Gestor -> Apelido Gestor)
     2. Baixa os meses do Informe Diario (cache local, nao rebaixa).
     3. Calcula o fluxo SEMANAL (segunda a domingo) por gestor.
     4. Grava em public\data\:
@@ -162,10 +162,10 @@ if ($Incremental) { Write-Host "  Modo: INCREMENTAL (apenas $($Meses -join ', ')
 New-Item -ItemType Directory -Force -Path $CvmDir | Out-Null
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
 
-# 1. Resolve CNPJ_FUNDO_CLASSE -> Apelido_Gestor (Fundos_12431/Fundos_CDI + Cadastro_Gestores)
-Step "Buscando Fundos_12431 / Fundos_CDI / Cadastro_Gestores no cadastro..."
-$fg12431 = Get-FundosGestorMap $CadastroUrl 'Fundos_12431'
-$fgCdi   = Get-FundosGestorMap $CadastroUrl 'Fundos_CDI'
+# 1. Resolve CNPJ_FUNDO_CLASSE -> Apelido_Gestor (Fundos_12431/Fundos_CDI locais + Cadastro_Gestores)
+Step "Lendo Fundos_12431.csv / Fundos_CDI.csv (local) e buscando Cadastro_Gestores no cadastro..."
+$fg12431 = Read-FundosGestorCsv (Join-Path $PSScriptRoot 'Fundos_12431.csv')
+$fgCdi   = Read-FundosGestorCsv (Join-Path $PSScriptRoot 'Fundos_CDI.csv')
 $gestorApelidoMap = Get-GestorApelidoMap $CadastroUrl
 Write-Host "    Fundos_12431: $($fg12431.map.Count) | Fundos_CDI: $($fgCdi.map.Count) | Cadastro_Gestores: $($gestorApelidoMap.Count) gestoras"
 
@@ -178,7 +178,7 @@ if ($bridge12431.semGestorCadastrado -gt 0 -or $bridgeCdi.semGestorCadastrado -g
   if ($faltando.Count) { Write-Host "        CNPJs de gestor ausentes: $($faltando -join ', ')" -ForegroundColor DarkYellow }
 }
 if ($bridge12431.map.Count -eq 0 -and $bridgeCdi.map.Count -eq 0) {
-  throw "Nenhum fundo resolvido. Verifique as abas Fundos_12431 / Fundos_CDI (coluna CNPJ Gestor) e Cadastro_Gestores."
+  throw "Nenhum fundo resolvido. Verifique tools\Fundos_12431.csv / tools\Fundos_CDI.csv (coluna CNPJ Gestor) e Cadastro_Gestores."
 }
 
 $agg      = @{ '12431' = @{}; 'trad' = @{} }

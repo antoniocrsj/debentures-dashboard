@@ -273,13 +273,16 @@ O gerador é o `tools/preparar-fluxo.ps1` (PowerShell, **sem instalar nada** —
 do BLC). Roda **toda semana** (os 2 meses mais recentes são sempre rebaixados; os antigos
 ficam em cache). Fluxo:
 
-1. Mantenha as abas `Fundos_12431`, `Fundos_CDI` e `Cadastro_Gestores` atualizadas na
-   planilha `Cadastro_Credito` (GAS) — `Fundos_12431`/`Fundos_CDI` listam
-   `CNPJ_FUNDO_CLASSE, DENOM_SOCIAL, CNPJ Gestor` de cada segmento; `Cadastro_Gestores`
-   lista `CNPJ Gestor, Nome Gestor, Apelido Gestor`. O script cruza fundo → CNPJ Gestor
-   (abas Fundos) → Apelido (Cadastro_Gestores), tudo planilha→planilha, sem depender de
-   cadastro externo (ver `tools/lib-cadastro.ps1`). A CVM não publica uma tabela única
-   ligando CNPJ da classe ao CNPJ do gestor, por isso o CNPJ Gestor fica na própria aba.
+1. Mantenha `tools/Fundos_12431.csv` / `tools/Fundos_CDI.csv` (arquivos **locais**,
+   versionados no git — não vivem mais na planilha) atualizados —
+   `CNPJ_FUNDO_CLASSE, DENOM_SOCIAL, CNPJ Gestor` de cada segmento. Use
+   `tools/selecionar-fundos.ps1` para gerar uma sugestão objetiva (≥15% do PL em
+   debêntures, ou nome batendo padrão de infraestrutura/incentivado) a partir do CDA da
+   CVM. A aba `Cadastro_Gestores` continua na planilha (GAS) — `CNPJ Gestor, Nome Gestor,
+   Apelido Gestor`. O script cruza fundo → CNPJ Gestor (CSV local) → Apelido
+   (Cadastro_Gestores) — ver `tools/lib-cadastro.ps1`. Se algum dia editar Fundos_12431/
+   Fundos_CDI direto na planilha (não recomendado), rode `sincronizar-fundos-planilha.ps1`
+   pra trazer de volta pro CSV local.
 2. Clique 2× em **`tools\preparar-fluxo.bat`** (sem argumentos = últimos 12 meses). Ele
    baixa os `inf_diario_fi_AAAAMM.zip` da CVM (cache em `C:\Projeto Crédito\CVM _informe_diario`,
    não rebaixa), calcula o fluxo semanal por gestor e grava direto em `public/data/` +

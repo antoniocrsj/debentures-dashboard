@@ -93,6 +93,94 @@ function Get-FundosGestorMap([string]$cadastroUrl, [string]$sheetName) {
   return @{ map = $map; colFundo = $colFundo; colGestor = $colGestor }
 }
 
+# Busca uma aba de fundos no GAS e retorna as linhas CRUAS (Cnpj, Denom,
+# CnpjGestor) sem descartar nada -- usado so' por
+# sincronizar-fundos-planilha.ps1 pra exportar pro CSV local (Fundos_12431/
+# Fundos_CDI passaram a viver como arquivo local, nao mais na planilha).
+function Get-FundosRawFromGas([string]$cadastroUrl, [string]$sheetName) {
+  $body = Get-GasBody "${cadastroUrl}?sheet=$sheetName&nocache=1"
+  $parsed = ConvertFrom-GasCsv $body
+
+  $iFundo = Find-ColIndex $parsed.headers '(?i)cnpj.*(fundo|classe)' '(?i)gestor'
+  if ($iFundo -lt 0) { $iFundo = Find-ColIndex $parsed.headers '(?i)cnpj' '(?i)gestor' }
+  $iGestor = Find-ColIndex $parsed.headers '(?i)cnpj.*gestor'
+  if ($iGestor -lt 0) { $iGestor = Find-ColIndex $parsed.headers '(?i)gestor.*cnpj' }
+  $iDenom = Find-ColIndex $parsed.headers '(?i)denom'
+  if ($iFundo -lt 0 -or $iGestor -lt 0) {
+    throw "Aba '$sheetName': preciso de coluna CNPJ do fundo e coluna CNPJ Gestor. Cabecalho: $($parsed.headers -join ', ')"
+  }
+  $colFundo = $parsed.headers[$iFundo]; $colGestor = $parsed.headers[$iGestor]
+  $colDenom = if ($iDenom -ge 0) { $parsed.headers[$iDenom] } else { $null }
+
+  $rows = New-Object System.Collections.Generic.List[object]
+  foreach ($row in $parsed.rows) {
+    $cf = NormCNPJ ([string]$row[$colFundo])
+    if ($cf -eq '') { continue }
+    $denom = if ($colDenom) { ([string]$row[$colDenom]).Trim() } else { '' }
+    $cg = NormCNPJ ([string]$row[$colGestor])
+    $rows.Add([pscustomobject]@{ Cnpj = $cf; Denom = $denom; CnpjGestor = $cg })
+  }
+  return $rows
+}
+
+# Parser generico de uma linha CSV (campo opcionalmente entre aspas, ""
+# escapa aspas interna). Ao contrario de ConvertFrom-GasCsv (que assume TODO
+# campo sempre entre aspas), aqui cada campo pode ou nao estar entre aspas --
+# necessario pra ler tanto Fundos_12431.csv (sem aspas, gerado por script)
+# quanto Sugestao_Lista_Final_*.csv (sempre com aspas).
+function Split-CsvLine([string]$line) {
+  $fields = New-Object System.Collections.Generic.List[string]
+  $i = 0; $n = $line.Length
+  while ($i -le $n) {
+    if ($i -lt $n -and $line[$i] -eq '"') {
+      $i++
+      $sb = New-Object System.Text.StringBuilder
+      while ($i -lt $n) {
+        if ($line[$i] -eq '"') {
+          if ($i + 1 -lt $n -and $line[$i + 1] -eq '"') { [void]$sb.Append('"'); $i += 2 }
+          else { $i++; break }
+        } else { [void]$sb.Append($line[$i]); $i++ }
+      }
+      $fields.Add($sb.ToString())
+      if ($i -lt $n -and $line[$i] -eq ',') { $i++ } else { $i++ }
+    } else {
+      $start = $i
+      while ($i -lt $n -and $line[$i] -ne ',') { $i++ }
+      $fields.Add($line.Substring($start, $i - $start))
+      $i++
+    }
+  }
+  return $fields.ToArray()
+}
+
+# Le' um Fundos_12431.csv / Fundos_CDI.csv LOCAL (CNPJ_FUNDO_CLASSE,
+# DENOM_SOCIAL, CNPJ Gestor) e retorna a mesma forma de Get-FundosGestorMap:
+# @{ map = (CNPJ_FUNDO_CLASSE(norm) -> CNPJ_GESTOR(norm)); colFundo; colGestor }
+function Read-FundosGestorCsv([string]$path) {
+  if (-not (Test-Path $path)) { throw "Arquivo nao encontrado: $path" }
+  $lines = [System.IO.File]::ReadAllLines($path, [System.Text.Encoding]::UTF8) | Where-Object { $_.Trim() -ne '' }
+  if ($lines.Count -lt 1) { return @{ map = @{}; colFundo = ''; colGestor = '' } }
+
+  $hdr = Split-CsvLine $lines[0]
+  $iFundo = Find-ColIndex $hdr '(?i)cnpj.*(fundo|classe)' '(?i)gestor'
+  if ($iFundo -lt 0) { $iFundo = Find-ColIndex $hdr '(?i)cnpj' '(?i)gestor' }
+  $iGestor = Find-ColIndex $hdr '(?i)cnpj.*gestor'
+  if ($iGestor -lt 0) { $iGestor = Find-ColIndex $hdr '(?i)gestor.*cnpj' }
+  if ($iFundo -lt 0 -or $iGestor -lt 0) {
+    throw "$path`: preciso de coluna CNPJ do fundo (CNPJ_FUNDO_CLASSE) e coluna CNPJ Gestor. Cabecalho: $($hdr -join ', ')"
+  }
+
+  $map = @{}
+  for ($i = 1; $i -lt $lines.Count; $i++) {
+    $cols = Split-CsvLine $lines[$i]
+    if ($cols.Count -le [Math]::Max($iFundo, $iGestor)) { continue }
+    $cf = NormCNPJ $cols[$iFundo]
+    $cg = NormCNPJ $cols[$iGestor]
+    if ($cf -ne '' -and $cg -ne '') { $map[$cf] = $cg }
+  }
+  return @{ map = $map; colFundo = $hdr[$iFundo]; colGestor = $hdr[$iGestor] }
+}
+
 # Busca a aba Cadastro_Gestores e retorna hashtable: CNPJ_GESTOR(norm) -> Apelido Gestor.
 function Get-GestorApelidoMap([string]$cadastroUrl, [string]$sheetName = 'Cadastro_Gestores') {
   $body = Get-GasBody "${cadastroUrl}?sheet=$sheetName&nocache=1"

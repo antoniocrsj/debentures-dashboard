@@ -65,20 +65,27 @@ Sem backend próprio. Duas estratégias de origem, ambas centralizadas em hooks:
 - **`tools/preparar-fluxo.ps1`** (+ `.bat`) gera `Fluxo_Semanal_12431.csv`, `…_Trad.csv` e
   `public/PL_Gestores.csv` a partir do Informe Diário da CVM. Baixa os
   `inf_diario_fi_AAAAMM.zip` (cache em `C:\Projeto Crédito\CVM _informe_diario`), resolve
-  CNPJ_FUNDO_CLASSE → Apelido_Gestor cruzando planilha→planilha (GAS `sheet=Fundos_12431`/
-  `Fundos_CDI` com coluna CNPJ Gestor + GAS `sheet=Cadastro_Gestores` — ver
+  CNPJ_FUNDO_CLASSE → Apelido_Gestor cruzando `tools/Fundos_12431.csv`/`Fundos_CDI.csv`
+  (arquivos **locais**, com coluna CNPJ Gestor) + GAS `sheet=Cadastro_Gestores` — ver
   `tools/lib-cadastro.ps1`), calcula o fluxo semanal (seg–dom) por gestor e grava direto
   em `public/data/`.
 - **Por que não `cad_fi.csv`?** Desde a Resolução CVM 175 o `CNPJ_FUNDO_CLASSE` (usado no
   Informe Diário) é o CNPJ da *classe*, que não existe no `cad_fi.csv` (cadastro nível
   *fundo*). Não há tabela pública única ligando classe → gestor, então o CNPJ do gestor
-  fica na própria aba de fundos, mantido pelo usuário.
+  fica na própria lista de fundos, mantido pelo usuário.
 - **Decisão:** o spec pedia `fluxo_semanal.py`, mas a máquina do usuário não tem Python e
   o pipeline do BLC já é PowerShell de 1 clique — então o gerador ficou em PowerShell, no
   mesmo padrão. Versão Python pode ser feita sob demanda.
 - **Cadastro manual (`tools/lista_12431.csv` / `lista_tradicional.csv`) foi descontinuado** —
-  substituído pelas abas `Fundos_12431` / `Fundos_CDI` / `Cadastro_Gestores` da planilha
-  `Cadastro_Credito` (GAS).
+  substituído inicialmente pelas abas `Fundos_12431` / `Fundos_CDI` da planilha
+  `Cadastro_Credito` (GAS), e depois migrado pra `tools/Fundos_12431.csv` /
+  `tools/Fundos_CDI.csv` (arquivos locais, versionados no git): nenhuma das duas é lida
+  pelo app publicado (só pelos scripts), e viraram cada vez mais derivadas do CDA da CVM
+  (`tools/selecionar-fundos.ps1`) — não fazia mais sentido pagar o preço da planilha (cache
+  do Apps Script, encoding, etc.) pra dado que não é mais realmente manual. `Cadastro_Emissores`
+  continua na planilha porque o app *lê ela ao vivo* e é genuinamente curadoria subjetiva
+  (Grupo/Setor/Descrição). `sincronizar-fundos-planilha.ps1` existe caso precise trazer uma
+  edição feita na planilha de volta pro CSV local.
 
 ### Pendente
 - **Virar `FLUXO_IS_MOCK = false`** em `useFluxo.js` quando as bases reais entrarem.

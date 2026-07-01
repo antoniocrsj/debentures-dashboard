@@ -1,9 +1,11 @@
 ﻿<#
   selecionar-fundos.ps1
   --------------------------------------------------------------------------
-  Gera uma SUGESTAO de fundos para as abas Fundos_12431 / Fundos_CDI, a partir
-  de criterios objetivos. Nao substitui a curadoria manual - so' aponta o que
-  revisar (nada e' escrito na planilha automaticamente).
+  Gera uma SUGESTAO de fundos para tools\Fundos_12431.csv / tools\Fundos_CDI.csv
+  (arquivos locais, ver sincronizar-fundos-planilha.ps1 se precisar trazer uma
+  edicao feita na planilha de volta pro arquivo local), a partir de criterios
+  objetivos. Nao substitui a curadoria manual - so' aponta o que revisar (nada
+  e' sobrescrito automaticamente).
 
   Criterios:
     - 12431 (Incentivados): nome do fundo contem termos de infraestrutura ou
@@ -144,20 +146,20 @@ if ($semApelido.Count -gt 0) {
   Write-Host "      CNPJs de gestor ausentes: $($cnpjsFaltando -join ', ')" -ForegroundColor DarkYellow
 }
 
-# ---- 5. Compara com Fundos_12431 / Fundos_CDI atuais -----------------------
-Step "Comparando com Fundos_12431 / Fundos_CDI atuais..."
-$fg12431Atual = Get-FundosGestorMap $CadastroUrl 'Fundos_12431'
-$fgCdiAtual   = Get-FundosGestorMap $CadastroUrl 'Fundos_CDI'
+# ---- 5. Compara com Fundos_12431 / Fundos_CDI atuais (locais) -------------
+Step "Lendo Fundos_12431.csv / Fundos_CDI.csv (local) atuais..."
+$fg12431Atual = Read-FundosGestorCsv (Join-Path $PSScriptRoot 'Fundos_12431.csv')
+$fgCdiAtual   = Read-FundosGestorCsv (Join-Path $PSScriptRoot 'Fundos_CDI.csv')
 Step "  Fundos_12431: $($fg12431Atual.map.Count) | Fundos_CDI: $($fgCdiAtual.map.Count)"
 
-# As duas abas devem ser complementares (mutuamente exclusivas). Um CNPJ nas
-# duas ao mesmo tempo e' um erro de curadoria manual na planilha -- avisa
-# explicitamente, pois um HashSet uniao (abaixo) esconderia isso silenciosamente.
+# As duas abas devem ser complementares (mutuamente exclusivas). Um CNPJ nos
+# dois arquivos ao mesmo tempo e' um erro de curadoria -- avisa explicitamente,
+# pois um HashSet uniao (abaixo) esconderia isso silenciosamente.
 $duplicados = @($fg12431Atual.map.Keys | Where-Object { $fgCdiAtual.map.ContainsKey($_) })
 if ($duplicados.Count -gt 0) {
   Write-Host "    ERRO: $($duplicados.Count) fundo(s) presente(s) em Fundos_12431 E Fundos_CDI ao mesmo tempo:" -ForegroundColor Red
   Write-Host "      $($duplicados -join ', ')" -ForegroundColor Red
-  Write-Host "      Corrija na planilha antes de aplicar as sugestoes abaixo." -ForegroundColor Red
+  Write-Host "      Corrija tools\Fundos_12431.csv / tools\Fundos_CDI.csv antes de aplicar as sugestoes abaixo." -ForegroundColor Red
 }
 
 $atuais = New-Object System.Collections.Generic.HashSet[string]

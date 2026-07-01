@@ -7,9 +7,9 @@
   O que faz:
     1. Le o .xlsx (mesmo aberto no Excel)
     2. Mantem apenas linhas de Debentures (coluna TP_APLIC), se existir
-    3. Resolve o mapa fundo->gestor via planilha (ver lib-cadastro.ps1):
-         GAS sheet=Fundos_12431 / sheet=Fundos_CDI  (CNPJ_FUNDO_CLASSE -> CNPJ Gestor)
-         GAS sheet=Cadastro_Gestores                (CNPJ Gestor -> Apelido Gestor)
+    3. Resolve o mapa fundo->gestor (ver lib-cadastro.ps1):
+         tools\Fundos_12431.csv / tools\Fundos_CDI.csv (local, CNPJ_FUNDO_CLASSE -> CNPJ Gestor)
+         GAS sheet=Cadastro_Gestores                    (CNPJ Gestor -> Apelido Gestor)
     4. Agrega somando VL_MERC_POS_FINAL por (CD_ATIVO, GESTOR)
     5. Grava um CSV de 3 colunas: CD_ATIVO,GESTOR,VL_ALOCADO
 
@@ -65,10 +65,10 @@ Write-Step "Lendo linhas da planilha (pode levar 1-2 min)..."
 $rawRows = Read-CdaFiBlcDebentures $XlsxPath
 Write-Step "  $($rawRows.Count) linhas de debentures lidas"
 
-# ---- 3. Mapa fundo->gestor (Fundos_12431/Fundos_CDI + Cadastro_Gestores) ---
-Write-Step "Buscando Fundos_12431 / Fundos_CDI / Cadastro_Gestores no cadastro..."
-$fg12431 = Get-FundosGestorMap $CadastroUrl 'Fundos_12431'
-$fgCdi   = Get-FundosGestorMap $CadastroUrl 'Fundos_CDI'
+# ---- 3. Mapa fundo->gestor (Fundos_12431/Fundos_CDI locais + Cadastro_Gestores) ---
+Write-Step "Lendo Fundos_12431.csv / Fundos_CDI.csv (local) e buscando Cadastro_Gestores no cadastro..."
+$fg12431 = Read-FundosGestorCsv (Join-Path $PSScriptRoot 'Fundos_12431.csv')
+$fgCdi   = Read-FundosGestorCsv (Join-Path $PSScriptRoot 'Fundos_CDI.csv')
 $gestorApelidoMap = Get-GestorApelidoMap $CadastroUrl
 # Une os dois segmentos: CNPJ_FUNDO_CLASSE -> CNPJ Gestor
 $fundoGestor = @{}
