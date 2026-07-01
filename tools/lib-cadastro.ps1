@@ -331,3 +331,103 @@ function Read-RegistroFundoGestor([string]$path) {
   }
   return $map
 }
+
+# --- CDA da CVM (cda_fi_AAAAMM.zip) - fonte primaria de selecionar-fundos.ps1 ---
+# Diferente do CDA_FI_BLC.xlsx (que o usuario baixa e as vezes ajusta manualmente
+# em outra pasta), este e' o CSV CRU publicado pela CVM, baixado e cacheado
+# automaticamente. Mesmas colunas do xlsx (CNPJ_FUNDO_CLASSE/TP_APLIC/CD_ATIVO/
+# VL_MERC_POS_FINAL), mas ';'-separado / latin-1, igual aos outros arquivos CVM.
+
+# Calcula o mes-alvo (AAAAMM) do CDA a usar, respeitando a defasagem de
+# publicacao: a CVM aceita retificacao do CDA dos ultimos meses, entao so'
+# confiamos num mes que ja fechou essa janela. Regra do usuario: ate' o dia 15
+# do mes corrente, usa mes atual -5; depois do dia 15, usa mes atual -4.
+function Get-CdaTargetMonth {
+  $hoje = Get-Date
+  $lag = if ($hoje.Day -le 15) { 5 } else { 4 }
+  return $hoje.AddMonths(-$lag).ToString('yyyyMM')
+}
+
+# Baixa/cacheia e extrai o cda_fi_{mesAno}.zip da CVM. Um mes especifico e'
+# imutavel uma vez publicado e fora da janela de retificacao (ver
+# Get-CdaTargetMonth), entao o cache nao expira - so' baixa se ainda nao tiver.
+function Get-CdaFiDir([string]$cdaDir, [string]$mesAno, [switch]$NoDownload) {
+  New-Item -ItemType Directory -Force -Path $cdaDir | Out-Null
+  $zipPath = Join-Path $cdaDir "cda_fi_$mesAno.zip"
+  $url = "https://dados.cvm.gov.br/dados/FI/DOC/CDA/DADOS/cda_fi_$mesAno.zip"
+
+  if (-not (Test-Path $zipPath) -and -not $NoDownload) {
+    $tmp = "$zipPath.tmp"
+    try {
+      Invoke-WebRequest -Uri $url -OutFile $tmp -TimeoutSec 300 -UseBasicParsing
+      Move-Item $tmp $zipPath -Force
+    } catch {
+      if (Test-Path $tmp) { Remove-Item $tmp -Force }
+      throw "Nao consegui baixar cda_fi_$mesAno.zip da CVM ($($_.Exception.Message)). Verifique se esse mes ja foi publicado."
+    }
+  }
+  if (-not (Test-Path $zipPath)) { throw "cda_fi_$mesAno.zip nao encontrado (sem cache local e -NoDownload ativo)." }
+
+  $extractDir = Join-Path $cdaDir "cda_extraido_$mesAno"
+  if (-not (Test-Path (Join-Path $extractDir "cda_fi_BLC_4_$mesAno.csv"))) {
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    if (Test-Path $extractDir) { Remove-Item $extractDir -Recurse -Force }
+    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $extractDir)
+  }
+  return $extractDir
+}
+
+# Le' o cda_fi_BLC_4_{mesAno}.csv (bloco misto - acoes, debentures, etc; filtra
+# so' TP_APLIC que comeca com "Deb") e retorna a mesma forma de
+# Read-CdaFiBlcDebentures: lista de @{ Ativo; Cnpj; Val }.
+function Read-CdaFiBlcCsv([string]$path) {
+  $rawRows = New-Object System.Collections.Generic.List[object]
+  $lines = [System.IO.File]::ReadAllLines($path, [System.Text.Encoding]::GetEncoding('latin1'))
+  if ($lines.Count -lt 1) { return $rawRows }
+  $hdr = $lines[0].Split(';')
+  $idx = @{}
+  for ($i = 0; $i -lt $hdr.Count; $i++) { $idx[$hdr[$i].Trim()] = $i }
+  $iCnpj = $idx['CNPJ_FUNDO_CLASSE']; $iApl = $idx['TP_APLIC']; $iVal = $idx['VL_MERC_POS_FINAL']; $iAtivo = $idx['CD_ATIVO']
+  if ($null -eq $iCnpj -or $null -eq $iApl -or $null -eq $iVal -or $null -eq $iAtivo) {
+    throw "cda_fi_BLC_4: colunas esperadas nao encontradas (CNPJ_FUNDO_CLASSE/TP_APLIC/VL_MERC_POS_FINAL/CD_ATIVO)."
+  }
+  $ci = [System.Globalization.CultureInfo]::InvariantCulture
+  for ($i = 1; $i -lt $lines.Count; $i++) {
+    $l = $lines[$i]; if ($l.Trim() -eq '') { continue }
+    $c = $l.Split(';')
+    if ($c.Count -le $iAtivo) { continue }
+    if ($c[$iApl].Trim() -notlike 'Deb*') { continue }
+    $cnpj = NormCNPJ $c[$iCnpj]
+    $ativo = $c[$iAtivo].Trim()
+    if ($cnpj -eq '' -or $ativo -eq '') { continue }
+    $val = 0.0
+    [double]::TryParse($c[$iVal], [System.Globalization.NumberStyles]::Any, $ci, [ref]$val) | Out-Null
+    $rawRows.Add([pscustomobject]@{ Ativo = $ativo; Cnpj = $cnpj; Val = $val })
+  }
+  return $rawRows
+}
+
+# Le' o cda_fi_PL_{mesAno}.csv (PL por fundo, MESMA data de referencia do CDA -
+# mais preciso que o PL do registro_classe.csv, que pode ser de outra data) e
+# retorna hashtable: CNPJ_FUNDO_CLASSE(norm) -> VL_PATRIM_LIQ.
+function Read-CdaFiPL([string]$path) {
+  $lines = [System.IO.File]::ReadAllLines($path, [System.Text.Encoding]::GetEncoding('latin1'))
+  $hdr = $lines[0].Split(';')
+  $idx = @{}
+  for ($i = 0; $i -lt $hdr.Count; $i++) { $idx[$hdr[$i].Trim()] = $i }
+  $iCnpj = $idx['CNPJ_FUNDO_CLASSE']; $iPL = $idx['VL_PATRIM_LIQ']
+  if ($null -eq $iCnpj -or $null -eq $iPL) { throw "cda_fi_PL: colunas esperadas nao encontradas (CNPJ_FUNDO_CLASSE/VL_PATRIM_LIQ)." }
+  $ci = [System.Globalization.CultureInfo]::InvariantCulture
+  $map = @{}
+  for ($i = 1; $i -lt $lines.Count; $i++) {
+    $l = $lines[$i]; if ($l.Trim() -eq '') { continue }
+    $c = $l.Split(';')
+    if ($c.Count -le $iPL) { continue }
+    $cnpj = NormCNPJ $c[$iCnpj]
+    if ($cnpj -eq '') { continue }
+    $pl = 0.0
+    [double]::TryParse($c[$iPL], [System.Globalization.NumberStyles]::Any, $ci, [ref]$pl) | Out-Null
+    $map[$cnpj] = $pl
+  }
+  return $map
+}

@@ -15,14 +15,19 @@
       em debentures (qualquer tipo).
 
   Fontes (publicas, baixadas automaticamente):
-    - CDA_FI_BLC.xlsx (mesmo arquivo do preparar-blc.ps1) -> posicao em
-      debentures por fundo (soma de todos os ativos, nao so' os alocados).
-    - registro_fundo_classe.zip da CVM -> universo de classes ATIVAS, PL de
-      cada uma, e o gestor (via ID_Registro_Fundo -> registro_fundo.csv).
-      Diferente do cad_fi.csv (legado, nivel fundo): estes arquivos sao
-      pos-Resolucao CVM 175, no nivel de CLASSE - a mesma granularidade do
-      CNPJ_FUNDO_CLASSE usado no Informe Diario/CDA. Validado contra a base
-      atual: 97-98% de acerto direto no CNPJ Gestor.
+    - cda_fi_{AAAAMM}.zip da CVM -> posicao em debentures (bloco BLC_4) e PL
+      por fundo (arquivo PL, mesma data de referencia) do mes-alvo. O mes-alvo
+      respeita a defasagem de publicacao da CVM (fundos podem retificar os
+      ultimos meses): ate' o dia 15 do mes corrente usa mes atual -5; depois
+      do dia 15, usa mes atual -4. Pode ser sobrescrito com -MesAno AAAAMM.
+      Alternativa: -XlsxPath para usar um arquivo local (ex: um .xlsx ja'
+      ajustado) em vez de baixar da CVM.
+    - registro_fundo_classe.zip da CVM -> universo de classes ATIVAS e o
+      gestor (via ID_Registro_Fundo -> registro_fundo.csv). Diferente do
+      cad_fi.csv (legado, nivel fundo): estes arquivos sao pos-Resolucao CVM
+      175, no nivel de CLASSE - a mesma granularidade do CNPJ_FUNDO_CLASSE
+      usado no CDA. Validado contra a base atual: 97-98% de acerto direto no
+      CNPJ Gestor.
 
   Saida (para revisao manual):
     tools\Sugestao_Novos.csv    - fundos que batem o criterio e ainda nao
@@ -30,11 +35,15 @@
     tools\Sugestao_Remover.csv  - fundos que estao nas abas hoje mas nao
                                    batem mais o criterio (ou sairam do CDA).
 
-  Uso: powershell -File selecionar-fundos.ps1 [-XlsxPath "C:\...\cda_fi_BLC_...xlsx"]
+  Uso: powershell -File selecionar-fundos.ps1
+       powershell -File selecionar-fundos.ps1 -MesAno 202603   # mes especifico
+       powershell -File selecionar-fundos.ps1 -XlsxPath "C:\...\cda_fi_BLC_...xlsx"
 #>
 
 param(
+  [string]$MesAno = '',
   [string]$XlsxPath = '',
+  [string]$CdaDir = ("C:\Projeto Cr" + [char]233 + "dito\CVM _cda"),
   [string]$RegistroDir = ("C:\Projeto Cr" + [char]233 + "dito\CVM _cadastro_fundos"),
   [string]$CadastroUrl = 'https://script.google.com/macros/s/AKfycbxhTXC7FXkp9fEz0bw6Nnh_JDm4UVhRkqZF5zOW-Cb842RhFBikauGaWeChG0vQerPrBA/exec',
   [double]$LimiarPct = 0.15,
@@ -43,7 +52,6 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$DefaultFolder = ("C:\Projeto Cr" + [char]233 + "dito\Power BI")
 $NOME_12431_REGEX = '(?i)incentiv|infraestr|\binfra\b|infra[- ]'
 
 . (Join-Path $PSScriptRoot 'lib-cadastro.ps1')
@@ -55,14 +63,22 @@ if (-not $OutDir) { $OutDir = $PSScriptRoot }
 Write-Host ""
 Write-Host "=== Selecionar Fundos (sugestao Fundos_12431 / Fundos_CDI) ===" -ForegroundColor Green
 
-# ---- 1. Ler o CDA_FI_BLC.xlsx ----------------------------------------------
-if ([string]::IsNullOrWhiteSpace($XlsxPath)) {
-  Step "Procurando cda_fi_BLC*.xlsx mais recente em $DefaultFolder..."
-  $XlsxPath = Find-LatestCdaFiBlc $DefaultFolder
-  if (-not $XlsxPath) { throw "Nao achei nenhum 'cda_fi_BLC*.xlsx' em $DefaultFolder. Informe -XlsxPath." }
+# ---- 1. Ler o CDA (debentures por fundo + PL na mesma data) ---------------
+$plPorFundo = $null
+if (-not [string]::IsNullOrWhiteSpace($XlsxPath)) {
+  Step "Lendo $XlsxPath (pode levar 1-2 min)..."
+  $rawRows = Read-CdaFiBlcDebentures $XlsxPath
+} else {
+  if (-not $MesAno) { $MesAno = Get-CdaTargetMonth }
+  Step "Mes-alvo do CDA: $MesAno (defasagem: ate dia 15 -> mes atual -5; depois -> -4)"
+  Step "Baixando/lendo cda_fi_$MesAno.zip da CVM..."
+  $cdaExtractDir = Get-CdaFiDir $CdaDir $MesAno -NoDownload:$NoDownload
+  Step "Lendo cda_fi_BLC_4_$MesAno.csv (debentures, pode levar 1-2 min)..."
+  $rawRows = Read-CdaFiBlcCsv (Join-Path $cdaExtractDir "cda_fi_BLC_4_$MesAno.csv")
+  Step "Lendo cda_fi_PL_$MesAno.csv (PL por fundo, mesma data de referencia)..."
+  $plPorFundo = Read-CdaFiPL (Join-Path $cdaExtractDir "cda_fi_PL_$MesAno.csv")
+  Step "  $($plPorFundo.Count) fundos com PL no CDA"
 }
-Step "Lendo $XlsxPath (pode levar 1-2 min)..."
-$rawRows = Read-CdaFiBlcDebentures $XlsxPath
 Step "  $($rawRows.Count) linhas de debentures lidas"
 
 # Soma o valor em debentures por fundo (todos os ativos, nao so' os alocados)
@@ -91,8 +107,11 @@ $semRegistro = 0; $semPL = 0
 foreach ($cnpj in $debPorFundo.Keys) {
   if (-not $classeInfo.ContainsKey($cnpj)) { $semRegistro++; continue }
   $info = $classeInfo[$cnpj]
-  if ($info.PL -le 0) { $semPL++; continue }
-  $pct = $debPorFundo[$cnpj] / $info.PL
+  # PL do CDA (mesma data de referencia da posicao em debentures) e' mais preciso;
+  # cai pro PL do registro_classe.csv (pode ser de outra data) se nao achar no CDA.
+  $pl = if ($plPorFundo -and $plPorFundo.ContainsKey($cnpj)) { $plPorFundo[$cnpj] } else { $info.PL }
+  if ($pl -le 0) { $semPL++; continue }
+  $pct = $debPorFundo[$cnpj] / $pl
   $eh12431 = [regex]::IsMatch($info.Denom, $NOME_12431_REGEX)
   if (-not $eh12431 -and $pct -lt $LimiarPct) { continue }
   $segmento = if ($eh12431) { '12431' } else { 'CDI' }
