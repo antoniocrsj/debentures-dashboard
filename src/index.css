@@ -828,6 +828,12 @@ a { color: var(--primary); }
 /* 3. Tabela de Ativos (e demais) com fundo branco, igual à coluna do ticker */
 .app:not(.desktop) .table-wrap { background: var(--card); }
 
+.app:not(.desktop) .asset-table td {
+  padding-top: 7px;
+  padding-bottom: 7px;
+  line-height: 15px;
+}
+
 /* 4 e 5. Topo da Captação enxuto: remove título, subtítulo, "Dados de…",
    o rótulo "Tipo de fundo", o botão "Todo o histórico" e o título "Ranking de gestores" */
 .app:not(.desktop) .fluxo-title,
