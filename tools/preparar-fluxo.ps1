@@ -250,24 +250,39 @@ foreach ($mes in $Meses) {
   }
 }
 
-# No modo incremental, se o mes mais antigo reprocessado nao comeca numa
-# segunda-feira, a semana que atravessa essa fronteira fica incompleta (faltam
-# os dias do mes anterior, que nao foi reprocessado). Removemos essa semana do
-# calculo novo: o merge abaixo preserva o valor antigo (completo) dela, se
-# existir; senao fica uma lacuna (melhor que um numero errado), que se
-# autocorrige no proximo run completo (sem -Incremental).
-if ($Incremental) {
-  $earliestMes = ($Meses | Sort-Object)[0]
-  $earliestFirstDay = [datetime]::ParseExact($earliestMes + '01', 'yyyyMMdd', $null)
-  $boundaryWeek = WeekStart $earliestFirstDay
-  if ($boundaryWeek -ne $earliestFirstDay) {
-    $boundaryKey = $boundaryWeek.ToString('yyyy-MM-dd')
-    foreach ($tipo in @('12431', 'trad')) {
-      $keysToRemove = @($agg[$tipo].Keys | Where-Object { $_.StartsWith("$boundaryKey|") })
-      foreach ($k in $keysToRemove) { $agg[$tipo].Remove($k) }
+# Uma semana so' e' confiavel se TODOS os seus 7 dias caem em meses processados
+# com sucesso ($mesesOk). Duas situacoes deixam uma semana incompleta:
+#   1. O mes mais antigo reprocessado nao comeca numa segunda-feira (falta o
+#      pedaco do mes anterior, que nao foi reprocessado).
+#   2. Um mes solicitado falhou no download (ex: mes atual ainda nao publicado
+#      pela CVM) e uma semana precisa dos dias dele para fechar.
+# Em ambos os casos, removemos a semana do calculo novo. No modo incremental o
+# merge preserva o valor antigo (completo) dela, se existir; no modo completo
+# (sem merge) ela so' fica de fora deste run. Em qualquer caso, e' sempre uma
+# lacuna temporaria (melhor que um numero errado), corrigida automaticamente
+# assim que o mes que faltou for reprocessado com sucesso.
+$mesesOkSet = New-Object System.Collections.Generic.HashSet[string]
+$mesesOk | ForEach-Object { [void]$mesesOkSet.Add($_) }
+$semanasIncompletas = New-Object System.Collections.Generic.List[string]
+foreach ($tipo in @('12431', 'trad')) {
+  $keysToRemove = New-Object System.Collections.Generic.List[string]
+  foreach ($k in $agg[$tipo].Keys) {
+    $wkStr = ($k -split '\|', 2)[0]
+    $wkStart = [datetime]::ParseExact($wkStr, 'yyyy-MM-dd', $null)
+    $confiavel = $true
+    for ($d = 0; $d -lt 7; $d++) {
+      if (-not $mesesOkSet.Contains($wkStart.AddDays($d).ToString('yyyyMM'))) { $confiavel = $false; break }
     }
-    Write-Host "    Semana de fronteira ($boundaryKey) incompleta - mantido valor anterior (se houver)." -ForegroundColor DarkYellow
+    if (-not $confiavel) { $keysToRemove.Add($k) }
   }
+  foreach ($k in $keysToRemove) {
+    $agg[$tipo].Remove($k)
+    $semanasIncompletas.Add(($k -split '\|', 2)[0])
+  }
+}
+if ($semanasIncompletas.Count -gt 0) {
+  $lista = $semanasIncompletas | Sort-Object -Unique
+  Write-Host "    Semana(s) incompleta(s) (mes fora do range processado com sucesso) - mantido valor anterior, se houver: $($lista -join ', ')" -ForegroundColor DarkYellow
 }
 
 # 4. Escreve as bases
