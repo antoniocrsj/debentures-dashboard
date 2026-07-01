@@ -30,10 +30,16 @@
       CNPJ Gestor.
 
   Saida (para revisao manual):
-    tools\Sugestao_Novos.csv    - fundos que batem o criterio e ainda nao
-                                   estao em Fundos_12431/Fundos_CDI.
-    tools\Sugestao_Remover.csv  - fundos que estao nas abas hoje mas nao
-                                   batem mais o criterio (ou sairam do CDA).
+    tools\Sugestao_Novos.csv             - fundos que batem o criterio e ainda
+                                            nao estao em Fundos_12431/Fundos_CDI.
+    tools\Sugestao_Remover.csv           - fundos que estao nas abas hoje mas
+                                            nao batem mais o criterio (ou
+                                            sairam do CDA).
+    tools\Sugestao_Lista_Final_12431.csv - lista COMPLETA (nao so' a diferenca)
+    tools\Sugestao_Lista_Final_CDI.csv     de quem deveria estar em cada aba,
+                                            mesmo esquema de colunas de
+                                            Fundos_12431.csv/Fundos_CDI.csv -
+                                            pronta pra comparar/substituir.
 
   Uso: powershell -File selecionar-fundos.ps1
        powershell -File selecionar-fundos.ps1 -MesAno 202603   # mes especifico
@@ -191,6 +197,22 @@ foreach ($cnpj in ($removerCnpjs | Sort-Object)) {
 }
 [System.IO.File]::WriteAllText($outRemover, $sbR.ToString(), $utf8)
 
+# Lista final completa (todos os candidatos qualificados, nao so' a diferenca) -
+# mesmo esquema de colunas de Fundos_12431.csv/Fundos_CDI.csv (CNPJ_FUNDO_CLASSE,
+# DENOM_SOCIAL, CNPJ Gestor), pronta pra substituir/validar contra a planilha.
+function Write-ListaFinal($items, $outFile) {
+  $sb = New-Object System.Text.StringBuilder
+  [void]$sb.AppendLine('CNPJ_FUNDO_CLASSE,DENOM_SOCIAL,CNPJ Gestor')
+  foreach ($c in ($items | Sort-Object Denom)) {
+    [void]$sb.AppendLine(('"{0}","{1}","{2}"' -f $c.Cnpj, $c.Denom.Replace('"', '""'), $c.CnpjGestor))
+  }
+  [System.IO.File]::WriteAllText($outFile, $sb.ToString(), $utf8)
+}
+$outFinal12431 = Join-Path $OutDir 'Sugestao_Lista_Final_12431.csv'
+$outFinalCdi   = Join-Path $OutDir 'Sugestao_Lista_Final_CDI.csv'
+Write-ListaFinal (@($candidatos | Where-Object { $_.Segmento -eq '12431' })) $outFinal12431
+Write-ListaFinal (@($candidatos | Where-Object { $_.Segmento -eq 'CDI' }))   $outFinalCdi
+
 # ---- 7. Relatorio -----------------------------------------------------------
 Write-Host ""
 Write-Host "=== RELATORIO ===" -ForegroundColor Green
@@ -201,7 +223,9 @@ Write-Host "  Fundos qualificados no CDA atual  : $($candidatos.Count) (12431: $
 Write-Host "  Novos (nao estao nas abas hoje)    : $($novos.Count)"
 Write-Host "  Para remover (nao qualificam mais) : $($removerCnpjs.Count)"
 Write-Host ""
-Write-Host "  Arquivos gerados (revise antes de colar na planilha):" -ForegroundColor White
-Write-Host "    $outNovos"   -ForegroundColor Yellow
-Write-Host "    $outRemover" -ForegroundColor Yellow
+Write-Host "  Arquivos gerados (revise antes de aplicar na planilha):" -ForegroundColor White
+Write-Host "    $outNovos"       -ForegroundColor Yellow
+Write-Host "    $outRemover"     -ForegroundColor Yellow
+Write-Host "    $outFinal12431  ($n12431 fundos - lista completa, nao so' a diferenca)" -ForegroundColor Yellow
+Write-Host "    $outFinalCdi  ($nCdi fundos - lista completa, nao so' a diferenca)" -ForegroundColor Yellow
 Write-Host ""
