@@ -250,39 +250,27 @@ foreach ($mes in $Meses) {
   }
 }
 
-# Uma semana so' e' confiavel se TODOS os seus 7 dias caem em meses processados
-# com sucesso ($mesesOk). Duas situacoes deixam uma semana incompleta:
-#   1. O mes mais antigo reprocessado nao comeca numa segunda-feira (falta o
-#      pedaco do mes anterior, que nao foi reprocessado).
-#   2. Um mes solicitado falhou no download (ex: mes atual ainda nao publicado
-#      pela CVM) e uma semana precisa dos dias dele para fechar.
-# Em ambos os casos, removemos a semana do calculo novo. No modo incremental o
-# merge preserva o valor antigo (completo) dela, se existir; no modo completo
-# (sem merge) ela so' fica de fora deste run. Em qualquer caso, e' sempre uma
-# lacuna temporaria (melhor que um numero errado), corrigida automaticamente
-# assim que o mes que faltou for reprocessado com sucesso.
+# Uma semana pode ficar parcial quando um dos seus dias cai num mes ainda nao
+# disponivel (ex: mes atual, antes da CVM publicar) ou nao reprocessado neste
+# run. Isso e' esperado e mostrado normalmente (nao escondemos a semana) -- a
+# coluna DataBase ja indica ate' que dia ela esta' atualizada, entao fica
+# visivel que e' uma semana "em andamento". Ela se completa sozinha no proximo
+# run, quando os dias que faltam ja tiverem sido publicados/reprocessados.
 $mesesOkSet = New-Object System.Collections.Generic.HashSet[string]
 $mesesOk | ForEach-Object { [void]$mesesOkSet.Add($_) }
-$semanasIncompletas = New-Object System.Collections.Generic.List[string]
+$semanasParciais = New-Object System.Collections.Generic.List[string]
 foreach ($tipo in @('12431', 'trad')) {
-  $keysToRemove = New-Object System.Collections.Generic.List[string]
   foreach ($k in $agg[$tipo].Keys) {
     $wkStr = ($k -split '\|', 2)[0]
     $wkStart = [datetime]::ParseExact($wkStr, 'yyyy-MM-dd', $null)
-    $confiavel = $true
     for ($d = 0; $d -lt 7; $d++) {
-      if (-not $mesesOkSet.Contains($wkStart.AddDays($d).ToString('yyyyMM'))) { $confiavel = $false; break }
+      if (-not $mesesOkSet.Contains($wkStart.AddDays($d).ToString('yyyyMM'))) { $semanasParciais.Add($wkStr); break }
     }
-    if (-not $confiavel) { $keysToRemove.Add($k) }
-  }
-  foreach ($k in $keysToRemove) {
-    $agg[$tipo].Remove($k)
-    $semanasIncompletas.Add(($k -split '\|', 2)[0])
   }
 }
-if ($semanasIncompletas.Count -gt 0) {
-  $lista = $semanasIncompletas | Sort-Object -Unique
-  Write-Host "    Semana(s) incompleta(s) (mes fora do range processado com sucesso) - mantido valor anterior, se houver: $($lista -join ', ')" -ForegroundColor DarkYellow
+if ($semanasParciais.Count -gt 0) {
+  $lista = $semanasParciais | Sort-Object -Unique
+  Write-Host "    Semana(s) parcial(is) (ainda em andamento, dado disponivel ate' o momento): $($lista -join ', ')" -ForegroundColor DarkGray
 }
 
 # 4. Escreve as bases
