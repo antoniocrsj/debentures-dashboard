@@ -1,4 +1,4 @@
-<#
+﻿<#
   preparar-fluxo.ps1
   --------------------------------------------------------------------------
   Gera as bases SEMANAIS de captacao/resgate da aba "Captacao" a partir do
@@ -29,7 +29,7 @@
 
 param(
   [string[]]$Meses,                                   # ex: 202504,202505 (default: ultimos 12 meses)
-  # "C:\Projeto Credito\CVM _informe_diario" — [char]233 = e-acento (mantem o .ps1 em ASCII)
+  # "C:\Projeto Credito\CVM _informe_diario" - [char]233 = e-acento (mantem o .ps1 em ASCII)
   [string]$CvmDir    = ("C:\Projeto Cr" + [char]233 + "dito\CVM _informe_diario"),
   [string]$CadastroUrl = 'https://script.google.com/macros/s/AKfycbxhTXC7FXkp9fEz0bw6Nnh_JDm4UVhRkqZF5zOW-Cb842RhFBikauGaWeChG0vQerPrBA/exec',
   [string]$OutDir,
@@ -107,7 +107,7 @@ function WeekStart([datetime]$date) {
 #   1. Nao duplica linhas (uma chave nunca vem de "antigo" E "novo" ao mesmo tempo).
 #   2. A semana que atravessa a fronteira do mes mais antigo reprocessado (quando
 #      esse mes nao comeca numa segunda-feira) e' removida do calculo novo ANTES
-#      de chegar aqui (ver bloco logo abaixo) — como ela nao esta em $newKeys,
+#      de chegar aqui (ver bloco logo abaixo) - como ela nao esta em $newKeys,
 #      o valor antigo (completo, de um run anterior) e' preservado automaticamente
 #      em vez de ser sobrescrito por um recalculo incompleto.
 
@@ -266,7 +266,7 @@ if ($Incremental) {
       $keysToRemove = @($agg[$tipo].Keys | Where-Object { $_.StartsWith("$boundaryKey|") })
       foreach ($k in $keysToRemove) { $agg[$tipo].Remove($k) }
     }
-    Write-Host "    Semana de fronteira ($boundaryKey) incompleta — mantido valor anterior (se houver)." -ForegroundColor DarkYellow
+    Write-Host "    Semana de fronteira ($boundaryKey) incompleta - mantido valor anterior (se houver)." -ForegroundColor DarkYellow
   }
 }
 
@@ -347,7 +347,7 @@ if ($Incremental) {
   Merge-Mensal  $oldMesTradLines  $outMesTrad  $newMonthTrad
 }
 
-# 5. PL_Gestores.csv — PL mais recente por gestor (12431 + Trad somados), consumido pela aba Gestores do app.
+# 5. PL_Gestores.csv - PL mais recente por gestor (12431 + Trad somados), consumido pela aba Gestores do app.
 function Get-LatestPlByGestor($tipo) {
   $latestWk = @{}
   foreach ($k in $agg[$tipo].Keys) {

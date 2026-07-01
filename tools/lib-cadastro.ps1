@@ -1,4 +1,4 @@
-<#
+﻿<#
   lib-cadastro.ps1
   --------------------------------------------------------------------------
   Biblioteca compartilhada por preparar-fluxo.ps1 e preparar-blc.ps1.

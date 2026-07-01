@@ -1,4 +1,4 @@
-<#
+﻿<#
   preparar-blc.ps1
   --------------------------------------------------------------------------
   Transforma o arquivo bruto da CVM (CDA_FI_BLC, .xlsx) no arquivo enxuto
@@ -28,7 +28,7 @@ param(
 $ErrorActionPreference = 'Stop'
 
 # ---- Configuracao ----------------------------------------------------------
-# "C:\Projeto Credito\Power BI" — [char]233 = e-acento (mantem o .ps1 lendo certo em ANSI)
+# "C:\Projeto Credito\Power BI" - [char]233 = e-acento (mantem o .ps1 lendo certo em ANSI)
 $DefaultFolder = ("C:\Projeto Cr" + [char]233 + "dito\Power BI")
 # ---------------------------------------------------------------------------
 
@@ -147,7 +147,7 @@ try {
             $headerDone = $true
           }
           elseif ($headerDone) {
-            # Linha de dados — guardar bruto pra agregar depois
+            # Linha de dados - guardar bruto pra agregar depois
             $ativo = if ($cellVals.ContainsKey($colAtivo)) { ([string]$cellVals[$colAtivo]).Trim() } else { '' }
             $cnpj  = if ($cellVals.ContainsKey($colCNPJ))  { ([string]$cellVals[$colCNPJ]).Trim() }  else { '' }
             $aplOk = $true
