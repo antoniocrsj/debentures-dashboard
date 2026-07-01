@@ -65,15 +65,20 @@ Sem backend próprio. Duas estratégias de origem, ambas centralizadas em hooks:
 - **`tools/preparar-fluxo.ps1`** (+ `.bat`) gera `Fluxo_Semanal_12431.csv`, `…_Trad.csv` e
   `public/PL_Gestores.csv` a partir do Informe Diário da CVM. Baixa os
   `inf_diario_fi_AAAAMM.zip` (cache em `C:\Projeto Crédito\CVM _informe_diario`), resolve
-  CNPJ_FUNDO → Apelido_Gestor via ponte (GAS `sheet=Fundos_12431`/`Fundos_CDI` +
-  CVM `cad_fi.csv` + GAS `sheet=Cadastro_Gestores` — ver `tools/lib-cadastro.ps1`), calcula
-  o fluxo semanal (seg–dom) por gestor e grava direto em `public/data/`.
+  CNPJ_FUNDO_CLASSE → Apelido_Gestor cruzando planilha→planilha (GAS `sheet=Fundos_12431`/
+  `Fundos_CDI` com coluna CNPJ Gestor + GAS `sheet=Cadastro_Gestores` — ver
+  `tools/lib-cadastro.ps1`), calcula o fluxo semanal (seg–dom) por gestor e grava direto
+  em `public/data/`.
+- **Por que não `cad_fi.csv`?** Desde a Resolução CVM 175 o `CNPJ_FUNDO_CLASSE` (usado no
+  Informe Diário) é o CNPJ da *classe*, que não existe no `cad_fi.csv` (cadastro nível
+  *fundo*). Não há tabela pública única ligando classe → gestor, então o CNPJ do gestor
+  fica na própria aba de fundos, mantido pelo usuário.
 - **Decisão:** o spec pedia `fluxo_semanal.py`, mas a máquina do usuário não tem Python e
   o pipeline do BLC já é PowerShell de 1 clique — então o gerador ficou em PowerShell, no
   mesmo padrão. Versão Python pode ser feita sob demanda.
 - **Cadastro manual (`tools/lista_12431.csv` / `lista_tradicional.csv`) foi descontinuado** —
   substituído pelas abas `Fundos_12431` / `Fundos_CDI` / `Cadastro_Gestores` da planilha
-  `Cadastro_Credito` (GAS), cruzadas com o `cad_fi.csv` público da CVM.
+  `Cadastro_Credito` (GAS).
 
 ### Pendente
 - **Virar `FLUXO_IS_MOCK = false`** em `useFluxo.js` quando as bases reais entrarem.

@@ -7,10 +7,9 @@
   O que faz:
     1. Le o .xlsx (mesmo aberto no Excel)
     2. Mantem apenas linhas de Debentures (coluna TP_APLIC), se existir
-    3. Resolve o mapa fundo->gestor via ponte (ver lib-cadastro.ps1):
-         GAS sheet=Fundos_12431 / sheet=Fundos_CDI  (universo de fundos)
-         CVM cad_fi.csv                             (CNPJ_FUNDO -> CNPJ_GESTOR)
-         GAS sheet=Cadastro_Gestores                (CNPJ_GESTOR -> Apelido Gestor)
+    3. Resolve o mapa fundo->gestor via planilha (ver lib-cadastro.ps1):
+         GAS sheet=Fundos_12431 / sheet=Fundos_CDI  (CNPJ_FUNDO_CLASSE -> CNPJ Gestor)
+         GAS sheet=Cadastro_Gestores                (CNPJ Gestor -> Apelido Gestor)
     4. Agrega somando VL_MERC_POS_FINAL por (CD_ATIVO, GESTOR)
     5. Grava um CSV de 3 colunas: CD_ATIVO,GESTOR,VL_ALOCADO
 
@@ -23,9 +22,7 @@
 param(
   [string]$XlsxPath = '',
   [string]$OutPath  = '',
-  [string]$CadastroUrl = 'https://script.google.com/macros/s/AKfycbxhTXC7FXkp9fEz0bw6Nnh_JDm4UVhRkqZF5zOW-Cb842RhFBikauGaWeChG0vQerPrBA/exec',
-  [string]$CvmCadDir   = ("C:\Projeto Cr" + [char]233 + "dito\CVM _cadastro_fundos"),
-  [switch]$NoDownload
+  [string]$CadastroUrl = 'https://script.google.com/macros/s/AKfycbxhTXC7FXkp9fEz0bw6Nnh_JDm4UVhRkqZF5zOW-Cb842RhFBikauGaWeChG0vQerPrBA/exec'
 )
 
 $ErrorActionPreference = 'Stop'
@@ -178,23 +175,25 @@ finally {
 
 Write-Step "  $($rawRows.Count) linhas de debentures lidas"
 
-# ---- 3. Mapa fundo->gestor (Fundos_12431/Fundos_CDI + cad_fi.csv + Cadastro_Gestores) ---
+# ---- 3. Mapa fundo->gestor (Fundos_12431/Fundos_CDI + Cadastro_Gestores) ---
 Write-Step "Buscando Fundos_12431 / Fundos_CDI / Cadastro_Gestores no cadastro..."
-$cnpjSet12431 = Get-FundosCnpjSet $CadastroUrl 'Fundos_12431'
-$cnpjSetCdi   = Get-FundosCnpjSet $CadastroUrl 'Fundos_CDI'
+$fg12431 = Get-FundosGestorMap $CadastroUrl 'Fundos_12431'
+$fgCdi   = Get-FundosGestorMap $CadastroUrl 'Fundos_CDI'
 $gestorApelidoMap = Get-GestorApelidoMap $CadastroUrl
-$todosFundos = New-Object System.Collections.Generic.HashSet[string]
-foreach ($c in $cnpjSet12431) { [void]$todosFundos.Add($c) }
-foreach ($c in $cnpjSetCdi)   { [void]$todosFundos.Add($c) }
-Write-Step "  $($todosFundos.Count) fundos (12431 + CDI) | $($gestorApelidoMap.Count) gestoras cadastradas"
+# Une os dois segmentos: CNPJ_FUNDO_CLASSE -> CNPJ Gestor
+$fundoGestor = @{}
+foreach ($k in $fg12431.map.Keys) { $fundoGestor[$k] = $fg12431.map[$k] }
+foreach ($k in $fgCdi.map.Keys)   { $fundoGestor[$k] = $fgCdi.map[$k] }
+Write-Step "  $($fundoGestor.Count) fundos (12431 + CDI) | $($gestorApelidoMap.Count) gestoras cadastradas"
 
-Write-Step "Baixando/lendo cad_fi.csv da CVM (ponte CNPJ_FUNDO -> CNPJ_GESTOR)..."
-$cadFiMap = Get-CadFiFundoGestorMap $CvmCadDir -NoDownload:$NoDownload
-$bridge = Build-FundoApelidoMap $todosFundos $cadFiMap $gestorApelidoMap
+$bridge = Build-FundoApelidoMap $fundoGestor $gestorApelidoMap
 $fundo2gestor = $bridge.map
 Write-Step "  $($fundo2gestor.Count) fundos mapeados a um gestor"
-if ($bridge.semCadFi -gt 0) { Write-Host "    sem match no cad_fi.csv: $($bridge.semCadFi)" -ForegroundColor Yellow }
-if ($bridge.semGestorCadastrado -gt 0) { Write-Host "    gestor sem cadastro em Cadastro_Gestores: $($bridge.semGestorCadastrado)" -ForegroundColor Yellow }
+if ($bridge.semGestorCadastrado -gt 0) {
+  Write-Host "    fundos com CNPJ Gestor sem cadastro em Cadastro_Gestores: $($bridge.semGestorCadastrado)" -ForegroundColor Yellow
+  $faltando = @($bridge.gestoresFaltando) | Sort-Object -Unique
+  if ($faltando.Count) { Write-Host "      CNPJs de gestor ausentes: $($faltando -join ', ')" -ForegroundColor DarkYellow }
+}
 
 # ---- 4. Agregar por (ativo, gestor) ---------------------------------------
 Write-Step "Agregando por (ativo, gestor)..."

@@ -10,10 +10,9 @@
                   VL_PATRIM_LIQ, CAPTC_DIA, RESG_DIA
 
   O que faz:
-    1. Resolve CNPJ_FUNDO -> Gestor_Apelido via ponte (ver lib-cadastro.ps1):
-         GAS sheet=Fundos_12431 / sheet=Fundos_CDI  (lista de fundos por segmento)
-         CVM cad_fi.csv                             (CNPJ_FUNDO -> CNPJ_GESTOR)
-         GAS sheet=Cadastro_Gestores                (CNPJ_GESTOR -> Apelido Gestor)
+    1. Resolve CNPJ_FUNDO_CLASSE -> Gestor_Apelido (ver lib-cadastro.ps1):
+         GAS sheet=Fundos_12431 / sheet=Fundos_CDI  (CNPJ_FUNDO_CLASSE -> CNPJ Gestor)
+         GAS sheet=Cadastro_Gestores                (CNPJ Gestor -> Apelido Gestor)
     2. Baixa os meses do Informe Diario (cache local, nao rebaixa).
     3. Calcula o fluxo SEMANAL (segunda a domingo) por gestor.
     4. Grava em public\data\:
@@ -32,10 +31,9 @@ param(
   [string[]]$Meses,                                   # ex: 202504,202505 (default: ultimos 12 meses)
   # "C:\Projeto Credito\CVM _informe_diario" — [char]233 = e-acento (mantem o .ps1 em ASCII)
   [string]$CvmDir    = ("C:\Projeto Cr" + [char]233 + "dito\CVM _informe_diario"),
-  [string]$CvmCadDir = ("C:\Projeto Cr" + [char]233 + "dito\CVM _cadastro_fundos"),
   [string]$CadastroUrl = 'https://script.google.com/macros/s/AKfycbxhTXC7FXkp9fEz0bw6Nnh_JDm4UVhRkqZF5zOW-Cb842RhFBikauGaWeChG0vQerPrBA/exec',
   [string]$OutDir,
-  [switch]$NoDownload,                                # usa apenas os zips/cad_fi ja baixados (nao baixa nada)
+  [switch]$NoDownload,                                # usa apenas os zips ja baixados (nao baixa nada)
   [switch]$Incremental                                # so processa mes atual + anterior; mescla com CSV existente
 )
 
@@ -162,28 +160,23 @@ if ($Incremental) { Write-Host "  Modo: INCREMENTAL (apenas $($Meses -join ', ')
 New-Item -ItemType Directory -Force -Path $CvmDir | Out-Null
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
 
-# 1. Resolve CNPJ_FUNDO -> Apelido_Gestor (Fundos_12431/Fundos_CDI + cad_fi.csv + Cadastro_Gestores)
+# 1. Resolve CNPJ_FUNDO_CLASSE -> Apelido_Gestor (Fundos_12431/Fundos_CDI + Cadastro_Gestores)
 Step "Buscando Fundos_12431 / Fundos_CDI / Cadastro_Gestores no cadastro..."
-$cnpjSet12431 = Get-FundosCnpjSet $CadastroUrl 'Fundos_12431'
-$cnpjSetCdi   = Get-FundosCnpjSet $CadastroUrl 'Fundos_CDI'
+$fg12431 = Get-FundosGestorMap $CadastroUrl 'Fundos_12431'
+$fgCdi   = Get-FundosGestorMap $CadastroUrl 'Fundos_CDI'
 $gestorApelidoMap = Get-GestorApelidoMap $CadastroUrl
-Write-Host "    Fundos_12431: $($cnpjSet12431.Count) | Fundos_CDI: $($cnpjSetCdi.Count) | Cadastro_Gestores: $($gestorApelidoMap.Count) gestoras"
+Write-Host "    Fundos_12431: $($fg12431.map.Count) | Fundos_CDI: $($fgCdi.map.Count) | Cadastro_Gestores: $($gestorApelidoMap.Count) gestoras"
 
-Step "Baixando/lendo cad_fi.csv da CVM (ponte CNPJ_FUNDO -> CNPJ_GESTOR)..."
-$cadFiMap = Get-CadFiFundoGestorMap $CvmCadDir -NoDownload:$NoDownload
-Write-Host "    cad_fi.csv: $($cadFiMap.Count) fundos mapeados"
-
-$bridge12431 = Build-FundoApelidoMap $cnpjSet12431 $cadFiMap $gestorApelidoMap
-$bridgeCdi   = Build-FundoApelidoMap $cnpjSetCdi   $cadFiMap $gestorApelidoMap
+$bridge12431 = Build-FundoApelidoMap $fg12431.map $gestorApelidoMap
+$bridgeCdi   = Build-FundoApelidoMap $fgCdi.map   $gestorApelidoMap
 Write-Host "    12431: $($bridge12431.map.Count) fundos resolvidos | Tradicional: $($bridgeCdi.map.Count) fundos resolvidos"
-if ($bridge12431.semCadFi -gt 0 -or $bridgeCdi.semCadFi -gt 0) {
-  Write-Host "      sem match no cad_fi.csv -> 12431: $($bridge12431.semCadFi) | Trad: $($bridgeCdi.semCadFi)" -ForegroundColor Yellow
-}
 if ($bridge12431.semGestorCadastrado -gt 0 -or $bridgeCdi.semGestorCadastrado -gt 0) {
-  Write-Host "      gestor sem cadastro em Cadastro_Gestores -> 12431: $($bridge12431.semGestorCadastrado) | Trad: $($bridgeCdi.semGestorCadastrado)" -ForegroundColor Yellow
+  Write-Host "      fundos com CNPJ Gestor sem cadastro em Cadastro_Gestores -> 12431: $($bridge12431.semGestorCadastrado) | Trad: $($bridgeCdi.semGestorCadastrado)" -ForegroundColor Yellow
+  $faltando = @($bridge12431.gestoresFaltando) + @($bridgeCdi.gestoresFaltando) | Sort-Object -Unique
+  if ($faltando.Count) { Write-Host "        CNPJs de gestor ausentes: $($faltando -join ', ')" -ForegroundColor DarkYellow }
 }
 if ($bridge12431.map.Count -eq 0 -and $bridgeCdi.map.Count -eq 0) {
-  throw "Nenhum fundo resolvido. Verifique as abas Fundos_12431 / Fundos_CDI / Cadastro_Gestores na planilha e o cad_fi.csv."
+  throw "Nenhum fundo resolvido. Verifique as abas Fundos_12431 / Fundos_CDI (coluna CNPJ Gestor) e Cadastro_Gestores."
 }
 
 $agg      = @{ '12431' = @{}; 'trad' = @{} }

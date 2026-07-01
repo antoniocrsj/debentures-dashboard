@@ -274,14 +274,16 @@ do BLC). Roda **toda semana** (os 2 meses mais recentes são sempre rebaixados; 
 ficam em cache). Fluxo:
 
 1. Mantenha as abas `Fundos_12431`, `Fundos_CDI` e `Cadastro_Gestores` atualizadas na
-   planilha `Cadastro_Credito` (GAS) — `Fundos_12431`/`Fundos_CDI` listam os
-   `CNPJ_FUNDO_CLASSE` de cada segmento; `Cadastro_Gestores` lista `CNPJ Gestor, Nome
-   Gestor, Apelido Gestor`. O script cruza CNPJ_FUNDO → CNPJ_GESTOR via `cad_fi.csv`
-   público da CVM (ver `tools/lib-cadastro.ps1`) — não precisa listar fundo por fundo.
+   planilha `Cadastro_Credito` (GAS) — `Fundos_12431`/`Fundos_CDI` listam
+   `CNPJ_FUNDO_CLASSE, DENOM_SOCIAL, CNPJ Gestor` de cada segmento; `Cadastro_Gestores`
+   lista `CNPJ Gestor, Nome Gestor, Apelido Gestor`. O script cruza fundo → CNPJ Gestor
+   (abas Fundos) → Apelido (Cadastro_Gestores), tudo planilha→planilha, sem depender de
+   cadastro externo (ver `tools/lib-cadastro.ps1`). A CVM não publica uma tabela única
+   ligando CNPJ da classe ao CNPJ do gestor, por isso o CNPJ Gestor fica na própria aba.
 2. Clique 2× em **`tools\preparar-fluxo.bat`** (sem argumentos = últimos 12 meses). Ele
    baixa os `inf_diario_fi_AAAAMM.zip` da CVM (cache em `C:\Projeto Crédito\CVM _informe_diario`,
-   não rebaixa) e o `cad_fi.csv` (cache em `C:\Projeto Crédito\CVM _cadastro_fundos`),
-   calcula o fluxo semanal por gestor e grava direto em `public/data/` + `public/PL_Gestores.csv`.
+   não rebaixa), calcula o fluxo semanal por gestor e grava direto em `public/data/` +
+   `public/PL_Gestores.csv`.
 3. Da **primeira vez**, troque `FLUXO_IS_MOCK` para `false` em `src/hooks/useFluxo.js`.
 4. Publique com **`tools\publicar.bat`** (sobe tudo de `public/`).
 

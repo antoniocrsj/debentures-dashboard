@@ -3,12 +3,14 @@
   --------------------------------------------------------------------------
   Biblioteca compartilhada por preparar-fluxo.ps1 e preparar-blc.ps1.
 
-  Resolve o mapa CNPJ_FUNDO -> Apelido_Gestor a partir de 3 fontes:
-    1. GAS (Google Apps Script) — abas manuais da planilha Cadastro_Credito:
-         Fundos_12431 / Fundos_CDI   (CNPJ_FUNDO_CLASSE, DENOM_SOCIAL)
-         Cadastro_Gestores          (CNPJ Gestor, Nome Gestor, Apelido Gestor)
-    2. CVM cad_fi.csv (ponte publica CNPJ_FUNDO -> CNPJ_GESTOR)
-         https://dados.cvm.gov.br/dados/FI/CAD/DADOS/cad_fi.csv
+  Resolve o mapa CNPJ_FUNDO_CLASSE -> Apelido_Gestor a partir das abas manuais
+  da planilha Cadastro_Credito (servidas como CSV pelo Google Apps Script):
+    - Fundos_12431 / Fundos_CDI  (CNPJ_FUNDO_CLASSE, DENOM_SOCIAL, CNPJ Gestor)
+    - Cadastro_Gestores          (CNPJ Gestor, Nome Gestor, Apelido Gestor)
+
+  O cruzamento e' inteiramente planilha->planilha (a CVM nao publica uma tabela
+  unica ligando CNPJ da classe ao CNPJ do gestor):
+    fundo -> CNPJ Gestor (aba Fundos_*) -> Apelido (aba Cadastro_Gestores)
 
   Uso: dot-source no inicio do script -> . (Join-Path $PSScriptRoot 'lib-cadastro.ps1')
 #>
@@ -63,20 +65,30 @@ function Find-ColIndex($headers, [string]$mustMatch, [string]$mustNotMatch = $nu
   return -1
 }
 
-# Busca uma aba de fundos (Fundos_12431 / Fundos_CDI) e retorna o Set de CNPJ_FUNDO_CLASSE normalizados.
-function Get-FundosCnpjSet([string]$cadastroUrl, [string]$sheetName) {
+# Busca uma aba de fundos (Fundos_12431 / Fundos_CDI) e retorna hashtable:
+#   CNPJ_FUNDO_CLASSE(norm) -> CNPJ_GESTOR(norm)
+function Get-FundosGestorMap([string]$cadastroUrl, [string]$sheetName) {
   $body = Get-GasBody "${cadastroUrl}?sheet=$sheetName"
   $parsed = ConvertFrom-GasCsv $body
-  $iCnpj = Find-ColIndex $parsed.headers '(?i)cnpj'
-  if ($iCnpj -lt 0) { throw "Aba '$sheetName': nao achei coluna de CNPJ. Cabecalho: $($parsed.headers -join ', ')" }
-  $col = $parsed.headers[$iCnpj]
 
-  $set = New-Object System.Collections.Generic.HashSet[string]
-  foreach ($row in $parsed.rows) {
-    $cnpj = NormCNPJ ([string]$row[$col])
-    if ($cnpj -ne '') { [void]$set.Add($cnpj) }
+  # Coluna do CNPJ do fundo: cita fundo/classe (e nao gestor); senao o 1o cnpj que nao e' gestor.
+  $iFundo = Find-ColIndex $parsed.headers '(?i)cnpj.*(fundo|classe)' '(?i)gestor'
+  if ($iFundo -lt 0) { $iFundo = Find-ColIndex $parsed.headers '(?i)cnpj' '(?i)gestor' }
+  # Coluna do CNPJ do gestor: cita cnpj e gestor.
+  $iGestor = Find-ColIndex $parsed.headers '(?i)cnpj.*gestor'
+  if ($iGestor -lt 0) { $iGestor = Find-ColIndex $parsed.headers '(?i)gestor.*cnpj' }
+  if ($iFundo -lt 0 -or $iGestor -lt 0) {
+    throw "Aba '$sheetName': preciso de coluna CNPJ do fundo (CNPJ_FUNDO_CLASSE) e coluna CNPJ Gestor. Cabecalho: $($parsed.headers -join ', ')"
   }
-  return $set
+  $colFundo = $parsed.headers[$iFundo]; $colGestor = $parsed.headers[$iGestor]
+
+  $map = @{}
+  foreach ($row in $parsed.rows) {
+    $cf = NormCNPJ ([string]$row[$colFundo])
+    $cg = NormCNPJ ([string]$row[$colGestor])
+    if ($cf -ne '' -and $cg -ne '') { $map[$cf] = $cg }
+  }
+  return @{ map = $map; colFundo = $colFundo; colGestor = $colGestor }
 }
 
 # Busca a aba Cadastro_Gestores e retorna hashtable: CNPJ_GESTOR(norm) -> Apelido Gestor.
@@ -97,63 +109,20 @@ function Get-GestorApelidoMap([string]$cadastroUrl, [string]$sheetName = 'Cadast
   return $map
 }
 
-# Baixa/cacheia o cad_fi.csv da CVM e retorna hashtable: CNPJ_FUNDO(norm) -> CNPJ_GESTOR(norm).
-# Re-baixa no maximo 1x por dia (arquivo e grande, ~70-90 mil linhas).
-function Get-CadFiFundoGestorMap([string]$cvmCadDir, [switch]$NoDownload) {
-  New-Item -ItemType Directory -Force -Path $cvmCadDir | Out-Null
-  $path = Join-Path $cvmCadDir 'cad_fi.csv'
-  $url = 'https://dados.cvm.gov.br/dados/FI/CAD/DADOS/cad_fi.csv'
-
-  $precisaBaixar = $true
-  if (Test-Path $path) {
-    $precisaBaixar = (Get-Item $path).LastWriteTime.Date -ne (Get-Date).Date
-  }
-  if ($precisaBaixar -and -not $NoDownload) {
-    $tmp = "$path.tmp"
-    try {
-      Invoke-WebRequest -Uri $url -OutFile $tmp -TimeoutSec 300 -UseBasicParsing
-      Move-Item $tmp $path -Force
-    } catch {
-      Write-Host "    AVISO: nao consegui baixar cad_fi.csv ($($_.Exception.Message))." -ForegroundColor Yellow
-      if (Test-Path $tmp) { Remove-Item $tmp -Force }
-      if (-not (Test-Path $path)) { throw "cad_fi.csv indisponivel e sem cache local em $path" }
-    }
-  }
-
-  $lines = [System.IO.File]::ReadAllLines($path, [System.Text.Encoding]::GetEncoding('latin1'))
-  if ($lines.Count -lt 2) { throw "cad_fi.csv vazio ou invalido em $path" }
-  $sep = if ($lines[0] -match ';') { ';' } else { ',' }
-  $hdr = $lines[0].Split($sep) | ForEach-Object { $_.Trim().Trim('"') }
-
-  $iFundo  = Find-ColIndex $hdr '(?i)cnpj.*(fundo|classe)' '(?i)gestor'
-  if ($iFundo -lt 0) { $iFundo = Find-ColIndex $hdr '(?i)cnpj' '(?i)gestor' }
-  $iGestor = Find-ColIndex $hdr '(?i)cnpj.*gestor'
-  if ($iGestor -lt 0) { $iGestor = Find-ColIndex $hdr '(?i)gestor.*cnpj' }
-  if ($iFundo -lt 0 -or $iGestor -lt 0) { throw "cad_fi.csv: nao achei colunas de CNPJ_FUNDO e CNPJ_GESTOR. Cabecalho: $($hdr -join ', ')" }
-
+# Combina os mapas: para cada CNPJ_FUNDO -> CNPJ_GESTOR (aba Fundos_*), resolve o Apelido
+# via Cadastro_Gestores. Retorna @{ map = (fundoCnpj -> apelido); semGestorCadastrado = N }
+function Build-FundoApelidoMap($fundoGestorMap, $gestorApelidoMap) {
   $map = @{}
-  for ($i = 1; $i -lt $lines.Count; $i++) {
-    $line = $lines[$i]; if ($line.Trim() -eq '') { continue }
-    $cols = $line.Split($sep)
-    if ($cols.Count -le [Math]::Max($iFundo, $iGestor)) { continue }
-    $cnpjFundo  = NormCNPJ ($cols[$iFundo].Trim().Trim('"'))
-    $cnpjGestor = NormCNPJ ($cols[$iGestor].Trim().Trim('"'))
-    if ($cnpjFundo -ne '' -and $cnpjGestor -ne '') { $map[$cnpjFundo] = $cnpjGestor }
-  }
-  return $map
-}
-
-# Combina os 3 mapas: para cada CNPJ_FUNDO do set, acha o gestor via cad_fi.csv e o apelido via Cadastro_Gestores.
-# Retorna @{ map = (fundoCnpj -> apelido); semCadFi = N; semGestorCadastrado = N }
-function Build-FundoApelidoMap($fundoCnpjSet, $cadFiMap, $gestorApelidoMap) {
-  $map = @{}
-  $semCadFi = 0
   $semGestorCadastrado = 0
-  foreach ($cnpjFundo in $fundoCnpjSet) {
-    if (-not $cadFiMap.ContainsKey($cnpjFundo)) { $semCadFi++; continue }
-    $cnpjGestor = $cadFiMap[$cnpjFundo]
-    if (-not $gestorApelidoMap.ContainsKey($cnpjGestor)) { $semGestorCadastrado++; continue }
+  $gestoresFaltando = @{}
+  foreach ($cnpjFundo in $fundoGestorMap.Keys) {
+    $cnpjGestor = $fundoGestorMap[$cnpjFundo]
+    if (-not $gestorApelidoMap.ContainsKey($cnpjGestor)) {
+      $semGestorCadastrado++
+      $gestoresFaltando[$cnpjGestor] = $true
+      continue
+    }
     $map[$cnpjFundo] = $gestorApelidoMap[$cnpjGestor]
   }
-  return @{ map = $map; semCadFi = $semCadFi; semGestorCadastrado = $semGestorCadastrado }
+  return @{ map = $map; semGestorCadastrado = $semGestorCadastrado; gestoresFaltando = $gestoresFaltando.Keys }
 }
