@@ -87,6 +87,7 @@ export function periodBounds(rows) {
 export function startForMonths(rows, months) {
   if (!rows || !rows.length || months == null) return null
   const max = rows[rows.length - 1].weekDate
+  if (months === '1w') return new Date(max)
   const d = new Date(max)
   d.setMonth(d.getMonth() - months)
   return d

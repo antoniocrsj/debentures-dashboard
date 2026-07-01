@@ -1,6 +1,7 @@
 import SearchSelect from '../SearchSelect.jsx'
 
 const SHORTCUTS = [
+  { months: '1w', label: '1 semana', short: '1s' },
   { months: 1,  label: '1 mês',  short: '1m' },
   { months: 3,  label: '3 meses', short: '3m' },
   { months: 6,  label: '6 meses', short: '6m' },
@@ -66,9 +67,10 @@ export default function FluxoFilters({
                   onClick={() => onMonths(months === s.months && s.months !== null ? null : s.months)}
                   disabled={disabled}
                   aria-pressed={active}
+                  aria-label={s.label}
                   title={s.label}
                 >
-                  {compact ? s.short : s.label}
+                  {s.months === '1w' || compact ? s.short : s.label}
                 </button>
               )
             })}
