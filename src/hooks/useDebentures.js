@@ -85,7 +85,9 @@ export function useDebentures(blcUrl) {
     setState(s => ({ ...s, loading: !fresh, refreshing: !!fresh, raw: fresh ?? s.raw }))
 
     Promise.all([
-      fetchCSV(`${CADASTRO_URL}?sheet=Cadastro_Emissores`),
+      // nocache=1: evita o cache de 6h do Apps Script — edições no Cadastro_Emissores
+      // aparecem no próximo load (o app já tem seu próprio cache local de 4h por cima).
+      fetchCSV(`${CADASTRO_URL}?sheet=Cadastro_Emissores&nocache=1`),
       fetchCSV(DEB_URL),
       fetchStaticCSV(STATIC_BLC_URL),
       // ANBIMA e PL_Gestores sao opcionais: se faltar/quebrar, o app segue sem essas colunas.

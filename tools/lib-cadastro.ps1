@@ -68,7 +68,9 @@ function Find-ColIndex($headers, [string]$mustMatch, [string]$mustNotMatch = $nu
 # Busca uma aba de fundos (Fundos_12431 / Fundos_CDI) e retorna hashtable:
 #   CNPJ_FUNDO_CLASSE(norm) -> CNPJ_GESTOR(norm)
 function Get-FundosGestorMap([string]$cadastroUrl, [string]$sheetName) {
-  $body = Get-GasBody "${cadastroUrl}?sheet=$sheetName"
+  # nocache=1: scripts rodam raramente (semanal/mensal) e precisam sempre do dado
+  # mais recente da planilha, sem esperar o cache de 6h do Apps Script expirar.
+  $body = Get-GasBody "${cadastroUrl}?sheet=$sheetName&nocache=1"
   $parsed = ConvertFrom-GasCsv $body
 
   # Coluna do CNPJ do fundo: cita fundo/classe (e nao gestor); senao o 1o cnpj que nao e' gestor.
@@ -93,7 +95,7 @@ function Get-FundosGestorMap([string]$cadastroUrl, [string]$sheetName) {
 
 # Busca a aba Cadastro_Gestores e retorna hashtable: CNPJ_GESTOR(norm) -> Apelido Gestor.
 function Get-GestorApelidoMap([string]$cadastroUrl, [string]$sheetName = 'Cadastro_Gestores') {
-  $body = Get-GasBody "${cadastroUrl}?sheet=$sheetName"
+  $body = Get-GasBody "${cadastroUrl}?sheet=$sheetName&nocache=1"
   $parsed = ConvertFrom-GasCsv $body
   $iCnpj = Find-ColIndex $parsed.headers '(?i)cnpj'
   $iApl  = Find-ColIndex $parsed.headers '(?i)apelido'
