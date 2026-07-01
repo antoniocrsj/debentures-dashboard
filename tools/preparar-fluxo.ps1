@@ -99,20 +99,25 @@ function WeekStart([datetime]$date) {
 }
 
 # ─── Merge incremental ────────────────────────────────────────────────────────
-# Mescla historico do CSV antigo (antes do periodo reprocessado) com o CSV novo.
+# Mescla historico do CSV antigo (fora do periodo reprocessado) com o CSV novo.
+#
+# Regra: mantem uma linha antiga SE E SOMENTE SE a sua chave (semana ou mes) nao
+# foi recalculada nesta rodada (nao esta em $newKeys). Isso evita 2 problemas de
+# uma versao anterior baseada em corte de data:
+#   1. Nao duplica linhas (uma chave nunca vem de "antigo" E "novo" ao mesmo tempo).
+#   2. A semana que atravessa a fronteira do mes mais antigo reprocessado (quando
+#      esse mes nao comeca numa segunda-feira) e' removida do calculo novo ANTES
+#      de chegar aqui (ver bloco logo abaixo) — como ela nao esta em $newKeys,
+#      o valor antigo (completo, de um run anterior) e' preservado automaticamente
+#      em vez de ser sobrescrito por um recalculo incompleto.
 
-function Merge-Semanal($oldLines, $outFile, $processedMeses) {
+function Merge-Semanal($oldLines, $outFile, $newKeys) {
   if ($oldLines.Count -lt 2) { return }
-  $sorted = $processedMeses | Sort-Object
-  # Mantemos apenas semanas onde a segunda-feira termina antes do 1o mes processado.
-  $cutoff = [datetime]::ParseExact($sorted[0] + '01', 'yyyyMMdd', $null).AddDays(-6)
-
   $kept = [System.Collections.Generic.List[string]]::new()
   for ($i = 1; $i -lt $oldLines.Count; $i++) {
     $line = $oldLines[$i]; if ($line.Trim() -eq '') { continue }
     $weekStr = $line.Split(',')[0].Trim('"')
-    $d = [datetime]::MinValue
-    if ([datetime]::TryParse($weekStr, [ref]$d) -and $d -lt $cutoff) { $kept.Add($line) }
+    if (-not $newKeys.Contains($weekStr)) { $kept.Add($line) }
   }
   if ($kept.Count -eq 0) { return }
 
@@ -128,16 +133,13 @@ function Merge-Semanal($oldLines, $outFile, $processedMeses) {
   Write-Host "    +$($kept.Count) linhas historicas mescladas." -ForegroundColor DarkGray
 }
 
-function Merge-Mensal($oldLines, $outFile, $processedMeses) {
+function Merge-Mensal($oldLines, $outFile, $newKeys) {
   if ($oldLines.Count -lt 2) { return }
-  $sorted = $processedMeses | Sort-Object
-  $cutoffYM = $sorted[0].Substring(0,4) + '-' + $sorted[0].Substring(4,2)
-
   $kept = [System.Collections.Generic.List[string]]::new()
   for ($i = 1; $i -lt $oldLines.Count; $i++) {
     $line = $oldLines[$i]; if ($line.Trim() -eq '') { continue }
     $mesStr = $line.Split(',')[0].Trim('"')
-    if ($mesStr -lt $cutoffYM) { $kept.Add($line) }
+    if (-not $newKeys.Contains($mesStr)) { $kept.Add($line) }
   }
   if ($kept.Count -eq 0) { return }
 
@@ -248,6 +250,26 @@ foreach ($mes in $Meses) {
   }
 }
 
+# No modo incremental, se o mes mais antigo reprocessado nao comeca numa
+# segunda-feira, a semana que atravessa essa fronteira fica incompleta (faltam
+# os dias do mes anterior, que nao foi reprocessado). Removemos essa semana do
+# calculo novo: o merge abaixo preserva o valor antigo (completo) dela, se
+# existir; senao fica uma lacuna (melhor que um numero errado), que se
+# autocorrige no proximo run completo (sem -Incremental).
+if ($Incremental) {
+  $earliestMes = ($Meses | Sort-Object)[0]
+  $earliestFirstDay = [datetime]::ParseExact($earliestMes + '01', 'yyyyMMdd', $null)
+  $boundaryWeek = WeekStart $earliestFirstDay
+  if ($boundaryWeek -ne $earliestFirstDay) {
+    $boundaryKey = $boundaryWeek.ToString('yyyy-MM-dd')
+    foreach ($tipo in @('12431', 'trad')) {
+      $keysToRemove = @($agg[$tipo].Keys | Where-Object { $_.StartsWith("$boundaryKey|") })
+      foreach ($k in $keysToRemove) { $agg[$tipo].Remove($k) }
+    }
+    Write-Host "    Semana de fronteira ($boundaryKey) incompleta — mantido valor anterior (se houver)." -ForegroundColor DarkYellow
+  }
+}
+
 # 4. Escreve as bases
 function Write-Base($tipo, $outFile) {
   $sb = New-Object System.Text.StringBuilder
@@ -310,10 +332,19 @@ $nMesTrad  = Write-BaseMensal 'trad'  $outMesTrad
 
 if ($Incremental) {
   Step "Mesclando com historico existente..."
-  Merge-Semanal $oldSem12431      $out12431    $Meses
-  Merge-Semanal $oldSemTrad       $outTrad     $Meses
-  Merge-Mensal  $oldMes12431Lines $outMes12431 $Meses
-  Merge-Mensal  $oldMesTradLines  $outMesTrad  $Meses
+  $newWeek12431 = New-Object System.Collections.Generic.HashSet[string]
+  $agg['12431'].Keys | ForEach-Object { [void]$newWeek12431.Add(($_ -split '\|', 2)[0]) }
+  $newWeekTrad = New-Object System.Collections.Generic.HashSet[string]
+  $agg['trad'].Keys | ForEach-Object { [void]$newWeekTrad.Add(($_ -split '\|', 2)[0]) }
+  $newMonth12431 = New-Object System.Collections.Generic.HashSet[string]
+  $aggMonth['12431'].Keys | ForEach-Object { [void]$newMonth12431.Add(($_ -split '\|', 2)[0]) }
+  $newMonthTrad = New-Object System.Collections.Generic.HashSet[string]
+  $aggMonth['trad'].Keys | ForEach-Object { [void]$newMonthTrad.Add(($_ -split '\|', 2)[0]) }
+
+  Merge-Semanal $oldSem12431      $out12431    $newWeek12431
+  Merge-Semanal $oldSemTrad       $outTrad     $newWeekTrad
+  Merge-Mensal  $oldMes12431Lines $outMes12431 $newMonth12431
+  Merge-Mensal  $oldMesTradLines  $outMesTrad  $newMonthTrad
 }
 
 # 5. PL_Gestores.csv — PL mais recente por gestor (12431 + Trad somados), consumido pela aba Gestores do app.
