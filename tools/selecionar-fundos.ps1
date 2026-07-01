@@ -142,10 +142,22 @@ if ($semApelido.Count -gt 0) {
 Step "Comparando com Fundos_12431 / Fundos_CDI atuais..."
 $fg12431Atual = Get-FundosGestorMap $CadastroUrl 'Fundos_12431'
 $fgCdiAtual   = Get-FundosGestorMap $CadastroUrl 'Fundos_CDI'
+Step "  Fundos_12431: $($fg12431Atual.map.Count) | Fundos_CDI: $($fgCdiAtual.map.Count)"
+
+# As duas abas devem ser complementares (mutuamente exclusivas). Um CNPJ nas
+# duas ao mesmo tempo e' um erro de curadoria manual na planilha -- avisa
+# explicitamente, pois um HashSet uniao (abaixo) esconderia isso silenciosamente.
+$duplicados = @($fg12431Atual.map.Keys | Where-Object { $fgCdiAtual.map.ContainsKey($_) })
+if ($duplicados.Count -gt 0) {
+  Write-Host "    ERRO: $($duplicados.Count) fundo(s) presente(s) em Fundos_12431 E Fundos_CDI ao mesmo tempo:" -ForegroundColor Red
+  Write-Host "      $($duplicados -join ', ')" -ForegroundColor Red
+  Write-Host "      Corrija na planilha antes de aplicar as sugestoes abaixo." -ForegroundColor Red
+}
+
 $atuais = New-Object System.Collections.Generic.HashSet[string]
 $fg12431Atual.map.Keys | ForEach-Object { [void]$atuais.Add($_) }
 $fgCdiAtual.map.Keys   | ForEach-Object { [void]$atuais.Add($_) }
-Step "  $($atuais.Count) fundos nas abas atuais"
+Step "  $($atuais.Count) fundos distintos nas abas atuais"
 
 $qualificadosSet = New-Object System.Collections.Generic.HashSet[string]
 $candidatos | ForEach-Object { [void]$qualificadosSet.Add($_.Cnpj) }
@@ -182,6 +194,9 @@ foreach ($cnpj in ($removerCnpjs | Sort-Object)) {
 # ---- 7. Relatorio -----------------------------------------------------------
 Write-Host ""
 Write-Host "=== RELATORIO ===" -ForegroundColor Green
+if ($duplicados.Count -gt 0) {
+  Write-Host "  ATENCAO: $($duplicados.Count) fundo(s) duplicado(s) entre Fundos_12431 e Fundos_CDI (ver acima)" -ForegroundColor Red
+}
 Write-Host "  Fundos qualificados no CDA atual  : $($candidatos.Count) (12431: $n12431 | Tradicional: $nCdi)"
 Write-Host "  Novos (nao estao nas abas hoje)    : $($novos.Count)"
 Write-Host "  Para remover (nao qualificam mais) : $($removerCnpjs.Count)"
