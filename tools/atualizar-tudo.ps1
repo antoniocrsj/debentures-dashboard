@@ -2,17 +2,17 @@
   atualizar-tudo.ps1
   --------------------------------------------------------------------------
   Fluxo de 1 clique para atualizar as bases publicas do app com seguranca:
-    1. Atualiza Captacao sempre (incremental).
-    2. Atualiza o cadastro de debentures sempre.
-    3. Atualiza BLC somente se o mes-alvo ainda nao estiver registrado.
-    4. Tenta atualizar ANBIMA, mas nao trava tudo se falhar.
-    5. Mostra resumo.
-    6. Pergunta se deve publicar agora.
-
-  Este script nao aplica Sugestao_Novos/Remover e nao altera Fundos_12431/CDI.
+    1. Avalia a lista de fundos 12431/CDI e so aplica se confirmado.
+    2. Atualiza Captacao sempre (incremental).
+    3. Atualiza o cadastro de debentures sempre.
+    4. Atualiza BLC somente se o mes-alvo ainda nao estiver registrado.
+    5. Tenta atualizar ANBIMA, mas nao trava tudo se falhar.
+    6. Mostra resumo.
+    7. Pergunta se deve publicar agora.
 #>
 
 param(
+  [switch]$SkipFundos,
   [switch]$ForceBlc,
   [switch]$SkipAnbima,
   [switch]$NoPublishPrompt
@@ -27,6 +27,7 @@ $BlcMetaPath = Join-Path $PublicDir 'BLC_meta.json'
 . (Join-Path $PSScriptRoot 'lib-cadastro.ps1')
 
 $summary = [ordered]@{
+  Fundos   = 'nao executado'
   Captacao = 'nao executado'
   Debentures = 'nao executado'
   BLC      = 'nao executado'
@@ -73,8 +74,8 @@ function Write-BlcMeta([string]$mesAno) {
   [System.IO.File]::WriteAllText($BlcMetaPath, $json + "`r`n", $utf8)
 }
 
-function Get-PublicStatus {
-  $lines = & git -C $Root status --short -- public/
+function Get-PublishStatus {
+  $lines = & git -C $Root status --short -- public/ tools/Fundos_12431.csv tools/Fundos_CDI.csv
   if ($LASTEXITCODE -ne 0) { throw "git status falhou" }
   return @($lines | Where-Object { $_ -and $_.Trim() -ne '' })
 }
@@ -218,12 +219,144 @@ function Get-AnbimaMetrics {
 
 function Get-DataSnapshot {
   return [pscustomobject]@{
+    Fundos        = Get-FundosMetrics
     Captacao12431 = Get-CaptacaoMetrics 'data\Fluxo_Semanal_12431.csv'
     CaptacaoTrad  = Get-CaptacaoMetrics 'data\Fluxo_Semanal_Trad.csv'
     Debentures    = Get-DebenturesMetrics
     BLC           = Get-BlcMetrics
     ANBIMA        = Get-AnbimaMetrics
   }
+}
+
+function Read-FundosRows([string]$path, [string]$segmento) {
+  if (-not (Test-Path $path)) { return @() }
+  $lines = @(Read-AllLinesShared $path ([System.Text.Encoding]::UTF8) | Where-Object { $_.Trim() -ne '' })
+  if ($lines.Count -lt 1) { return @() }
+
+  $hdr = Split-CsvLine $lines[0]
+  $iFundo = Find-ColIndex $hdr '(?i)cnpj.*(fundo|classe)' '(?i)gestor'
+  if ($iFundo -lt 0) { $iFundo = Find-ColIndex $hdr '(?i)cnpj' '(?i)gestor' }
+  $iGestor = Find-ColIndex $hdr '(?i)cnpj.*gestor'
+  if ($iGestor -lt 0) { $iGestor = Find-ColIndex $hdr '(?i)gestor.*cnpj' }
+  $iDenom = Find-ColIndex $hdr '(?i)denom'
+  if ($iFundo -lt 0) { throw "$path`: coluna CNPJ_FUNDO_CLASSE nao encontrada." }
+
+  $rows = New-Object System.Collections.Generic.List[object]
+  for ($i = 1; $i -lt $lines.Count; $i++) {
+    $cols = Split-CsvLine $lines[$i]
+    if ($cols.Count -le $iFundo) { continue }
+    $cnpj = NormCNPJ $cols[$iFundo]
+    if ($cnpj -eq '') { continue }
+    $denom = if ($iDenom -ge 0 -and $cols.Count -gt $iDenom) { ([string]$cols[$iDenom]).Trim() } else { '' }
+    $gestor = if ($iGestor -ge 0 -and $cols.Count -gt $iGestor) { NormCNPJ $cols[$iGestor] } else { '' }
+    $rows.Add([pscustomobject]@{ Cnpj=$cnpj; Denom=$denom; CnpjGestor=$gestor; Segmento=$segmento })
+  }
+  return $rows.ToArray()
+}
+
+function Get-FundosMetricsFromFiles([string]$path12431, [string]$pathCdi) {
+  $rows12431 = @(Read-FundosRows $path12431 '12431')
+  $rowsCdi = @(Read-FundosRows $pathCdi 'CDI')
+  $rows = @($rows12431 + $rowsCdi)
+
+  $segmentMap = @{}
+  $rowMap = @{}
+  $duplicados = New-Object System.Collections.Generic.List[string]
+  foreach ($r in $rows) {
+    if ($segmentMap.ContainsKey($r.Cnpj)) {
+      $duplicados.Add($r.Cnpj)
+    }
+    $segmentMap[$r.Cnpj] = $r.Segmento
+    $rowMap[$r.Cnpj] = $r
+  }
+
+  $gestores = @($rows | ForEach-Object { $_.CnpjGestor } | Where-Object { $_ } | Sort-Object -Unique)
+  $semGestor = @($rows | Where-Object { -not $_.CnpjGestor })
+  return [pscustomobject]@{
+    Rows=@($rows)
+    RowMap=$rowMap
+    SegmentMap=$segmentMap
+    Total=$segmentMap.Count
+    Fundos12431=$rows12431.Count
+    FundosCdi=$rowsCdi.Count
+    Gestores=$gestores.Count
+    SemGestor=$semGestor.Count
+    Duplicados=@($duplicados | Sort-Object -Unique)
+  }
+}
+
+function Get-FundosMetrics {
+  return Get-FundosMetricsFromFiles `
+    (Join-Path $PSScriptRoot 'Fundos_12431.csv') `
+    (Join-Path $PSScriptRoot 'Fundos_CDI.csv')
+}
+
+function Get-FundosSuggestionMetrics {
+  $path12431 = Join-Path $PSScriptRoot 'Sugestao_Lista_Final_12431.csv'
+  $pathCdi = Join-Path $PSScriptRoot 'Sugestao_Lista_Final_CDI.csv'
+  if (-not (Test-Path $path12431) -or -not (Test-Path $pathCdi)) {
+    throw "selecionar-fundos.ps1 nao gerou as listas finais esperadas."
+  }
+  $metrics = Get-FundosMetricsFromFiles $path12431 $pathCdi
+  if ($metrics.Total -eq 0) {
+    throw "listas finais de fundos vieram vazias."
+  }
+  return $metrics
+}
+
+function Get-FundosDiff($before, $after) {
+  $novos = @(@($after.Rows) | Where-Object { -not $before.RowMap.ContainsKey($_.Cnpj) })
+  $removidos = @(@($before.Rows) | Where-Object { -not $after.RowMap.ContainsKey($_.Cnpj) })
+  $mudaram = @(@($after.Rows) | Where-Object {
+    $before.RowMap.ContainsKey($_.Cnpj) -and $before.RowMap[$_.Cnpj].Segmento -ne $_.Segmento
+  })
+  $alterados = @(@($after.Rows) | Where-Object {
+    $before.RowMap.ContainsKey($_.Cnpj) -and (
+      $before.RowMap[$_.Cnpj].Segmento -ne $_.Segmento -or
+      $before.RowMap[$_.Cnpj].CnpjGestor -ne $_.CnpjGestor -or
+      $before.RowMap[$_.Cnpj].Denom -ne $_.Denom
+    )
+  })
+  return [pscustomobject]@{ Novos=$novos; Removidos=$removidos; Mudaram=$mudaram; Alterados=$alterados }
+}
+
+function Test-FundosSame($before, $after) {
+  if ($before.Total -ne $after.Total) { return $false }
+  $diff = Get-FundosDiff $before $after
+  return ($diff.Novos.Count -eq 0 -and $diff.Removidos.Count -eq 0 -and $diff.Alterados.Count -eq 0)
+}
+
+function Format-FundosSample($rows) {
+  $sample = @(@($rows) | Select-Object -First 10 | ForEach-Object {
+    $nome = if ($_.Denom) { $_.Denom } else { $_.Cnpj }
+    "{0}: {1}" -f $_.Segmento, $nome
+  })
+  if ($sample.Count -eq 0) { return @() }
+  return $sample
+}
+
+function Write-FundosCompare($before, $after) {
+  Write-Host ""
+  Write-Host "Lista de Fundos 12431/CDI" -ForegroundColor White
+  Write-CompareLine 'Fundos distintos' $before.Total $after.Total 'count'
+  Write-CompareLine 'Fundos 12431' $before.Fundos12431 $after.Fundos12431 'count'
+  Write-CompareLine 'Fundos CDI' $before.FundosCdi $after.FundosCdi 'count'
+  Write-CompareLine 'Gestores informados' $before.Gestores $after.Gestores 'count'
+  Write-CompareLine 'Fundos sem CNPJ Gestor' $before.SemGestor $after.SemGestor 'count'
+  Write-CompareLine 'Duplicados entre listas' $before.Duplicados.Count $after.Duplicados.Count 'count'
+
+  $diff = Get-FundosDiff $before $after
+  Write-Host ("  Novos fundos: {0}" -f (Format-Count $diff.Novos.Count))
+  foreach ($x in (Format-FundosSample $diff.Novos)) { Write-Host "    $x" -ForegroundColor Yellow }
+  Write-Host ("  Fundos removidos: {0}" -f (Format-Count $diff.Removidos.Count))
+  foreach ($x in (Format-FundosSample $diff.Removidos)) { Write-Host "    $x" -ForegroundColor Yellow }
+  Write-Host ("  Mudaram de lista: {0}" -f (Format-Count $diff.Mudaram.Count))
+  foreach ($x in (Format-FundosSample $diff.Mudaram)) { Write-Host "    $x" -ForegroundColor Yellow }
+}
+
+function Apply-FundosSuggestion {
+  Copy-Item -Path (Join-Path $PSScriptRoot 'Sugestao_Lista_Final_12431.csv') -Destination (Join-Path $PSScriptRoot 'Fundos_12431.csv') -Force
+  Copy-Item -Path (Join-Path $PSScriptRoot 'Sugestao_Lista_Final_CDI.csv') -Destination (Join-Path $PSScriptRoot 'Fundos_CDI.csv') -Force
 }
 
 function Format-Count($v) {
@@ -339,6 +472,7 @@ function Write-AnbimaCompare($before, $after) {
 function Write-ImpactReport($before, $after) {
   Write-Host ""
   Write-Host "=== IMPACTO DA ATUALIZACAO (ANTES -> DEPOIS) ===" -ForegroundColor Green
+  Write-FundosCompare $before.Fundos $after.Fundos
   Write-CaptacaoCompare 'Incentivado 12.431' $before.Captacao12431 $after.Captacao12431
   Write-CaptacaoCompare 'Credito Tradicional' $before.CaptacaoTrad $after.CaptacaoTrad
   Write-DebenturesCompare $before.Debentures $after.Debentures
@@ -352,8 +486,53 @@ Write-Host "Pasta: $Root"
 
 $snapshotBefore = Get-DataSnapshot
 
-# 1. Captacao sempre
-Step "1/6 Captacao"
+# 1. Lista de fundos 12431/CDI: avalia sempre, aplica so com confirmacao.
+Step "1/7 Lista de Fundos 12431/CDI"
+if ($SkipFundos) {
+  $summary.Fundos = 'PULADO por parametro -SkipFundos'
+  Warn $summary.Fundos
+} else {
+  try {
+    & (Join-Path $PSScriptRoot 'selecionar-fundos.ps1')
+    $fundosAtuais = Get-FundosMetrics
+    $fundosSugeridos = Get-FundosSuggestionMetrics
+
+    Write-Host ""
+    Write-Host "=== IMPACTO SUGERIDO NA LISTA DE FUNDOS ===" -ForegroundColor Green
+    Write-FundosCompare $fundosAtuais $fundosSugeridos
+
+    if ($fundosSugeridos.Duplicados.Count -gt 0) {
+      $summary.Fundos = "BLOQUEADO: sugestao tem $($fundosSugeridos.Duplicados.Count) duplicado(s)"
+      Warn "$($summary.Fundos). Vou seguir com a lista atual."
+    } elseif (Test-FundosSame $fundosAtuais $fundosSugeridos) {
+      $summary.Fundos = 'sem alteracoes sugeridas'
+      Ok $summary.Fundos
+    } else {
+      $applyFundos = 'N'
+      if ($NoPublishPrompt) {
+        $applyFundos = 'N'
+      } else {
+        $applyFundos = Read-Host "Aplicar lista sugerida de fundos agora? (S/N)"
+      }
+
+      if ($applyFundos -match '^(?i)s') {
+        Apply-FundosSuggestion
+        $fundosDepois = Get-FundosMetrics
+        $summary.Fundos = "OK (12431: $($fundosDepois.Fundos12431) | CDI: $($fundosDepois.FundosCdi))"
+        Ok "Lista de fundos aplicada."
+      } else {
+        $summary.Fundos = 'nao aplicada por escolha do usuario'
+        Warn "Vou seguir com a lista atual."
+      }
+    }
+  } catch {
+    $summary.Fundos = "FALHOU sem travar: $($_.Exception.Message)"
+    Warn "$($summary.Fundos). Vou seguir com a lista atual."
+  }
+}
+
+# 2. Captacao sempre
+Step "2/7 Captacao"
 try {
   & (Join-Path $PSScriptRoot 'preparar-fluxo.ps1') -Incremental
   $summary.Captacao = 'OK'
@@ -364,8 +543,8 @@ try {
   throw "Interrompido: Captacao e a atualizacao principal."
 }
 
-# 2. Cadastro de debentures sempre
-Step "2/6 Cadastro de Debentures"
+# 3. Cadastro de debentures sempre
+Step "3/7 Cadastro de Debentures"
 try {
   & (Join-Path $PSScriptRoot 'preparar-debentures.ps1')
   $summary.Debentures = 'OK'
@@ -376,8 +555,8 @@ try {
   throw "Interrompido: cadastro de debentures falhou."
 }
 
-# 3. BLC se necessario
-Step "3/6 BLC / Alocacao"
+# 4. BLC se necessario
+Step "4/7 BLC / Alocacao"
 $targetMonth = Get-CdaTargetMonth
 $meta = Read-BlcMeta
 $blcFile = Join-Path $PublicDir 'BLC_tratado.csv'
@@ -405,8 +584,8 @@ if ($blcAlreadyCurrent) {
   }
 }
 
-# 4. ANBIMA opcional
-Step "4/6 ANBIMA"
+# 5. ANBIMA opcional
+Step "5/7 ANBIMA"
 if ($SkipAnbima) {
   $summary.ANBIMA = 'PULADO por parametro -SkipAnbima'
   Warn $summary.ANBIMA
@@ -421,8 +600,8 @@ if ($SkipAnbima) {
   }
 }
 
-# 5. Resumo
-Step "5/6 Resumo"
+# 6. Resumo
+Step "6/7 Resumo"
 $snapshotAfter = Get-DataSnapshot
 Write-ImpactReport $snapshotBefore $snapshotAfter
 
@@ -433,18 +612,18 @@ foreach ($k in $summary.Keys) {
   Write-Host ("  {0}: {1}" -f $k, $summary[$k])
 }
 
-$publicStatus = Get-PublicStatus
+$publishStatus = Get-PublishStatus
 Write-Host ""
-Write-Host "Arquivos alterados em public/:"
-if ($publicStatus.Count -eq 0) {
-  Write-Host "  (nenhuma alteracao em public/)" -ForegroundColor DarkGray
+Write-Host "Arquivos alterados para publicar:"
+if ($publishStatus.Count -eq 0) {
+  Write-Host "  (nenhuma alteracao em public/ ou tools/Fundos_*.csv)" -ForegroundColor DarkGray
 } else {
-  $publicStatus | ForEach-Object { Write-Host "  $_" -ForegroundColor Yellow }
+  $publishStatus | ForEach-Object { Write-Host "  $_" -ForegroundColor Yellow }
 }
 
-# 6. Publicacao
-Step "6/6 Publicacao"
-if ($publicStatus.Count -eq 0) {
+# 7. Publicacao
+Step "7/7 Publicacao"
+if ($publishStatus.Count -eq 0) {
   $summary.Publicacao = 'nada para publicar'
   Ok $summary.Publicacao
 } else {
@@ -457,8 +636,8 @@ if ($publicStatus.Count -eq 0) {
 
   if ($publish -match '^(?i)s') {
     try {
-      & git -C $Root add public/
-      if ($LASTEXITCODE -ne 0) { throw "git add public/ falhou" }
+      & git -C $Root add public/ tools/Fundos_12431.csv tools/Fundos_CDI.csv
+      if ($LASTEXITCODE -ne 0) { throw "git add falhou" }
 
       & git -C $Root commit -m "Atualiza dados"
       if ($LASTEXITCODE -ne 0) { throw "git commit falhou" }

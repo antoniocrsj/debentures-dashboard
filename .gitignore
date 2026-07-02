@@ -11,3 +11,6 @@ dist
 dados-anbima/input/
 dados-anbima/output/
 dados-anbima/logs/
+
+# Saidas temporarias da revisao de Fundos_12431/Fundos_CDI
+tools/Sugestao_*.csv
