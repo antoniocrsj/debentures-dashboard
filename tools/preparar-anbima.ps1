@@ -71,7 +71,11 @@ function Parse-NumPt($s) {
   if ($s -is [double] -or $s -is [int] -or $s -is [long] -or $s -is [decimal] -or $s -is [single]) { return [double]$s }
   $t = ([string]$s).Trim()
   if ($t -eq '' -or $t -eq '--' -or $t -eq '-' -or $t -match '^(?i)n/?d$' -or $t -match '^(?i)n/?a$') { return $null }
-  $t = $t -replace '\.', '' -replace ',', '.'   # 1.234,56 -> 1234.56  (e 14,30 -> 14.30)
+  if ($t -match ',') {
+    $t = $t -replace '\.', '' -replace ',', '.'   # 1.234,56 -> 1234.56  (e 14,30 -> 14.30)
+  } elseif (($t.ToCharArray() | Where-Object { $_ -eq '.' }).Count -gt 1) {
+    $t = $t -replace '\.', ''                     # 1.234.567 -> 1234567
+  }
   $out = 0.0
   if ([double]::TryParse($t, [System.Globalization.NumberStyles]::Any, $ci, [ref]$out)) { return $out }
   return $null
@@ -114,12 +118,154 @@ function Is-Ole2($path) {
   try { $b = New-Object byte[] 8; [void]$fs.Read($b,0,8) } finally { $fs.Close() }
   return ($b[0] -eq 0xD0 -and $b[1] -eq 0xCF -and $b[2] -eq 0x11 -and $b[3] -eq 0xE0)
 }
+function B64Url($bytes) {
+  return [Convert]::ToBase64String($bytes).TrimEnd('=').Replace('+','-').Replace('/','_')
+}
+function New-AnbimaDataJwt {
+  $secret = 'Sx!RNAMs@TXN_d!v9e*B%bPG-+AB%DZv9tq@TuFB'
+  $header = B64Url ([System.Text.Encoding]::UTF8.GetBytes('{"typ":"JWT","alg":"HS256"}'))
+  $payloadObj = [ordered]@{
+    tokenRecaptcha = [guid]::NewGuid().ToString()
+    verificationHashCache = [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
+  }
+  $payload = B64Url ([System.Text.Encoding]::UTF8.GetBytes(($payloadObj | ConvertTo-Json -Compress)))
+  $data = "$header.$payload"
+  $hmac = [System.Security.Cryptography.HMACSHA256]::new([System.Text.Encoding]::UTF8.GetBytes($secret))
+  $sig = B64Url ($hmac.ComputeHash([System.Text.Encoding]::UTF8.GetBytes($data)))
+  return "$data.$sig"
+}
+function Invoke-AnbimaDataApi($path, $query) {
+  $qs = ($query.GetEnumerator() | ForEach-Object {
+    '{0}={1}' -f [uri]::EscapeDataString([string]$_.Key), [uri]::EscapeDataString([string]$_.Value)
+  }) -join '&'
+  $url = "https://data-api.prd.anbima.com.br$path`?$qs"
+  $headers = @{
+    'User-Agent' = 'Mozilla/5.0'
+    'Origin' = 'https://data.anbima.com.br'
+    'Referer' = 'https://data.anbima.com.br/busca/debentures?view=precos'
+    'g-google-authorization' = New-AnbimaDataJwt
+    'Params' = '?view=precos'
+  }
+  $resp = Invoke-WebRequest -Uri $url -UseBasicParsing -Headers $headers -TimeoutSec 60
+  return ($resp.Content | ConvertFrom-Json)
+}
+function Latest-Preco($precos, [string]$wantedDate) {
+  if (-not $precos) { return $null }
+  $best = $null; $bestDate = [DateTime]::MinValue
+  foreach ($p in $precos) {
+    if ($wantedDate -ne '' -and $p.data_referencia -ne $wantedDate) { continue }
+    $d = Cell-ToDate $p.data_referencia
+    if ($null -ne $d -and $d -gt $bestDate) { $bestDate = $d; $best = $p }
+  }
+  return $best
+}
+function Tipo-AnbimaApi($indexador) {
+  $idx = ([string]$indexador).Trim().ToUpperInvariant()
+  if ($idx -eq 'DI+') { return 'DI_SPREAD' }
+  if ($idx -eq 'DI%') { return 'DI_PERCENTUAL' }
+  if ($idx -eq 'IPCA') { return 'IPCA_SPREAD' }
+  if ($idx -match 'PR') { return 'PREFIXADO' }
+  if ($idx -match 'IGP') { return 'IGP-M' }
+  return $idx
+}
+function Load-AnbimaDataApi {
+  $wantedDate = $Data
+  $pageSize = 100
+  $debRows = New-Object System.Collections.Generic.List[object]
+  $first = Invoke-AnbimaDataApi '/web-bff/v1/debentures' ([ordered]@{
+    view='precos'; page=0; size=$pageSize; field='codigo_b3'; order='asc'
+  })
+  $totalPages = [int]$first.total_pages
+  foreach ($x in $first.content) { $debRows.Add($x) }
+  for ($p=1; $p -lt $totalPages; $p++) {
+    $j = Invoke-AnbimaDataApi '/web-bff/v1/debentures' ([ordered]@{
+      view='precos'; page=$p; size=$pageSize; field='codigo_b3'; order='asc'
+    })
+    foreach ($x in $j.content) { $debRows.Add($x) }
+  }
+
+  $tpfRows = New-Object System.Collections.Generic.List[object]
+  $tp = Invoke-AnbimaDataApi '/web-bff/v1/titulos-publicos' ([ordered]@{
+    view='precos'; page=0; size=200; field='data_vencimento'; order='asc'
+  })
+  foreach ($x in $tp.content) { $tpfRows.Add($x) }
+  for ($p=1; $p -lt [int]$tp.total_pages; $p++) {
+    $j = Invoke-AnbimaDataApi '/web-bff/v1/titulos-publicos' ([ordered]@{
+      view='precos'; page=$p; size=200; field='data_vencimento'; order='asc'
+    })
+    foreach ($x in $j.content) { $tpfRows.Add($x) }
+  }
+  return [pscustomobject]@{ Deb=$debRows; Tpf=$tpfRows; First=$first }
+}
 
 Write-Host ""
 Write-Host "=== Preparar Taxas ANBIMA (coluna Tx Anbima) ===" -ForegroundColor Green
 $LogLines.Add("Execucao: " + (Get-Date).ToString('yyyy-MM-dd HH:mm:ss'))
 
+$usedApi = $false
+$apiSource = ''
+$records = New-Object System.Collections.Generic.List[object]
+$dataRefDeb = $null
+$ntnb = @{}
+$ltn  = New-Object System.Collections.Generic.List[object]
+$tpfRef = $null
+
 # ---- 1. Resolver data + localizar/baixar arquivos --------------------------
+if ($DebFile -eq '' -and $TpfFile -eq '') {
+  Step "Aquisicao via ANBIMA Data API"
+  try {
+    $api = Load-AnbimaDataApi
+    $maxDebDate = [DateTime]::MinValue
+    foreach ($x in $api.Deb) {
+      $preco = Latest-Preco $x.precos $Data
+      if ($null -eq $preco) { continue }
+      $pd = Cell-ToDate $preco.data_referencia
+      if ($pd -and $pd -gt $maxDebDate) { $maxDebDate = $pd }
+      $records.Add([pscustomobject]@{
+        Sheet     = Tipo-AnbimaApi $x.indexador
+        Ticker    = Norm-Ticker $x.codigo_b3
+        Nome      = ([string]$x.emissor).Trim()
+        Venc      = Cell-ToDate $x.data_vencimento
+        Indice    = ([string]$x.remuneracao).Trim()
+        TaxaInd   = $preco.taxa_indicativa
+        PU        = $preco.pu_indicativo
+        Duration  = $preco.duration
+        RefNtnb   = ([string]$preco.referencia_ntn_b).Trim()
+      })
+    }
+    if ($maxDebDate -gt [DateTime]::MinValue) { $dataRefDeb = $maxDebDate }
+    $dataRefStr = if ($dataRefDeb) { $dataRefDeb.ToString('yyyy-MM-dd') } else { $Data }
+
+    $maxTpfDate = [DateTime]::MinValue
+    foreach ($x in $api.Tpf) {
+      $preco = Latest-Preco $x.precos $dataRefStr
+      if ($null -eq $preco) { $preco = Latest-Preco $x.precos '' }
+      if ($null -eq $preco) { continue }
+      $taxa = Parse-NumPt $preco.taxa_indicativa
+      $venc = Cell-ToDate $x.data_vencimento
+      $pd = Cell-ToDate $preco.data_referencia
+      if ($pd -and $pd -gt $maxTpfDate) { $maxTpfDate = $pd }
+      if ($null -eq $taxa -or $null -eq $venc) { continue }
+      $tipo = ([string]$x.tipo_titulo).Trim().ToUpperInvariant()
+      if ($tipo -eq 'NTN-B') { $ntnb[$venc.ToString('yyyyMMdd')] = $taxa }
+      elseif ($tipo -eq 'LTN') { $ltn.Add([pscustomobject]@{ Venc=$venc; Taxa=$taxa }) }
+    }
+    if ($maxTpfDate -gt [DateTime]::MinValue) { $tpfRef = $maxTpfDate.ToString('yyyyMMdd') }
+    $apiSource = 'ANBIMA Data API (web-bff)'
+    $usedApi = ($records.Count -gt 0)
+    Log ("Registros lidos: $($records.Count) | Data de referencia (debentures): $dataRefStr")
+    Log ("Titulos publicos API: NTN-B $($ntnb.Count) | LTN $($ltn.Count) | data ref TPF: $tpfRef")
+  } catch {
+    Log ("API ANBIMA Data falhou; usando fallback XLS/TXT antigo. Motivo: " + $_.Exception.Message) 'Yellow'
+    $records.Clear()
+    $ntnb.Clear()
+    $ltn.Clear()
+    $tpfRef = $null
+    $dataRefDeb = $null
+  }
+}
+
+if (-not $usedApi) {
 Step "Aquisicao dos arquivos publicos"
 
 # Caminhos finais dos arquivos brutos (por data)
@@ -214,6 +360,7 @@ if ($resolved.OkTpf -and (Test-Path $resolved.Tpf)) {
 } else {
   Log "Sem arquivo de titulos publicos — IPCA e %CDI ficarao pendentes (—)." 'Yellow'
 }
+}
 function Nearest-LTN([DateTime]$venc) {
   if ($ltn.Count -eq 0) { return $null }
   $best = $null; $bestDiff = [double]::MaxValue
@@ -222,6 +369,7 @@ function Nearest-LTN([DateTime]$venc) {
 }
 
 # ---- 4. Ler debentures via Excel COM --------------------------------------
+if (-not $usedApi) {
 Step "Lendo debentures (.xls via Excel COM)"
 $SHEETS = @('DI_PERCENTUAL','DI_SPREAD','IGP-M','IPCA_SPREAD','PREFIXADO')
 $HEADER_ROW = 8; $DATA_ROW = 10
@@ -268,6 +416,7 @@ try {
 if ($null -eq $dataRefDeb -and $resolved.Date) { $dataRefDeb = $resolved.Date }
 $dataRefStr = if ($dataRefDeb) { $dataRefDeb.ToString('yyyy-MM-dd') } else { '' }
 Log ("Registros lidos: $($records.Count) | Data de referencia (debentures): $dataRefStr")
+}
 
 # ---- 5. Calcular tx por tipo ----------------------------------------------
 Step "Calculando taxas / spreads"
@@ -292,7 +441,7 @@ foreach ($rec in $records) {
     durationAnbimaAnos=$(if($null -ne $durDias){ Fmt-Comma ($durDias / 252.0) 2 }else{''});
     percentualCdiOriginal=''; spreadCdiEquivalente=''; metodologiaConversaoCdi='';
     ntnbReferencia=''; codigoNtnbExibicao=''; taxaNtnbReferencia=''; spreadNtnbBps='';
-    statusCalculoAnbima='ok'; motivoAusenciaAnbima=''; fonteAnbima='ANBIMA Mercado Secundario (publico)'
+    statusCalculoAnbima='ok'; motivoAusenciaAnbima=''; fonteAnbima=$(if($usedApi){$apiSource}else{'ANBIMA Mercado Secundario (publico)'})
   }
   $taxa = Parse-NumPt $rec.TaxaInd
   $o.taxaAnbimaOriginal = $(if ($null -ne $taxa) { Fmt-Comma $taxa 4 } else { '' })
@@ -404,13 +553,15 @@ foreach ($c in $conf) { [void]$cb.AppendLine((@($c.ticker,$c.tipo,$c.status,$c.m
 
 # ---- 8. Relatorio / log ----------------------------------------------------
 $comTaxa = ($out | Where-Object { $_.txAnbimaFormatada -ne '—' }).Count
+$debFonteRel = if ($usedApi) { $apiSource } else { $resolved.Deb }
+$tpfFonteRel = if ($usedApi) { $apiSource } else { $resolved.Tpf }
 $report = @(
   "",
   "=== RELATORIO ANBIMA ===",
   ("Data de referencia (debentures): " + $dataRefStr),
   ("Data de referencia (TPF)       : " + $(if($tpfRef){$tpfRef}else{'(sem TPF)'})),
-  ("Arquivo debentures: " + $resolved.Deb),
-  ("Arquivo TPF       : " + $resolved.Tpf),
+  ("Fonte debentures  : " + $debFonteRel),
+  ("Fonte TPF         : " + $tpfFonteRel),
   ("Registros lidos (debentures)   : " + $records.Count),
   ("Tickers unicos na base ANBIMA  : " + $out.Count),
   ("  DI_SPREAD     : " + $stats.DI_SPREAD),
