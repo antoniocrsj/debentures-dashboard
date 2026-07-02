@@ -58,10 +58,10 @@ Duplo-clique em **`tools\publicar.bat`**.
 
 Faça isto **uma vez por mês**, quando a CVM soltar o CDA novo (carteira dos fundos):
 
-1. Baixe o arquivo **CDA_FI_BLC** do mês no site da CVM (`.xlsx`) e salve na pasta de
-   sempre (`C:\Projeto Crédito\Power BI`).
-2. Duplo-clique em **`tools\preparar-blc.bat`** → gera a base de alocação (~3 min).
-3. Duplo-clique em **`tools\publicar.bat`** → sobe pro ar.
+1. Duplo-clique em **`tools\preparar-blc.bat`** → baixa o CDA direto da CVM (mês mais
+   recente já fechado) e gera a base de alocação (~3 min). Não precisa baixar nada
+   manualmente.
+2. Duplo-clique em **`tools\publicar.bat`** → sobe pro ar.
 
 > Dica: dá pra publicar tudo junto. Se no mesmo dia você rodar **`preparar-fluxo`** e
 > **`preparar-blc`**, basta **um** `publicar.bat` no final — ele sobe as duas bases de uma vez.

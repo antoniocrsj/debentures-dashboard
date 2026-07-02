@@ -169,14 +169,14 @@ npm run preview   # serve o dist/ localmente
 ### Alocação (BLC) — mensal
 É o fluxo principal. Faça **2 cliques**:
 
-1. Baixe o arquivo **CDA_FI_BLC** do mês no site da CVM (`.xlsx`) e salve na pasta de
-   sempre (padrão do script: `C:\Projeto Crédito\Power BI`).
-2. Clique 2× em **`tools\preparar-blc.bat`** → gera o `BLC_tratado.csv` direto em
-   `public/` (~3 min).
-3. Clique 2× em **`tools\publicar.bat`** → sobe pro ar (Vercel atualiza em ~1 min).
+1. Clique 2× em **`tools\preparar-blc.bat`** → baixa o CDA direto da CVM (mês mais
+   recente já fechado, mesma regra de defasagem do `selecionar-fundos.ps1`) e gera o
+   `BLC_tratado.csv` direto em `public/` (~3 min). Não precisa baixar nada manualmente
+   — só se quiser usar um `.xlsx` específico, arraste ele para cima do `.bat`.
+2. Clique 2× em **`tools\publicar.bat`** → sobe pro ar (Vercel atualiza em ~1 min).
 
 > Não precisa abrir terminal nem mexer em planilha. O `preparar-blc` busca o mapa
-> fundo→gestor sozinho no GAS de cadastro.
+> fundo→gestor em `tools\Fundos_12431.csv` / `tools\Fundos_CDI.csv` (local).
 
 ### Cadastros (emissores / fundos / debêntures)
 Esses ficam nas **planilhas do Google**. Edite a planilha normalmente — o Apps Script
@@ -203,14 +203,16 @@ A URL fixa de produção é `https://debentures-dashboard-three.vercel.app`.
 
 ### `tools\preparar-blc.bat`
 Atalho que roda `preparar-blc.ps1` (PowerShell, sem instalar nada). Ele:
-1. Lê o `.xlsx` da CVM (mesmo aberto no Excel);
-2. Mantém só as linhas de Debêntures (coluna `TP_APLIC`, quando existe);
-3. Busca o mapa **fundo→gestor** no GAS de cadastro;
+1. Baixa o `cda_fi_{AAAAMM}.zip` da CVM (mês-alvo pela regra de defasagem) e lê o
+   bloco BLC_4 (ou um `.xlsx` local, se informado);
+2. Mantém só as linhas de Debêntures (coluna `TP_APLIC`);
+3. Busca o mapa **fundo→gestor** em `tools\Fundos_12431.csv` / `tools\Fundos_CDI.csv`
+   (local) + `Apelido Gestor` no GAS de `Cadastro_Gestores`;
 4. **Soma** `VL_MERC_POS_FINAL` por (`CD_ATIVO`, `GESTOR`);
 5. Grava `public/BLC_tratado.csv` (3 colunas).
 
-Uso: arraste o `.xlsx` para cima do `.bat`, **ou** clique 2× (ele pega o
-`cda_fi_BLC*.xlsx` mais recente da pasta padrão).
+Uso: clique 2× (baixa da CVM sozinho), **ou** arraste um `.xlsx` local para cima do
+`.bat` pra usar ele em vez de baixar.
 
 ### `tools\publicar.bat`
 Sobe o arquivo gerado para o ar. Por dentro faz:

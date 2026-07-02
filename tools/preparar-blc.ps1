@@ -1,36 +1,39 @@
 ﻿<#
   preparar-blc.ps1
   --------------------------------------------------------------------------
-  Transforma o arquivo bruto da CVM (CDA_FI_BLC, .xlsx) no arquivo enxuto
-  que o app de debentures consome.
+  Gera o arquivo enxuto de alocacao em debentures que o app consome, a partir
+  do CDA da CVM.
 
   O que faz:
-    1. Le o .xlsx (mesmo aberto no Excel)
-    2. Mantem apenas linhas de Debentures (coluna TP_APLIC), se existir
-    3. Resolve o mapa fundo->gestor (ver lib-cadastro.ps1):
+    1. Baixa o cda_fi_{AAAAMM}.zip da CVM (mes-alvo pela mesma regra de
+       defasagem de selecionar-fundos.ps1: ate dia 15 -> mes atual -5; depois
+       -> mes atual -4) e le' o bloco BLC_4 (debentures). Alternativa:
+       -XlsxPath pra usar um arquivo local (ex: .xlsx ja' ajustado) em vez de
+       baixar da CVM.
+    2. Resolve o mapa fundo->gestor (ver lib-cadastro.ps1):
          tools\Fundos_12431.csv / tools\Fundos_CDI.csv (local, CNPJ_FUNDO_CLASSE -> CNPJ Gestor)
          GAS sheet=Cadastro_Gestores                    (CNPJ Gestor -> Apelido Gestor)
-    4. Agrega somando VL_MERC_POS_FINAL por (CD_ATIVO, GESTOR)
-    5. Grava um CSV de 3 colunas: CD_ATIVO,GESTOR,VL_ALOCADO
+    3. Agrega somando VL_MERC_POS_FINAL por (CD_ATIVO, GESTOR)
+    4. Grava um CSV de 3 colunas: CD_ATIVO,GESTOR,VL_ALOCADO
 
   Uso:
-    - Arraste o .xlsx para cima do preparar-blc.bat   (mais facil), ou
-    - powershell -File preparar-blc.ps1 "C:\caminho\arquivo.xlsx"
-    - Sem argumento: pega o cda_fi_BLC*.xlsx mais recente da pasta padrao.
+    - powershell -File preparar-blc.ps1                          (baixa da CVM)
+    - powershell -File preparar-blc.ps1 -MesAno 202603            (mes especifico)
+    - powershell -File preparar-blc.ps1 -XlsxPath "C:\...\a.xlsx" (.xlsx local)
+    - Duplo-clique em preparar-blc.bat (baixa da CVM), ou arraste um .xlsx
+      pra cima do .bat (usa -XlsxPath automaticamente)
 #>
 
 param(
+  [string]$MesAno = '',
   [string]$XlsxPath = '',
   [string]$OutPath  = '',
-  [string]$CadastroUrl = 'https://script.google.com/macros/s/AKfycbxhTXC7FXkp9fEz0bw6Nnh_JDm4UVhRkqZF5zOW-Cb842RhFBikauGaWeChG0vQerPrBA/exec'
+  [string]$CdaDir = ("C:\Projeto Cr" + [char]233 + "dito\CVM _cda"),
+  [string]$CadastroUrl = 'https://script.google.com/macros/s/AKfycbxhTXC7FXkp9fEz0bw6Nnh_JDm4UVhRkqZF5zOW-Cb842RhFBikauGaWeChG0vQerPrBA/exec',
+  [switch]$NoDownload
 )
 
 $ErrorActionPreference = 'Stop'
-
-# ---- Configuracao ----------------------------------------------------------
-# "C:\Projeto Credito\Power BI" - [char]233 = e-acento (mantem o .ps1 lendo certo em ANSI)
-$DefaultFolder = ("C:\Projeto Cr" + [char]233 + "dito\Power BI")
-# ---------------------------------------------------------------------------
 
 . (Join-Path $PSScriptRoot 'lib-cadastro.ps1')
 
@@ -39,31 +42,28 @@ function Write-Step($msg) { Write-Host "  $msg" -ForegroundColor Cyan }
 Write-Host ""
 Write-Host "=== Preparar BLC para o app ===" -ForegroundColor Green
 
-# ---- 1. Localizar o arquivo .xlsx -----------------------------------------
-if ([string]::IsNullOrWhiteSpace($XlsxPath)) {
-  Write-Step "Nenhum arquivo informado. Procurando o mais recente em: $DefaultFolder"
-  $XlsxPath = Find-LatestCdaFiBlc $DefaultFolder
-  if (-not $XlsxPath) { throw "Nao achei nenhum 'cda_fi_BLC*.xlsx' em $DefaultFolder. Arraste o arquivo para o .bat ou informe o caminho." }
+# ---- 1. Ler o CDA (debentures por fundo) -----------------------------------
+if (-not [string]::IsNullOrWhiteSpace($XlsxPath)) {
+  if (-not (Test-Path $XlsxPath)) { throw "Arquivo nao encontrado: $XlsxPath" }
+  Write-Step "Lendo $XlsxPath (pode levar 1-2 min)..."
+  $rawRows = Read-CdaFiBlcDebentures $XlsxPath
+} else {
+  if (-not $MesAno) { $MesAno = Get-CdaTargetMonth }
+  Write-Step "Mes-alvo do CDA: $MesAno (defasagem: ate dia 15 -> mes atual -5; depois -> -4)"
+  Write-Step "Baixando/lendo cda_fi_$MesAno.zip da CVM..."
+  $cdaExtractDir = Get-CdaFiDir $CdaDir $MesAno -NoDownload:$NoDownload
+  Write-Step "Lendo cda_fi_BLC_4_$MesAno.csv (debentures, pode levar 1-2 min)..."
+  $rawRows = Read-CdaFiBlcCsv (Join-Path $cdaExtractDir "cda_fi_BLC_4_$MesAno.csv")
 }
-if (-not (Test-Path $XlsxPath)) { throw "Arquivo nao encontrado: $XlsxPath" }
-Write-Step "Arquivo: $XlsxPath"
+Write-Step "  $($rawRows.Count) linhas de debentures lidas"
 
 if ([string]::IsNullOrWhiteSpace($OutPath)) {
   # Salva direto na pasta public/ do app (o script mora em tools/, public/ e' irma)
   $appPublic = Join-Path (Split-Path $PSScriptRoot -Parent) 'public'
-  if (Test-Path $appPublic) {
-    $OutPath = Join-Path $appPublic 'BLC_tratado.csv'
-  } else {
-    $OutPath = Join-Path (Split-Path $XlsxPath -Parent) 'BLC_tratado.csv'
-  }
+  $OutPath = Join-Path $appPublic 'BLC_tratado.csv'
 }
 
 $swTotal = [System.Diagnostics.Stopwatch]::StartNew()
-
-# ---- 2. Ler o xlsx (mesmo travado pelo Excel) ------------------------------
-Write-Step "Lendo linhas da planilha (pode levar 1-2 min)..."
-$rawRows = Read-CdaFiBlcDebentures $XlsxPath
-Write-Step "  $($rawRows.Count) linhas de debentures lidas"
 
 # ---- 3. Mapa fundo->gestor (Fundos_12431/Fundos_CDI locais + Cadastro_Gestores) ---
 Write-Step "Lendo Fundos_12431.csv / Fundos_CDI.csv (local) e buscando Cadastro_Gestores no cadastro..."
