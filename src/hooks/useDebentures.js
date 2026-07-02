@@ -14,6 +14,8 @@ export const BLC_DEFAULT_URL =
 
 // BLC tratado: arquivo estatico servido pelo proprio app (public/). Sem GAS, sem proxy.
 const STATIC_BLC_URL = '/BLC_tratado.csv'
+// Cadastro de debentures: gerado por tools/preparar-debentures.ps1 a partir do Debentures.com.br.
+const STATIC_DEBENTURES_URL = '/Debentures.csv'
 // Taxas ANBIMA (coluna Tx Anbima): tambem estatico em public/.
 const STATIC_ANBIMA_URL = '/Anbima_Tx.csv'
 // PL por gestor: gerado por preparar-fluxo.ps1 a partir do Informe Diario da CVM.
@@ -37,7 +39,7 @@ async function fetchStaticCSV(path) {
 }
 
 function cacheKey() {
-  return 'deb-cache-v4'  // v4: base ANBIMA com Duration (anos)
+  return 'deb-cache-v5'  // v5: cadastro de debentures estatico em public/
 }
 
 function readCache() {
@@ -88,7 +90,7 @@ export function useDebentures(blcUrl) {
       // nocache=1: evita o cache de 6h do Apps Script — edições no Cadastro_Emissores
       // aparecem no próximo load (o app já tem seu próprio cache local de 4h por cima).
       fetchCSV(`${CADASTRO_URL}?sheet=Cadastro_Emissores&nocache=1`),
-      fetchCSV(DEB_URL),
+      fetchStaticCSV(STATIC_DEBENTURES_URL).catch(() => fetchCSV(DEB_URL)),
       fetchStaticCSV(STATIC_BLC_URL),
       // ANBIMA e PL_Gestores sao opcionais: se faltar/quebrar, o app segue sem essas colunas.
       fetchStaticCSV(STATIC_ANBIMA_URL).catch(() => []),

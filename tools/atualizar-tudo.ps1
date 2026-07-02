@@ -3,10 +3,11 @@
   --------------------------------------------------------------------------
   Fluxo de 1 clique para atualizar as bases publicas do app com seguranca:
     1. Atualiza Captacao sempre (incremental).
-    2. Atualiza BLC somente se o mes-alvo ainda nao estiver registrado.
-    3. Tenta atualizar ANBIMA, mas nao trava tudo se falhar.
-    4. Mostra resumo.
-    5. Pergunta se deve publicar agora.
+    2. Atualiza o cadastro de debentures sempre.
+    3. Atualiza BLC somente se o mes-alvo ainda nao estiver registrado.
+    4. Tenta atualizar ANBIMA, mas nao trava tudo se falhar.
+    5. Mostra resumo.
+    6. Pergunta se deve publicar agora.
 
   Este script nao aplica Sugestao_Novos/Remover e nao altera Fundos_12431/CDI.
 #>
@@ -27,6 +28,7 @@ $BlcMetaPath = Join-Path $PublicDir 'BLC_meta.json'
 
 $summary = [ordered]@{
   Captacao = 'nao executado'
+  Debentures = 'nao executado'
   BLC      = 'nao executado'
   ANBIMA   = 'nao executado'
   Publicacao = 'nao executada'
@@ -153,6 +155,30 @@ function Get-CaptacaoMetrics([string]$relativePath) {
   }
 }
 
+function Read-MetaJson([string]$relativePath) {
+  $path = Join-Path $PublicDir $relativePath
+  if (-not (Test-Path $path)) { return $null }
+  try { return Get-Content -Raw -Path $path | ConvertFrom-Json } catch { return $null }
+}
+
+function Get-DebenturesMetrics {
+  $rows = @(Read-PublicCsv 'Debentures.csv')
+  $assets = @($rows | ForEach-Object { $_.'Codigo do Ativo' } | Where-Object { $_ } | Sort-Object -Unique)
+  $emissores = @($rows | ForEach-Object { $_.CNPJ } | Where-Object { $_ } | Sort-Object -Unique)
+  $incentivadas = @($rows | Where-Object { ([string]$_.'Deb. Incent. (Lei 12.431)').Trim().ToUpperInvariant() -eq 'S' })
+  $registradas = @($rows | Where-Object { ([string]$_.Situacao).Trim() -match '(?i)registr' })
+  $meta = Read-MetaJson 'Debentures_meta.json'
+  return [pscustomobject]@{
+    Rows=$rows.Count
+    Ativos=$assets.Count
+    Emissores=$emissores.Count
+    Incentivadas=$incentivadas.Count
+    Registradas=$registradas.Count
+    FonteGeradaEm=$(if ($meta -and $meta.generatedAtSource) { [string]$meta.generatedAtSource } else { '' })
+    AssetList=$assets
+  }
+}
+
 function Get-BlcMetrics {
   $rows = @(Read-PublicCsv 'BLC_tratado.csv')
   $assets = @($rows | ForEach-Object { $_.CD_ATIVO } | Where-Object { $_ } | Sort-Object -Unique)
@@ -194,6 +220,7 @@ function Get-DataSnapshot {
   return [pscustomobject]@{
     Captacao12431 = Get-CaptacaoMetrics 'data\Fluxo_Semanal_12431.csv'
     CaptacaoTrad  = Get-CaptacaoMetrics 'data\Fluxo_Semanal_Trad.csv'
+    Debentures    = Get-DebenturesMetrics
     BLC           = Get-BlcMetrics
     ANBIMA        = Get-AnbimaMetrics
   }
@@ -282,6 +309,24 @@ function Write-BlcCompare($before, $after) {
   if ($removedGestores.Count -gt 0) { Write-Host ("    " + (($removedGestores | Select-Object -First 10) -join ', ')) -ForegroundColor Yellow }
 }
 
+function Write-DebenturesCompare($before, $after) {
+  Write-Host ""
+  Write-Host "Cadastro de Debentures" -ForegroundColor White
+  Write-CompareLine 'Fonte gerada em' $before.FonteGeradaEm $after.FonteGeradaEm 'text'
+  Write-CompareLine 'Linhas' $before.Rows $after.Rows 'count'
+  Write-CompareLine 'Ativos' $before.Ativos $after.Ativos 'count'
+  Write-CompareLine 'Emissores' $before.Emissores $after.Emissores 'count'
+  Write-CompareLine 'Deb. incentivadas' $before.Incentivadas $after.Incentivadas 'count'
+  Write-CompareLine 'Registradas' $before.Registradas $after.Registradas 'count'
+
+  $newAssets = Get-NewItems $before.AssetList $after.AssetList
+  $removedAssets = Get-NewItems $after.AssetList $before.AssetList
+  Write-Host ("  Novos ativos no cadastro: {0}" -f (Format-Count $newAssets.Count))
+  if ($newAssets.Count -gt 0) { Write-Host ("    " + (($newAssets | Select-Object -First 10) -join ', ')) -ForegroundColor Yellow }
+  Write-Host ("  Ativos que sairam do cadastro: {0}" -f (Format-Count $removedAssets.Count))
+  if ($removedAssets.Count -gt 0) { Write-Host ("    " + (($removedAssets | Select-Object -First 10) -join ', ')) -ForegroundColor Yellow }
+}
+
 function Write-AnbimaCompare($before, $after) {
   Write-Host ""
   Write-Host "ANBIMA" -ForegroundColor White
@@ -296,6 +341,7 @@ function Write-ImpactReport($before, $after) {
   Write-Host "=== IMPACTO DA ATUALIZACAO (ANTES -> DEPOIS) ===" -ForegroundColor Green
   Write-CaptacaoCompare 'Incentivado 12.431' $before.Captacao12431 $after.Captacao12431
   Write-CaptacaoCompare 'Credito Tradicional' $before.CaptacaoTrad $after.CaptacaoTrad
+  Write-DebenturesCompare $before.Debentures $after.Debentures
   Write-BlcCompare $before.BLC $after.BLC
   Write-AnbimaCompare $before.ANBIMA $after.ANBIMA
 }
@@ -307,7 +353,7 @@ Write-Host "Pasta: $Root"
 $snapshotBefore = Get-DataSnapshot
 
 # 1. Captacao sempre
-Step "1/5 Captacao"
+Step "1/6 Captacao"
 try {
   & (Join-Path $PSScriptRoot 'preparar-fluxo.ps1') -Incremental
   $summary.Captacao = 'OK'
@@ -318,8 +364,20 @@ try {
   throw "Interrompido: Captacao e a atualizacao principal."
 }
 
-# 2. BLC se necessario
-Step "2/5 BLC / Alocacao"
+# 2. Cadastro de debentures sempre
+Step "2/6 Cadastro de Debentures"
+try {
+  & (Join-Path $PSScriptRoot 'preparar-debentures.ps1')
+  $summary.Debentures = 'OK'
+  Ok "Cadastro de debentures atualizado."
+} catch {
+  $summary.Debentures = "FALHOU: $($_.Exception.Message)"
+  Fail $summary.Debentures
+  throw "Interrompido: cadastro de debentures falhou."
+}
+
+# 3. BLC se necessario
+Step "3/6 BLC / Alocacao"
 $targetMonth = Get-CdaTargetMonth
 $meta = Read-BlcMeta
 $blcFile = Join-Path $PublicDir 'BLC_tratado.csv'
@@ -347,8 +405,8 @@ if ($blcAlreadyCurrent) {
   }
 }
 
-# 3. ANBIMA opcional
-Step "3/5 ANBIMA"
+# 4. ANBIMA opcional
+Step "4/6 ANBIMA"
 if ($SkipAnbima) {
   $summary.ANBIMA = 'PULADO por parametro -SkipAnbima'
   Warn $summary.ANBIMA
@@ -363,8 +421,8 @@ if ($SkipAnbima) {
   }
 }
 
-# 4. Resumo
-Step "4/5 Resumo"
+# 5. Resumo
+Step "5/6 Resumo"
 $snapshotAfter = Get-DataSnapshot
 Write-ImpactReport $snapshotBefore $snapshotAfter
 
@@ -384,8 +442,8 @@ if ($publicStatus.Count -eq 0) {
   $publicStatus | ForEach-Object { Write-Host "  $_" -ForegroundColor Yellow }
 }
 
-# 5. Publicacao
-Step "5/5 Publicacao"
+# 6. Publicacao
+Step "6/6 Publicacao"
 if ($publicStatus.Count -eq 0) {
   $summary.Publicacao = 'nada para publicar'
   Ok $summary.Publicacao

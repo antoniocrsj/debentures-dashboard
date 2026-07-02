@@ -2,15 +2,15 @@ import { parseNum, normCNPJ } from './format.js'
 
 const FIELDS = {
   codigoAtivo:    ['Codigo do Ativo', 'Código do Ativo', 'Codigo Ativo', 'CODIGO_ATIVO'],
-  cnpjEmissor:    ['CNPJ Emissor', 'CNPJ do Emissor', 'CNPJ_EMISSOR'],
+  cnpjEmissor:    ['CNPJ Emissor', 'CNPJ do Emissor', 'CNPJ_EMISSOR', 'CNPJ'],
   qtdMercado:     ['Quantidade em Mercado', 'Qtd em Mercado', 'Quantidade Mercado'],
   vna:            ['Valor Nominal Atual', 'VNA'],
   taxa:           ['Juros Criterio Novo - Taxa', 'Taxa', 'Juros - Taxa', 'Taxa de Juros'],
   vencimento:     ['Data de Vencimento', 'Vencimento', 'Dt Vencimento', 'DT_VENC'],
   emissao:        ['Data de Emissao', 'Data de Emissão', 'Emissao', 'Dt Emissao'],
-  indexador:      ['Indexador', 'Indice', 'Índice'],
+  indexador:      ['Indexador', 'Indice', 'Índice', 'indice'],
   coordenador:    ['Coordenador Lider', 'Coordenador Líder', 'Coordenador', 'Lead Manager'],
-  garantia:       ['Garantia', 'Tipo de Garantia'],
+  garantia:       ['Garantia', 'Tipo de Garantia', 'Garantia/Especie'],
   lei12431:       ['Deb. Incent. (Lei 12.431)', 'Lei 12.431', 'Lei 12431', 'Debentures Incentivadas', 'Incentivada', 'DEB_INCENT'],
   descricao:      ['Descricao', 'Descrição', 'Observacoes', 'Obs'],
   // emissores
