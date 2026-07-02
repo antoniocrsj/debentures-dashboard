@@ -13,8 +13,9 @@
         * elegiveis: FIF de Renda Fixa/Multimercado/sem classificacao clara e FIDC.
         * nao elegiveis: Acoes/FIA, FIP, FII/FIIM, FIAGRO, Funcine, Cambial/FMP.
     - PL do fundo precisa ser > R$ 5 milhoes.
-    - 12431 (Incentivados): entre os elegiveis, precisa ter >= 5% do PL em
-      debentures Lei 12.431 E nome com indicio de infraestrutura/incentivado.
+    - 12431 (Incentivados): entre os elegiveis, entra se tiver >= 5% do PL em
+      debentures Lei 12.431 E nome com indicio de infraestrutura/incentivado;
+      ou, mesmo sem nome, se tiver > 20% do PL em debentures Lei 12.431.
     - Tradicional (CDI): o que sobrar depois dos filtros acima.
 
   Fontes (publicas, baixadas automaticamente):
@@ -57,6 +58,7 @@ param(
   [string]$CadastroUrl = 'https://script.google.com/macros/s/AKfycbxhTXC7FXkp9fEz0bw6Nnh_JDm4UVhRkqZF5zOW-Cb842RhFBikauGaWeChG0vQerPrBA/exec',
   [double]$LimiarPct = 0.15,
   [double]$LimiarLei12431Pct = 0.05,
+  [double]$LimiarLei12431FortePct = 0.20,
   [double]$MinPl = 5000000,
   [string]$DebenturesPath = '',
   [string]$OutDir = '',
@@ -190,7 +192,7 @@ Step "  $($gestorApelidoMap.Count) gestoras cadastradas"
 Step "Classificando fundos (> $($LimiarPct*100)% debentures, PL > R$ 5 mi, tipo elegivel)..."
 $candidatos = New-Object System.Collections.Generic.List[object]
 $semRegistro = 0; $semPL = 0; $abaixoDeb = 0; $plBaixo = 0; $tipoNaoElegivel = 0
-$nome12431SemCarteira = 0; $carteira12431SemNome = 0
+$nome12431SemCarteira = 0; $carteira12431SemNome = 0; $carteiraForteSemNome = 0
 foreach ($cnpj in $debPorFundo.Keys) {
   if (-not $classeInfo.ContainsKey($cnpj)) { $semRegistro++; continue }
   $info = $classeInfo[$cnpj]
@@ -206,10 +208,12 @@ foreach ($cnpj in $debPorFundo.Keys) {
   $debLei = if ($debLei12431PorFundo.ContainsKey($cnpj)) { $debLei12431PorFundo[$cnpj] } else { 0.0 }
   $pctLei = $debLei / $pl
   $nome12431 = [regex]::IsMatch((Normalize-Text $info.Denom), $NOME_12431_REGEX)
-  $carteira12431 = ($pctLei -ge $LimiarLei12431Pct)
-  $eh12431 = ($carteira12431 -and $nome12431)
-  if ($nome12431 -and -not $carteira12431) { $nome12431SemCarteira++ }
-  if ($carteira12431 -and -not $nome12431) { $carteira12431SemNome++ }
+  $carteira12431Minima = ($pctLei -ge $LimiarLei12431Pct)
+  $carteira12431Forte = ($pctLei -gt $LimiarLei12431FortePct)
+  $eh12431 = (($carteira12431Minima -and $nome12431) -or $carteira12431Forte)
+  if ($nome12431 -and -not $carteira12431Minima) { $nome12431SemCarteira++ }
+  if ($carteira12431Minima -and -not $nome12431 -and -not $carteira12431Forte) { $carteira12431SemNome++ }
+  if ($carteira12431Forte -and -not $nome12431) { $carteiraForteSemNome++ }
   $segmento = if ($eh12431) { '12431' } else { 'CDI' }
 
   $cnpjGestor = if ($fundoGestorCvm.ContainsKey($info.IdFundo)) { $fundoGestorCvm[$info.IdFundo] } else { '' }
@@ -225,7 +229,7 @@ $n12431 = ($candidatos | Where-Object { $_.Segmento -eq '12431' }).Count
 $nCdi   = ($candidatos | Where-Object { $_.Segmento -eq 'CDI' }).Count
 Step "  $($candidatos.Count) fundos qualificados (12431: $n12431 | CDI nao-isento: $nCdi)"
 Step "  excluidos -> sem registro: $semRegistro | sem PL valido: $semPL | <= $($LimiarPct*100)% deb: $abaixoDeb | PL <= R$ 5 mi: $plBaixo | tipo nao elegivel: $tipoNaoElegivel"
-Step "  alertas 12431 -> nome sem >= $($LimiarLei12431Pct*100)% Lei 12.431: $nome12431SemCarteira | >= $($LimiarLei12431Pct*100)% Lei 12.431 sem nome: $carteira12431SemNome"
+Step "  alertas 12431 -> nome sem >= $($LimiarLei12431Pct*100)% Lei 12.431: $nome12431SemCarteira | >= $($LimiarLei12431Pct*100)% e <= $($LimiarLei12431FortePct*100)% Lei 12.431 sem nome: $carteira12431SemNome | > $($LimiarLei12431FortePct*100)% sem nome incluidos: $carteiraForteSemNome"
 
 $semGestor = @($candidatos | Where-Object { $_.CnpjGestor -eq '' })
 $semApelido = @($candidatos | Where-Object { $_.CnpjGestor -ne '' -and $_.Apelido -eq '' })
@@ -329,11 +333,11 @@ if ($duplicados.Count -gt 0) {
   Write-Host "  ATENCAO: $($duplicados.Count) fundo(s) duplicado(s) entre Fundos_12431 e Fundos_CDI (ver acima)" -ForegroundColor Red
 }
 Write-Host "  Regra base                         : > $($LimiarPct*100)% do PL em debentures, PL > R$ 5 mi, tipo elegivel"
-Write-Host "  Regra 12431                        : >= $($LimiarLei12431Pct*100)% do PL em debentures Lei 12.431 + nome infra/incentivado"
+Write-Host "  Regra 12431                        : >= $($LimiarLei12431Pct*100)% Lei 12.431 + nome infra/incentivado; ou > $($LimiarLei12431FortePct*100)% Lei 12.431 mesmo sem nome"
 Write-Host "  Fundos qualificados no CDA atual   : $($candidatos.Count) (12431: $n12431 | CDI nao-isento: $nCdi)"
 Write-Host "  Novos (nao estao nas abas hoje)    : $($novos.Count)"
 Write-Host "  Para remover (nao qualificam mais) : $($removerCnpjs.Count)"
-Write-Host "  Alertas 12431 para revisar         : nome sem carteira=$nome12431SemCarteira | carteira sem nome=$carteira12431SemNome"
+Write-Host "  Alertas 12431 para revisar         : nome sem carteira=$nome12431SemCarteira | carteira 5%-20% sem nome=$carteira12431SemNome | >20% sem nome incluidos=$carteiraForteSemNome"
 Write-Host ""
 Write-Host "  Arquivos gerados (revise antes de aplicar na planilha):" -ForegroundColor White
 Write-Host "    $outNovos"       -ForegroundColor Yellow
