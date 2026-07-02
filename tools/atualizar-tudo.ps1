@@ -34,6 +34,7 @@ $summary = [ordered]@{
   ANBIMA   = 'nao executado'
   Publicacao = 'nao executada'
 }
+$fundosAplicados = $false
 
 function Step([string]$msg) {
   Write-Host ""
@@ -530,6 +531,7 @@ if ($SkipFundos) {
       if ($applyFundos -match '^(?i)s') {
         Apply-FundosSuggestion
         $fundosDepois = Get-FundosMetrics
+        $fundosAplicados = $true
         $summary.Fundos = "OK (12431: $($fundosDepois.Fundos12431) | CDI: $($fundosDepois.FundosCdi))"
         Ok "Lista de fundos aplicada."
       } else {
@@ -546,8 +548,14 @@ if ($SkipFundos) {
 # 3. Captacao sempre
 Step "3/7 Captacao"
 try {
-  & (Join-Path $PSScriptRoot 'preparar-fluxo.ps1') -Incremental
-  $summary.Captacao = 'OK'
+  if ($fundosAplicados) {
+    Warn "Lista de fundos mudou; vou recalcular a captacao completa para evitar historico misto."
+    & (Join-Path $PSScriptRoot 'preparar-fluxo.ps1')
+    $summary.Captacao = 'OK (recalculo completo)'
+  } else {
+    & (Join-Path $PSScriptRoot 'preparar-fluxo.ps1') -Incremental
+    $summary.Captacao = 'OK'
+  }
   Ok "Captacao atualizada."
 } catch {
   $summary.Captacao = "FALHOU: $($_.Exception.Message)"
