@@ -8,13 +8,14 @@
   e' sobrescrito automaticamente).
 
   Criterios:
-    - 12431 (Incentivados): nome do fundo contem termos de infraestrutura ou
-      incentivado (Lei 12.431). Fundos FI-Infra sao obrigados por lei a manter
-      a carteira majoritariamente em debentures incentivadas, entao o nome ja'
-      e' um sinal confiavel (validado contra a base atual: cobre 100% dos
-      fundos ja conhecidos como 12431, sem nenhum falso positivo no CDI).
-    - Tradicional (CDI): NAO bate o criterio de nome acima E tem >= 15% do PL
-      em debentures (qualquer tipo).
+    - Primeiro filtro comum: fundo precisa ter > 15% do PL em debentures.
+    - Fundo precisa ser elegivel como credito:
+        * elegiveis: FIF de Renda Fixa/Multimercado/sem classificacao clara e FIDC.
+        * nao elegiveis: Acoes/FIA, FIP, FII/FIIM, FIAGRO, Funcine, Cambial/FMP.
+    - PL do fundo precisa ser > R$ 5 milhoes.
+    - 12431 (Incentivados): entre os elegiveis, precisa ter >= 5% do PL em
+      debentures Lei 12.431 E nome com indicio de infraestrutura/incentivado.
+    - Tradicional (CDI): o que sobrar depois dos filtros acima.
 
   Fontes (publicas, baixadas automaticamente):
     - cda_fi_{AAAAMM}.zip da CVM -> posicao em debentures (bloco BLC_4) e PL
@@ -55,18 +56,77 @@ param(
   [string]$RegistroDir = ("C:\Projeto Cr" + [char]233 + "dito\CVM _cadastro_fundos"),
   [string]$CadastroUrl = 'https://script.google.com/macros/s/AKfycbxhTXC7FXkp9fEz0bw6Nnh_JDm4UVhRkqZF5zOW-Cb842RhFBikauGaWeChG0vQerPrBA/exec',
   [double]$LimiarPct = 0.15,
+  [double]$LimiarLei12431Pct = 0.05,
+  [double]$MinPl = 5000000,
+  [string]$DebenturesPath = '',
   [string]$OutDir = '',
   [switch]$NoDownload
 )
 
 $ErrorActionPreference = 'Stop'
-$NOME_12431_REGEX = '(?i)incentiv|infraestr|\binfra\b|infra[- ]'
+$NOME_12431_REGEX = 'INCENTIV|INFRAESTR|\bINFRA\b|INFRA[- ]|12\.?431|12431'
 
 . (Join-Path $PSScriptRoot 'lib-cadastro.ps1')
 
 function Step($m) { Write-Host "  $m" -ForegroundColor Cyan }
 
 if (-not $OutDir) { $OutDir = $PSScriptRoot }
+if (-not $DebenturesPath) { $DebenturesPath = Join-Path (Split-Path $PSScriptRoot -Parent) 'public\Debentures.csv' }
+
+function Normalize-Text([string]$s) {
+  $txt = ([string]$s).Normalize([System.Text.NormalizationForm]::FormD)
+  $chars = $txt.ToCharArray() | Where-Object {
+    [Globalization.CharUnicodeInfo]::GetUnicodeCategory($_) -ne [Globalization.UnicodeCategory]::NonSpacingMark
+  }
+  return (-join $chars).ToUpperInvariant()
+}
+
+function Normalize-Ativo([string]$s) {
+  return ([string]$s).Trim().ToUpperInvariant()
+}
+
+function Get-PropValue($row, [string]$name) {
+  $p = $row.PSObject.Properties[$name]
+  if ($p) { return [string]$p.Value }
+  return ''
+}
+
+function Read-DebenturesLei12431Map([string]$path) {
+  if (-not (Test-Path $path)) { throw "Arquivo de cadastro de debentures nao encontrado: $path" }
+  $lines = @(Read-AllLinesShared $path ([System.Text.Encoding]::UTF8) | Where-Object { $_.Trim() -ne '' })
+  if ($lines.Count -lt 2) { throw "Cadastro de debentures vazio: $path" }
+
+  $hdr = Split-CsvLine $lines[0]
+  $iAtivo = Find-ColIndex $hdr '(?i)(codigo|c[oó]digo).*ativo'
+  $iLei = Find-ColIndex $hdr '(?i)(12\.?431|incent)'
+  if ($iAtivo -lt 0 -or $iLei -lt 0) {
+    throw "Cadastro de debentures sem colunas Codigo do Ativo / Lei 12.431."
+  }
+  $colAtivo = $hdr[$iAtivo]
+  $colLei = $hdr[$iLei]
+
+  $map = @{}
+  foreach ($r in @($lines | ConvertFrom-Csv)) {
+    $ativo = Normalize-Ativo (Get-PropValue $r $colAtivo)
+    if ($ativo -eq '') { continue }
+    $flag = (Get-PropValue $r $colLei).Trim().ToUpperInvariant()
+    $map[$ativo] = ($flag -match '^(S|SIM|TRUE|1)$')
+  }
+  return $map
+}
+
+function Test-FundoCreditoElegivel($info) {
+  $tipo = Normalize-Text $info.TipoClasse
+  $classificacao = Normalize-Text $info.Classificacao
+  $denom = Normalize-Text $info.Denom
+
+  if ($tipo -match '\b(FII|FIIM|FIAGRO|FIP|FUNCINE)\b') { return $false }
+  if ($denom -match '\b(FII|FIAGRO|FIP|FUNCINE)\b|IMOBILIARIO|PARTICIPACOES') { return $false }
+  if ($classificacao -match 'ACOES|CAMBIAL|FMP') { return $false }
+  if ($tipo -match '\bFIDC\b') { return $true }
+  if ($tipo -match '\bFIF\b') { return $true }
+  return $false
+}
 
 Write-Host ""
 Write-Host "=== Selecionar Fundos (sugestao Fundos_12431 / Fundos_CDI) ===" -ForegroundColor Green
@@ -89,12 +149,30 @@ if (-not [string]::IsNullOrWhiteSpace($XlsxPath)) {
 }
 Step "  $($rawRows.Count) linhas de debentures lidas"
 
-# Soma o valor em debentures por fundo (todos os ativos, nao so' os alocados)
+Step "Lendo cadastro de debentures para identificar Lei 12.431..."
+$lei12431PorAtivo = Read-DebenturesLei12431Map $DebenturesPath
+Step "  $($lei12431PorAtivo.Count) ativos no cadastro de debentures"
+
+# Soma o valor em debentures por fundo e a parcela em debentures Lei 12.431.
 $debPorFundo = @{}
+$debLei12431PorFundo = @{}
+$ativosSemCadastroLei = New-Object System.Collections.Generic.HashSet[string]
 foreach ($r in $rawRows) {
   if ($debPorFundo.ContainsKey($r.Cnpj)) { $debPorFundo[$r.Cnpj] += $r.Val } else { $debPorFundo[$r.Cnpj] = $r.Val }
+
+  $ativo = Normalize-Ativo $r.Ativo
+  if ($ativo -ne '' -and $lei12431PorAtivo.ContainsKey($ativo)) {
+    if ($lei12431PorAtivo[$ativo]) {
+      if ($debLei12431PorFundo.ContainsKey($r.Cnpj)) { $debLei12431PorFundo[$r.Cnpj] += $r.Val } else { $debLei12431PorFundo[$r.Cnpj] = $r.Val }
+    }
+  } elseif ($ativo -ne '') {
+    [void]$ativosSemCadastroLei.Add($ativo)
+  }
 }
 Step "  $($debPorFundo.Count) fundos distintos com posicao em debentures"
+if ($ativosSemCadastroLei.Count -gt 0) {
+  Write-Host "    AVISO: $($ativosSemCadastroLei.Count) ativo(s) do CDA nao apareceram no cadastro de debentures." -ForegroundColor Yellow
+}
 
 # ---- 2. Cadastro de classes da CVM (registro_classe + registro_fundo) -----
 Step "Baixando/lendo cadastro de classes da CVM (registro_fundo_classe.zip)..."
@@ -109,9 +187,10 @@ $gestorApelidoMap = Get-GestorApelidoMap $CadastroUrl
 Step "  $($gestorApelidoMap.Count) gestoras cadastradas"
 
 # ---- 4. Classifica cada fundo com posicao em debentures --------------------
-Step "Classificando fundos (12431 por nome, Tradicional por >= $($LimiarPct*100)% em debentures)..."
+Step "Classificando fundos (> $($LimiarPct*100)% debentures, PL > R$ 5 mi, tipo elegivel)..."
 $candidatos = New-Object System.Collections.Generic.List[object]
-$semRegistro = 0; $semPL = 0
+$semRegistro = 0; $semPL = 0; $abaixoDeb = 0; $plBaixo = 0; $tipoNaoElegivel = 0
+$nome12431SemCarteira = 0; $carteira12431SemNome = 0
 foreach ($cnpj in $debPorFundo.Keys) {
   if (-not $classeInfo.ContainsKey($cnpj)) { $semRegistro++; continue }
   $info = $classeInfo[$cnpj]
@@ -120,22 +199,33 @@ foreach ($cnpj in $debPorFundo.Keys) {
   $pl = if ($plPorFundo -and $plPorFundo.ContainsKey($cnpj)) { $plPorFundo[$cnpj] } else { $info.PL }
   if ($pl -le 0) { $semPL++; continue }
   $pct = $debPorFundo[$cnpj] / $pl
-  $eh12431 = [regex]::IsMatch($info.Denom, $NOME_12431_REGEX)
-  if (-not $eh12431 -and $pct -lt $LimiarPct) { continue }
+  if ($pct -le $LimiarPct) { $abaixoDeb++; continue }
+  if ($pl -le $MinPl) { $plBaixo++; continue }
+  if (-not (Test-FundoCreditoElegivel $info)) { $tipoNaoElegivel++; continue }
+
+  $debLei = if ($debLei12431PorFundo.ContainsKey($cnpj)) { $debLei12431PorFundo[$cnpj] } else { 0.0 }
+  $pctLei = $debLei / $pl
+  $nome12431 = [regex]::IsMatch((Normalize-Text $info.Denom), $NOME_12431_REGEX)
+  $carteira12431 = ($pctLei -ge $LimiarLei12431Pct)
+  $eh12431 = ($carteira12431 -and $nome12431)
+  if ($nome12431 -and -not $carteira12431) { $nome12431SemCarteira++ }
+  if ($carteira12431 -and -not $nome12431) { $carteira12431SemNome++ }
   $segmento = if ($eh12431) { '12431' } else { 'CDI' }
 
   $cnpjGestor = if ($fundoGestorCvm.ContainsKey($info.IdFundo)) { $fundoGestorCvm[$info.IdFundo] } else { '' }
   $apelido = if ($cnpjGestor -ne '' -and $gestorApelidoMap.ContainsKey($cnpjGestor)) { $gestorApelidoMap[$cnpjGestor] } else { '' }
 
   $candidatos.Add([pscustomobject]@{
-    Cnpj = $cnpj; Denom = $info.Denom; Segmento = $segmento; PctDeb = $pct
+    Cnpj = $cnpj; Denom = $info.Denom; Segmento = $segmento; PctDeb = $pct; PctLei12431 = $pctLei
+    PL = $pl; TipoClasse = $info.TipoClasse; Classificacao = $info.Classificacao
     CnpjGestor = $cnpjGestor; Apelido = $apelido
   })
 }
 $n12431 = ($candidatos | Where-Object { $_.Segmento -eq '12431' }).Count
 $nCdi   = ($candidatos | Where-Object { $_.Segmento -eq 'CDI' }).Count
-Step "  $($candidatos.Count) fundos qualificados (12431: $n12431 | Tradicional: $nCdi)"
-Step "  sem registro no cadastro CVM: $semRegistro | sem PL valido: $semPL"
+Step "  $($candidatos.Count) fundos qualificados (12431: $n12431 | CDI nao-isento: $nCdi)"
+Step "  excluidos -> sem registro: $semRegistro | sem PL valido: $semPL | <= $($LimiarPct*100)% deb: $abaixoDeb | PL <= R$ 5 mi: $plBaixo | tipo nao elegivel: $tipoNaoElegivel"
+Step "  alertas 12431 -> nome sem >= $($LimiarLei12431Pct*100)% Lei 12.431: $nome12431SemCarteira | >= $($LimiarLei12431Pct*100)% Lei 12.431 sem nome: $carteira12431SemNome"
 
 $semGestor = @($candidatos | Where-Object { $_.CnpjGestor -eq '' })
 $semApelido = @($candidatos | Where-Object { $_.CnpjGestor -ne '' -and $_.Apelido -eq '' })
@@ -179,10 +269,12 @@ $utf8 = New-Object System.Text.UTF8Encoding($false)
 
 $outNovos = Join-Path $OutDir 'Sugestao_Novos.csv'
 $sbN = New-Object System.Text.StringBuilder
-[void]$sbN.AppendLine('CNPJ_FUNDO_CLASSE,DENOM_SOCIAL,Segmento,Pct_Debentures,CNPJ Gestor,Apelido Gestor')
+[void]$sbN.AppendLine('CNPJ_FUNDO_CLASSE,DENOM_SOCIAL,Segmento,Pct_Debentures,Pct_Lei_12431,PL,Tipo_Classe,Classificacao,CNPJ Gestor,Apelido Gestor')
 foreach ($c in ($novos | Sort-Object Segmento, Denom)) {
   $pct = ([Math]::Round($c.PctDeb * 100, 1)).ToString($ci)
-  [void]$sbN.AppendLine(('"{0}","{1}",{2},{3}%,"{4}","{5}"' -f $c.Cnpj, $c.Denom.Replace('"', '""'), $c.Segmento, $pct, $c.CnpjGestor, $c.Apelido.Replace('"', '""')))
+  $pctLei = ([Math]::Round($c.PctLei12431 * 100, 1)).ToString($ci)
+  $plFmt = ([Math]::Round($c.PL, 2)).ToString($ci)
+  [void]$sbN.AppendLine(('"{0}","{1}",{2},{3}%,{4}%,{5},"{6}","{7}","{8}","{9}"' -f $c.Cnpj, ([string]$c.Denom).Replace('"', '""'), $c.Segmento, $pct, $pctLei, $plFmt, ([string]$c.TipoClasse).Replace('"', '""'), ([string]$c.Classificacao).Replace('"', '""'), $c.CnpjGestor, ([string]$c.Apelido).Replace('"', '""')))
 }
 [System.IO.File]::WriteAllText($outNovos, $sbN.ToString(), $utf8)
 
@@ -190,11 +282,26 @@ $outRemover = Join-Path $OutDir 'Sugestao_Remover.csv'
 $sbR = New-Object System.Text.StringBuilder
 [void]$sbR.AppendLine('CNPJ_FUNDO_CLASSE,Motivo')
 foreach ($cnpj in ($removerCnpjs | Sort-Object)) {
-  $motivo =
-    if (-not $classeInfo.ContainsKey($cnpj)) { 'nao encontrado como classe ativa no cadastro CVM (cancelado/liquidado?)' }
-    elseif (-not $debPorFundo.ContainsKey($cnpj)) { 'sem posicao em debentures no CDA atual' }
-    elseif ($classeInfo[$cnpj].PL -le 0) { 'PL invalido/zerado no cadastro CVM' }
-    else { "abaixo de $($LimiarPct*100)% em debentures e nome nao bate padrao 12431" }
+  $motivo = ''
+  if (-not $classeInfo.ContainsKey($cnpj)) {
+    $motivo = 'nao encontrado como classe ativa no cadastro CVM (cancelado/liquidado?)'
+  } elseif (-not $debPorFundo.ContainsKey($cnpj)) {
+    $motivo = 'sem posicao em debentures no CDA atual'
+  } else {
+    $info = $classeInfo[$cnpj]
+    $pl = if ($plPorFundo -and $plPorFundo.ContainsKey($cnpj)) { $plPorFundo[$cnpj] } else { $info.PL }
+    if ($pl -le 0) {
+      $motivo = 'PL invalido/zerado'
+    } elseif (($debPorFundo[$cnpj] / $pl) -le $LimiarPct) {
+      $motivo = "debentures <= $($LimiarPct*100)% do PL"
+    } elseif ($pl -le $MinPl) {
+      $motivo = 'PL <= R$ 5 milhoes'
+    } elseif (-not (Test-FundoCreditoElegivel $info)) {
+      $motivo = "tipo/classificacao nao elegivel ($($info.TipoClasse) / $($info.Classificacao))"
+    } else {
+      $motivo = 'nao passou nos filtros atuais'
+    }
+  }
   [void]$sbR.AppendLine(('"{0}","{1}"' -f $cnpj, $motivo))
 }
 [System.IO.File]::WriteAllText($outRemover, $sbR.ToString(), $utf8)
@@ -221,9 +328,12 @@ Write-Host "=== RELATORIO ===" -ForegroundColor Green
 if ($duplicados.Count -gt 0) {
   Write-Host "  ATENCAO: $($duplicados.Count) fundo(s) duplicado(s) entre Fundos_12431 e Fundos_CDI (ver acima)" -ForegroundColor Red
 }
-Write-Host "  Fundos qualificados no CDA atual  : $($candidatos.Count) (12431: $n12431 | Tradicional: $nCdi)"
+Write-Host "  Regra base                         : > $($LimiarPct*100)% do PL em debentures, PL > R$ 5 mi, tipo elegivel"
+Write-Host "  Regra 12431                        : >= $($LimiarLei12431Pct*100)% do PL em debentures Lei 12.431 + nome infra/incentivado"
+Write-Host "  Fundos qualificados no CDA atual   : $($candidatos.Count) (12431: $n12431 | CDI nao-isento: $nCdi)"
 Write-Host "  Novos (nao estao nas abas hoje)    : $($novos.Count)"
 Write-Host "  Para remover (nao qualificam mais) : $($removerCnpjs.Count)"
+Write-Host "  Alertas 12431 para revisar         : nome sem carteira=$nome12431SemCarteira | carteira sem nome=$carteira12431SemNome"
 Write-Host ""
 Write-Host "  Arquivos gerados (revise antes de aplicar na planilha):" -ForegroundColor White
 Write-Host "    $outNovos"       -ForegroundColor Yellow

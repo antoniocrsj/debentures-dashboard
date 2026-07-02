@@ -2,9 +2,9 @@
   atualizar-tudo.ps1
   --------------------------------------------------------------------------
   Fluxo de 1 clique para atualizar as bases publicas do app com seguranca:
-    1. Avalia a lista de fundos 12431/CDI e so aplica se confirmado.
-    2. Atualiza Captacao sempre (incremental).
-    3. Atualiza o cadastro de debentures sempre.
+    1. Atualiza o cadastro de debentures sempre.
+    2. Avalia a lista de fundos 12431/CDI e so aplica se confirmado.
+    3. Atualiza Captacao sempre (incremental).
     4. Atualiza BLC somente se o mes-alvo ainda nao estiver registrado.
     5. Tenta atualizar ANBIMA, mas nao trava tudo se falhar.
     6. Mostra resumo.
@@ -27,9 +27,9 @@ $BlcMetaPath = Join-Path $PublicDir 'BLC_meta.json'
 . (Join-Path $PSScriptRoot 'lib-cadastro.ps1')
 
 $summary = [ordered]@{
+  Debentures = 'nao executado'
   Fundos   = 'nao executado'
   Captacao = 'nao executado'
-  Debentures = 'nao executado'
   BLC      = 'nao executado'
   ANBIMA   = 'nao executado'
   Publicacao = 'nao executada'
@@ -486,8 +486,20 @@ Write-Host "Pasta: $Root"
 
 $snapshotBefore = Get-DataSnapshot
 
-# 1. Lista de fundos 12431/CDI: avalia sempre, aplica so com confirmacao.
-Step "1/7 Lista de Fundos 12431/CDI"
+# 1. Cadastro de debentures sempre
+Step "1/7 Cadastro de Debentures"
+try {
+  & (Join-Path $PSScriptRoot 'preparar-debentures.ps1')
+  $summary.Debentures = 'OK'
+  Ok "Cadastro de debentures atualizado."
+} catch {
+  $summary.Debentures = "FALHOU: $($_.Exception.Message)"
+  Fail $summary.Debentures
+  throw "Interrompido: cadastro de debentures falhou."
+}
+
+# 2. Lista de fundos 12431/CDI: avalia sempre, aplica so com confirmacao.
+Step "2/7 Lista de Fundos 12431/CDI"
 if ($SkipFundos) {
   $summary.Fundos = 'PULADO por parametro -SkipFundos'
   Warn $summary.Fundos
@@ -531,8 +543,8 @@ if ($SkipFundos) {
   }
 }
 
-# 2. Captacao sempre
-Step "2/7 Captacao"
+# 3. Captacao sempre
+Step "3/7 Captacao"
 try {
   & (Join-Path $PSScriptRoot 'preparar-fluxo.ps1') -Incremental
   $summary.Captacao = 'OK'
@@ -541,18 +553,6 @@ try {
   $summary.Captacao = "FALHOU: $($_.Exception.Message)"
   Fail $summary.Captacao
   throw "Interrompido: Captacao e a atualizacao principal."
-}
-
-# 3. Cadastro de debentures sempre
-Step "3/7 Cadastro de Debentures"
-try {
-  & (Join-Path $PSScriptRoot 'preparar-debentures.ps1')
-  $summary.Debentures = 'OK'
-  Ok "Cadastro de debentures atualizado."
-} catch {
-  $summary.Debentures = "FALHOU: $($_.Exception.Message)"
-  Fail $summary.Debentures
-  throw "Interrompido: cadastro de debentures falhou."
 }
 
 # 4. BLC se necessario

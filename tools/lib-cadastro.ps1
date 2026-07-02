@@ -393,11 +393,12 @@ function Read-RegistroCsv([string]$path) {
 }
 
 # Le' registro_classe.csv (classes ATIVAS apenas) e retorna hashtable:
-#   CNPJ_Classe(norm) -> @{ Denom; PL; IdFundo }
+#   CNPJ_Classe(norm) -> @{ Denom; PL; IdFundo; TipoClasse; Classificacao }
 function Read-RegistroClasse([string]$path) {
   $rc = Read-RegistroCsv $path
   $iCnpj = $rc.idx['CNPJ_Classe']; $iId = $rc.idx['ID_Registro_Fundo']
   $iDenom = $rc.idx['Denominacao_Social']; $iSit = $rc.idx['Situacao']; $iPL = $rc.idx['Patrimonio_Liquido']
+  $iTipo = $rc.idx['Tipo_Classe']; $iClassif = $rc.idx['Classificacao']
   if ($null -eq $iCnpj -or $null -eq $iId -or $null -eq $iDenom -or $null -eq $iSit -or $null -eq $iPL) {
     throw "registro_classe.csv: colunas esperadas nao encontradas (CNPJ_Classe/ID_Registro_Fundo/Denominacao_Social/Situacao/Patrimonio_Liquido)."
   }
@@ -412,7 +413,15 @@ function Read-RegistroClasse([string]$path) {
     if ($cnpj -eq '') { continue }
     $pl = 0.0
     [double]::TryParse($c[$iPL], [System.Globalization.NumberStyles]::Any, $ci, [ref]$pl) | Out-Null
-    $map[$cnpj] = @{ Denom = $c[$iDenom].Trim(); PL = $pl; IdFundo = $c[$iId].Trim() }
+    $tipoClasse = if ($null -ne $iTipo -and $c.Count -gt $iTipo) { $c[$iTipo].Trim() } else { '' }
+    $classificacao = if ($null -ne $iClassif -and $c.Count -gt $iClassif) { $c[$iClassif].Trim() } else { '' }
+    $map[$cnpj] = @{
+      Denom = $c[$iDenom].Trim()
+      PL = $pl
+      IdFundo = $c[$iId].Trim()
+      TipoClasse = $tipoClasse
+      Classificacao = $classificacao
+    }
   }
   return $map
 }
