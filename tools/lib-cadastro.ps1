@@ -153,12 +153,27 @@ function Split-CsvLine([string]$line) {
   return $fields.ToArray()
 }
 
+function Read-AllLinesShared([string]$path, [System.Text.Encoding]$encoding) {
+  $share = [System.IO.FileShare]::ReadWrite -bor [System.IO.FileShare]::Delete
+  $fs = [System.IO.File]::Open($path, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, $share)
+  try {
+    $sr = New-Object System.IO.StreamReader($fs, $encoding, $true)
+    try {
+      return @($sr.ReadToEnd() -split '\r?\n')
+    } finally {
+      $sr.Dispose()
+    }
+  } finally {
+    $fs.Dispose()
+  }
+}
+
 # Le' um Fundos_12431.csv / Fundos_CDI.csv LOCAL (CNPJ_FUNDO_CLASSE,
 # DENOM_SOCIAL, CNPJ Gestor) e retorna a mesma forma de Get-FundosGestorMap:
 # @{ map = (CNPJ_FUNDO_CLASSE(norm) -> CNPJ_GESTOR(norm)); colFundo; colGestor }
 function Read-FundosGestorCsv([string]$path) {
   if (-not (Test-Path $path)) { throw "Arquivo nao encontrado: $path" }
-  $lines = [System.IO.File]::ReadAllLines($path, [System.Text.Encoding]::UTF8) | Where-Object { $_.Trim() -ne '' }
+  $lines = Read-AllLinesShared $path ([System.Text.Encoding]::UTF8) | Where-Object { $_.Trim() -ne '' }
   if ($lines.Count -lt 1) { return @{ map = @{}; colFundo = ''; colGestor = '' } }
 
   $hdr = Split-CsvLine $lines[0]
