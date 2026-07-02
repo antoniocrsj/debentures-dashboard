@@ -24,7 +24,7 @@ export default function FluxoDashboard({ compact = false }) {
   const [gestor, setGestor] = useState('')
   const [months, setMonths] = useState(DEFAULT_MONTHS)   // null = todo o histórico
 
-  const { loading, error, rows, invalid, isMock, reload, monthly } = useFluxo(tipo)
+  const { loading, error, rows, invalid, isMock, reload, monthly, meta } = useFluxo(tipo)
   const tipoLabel = FLUXO_TIPOS.find(t => t.id === tipo)?.label ?? tipo
 
   const gestores = useMemo(() => gestorOptions(rows), [rows])
@@ -39,7 +39,17 @@ export default function FluxoDashboard({ compact = false }) {
     [rows, gestor, effStart, effEnd]
   )
   const weekly  = useMemo(() => aggregateByWeek(filtered), [filtered])
-  const cards   = useMemo(() => computeCards(filtered), [filtered])
+  const cards   = useMemo(() => {
+    const base = computeCards(filtered)
+    const metaTipo = meta?.[tipo]
+    const staticFundos = gestor
+      ? metaTipo?.porGestor?.[gestor]
+      : metaTipo?.fundos
+    return {
+      ...base,
+      numFundos: staticFundos ?? base.numFundos,
+    }
+  }, [filtered, meta, tipo, gestor])
   // Mensal: mesmo gestor/período da seção; agregação por mês (do diário), zero-fill.
   const monthlyAgg = useMemo(
     () => aggregateByMonth(filterMensal(monthly, gestor), effStart, effEnd, monthly),

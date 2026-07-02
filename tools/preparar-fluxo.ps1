@@ -181,6 +181,31 @@ if ($bridge12431.map.Count -eq 0 -and $bridgeCdi.map.Count -eq 0) {
   throw "Nenhum fundo resolvido. Verifique tools\Fundos_12431.csv / tools\Fundos_CDI.csv (coluna CNPJ Gestor) e Cadastro_Gestores."
 }
 
+function Get-FundosMeta($fundoGestorMap, $fundoApelidoMap) {
+  $porGestor = @{}
+  foreach ($cnpj in $fundoApelidoMap.Keys) {
+    $g = $fundoApelidoMap[$cnpj]
+    if ($porGestor.ContainsKey($g)) { $porGestor[$g] += 1 } else { $porGestor[$g] = 1 }
+  }
+  $orderedGestores = [ordered]@{}
+  foreach ($g in ($porGestor.Keys | Sort-Object)) { $orderedGestores[$g] = $porGestor[$g] }
+  return [ordered]@{
+    fundos = $fundoGestorMap.Count
+    gestores = $porGestor.Count
+    semGestor = [Math]::Max(0, $fundoGestorMap.Count - $fundoApelidoMap.Count)
+    porGestor = $orderedGestores
+  }
+}
+
+$fluxoMeta = [ordered]@{
+  updatedAt = (Get-Date).ToString('s')
+  rule = 'Contagem estatica da lista atual de fundos; nao varia por periodo.'
+  '12431' = Get-FundosMeta $fg12431.map $bridge12431.map
+  trad = Get-FundosMeta $fgCdi.map $bridgeCdi.map
+}
+$utf8Meta = New-Object System.Text.UTF8Encoding($false)
+[System.IO.File]::WriteAllText((Join-Path $OutDir 'Fluxo_Meta.json'), (($fluxoMeta | ConvertTo-Json -Depth 6) + "`r`n"), $utf8Meta)
+
 $agg      = @{ '12431' = @{}; 'trad' = @{} }
 $seen     = @{ '12431' = @{}; 'trad' = @{} }
 $weekMax  = @{ '12431' = @{}; 'trad' = @{} }
