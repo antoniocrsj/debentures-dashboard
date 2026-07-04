@@ -87,17 +87,38 @@ export function fmtDateDDMMYY(str) {
   return full
 }
 
-/** Data + hora de atualização — DD/MM/AA HH:MM, a partir de um timestamp (Date.now()) */
-export function fmtDateTime(ts) {
-  if (!ts) return ''
-  const d = new Date(ts)
-  if (isNaN(d)) return ''
+/** Formata um Date como DD/MM/AAAA */
+export function fmtDateOnly(d) {
+  if (!d || isNaN(d)) return ''
   const dd = String(d.getDate()).padStart(2, '0')
   const mm = String(d.getMonth() + 1).padStart(2, '0')
-  const yy = String(d.getFullYear()).slice(-2)
-  const hh = String(d.getHours()).padStart(2, '0')
-  const mi = String(d.getMinutes()).padStart(2, '0')
-  return `${dd}/${mm}/${yy} ${hh}:${mi}`
+  return `${dd}/${mm}/${d.getFullYear()}`
+}
+
+/** Parseia "DD/MM/AAAA[ HH:MM[:SS]]" (ex: gerado em Debentures_meta.json) */
+export function parseBRDateTime(str) {
+  if (!str) return null
+  const m = String(str).trim().match(/^(\d{2})\/(\d{2})\/(\d{4})(?:\s+(\d{2}):(\d{2})(?::(\d{2}))?)?/)
+  if (!m) return null
+  const [, d, mo, y, h, mi, s] = m
+  return new Date(+y, +mo - 1, +d, +(h || 0), +(mi || 0), +(s || 0))
+}
+
+/** Parseia "AAAA-MM-DD" (ISO, ex: dataReferenciaAnbima) como data local */
+export function parseISODate(str) {
+  if (!str) return null
+  const m = String(str).trim().match(/^(\d{4})-(\d{2})-(\d{2})/)
+  if (!m) return null
+  const [, y, mo, d] = m
+  return new Date(+y, +mo - 1, +d)
+}
+
+/** "202602" -> "fev/2026" (mes de referencia do BLC/CDA, ex: BLC_meta.json) */
+export function fmtMesAno(mesAno) {
+  if (!mesAno || mesAno.length !== 6) return ''
+  const y = mesAno.slice(0, 4)
+  const m = parseInt(mesAno.slice(4, 6), 10)
+  return `${MESES[m - 1] || m}/${y}`
 }
 
 /** Display a taxa/rate — 2 decimal places with comma */

@@ -4,7 +4,7 @@ import {
   buildIndexes, buildBlcIndex, buildAnbimaIndex, buildPlByGestor,
   enrichDebenture, computeManagers, computeGroups, recomputeAlocByGestor
 } from './utils/data.js'
-import { isYes, dateKey, fmtDateTime } from './utils/format.js'
+import { isYes, dateKey, fmtDateOnly, parseBRDateTime, parseISODate, fmtMesAno } from './utils/format.js'
 import { lazyWithRetry } from './utils/lazyWithRetry.js'
 import Header from './components/Header.jsx'
 import Filters from './components/Filters.jsx'
@@ -74,8 +74,32 @@ export default function App() {
   useEffect(() => { setShowAll(false) }, [filters])
 
   const currentMonth = months[monthIdx] ?? months[0]
-  const { loading, refreshing, error, raw, cachedAt } = useDebentures(currentMonth.url)
-  const updatedLabel = useMemo(() => fmtDateTime(cachedAt), [cachedAt])
+  const { loading, refreshing, error, raw } = useDebentures(currentMonth.url)
+
+  // Data de atualização real de cada fonte (não a hora em que o navegador buscou/cacheou).
+  const dataFreshness = useMemo(() => {
+    if (!raw) return null
+    const sources = []
+
+    const debGen = parseBRDateTime(raw.debenturesMeta?.generatedAtSource)
+    if (debGen) sources.push({ label: 'Debêntures (cadastro)', date: debGen })
+
+    const anbimaIso = raw.anbima?.find(r => r.dataReferenciaAnbima)?.dataReferenciaAnbima
+    const anbimaDate = parseISODate(anbimaIso)
+    if (anbimaDate) sources.push({ label: 'ANBIMA', date: anbimaDate })
+
+    const mesRef = fmtMesAno(raw.blcMeta?.mesAno)
+    if (mesRef) sources.push({ label: 'Carteira dos fundos (BLC)', date: null, text: mesRef })
+
+    if (!sources.length) return null
+    const dated = sources.filter(s => s.date)
+    const latest = dated.length ? dated.reduce((a, b) => (b.date > a.date ? b : a)) : null
+
+    return {
+      label: latest ? fmtDateOnly(latest.date) : '',
+      tooltip: sources.map(s => `${s.label}: ${s.text || fmtDateOnly(s.date)}`).join('\n'),
+    }
+  }, [raw])
 
   // Build indexes once per raw load
   const indexes = useMemo(() => {
@@ -246,7 +270,8 @@ export default function App() {
             disabled={loading}
             onChange={setFilters}
             tabsSlot={desktop ? tabsNav : null}
-            updatedLabel={updatedLabel}
+            updatedLabel={dataFreshness?.label}
+            updatedTooltip={dataFreshness?.tooltip}
           />
         )}
 

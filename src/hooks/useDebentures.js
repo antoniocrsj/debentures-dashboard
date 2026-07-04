@@ -20,6 +20,9 @@ const STATIC_DEBENTURES_URL = '/Debentures.csv'
 const STATIC_ANBIMA_URL = '/Anbima_Tx.csv'
 // PL por gestor: gerado por preparar-fluxo.ps1 a partir do Informe Diario da CVM.
 const STATIC_PL_GESTORES_URL = '/PL_Gestores.csv'
+// Metadados de quando cada fonte foi gerada (nao o cache do navegador) — usados em App.jsx (dataFreshness).
+const STATIC_DEBENTURES_META_URL = '/Debentures_meta.json'
+const STATIC_BLC_META_URL = '/BLC_meta.json'
 
 async function fetchCSV(rawUrl) {
   const url = `/api/proxy?url=${encodeURIComponent(rawUrl)}`
@@ -38,8 +41,14 @@ async function fetchStaticCSV(path) {
   return parseCSV(await res.text())
 }
 
+async function fetchStaticJSON(path) {
+  const res = await fetch(path)
+  if (!res.ok) throw new Error(`HTTP ${res.status} ao ler ${path}`)
+  return res.json()
+}
+
 function cacheKey() {
-  return 'deb-cache-v5'  // v5: cadastro de debentures estatico em public/
+  return 'deb-cache-v6'  // v6: inclui metadados de geracao (Debentures_meta/BLC_meta)
 }
 
 function readCache() {
@@ -95,9 +104,12 @@ export function useDebentures(blcUrl) {
       // ANBIMA e PL_Gestores sao opcionais: se faltar/quebrar, o app segue sem essas colunas.
       fetchStaticCSV(STATIC_ANBIMA_URL).catch(() => []),
       fetchStaticCSV(STATIC_PL_GESTORES_URL).catch(() => []),
+      // Metadados de geracao das fontes estaticas — tambem opcionais.
+      fetchStaticJSON(STATIC_DEBENTURES_META_URL).catch(() => null),
+      fetchStaticJSON(STATIC_BLC_META_URL).catch(() => null),
     ])
-      .then(([emissores, debentures, blc, anbima, plGestores]) => {
-        const raw = { emissores, debentures, blc, anbima, plGestores }
+      .then(([emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta]) => {
+        const raw = { emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta }
         writeCache(raw)
         if (alive) setState({ loading: false, refreshing: false, error: null, raw, cachedAt: Date.now() })
       })
