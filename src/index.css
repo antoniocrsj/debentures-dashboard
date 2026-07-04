@@ -314,14 +314,11 @@ a { color: var(--primary); }
 
 /* ─── Asset table ────────────────────────────────────────────── */
 /*
- * table-scroll é quem rola (linha de Total, quando existe, fica fora
- * dele — uma 2a tabela estática logo abaixo, sempre visível e com a
- * largura inteira, sem disputar espaço com a barra de rolagem).
- * overflow-x: auto no mesmo elemento que overflow-y:auto é intencional
- * no desktop (ver bloco @media); no mobile só x é usado (scroll da página
- * cuida do y), então position:sticky no <th> não é usado ali.
+ * overflow-x: auto on .table-wrap makes the browser treat overflow-y as auto
+ * too, which breaks position:sticky on <th>. So we use a plain header row
+ * with a strong bottom border instead of position:sticky.
  */
-.table-scroll {
+.table-wrap {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
@@ -968,19 +965,12 @@ a { color: var(--primary); }
   /* Card branco arredondado, alinhado às tabelas Gestores/Grupos.
      Margem superior ~70% das laterais (24px → ~17px) */
   .app.desktop .table-wrap {
-    display: flex;
-    flex-direction: column;
     max-height: 46vh;
+    overflow: auto;
     margin: 17px 24px 0;
     background: var(--card);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    overflow: hidden;
-  }
-  .app.desktop .table-scroll {
-    flex: 1 1 auto;
-    min-height: 0;
-    overflow: auto;
   }
   /* separate+spacing:0 faz a borda de 1px caber DENTRO da altura (23px exatos) */
   .app.desktop .asset-table { font-size: 11px; border-collapse: separate; border-spacing: 0; }
@@ -1000,16 +990,24 @@ a { color: var(--primary); }
   }
   .app.desktop .asset-table thead .col-sticky { z-index: 4; }
 
-  /* Linha de Total — 2a tabela estática fora do table-scroll, sempre visível
-     e com a largura inteira (não disputa espaço com a barra de rolagem). */
-  .app.desktop .asset-table-total { flex: 0 0 auto; }
-  .app.desktop .asset-table-total td {
+  /* Linha de Total — fixa embaixo do scroll (mesma tabela, mesmas colunas
+     do cabeçalho/linhas — alinhamento garantido por construção). */
+  .app.desktop .asset-table tfoot td {
+    position: sticky;
+    bottom: 0;
+    z-index: 3;
     background: var(--primary-light);
     border-top: 1px solid var(--primary-border);
+    border-bottom: 0;
     font-weight: 700;
     color: var(--text);
   }
-  .app.desktop .asset-table-total .col-aloc { color: var(--success); }
+  .app.desktop .asset-table tfoot .col-sticky {
+    bottom: 0;
+    z-index: 4;
+    background: var(--primary-light);
+  }
+  .app.desktop .asset-table tfoot .col-aloc { color: var(--success); }
 
   /* Rankings com a MESMA identidade da tabela de Ativos:
      um card branco arredondado, linhas separadas por borda,
@@ -1076,28 +1074,28 @@ a { color: var(--primary); }
 
 /* ─── Desktop: barras de rolagem discretas ──────────────────── */
 @media (min-width: 700px) {
-  .app.desktop .table-scroll,
+  .app.desktop .table-wrap,
   .app.desktop .desktop-split-col .ranking-list {
     scrollbar-width: thin;
     scrollbar-color: #c3ccda transparent;
   }
-  .app.desktop .table-scroll::-webkit-scrollbar,
+  .app.desktop .table-wrap::-webkit-scrollbar,
   .app.desktop .desktop-split-col .ranking-list::-webkit-scrollbar {
     width: 9px;
     height: 9px;
   }
-  .app.desktop .table-scroll::-webkit-scrollbar-track,
+  .app.desktop .table-wrap::-webkit-scrollbar-track,
   .app.desktop .desktop-split-col .ranking-list::-webkit-scrollbar-track {
     background: transparent;
   }
-  .app.desktop .table-scroll::-webkit-scrollbar-thumb,
+  .app.desktop .table-wrap::-webkit-scrollbar-thumb,
   .app.desktop .desktop-split-col .ranking-list::-webkit-scrollbar-thumb {
     background: #c3ccda;
     border-radius: 99px;
     border: 2px solid transparent;
     background-clip: padding-box;
   }
-  .app.desktop .table-scroll::-webkit-scrollbar-thumb:hover,
+  .app.desktop .table-wrap::-webkit-scrollbar-thumb:hover,
   .app.desktop .desktop-split-col .ranking-list::-webkit-scrollbar-thumb:hover {
     background: var(--primary);
     background-clip: padding-box;

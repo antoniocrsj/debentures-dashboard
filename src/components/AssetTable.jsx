@@ -47,88 +47,74 @@ export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter
 
   return (
     <div className="table-wrap">
-      <div className="table-scroll">
-        <table className="asset-table">
-          <colgroup>
-            <col className="c-ativo" />
-            <col className="c-emis" />
-            <col className="c-venc" />
-            <col className="c-taxa" />
-            <col className="c-anbima" />
-            <col className="c-duration" />
-            <col className="c-vol" />
-            <col className="c-aloc" />
-          </colgroup>
-          <thead>
-            <tr>
-              {COLS.map(col => (
-                <th
-                  key={col.id}
-                  className={`${col.sticky ? 'col-sticky' : ''}${col.sortable ? '' : ' th-nosort'}`}
-                  onClick={col.sortable ? () => onSort(col.id) : undefined}
-                  aria-sort={col.sortable && sort.col === col.id ? (sort.dir === 'asc' ? 'ascending' : 'descending') : undefined}
-                  title={col.id === 'txanbima' && anbimaRef ? `Taxa indicativa ANBIMA — ref ${anbimaRef}` : undefined}
-                >
-                  {col.label}
-                  {col.sortable && sort.col === col.id && (
-                    <span className="sort-arrow">{sort.dir === 'asc' ? ' ↑' : ' ↓'}</span>
-                  )}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {assets.map((a, i) => {
-              const selected = activeAtivo === a.codigoAtivo
-              return (
-                <tr
-                  key={a.codigoAtivo || i}
-                  className={selected ? 'row-selected' : ''}
-                  onClick={() => onFilter('ativo', a.codigoAtivo)}
-                  tabIndex={0}
-                  onKeyDown={e => e.key === 'Enter' && onFilter('ativo', a.codigoAtivo)}
-                >
-                  <td className="col-sticky col-ativo">
-                    <div className="ativo-cell">
-                      <div>
-                        <span className="ativo-code">{a.codigoAtivo || '-'}</span>
-                        {a.grupo && <span className="ativo-grupo">{a.grupo}</span>}
-                      </div>
-                      <button
-                        className="info-btn"
-                        onClick={e => { e.stopPropagation(); onInfoClick(a) }}
-                        aria-label="Ver detalhes"
-                      >ℹ</button>
+      <table className="asset-table">
+        <colgroup>
+          <col className="c-ativo" />
+          <col className="c-emis" />
+          <col className="c-venc" />
+          <col className="c-taxa" />
+          <col className="c-anbima" />
+          <col className="c-duration" />
+          <col className="c-vol" />
+          <col className="c-aloc" />
+        </colgroup>
+        <thead>
+          <tr>
+            {COLS.map(col => (
+              <th
+                key={col.id}
+                className={`${col.sticky ? 'col-sticky' : ''}${col.sortable ? '' : ' th-nosort'}`}
+                onClick={col.sortable ? () => onSort(col.id) : undefined}
+                aria-sort={col.sortable && sort.col === col.id ? (sort.dir === 'asc' ? 'ascending' : 'descending') : undefined}
+                title={col.id === 'txanbima' && anbimaRef ? `Taxa indicativa ANBIMA — ref ${anbimaRef}` : undefined}
+              >
+                {col.label}
+                {col.sortable && sort.col === col.id && (
+                  <span className="sort-arrow">{sort.dir === 'asc' ? ' ↑' : ' ↓'}</span>
+                )}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {assets.map((a, i) => {
+            const selected = activeAtivo === a.codigoAtivo
+            return (
+              <tr
+                key={a.codigoAtivo || i}
+                className={selected ? 'row-selected' : ''}
+                onClick={() => onFilter('ativo', a.codigoAtivo)}
+                tabIndex={0}
+                onKeyDown={e => e.key === 'Enter' && onFilter('ativo', a.codigoAtivo)}
+              >
+                <td className="col-sticky col-ativo">
+                  <div className="ativo-cell">
+                    <div>
+                      <span className="ativo-code">{a.codigoAtivo || '-'}</span>
+                      {a.grupo && <span className="ativo-grupo">{a.grupo}</span>}
                     </div>
-                  </td>
-                  <td className="col-num">{fmtData(a.emissao)}</td>
-                  <td className="col-num">{fmtData(a.vencimento)}</td>
-                  <td className="col-num">{fmtTaxa(a.taxa)}</td>
-                  <td className="col-num col-anbima" title={anbimaTooltip(a, anbimaRef)}>{(a.txAnbima && a.txAnbima !== '—') ? a.txAnbima : '-'}</td>
-                  <td className="col-num col-anbima">{(a.durationAnbima && a.durationAnbima !== '—') ? a.durationAnbima : '-'}</td>
-                  <td className="col-num">{a.volumeEmitido > 0 ? fmtBRL(a.volumeEmitido) : '-'}</td>
-                  <td className={`col-num col-aloc${a.alocacao > 0 ? ' has-aloc' : ''}`}>
-                    {a.alocacao > 0 ? fmtBRL(a.alocacao) : '-'}
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      </div>
-      {desktop && (
-        <table className="asset-table asset-table-total">
-          <colgroup>
-            <col className="c-ativo" />
-            <col className="c-emis" />
-            <col className="c-venc" />
-            <col className="c-taxa" />
-            <col className="c-anbima" />
-            <col className="c-duration" />
-            <col className="c-vol" />
-            <col className="c-aloc" />
-          </colgroup>
-          <tbody>
+                    <button
+                      className="info-btn"
+                      onClick={e => { e.stopPropagation(); onInfoClick(a) }}
+                      aria-label="Ver detalhes"
+                    >ℹ</button>
+                  </div>
+                </td>
+                <td className="col-num">{fmtData(a.emissao)}</td>
+                <td className="col-num">{fmtData(a.vencimento)}</td>
+                <td className="col-num">{fmtTaxa(a.taxa)}</td>
+                <td className="col-num col-anbima" title={anbimaTooltip(a, anbimaRef)}>{(a.txAnbima && a.txAnbima !== '—') ? a.txAnbima : '-'}</td>
+                <td className="col-num col-anbima">{(a.durationAnbima && a.durationAnbima !== '—') ? a.durationAnbima : '-'}</td>
+                <td className="col-num">{a.volumeEmitido > 0 ? fmtBRL(a.volumeEmitido) : '-'}</td>
+                <td className={`col-num col-aloc${a.alocacao > 0 ? ' has-aloc' : ''}`}>
+                  {a.alocacao > 0 ? fmtBRL(a.alocacao) : '-'}
+                </td>
+              </tr>
+            )
+          })}
+        </tbody>
+        {desktop && (
+          <tfoot>
             <tr className="total-row">
               <td className="col-sticky col-ativo">Total</td>
               <td className="col-num"></td>
@@ -139,9 +125,9 @@ export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter
               <td className="col-num">{fmtBRL(totalVol)}</td>
               <td className="col-num col-aloc">{fmtBRL(totalAloc)}</td>
             </tr>
-          </tbody>
-        </table>
-      )}
+          </tfoot>
+        )}
+      </table>
     </div>
   )
 }
