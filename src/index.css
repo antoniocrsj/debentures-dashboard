@@ -4,6 +4,8 @@
   --primary-dark:   #14253f;   /* azul-marinho profundo (header) */
   --primary-light:  #e9eef7;   /* azul-acinzentado claro (hover / selecionado) */
   --primary-border: #cdd9ea;   /* borda azul-acinzentada clara */
+  --navy-light:    #33547f;    /* azul-marinho claro (borda/texto dos botões/chips no estado normal) */
+  --chip-bg:       #f6f8fa;    /* preenchimento quase branco dos botões/chips no estado normal */
   --bg:            #eef1f5;     /* cinza claro de fundo */
   --card:          #ffffff;
   --text:          #0f172a;
@@ -119,13 +121,13 @@ a { color: var(--primary); }
 }
 .chip-select {
   appearance: none;
-  background: var(--bg);
-  border: 1.5px solid var(--border);
+  background: var(--chip-bg);
+  border: 1px solid var(--navy-light);
   border-radius: 99px;
   padding: 5px 6px;
   font-size: 11px;
   font-weight: 500;
-  color: var(--text-muted);
+  color: var(--navy-light);
   cursor: pointer;
   white-space: nowrap;
   width: 88px;
@@ -141,13 +143,13 @@ a { color: var(--primary); }
 
 .chip-toggle {
   flex-shrink: 0;
-  background: var(--bg);
-  border: 1.5px solid var(--border);
+  background: var(--chip-bg);
+  border: 1px solid var(--navy-light);
   border-radius: 99px;
   padding: 5px 12px;
   font-size: 12px;
   font-weight: 500;
-  color: var(--text-muted);
+  color: var(--navy-light);
   transition: all .15s;
   white-space: nowrap;
 }
@@ -173,13 +175,13 @@ a { color: var(--primary); }
   display: flex;
   align-items: center;
   margin: 6px 12px 0;
-  background: var(--bg);
-  border: 1.5px solid var(--border);
+  background: var(--chip-bg);
+  border: 1px solid var(--navy-light);
   border-radius: 8px;
   padding: 0 10px;
   gap: 6px;
 }
-.search-icon { font-size: 13px; color: var(--text-muted); }
+.search-icon { font-size: 13px; color: var(--navy-light); }
 .search-input {
   flex: 1;
   border: none;
@@ -188,7 +190,7 @@ a { color: var(--primary); }
   font-size: 13px;
   color: var(--text);
 }
-.search-input::placeholder { color: var(--text-muted); }
+.search-input::placeholder { color: var(--navy-light); }
 .search-input:focus { outline: none; }
 
 .data-updated {
@@ -689,11 +691,11 @@ a { color: var(--primary); }
 .fluxo-field { display: flex; flex-direction: column; gap: 4px; }
 .fluxo-field-label { font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: .03em; }
 
-.segmented { display: flex; width: 100%; background: var(--primary-light); border: 1px solid var(--primary-border); border-radius: 10px; padding: 2px; }
+.segmented { display: flex; width: 100%; background: var(--chip-bg); border: 1px solid var(--navy-light); border-radius: 10px; padding: 2px; }
 .segmented-btn {
   flex: 1 1 0;
   border: 0; background: transparent; cursor: pointer;
-  font-size: 13px; font-weight: 600; color: var(--primary-dark);
+  font-size: 13px; font-weight: 500; color: var(--navy-light);
   padding: 7px 12px; border-radius: 8px; white-space: nowrap; text-align: center;
 }
 .segmented-btn.active { background: var(--primary-dark); color: #fff; }
@@ -702,8 +704,8 @@ a { color: var(--primary); }
 
 .period-shortcuts { display: flex; gap: 6px; flex-wrap: wrap; }
 .period-chip {
-  border: 1px solid var(--primary-border); background: #fff; color: var(--primary-dark);
-  font-size: 12.5px; font-weight: 600; padding: 6px 10px; border-radius: 8px; cursor: pointer;
+  border: 1px solid var(--navy-light); background: var(--chip-bg); color: var(--navy-light);
+  font-size: 12.5px; font-weight: 500; padding: 6px 10px; border-radius: 8px; cursor: pointer;
 }
 .period-chip.active { background: var(--primary-dark); color: #fff; border-color: var(--primary-dark); }
 .period-chip:disabled { opacity: .5; cursor: default; }
