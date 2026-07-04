@@ -990,6 +990,24 @@ a { color: var(--primary); }
   }
   .app.desktop .asset-table thead .col-sticky { z-index: 4; }
 
+  /* Linha de Total no rodapé — fixa embaixo do scroll, espelhando o cabeçalho fixo em cima */
+  .app.desktop .asset-table tfoot td {
+    position: sticky;
+    bottom: 0;
+    z-index: 3;
+    background: var(--primary-light);
+    border-top: 2px solid var(--primary);
+    border-bottom: 0;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .app.desktop .asset-table tfoot .col-sticky {
+    bottom: 0;
+    z-index: 4;
+    background: var(--primary-light);
+  }
+  .app.desktop .asset-table tfoot .col-aloc { color: var(--success); }
+
   /* Rankings com a MESMA identidade da tabela de Ativos:
      um card branco arredondado, linhas separadas por borda,
      sem cards soltos, sem barra azul. */
@@ -1029,6 +1047,21 @@ a { color: var(--primary); }
   .app.desktop .desktop-split-col .rank-name,
   .app.desktop .desktop-split-col .rank-aloc,
   .app.desktop .desktop-split-col .rank-pl { font-size: 11px; }
+
+  /* Linha de Total no rodapé de Gestores/Grupos — mesmo tratamento da tabela de Ativos */
+  .app.desktop .desktop-split-col .ranking-total {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    background: var(--primary-light);
+    border-top: 2px solid var(--primary);
+    border-bottom: 0;
+  }
+  .app.desktop .desktop-split-col .ranking-total .rank-name,
+  .app.desktop .desktop-split-col .ranking-total .rank-pl {
+    color: var(--text);
+    font-weight: 700;
+  }
 }
 
 /* ─── Desktop: barras de rolagem discretas ──────────────────── */

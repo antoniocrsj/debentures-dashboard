@@ -1,6 +1,6 @@
 import { fmtBRL } from '../utils/format.js'
 
-export default function ManagerRanking({ managers, activeGestor, onFilter }) {
+export default function ManagerRanking({ managers, activeGestor, onFilter, desktop }) {
   if (!managers.length) {
     return (
       <div className="empty-state">
@@ -38,6 +38,14 @@ export default function ManagerRanking({ managers, activeGestor, onFilter }) {
           </div>
         )
       })}
+      {desktop && (
+        <div className="ranking-row ranking-total">
+          <span className="rank-num"></span>
+          <span className="rank-name">Total</span>
+          <span className="rank-aloc">{fmtBRL(managers.reduce((s, m) => s + m.alocacao, 0))}</span>
+          <span className="rank-pl">{fmtBRL(managers.reduce((s, m) => s + m.pl, 0))}</span>
+        </div>
+      )}
     </div>
   )
 }

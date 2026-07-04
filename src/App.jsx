@@ -343,6 +343,7 @@ export default function App() {
                 managers={managers}
                 activeGestor={filters.gestor}
                 onFilter={handleFilter}
+                desktop={desktop}
               />
             )}
             {tab === 'grupos' && (
@@ -351,6 +352,7 @@ export default function App() {
                 activeGrupo={filters.grupo}
                 onFilter={handleFilter}
                 gestorPl={selectedGestorPl}
+                desktop={desktop}
               />
             )}
           </>
@@ -374,6 +376,7 @@ export default function App() {
                   managers={managers}
                   activeGestor={filters.gestor}
                   onFilter={handleFilter}
+                  desktop={desktop}
                 />
               </div>
               <div className="desktop-split-col">
@@ -382,6 +385,7 @@ export default function App() {
                   activeGrupo={filters.grupo}
                   onFilter={handleFilter}
                   gestorPl={selectedGestorPl}
+                  desktop={desktop}
                 />
               </div>
             </div>

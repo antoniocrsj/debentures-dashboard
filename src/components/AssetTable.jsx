@@ -42,6 +42,9 @@ export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter
     )
   }
 
+  const totalVol  = desktop ? assets.reduce((s, a) => s + (a.volumeEmitido || 0), 0) : 0
+  const totalAloc = desktop ? assets.reduce((s, a) => s + (a.alocacao || 0), 0) : 0
+
   return (
     <div className="table-wrap">
       <table className="asset-table">
@@ -110,6 +113,20 @@ export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter
             )
           })}
         </tbody>
+        {desktop && (
+          <tfoot>
+            <tr className="total-row">
+              <td className="col-sticky col-ativo">Total</td>
+              <td className="col-num"></td>
+              <td className="col-num"></td>
+              <td className="col-num"></td>
+              <td className="col-num col-anbima"></td>
+              <td className="col-num col-anbima"></td>
+              <td className="col-num">{fmtBRL(totalVol)}</td>
+              <td className="col-num col-aloc">{fmtBRL(totalAloc)}</td>
+            </tr>
+          </tfoot>
+        )}
       </table>
     </div>
   )

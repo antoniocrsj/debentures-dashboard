@@ -1,6 +1,6 @@
 import { fmtBRL, fmtPct } from '../utils/format.js'
 
-export default function GroupRanking({ groups, activeGrupo, onFilter, gestorPl }) {
+export default function GroupRanking({ groups, activeGrupo, onFilter, gestorPl, desktop }) {
   if (!groups.length) {
     return (
       <div className="empty-state">
@@ -12,6 +12,7 @@ export default function GroupRanking({ groups, activeGrupo, onFilter, gestorPl }
 
   // %PL só faz sentido com um gestor selecionado (alocação já filtrada por ele) e PL conhecido.
   const showPct = gestorPl > 0
+  const totalAloc = desktop ? groups.reduce((s, g) => s + g.alocacao, 0) : 0
 
   return (
     <div className="ranking-list">
@@ -41,6 +42,14 @@ export default function GroupRanking({ groups, activeGrupo, onFilter, gestorPl }
           </div>
         )
       })}
+      {desktop && (
+        <div className="ranking-row ranking-total">
+          <span className="rank-num"></span>
+          <span className="rank-name">Total</span>
+          <span className="rank-aloc">{fmtBRL(totalAloc)}</span>
+          {showPct && <span className="rank-pl">{fmtPct((totalAloc / gestorPl) * 100)}</span>}
+        </div>
+      )}
     </div>
   )
 }
