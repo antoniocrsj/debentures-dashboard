@@ -211,6 +211,9 @@ export default function App() {
 
   const groups = useMemo(() => computeGroups(filteredAssets), [filteredAssets])
 
+  // PL do gestor selecionado — habilita a coluna %PL no ranking de Grupos.
+  const selectedGestorPl = filters.gestor ? (plByGestor[filters.gestor] || 0) : 0
+
   const handleMonthsChange = useCallback((newMonths, idx) => {
     setMonths(newMonths)
     setMonthIdx(idx)
@@ -347,6 +350,7 @@ export default function App() {
                 groups={groups}
                 activeGrupo={filters.grupo}
                 onFilter={handleFilter}
+                gestorPl={selectedGestorPl}
               />
             )}
           </>
@@ -377,6 +381,7 @@ export default function App() {
                   groups={groups}
                   activeGrupo={filters.grupo}
                   onFilter={handleFilter}
+                  gestorPl={selectedGestorPl}
                 />
               </div>
             </div>

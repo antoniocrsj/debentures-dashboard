@@ -121,6 +121,12 @@ export function fmtMesAno(mesAno) {
   return `${MESES[m - 1] || m}/${y}`
 }
 
+/** Percentual — 1 casa decimal com vírgula, ex: 12,3% */
+export function fmtPct(n) {
+  if (n == null || isNaN(n)) return '—'
+  return `${n.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`
+}
+
 /** Display a taxa/rate — 2 decimal places with comma */
 export function fmtTaxa(str) {
   if (!str) return '—'
