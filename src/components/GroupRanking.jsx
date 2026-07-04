@@ -15,33 +15,35 @@ export default function GroupRanking({ groups, activeGrupo, onFilter, gestorPl, 
   const totalAloc = desktop ? groups.reduce((s, g) => s + g.alocacao, 0) : 0
 
   return (
-    <div className="ranking-list">
-      <div className="ranking-header">
-        <span className="rank-col">#</span>
-        <span className="name-col">Grupo Econômico</span>
-        <span className="val-col">Alocação</span>
-        {showPct && <span className="val-col">%PL</span>}
-      </div>
-      {groups.map((g, i) => {
-        const selected = activeGrupo === g.grupo
-        return (
-          <div
-            key={g.grupo}
-            className={`ranking-card${selected ? ' card-selected' : ''}`}
-            onClick={() => onFilter('grupo', g.grupo)}
-            role="button"
-            tabIndex={0}
-            onKeyDown={e => e.key === 'Enter' && onFilter('grupo', g.grupo)}
-          >
-            <div className="ranking-row">
-              <span className="rank-num">{i + 1}</span>
-              <span className="rank-name">{g.grupo}</span>
-              <span className="rank-aloc">{fmtBRL(g.alocacao)}</span>
-              {showPct && <span className="rank-pl">{fmtPct((g.alocacao / gestorPl) * 100)}</span>}
+    <div className="ranking-panel">
+      <div className="ranking-list">
+        <div className="ranking-header">
+          <span className="rank-col">#</span>
+          <span className="name-col">Grupo Econômico</span>
+          <span className="val-col">Alocação</span>
+          {showPct && <span className="val-col">%PL</span>}
+        </div>
+        {groups.map((g, i) => {
+          const selected = activeGrupo === g.grupo
+          return (
+            <div
+              key={g.grupo}
+              className={`ranking-card${selected ? ' card-selected' : ''}`}
+              onClick={() => onFilter('grupo', g.grupo)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={e => e.key === 'Enter' && onFilter('grupo', g.grupo)}
+            >
+              <div className="ranking-row">
+                <span className="rank-num">{i + 1}</span>
+                <span className="rank-name">{g.grupo}</span>
+                <span className="rank-aloc">{fmtBRL(g.alocacao)}</span>
+                {showPct && <span className="rank-pl">{fmtPct((g.alocacao / gestorPl) * 100)}</span>}
+              </div>
             </div>
-          </div>
-        )
-      })}
+          )
+        })}
+      </div>
       {desktop && (
         <div className="ranking-row ranking-total">
           <span className="rank-num"></span>
