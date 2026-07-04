@@ -4,7 +4,7 @@ import {
   buildIndexes, buildBlcIndex, buildAnbimaIndex, buildPlByGestor,
   enrichDebenture, computeManagers, computeGroups, recomputeAlocByGestor
 } from './utils/data.js'
-import { isYes, dateKey } from './utils/format.js'
+import { isYes, dateKey, fmtDateTime } from './utils/format.js'
 import { lazyWithRetry } from './utils/lazyWithRetry.js'
 import Header from './components/Header.jsx'
 import Filters from './components/Filters.jsx'
@@ -74,7 +74,8 @@ export default function App() {
   useEffect(() => { setShowAll(false) }, [filters])
 
   const currentMonth = months[monthIdx] ?? months[0]
-  const { loading, refreshing, error, raw } = useDebentures(currentMonth.url)
+  const { loading, refreshing, error, raw, cachedAt } = useDebentures(currentMonth.url)
+  const updatedLabel = useMemo(() => fmtDateTime(cachedAt), [cachedAt])
 
   // Build indexes once per raw load
   const indexes = useMemo(() => {
@@ -245,6 +246,7 @@ export default function App() {
             disabled={loading}
             onChange={setFilters}
             tabsSlot={desktop ? tabsNav : null}
+            updatedLabel={updatedLabel}
           />
         )}
 
@@ -299,6 +301,7 @@ export default function App() {
                   onFilter={handleFilter}
                   onInfoClick={setSelected}
                   anbimaRef={anbimaRef}
+                  desktop={desktop}
                 />
                 {!showAll && filteredAssets.length > PAGE_SIZE && (
                   <button className="show-all-btn" onClick={() => setShowAll(true)}>
@@ -334,6 +337,7 @@ export default function App() {
               onFilter={handleFilter}
               onInfoClick={setSelected}
               anbimaRef={anbimaRef}
+              desktop={desktop}
             />
             <div className="desktop-split">
               <div className="desktop-split-col">

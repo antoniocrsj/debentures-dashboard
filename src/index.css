@@ -191,6 +191,13 @@ a { color: var(--primary); }
 .search-input::placeholder { color: var(--text-muted); }
 .search-input:focus { outline: none; }
 
+.data-updated {
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  margin: 4px 12px 0;
+}
+
 /* ─── Searchable dropdown ────────────────────────────────────── */
 .chip-label {
   display: block;
@@ -950,6 +957,9 @@ a { color: var(--primary); }
     flex: 0 1 320px;
     max-width: 320px;
     margin: 8px 0 8px 12px;
+  }
+  .app.desktop .data-updated {
+    margin: 0 12px 0 auto;
   }
   .app.desktop .tabs.tabs-inline {
     flex: 0 0 auto;

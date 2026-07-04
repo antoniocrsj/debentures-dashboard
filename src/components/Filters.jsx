@@ -3,7 +3,7 @@ import SearchSelect from './SearchSelect.jsx'
 
 const EMPTY = { grupo: '', setor: '', gestor: '', lei12431: '', ativo: '', search: '' }
 
-export default function Filters({ filters, options, disabled, onChange, tabsSlot }) {
+export default function Filters({ filters, options, disabled, onChange, tabsSlot, updatedLabel }) {
   const set = useCallback((key, val) => onChange(f => ({ ...f, [key]: val })), [onChange])
 
   return (
@@ -33,6 +33,7 @@ export default function Filters({ filters, options, disabled, onChange, tabsSlot
           />
         </div>
         {tabsSlot}
+        {updatedLabel && <p className="data-updated">Atualizado em {updatedLabel}</p>}
       </div>
     </div>
   )

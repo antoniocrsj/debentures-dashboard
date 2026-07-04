@@ -1,4 +1,4 @@
-import { fmtBRL, fmtDateShort, fmtTaxa } from '../utils/format.js'
+import { fmtBRL, fmtDateShort, fmtDateDDMMYY, fmtTaxa } from '../utils/format.js'
 
 const COLS = [
   { id: 'ativo',      label: 'Ativo',      sticky: true,  sortable: true  },
@@ -31,7 +31,8 @@ function anbimaTooltip(a, ref) {
   return L.join('\n')
 }
 
-export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter, onInfoClick, anbimaRef }) {
+export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter, onInfoClick, anbimaRef, desktop }) {
+  const fmtData = desktop ? fmtDateDDMMYY : fmtDateShort
   if (!assets.length) {
     return (
       <div className="empty-state">
@@ -96,8 +97,8 @@ export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter
                     >ℹ</button>
                   </div>
                 </td>
-                <td className="col-num">{fmtDateShort(a.emissao)}</td>
-                <td className="col-num">{fmtDateShort(a.vencimento)}</td>
+                <td className="col-num">{fmtData(a.emissao)}</td>
+                <td className="col-num">{fmtData(a.vencimento)}</td>
                 <td className="col-num">{fmtTaxa(a.taxa)}</td>
                 <td className="col-num col-anbima" title={anbimaTooltip(a, anbimaRef)}>{(a.txAnbima && a.txAnbima !== '—') ? a.txAnbima : '-'}</td>
                 <td className="col-num col-anbima">{(a.durationAnbima && a.durationAnbima !== '—') ? a.durationAnbima : '-'}</td>

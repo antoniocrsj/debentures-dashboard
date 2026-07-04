@@ -75,6 +75,31 @@ export function fmtDateShort(str) {
   return full
 }
 
+/** Short date — DD/MM/YY ex: 03/10/29 */
+export function fmtDateDDMMYY(str) {
+  if (!str) return '—'
+  const full = fmtDate(str)
+  const parts = full.split('/')
+  if (parts.length === 3) {
+    const [d, m, y] = parts
+    return `${d}/${m}/${y.slice(-2)}`
+  }
+  return full
+}
+
+/** Data + hora de atualização — DD/MM/AA HH:MM, a partir de um timestamp (Date.now()) */
+export function fmtDateTime(ts) {
+  if (!ts) return ''
+  const d = new Date(ts)
+  if (isNaN(d)) return ''
+  const dd = String(d.getDate()).padStart(2, '0')
+  const mm = String(d.getMonth() + 1).padStart(2, '0')
+  const yy = String(d.getFullYear()).slice(-2)
+  const hh = String(d.getHours()).padStart(2, '0')
+  const mi = String(d.getMinutes()).padStart(2, '0')
+  return `${dd}/${mm}/${yy} ${hh}:${mi}`
+}
+
 /** Display a taxa/rate — 2 decimal places with comma */
 export function fmtTaxa(str) {
   if (!str) return '—'

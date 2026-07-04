@@ -4,10 +4,11 @@ import SortableTh, { cycleSort } from './SortableTh.jsx'
 
 /**
  * Tabela "Meses": captação/resgate/cap. líquida consolidados por mês (agregação
- * feita do diário na preparação, não da semana). Ordenável (padrão: mês ↑ =
- * cronológico). Meses sem movimentação aparecem com zero.
+ * feita do diário na preparação, não da semana). Ordenável (padrão: mês mais
+ * recente primeiro, igual à tabela de Semanas). Meses sem movimentação
+ * aparecem com zero.
  */
-const DEFAULT_SORT = { col: 'mes', dir: 'asc' }   // cronológico (mais antigo primeiro)
+const DEFAULT_SORT = { col: 'mes', dir: 'desc' }   // mais recente primeiro
 const KEYS = {
   mes:      m => m.mesKey,        // 'yyyy-MM' ordena cronologicamente como texto
   liquido:  m => m.liquido,
