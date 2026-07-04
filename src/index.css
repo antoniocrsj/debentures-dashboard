@@ -453,26 +453,12 @@ a { color: var(--primary); }
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 12px 6px;
+  padding: 5px 12px;
 }
 .rank-num  { width: 24px; font-size: 11px; font-weight: 700; color: var(--text-muted); flex-shrink: 0; text-align: center; }
 .rank-name { flex: 1; font-size: 13px; font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .rank-aloc { width: 80px; text-align: center; font-size: 12.5px; font-weight: 700; color: var(--success); flex-shrink: 0; }
 .rank-pl   { width: 80px; text-align: center; font-size: 11.5px; color: var(--text-muted); flex-shrink: 0; }
-
-.rank-bar-wrap {
-  height: 3px;
-  background: var(--border);
-  margin: 0 12px 10px;
-  border-radius: 2px;
-  overflow: hidden;
-}
-.rank-bar {
-  height: 100%;
-  background: linear-gradient(90deg, var(--primary) 0%, #3b82f6 100%);
-  border-radius: 2px;
-  transition: width .4s ease;
-}
 
 /* ─── Modal ──────────────────────────────────────────────────── */
 .modal-overlay {
@@ -836,8 +822,8 @@ a { color: var(--primary); }
 .app:not(.desktop) .table-wrap { background: var(--card); }
 
 .app:not(.desktop) .asset-table td {
-  padding-top: 7px;
-  padding-bottom: 7px;
+  padding-top: 4px;
+  padding-bottom: 4px;
   line-height: 15px;
 }
 
@@ -1043,8 +1029,6 @@ a { color: var(--primary); }
   .app.desktop .desktop-split-col .rank-name,
   .app.desktop .desktop-split-col .rank-aloc,
   .app.desktop .desktop-split-col .rank-pl { font-size: 11px; }
-  /* remove a barra azul → linhas mais baixas e uniformes */
-  .app.desktop .desktop-split-col .rank-bar-wrap { display: none; }
 }
 
 /* ─── Desktop: barras de rolagem discretas ──────────────────── */
