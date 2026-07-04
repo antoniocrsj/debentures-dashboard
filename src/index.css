@@ -121,6 +121,10 @@ a { color: var(--primary); }
 }
 .chip-select {
   appearance: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
   background: var(--chip-bg);
   border: 1px solid var(--navy-light);
   border-radius: 99px;
@@ -161,6 +165,10 @@ a { color: var(--primary); }
 }
 .chip-clear {
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
   background: #fef2f2;
   border: 1.5px solid #fecaca;
   border-radius: 99px;
@@ -174,6 +182,7 @@ a { color: var(--primary); }
 .search-wrap {
   display: flex;
   align-items: center;
+  height: 30px;
   margin: 6px 12px 0;
   background: var(--chip-bg);
   border: 1px solid var(--navy-light);
@@ -256,7 +265,11 @@ a { color: var(--primary); }
 }
 .tab-btn {
   flex: 1;
-  padding: 10px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  padding: 0 4px;
   font-size: 12px;
   font-weight: 500;
   color: var(--text-muted);
@@ -694,18 +707,22 @@ a { color: var(--primary); }
 .segmented { display: flex; width: 100%; background: var(--chip-bg); border: 1px solid var(--navy-light); border-radius: 99px; padding: 2px; }
 .segmented-btn {
   flex: 1 1 0;
+  display: flex; align-items: center; justify-content: center;
+  height: 30px;
   border: 0; background: transparent; cursor: pointer;
   font-size: 13px; font-weight: 500; color: var(--navy-light);
-  padding: 7px 12px; border-radius: 99px; white-space: nowrap; text-align: center;
+  padding: 0 12px; border-radius: 99px; white-space: nowrap; text-align: center;
 }
 .segmented-btn.active { background: var(--primary-dark); color: #fff; }
 .segmented-btn:disabled { opacity: .5; cursor: default; }
-.segmented-sm .segmented-btn { font-size: 12px; padding: 5px 9px; }
+.segmented-sm .segmented-btn { font-size: 12px; padding: 0 9px; }
 
 .period-shortcuts { display: flex; gap: 6px; flex-wrap: wrap; }
 .period-chip {
+  display: flex; align-items: center; justify-content: center;
+  height: 30px;
   border: 1px solid var(--navy-light); background: var(--chip-bg); color: var(--navy-light);
-  font-size: 12.5px; font-weight: 500; padding: 6px 10px; border-radius: 99px; cursor: pointer;
+  font-size: 12.5px; font-weight: 500; padding: 0 10px; border-radius: 99px; cursor: pointer;
 }
 .period-chip.active { background: var(--primary-dark); color: #fff; border-color: var(--primary-dark); }
 .period-chip:disabled { opacity: .5; cursor: default; }
@@ -779,9 +796,10 @@ a { color: var(--primary); }
 
 /* ─── Botão de visão Desktop / Compacto (header) ─────────────── */
 .view-toggle {
-  display: inline-flex; align-items: center; gap: 5px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+  height: 30px;
   background: rgba(255,255,255,.14); color: #fff;
-  border-radius: 8px; padding: 5px 10px;
+  border-radius: 8px; padding: 0 10px;
   font-size: 12px; font-weight: 600; white-space: nowrap; flex-shrink: 0;
   transition: background .15s;
 }
@@ -792,7 +810,7 @@ a { color: var(--primary); }
 /* ─── Navegação por ícones entre seções (compacto — GER-2) ─── */
 .section-nav { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 .section-btn {
-  width: 38px; height: 38px;
+  width: 30px; height: 30px;
   display: flex; align-items: center; justify-content: center;
   border-radius: 50%;
   border: 1.5px solid rgba(255,255,255,.4);
@@ -801,7 +819,7 @@ a { color: var(--primary); }
   flex-shrink: 0;
   transition: background .15s, color .15s, border-color .15s, transform .1s;
 }
-.section-btn svg { width: 22px; height: 22px; }
+.section-btn svg { width: 18px; height: 18px; }
 .section-btn:hover  { background: rgba(255,255,255,.16); }
 .section-btn:active { transform: scale(.95); }
 .section-btn.active {
@@ -868,7 +886,7 @@ a { color: var(--primary); }
   .app.desktop .fluxo-filters-row { flex-wrap: nowrap; align-items: flex-end; gap: 16px; }
   .app.desktop .fluxo-field-tipo { flex: 0 0 auto; }
   .app.desktop .fluxo-field-tipo .segmented { width: auto; }
-  .app.desktop .fluxo-field-tipo .segmented-btn { font-size: 12px; padding: 5px 12px; }
+  .app.desktop .fluxo-field-tipo .segmented-btn { font-size: 12px; padding: 0 12px; }
   .app.desktop .fluxo-period-info { margin-top: 0; }
 
   /* 3. Cards mais estreitos e baixos */
@@ -956,7 +974,7 @@ a { color: var(--primary); }
   }
   .app.desktop .tabs.tabs-inline .tab-btn {
     flex: 0 0 auto;
-    padding: 9px 18px;
+    padding: 0 18px;
     margin-bottom: 0;
     font-size: 13px;
   }
