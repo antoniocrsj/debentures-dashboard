@@ -172,9 +172,19 @@ function finishRun(run, exitCode) {
 // PowerShell 5.1 escreve stdout redirecionado na codepage do console, nao
 // necessariamente UTF-8 -- forcamos via $OutputEncoding antes de chamar o
 // script real (truque padrao para redirecionamento de pipeline em PS 5.1).
+//
+// Nomes de parametro (-SkipFundos, -CaptacaoModo, ...) NAO podem ir entre
+// aspas: aspas fazem o PowerShell tratar o token como um valor de string
+// literal em vez de reconhecer o nome do parametro, e ele acaba caindo no
+// bind posicional do primeiro parametro nao-switch do script (foi exatamente
+// o bug: '-SkipFundos' virava o VALOR de -CaptacaoModo). Só os valores em si
+// (ex.: 'Auto') precisam de aspas.
 function psCommand(scriptPath, args) {
-  const quotedArgs = args.map(a => `'${String(a).replace(/'/g, "''")}'`).join(' ')
-  const inner = `$OutputEncoding = [System.Text.UTF8Encoding]::new(); & '${scriptPath}' ${quotedArgs}`
+  const rendered = args
+    .map(a => String(a))
+    .map(a => (/^-[A-Za-z]/.test(a) ? a : `'${a.replace(/'/g, "''")}'`))
+    .join(' ')
+  const inner = `$OutputEncoding = [System.Text.UTF8Encoding]::new(); & '${scriptPath}' ${rendered}`
   return { cmd: 'powershell', args: ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-Command', inner] }
 }
 
