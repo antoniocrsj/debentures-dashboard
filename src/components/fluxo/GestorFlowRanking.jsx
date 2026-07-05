@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { fmtFluxo, fmtFluxoSigned, sortRows, fmtInt } from '../../utils/fluxo.js'
+import { fmtPct } from '../../utils/format.js'
 import SortableTh, { cycleSort } from './SortableTh.jsx'
 
 const LIMIT = 20
@@ -11,8 +12,16 @@ const KEYS = {
   liquido:  g => g.liquido,
   captacao: g => g.captacao,
   resgate:  g => g.resgate,
+  rent1s:   g => g.pctCdi1s,
+  rent1m:   g => g.pctCdi1m,
+  rent3m:   g => g.pctCdi3m,
+  rent6m:   g => g.pctCdi6m,
+  rent12m:  g => g.pctCdi12m,
 }
-const LABELS = { gestor: 'Gestor', pl: 'PL', liquido: 'Cap. Líquida', captacao: 'Captação', resgate: 'Resgate' }
+const LABELS = {
+  gestor: 'Gestor', pl: 'PL', liquido: 'Cap. Líquida', captacao: 'Captação', resgate: 'Resgate',
+  rent1s: '%CDI 1s', rent1m: '%CDI 1m', rent3m: '%CDI 3m', rent6m: '%CDI 6m', rent12m: '%CDI 12m',
+}
 
 export default function GestorFlowRanking({ ranking, onSelect }) {
   const [sort, setSort] = useState(DEFAULT_SORT)
@@ -45,6 +54,11 @@ export default function GestorFlowRanking({ ranking, onSelect }) {
               <SortableTh col="captacao" label="Captação"    sort={sort} onSort={onSort} />
               <SortableTh col="resgate"  label="Resgate"     sort={sort} onSort={onSort} />
               <SortableTh col="pl"       label="PL"          sort={sort} onSort={onSort} />
+              <SortableTh col="rent1s"   label="%CDI 1s"     sort={sort} onSort={onSort} />
+              <SortableTh col="rent1m"   label="%CDI 1m"     sort={sort} onSort={onSort} />
+              <SortableTh col="rent3m"   label="%CDI 3m"     sort={sort} onSort={onSort} />
+              <SortableTh col="rent6m"   label="%CDI 6m"     sort={sort} onSort={onSort} />
+              <SortableTh col="rent12m"  label="%CDI 12m"    sort={sort} onSort={onSort} />
             </tr>
           </thead>
           <tbody>
@@ -63,6 +77,11 @@ export default function GestorFlowRanking({ ranking, onSelect }) {
                   <td className="col-num">{fmtFluxo(g.captacao)}</td>
                   <td className="col-num">{fmtFluxo(g.resgate)}</td>
                   <td className="col-num">{g.plRecente > 0 ? fmtFluxo(g.plRecente) : '-'}</td>
+                  <td className="col-num">{fmtPct(g.pctCdi1s)}</td>
+                  <td className="col-num">{fmtPct(g.pctCdi1m)}</td>
+                  <td className="col-num">{fmtPct(g.pctCdi3m)}</td>
+                  <td className="col-num">{fmtPct(g.pctCdi6m)}</td>
+                  <td className="col-num">{fmtPct(g.pctCdi12m)}</td>
                 </tr>
               )
             })}

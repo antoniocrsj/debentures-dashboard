@@ -8,6 +8,7 @@ import {
   toChartSeries, fmtMonthYY, fmtWeekFull, monthTicks,
   fmtFluxo, fmtFluxoSigned,
   parseMes, normalizeMonthRow, filterMensal, aggregateByMonth,
+  normalizeRentabilidade, mergeRentabilidade,
 } from '../src/utils/fluxo.js'
 
 const norm = s => s.replace(/ /g, ' ')   // troca espaço não-separável por comum
@@ -109,6 +110,32 @@ test('aggregateByGestor: PL total médio no tempo e PL recente por gestor', () =
   assert.equal(a.liquido, 1300)
   const b = g.find(x => x.gestor === 'B')
   assert.equal(b.plTotalMedio, 20000)
+})
+
+test('normalizeRentabilidade: célula vazia vira null (não zero)', () => {
+  const map = normalizeRentabilidade([
+    { Gestor_Apelido: 'A', PctCDI_1s: '105,4', PctCDI_1m: '', PctCDI_3m: '98.2', PctCDI_6m: '', PctCDI_12m: '' },
+  ])
+  const a = map.get('A')
+  assert.equal(a.pctCdi1s, 105.4)
+  assert.equal(a.pctCdi1m, null)
+  assert.equal(a.pctCdi3m, 98.2)
+  assert.equal(a.pctCdi12m, null)
+})
+
+test('mergeRentabilidade: junta por gestor; sem match vira null, não quebra a linha', () => {
+  const ranking = aggregateByGestor(SAMPLE)
+  const rentMap = normalizeRentabilidade([
+    { Gestor_Apelido: 'A', PctCDI_1s: '110', PctCDI_1m: '108', PctCDI_3m: '', PctCDI_6m: '', PctCDI_12m: '' },
+  ])
+  const merged = mergeRentabilidade(ranking, rentMap)
+  const a = merged.find(x => x.gestor === 'A')
+  const b = merged.find(x => x.gestor === 'B')
+  assert.equal(a.pctCdi1s, 110)
+  assert.equal(a.pctCdi1m, 108)
+  assert.equal(a.pctCdi3m, null)
+  assert.equal(b.pctCdi1s, null)   // B nao esta' no rentMap
+  assert.equal(b.captacao, ranking.find(x => x.gestor === 'B').captacao) // resto da linha intacto
 })
 
 test('sortRows: numérico por valor, nulos no fim, não muta a base', () => {

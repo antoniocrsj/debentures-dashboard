@@ -3,7 +3,7 @@ import { useFluxo, FLUXO_TIPOS } from '../../hooks/useFluxo.js'
 import {
   filterFluxo, aggregateByWeek, aggregateByGestor, computeCards,
   gestorOptions, startForMonths, periodBounds, fmtWeekFull, latestBaseDate,
-  filterMensal, aggregateByMonth,
+  filterMensal, aggregateByMonth, mergeRentabilidade,
 } from '../../utils/fluxo.js'
 import { lazyWithRetry } from '../../utils/lazyWithRetry.js'
 import FluxoFilters from './FluxoFilters.jsx'
@@ -24,7 +24,7 @@ export default function FluxoDashboard({ compact = false }) {
   const [gestor, setGestor] = useState('')
   const [months, setMonths] = useState(DEFAULT_MONTHS)   // null = todo o histórico
 
-  const { loading, error, rows, invalid, isMock, reload, monthly, meta } = useFluxo(tipo)
+  const { loading, error, rows, invalid, isMock, reload, monthly, meta, rentabilidade } = useFluxo(tipo)
   const tipoLabel = FLUXO_TIPOS.find(t => t.id === tipo)?.label ?? tipo
 
   const gestores = useMemo(() => gestorOptions(rows), [rows])
@@ -55,7 +55,10 @@ export default function FluxoDashboard({ compact = false }) {
     () => aggregateByMonth(filterMensal(monthly, gestor), effStart, effEnd, monthly),
     [monthly, gestor, effStart, effEnd]
   )
-  const ranking = useMemo(() => (gestor ? [] : aggregateByGestor(filtered)), [filtered, gestor])
+  const ranking = useMemo(
+    () => (gestor ? [] : mergeRentabilidade(aggregateByGestor(filtered), rentabilidade)),
+    [filtered, gestor, rentabilidade]
+  )
 
   // Período efetivo (datas reais usadas) e data de referência da base do segmento
   const periodLabel = weekly.length

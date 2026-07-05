@@ -543,3 +543,85 @@ function Read-CdaFiPL([string]$path) {
   }
   return $map
 }
+
+# Busca a serie diaria do CDI (SGS/BCB, serie 12 - Taxa de juros - CDI, % ao dia)
+# e retorna hashtable: 'yyyy-MM-dd' -> taxa diaria (fracao, ex 0.0005216 = 0,05216%).
+# Cacheia em disco (CDI_Diario.csv, dentro de $cacheDir) para nao rebaixar toda
+# hora; so' rebaixa se o cache nao existir, estiver desatualizado (ultima data
+# ha' mais de 4 dias) ou nao tiver $NoDownload.
+function Get-CdiDiario([string]$cacheDir, [datetime]$desde, [switch]$NoDownload) {
+  $cacheFile = Join-Path $cacheDir 'CDI_Diario.csv'
+  $map = @{}
+  $precisaBaixar = $true
+  $ci = [System.Globalization.CultureInfo]::InvariantCulture
+
+  if (Test-Path $cacheFile) {
+    $lines = [System.IO.File]::ReadAllLines($cacheFile, [System.Text.Encoding]::UTF8)
+    $maxData = $null
+    for ($i = 1; $i -lt $lines.Count; $i++) {
+      $l = $lines[$i]; if ($l.Trim() -eq '') { continue }
+      $c = $l.Split(',')
+      if ($c.Count -lt 2) { continue }
+      $d = $c[0].Trim()
+      $taxa = 0.0
+      [double]::TryParse($c[1], [System.Globalization.NumberStyles]::Any, $ci, [ref]$taxa) | Out-Null
+      $map[$d] = $taxa
+      $dt = [datetime]::MinValue
+      if ([datetime]::TryParseExact($d, 'yyyy-MM-dd', $ci, [System.Globalization.DateTimeStyles]::None, [ref]$dt)) {
+        if ($null -eq $maxData -or $dt -gt $maxData) { $maxData = $dt }
+      }
+    }
+    if ($maxData -and ((Get-Date) - $maxData).TotalDays -le 4) { $precisaBaixar = $false }
+  }
+
+  if ($NoDownload) { $precisaBaixar = $false }
+
+  if ($precisaBaixar) {
+    try {
+      $dataIni = $desde.ToString('dd/MM/yyyy')
+      $dataFim = (Get-Date).ToString('dd/MM/yyyy')
+      $url = "https://api.bcb.gov.br/dados/serie/bcdata.sgs.12/dados?formato=json&dataInicial=$dataIni&dataFinal=$dataFim"
+      $resp = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 90
+      $json = $resp.Content | ConvertFrom-Json
+      $novoMap = @{}
+      foreach ($item in $json) {
+        $dt = [datetime]::ParseExact($item.data, 'dd/MM/yyyy', $ci)
+        $taxa = 0.0
+        [double]::TryParse($item.valor, [System.Globalization.NumberStyles]::Any, $ci, [ref]$taxa) | Out-Null
+        $novoMap[$dt.ToString('yyyy-MM-dd')] = $taxa / 100.0
+      }
+      if ($novoMap.Count -gt 0) {
+        $map = $novoMap
+        $sb = New-Object System.Text.StringBuilder
+        [void]$sb.AppendLine('Data,TaxaDiaria')
+        foreach ($k in ($map.Keys | Sort-Object)) {
+          [void]$sb.AppendLine(('{0},{1}' -f $k, $map[$k].ToString($ci)))
+        }
+        $utf8 = New-Object System.Text.UTF8Encoding($false)
+        [System.IO.File]::WriteAllText($cacheFile, $sb.ToString(), $utf8)
+      }
+    } catch {
+      Write-Host "    Falha ao baixar CDI do Banco Central (usando cache local, se houver): $($_.Exception.Message)" -ForegroundColor Yellow
+    }
+  }
+
+  return $map
+}
+
+# Retorno acumulado do CDI no intervalo inicio-exclusivo, fim-inclusivo,
+# a partir do mapa retornado por Get-CdiDiario. Retorna $null se nao houver
+# nenhum dia de CDI publicado no intervalo (janela maior que o historico).
+function Get-CdiRetornoJanela($cdiMap, [datetime]$inicio, [datetime]$fim) {
+  $prod = 1.0
+  $achou = $false
+  foreach ($k in $cdiMap.Keys) {
+    $dt = [datetime]::MinValue
+    if (-not [datetime]::TryParseExact($k, 'yyyy-MM-dd', [System.Globalization.CultureInfo]::InvariantCulture, [System.Globalization.DateTimeStyles]::None, [ref]$dt)) { continue }
+    if ($dt -gt $inicio -and $dt -le $fim) {
+      $prod *= (1.0 + $cdiMap[$k])
+      $achou = $true
+    }
+  }
+  if (-not $achou) { return $null }
+  return $prod - 1.0
+}

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { parseCSV } from '../utils/csv.js'
-import { normalizeFluxo, normalizeMensal } from '../utils/fluxo.js'
+import { normalizeFluxo, normalizeMensal, normalizeRentabilidade } from '../utils/fluxo.js'
 
 export const FLUXO_SOURCES = {
   '12431': '/data/Fluxo_Semanal_12431.csv',
@@ -10,6 +10,11 @@ export const FLUXO_SOURCES = {
 export const FLUXO_SOURCES_MENSAL = {
   '12431': '/data/Fluxo_Mensal_12431.csv',
   trad: '/data/Fluxo_Mensal_Trad.csv',
+}
+
+export const FLUXO_SOURCES_RENT = {
+  '12431': '/data/Fluxo_Rentabilidade_12431.csv',
+  trad: '/data/Fluxo_Rentabilidade_Trad.csv',
 }
 
 export const FLUXO_META_URL = '/data/Fluxo_Meta.json'
@@ -28,12 +33,14 @@ export function useFluxo(tipo) {
     invalid: 0,
     monthly: [],
     meta: null,
+    rentabilidade: new Map(),
   })
   const reqId = useRef(0)
 
   const load = useCallback(() => {
     const src = FLUXO_SOURCES[tipo]
     const srcMes = FLUXO_SOURCES_MENSAL[tipo]
+    const srcRent = FLUXO_SOURCES_RENT[tipo]
     const id = ++reqId.current
     setState(s => ({ ...s, loading: true, error: null }))
 
@@ -45,6 +52,7 @@ export function useFluxo(tipo) {
         invalid: 0,
         monthly: [],
         meta: null,
+        rentabilidade: new Map(),
       })
       return
     }
@@ -63,6 +71,17 @@ export function useFluxo(tipo) {
           })
       : Promise.resolve([])
 
+    // Rentabilidade (%CDI por gestor, janelas 1s/1m/3m/6m/12m) — opcional: se
+    // faltar/quebrar, a Captação segue funcionando sem essas colunas.
+    const loadRent = srcRent
+      ? fetch(srcRent)
+          .then(async res => (res.ok ? normalizeRentabilidade(parseCSV(await res.text())) : new Map()))
+          .catch(err => {
+            console.error(`[useFluxo] rentabilidade indisponivel (${srcRent}):`, err)
+            return new Map()
+          })
+      : Promise.resolve(new Map())
+
     const loadMeta = fetch(FLUXO_META_URL)
       .then(async res => (res.ok ? (await res.json()) : null))
       .catch(err => {
@@ -70,10 +89,10 @@ export function useFluxo(tipo) {
         return null
       })
 
-    Promise.all([loadWeekly, loadMonthly, loadMeta])
-      .then(([{ rows, invalid }, monthly, meta]) => {
+    Promise.all([loadWeekly, loadMonthly, loadRent, loadMeta])
+      .then(([{ rows, invalid }, monthly, rentabilidade, meta]) => {
         if (id === reqId.current) {
-          setState({ loading: false, error: null, rows, invalid, monthly, meta })
+          setState({ loading: false, error: null, rows, invalid, monthly, meta, rentabilidade })
         }
       })
       .catch(err => {
@@ -86,6 +105,7 @@ export function useFluxo(tipo) {
             invalid: 0,
             monthly: [],
             meta: null,
+            rentabilidade: new Map(),
           })
         }
       })
