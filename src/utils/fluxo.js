@@ -228,6 +228,58 @@ export function aggregateByGestor(rows) {
   }))
 }
 
+// ───────────────────────── Rentabilidade (%CDI por gestor) ─────────────────────────
+// Contrato do CSV: Gestor_Apelido, Retorno_1s..Retorno_12m, PctCDI_1s..PctCDI_12m, DataBase
+// PctCDI já vem em pontos percentuais (ex.: 105.4 = 105,4% do CDI). Célula vazia
+// = sem histórico suficiente para aquela janela ainda (não é 0%).
+
+/** Converte uma célula numérica opcional: '' ou ausente → null (não é zero). */
+function numOrNull(v) {
+  if (v === '' || v == null) return null
+  const n = parseNum(v)
+  return isNaN(n) ? null : n
+}
+
+/** Parseia uma linha do CSV de rentabilidade. */
+export function normalizeRentabilidadeRow(row) {
+  const gestor = String(row.Gestor_Apelido ?? row.gestor ?? '').trim()
+  if (!gestor) return null
+  return {
+    gestor,
+    pctCdi1s:  numOrNull(row.PctCDI_1s),
+    pctCdi1m:  numOrNull(row.PctCDI_1m),
+    pctCdi3m:  numOrNull(row.PctCDI_3m),
+    pctCdi6m:  numOrNull(row.PctCDI_6m),
+    pctCdi12m: numOrNull(row.PctCDI_12m),
+    dataBase: row.DataBase ?? row.dataBase ?? '',
+  }
+}
+
+/** Mapa gestor → linha de rentabilidade, a partir do CSV bruto. */
+export function normalizeRentabilidade(rawRows) {
+  const map = new Map()
+  for (const r of rawRows || []) {
+    const n = normalizeRentabilidadeRow(r)
+    if (n) map.set(n.gestor, n)
+  }
+  return map
+}
+
+/** Junta rentabilidade (%CDI por janela) no ranking de gestores (aggregateByGestor). */
+export function mergeRentabilidade(ranking, rentMap) {
+  return (ranking || []).map(g => {
+    const r = rentMap?.get(g.gestor)
+    return {
+      ...g,
+      pctCdi1s:  r ? r.pctCdi1s  : null,
+      pctCdi1m:  r ? r.pctCdi1m  : null,
+      pctCdi3m:  r ? r.pctCdi3m  : null,
+      pctCdi6m:  r ? r.pctCdi6m  : null,
+      pctCdi12m: r ? r.pctCdi12m : null,
+    }
+  })
+}
+
 /** Indicadores agregados do período (cards). */
 export function computeCards(rows) {
   const weeks = aggregateByWeek(rows)

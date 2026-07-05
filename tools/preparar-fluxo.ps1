@@ -7,7 +7,7 @@
   Fonte CVM: https://dados.cvm.gov.br/dataset/fi-doc-inf_diario
   Arquivos:  inf_diario_fi_AAAAMM.zip  (CSV ; latin-1)
   Colunas usadas: CNPJ_FUNDO_CLASSE (ou CNPJ_FUNDO), DT_COMPTC,
-                  VL_PATRIM_LIQ, CAPTC_DIA, RESG_DIA
+                  VL_PATRIM_LIQ, CAPTC_DIA, RESG_DIA, VL_QUOTA
 
   O que faz:
     1. Resolve CNPJ_FUNDO_CLASSE -> Gestor_Apelido (ver lib-cadastro.ps1):
@@ -15,10 +15,17 @@
          GAS sheet=Cadastro_Gestores                    (CNPJ Gestor -> Apelido Gestor)
     2. Baixa os meses do Informe Diario (cache local, nao rebaixa).
     3. Calcula o fluxo SEMANAL (segunda a domingo) por gestor.
-    4. Grava em public\data\:
-         Fluxo_Semanal_12431.csv
-         Fluxo_Semanal_Trad.csv
-       Colunas: Semana,Gestor_Apelido,Captacao,Resgate,Liquido,PL_Medio,Num_Fundos
+    4. Calcula a rentabilidade por gestor (retorno da cota ponderado pelo PL de
+       cada fundo, comparado ao CDI do mesmo periodo) nas janelas moveis
+       1 semana / 1 / 3 / 6 / 12 meses, contadas a partir do dado mais recente.
+    5. Grava em public\data\:
+         Fluxo_Semanal_12431.csv / Fluxo_Semanal_Trad.csv
+           Colunas: Semana,Gestor_Apelido,Captacao,Resgate,Liquido,PL_Medio,Num_Fundos,DataBase
+         Fluxo_Rentabilidade_12431.csv / Fluxo_Rentabilidade_Trad.csv
+           Colunas: Gestor_Apelido,Retorno_1s,Retorno_1m,Retorno_3m,Retorno_6m,Retorno_12m,
+                    PctCDI_1s,PctCDI_1m,PctCDI_3m,PctCDI_6m,PctCDI_12m,DataBase
+           (Retorno e PctCDI ja' em pontos percentuais, ex 1.23 = 1,23%. Celula
+            vazia = sem historico suficiente para aquela janela ainda.)
        Tambem grava public\PL_Gestores.csv (PL mais recente por gestor, consumido
        pela aba Gestores do app).
 
@@ -211,6 +218,9 @@ $seen     = @{ '12431' = @{}; 'trad' = @{} }
 $weekMax  = @{ '12431' = @{}; 'trad' = @{} }
 $aggMonth = @{ '12431' = @{}; 'trad' = @{} }
 $tipos    = @{ '12431' = $bridge12431.map; 'trad' = $bridgeCdi.map }
+# Serie diaria de cota+PL por fundo (necessaria pra rentabilidade - retorno nao
+# e' soma, precisa da cota dia a dia). $quotaSeries[$tipo][$cnpj][dataYyyyMmDd] = @{quota=;pl=}
+$quotaSeries = @{ '12431' = @{}; 'trad' = @{} }
 
 $mesesOk = @(); $mesesFalha = @(); $invalidas = 0; $minDate = $null; $maxDate = $null
 
@@ -230,6 +240,7 @@ foreach ($mes in $Meses) {
     $idx = @{}; for ($i = 0; $i -lt $header.Count; $i++) { $idx[$header[$i].Trim()] = $i }
     $iCnpj = if ($idx.ContainsKey('CNPJ_FUNDO_CLASSE')) { $idx['CNPJ_FUNDO_CLASSE'] } elseif ($idx.ContainsKey('CNPJ_FUNDO')) { $idx['CNPJ_FUNDO'] } else { -1 }
     $iDt = $idx['DT_COMPTC']; $iPl = $idx['VL_PATRIM_LIQ']; $iCap = $idx['CAPTC_DIA']; $iRes = $idx['RESG_DIA']
+    $iCota = if ($idx.ContainsKey('VL_QUOTA')) { $idx['VL_QUOTA'] } else { -1 }
     if ($iCnpj -lt 0 -or $null -eq $iDt -or $null -eq $iCap) { throw "colunas esperadas nao encontradas" }
 
     $ci = [System.Globalization.CultureInfo]::InvariantCulture
@@ -251,6 +262,16 @@ foreach ($mes in $Meses) {
       [double]::TryParse($c[$iCap], [System.Globalization.NumberStyles]::Any, $ci, [ref]$cap) | Out-Null
       [double]::TryParse($c[$iRes], [System.Globalization.NumberStyles]::Any, $ci, [ref]$res) | Out-Null
       [double]::TryParse($c[$iPl],  [System.Globalization.NumberStyles]::Any, $ci, [ref]$pl)  | Out-Null
+
+      if ($iCota -ge 0 -and $c.Count -gt $iCota) {
+        $cota = 0.0
+        [double]::TryParse($c[$iCota], [System.Globalization.NumberStyles]::Any, $ci, [ref]$cota) | Out-Null
+        if ($cota -gt 0 -and $pl -gt 0) {
+          $serieFundo = $quotaSeries[$tipo][$cnpj]
+          if (-not $serieFundo) { $serieFundo = @{}; $quotaSeries[$tipo][$cnpj] = $serieFundo }
+          $serieFundo[$dt.ToString('yyyy-MM-dd')] = @{ quota = $cota; pl = $pl }
+        }
+      }
 
       $key = "$wkKey|$gestor"
       $b = $agg[$tipo][$key]
@@ -296,6 +317,119 @@ foreach ($tipo in @('12431', 'trad')) {
 if ($semanasParciais.Count -gt 0) {
   $lista = $semanasParciais | Sort-Object -Unique
   Write-Host "    Semana(s) parcial(is) (ainda em andamento, dado disponivel ate' o momento): $($lista -join ', ')" -ForegroundColor DarkGray
+}
+
+# 3b. Rentabilidade por gestor -----------------------------------------------
+# Retorno da cota (nao e' soma - precisa encadear dia a dia), ponderado pelo
+# PL de cada fundo no dia anterior, comparado ao CDI da mesma janela.
+
+# Retorno acumulado no intervalo inicio-exclusivo, fim-inclusivo, a partir de
+# uma serie ($dates/$rets paralelas, ja' em ordem cronologica). $null se nao
+# houver nenhum dia dentro do intervalo (historico insuficiente pra' janela).
+function Get-RetornoJanela($dates, $rets, [datetime]$inicio, [datetime]$fim) {
+  $prod = 1.0; $achou = $false
+  for ($i = 0; $i -lt $dates.Count; $i++) {
+    $d = [datetime]::ParseExact($dates[$i], 'yyyy-MM-dd', $null)
+    if ($d -gt $inicio -and $d -le $fim) { $prod *= (1.0 + $rets[$i]); $achou = $true }
+  }
+  if (-not $achou) { return $null }
+  return $prod - 1.0
+}
+
+# Serie diaria de retorno por gestor: em cada dia com pelo menos 2 fundos com
+# cota valida (dia atual + anterior), o retorno do gestor e' a media dos
+# retornos dos fundos ponderada pelo PL de cada um no dia anterior.
+function Compute-RetornoDiarioGestor($tipoQuotaSeries, $cnpjsByGestor) {
+  $result = @{}
+  foreach ($gestor in $cnpjsByGestor.Keys) {
+    $cnpjs = $cnpjsByGestor[$gestor]
+    $allDates = New-Object System.Collections.Generic.SortedSet[string]
+    foreach ($cnpj in $cnpjs) {
+      if ($tipoQuotaSeries.ContainsKey($cnpj)) {
+        foreach ($d in $tipoQuotaSeries[$cnpj].Keys) { [void]$allDates.Add($d) }
+      }
+    }
+    if ($allDates.Count -lt 2) { continue }
+    $sortedDates = @($allDates)
+    $dailyDates = New-Object System.Collections.Generic.List[string]
+    $dailyRets  = New-Object System.Collections.Generic.List[double]
+    for ($i = 1; $i -lt $sortedDates.Count; $i++) {
+      $dPrev = $sortedDates[$i - 1]; $dCur = $sortedDates[$i]
+      $sumW = 0.0; $sumWR = 0.0
+      foreach ($cnpj in $cnpjs) {
+        $serie = $tipoQuotaSeries[$cnpj]
+        if ($serie -and $serie.ContainsKey($dPrev) -and $serie.ContainsKey($dCur)) {
+          $qPrev = $serie[$dPrev].quota; $qCur = $serie[$dCur].quota; $plPrev = $serie[$dPrev].pl
+          if ($qPrev -gt 0 -and $plPrev -gt 0) {
+            $ret = ($qCur / $qPrev) - 1.0
+            $sumW += $plPrev; $sumWR += $plPrev * $ret
+          }
+        }
+      }
+      if ($sumW -gt 0) { $dailyDates.Add($dCur); $dailyRets.Add($sumWR / $sumW) }
+    }
+    if ($dailyDates.Count -gt 0) { $result[$gestor] = @{ dates = $dailyDates; rets = $dailyRets } }
+  }
+  return $result
+}
+
+function Fmt-PctOuVazio($v, $ci) {
+  if ($null -eq $v) { return '' }
+  return ([Math]::Round($v, 4)).ToString($ci)
+}
+
+Step "Buscando serie do CDI (Banco Central, SGS 12) e calculando rentabilidade por gestor..."
+$cdiMap = Get-CdiDiario $CvmDir ((Get-Date).AddMonths(-13)) -NoDownload:$NoDownload
+Write-Host "    CDI: $($cdiMap.Count) dias carregados"
+
+$JANELAS_DIAS   = @{ '1s' = 7 }
+$JANELAS_MESES  = @{ '1m' = 1; '3m' = 3; '6m' = 6; '12m' = 12 }
+$ORDEM_JANELAS  = @('1s', '1m', '3m', '6m', '12m')
+
+$rentPorTipo = @{}
+foreach ($tipo in @('12431', 'trad')) {
+  $cnpjsByGestor = @{}
+  foreach ($cnpj in $tipos[$tipo].Keys) {
+    $g = $tipos[$tipo][$cnpj]
+    if (-not $cnpjsByGestor.ContainsKey($g)) { $cnpjsByGestor[$g] = New-Object System.Collections.Generic.List[string] }
+    $cnpjsByGestor[$g].Add($cnpj)
+  }
+  $retornoGestor = Compute-RetornoDiarioGestor $quotaSeries[$tipo] $cnpjsByGestor
+  $linhas = @{}
+  foreach ($gestor in $retornoGestor.Keys) {
+    $serie = $retornoGestor[$gestor]
+    $fimRef = [datetime]::ParseExact($serie.dates[$serie.dates.Count - 1], 'yyyy-MM-dd', $null)
+    $linha = @{}
+    foreach ($jk in $ORDEM_JANELAS) {
+      $inicio = if ($JANELAS_DIAS.ContainsKey($jk)) { $fimRef.AddDays(-$JANELAS_DIAS[$jk]) } else { $fimRef.AddMonths(-$JANELAS_MESES[$jk]) }
+      $retGestor = Get-RetornoJanela $serie.dates $serie.rets $inicio $fimRef
+      $retCdi = Get-CdiRetornoJanela $cdiMap $inicio $fimRef
+      $linha["ret_$jk"] = if ($null -ne $retGestor) { $retGestor * 100.0 } else { $null }
+      $linha["pctcdi_$jk"] = if ($null -ne $retGestor -and $null -ne $retCdi -and $retCdi -ne 0) { ($retGestor / $retCdi) * 100.0 } else { $null }
+    }
+    $linha['dataBase'] = $fimRef.ToString('yyyy-MM-dd')
+    $linhas[$gestor] = $linha
+  }
+  $rentPorTipo[$tipo] = $linhas
+}
+
+function Write-BaseRentabilidade($tipo, $outFile) {
+  $sb = New-Object System.Text.StringBuilder
+  [void]$sb.AppendLine('Gestor_Apelido,Retorno_1s,Retorno_1m,Retorno_3m,Retorno_6m,Retorno_12m,PctCDI_1s,PctCDI_1m,PctCDI_3m,PctCDI_6m,PctCDI_12m,DataBase')
+  $ci = [System.Globalization.CultureInfo]::InvariantCulture
+  $linhas = $rentPorTipo[$tipo]
+  foreach ($gestor in ($linhas.Keys | Sort-Object)) {
+    $l = $linhas[$gestor]
+    $cols = New-Object System.Collections.Generic.List[string]
+    $cols.Add('"' + $gestor.Replace('"', '""') + '"')
+    foreach ($jk in $ORDEM_JANELAS) { $cols.Add((Fmt-PctOuVazio $l["ret_$jk"] $ci)) }
+    foreach ($jk in $ORDEM_JANELAS) { $cols.Add((Fmt-PctOuVazio $l["pctcdi_$jk"] $ci)) }
+    $cols.Add($l['dataBase'])
+    [void]$sb.AppendLine(($cols -join ','))
+  }
+  $utf8 = New-Object System.Text.UTF8Encoding($false)
+  [System.IO.File]::WriteAllText($outFile, $sb.ToString(), $utf8)
+  return $linhas.Count
 }
 
 # 4. Escreve as bases
@@ -357,6 +491,16 @@ $n12431    = Write-Base       '12431' $out12431
 $nTrad     = Write-Base       'trad'  $outTrad
 $nMes12431 = Write-BaseMensal '12431' $outMes12431
 $nMesTrad  = Write-BaseMensal 'trad'  $outMesTrad
+
+# Rentabilidade nao e' mesclada com o historico (diferente de Semanal/Mensal):
+# cada janela (1s..12m) precisa da serie de cota do periodo INTEIRO presente
+# em $quotaSeries NESTA rodada. Rodando com -Incremental (so' 2 meses), as
+# janelas maiores (3m/6m/12m) ficam vazias por falta de historico - pra' elas
+# sairem preenchidas e' preciso rodar sem -Incremental cobrindo os 12 meses.
+$outRent12431 = Join-Path $OutDir 'Fluxo_Rentabilidade_12431.csv'
+$outRentTrad  = Join-Path $OutDir 'Fluxo_Rentabilidade_Trad.csv'
+$nRent12431 = Write-BaseRentabilidade '12431' $outRent12431
+$nRentTrad  = Write-BaseRentabilidade 'trad'  $outRentTrad
 
 if ($Incremental) {
   Step "Mesclando com historico existente..."
@@ -427,6 +571,8 @@ Write-Host "    $out12431" -ForegroundColor Yellow
 Write-Host "    $outTrad"  -ForegroundColor Yellow
 Write-Host ("    $outMes12431  (mensal: $nMes12431 linhas)") -ForegroundColor Yellow
 Write-Host ("    $outMesTrad  (mensal: $nMesTrad linhas)")  -ForegroundColor Yellow
+Write-Host ("    $outRent12431  (rentabilidade: $nRent12431 gestoras)") -ForegroundColor Yellow
+Write-Host ("    $outRentTrad  (rentabilidade: $nRentTrad gestoras)")  -ForegroundColor Yellow
 Write-Host ("    $outPlGestores  ($($plByGestor.Count) gestoras)") -ForegroundColor Yellow
 Write-Host ""
 Write-Host "  Proximo: revise os CSVs, troque FLUXO_IS_MOCK para false em src/hooks/useFluxo.js e publique." -ForegroundColor White
