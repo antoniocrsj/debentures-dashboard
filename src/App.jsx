@@ -4,7 +4,7 @@ import {
   buildIndexes, buildBlcIndex, buildAnbimaIndex, buildPlByGestor,
   enrichDebenture, computeManagers, computeGroups, recomputeAlocByGestor
 } from './utils/data.js'
-import { isYes, dateKey } from './utils/format.js'
+import { isYes, dateKey, fmtDateOnly, parseBRDateTime, parseISODate, fmtMesAno } from './utils/format.js'
 import { lazyWithRetry } from './utils/lazyWithRetry.js'
 import Header from './components/Header.jsx'
 import Filters from './components/Filters.jsx'
@@ -75,6 +75,31 @@ export default function App() {
 
   const currentMonth = months[monthIdx] ?? months[0]
   const { loading, refreshing, error, raw } = useDebentures(currentMonth.url)
+
+  // Data de atualização real de cada fonte (não a hora em que o navegador buscou/cacheou).
+  const dataFreshness = useMemo(() => {
+    if (!raw) return null
+    const sources = []
+
+    const debGen = parseBRDateTime(raw.debenturesMeta?.generatedAtSource)
+    if (debGen) sources.push({ label: 'Debêntures (cadastro)', date: debGen })
+
+    const anbimaIso = raw.anbima?.find(r => r.dataReferenciaAnbima)?.dataReferenciaAnbima
+    const anbimaDate = parseISODate(anbimaIso)
+    if (anbimaDate) sources.push({ label: 'ANBIMA', date: anbimaDate })
+
+    const mesRef = fmtMesAno(raw.blcMeta?.mesAno)
+    if (mesRef) sources.push({ label: 'Carteira dos fundos (BLC)', date: null, text: mesRef })
+
+    if (!sources.length) return null
+    const dated = sources.filter(s => s.date)
+    const latest = dated.length ? dated.reduce((a, b) => (b.date > a.date ? b : a)) : null
+
+    return {
+      label: latest ? fmtDateOnly(latest.date) : '',
+      tooltip: sources.map(s => `${s.label}: ${s.text || fmtDateOnly(s.date)}`).join('\n'),
+    }
+  }, [raw])
 
   // Build indexes once per raw load
   const indexes = useMemo(() => {
@@ -186,6 +211,9 @@ export default function App() {
 
   const groups = useMemo(() => computeGroups(filteredAssets), [filteredAssets])
 
+  // PL do gestor selecionado — habilita a coluna %PL no ranking de Grupos.
+  const selectedGestorPl = filters.gestor ? (plByGestor[filters.gestor] || 0) : 0
+
   const handleMonthsChange = useCallback((newMonths, idx) => {
     setMonths(newMonths)
     setMonthIdx(idx)
@@ -245,6 +273,8 @@ export default function App() {
             disabled={loading}
             onChange={setFilters}
             tabsSlot={desktop ? tabsNav : null}
+            updatedLabel={dataFreshness?.label}
+            updatedTooltip={dataFreshness?.tooltip}
           />
         )}
 
@@ -299,6 +329,7 @@ export default function App() {
                   onFilter={handleFilter}
                   onInfoClick={setSelected}
                   anbimaRef={anbimaRef}
+                  desktop={desktop}
                 />
                 {!showAll && filteredAssets.length > PAGE_SIZE && (
                   <button className="show-all-btn" onClick={() => setShowAll(true)}>
@@ -312,6 +343,7 @@ export default function App() {
                 managers={managers}
                 activeGestor={filters.gestor}
                 onFilter={handleFilter}
+                desktop={desktop}
               />
             )}
             {tab === 'grupos' && (
@@ -319,6 +351,8 @@ export default function App() {
                 groups={groups}
                 activeGrupo={filters.grupo}
                 onFilter={handleFilter}
+                gestorPl={selectedGestorPl}
+                desktop={desktop}
               />
             )}
           </>
@@ -334,6 +368,7 @@ export default function App() {
               onFilter={handleFilter}
               onInfoClick={setSelected}
               anbimaRef={anbimaRef}
+              desktop={desktop}
             />
             <div className="desktop-split">
               <div className="desktop-split-col">
@@ -341,6 +376,7 @@ export default function App() {
                   managers={managers}
                   activeGestor={filters.gestor}
                   onFilter={handleFilter}
+                  desktop={desktop}
                 />
               </div>
               <div className="desktop-split-col">
@@ -348,6 +384,8 @@ export default function App() {
                   groups={groups}
                   activeGrupo={filters.grupo}
                   onFilter={handleFilter}
+                  gestorPl={selectedGestorPl}
+                  desktop={desktop}
                 />
               </div>
             </div>

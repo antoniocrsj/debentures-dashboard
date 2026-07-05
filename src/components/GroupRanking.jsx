@@ -1,6 +1,6 @@
-import { fmtBRL } from '../utils/format.js'
+import { fmtBRL, fmtPct } from '../utils/format.js'
 
-export default function GroupRanking({ groups, activeGrupo, onFilter }) {
+export default function GroupRanking({ groups, activeGrupo, onFilter, gestorPl, desktop }) {
   if (!groups.length) {
     return (
       <div className="empty-state">
@@ -10,37 +10,48 @@ export default function GroupRanking({ groups, activeGrupo, onFilter }) {
     )
   }
 
-  const maxAloc = groups[0]?.alocacao || 1
+  // %PL só faz sentido com um gestor selecionado (alocação já filtrada por ele) e PL conhecido.
+  const showPct = gestorPl > 0
+  const totalAloc = desktop ? groups.reduce((s, g) => s + g.alocacao, 0) : 0
 
   return (
-    <div className="ranking-list">
-      <div className="ranking-header">
-        <span className="rank-col">#</span>
-        <span className="name-col">Grupo Econômico</span>
-        <span className="val-col">Alocação</span>
+    <div className="ranking-panel">
+      <div className="ranking-list">
+        <div className="ranking-header">
+          <span className="rank-col">#</span>
+          <span className="name-col">Grupo Econômico</span>
+          <span className="val-col">Alocação</span>
+          {showPct && <span className="val-col">%PL</span>}
+        </div>
+        {groups.map((g, i) => {
+          const selected = activeGrupo === g.grupo
+          return (
+            <div
+              key={g.grupo}
+              className={`ranking-card${selected ? ' card-selected' : ''}`}
+              onClick={() => onFilter('grupo', g.grupo)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={e => e.key === 'Enter' && onFilter('grupo', g.grupo)}
+            >
+              <div className="ranking-row">
+                <span className="rank-num">{i + 1}</span>
+                <span className="rank-name">{g.grupo}</span>
+                <span className="rank-aloc">{fmtBRL(g.alocacao)}</span>
+                {showPct && <span className="rank-pl">{fmtPct((g.alocacao / gestorPl) * 100)}</span>}
+              </div>
+            </div>
+          )
+        })}
       </div>
-      {groups.map((g, i) => {
-        const selected = activeGrupo === g.grupo
-        return (
-          <div
-            key={g.grupo}
-            className={`ranking-card${selected ? ' card-selected' : ''}`}
-            onClick={() => onFilter('grupo', g.grupo)}
-            role="button"
-            tabIndex={0}
-            onKeyDown={e => e.key === 'Enter' && onFilter('grupo', g.grupo)}
-          >
-            <div className="ranking-row">
-              <span className="rank-num">{i + 1}</span>
-              <span className="rank-name">{g.grupo}</span>
-              <span className="rank-aloc">{fmtBRL(g.alocacao)}</span>
-            </div>
-            <div className="rank-bar-wrap">
-              <div className="rank-bar" style={{ width: `${(g.alocacao / maxAloc) * 100}%` }} />
-            </div>
-          </div>
-        )
-      })}
+      {desktop && (
+        <div className="ranking-row ranking-total">
+          <span className="rank-num"></span>
+          <span className="rank-name">Total</span>
+          <span className="rank-aloc">{fmtBRL(totalAloc)}</span>
+          {showPct && <span className="rank-pl">{fmtPct((totalAloc / gestorPl) * 100)}</span>}
+        </div>
+      )}
     </div>
   )
 }
