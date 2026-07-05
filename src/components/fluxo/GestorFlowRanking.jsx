@@ -6,6 +6,9 @@ import SortableTh, { cycleSort } from './SortableTh.jsx'
 const LIMIT = 20
 const DEFAULT_SORT = { col: 'liquido', dir: 'desc' }
 
+// %CDI: acima de 100% bate o CDI (verde); negativo é retorno negativo (vermelho).
+const rentClass = v => (v == null ? '' : v > 100 ? ' pos' : v < 0 ? ' neg' : '')
+
 const KEYS = {
   gestor:   g => g.gestor,
   pl:       g => g.plRecente,   // PL total do gestor na semana mais recente do período
@@ -77,11 +80,11 @@ export default function GestorFlowRanking({ ranking, onSelect }) {
                   <td className="col-num">{fmtFluxo(g.captacao)}</td>
                   <td className="col-num">{fmtFluxo(g.resgate)}</td>
                   <td className="col-num">{g.plRecente > 0 ? fmtFluxo(g.plRecente) : '-'}</td>
-                  <td className="col-num">{fmtPct(g.pctCdi1s)}</td>
-                  <td className="col-num">{fmtPct(g.pctCdi1m)}</td>
-                  <td className="col-num">{fmtPct(g.pctCdi3m)}</td>
-                  <td className="col-num">{fmtPct(g.pctCdi6m)}</td>
-                  <td className="col-num">{fmtPct(g.pctCdi12m)}</td>
+                  <td className={`col-num rent-cell${rentClass(g.pctCdi1s)}`}>{fmtPct(g.pctCdi1s)}</td>
+                  <td className={`col-num rent-cell${rentClass(g.pctCdi1m)}`}>{fmtPct(g.pctCdi1m)}</td>
+                  <td className={`col-num rent-cell${rentClass(g.pctCdi3m)}`}>{fmtPct(g.pctCdi3m)}</td>
+                  <td className={`col-num rent-cell${rentClass(g.pctCdi6m)}`}>{fmtPct(g.pctCdi6m)}</td>
+                  <td className={`col-num rent-cell${rentClass(g.pctCdi12m)}`}>{fmtPct(g.pctCdi12m)}</td>
                 </tr>
               )
             })}
