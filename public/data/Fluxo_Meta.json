@@ -1,5 +1,5 @@
 {
-    "updatedAt":  "2026-07-04T22:03:05",
+    "updatedAt":  "2026-07-05T20:10:18",
     "rule":  "Contagem estatica da lista atual de fundos; nao varia por periodo.",
     "12431":  {
                   "fundos":  1632,
@@ -122,7 +122,7 @@
                                 }
               },
     "trad":  {
-                 "fundos":  828,
+                 "fundos":  827,
                  "gestores":  131,
                  "semGestor":  2,
                  "porGestor":  {
@@ -254,7 +254,7 @@
                                    "Warren":  1,
                                    "Wise":  3,
                                    "WIT":  1,
-                                   "XPG":  38,
+                                   "XPG":  37,
                                    "XVI":  1,
                                    "ZSYS":  2
                                }
