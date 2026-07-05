@@ -12,6 +12,14 @@ function fmtTimestamp(iso) {
   return `${d}/${mo}/${y} ${h}:${mi}`
 }
 
+function fmtDataCurta(iso) {
+  if (!iso) return '—'
+  const m = String(iso).match(/^(\d{4})-(\d{2})-(\d{2})/)
+  return m ? `${m[3]}/${m[2]}` : iso
+}
+
+const ORDINAL = n => (Number.isFinite(Number(n)) ? `${Number(n)}ª` : n)
+
 function fmtCampo(campo, valor) {
   if (valor == null || valor === '') return '—'
   if (MONEY_FIELDS.has(campo)) return fmtBRL(Number(valor))
@@ -56,7 +64,7 @@ function ImpactoSection({ title, campos }) {
   )
 }
 
-const ETAPA_LABELS = { Debentures: 'Debêntures', Fundos: 'Lista de fundos', Captacao: 'Captação', BLC: 'BLC / Alocação', ANBIMA: 'ANBIMA' }
+const ETAPA_LABELS = { Debentures: 'Debêntures', Fundos: 'Lista de fundos', Captacao: 'Captação', BLC: 'BLC / Alocação', ANBIMA: 'ANBIMA', Ofertas: 'Ofertas CVM' }
 
 export default function AtualizacaoResumoModal({ resumo, onClose }) {
   useEffect(() => {
@@ -89,6 +97,30 @@ export default function AtualizacaoResumoModal({ resumo, onClose }) {
                 <div className="modal-row" key={k}>
                   <span className="modal-label">{ETAPA_LABELS[k] || k}</span>
                   <span className="modal-value">{v || '—'}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {Array.isArray(resumo.novasEmissoes) && resumo.novasEmissoes.length > 0 && (
+            <div className="modal-section">
+              <h3 className="modal-section-title">
+                🆕 Novas emissões na CVM ({resumo.novasEmissoes.length})
+              </h3>
+              <p className="modal-desc">
+                Debêntures já registradas na CVM (Resolução 160) que ainda não
+                aparecem no cadastro do Debentures.com.br.
+              </p>
+              {resumo.novasEmissoes.map((e, i) => (
+                <div className="modal-row" key={`${e.emissor}-${e.emissao}-${i}`}>
+                  <span className="modal-label">
+                    {e.emissor} — {ORDINAL(e.emissao)} emissão
+                    {e.incentivada ? <span className="badge-lei"> 12.431</span> : null}
+                  </span>
+                  <span className="modal-value">
+                    {e.valor > 0 ? fmtBRL(e.valor) : '—'}
+                    <small className="modal-emis-data"> · {fmtDataCurta(e.dataRegistro)}</small>
+                  </span>
                 </div>
               ))}
             </div>

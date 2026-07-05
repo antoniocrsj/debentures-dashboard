@@ -538,6 +538,7 @@ a { color: var(--primary); }
 .modal-value.highlight { color: var(--primary); font-size: 14px; }
 .modal-desc  { font-size: 13px; color: var(--text-muted); line-height: 1.6; padding-top: 4px; }
 .badge-lei   { display: inline-block; color: var(--success); margin-right: 4px; font-weight: 600; }
+.modal-emis-data { color: var(--text-muted); font-weight: 400; }
 
 /* Ação "Ver na ANBIMA" (link externo) — mesma identidade dos botões claros */
 .modal-actions { padding-top: 16px; }

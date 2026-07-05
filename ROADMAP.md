@@ -157,6 +157,18 @@ Windows + relatório de texto no console, sem nada visível no app publicado).
   não é uma seção de navegação) abre um modal com o que rodou e os principais
   números antes→depois. Opcional/não-bloqueante — some sozinho se o arquivo
   não existir ainda.
+- **Novas emissões na CVM (reconciliação)** — o mesmo passo de atualização
+  baixa a base de **ofertas de distribuição da CVM** (Resolução 160,
+  `oferta_resolucao_160.csv`), filtra debêntures com registro concedido nos
+  últimos 90 dias e cruza com o nosso cadastro por `CNPJ + nº da emissão`. As
+  emissões já registradas na CVM que **ainda não entraram** no cadastro do
+  Debentures.com.br (que tem defasagem) aparecem como uma seção no mesmo modal
+  de resumo. Resolve o problema de "emissão nova não aparece na lista" —
+  captura a emissão dias antes do Debentures.com.br. Best-effort: se a CVM
+  estiver fora do ar, não trava a atualização. Limitação: a base de ofertas
+  não traz o ticker (código do ativo), então é um **aviso** ("existe a Nª
+  emissão da empresa X"), não um registro completo — o ticker/características
+  só vêm quando o Debentures.com.br publica.
 
 ---
 

@@ -25,9 +25,12 @@ param(
   [switch]$SkipFundos,
   [switch]$ForceBlc,
   [switch]$SkipAnbima,
+  [switch]$SkipOfertas,
   [switch]$NoPublishPrompt,
   [ValidateSet('Auto', 'Incremental', 'Completa')]
-  [string]$CaptacaoModo = 'Auto'
+  [string]$CaptacaoModo = 'Auto',
+  # "C:\Projeto Credito\CVM _ofertas" - [char]233 = e-acento (mantem o .ps1 em ASCII)
+  [string]$OfertaDir = ("C:\Projeto Cr" + [char]233 + "dito\CVM _ofertas")
 )
 
 $ErrorActionPreference = 'Stop'
@@ -44,9 +47,11 @@ $summary = [ordered]@{
   Captacao = 'nao executado'
   BLC      = 'nao executado'
   ANBIMA   = 'nao executado'
+  Ofertas  = 'nao executado'
   Publicacao = 'nao executada'
 }
 $fundosAplicados = $false
+$novasEmissoes = @()
 
 function Step([string]$msg) {
   Write-Host ""
@@ -345,7 +350,7 @@ function Get-ResumoFonte($before, $after, [string[]]$campos) {
 # pelo painel de controle local quanto pelo icone novo do header no app
 # publicado. Nao inclui o status de Publicacao (so' se sabe DEPOIS deste
 # arquivo ja' ter sido gravado/staged) -- esse status fica so' no console.
-function Write-ResumoPublicado($before, $after, $summary, [string]$captacaoModo) {
+function Write-ResumoPublicado($before, $after, $summary, [string]$captacaoModo, $novasEmissoes) {
   $resumo = [ordered]@{
     timestamp = (Get-Date).ToString('s')
     captacaoModo = $captacaoModo
@@ -355,6 +360,7 @@ function Write-ResumoPublicado($before, $after, $summary, [string]$captacaoModo)
       Captacao   = $summary.Captacao
       BLC        = $summary.BLC
       ANBIMA     = $summary.ANBIMA
+      Ofertas    = $summary.Ofertas
     }
     impacto = [ordered]@{
       fundos = Get-ResumoFonte $before.Fundos $after.Fundos @('Total', 'Gestores', 'SemGestor')
@@ -364,6 +370,18 @@ function Write-ResumoPublicado($before, $after, $summary, [string]$captacaoModo)
       blc = Get-ResumoFonte $before.BLC $after.BLC @('MesAno', 'Ativos', 'Gestores', 'TotalAlocado')
       anbima = Get-ResumoFonte $before.ANBIMA $after.ANBIMA @('DataRef', 'Tickers', 'ComTaxa')
     }
+    # Emissoes de debentures ja registradas na CVM (Resolucao 160) que ainda
+    # nao entraram no nosso cadastro (Debentures.com.br tem defasagem).
+    novasEmissoes = @($novasEmissoes | ForEach-Object {
+      [ordered]@{
+        dataRegistro = $_.DataRegistro
+        emissor = $_.Emissor
+        emissao = $_.Emissao
+        valor = $_.Valor
+        incentivada = $_.Incentivada
+        lider = $_.Lider
+      }
+    })
   }
   $utf8Resumo = New-Object System.Text.UTF8Encoding($false)
   $path = Join-Path $PublicDir 'Atualizacao_Resumo.json'
@@ -502,6 +520,30 @@ if ($SkipAnbima) {
   }
 }
 
+# 5b. Ofertas CVM: reconciliacao (best-effort, nao trava a atualizacao).
+# Compara as ofertas de debentures ja registradas na CVM (Resolucao 160) com
+# o nosso cadastro (recem-gerado no passo 1) e lista as que ainda nao entraram.
+Step "Ofertas CVM (novas emissoes)"
+if ($SkipOfertas) {
+  $summary.Ofertas = 'PULADO por parametro -SkipOfertas'
+  Warn $summary.Ofertas
+} else {
+  try {
+    $ofertaExtractDir = Get-OfertaDistribDir $OfertaDir
+    $ofertaCsv = Join-Path $ofertaExtractDir 'oferta_resolucao_160.csv'
+    $debCsv = Join-Path $PublicDir 'Debentures.csv'
+    $novasEmissoes = @(Get-OfertasDebNaoCadastradas $ofertaCsv $debCsv 90)
+    $summary.Ofertas = "OK ($($novasEmissoes.Count) emissao(oes) registrada(s) na CVM ainda nao no cadastro)"
+    Ok $summary.Ofertas
+    foreach ($e in $novasEmissoes) {
+      Write-Host ("    {0} | {1} | {2}a emissao | {3}" -f $e.DataRegistro, $e.Emissor, $e.Emissao, (Format-Money $e.Valor)) -ForegroundColor Yellow
+    }
+  } catch {
+    $summary.Ofertas = "FALHOU sem travar: $($_.Exception.Message)"
+    Warn $summary.Ofertas
+  }
+}
+
 # 6. Resumo
 Step "6/7 Resumo"
 $snapshotAfter = Get-DataSnapshot
@@ -514,7 +556,7 @@ foreach ($k in $summary.Keys) {
   Write-Host ("  {0}: {1}" -f $k, $summary[$k])
 }
 
-Write-ResumoPublicado $snapshotBefore $snapshotAfter $summary $CaptacaoModo
+Write-ResumoPublicado $snapshotBefore $snapshotAfter $summary $CaptacaoModo $novasEmissoes
 Ok "public\Atualizacao_Resumo.json atualizado (sera incluido na publicacao)."
 
 $publishStatus = Get-PublishStatus

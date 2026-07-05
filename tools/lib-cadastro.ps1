@@ -803,3 +803,124 @@ function Apply-FundosSuggestion([string]$scriptRoot) {
   Copy-Item -Path (Join-Path $scriptRoot 'Sugestao_Lista_Final_12431.csv') -Destination (Join-Path $scriptRoot 'Fundos_12431.csv') -Force
   Copy-Item -Path (Join-Path $scriptRoot 'Sugestao_Lista_Final_CDI.csv') -Destination (Join-Path $scriptRoot 'Fundos_CDI.csv') -Force
 }
+
+# ─── Ofertas publicas de distribuicao (CVM) ──────────────────────────────
+# Base de OFERTAS registradas na CVM (Resolucao 160). Mais tempestiva que o
+# cadastro do Debentures.com.br (que tem defasagem): serve pra detectar
+# emissoes ja registradas na CVM que ainda nao entraram no nosso cadastro.
+
+# Baixa/cacheia oferta_distribuicao.zip da CVM e extrai. Re-baixa no max 1x/dia.
+# O zip contem oferta_distribuicao.csv (Instrucao 400, historico) e
+# oferta_resolucao_160.csv (regime atual) - usamos o segundo.
+function Get-OfertaDistribDir([string]$ofertaDir, [switch]$NoDownload) {
+  New-Item -ItemType Directory -Force -Path $ofertaDir | Out-Null
+  $zipPath = Join-Path $ofertaDir 'oferta_distribuicao.zip'
+  $url = 'https://dados.cvm.gov.br/dados/OFERTA/DISTRIB/DADOS/oferta_distribuicao.zip'
+
+  $precisaBaixar = $true
+  if (Test-Path $zipPath) { $precisaBaixar = (Get-Item $zipPath).LastWriteTime.Date -ne (Get-Date).Date }
+  if ($precisaBaixar -and -not $NoDownload) {
+    $tmp = "$zipPath.tmp"
+    try {
+      Invoke-WebRequest -Uri $url -OutFile $tmp -TimeoutSec 300 -UseBasicParsing
+      Move-Item $tmp $zipPath -Force
+    } catch {
+      Write-Host "    AVISO: nao consegui baixar oferta_distribuicao.zip ($($_.Exception.Message))." -ForegroundColor Yellow
+      if (Test-Path $tmp) { Remove-Item $tmp -Force }
+      if (-not (Test-Path $zipPath)) { throw "oferta_distribuicao.zip indisponivel e sem cache local em $zipPath" }
+    }
+  }
+
+  $extractDir = Join-Path $ofertaDir 'oferta_extraida'
+  Add-Type -AssemblyName System.IO.Compression.FileSystem
+  if (Test-Path $extractDir) { Remove-Item $extractDir -Recurse -Force }
+  [System.IO.Compression.ZipFile]::ExtractToDirectory($zipPath, $extractDir)
+  return $extractDir
+}
+
+# Le' Debentures.csv (UTF-8, virgula, campos entre aspas) e retorna um HashSet
+# de chaves "cnpj|emissao" (emissao como inteiro, sem zeros a esquerda) - o
+# conjunto de emissoes que JA existem no nosso cadastro.
+function Get-DebenturesEmissaoSet([string]$debenturesPath) {
+  $set = New-Object System.Collections.Generic.HashSet[string]
+  if (-not (Test-Path $debenturesPath)) { return $set }
+  $lines = @(Read-AllLinesShared $debenturesPath ([System.Text.Encoding]::UTF8) | Where-Object { $_.Trim() -ne '' })
+  if ($lines.Count -lt 2) { return $set }
+  $hdr = Split-CsvLine $lines[0]
+  $iCnpj = Find-ColIndex $hdr '(?i)^cnpj$'
+  if ($iCnpj -lt 0) { $iCnpj = Find-ColIndex $hdr '(?i)cnpj' }
+  $iEmis = Find-ColIndex $hdr '(?i)^emissao$'
+  if ($iEmis -lt 0) { $iEmis = Find-ColIndex $hdr '(?i)emissao' '(?i)data|registro|cvm' }
+  if ($iCnpj -lt 0 -or $iEmis -lt 0) { return $set }
+  for ($i = 1; $i -lt $lines.Count; $i++) {
+    $cols = Split-CsvLine $lines[$i]
+    if ($cols.Count -le [Math]::Max($iCnpj, $iEmis)) { continue }
+    $cnpj = NormCNPJ $cols[$iCnpj]
+    $emisDigits = ($cols[$iEmis] -replace '\D', '')
+    if ($cnpj -eq '' -or $emisDigits -eq '') { continue }
+    [void]$set.Add("$cnpj|$([int]$emisDigits)")
+  }
+  return $set
+}
+
+# Reconcilia a base de ofertas (oferta_resolucao_160.csv) contra o nosso
+# cadastro: retorna as ofertas de DEBENTURES com Registro Concedido nos
+# ultimos $janelaDias dias que NAO tem par (CNPJ + numero da emissao) no
+# Debentures.csv - ou seja, emissoes ja registradas na CVM que o
+# Debentures.com.br ainda nao publicou. Uma linha por (CNPJ, emissao).
+function Get-OfertasDebNaoCadastradas([string]$ofertaCsvPath, [string]$debenturesPath, [int]$janelaDias = 90) {
+  $resultado = New-Object System.Collections.Generic.List[object]
+  if (-not (Test-Path $ofertaCsvPath)) { return $resultado.ToArray() }
+
+  $have = Get-DebenturesEmissaoSet $debenturesPath
+  $rc = Read-RegistroCsv $ofertaCsvPath
+  $idx = $rc.idx
+  $iVm = $idx['Valor_Mobiliario']; $iStatus = $idx['Status_Requerimento']
+  $iDataReg = $idx['Data_Registro']; $iCnpj = $idx['CNPJ_Emissor']; $iNome = $idx['Nome_Emissor']
+  $iEmis = $idx['Emissao']; $iValor = $idx['Valor_Total_Registrado']
+  $iIncent = $idx['Titulo_incentivado']; $iLider = $idx['Nome_Lider']
+  if ($null -eq $iVm -or $null -eq $iStatus -or $null -eq $iDataReg -or $null -eq $iCnpj -or $null -eq $iEmis) {
+    Write-Host "    AVISO: oferta_resolucao_160.csv sem as colunas esperadas; pulando reconciliacao." -ForegroundColor Yellow
+    return $resultado.ToArray()
+  }
+
+  $ci = [System.Globalization.CultureInfo]::InvariantCulture
+  $corte = (Get-Date).Date.AddDays(-$janelaDias)
+  # "Debentures" com e-circunflexo (char 234), mantendo o .ps1 em ASCII.
+  $rotuloDeb = 'Deb' + [char]234 + 'ntures'
+  $vistos = @{}
+  for ($i = 1; $i -lt $rc.lines.Count; $i++) {
+    $l = $rc.lines[$i]; if ($l.Trim() -eq '') { continue }
+    $c = $l.Split(';')
+    if ($c.Count -le $iEmis) { continue }
+    if ($c[$iVm].Trim() -ne $rotuloDeb) { continue }
+    if ($c[$iStatus].Trim() -ne 'Registro Concedido') { continue }
+    $dt = [datetime]::MinValue
+    if (-not [datetime]::TryParseExact($c[$iDataReg].Trim(), 'yyyy-MM-dd', $ci, [System.Globalization.DateTimeStyles]::None, [ref]$dt)) { continue }
+    if ($dt -lt $corte) { continue }
+    $cnpj = NormCNPJ $c[$iCnpj]
+    $emisDigits = ($c[$iEmis] -replace '\D', '')
+    if ($cnpj -eq '' -or $emisDigits -eq '') { continue }
+    $chave = "$cnpj|$([int]$emisDigits)"
+    if ($have.Contains($chave)) { continue }
+    if ($vistos.ContainsKey($chave)) { continue }
+    $vistos[$chave] = $true
+
+    $valor = 0.0
+    if ($null -ne $iValor -and $c.Count -gt $iValor) {
+      [double]::TryParse($c[$iValor], [System.Globalization.NumberStyles]::Any, $ci, [ref]$valor) | Out-Null
+    }
+    $incent = if ($null -ne $iIncent -and $c.Count -gt $iIncent) { $c[$iIncent].Trim() } else { '' }
+    $lider = if ($null -ne $iLider -and $c.Count -gt $iLider) { $c[$iLider].Trim() } else { '' }
+    $resultado.Add([pscustomobject]@{
+      DataRegistro = $c[$iDataReg].Trim()
+      Emissor = $c[$iNome].Trim()
+      Cnpj = $cnpj
+      Emissao = [int]$emisDigits
+      Valor = $valor
+      Incentivada = ($incent -match '^(?i)s')
+      Lider = $lider
+    })
+  }
+  return @($resultado | Sort-Object DataRegistro)
+}
