@@ -22,6 +22,12 @@ Pronto. Em ~1 minuto o app no ar já está atualizado (mesma URL de sempre).
 > O passo a passo desta página continua valendo se preferir rodar/conferir uma base
 > de cada vez.
 
+> **Prefere uma tela em vez do `.bat` preto?** Rode `npm run dev` na pasta do
+> projeto e clique no ícone tracejado (⚙) no topo do app — abre um painel de
+> controle com escolha de modo (Auto/Incremental/Completa), log ao vivo e
+> botões de fundos/publicar, sem precisar decorar nomes de script. Só funciona
+> rodando localmente assim, nunca no site publicado.
+
 ---
 
 ## 🗓️ O que atualizar e com que frequência

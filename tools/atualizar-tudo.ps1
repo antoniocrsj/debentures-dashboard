@@ -4,18 +4,30 @@
   Fluxo de 1 clique para atualizar as bases publicas do app com seguranca:
     1. Atualiza o cadastro de debentures sempre.
     2. Avalia a lista de fundos 12431/CDI e so aplica se confirmado.
-    3. Atualiza Captacao sempre (incremental).
+    3. Atualiza Captacao (modo controlado por -CaptacaoModo, default Auto).
     4. Atualiza BLC somente se o mes-alvo ainda nao estiver registrado.
     5. Tenta atualizar ANBIMA, mas nao trava tudo se falhar.
-    6. Mostra resumo.
+    6. Mostra resumo e grava public\Atualizacao_Resumo.json.
     7. Pergunta se deve publicar agora.
+
+  -CaptacaoModo controla o reprocessamento da Captacao (preparar-fluxo.ps1):
+    Auto        (default) completo se a lista de fundos mudou nesta rodada,
+                 senao incremental (2 meses mais recentes) - comportamento
+                 historico deste script.
+    Incremental forca incremental mesmo se a lista de fundos mudou.
+    Completa    forca reprocessamento completo (ultimos 12 meses) - use de
+                 vez em quando para repopular as janelas de 3m/6m/12m da
+                 rentabilidade (%CDI), que nao sao mescladas entre rodadas
+                 incrementais.
 #>
 
 param(
   [switch]$SkipFundos,
   [switch]$ForceBlc,
   [switch]$SkipAnbima,
-  [switch]$NoPublishPrompt
+  [switch]$NoPublishPrompt,
+  [ValidateSet('Auto', 'Incremental', 'Completa')]
+  [string]$CaptacaoModo = 'Auto'
 )
 
 $ErrorActionPreference = 'Stop'
@@ -220,7 +232,7 @@ function Get-AnbimaMetrics {
 
 function Get-DataSnapshot {
   return [pscustomobject]@{
-    Fundos        = Get-FundosMetrics
+    Fundos        = Get-FundosMetrics $PSScriptRoot
     Captacao12431 = Get-CaptacaoMetrics 'data\Fluxo_Semanal_12431.csv'
     CaptacaoTrad  = Get-CaptacaoMetrics 'data\Fluxo_Semanal_Trad.csv'
     Debentures    = Get-DebenturesMetrics
@@ -229,174 +241,10 @@ function Get-DataSnapshot {
   }
 }
 
-function Read-FundosRows([string]$path, [string]$segmento) {
-  if (-not (Test-Path $path)) { return @() }
-  $lines = @(Read-AllLinesShared $path ([System.Text.Encoding]::UTF8) | Where-Object { $_.Trim() -ne '' })
-  if ($lines.Count -lt 1) { return @() }
-
-  $hdr = Split-CsvLine $lines[0]
-  $iFundo = Find-ColIndex $hdr '(?i)cnpj.*(fundo|classe)' '(?i)gestor'
-  if ($iFundo -lt 0) { $iFundo = Find-ColIndex $hdr '(?i)cnpj' '(?i)gestor' }
-  $iGestor = Find-ColIndex $hdr '(?i)cnpj.*gestor'
-  if ($iGestor -lt 0) { $iGestor = Find-ColIndex $hdr '(?i)gestor.*cnpj' }
-  $iDenom = Find-ColIndex $hdr '(?i)denom'
-  if ($iFundo -lt 0) { throw "$path`: coluna CNPJ_FUNDO_CLASSE nao encontrada." }
-
-  $rows = New-Object System.Collections.Generic.List[object]
-  for ($i = 1; $i -lt $lines.Count; $i++) {
-    $cols = Split-CsvLine $lines[$i]
-    if ($cols.Count -le $iFundo) { continue }
-    $cnpj = NormCNPJ $cols[$iFundo]
-    if ($cnpj -eq '') { continue }
-    $denom = if ($iDenom -ge 0 -and $cols.Count -gt $iDenom) { ([string]$cols[$iDenom]).Trim() } else { '' }
-    $gestor = if ($iGestor -ge 0 -and $cols.Count -gt $iGestor) { NormCNPJ $cols[$iGestor] } else { '' }
-    $rows.Add([pscustomobject]@{ Cnpj=$cnpj; Denom=$denom; CnpjGestor=$gestor; Segmento=$segmento })
-  }
-  return $rows.ToArray()
-}
-
-function Get-FundosMetricsFromFiles([string]$path12431, [string]$pathCdi) {
-  $rows12431 = @(Read-FundosRows $path12431 '12431')
-  $rowsCdi = @(Read-FundosRows $pathCdi 'CDI')
-  $rows = @($rows12431 + $rowsCdi)
-
-  $segmentMap = @{}
-  $rowMap = @{}
-  $duplicados = New-Object System.Collections.Generic.List[string]
-  foreach ($r in $rows) {
-    if ($segmentMap.ContainsKey($r.Cnpj)) {
-      $duplicados.Add($r.Cnpj)
-    }
-    $segmentMap[$r.Cnpj] = $r.Segmento
-    $rowMap[$r.Cnpj] = $r
-  }
-
-  $gestores = @($rows | ForEach-Object { $_.CnpjGestor } | Where-Object { $_ } | Sort-Object -Unique)
-  $semGestor = @($rows | Where-Object { -not $_.CnpjGestor })
-  return [pscustomobject]@{
-    Rows=@($rows)
-    RowMap=$rowMap
-    SegmentMap=$segmentMap
-    Total=$segmentMap.Count
-    Fundos12431=$rows12431.Count
-    FundosCdi=$rowsCdi.Count
-    Gestores=$gestores.Count
-    SemGestor=$semGestor.Count
-    Duplicados=@($duplicados | Sort-Object -Unique)
-  }
-}
-
-function Get-FundosMetrics {
-  return Get-FundosMetricsFromFiles `
-    (Join-Path $PSScriptRoot 'Fundos_12431.csv') `
-    (Join-Path $PSScriptRoot 'Fundos_CDI.csv')
-}
-
-function Get-FundosSuggestionMetrics {
-  $path12431 = Join-Path $PSScriptRoot 'Sugestao_Lista_Final_12431.csv'
-  $pathCdi = Join-Path $PSScriptRoot 'Sugestao_Lista_Final_CDI.csv'
-  if (-not (Test-Path $path12431) -or -not (Test-Path $pathCdi)) {
-    throw "selecionar-fundos.ps1 nao gerou as listas finais esperadas."
-  }
-  $metrics = Get-FundosMetricsFromFiles $path12431 $pathCdi
-  if ($metrics.Total -eq 0) {
-    throw "listas finais de fundos vieram vazias."
-  }
-  return $metrics
-}
-
-function Get-FundosDiff($before, $after) {
-  $novos = @(@($after.Rows) | Where-Object { -not $before.RowMap.ContainsKey($_.Cnpj) })
-  $removidos = @(@($before.Rows) | Where-Object { -not $after.RowMap.ContainsKey($_.Cnpj) })
-  $mudaram = @(@($after.Rows) | Where-Object {
-    $before.RowMap.ContainsKey($_.Cnpj) -and $before.RowMap[$_.Cnpj].Segmento -ne $_.Segmento
-  })
-  $alterados = @(@($after.Rows) | Where-Object {
-    $before.RowMap.ContainsKey($_.Cnpj) -and (
-      $before.RowMap[$_.Cnpj].Segmento -ne $_.Segmento -or
-      $before.RowMap[$_.Cnpj].CnpjGestor -ne $_.CnpjGestor -or
-      $before.RowMap[$_.Cnpj].Denom -ne $_.Denom
-    )
-  })
-  return [pscustomobject]@{ Novos=$novos; Removidos=$removidos; Mudaram=$mudaram; Alterados=$alterados }
-}
-
 function Test-FundosSame($before, $after) {
   if ($before.Total -ne $after.Total) { return $false }
   $diff = Get-FundosDiff $before $after
   return ($diff.Novos.Count -eq 0 -and $diff.Removidos.Count -eq 0 -and $diff.Alterados.Count -eq 0)
-}
-
-function Format-FundosSample($rows) {
-  $sample = @(@($rows) | Select-Object -First 10 | ForEach-Object {
-    $nome = if ($_.Denom) { $_.Denom } else { $_.Cnpj }
-    "{0}: {1}" -f $_.Segmento, $nome
-  })
-  if ($sample.Count -eq 0) { return @() }
-  return $sample
-}
-
-function Write-FundosCompare($before, $after) {
-  Write-Host ""
-  Write-Host "Lista de Fundos 12431/CDI" -ForegroundColor White
-  Write-CompareLine 'Fundos distintos' $before.Total $after.Total 'count'
-  Write-CompareLine 'Fundos 12431' $before.Fundos12431 $after.Fundos12431 'count'
-  Write-CompareLine 'Fundos CDI' $before.FundosCdi $after.FundosCdi 'count'
-  Write-CompareLine 'Gestores informados' $before.Gestores $after.Gestores 'count'
-  Write-CompareLine 'Fundos sem CNPJ Gestor' $before.SemGestor $after.SemGestor 'count'
-  Write-CompareLine 'Duplicados entre listas' $before.Duplicados.Count $after.Duplicados.Count 'count'
-
-  $diff = Get-FundosDiff $before $after
-  Write-Host ("  Novos fundos: {0}" -f (Format-Count $diff.Novos.Count))
-  foreach ($x in (Format-FundosSample $diff.Novos)) { Write-Host "    $x" -ForegroundColor Yellow }
-  Write-Host ("  Fundos removidos: {0}" -f (Format-Count $diff.Removidos.Count))
-  foreach ($x in (Format-FundosSample $diff.Removidos)) { Write-Host "    $x" -ForegroundColor Yellow }
-  Write-Host ("  Mudaram de lista: {0}" -f (Format-Count $diff.Mudaram.Count))
-  foreach ($x in (Format-FundosSample $diff.Mudaram)) { Write-Host "    $x" -ForegroundColor Yellow }
-}
-
-function Apply-FundosSuggestion {
-  Copy-Item -Path (Join-Path $PSScriptRoot 'Sugestao_Lista_Final_12431.csv') -Destination (Join-Path $PSScriptRoot 'Fundos_12431.csv') -Force
-  Copy-Item -Path (Join-Path $PSScriptRoot 'Sugestao_Lista_Final_CDI.csv') -Destination (Join-Path $PSScriptRoot 'Fundos_CDI.csv') -Force
-}
-
-function Format-Count($v) {
-  if ($null -eq $v -or $v -eq '') { return '-' }
-  return ([double]$v).ToString('N0', [System.Globalization.CultureInfo]::GetCultureInfo('pt-BR'))
-}
-
-function Format-Money($v) {
-  if ($null -eq $v -or $v -eq '') { return '-' }
-  $n = [double]$v
-  $abs = [math]::Abs($n)
-  $culture = [System.Globalization.CultureInfo]::GetCultureInfo('pt-BR')
-  if ($abs -ge 1000000000) { return 'R$ ' + ($n / 1000000000).ToString('N1', $culture) + ' bi' }
-  if ($abs -ge 1000000)    { return 'R$ ' + ($n / 1000000).ToString('N1', $culture) + ' mi' }
-  if ($abs -ge 1000)       { return 'R$ ' + ($n / 1000).ToString('N0', $culture) + ' mil' }
-  return 'R$ ' + $n.ToString('N0', $culture)
-}
-
-function Format-Value($v, [string]$kind) {
-  if ($kind -eq 'money') { return Format-Money $v }
-  if ($kind -eq 'count') { return Format-Count $v }
-  if ($null -eq $v -or $v -eq '') { return '-' }
-  return [string]$v
-}
-
-function Format-Delta($before, $after, [string]$kind) {
-  if ($kind -eq 'text') {
-    if ([string]$before -eq [string]$after) { return 'sem mudanca' }
-    return 'mudou'
-  }
-  $delta = [double]$after - [double]$before
-  if ([math]::Abs($delta) -lt 0.0001) { return 'sem mudanca' }
-  $prefix = if ($delta -gt 0) { '+' } else { '' }
-  if ($kind -eq 'money') { return $prefix + (Format-Money $delta) }
-  return $prefix + (Format-Count $delta)
-}
-
-function Write-CompareLine([string]$label, $before, $after, [string]$kind = 'count') {
-  Write-Host ("  {0}: {1} -> {2} ({3})" -f $label, (Format-Value $before $kind), (Format-Value $after $kind), (Format-Delta $before $after $kind))
 }
 
 function Get-NewItems($beforeList, $afterList) {
@@ -481,6 +329,47 @@ function Write-ImpactReport($before, $after) {
   Write-AnbimaCompare $before.ANBIMA $after.ANBIMA
 }
 
+# Campos-resumo (antes/depois) por fonte -- so' os numeros mais relevantes pra
+# quem ve o app, nao o dump inteiro do snapshot (que carrega listas grandes
+# como RowMap/AssetList, uteis so' internamente pro calculo do diff).
+function Get-ResumoFonte($before, $after, [string[]]$campos) {
+  $out = [ordered]@{}
+  foreach ($c in $campos) {
+    $out[$c] = [ordered]@{ antes = $before.$c; depois = $after.$c }
+  }
+  return $out
+}
+
+# Escreve public\Atualizacao_Resumo.json -- resumo cross-fonte desta rodada,
+# publicado junto com os dados (mesmo git add public/ do passo 7) e lido tanto
+# pelo painel de controle local quanto pelo icone novo do header no app
+# publicado. Nao inclui o status de Publicacao (so' se sabe DEPOIS deste
+# arquivo ja' ter sido gravado/staged) -- esse status fica so' no console.
+function Write-ResumoPublicado($before, $after, $summary, [string]$captacaoModo) {
+  $resumo = [ordered]@{
+    timestamp = (Get-Date).ToString('s')
+    captacaoModo = $captacaoModo
+    etapas = [ordered]@{
+      Debentures = $summary.Debentures
+      Fundos     = $summary.Fundos
+      Captacao   = $summary.Captacao
+      BLC        = $summary.BLC
+      ANBIMA     = $summary.ANBIMA
+    }
+    impacto = [ordered]@{
+      fundos = Get-ResumoFonte $before.Fundos $after.Fundos @('Total', 'Gestores', 'SemGestor')
+      captacao12431 = Get-ResumoFonte $before.Captacao12431 $after.Captacao12431 @('Semanas', 'Gestores', 'UltimaSemana', 'LiquidoRecente', 'CaptacaoRecente', 'ResgateRecente', 'PLRecente')
+      captacaoTrad = Get-ResumoFonte $before.CaptacaoTrad $after.CaptacaoTrad @('Semanas', 'Gestores', 'UltimaSemana', 'LiquidoRecente', 'CaptacaoRecente', 'ResgateRecente', 'PLRecente')
+      debentures = Get-ResumoFonte $before.Debentures $after.Debentures @('Ativos', 'Emissores', 'Incentivadas', 'Registradas')
+      blc = Get-ResumoFonte $before.BLC $after.BLC @('MesAno', 'Ativos', 'Gestores', 'TotalAlocado')
+      anbima = Get-ResumoFonte $before.ANBIMA $after.ANBIMA @('DataRef', 'Tickers', 'ComTaxa')
+    }
+  }
+  $utf8Resumo = New-Object System.Text.UTF8Encoding($false)
+  $path = Join-Path $PublicDir 'Atualizacao_Resumo.json'
+  [System.IO.File]::WriteAllText($path, (($resumo | ConvertTo-Json -Depth 8) + "`r`n"), $utf8Resumo)
+}
+
 Write-Host ""
 Write-Host "=== Atualizacao completa do Debentures CR ===" -ForegroundColor Green
 Write-Host "Pasta: $Root"
@@ -507,8 +396,8 @@ if ($SkipFundos) {
 } else {
   try {
     & (Join-Path $PSScriptRoot 'selecionar-fundos.ps1')
-    $fundosAtuais = Get-FundosMetrics
-    $fundosSugeridos = Get-FundosSuggestionMetrics
+    $fundosAtuais = Get-FundosMetrics $PSScriptRoot
+    $fundosSugeridos = Get-FundosSuggestionMetrics $PSScriptRoot
 
     Write-Host ""
     Write-Host "=== IMPACTO SUGERIDO NA LISTA DE FUNDOS ===" -ForegroundColor Green
@@ -529,8 +418,8 @@ if ($SkipFundos) {
       }
 
       if ($applyFundos -match '^(?i)s') {
-        Apply-FundosSuggestion
-        $fundosDepois = Get-FundosMetrics
+        Apply-FundosSuggestion $PSScriptRoot
+        $fundosDepois = Get-FundosMetrics $PSScriptRoot
         $fundosAplicados = $true
         $summary.Fundos = "OK (12431: $($fundosDepois.Fundos12431) | CDI: $($fundosDepois.FundosCdi))"
         Ok "Lista de fundos aplicada."
@@ -548,13 +437,18 @@ if ($SkipFundos) {
 # 3. Captacao sempre
 Step "3/7 Captacao"
 try {
-  if ($fundosAplicados) {
-    Warn "Lista de fundos mudou; vou recalcular a captacao completa para evitar historico misto."
+  $captacaoCompleta = ($CaptacaoModo -eq 'Completa') -or (($CaptacaoModo -eq 'Auto') -and $fundosAplicados)
+  if ($captacaoCompleta) {
+    if ($CaptacaoModo -eq 'Completa') {
+      Ok "Modo Completa solicitado: recalculando ultimos 12 meses (repopula rentabilidade)."
+    } else {
+      Warn "Lista de fundos mudou; vou recalcular a captacao completa para evitar historico misto."
+    }
     & (Join-Path $PSScriptRoot 'preparar-fluxo.ps1')
     $summary.Captacao = 'OK (recalculo completo)'
   } else {
     & (Join-Path $PSScriptRoot 'preparar-fluxo.ps1') -Incremental
-    $summary.Captacao = 'OK'
+    $summary.Captacao = 'OK (incremental)'
   }
   Ok "Captacao atualizada."
 } catch {
@@ -619,6 +513,9 @@ foreach ($k in $summary.Keys) {
   if ($k -eq 'Publicacao') { continue }
   Write-Host ("  {0}: {1}" -f $k, $summary[$k])
 }
+
+Write-ResumoPublicado $snapshotBefore $snapshotAfter $summary $CaptacaoModo
+Ok "public\Atualizacao_Resumo.json atualizado (sera incluido na publicacao)."
 
 $publishStatus = Get-PublishStatus
 Write-Host ""

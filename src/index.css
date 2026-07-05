@@ -803,6 +803,7 @@ a { color: var(--primary); }
 .section-btn svg { width: 18px; height: 18px; }
 .section-btn:hover  { background: rgba(255,255,255,.16); }
 .section-btn:active { transform: scale(.95); }
+.cp-header-btn { border-style: dashed; }
 .section-btn.active {
   background: #fff;
   color: var(--primary-dark);
@@ -1101,4 +1102,45 @@ a { color: var(--primary); }
     background: var(--primary);
     background-clip: padding-box;
   }
+}
+
+/* ─── Painel de controle da atualização (dev-only) ──────────────────────── */
+.control-panel { max-width: 760px; margin: 0 auto; padding: 16px; }
+.cp-header { margin-bottom: 16px; }
+.cp-title { font-size: 20px; font-weight: 700; color: var(--text); margin: 0 0 4px; }
+.cp-subtitle { font-size: 12.5px; color: #94a3b8; margin: 0; }
+.cp-block {
+  background: #fff; border: 1px solid var(--primary-border); border-radius: 10px;
+  padding: 14px; margin-bottom: 14px;
+}
+.cp-block-title { font-size: 14px; font-weight: 600; color: var(--text); margin: 0 0 10px; }
+.cp-modos { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+.cp-modo-btn {
+  padding: 6px 14px; border-radius: 99px; border: 1px solid var(--navy-light);
+  background: var(--chip-bg); color: var(--navy-light); font-size: 13px; cursor: pointer;
+}
+.cp-modo-btn.active { background: var(--primary-dark); border-color: var(--primary-dark); color: #fff; }
+.cp-modo-btn:disabled { opacity: .5; cursor: default; }
+.cp-checkbox { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text); margin-bottom: 12px; }
+.cp-btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.cp-btn {
+  padding: 8px 16px; border-radius: 8px; border: 1px solid var(--navy-light);
+  background: #fff; color: var(--navy-light); font-size: 13px; font-weight: 600; cursor: pointer;
+}
+.cp-btn:disabled { opacity: .5; cursor: default; }
+.cp-btn-primary { background: var(--primary-dark); border-color: var(--primary-dark); color: #fff; }
+.cp-btn-danger { border-color: #b91c1c; color: #b91c1c; }
+.cp-error { color: #b91c1c; font-size: 13px; font-weight: 600; }
+.cp-log {
+  background: #0f172a; color: #e2e8f0; border-radius: 8px; padding: 10px 12px;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 12px; line-height: 1.5; max-height: 360px; overflow-y: auto; white-space: pre-wrap;
+}
+.cp-log-stdout { color: #e2e8f0; }
+.cp-log-stderr { color: #fca5a5; }
+.cp-log-meta { color: #7dd3fc; }
+.cp-log-done { color: #86efac; font-weight: 700; margin-top: 6px; }
+.cp-resumo {
+  background: #f6f8fa; border-radius: 8px; padding: 10px 12px; font-size: 11.5px;
+  max-height: 360px; overflow: auto; white-space: pre-wrap;
 }

@@ -52,6 +52,7 @@ O app tem **duas seções**: **Debêntures** e **Captação**. Cada tabela receb
 | **GER-1** | Nomear todas as tabelas (este glossário) | Geral | Baixa | Baixo | Alta | ✅ Concluído |
 | **CAP-3** | Coluna **PL** na **C1** (Gestores da Captação) | Captação | Baixa | Baixo | Média | ✅ Concluído |
 | **GER-2** | Navegação por **ícones** entre seções no app compacto | Geral | Média | Baixo–Médio | Média–Alta | ✅ Concluído |
+| **GER-3** | Painel de controle da atualização (dev) + resumo no header | Geral | Alta | Médio–Alto | Média–Alta | ✅ Concluído |
 | **DEB-1** | Enriquecer o **Modal do Ativo** (janela (i)) | Debêntures | Baixa–Média | Baixo | Média–Alta | ⏸️ Pausado |
 | **CAP-1** | **Performance** dos fundos (rentabilidade %CDI por gestor) | Captação | Alta | Médio–Alto | Alta | ✅ Concluído |
 | **CAP-2** | Regra de seleção do universo de fundos via dados **CVM** | Captação | Alta | Alto | Alta | 🔵 Fase 2 (fundacional) |
@@ -132,6 +133,30 @@ adaptados à identidade do nosso app.
   - As **sub-abas de Debêntures** (Ativos / Gestores / Grupos) aparecem logo abaixo,
     só quando a seção Debêntures está ativa; o app lembra a última sub-aba usada.
   - Ícone da seção atual fica **preenchido**; o outro, em **contorno**. Desktop inalterado.
+
+---
+
+### GER-3 · Painel de controle da atualização + resumo no header — ✅ Concluído
+**O quê:** melhorar a experiência de atualizar os dados (antes: só `.bat`s no
+Windows + relatório de texto no console, sem nada visível no app publicado).
+
+**Decidido e entregue:**
+- **Painel local** (`src/components/ControlPanel.jsx`) — só existe/funciona
+  rodando `npm run dev` no notebook do operador (nunca no build de produção:
+  `import.meta.env.DEV` é eliminado pelo Rollup no build; nunca alcançável do
+  site publicado por CORS/mixed-content mesmo que existisse). Ícone próprio no
+  header (visível só em dev). Escolha de modo da Captação
+  (Auto/Incremental/Completa — novo `-CaptacaoModo` em `atualizar-tudo.ps1`),
+  log ao vivo via SSE (rota dev-only em `vite.config.js`, mesmo padrão do
+  proxy GAS já existente), botões explícitos pra fundos (ver sugestão/aplicar)
+  e publicar (em vez de pilotar os `Read-Host` interativos do script via
+  stdin — mais simples e robusto).
+- **Resumo publicado** (`public/Atualizacao_Resumo.json`, escrito por
+  `atualizar-tudo.ps1`) — vai junto no `git add public/`, então aparece no app
+  publicado também: novo ícone no header (visível em desktop **e** compacto,
+  não é uma seção de navegação) abre um modal com o que rodou e os principais
+  números antes→depois. Opcional/não-bloqueante — some sozinho se o arquivo
+  não existir ainda.
 
 ---
 
@@ -229,6 +254,8 @@ captação / resgate / cap. líquida e PL).
   - ⏸️ DEB-1 · Enriquecer o Modal do Ativo *(pausado a pedido)*
 - ✅ **CAP-1 · Performance dos fundos (rentabilidade %CDI)** — entregue fora de ordem,
   sem esperar por CAP-2 (ver detalhe acima)
+- ✅ **GER-3 · Painel de controle da atualização + resumo no header** — entregue fora
+  de ordem, sem depender de nenhum outro item (ver detalhe acima)
 - **Fase 2 — Qualidade de dados** *(fundacional, em aberto)*
   - 🔵 CAP-2 · Pipeline CVM + regra de seleção de fundos
   - 🟡 MER-1 · Ingestão de dados de negociação do mercado secundário *(a definir)*

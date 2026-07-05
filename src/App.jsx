@@ -1,5 +1,6 @@
 import { useState, useMemo, useCallback, useEffect, Suspense } from 'react'
 import { useDebentures, BLC_DEFAULT_URL } from './hooks/useDebentures.js'
+import { useAtualizacaoResumo } from './hooks/useAtualizacaoResumo.js'
 import {
   buildIndexes, buildBlcIndex, buildAnbimaIndex, buildPlByGestor,
   enrichDebenture, computeManagers, computeGroups, recomputeAlocByGestor
@@ -13,11 +14,19 @@ import AssetModal from './components/AssetModal.jsx'
 import ManagerRanking from './components/ManagerRanking.jsx'
 import GroupRanking from './components/GroupRanking.jsx'
 import MonthSelector from './components/MonthSelector.jsx'
+import AtualizacaoResumoModal from './components/AtualizacaoResumoModal.jsx'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
 
 // Aba Captação carregada sob demanda (Recharts só entra ao abrir a aba).
 // lazyWithRetry: re-tenta o import se o chunk falhar (evita tela em branco).
 const FluxoDashboard = lazyWithRetry(() => import('./components/fluxo/FluxoDashboard.jsx'))
+
+// Painel de controle da atualização: só existe no bundle de DEV. Em produção
+// import.meta.env.DEV é substituído por `false` em tempo de build e o Rollup
+// elimina este branch inteiro (import incluído) do bundle publicado.
+const ControlPanel = import.meta.env.DEV
+  ? lazyWithRetry(() => import('./components/ControlPanel.jsx'))
+  : null
 
 const DEFAULT_MONTHS = [{ label: 'Fev/26', url: BLC_DEFAULT_URL }]
 
@@ -46,6 +55,8 @@ export default function App() {
   const [sort, setSort]               = useState(INIT_SORT)
   const [selectedAsset, setSelected]  = useState(null)
   const [showMonths, setShowMonths]   = useState(false)
+  const [showResumo, setShowResumo]   = useState(false)
+  const { resumo } = useAtualizacaoResumo()
   const [showAll, setShowAll]         = useState(false)
   const [desktop, setDesktop]         = useState(() => {
     try { return localStorage.getItem('view-desktop') === '1' && window.innerWidth >= 700 } catch { return false }
@@ -53,11 +64,12 @@ export default function App() {
 
   const toggleDesktop = useCallback(() => setDesktop(d => !d), [])
 
-  // Seção atual (compacto): 'debentures' (abas Ativos/Gestores/Grupos) ou 'captacao'.
+  // Seção atual (compacto): 'debentures' (abas Ativos/Gestores/Grupos), 'captacao'
+  // ou 'atualizacao' (painel de controle, dev-only).
   const [lastDebTab, setLastDebTab] = useState('ativos')   // lembra a sub-aba ao voltar p/ Debêntures
-  const section = tab === 'captacao' ? 'captacao' : 'debentures'
+  const section = tab === 'captacao' ? 'captacao' : tab === 'atualizacao' ? 'atualizacao' : 'debentures'
   const selectSection = useCallback(
-    s => setTab(s === 'captacao' ? 'captacao' : lastDebTab),
+    s => setTab(s === 'captacao' || s === 'atualizacao' ? s : lastDebTab),
     [lastDebTab]
   )
 
@@ -262,11 +274,13 @@ export default function App() {
         onToggleView={toggleDesktop}
         section={section}
         onSection={selectSection}
+        hasResumo={!!resumo}
+        onOpenResumo={() => setShowResumo(true)}
       />
 
       {/* Filters + tabs scroll together as one sticky block */}
       <div className="sticky-area">
-        {tab !== 'captacao' && (
+        {section === 'debentures' && (
           <Filters
             filters={filters}
             options={options}
@@ -280,7 +294,7 @@ export default function App() {
 
         {/* Desktop: abas standalone só na Captação (nas demais vão ao lado da busca).
             Compacto: sub-abas só na seção Debêntures (Captação não tem sub-abas). */}
-        {(desktop ? tab === 'captacao' : tab !== 'captacao') && tabsNav}
+        {(desktop ? tab === 'captacao' : section === 'debentures') && tabsNav}
       </div>
 
       {/* Scrollable content */}
@@ -298,14 +312,25 @@ export default function App() {
           </ErrorBoundary>
         )}
 
-        {tab !== 'captacao' && loading && (
+        {/* Painel de controle da atualização: dev-only (ControlPanel é null em produção). */}
+        {tab === 'atualizacao' && ControlPanel && (
+          <ErrorBoundary label="o Painel de Atualização">
+            <Suspense fallback={
+              <div className="state-box"><div className="spinner" aria-label="Carregando" /><p>Carregando…</p></div>
+            }>
+              <ControlPanel />
+            </Suspense>
+          </ErrorBoundary>
+        )}
+
+        {section === 'debentures' && loading && (
           <div className="state-box">
             <div className="spinner" aria-label="Carregando" />
             <p>Carregando dados…</p>
           </div>
         )}
 
-        {tab !== 'captacao' && !loading && error && (
+        {section === 'debentures' && !loading && error && (
           <div className="state-box error">
             <span className="state-icon">⚠️</span>
             <p className="error-msg">{error}</p>
@@ -317,7 +342,7 @@ export default function App() {
           </div>
         )}
 
-        {tab !== 'captacao' && tab !== 'debentures' && !loading && !error && raw && (
+        {section === 'debentures' && tab !== 'debentures' && !loading && !error && raw && (
           <>
             {tab === 'ativos' && (
               <>
@@ -404,6 +429,10 @@ export default function App() {
           onChange={handleMonthsChange}
           onClose={() => setShowMonths(false)}
         />
+      )}
+
+      {showResumo && resumo && (
+        <AtualizacaoResumoModal resumo={resumo} onClose={() => setShowResumo(false)} />
       )}
 
     </div>

@@ -16,8 +16,27 @@ function CaptacaoIcon() {
     </svg>
   )
 }
+function ControlPanelIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  )
+}
+function ResumoIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 8v5l3 2" />
+    </svg>
+  )
+}
 
-export default function Header({ loading, refreshing, error, desktop, onToggleView, section, onSection }) {
+export default function Header({
+  loading, refreshing, error, desktop, onToggleView, section, onSection,
+  hasResumo, onOpenResumo,
+}) {
   return (
     <header className="app-header">
       <div className="header-left">
@@ -60,6 +79,36 @@ export default function Header({ loading, refreshing, error, desktop, onToggleVi
             <CaptacaoIcon />
           </button>
         </nav>
+      )}
+
+      {/* Resumo da última atualização: visível em desktop e compacto (não é uma
+          "seção" de navegação, é um atalho pontual) — só aparece quando o
+          arquivo existe (useAtualizacaoResumo retornou algo). */}
+      {hasResumo && (
+        <button
+          type="button"
+          className="section-btn"
+          aria-label="Última atualização"
+          title="Última atualização"
+          onClick={onOpenResumo}
+        >
+          <ResumoIcon />
+        </button>
+      )}
+
+      {/* Painel de controle da atualização: só existe em dev (nunca em produção,
+          nem quando alguém acessa este mesmo bundle de outra máquina). */}
+      {import.meta.env.DEV && (
+        <button
+          type="button"
+          className={`section-btn cp-header-btn${section === 'atualizacao' ? ' active' : ''}`}
+          aria-pressed={section === 'atualizacao'}
+          aria-label="Painel de controle da atualização"
+          title="Painel de controle da atualização (dev)"
+          onClick={() => onSection('atualizacao')}
+        >
+          <ControlPanelIcon />
+        </button>
       )}
 
       <button

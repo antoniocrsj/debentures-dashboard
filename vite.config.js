@@ -1,6 +1,13 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
+import { spawn } from 'node:child_process'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const TOOLS_DIR = path.join(__dirname, 'tools')
+const REPO_ROOT = __dirname
 
 // Cookie store persists for the lifetime of the dev server.
 // The first request to a GAS URL gets the interstitial and sets cookies;
@@ -118,6 +125,98 @@ async function gasFetch(originalUrl, maxHops = 8) {
   throw new Error('Too many redirects fetching ' + originalUrl)
 }
 
+// ─── Painel de controle da atualização (dev-only) ──────────────────────────
+// Roda os scripts de tools/ (PowerShell) sob demanda a partir de uma tela web
+// local (src/components/ControlPanel.jsx, so' existe no bundle de dev — ver
+// import.meta.env.DEV em App.jsx). So' faz sentido em `vite dev`/`vite preview`
+// rodando no notebook do operador: nunca existe no build de producao, e
+// mesmo que existisse não teria como alcançar `localhost` a partir do site
+// publicado (CORS/mixed-content bloqueiam isso pelo navegador).
+//
+// Um "run" por vez (uso é sempre de um único operador local): guarda um
+// buffer das linhas de stdout/stderr (para reconectar via SSE sem perder
+// log) e o estado (rodando / concluído / código de saída).
+let currentRun = null
+let runSeq = 0
+
+function newRun(label) {
+  runSeq += 1
+  currentRun = {
+    id: runSeq,
+    label,
+    buffer: [],
+    seq: 0,
+    running: true,
+    exitCode: null,
+    listeners: new Set(),
+  }
+  return currentRun
+}
+
+function pushLine(run, streamName, text) {
+  run.seq += 1
+  const entry = { seq: run.seq, stream: streamName, text }
+  run.buffer.push(entry)
+  if (run.buffer.length > 4000) run.buffer.shift()
+  for (const send of run.listeners) send(entry)
+}
+
+function finishRun(run, exitCode) {
+  run.running = false
+  run.exitCode = exitCode
+  const entry = { seq: ++run.seq, stream: 'done', text: String(exitCode) }
+  run.buffer.push(entry)
+  for (const send of run.listeners) send(entry)
+}
+
+// PowerShell 5.1 escreve stdout redirecionado na codepage do console, nao
+// necessariamente UTF-8 -- forcamos via $OutputEncoding antes de chamar o
+// script real (truque padrao para redirecionamento de pipeline em PS 5.1).
+function psCommand(scriptPath, args) {
+  const quotedArgs = args.map(a => `'${String(a).replace(/'/g, "''")}'`).join(' ')
+  const inner = `$OutputEncoding = [System.Text.UTF8Encoding]::new(); & '${scriptPath}' ${quotedArgs}`
+  return { cmd: 'powershell', args: ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-Command', inner] }
+}
+
+function spawnStep(run, cmd, args, cwd) {
+  return new Promise(resolve => {
+    pushLine(run, 'meta', `$ ${cmd} ${args.join(' ')}`)
+    const child = spawn(cmd, args, { cwd: cwd || REPO_ROOT, windowsHide: true })
+    child.stdout.on('data', d => pushLine(run, 'stdout', d.toString('utf8')))
+    child.stderr.on('data', d => pushLine(run, 'stderr', d.toString('utf8')))
+    child.on('error', err => { pushLine(run, 'stderr', `[erro ao iniciar] ${err.message}`); resolve(1) })
+    child.on('close', code => resolve(code == null ? 1 : code))
+  })
+}
+
+// Roda uma sequencia de passos no MESMO run/buffer, parando no primeiro que falhar.
+async function runSequence(label, steps) {
+  const run = newRun(label)
+  ;(async () => {
+    let code = 0
+    for (const step of steps) {
+      code = await spawnStep(run, step.cmd, step.args, step.cwd)
+      if (code !== 0) break
+    }
+    finishRun(run, code)
+  })()
+  return run
+}
+
+function sendJson(res, status, obj) {
+  res.statusCode = status
+  res.setHeader('Content-Type', 'application/json; charset=utf-8')
+  res.end(JSON.stringify(obj))
+}
+
+async function readJsonBody(req) {
+  const chunks = []
+  for await (const chunk of req) chunks.push(chunk)
+  const raw = Buffer.concat(chunks).toString('utf8')
+  if (!raw) return {}
+  try { return JSON.parse(raw) } catch { return {} }
+}
+
 export default defineConfig({
   plugins: [
     react(),
@@ -168,6 +267,91 @@ export default defineConfig({
             res.statusCode = 502
             res.end(`Proxy error: ${e.message}`)
           }
+        })
+      },
+    },
+    {
+      name: 'atualizacao-control-panel',
+      configureServer(server) {
+        server.middlewares.use(async (req, res, next) => {
+          if (!req.url.startsWith('/api/atualizar')) return next()
+          const [urlPath, qs] = req.url.split('?')
+
+          // GET /api/atualizar/stream?since=N — SSE: replay do buffer + tail ao vivo.
+          if (urlPath === '/api/atualizar/stream' && req.method === 'GET') {
+            res.writeHead(200, {
+              'Content-Type': 'text/event-stream',
+              'Cache-Control': 'no-cache',
+              Connection: 'keep-alive',
+            })
+            const since = Number(new URLSearchParams(qs || '').get('since') || 0)
+            const run = currentRun
+            const send = entry => res.write(`id: ${entry.seq}\ndata: ${JSON.stringify(entry)}\n\n`)
+            if (run) {
+              res.write(`event: run\ndata: ${JSON.stringify({ id: run.id, label: run.label, running: run.running })}\n\n`)
+              for (const entry of run.buffer) { if (entry.seq > since) send(entry) }
+              if (run.running) {
+                run.listeners.add(send)
+                req.on('close', () => run.listeners.delete(send))
+              } else {
+                res.end()
+              }
+            } else {
+              res.write(`event: run\ndata: null\n\n`)
+              res.end()
+            }
+            return
+          }
+
+          // POST /api/atualizar/rodar — { modo: 'Auto'|'Incremental'|'Completa', skipAnbima }
+          if (urlPath === '/api/atualizar/rodar' && req.method === 'POST') {
+            if (currentRun && currentRun.running) return sendJson(res, 409, { erro: 'Ja ha uma atualizacao em andamento.' })
+            const body = await readJsonBody(req)
+            const modo = ['Auto', 'Incremental', 'Completa'].includes(body.modo) ? body.modo : 'Auto'
+            const args = ['-SkipFundos', '-NoPublishPrompt', '-CaptacaoModo', modo]
+            if (body.skipAnbima) args.push('-SkipAnbima')
+            const { cmd, args: psArgs } = psCommand(path.join(TOOLS_DIR, 'atualizar-tudo.ps1'), args)
+            const run = await runSequence('atualizar-tudo', [{ cmd, args: psArgs }])
+            return sendJson(res, 200, { id: run.id })
+          }
+
+          // POST /api/atualizar/fundos/sugestao — roda selecionar-fundos.ps1 sozinho.
+          if (urlPath === '/api/atualizar/fundos/sugestao' && req.method === 'POST') {
+            if (currentRun && currentRun.running) return sendJson(res, 409, { erro: 'Ja ha uma atualizacao em andamento.' })
+            const { cmd, args } = psCommand(path.join(TOOLS_DIR, 'selecionar-fundos.ps1'), [])
+            const run = await runSequence('fundos-sugestao', [{ cmd, args }])
+            return sendJson(res, 200, { id: run.id })
+          }
+
+          // POST /api/atualizar/fundos/aplicar — copia a sugestao por cima dos CSVs reais.
+          if (urlPath === '/api/atualizar/fundos/aplicar' && req.method === 'POST') {
+            if (currentRun && currentRun.running) return sendJson(res, 409, { erro: 'Ja ha uma atualizacao em andamento.' })
+            const { cmd, args } = psCommand(path.join(TOOLS_DIR, 'aplicar-fundos.ps1'), [])
+            const run = await runSequence('fundos-aplicar', [{ cmd, args }])
+            return sendJson(res, 200, { id: run.id })
+          }
+
+          // GET /api/atualizar/publicar/status — o que git veria pra publicar, sem publicar.
+          if (urlPath === '/api/atualizar/publicar/status' && req.method === 'GET') {
+            const run = await runSequence('publicar-status', [{
+              cmd: 'git',
+              args: ['status', '--short', '--', 'public/', 'tools/Fundos_12431.csv', 'tools/Fundos_CDI.csv'],
+            }])
+            return sendJson(res, 200, { id: run.id })
+          }
+
+          // POST /api/atualizar/publicar — git add/commit/push de fato.
+          if (urlPath === '/api/atualizar/publicar' && req.method === 'POST') {
+            if (currentRun && currentRun.running) return sendJson(res, 409, { erro: 'Ja ha uma atualizacao em andamento.' })
+            const run = await runSequence('publicar', [
+              { cmd: 'git', args: ['add', 'public/', 'tools/Fundos_12431.csv', 'tools/Fundos_CDI.csv'] },
+              { cmd: 'git', args: ['commit', '-m', 'Atualiza dados (painel de controle)'] },
+              { cmd: 'git', args: ['push'] },
+            ])
+            return sendJson(res, 200, { id: run.id })
+          }
+
+          next()
         })
       },
     },

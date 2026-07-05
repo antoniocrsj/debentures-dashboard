@@ -27,7 +27,8 @@
            (Retorno e PctCDI ja' em pontos percentuais, ex 1.23 = 1,23%. Celula
             vazia = sem historico suficiente para aquela janela ainda.)
        Tambem grava public\PL_Gestores.csv (PL mais recente por gestor, consumido
-       pela aba Gestores do app).
+       pela aba Gestores do app) e public\data\Fluxo_Atualizacao.json (resumo
+       estruturado desta rodada, usado pelo painel de controle web).
 
   Uso: clique 2x em preparar-fluxo.bat, ou:
        powershell -File preparar-fluxo.ps1 -Meses 202504,202505
@@ -577,3 +578,33 @@ Write-Host ("    $outPlGestores  ($($plByGestor.Count) gestoras)") -ForegroundCo
 Write-Host ""
 Write-Host "  Proximo: revise os CSVs, troque FLUXO_IS_MOCK para false em src/hooks/useFluxo.js e publique." -ForegroundColor White
 Write-Host ""
+
+# Resumo estruturado desta rodada (usado pelo painel de controle web para
+# mostrar o resultado sem precisar reler o log de texto).
+$resumoCaptacao = [ordered]@{
+  timestamp = (Get-Date).ToString('s')
+  modo = $(if ($Incremental) { 'incremental' } else { 'completa' })
+  mesesProcessados = @($mesesOk)
+  mesesFalha = @($mesesFalha)
+  periodoCoberto = $(if ($minDate -and $maxDate) {
+    [ordered]@{ inicio = $minDate.ToString('yyyy-MM-dd'); fim = $maxDate.ToString('yyyy-MM-dd') }
+  } else { $null })
+  linhasInvalidas = $invalidas
+  '12431' = [ordered]@{
+    gestoras = $f1
+    naoEncontrados = $nf12431
+    linhasSemanais = $n12431
+    linhasMensais = $nMes12431
+    gestorasRentabilidade = $nRent12431
+  }
+  trad = [ordered]@{
+    gestoras = $f2
+    naoEncontrados = $nfTrad
+    linhasSemanais = $nTrad
+    linhasMensais = $nMesTrad
+    gestorasRentabilidade = $nRentTrad
+  }
+  gestoresPl = $plByGestor.Count
+}
+$utf8Resumo = New-Object System.Text.UTF8Encoding($false)
+[System.IO.File]::WriteAllText((Join-Path $OutDir 'Fluxo_Atualizacao.json'), (($resumoCaptacao | ConvertTo-Json -Depth 6) + "`r`n"), $utf8Resumo)

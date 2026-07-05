@@ -625,3 +625,181 @@ function Get-CdiRetornoJanela($cdiMap, [datetime]$inicio, [datetime]$fim) {
   if (-not $achou) { return $null }
   return $prod - 1.0
 }
+
+# ─── Lista de Fundos 12431/CDI: metricas, diff e aplicacao da sugestao ─────
+# Movido de atualizar-tudo.ps1 (GER-3): usado tanto pelo fluxo interativo do
+# terminal quanto pelo painel de controle web (tools/aplicar-fundos.ps1).
+
+function Format-Count($v) {
+  if ($null -eq $v -or $v -eq '') { return '-' }
+  return ([double]$v).ToString('N0', [System.Globalization.CultureInfo]::GetCultureInfo('pt-BR'))
+}
+
+function Format-Money($v) {
+  if ($null -eq $v -or $v -eq '') { return '-' }
+  $n = [double]$v
+  $abs = [math]::Abs($n)
+  $culture = [System.Globalization.CultureInfo]::GetCultureInfo('pt-BR')
+  if ($abs -ge 1000000000) { return 'R$ ' + ($n / 1000000000).ToString('N1', $culture) + ' bi' }
+  if ($abs -ge 1000000)    { return 'R$ ' + ($n / 1000000).ToString('N1', $culture) + ' mi' }
+  if ($abs -ge 1000)       { return 'R$ ' + ($n / 1000).ToString('N0', $culture) + ' mil' }
+  return 'R$ ' + $n.ToString('N0', $culture)
+}
+
+function Format-Value($v, [string]$kind) {
+  if ($kind -eq 'money') { return Format-Money $v }
+  if ($kind -eq 'count') { return Format-Count $v }
+  if ($null -eq $v -or $v -eq '') { return '-' }
+  return [string]$v
+}
+
+function Format-Delta($before, $after, [string]$kind) {
+  if ($kind -eq 'text') {
+    if ([string]$before -eq [string]$after) { return 'sem mudanca' }
+    return 'mudou'
+  }
+  $delta = [double]$after - [double]$before
+  if ([math]::Abs($delta) -lt 0.0001) { return 'sem mudanca' }
+  $prefix = if ($delta -gt 0) { '+' } else { '' }
+  if ($kind -eq 'money') { return $prefix + (Format-Money $delta) }
+  return $prefix + (Format-Count $delta)
+}
+
+function Write-CompareLine([string]$label, $before, $after, [string]$kind = 'count') {
+  Write-Host ("  {0}: {1} -> {2} ({3})" -f $label, (Format-Value $before $kind), (Format-Value $after $kind), (Format-Delta $before $after $kind))
+}
+
+function Read-FundosRows([string]$path, [string]$segmento) {
+  if (-not (Test-Path $path)) { return @() }
+  $lines = @(Read-AllLinesShared $path ([System.Text.Encoding]::UTF8) | Where-Object { $_.Trim() -ne '' })
+  if ($lines.Count -lt 1) { return @() }
+
+  $hdr = Split-CsvLine $lines[0]
+  $iFundo = Find-ColIndex $hdr '(?i)cnpj.*(fundo|classe)' '(?i)gestor'
+  if ($iFundo -lt 0) { $iFundo = Find-ColIndex $hdr '(?i)cnpj' '(?i)gestor' }
+  $iGestor = Find-ColIndex $hdr '(?i)cnpj.*gestor'
+  if ($iGestor -lt 0) { $iGestor = Find-ColIndex $hdr '(?i)gestor.*cnpj' }
+  $iDenom = Find-ColIndex $hdr '(?i)denom'
+  if ($iFundo -lt 0) { throw "$path`: coluna CNPJ_FUNDO_CLASSE nao encontrada." }
+
+  $rows = New-Object System.Collections.Generic.List[object]
+  for ($i = 1; $i -lt $lines.Count; $i++) {
+    $cols = Split-CsvLine $lines[$i]
+    if ($cols.Count -le $iFundo) { continue }
+    $cnpj = NormCNPJ $cols[$iFundo]
+    if ($cnpj -eq '') { continue }
+    $denom = if ($iDenom -ge 0 -and $cols.Count -gt $iDenom) { ([string]$cols[$iDenom]).Trim() } else { '' }
+    $gestor = if ($iGestor -ge 0 -and $cols.Count -gt $iGestor) { NormCNPJ $cols[$iGestor] } else { '' }
+    $rows.Add([pscustomobject]@{ Cnpj=$cnpj; Denom=$denom; CnpjGestor=$gestor; Segmento=$segmento })
+  }
+  return $rows.ToArray()
+}
+
+function Get-FundosMetricsFromFiles([string]$path12431, [string]$pathCdi) {
+  $rows12431 = @(Read-FundosRows $path12431 '12431')
+  $rowsCdi = @(Read-FundosRows $pathCdi 'CDI')
+  $rows = @($rows12431 + $rowsCdi)
+
+  $segmentMap = @{}
+  $rowMap = @{}
+  $duplicados = New-Object System.Collections.Generic.List[string]
+  foreach ($r in $rows) {
+    if ($segmentMap.ContainsKey($r.Cnpj)) {
+      $duplicados.Add($r.Cnpj)
+    }
+    $segmentMap[$r.Cnpj] = $r.Segmento
+    $rowMap[$r.Cnpj] = $r
+  }
+
+  $gestores = @($rows | ForEach-Object { $_.CnpjGestor } | Where-Object { $_ } | Sort-Object -Unique)
+  $semGestor = @($rows | Where-Object { -not $_.CnpjGestor })
+  return [pscustomobject]@{
+    Rows=@($rows)
+    RowMap=$rowMap
+    SegmentMap=$segmentMap
+    Total=$segmentMap.Count
+    Fundos12431=$rows12431.Count
+    FundosCdi=$rowsCdi.Count
+    Gestores=$gestores.Count
+    SemGestor=$semGestor.Count
+    Duplicados=@($duplicados | Sort-Object -Unique)
+  }
+}
+
+function Get-FundosMetrics([string]$scriptRoot) {
+  return Get-FundosMetricsFromFiles `
+    (Join-Path $scriptRoot 'Fundos_12431.csv') `
+    (Join-Path $scriptRoot 'Fundos_CDI.csv')
+}
+
+function Get-FundosSuggestionMetrics([string]$scriptRoot) {
+  $path12431 = Join-Path $scriptRoot 'Sugestao_Lista_Final_12431.csv'
+  $pathCdi = Join-Path $scriptRoot 'Sugestao_Lista_Final_CDI.csv'
+  if (-not (Test-Path $path12431) -or -not (Test-Path $pathCdi)) {
+    throw "selecionar-fundos.ps1 nao gerou as listas finais esperadas."
+  }
+  $metrics = Get-FundosMetricsFromFiles $path12431 $pathCdi
+  if ($metrics.Total -eq 0) {
+    throw "listas finais de fundos vieram vazias."
+  }
+  return $metrics
+}
+
+function Get-FundosDiff($before, $after) {
+  $novos = @(@($after.Rows) | Where-Object { -not $before.RowMap.ContainsKey($_.Cnpj) })
+  $removidos = @(@($before.Rows) | Where-Object { -not $after.RowMap.ContainsKey($_.Cnpj) })
+  $mudaram = @(@($after.Rows) | Where-Object {
+    $before.RowMap.ContainsKey($_.Cnpj) -and $before.RowMap[$_.Cnpj].Segmento -ne $_.Segmento
+  })
+  $alterados = @(@($after.Rows) | Where-Object {
+    $before.RowMap.ContainsKey($_.Cnpj) -and (
+      $before.RowMap[$_.Cnpj].Segmento -ne $_.Segmento -or
+      $before.RowMap[$_.Cnpj].CnpjGestor -ne $_.CnpjGestor -or
+      $before.RowMap[$_.Cnpj].Denom -ne $_.Denom
+    )
+  })
+  return [pscustomobject]@{ Novos=$novos; Removidos=$removidos; Mudaram=$mudaram; Alterados=$alterados }
+}
+
+function Test-FundosSame($before, $after) {
+  if ($before.Total -ne $after.Total) { return $false }
+  $diff = Get-FundosDiff $before $after
+  return ($diff.Novos.Count -eq 0 -and $diff.Removidos.Count -eq 0 -and $diff.Alterados.Count -eq 0)
+}
+
+function Format-FundosSample($rows) {
+  $sample = @(@($rows) | Select-Object -First 10 | ForEach-Object {
+    $nome = if ($_.Denom) { $_.Denom } else { $_.Cnpj }
+    "{0}: {1}" -f $_.Segmento, $nome
+  })
+  if ($sample.Count -eq 0) { return @() }
+  return $sample
+}
+
+function Write-FundosCompare($before, $after) {
+  Write-Host ""
+  Write-Host "Lista de Fundos 12431/CDI" -ForegroundColor White
+  Write-CompareLine 'Fundos distintos' $before.Total $after.Total 'count'
+  Write-CompareLine 'Fundos 12431' $before.Fundos12431 $after.Fundos12431 'count'
+  Write-CompareLine 'Fundos CDI' $before.FundosCdi $after.FundosCdi 'count'
+  Write-CompareLine 'Gestores informados' $before.Gestores $after.Gestores 'count'
+  Write-CompareLine 'Fundos sem CNPJ Gestor' $before.SemGestor $after.SemGestor 'count'
+  Write-CompareLine 'Duplicados entre listas' $before.Duplicados.Count $after.Duplicados.Count 'count'
+
+  $diff = Get-FundosDiff $before $after
+  Write-Host ("  Novos fundos: {0}" -f (Format-Count $diff.Novos.Count))
+  foreach ($x in (Format-FundosSample $diff.Novos)) { Write-Host "    $x" -ForegroundColor Yellow }
+  Write-Host ("  Fundos removidos: {0}" -f (Format-Count $diff.Removidos.Count))
+  foreach ($x in (Format-FundosSample $diff.Removidos)) { Write-Host "    $x" -ForegroundColor Yellow }
+  Write-Host ("  Mudaram de lista: {0}" -f (Format-Count $diff.Mudaram.Count))
+  foreach ($x in (Format-FundosSample $diff.Mudaram)) { Write-Host "    $x" -ForegroundColor Yellow }
+}
+
+# Aplica a sugestao gerada por selecionar-fundos.ps1: copia os 2 CSVs de
+# sugestao por cima dos reais. Usado pelo fluxo interativo (atualizar-tudo.ps1)
+# e pelo botao "Aplicar sugestao de fundos" do painel de controle web
+# (tools/aplicar-fundos.ps1).
+function Apply-FundosSuggestion([string]$scriptRoot) {
+  Copy-Item -Path (Join-Path $scriptRoot 'Sugestao_Lista_Final_12431.csv') -Destination (Join-Path $scriptRoot 'Fundos_12431.csv') -Force
+  Copy-Item -Path (Join-Path $scriptRoot 'Sugestao_Lista_Final_CDI.csv') -Destination (Join-Path $scriptRoot 'Fundos_CDI.csv') -Force
+}
