@@ -3,7 +3,7 @@
 Documento de estado/decisões do projeto. Para instruções de uso (rodar, atualizar,
 publicar), ver o [README.md](README.md). **Fonte da verdade é sempre o código.**
 
-Última atualização: implementação da aba **Captação**.
+Última atualização: rentabilidade (%CDI por gestor) na aba **Captação**.
 
 ---
 
@@ -27,7 +27,7 @@ Sem backend próprio. Duas estratégias de origem, ambas centralizadas em hooks:
 | Área | Hook | Fontes |
 |------|------|--------|
 | Mercado | `src/hooks/useDebentures.js` | 3 planilhas via Google Apps Script (emissores, fundos, debêntures) + `public/BLC_tratado.csv` estático |
-| Captação | `src/hooks/useFluxo.js` | `public/data/Fluxo_Semanal_12431.csv` e `…_Trad.csv` estáticos |
+| Captação | `src/hooks/useFluxo.js` | `public/data/Fluxo_Semanal_*.csv`, `Fluxo_Mensal_*.csv`, `Fluxo_Rentabilidade_*.csv` e `Fluxo_Meta.json` estáticos |
 
 - **GAS + proxy CORS:** dev via middleware em `vite.config.js`; produção via
   `api/proxy.js` (serverless). Só as 3 planilhas passam por aí.
@@ -54,11 +54,15 @@ Sem backend próprio. Duas estratégias de origem, ambas centralizadas em hooks:
 - BLC estático por gestor + fluxo mensal de 2 cliques (`preparar-blc.bat` + `publicar.bat`).
 - PWA, proxy CORS (dev/prod), deploy automático na Vercel.
 
-### Pronto, aguardando dados reais
+### Pronto e em produção (Captação)
 - **Aba Captação** completa (filtros tipo/gestor/período, cards, gráfico combinado,
-  tabela semanal, ranking de gestores, estados de loading/erro/vazio).
-- **Roda com CSVs MOCK** em `public/data/` (banner de aviso enquanto
-  `FLUXO_IS_MOCK = true` em `useFluxo.js`).
+  tabela semanal, tabela mensal, ranking de gestores, estados de loading/erro/vazio).
+- Roda com dados **reais** (`FLUXO_IS_MOCK = false` em `useFluxo.js`) desde que os
+  CSVs de `public/data/` passaram a ser gerados por `preparar-fluxo.ps1`.
+- **Rentabilidade (%CDI) por gestor** no ranking de gestores (C1): 5 colunas
+  (1s/1m/3m/6m/12m), verde acima de 100% do CDI, vermelho se negativo. Cálculo:
+  retorno diário da cota ponderado pelo PL de cada gestor, comparado ao CDI (API do
+  Banco Central, SGS série 12). Ver detalhe em `ROADMAP.md` (CAP-1).
 - Funções puras testadas (`test/fluxo.test.js`, `npm test`).
 
 ### Gerador das bases de Captação — pronto
@@ -88,11 +92,14 @@ Sem backend próprio. Duas estratégias de origem, ambas centralizadas em hooks:
   edição feita na planilha de volta pro CSV local.
 
 ### Pendente
-- **Virar `FLUXO_IS_MOCK = false`** em `useFluxo.js` quando as bases reais entrarem.
 - **Carga a frio do Mercado ~12s** — as 3 chamadas GAS ainda pesam; opção futura é
   tornar a base de debêntures estática (como o BLC).
-- **Seletor de meses (BLC)** ainda visível mas inerte: `useDebentures` lê sempre o
-  `BLC_tratado.csv` estático, então trocar de mês não muda os dados.
+- **Seletor de meses (BLC) sem ponto de entrada:** `App.jsx` ainda tem o estado
+  (`showMonths`/`months`/`localStorage['blc-months']`) e o componente
+  `MonthSelector.jsx`, mas o botão do header que abria essa tela foi removido (GER-2) e
+  nada mais aciona `setShowMonths(true)` — hoje é código morto. Decisão pendente:
+  recriar um jeito de abrir (ex.: ícone no header) ou remover o recurso de vez, já que
+  o app sempre lê um único `BLC_tratado.csv` estático.
 
 ---
 

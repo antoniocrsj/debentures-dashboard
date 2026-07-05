@@ -1,6 +1,6 @@
 @echo off
 chcp 65001 >nul
-REM Sobe os arquivos de dados (BLC e Captacao) gerados em public/ para o ar.
+REM Sobe todos os dados gerados em public/ (Debentures, BLC, ANBIMA, Captacao) para o ar.
 cd /d "%~dp0.."
 
 echo.

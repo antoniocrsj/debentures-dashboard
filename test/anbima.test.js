@@ -7,7 +7,7 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { buildAnbimaIndex, enrichDebenture } from '../src/utils/data.js'
 
-const ctx = anbimaByTicker => ({ emissorMap: {}, blcByAtivo: {}, fundoMap: {}, anbimaByTicker })
+const ctx = anbimaByTicker => ({ emissorMap: {}, blcByAtivo: {}, anbimaByTicker })
 const deb = ticker => ({ 'Codigo do Ativo': ticker })
 
 test('buildAnbimaIndex: indexa por ticker em maiusculas, com trim', () => {

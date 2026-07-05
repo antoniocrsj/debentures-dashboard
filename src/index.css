@@ -145,24 +145,6 @@ a { color: var(--primary); }
 }
 .chip-select:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
 
-.chip-toggle {
-  flex-shrink: 0;
-  background: var(--chip-bg);
-  border: 1px solid var(--navy-light);
-  border-radius: 99px;
-  padding: 5px 12px;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--navy-light);
-  transition: all .15s;
-  white-space: nowrap;
-}
-.chip-toggle.active {
-  background: var(--primary-light);
-  border-color: var(--primary);
-  color: var(--primary);
-  font-weight: 600;
-}
 .chip-clear {
   flex-shrink: 0;
   display: flex;
@@ -429,7 +411,6 @@ a { color: var(--primary); }
 .info-btn:hover { color: var(--primary); background: var(--primary-light); }
 
 .col-num { text-align: center; white-space: nowrap; font-variant-numeric: tabular-nums; }
-.col-taxa { white-space: nowrap; font-size: 12px; }
 .col-aloc { font-weight: 600; }
 .col-aloc.has-aloc { color: var(--success); }
 
@@ -715,7 +696,6 @@ a { color: var(--primary); }
 }
 .segmented-btn.active { background: var(--primary-dark); color: #fff; }
 .segmented-btn:disabled { opacity: .5; cursor: default; }
-.segmented-sm .segmented-btn { font-size: 12px; padding: 0 9px; }
 
 .period-shortcuts { display: flex; gap: 6px; flex-wrap: wrap; }
 .period-chip {
@@ -764,7 +744,6 @@ a { color: var(--primary); }
 .fluxo-ranking-block, .fluxo-table-block { margin-bottom: 18px; }
 .fluxo-table .col-num { text-align: center; white-space: nowrap; }
 .fluxo-table .col-gestor { white-space: nowrap; }
-.fluxo-table .th-pos { text-align: center; width: 34px; color: #64748b; }
 .liq-cell.pos { color: #047857; font-weight: 600; }
 .liq-cell.neg { color: #b91c1c; font-weight: 600; }
 .rent-cell.pos { color: #047857; font-weight: 600; }

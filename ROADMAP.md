@@ -53,8 +53,8 @@ O app tem **duas seções**: **Debêntures** e **Captação**. Cada tabela receb
 | **CAP-3** | Coluna **PL** na **C1** (Gestores da Captação) | Captação | Baixa | Baixo | Média | ✅ Concluído |
 | **GER-2** | Navegação por **ícones** entre seções no app compacto | Geral | Média | Baixo–Médio | Média–Alta | ✅ Concluído |
 | **DEB-1** | Enriquecer o **Modal do Ativo** (janela (i)) | Debêntures | Baixa–Média | Baixo | Média–Alta | ⏸️ Pausado |
+| **CAP-1** | **Performance** dos fundos (rentabilidade %CDI por gestor) | Captação | Alta | Médio–Alto | Alta | ✅ Concluído |
 | **CAP-2** | Regra de seleção do universo de fundos via dados **CVM** | Captação | Alta | Alto | Alta | 🔵 Fase 2 (fundacional) |
-| **CAP-1** | **Performance** dos fundos | Captação | Alta | Médio–Alto | Alta | 🟣 Fase 3 (depende de CAP-2) |
 | **MER-1** | **Mercado Secundário** — ingestão de dados de negociação | Mercado Sec. | Alta | Médio–Alto | Alta | 🟡 A definir |
 | **MER-2** | **Evolução de preço** — gráfico de PU por ativo | Mercado Sec. | Média | Médio | Alta | 🟡 A definir (depende de MER-1) |
 
@@ -62,10 +62,12 @@ O app tem **duas seções**: **Debêntures** e **Captação**. Cada tabela receb
 - **CAP-3, DEB-1 e GER-2** são entregas de **Fase 1**: alto valor percebido, baixo
   risco e sem dependências de dados novos. CAP-3 em especial é quase imediato (o dado
   de PL já é calculado).
-- **CAP-2** é **fundacional**: define corretamente o universo de fundos e cria o
-  **pipeline de dados CVM** que a performance (CAP-1) vai reaproveitar.
-- **CAP-1** depende de CAP-2 — medir performance faz sentido sobre o universo certo,
-  usando o mesmo pipeline.
+- **CAP-1** acabou saindo antes de CAP-2: em vez de esperar a regra de seleção via
+  CVM, reaproveitou o universo de fundos já curado manualmente (`Fundos_12431.csv`/
+  `Fundos_CDI.csv`) e o Informe Diário da CVM que a Captação já baixava (passou a
+  ler também `VL_QUOTA`, não só PL/captação/resgate).
+- **CAP-2** continua **fundacional** e em aberto: automatizar a seleção do universo
+  de fundos via dados CVM, hoje ainda mantida manualmente.
 
 ---
 
@@ -147,7 +149,9 @@ Captação refletir o mercado de forma fidedigna.
 3. **Integração:** alimentar a Captação com o universo selecionado e documentar a regra.
 
 - **Complexidade:** Alta · **Custo:** Alto · **Relevância:** Alta
-- **Destrava:** CAP-1 (reaproveita o pipeline CVM).
+- **Nota:** CAP-1 (rentabilidade) já foi entregue sem esperar por este item, reaproveitando
+  o universo curado manualmente (`tools/Fundos_12431.csv`/`Fundos_CDI.csv`). Quando CAP-2
+  existir, o pipeline de rentabilidade passa a reaproveitá-lo — não é um bloqueador.
 - **🟡 A definir (depende da sua visão de negócio):**
   - Qual é a **definição de "indústria"**? (crédito privado? high grade? todos os
     fundos abertos com PL ≥ X?)
@@ -191,17 +195,28 @@ Captação refletir o mercado de forma fidedigna.
 
 ---
 
-### CAP-1 · Performance dos fundos — 🟣 Fase 3
-**O quê:** trazer a **rentabilidade** dos fundos para a Captação (hoje só há fluxo:
+### CAP-1 · Performance dos fundos — ✅ Concluído
+**O quê:** trazer a **rentabilidade** dos fundos para a Captação (antes só havia fluxo:
 captação / resgate / cap. líquida e PL).
 
-- **Complexidade:** Alta · **Custo:** Médio–Alto · **Relevância:** Alta
-- **Depende de:** CAP-2 (universo + pipeline CVM).
-- **🟡 A definir:**
-  - **Métrica:** rentabilidade da cota? Em quais **janelas** (mês, 12m, no período
-    filtrado)? Comparar contra **benchmark** (CDI / IMA-B)?
-  - **Granularidade:** por fundo, por gestor (média ponderada por PL), ou ambos?
-  - **Onde exibir:** nova coluna nas tabelas, novo card, ou nova sub-aba?
+**Decidido e entregue:**
+- **Métrica:** **%CDI** (retorno da cota comparado ao CDI do mesmo intervalo), não o
+  retorno bruto isolado.
+- **Cálculo:** retorno diário da cota ponderado pelo **PL** dos fundos de cada gestor
+  (`Σ(PL_dia_anterior × retorno_fundo) / Σ(PL_dia_anterior)`), encadeado nas janelas
+  **1s / 1m / 3m / 6m / 12m** (mesmas do filtro de período), comparado ao CDI (API do
+  Banco Central, SGS série 12).
+- **Granularidade:** por **gestor** (não por fundo individual).
+- **Onde exibe:** 5 colunas novas, ordenáveis, na tabela **C1** (Ranking de Gestores) —
+  `GestorFlowRanking.jsx`. Verde quando supera 100% do CDI, vermelho quando negativo.
+  Semanas (C2) e Meses (C3) não foram alteradas.
+- **Fonte:** reaproveita o Informe Diário da CVM que a Captação já baixava (passou a
+  ler também `VL_QUOTA`, além de PL/captação/resgate) e o universo de fundos já
+  curado manualmente (`tools/Fundos_12431.csv`/`Fundos_CDI.csv`) — não esperou por CAP-2.
+- **Limitação conhecida:** a base de rentabilidade não é mesclada entre execuções
+  incrementais (diferente de Semanal/Mensal) — é sempre recalculada do zero a partir
+  dos meses processados na execução atual. Rodar `preparar-fluxo.bat` sem
+  `-Incremental` (12 meses) garante as janelas de 3m/6m/12m preenchidas.
 
 ---
 
@@ -212,11 +227,12 @@ captação / resgate / cap. líquida e PL).
   - ✅ CAP-3 · Coluna PL na C1
   - ✅ GER-2 · Navegação por ícones no app compacto
   - ⏸️ DEB-1 · Enriquecer o Modal do Ativo *(pausado a pedido)*
-- **Fase 2 — Qualidade de dados** *(fundacional)*
+- ✅ **CAP-1 · Performance dos fundos (rentabilidade %CDI)** — entregue fora de ordem,
+  sem esperar por CAP-2 (ver detalhe acima)
+- **Fase 2 — Qualidade de dados** *(fundacional, em aberto)*
   - 🔵 CAP-2 · Pipeline CVM + regra de seleção de fundos
   - 🟡 MER-1 · Ingestão de dados de negociação do mercado secundário *(a definir)*
-- **Fase 3 — Inteligência** *(depende da Fase 2)*
-  - 🟣 CAP-1 · Performance dos fundos
+- **Fase 3 — Mercado Secundário** *(depende da Fase 2)*
   - 🟡 MER-2 · Gráfico de evolução de preço por ativo *(depende de MER-1)*
 
 ---

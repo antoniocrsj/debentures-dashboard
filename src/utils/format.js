@@ -32,12 +32,6 @@ export function fmtBRL(n) {
   return R$.format(n)
 }
 
-/** Full BRL with two decimals */
-export function fmtBRLFull(n) {
-  if (n == null || isNaN(n)) return '—'
-  return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(n)
-}
-
 /** Display a date string — handles ISO, DD/MM/YYYY, and JS Date strings */
 export function fmtDate(str) {
   if (!str) return '—'

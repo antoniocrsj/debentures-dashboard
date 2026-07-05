@@ -16,6 +16,12 @@ nem mexer em planilha.
 
 Pronto. Em ~1 minuto o app no ar já está atualizado (mesma URL de sempre).
 
+> **Atalho "faz tudo":** `tools\atualizar-tudo.bat` roda Debêntures + Captação + BLC
+> (só se o mês novo ainda não estiver registrado) + ANBIMA em sequência e no final
+> pergunta se quer publicar — um único duplo-clique em vez dos passos manuais abaixo.
+> O passo a passo desta página continua valendo se preferir rodar/conferir uma base
+> de cada vez.
+
 ---
 
 ## 🗓️ O que atualizar e com que frequência

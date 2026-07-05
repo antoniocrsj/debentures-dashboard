@@ -74,7 +74,7 @@ debentures-dashboard/
 
 ## 1. Arquivos de dados que o app usa
 
-O app carrega **4 fontes** em paralelo:
+A seção **Mercado** (Debêntures) carrega **4 fontes** em paralelo:
 
 | # | Fonte | Origem | Conteúdo |
 |---|-------|--------|----------|
@@ -87,6 +87,12 @@ As fontes 1–3 são planilhas do Google que você mantém, expostas como CSV po
 Apps Script (com cache de 6h). A fonte 4 é o **único arquivo que precisa de
 tratamento mensal** (ver seção 4) — é servida direto pelo app, sem Google, por isso
 abre em milissegundos.
+
+Além disso, o Mercado também lê, de forma opcional/estática (sem quebrar se faltar):
+`public/Anbima_Tx.csv` (taxas indicativas ANBIMA), `public/PL_Gestores.csv` (PL mais
+recente por gestor, gerado junto com a Captação) e `public/Debentures_meta.json` /
+`public/BLC_meta.json` (data de referência de cada fonte, para o rótulo "Atualizado em").
+A aba **Captação** tem seu próprio conjunto de fontes estáticas — ver seção 7.
 
 > **Por que o BLC é tratado por gestor?** O arquivo bruto da CVM (CDA) tem ~221 mil
 > linhas no nível de **fundo** (8,9 MB). O app só mostra **gestores e grupos**, nunca
@@ -201,6 +207,14 @@ A URL fixa de produção é `https://debentures-dashboard-three.vercel.app`.
 
 ## 6. O que fazem os `.bat`
 
+### `tools\atualizar-tudo.bat` — atalho recomendado (roda tudo de uma vez)
+Chama, em sequência: `preparar-debentures.ps1` → `selecionar-fundos.ps1` (avalia se o
+universo de fundos mudou, aplica só com confirmação) → `preparar-fluxo.ps1`
+(`-Incremental`, a menos que a lista de fundos tenha mudado) → `preparar-blc.ps1`
+(só se o mês-alvo ainda não estiver em `public/BLC_meta.json`) → `preparar-anbima.ps1`
+(melhor esforço) → pergunta se quer publicar (git add/commit/push).
+É o jeito mais simples de manter tudo em dia com 1 clique.
+
 ### `tools\preparar-blc.bat`
 Atalho que roda `preparar-blc.ps1` (PowerShell, sem instalar nada). Ele:
 1. Baixa o `cda_fi_{AAAAMM}.zip` da CVM (mês-alvo pela regra de defasagem) e lê o
@@ -214,17 +228,37 @@ Atalho que roda `preparar-blc.ps1` (PowerShell, sem instalar nada). Ele:
 Uso: clique 2× (baixa da CVM sozinho), **ou** arraste um `.xlsx` local para cima do
 `.bat` pra usar ele em vez de baixar.
 
+### `tools\preparar-fluxo.bat`
+Roda `preparar-fluxo.ps1`: gera as bases da aba Captação (Semanal, Mensal e
+Rentabilidade %CDI por gestor) a partir do Informe Diário da CVM — ver seção 7.
+Sem argumentos processa os últimos 12 meses; `-Incremental` processa só mês atual +
+anterior (mais rápido, mas não recalcula as janelas longas de rentabilidade).
+
+### `tools\preparar-debentures.bat` / `tools\preparar-anbima.bat`
+Atualizam, respectivamente, `public/Debentures.csv` (cadastro de debêntures) e
+`public/Anbima_Tx.csv` (taxas indicativas ANBIMA, usadas no botão "Ver na ANBIMA" e
+no Modal do Ativo).
+
 ### `tools\publicar.bat`
-Sobe o arquivo gerado para o ar. Por dentro faz:
+Sobe **todos** os dados gerados em `public/` (Debêntures, BLC, ANBIMA, Captação) para
+o ar. Por dentro faz:
 ```
-git add public/BLC_tratado.csv
-git commit -m "Atualiza BLC"
+git add public/
+git commit -m "Atualiza dados (BLC / Captacao)"
 git push
 ```
 Abre uma janela, roda alguns segundos e mostra "Pronto!". A Vercel publica em ~1 min.
 
 > ⚠️ Rode clicando 2× no arquivo dentro de `tools\` — **não** digite o nome no
 > terminal de uma pasta qualquer.
+
+### Outros scripts em `tools\` (não são `.bat`, uso pontual)
+- `lib-cadastro.ps1` — funções compartilhadas (resolver fundo→gestor, baixar/cachear
+  CDI do Banco Central) usadas pelos scripts `preparar-*`.
+- `selecionar-fundos.ps1` — avalia o universo de fundos elegíveis a partir do CDA da
+  CVM; chamado pelo `atualizar-tudo.ps1`.
+- `sincronizar-fundos-planilha.ps1` — utilitário manual para trazer uma edição feita
+  na planilha de volta para os CSVs locais (`Fundos_12431.csv`/`Fundos_CDI.csv`).
 
 ---
 
@@ -329,6 +363,15 @@ sinais explícitos (Captação +, Resgate −, Líquido ±) e o PL total da sema
 
 **Referência da base:** "Base atualizada até DD/MM/AAAA" usa a semana mais recente do
 **segmento selecionado** (12.431 ou Tradicional), não a hora de acesso.
+
+**Rentabilidade (%CDI):** no ranking de gestores (C1), 5 colunas — %CDI 1s/1m/3m/6m/12m
+— vindas de `public/data/Fluxo_Rentabilidade_12431.csv` / `…_Trad.csv` (opcional: se
+faltar, a Captação continua funcionando sem essas colunas, célula vazia = sem
+histórico suficiente, não é 0%). Retorno diário da cota ponderado pelo PL de cada
+gestor, comparado ao CDI (Banco Central, SGS série 12). Verde acima de 100% do CDI,
+vermelho se negativo. Gerado pelo mesmo `preparar-fluxo.ps1` — **atenção:** essa base
+**não é mesclada** entre rodadas incrementais (diferente de Semanal/Mensal): rode sem
+`-Incremental` (12 meses) de vez em quando para repopular as janelas de 3m/6m/12m.
 
 ---
 
