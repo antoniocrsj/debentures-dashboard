@@ -1,0 +1,42 @@
+{
+    "asOf":  "2026-07-06",
+    "geradoEm":  "2026-07-06T15:15:46",
+    "itens":  [
+                  {
+                      "dataRegistro":  "2026-06-29",
+                      "emissor":  "VERDE TRANSMISSAO DE ENERGIA S.A.",
+                      "cnpj":  "44323802000108",
+                      "emissao":  3,
+                      "valor":  1585000000,
+                      "incentivada":  false,
+                      "lider":  "BANCO NACIONAL DE DESENVOLVIMENTO ECONÔMICO E SOCIAL - BNDES"
+                  },
+                  {
+                      "dataRegistro":  "2026-06-29",
+                      "emissor":  "BURITI TRANSMISSAO DE ENERGIA S.A.",
+                      "cnpj":  "47290852000124",
+                      "emissao":  2,
+                      "valor":  618000000,
+                      "incentivada":  false,
+                      "lider":  "BANCO NACIONAL DE DESENVOLVIMENTO ECONÔMICO E SOCIAL - BNDES"
+                  },
+                  {
+                      "dataRegistro":  "2026-07-01",
+                      "emissor":  "IOCHPE MAXION SA",
+                      "cnpj":  "61156113000175",
+                      "emissao":  17,
+                      "valor":  400000000,
+                      "incentivada":  false,
+                      "lider":  "ITAU BBA ASSESSORIA FINANCEIRA S.A"
+                  },
+                  {
+                      "dataRegistro":  "2026-07-03",
+                      "emissor":  "TRANSMISSORA ALIANÇA DE ENERGIA ELÉTRICA S.A.",
+                      "cnpj":  "07859971000130",
+                      "emissao":  22,
+                      "valor":  1700000000,
+                      "incentivada":  false,
+                      "lider":  "BANCO BRADESCO BBI S.A."
+                  }
+              ]
+}

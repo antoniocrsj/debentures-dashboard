@@ -420,6 +420,7 @@
         "tipo": "anbima-sem-anterior",
         "texto": "ANBIMA sem dia anterior disponivel para comparacao (comeca a partir do proximo snapshot)"
       }
-    ]
+    ],
+    "emissoesCVM": null
   }
 }
