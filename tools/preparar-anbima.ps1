@@ -152,7 +152,17 @@ function Invoke-AnbimaDataApi($path, $query) {
     'Params' = '?view=precos'
   }
   $resp = Invoke-WebRequest -Uri $url -UseBasicParsing -Headers $headers -TimeoutSec 60
-  return ($resp.Content | ConvertFrom-Json)
+  # A API responde em UTF-8, mas o Windows PowerShell 5.1 costuma decodificar o
+  # corpo como latin-1 quando o Content-Type nao traz charset -- isso gerava
+  # "PrA(c)-Fixado" no lugar de "Pre-Fixado" no Anbima_Tx.csv. Decodifica sempre
+  # a partir dos bytes crus da resposta como UTF-8 (com fallback pro .Content).
+  $json = $null
+  try {
+    $ms = $resp.RawContentStream
+    if ($ms -and $ms.Length -gt 0) { $json = [System.Text.Encoding]::UTF8.GetString($ms.ToArray()) }
+  } catch { $json = $null }
+  if ([string]::IsNullOrEmpty($json)) { $json = [string]$resp.Content }
+  return ($json | ConvertFrom-Json)
 }
 function Latest-Preco($precos, [string]$wantedDate) {
   if (-not $precos) { return $null }
