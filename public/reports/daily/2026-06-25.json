@@ -1,0 +1,233 @@
+{
+  "date": "2026-06-25",
+  "label": "25/06/2026",
+  "previousDate": null,
+  "sourceDates": {
+    "debentures": "2026-06-25",
+    "cap12431": null,
+    "capTrad": null,
+    "perf12431": null,
+    "perfTrad": null,
+    "anbima": null,
+    "blc": null,
+    "fundos": null
+  },
+  "summary": [
+    {
+      "texto": "12 nova(s) debênture(s) cadastrada(s)",
+      "tom": "pos"
+    },
+    {
+      "texto": "2 alerta(s) de qualidade",
+      "tom": "warn"
+    }
+  ],
+  "sections": {
+    "debentures": {
+      "novas": [
+        {
+          "ticker": "CEEBD4",
+          "empresa": "CIA. DE ELETRIC. DO EST. DA BAHIA-COELBA",
+          "cnpj": "15139629000194",
+          "dataRegistro": "25/06/2026",
+          "dataEmissao": "25/06/2026",
+          "vencimento": "25/06/2033",
+          "indexador": "PRÉ",
+          "taxa": "14,2236",
+          "incentivada": true,
+          "coordenador": "ITAU UNIBANCO HOLDING S.A"
+        },
+        {
+          "ticker": "EKTRB9",
+          "empresa": "ELEKTRO REDES S.A.",
+          "cnpj": "02328280000197",
+          "dataRegistro": "25/06/2026",
+          "dataEmissao": "25/06/2026",
+          "vencimento": "25/06/2036",
+          "indexador": "DI",
+          "taxa": "13,8442",
+          "incentivada": true,
+          "coordenador": "BANCO SANTANDER (BRASIL) S/A"
+        },
+        {
+          "ticker": "FAGU12",
+          "empresa": "FAGUNDES CONSTRUCAO E MINERACAO S.A.",
+          "cnpj": "90272337000140",
+          "dataRegistro": "25/06/2026",
+          "dataEmissao": "25/06/2026",
+          "vencimento": "25/06/2031",
+          "indexador": "DI",
+          "taxa": "1,65",
+          "incentivada": false,
+          "coordenador": "UBS BB CCTVM S/A"
+        },
+        {
+          "ticker": "MRLE18",
+          "empresa": "MRL ENGENHARIA E EMPREENDIMENTOS S.A.",
+          "cnpj": "02578564000131",
+          "dataRegistro": "25/06/2026",
+          "dataEmissao": "18/06/2026",
+          "vencimento": "18/06/2028",
+          "indexador": "DI",
+          "taxa": "1,7",
+          "incentivada": false,
+          "coordenador": "BCO VOTORANTIM S/A"
+        },
+        {
+          "ticker": "OVSAB3",
+          "empresa": "UNIDAS LOCACOES E SERVICOS S/A",
+          "cnpj": "75609123000123",
+          "dataRegistro": "25/06/2026",
+          "dataEmissao": "26/06/2026",
+          "vencimento": "26/06/2033",
+          "indexador": "DI",
+          "taxa": "1,98",
+          "incentivada": false,
+          "coordenador": "UBS BB CCTVM S/A"
+        },
+        {
+          "ticker": "QATY12",
+          "empresa": "QUALITY ALUGUEL DE VEICULOS S/A.",
+          "cnpj": "72653009000102",
+          "dataRegistro": "25/06/2026",
+          "dataEmissao": "25/06/2026",
+          "vencimento": "10/06/2030",
+          "indexador": "DI",
+          "taxa": "3,5",
+          "incentivada": false,
+          "coordenador": "ITAU UNIBANCO HOLDING S.A"
+        },
+        {
+          "ticker": "RBRAF8",
+          "empresa": "OPEA SECURITIZADORA S/A",
+          "cnpj": "02773542000122",
+          "dataRegistro": "25/06/2026",
+          "dataEmissao": "17/06/2026",
+          "vencimento": "14/12/2026",
+          "indexador": "SEM-ÍNDICE",
+          "taxa": "0",
+          "incentivada": false,
+          "coordenador": "ITAU UNIBANCO HOLDING S.A"
+        },
+        {
+          "ticker": "RBRAG8",
+          "empresa": "OPEA SECURITIZADORA S/A",
+          "cnpj": "02773542000122",
+          "dataRegistro": "25/06/2026",
+          "dataEmissao": "17/06/2026",
+          "vencimento": "15/12/2026",
+          "indexador": "SEM-ÍNDICE",
+          "taxa": "0",
+          "incentivada": false,
+          "coordenador": "ITAU UNIBANCO HOLDING S.A"
+        },
+        {
+          "ticker": "RBRAH8",
+          "empresa": "OPEA SECURITIZADORA S/A",
+          "cnpj": "02773542000122",
+          "dataRegistro": "25/06/2026",
+          "dataEmissao": "17/06/2026",
+          "vencimento": "16/12/2026",
+          "indexador": "SEM-ÍNDICE",
+          "taxa": "0",
+          "incentivada": false,
+          "coordenador": "ITAU UNIBANCO HOLDING S.A"
+        },
+        {
+          "ticker": "RBRAI8",
+          "empresa": "OPEA SECURITIZADORA S/A",
+          "cnpj": "02773542000122",
+          "dataRegistro": "25/06/2026",
+          "dataEmissao": "17/06/2026",
+          "vencimento": "17/12/2026",
+          "indexador": "SEM-ÍNDICE",
+          "taxa": "0",
+          "incentivada": false,
+          "coordenador": "ITAU UNIBANCO HOLDING S.A"
+        },
+        {
+          "ticker": "RBRAJ8",
+          "empresa": "OPEA SECURITIZADORA S/A",
+          "cnpj": "02773542000122",
+          "dataRegistro": "25/06/2026",
+          "dataEmissao": "17/06/2026",
+          "vencimento": "14/12/2026",
+          "indexador": "PRÉ",
+          "taxa": "0",
+          "incentivada": false,
+          "coordenador": "ITAU UNIBANCO HOLDING S.A"
+        },
+        {
+          "ticker": "RMGG12",
+          "empresa": "ECO050 - CONCESSIONARIA DE RODOVIAS S.A",
+          "cnpj": "19208022000170",
+          "dataRegistro": "25/06/2026",
+          "dataEmissao": "15/08/2025",
+          "vencimento": "15/12/2038",
+          "indexador": "IPCA",
+          "taxa": "8,59",
+          "incentivada": true,
+          "coordenador": "BCO.NACIONAL DESENV.ECON.SOCIAL - BNDES"
+        }
+      ],
+      "saidas": [],
+      "temSnapshotAnterior": false
+    },
+    "captacao": {
+      "12431": null,
+      "trad": null
+    },
+    "gestores": {
+      "top12431Captacao": [],
+      "top12431Resgate": [],
+      "topTradCaptacao": [],
+      "topTradResgate": []
+    },
+    "anbima": {
+      "aberturas": [],
+      "fechamentos": [],
+      "atual": null,
+      "anterior": null,
+      "semAnterior": true
+    },
+    "fundos": {
+      "novos": [],
+      "removidos": [],
+      "semAnterior": true
+    },
+    "perf": {
+      "top12431Pos": [],
+      "top12431Neg": [],
+      "topTradPos": [],
+      "topTradNeg": []
+    },
+    "inclusoes": {
+      "novosDebentures": [
+        "CEEBD4",
+        "EKTRB9",
+        "FAGU12",
+        "MRLE18",
+        "OVSAB3",
+        "QATY12",
+        "RBRAF8",
+        "RBRAG8",
+        "RBRAH8",
+        "RBRAI8",
+        "RBRAJ8",
+        "RMGG12"
+      ],
+      "novosBlc": [],
+      "temSnapshotBlc": false
+    },
+    "alertas": [
+      {
+        "tipo": "blc-sem-cadastro",
+        "texto": "70 ativo(s) no BLC sem correspondencia em Debentures.csv"
+      },
+      {
+        "tipo": "anbima-sem-anterior",
+        "texto": "ANBIMA sem dia anterior disponivel para comparacao (comeca a partir do proximo snapshot)"
+      }
+    ]
+  }
+}

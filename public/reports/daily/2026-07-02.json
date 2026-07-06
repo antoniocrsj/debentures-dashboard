@@ -1,0 +1,90 @@
+{
+  "date": "2026-07-02",
+  "label": "02/07/2026",
+  "previousDate": "2026-06-29",
+  "sourceDates": {
+    "debentures": "2026-07-02",
+    "cap12431": null,
+    "capTrad": null,
+    "perf12431": null,
+    "perfTrad": null,
+    "anbima": null,
+    "blc": null,
+    "fundos": null
+  },
+  "summary": [
+    {
+      "texto": "1 nova(s) debênture(s) cadastrada(s)",
+      "tom": "pos"
+    },
+    {
+      "texto": "2 alerta(s) de qualidade",
+      "tom": "warn"
+    }
+  ],
+  "sections": {
+    "debentures": {
+      "novas": [
+        {
+          "ticker": "AXIA19",
+          "empresa": "AXIA ENERGIA S.A.",
+          "cnpj": "00001180000126",
+          "dataRegistro": "02/07/2026",
+          "dataEmissao": "15/06/2026",
+          "vencimento": "15/06/2036",
+          "indexador": "IPCA",
+          "taxa": "8,0036",
+          "incentivada": true,
+          "coordenador": "BTG PACTUAL INVESTMENT BANKING LTDA."
+        }
+      ],
+      "saidas": [],
+      "temSnapshotAnterior": false
+    },
+    "captacao": {
+      "12431": null,
+      "trad": null
+    },
+    "gestores": {
+      "top12431Captacao": [],
+      "top12431Resgate": [],
+      "topTradCaptacao": [],
+      "topTradResgate": []
+    },
+    "anbima": {
+      "aberturas": [],
+      "fechamentos": [],
+      "atual": null,
+      "anterior": null,
+      "semAnterior": true
+    },
+    "fundos": {
+      "novos": [],
+      "removidos": [],
+      "semAnterior": true
+    },
+    "perf": {
+      "top12431Pos": [],
+      "top12431Neg": [],
+      "topTradPos": [],
+      "topTradNeg": []
+    },
+    "inclusoes": {
+      "novosDebentures": [
+        "AXIA19"
+      ],
+      "novosBlc": [],
+      "temSnapshotBlc": false
+    },
+    "alertas": [
+      {
+        "tipo": "blc-sem-cadastro",
+        "texto": "70 ativo(s) no BLC sem correspondencia em Debentures.csv"
+      },
+      {
+        "tipo": "anbima-sem-anterior",
+        "texto": "ANBIMA sem dia anterior disponivel para comparacao (comeca a partir do proximo snapshot)"
+      }
+    ]
+  }
+}

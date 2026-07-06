@@ -1,0 +1,168 @@
+{
+  "date": "2026-06-29",
+  "label": "29/06/2026",
+  "previousDate": "2026-06-26",
+  "sourceDates": {
+    "debentures": "2026-06-29",
+    "cap12431": null,
+    "capTrad": null,
+    "perf12431": null,
+    "perfTrad": null,
+    "anbima": null,
+    "blc": null,
+    "fundos": null
+  },
+  "summary": [
+    {
+      "texto": "7 nova(s) debênture(s) cadastrada(s)",
+      "tom": "pos"
+    },
+    {
+      "texto": "2 alerta(s) de qualidade",
+      "tom": "warn"
+    }
+  ],
+  "sections": {
+    "debentures": {
+      "novas": [
+        {
+          "ticker": "DUXC12",
+          "empresa": "DUX COMPANY LTDA.",
+          "cnpj": "31112243000145",
+          "dataRegistro": "29/06/2026",
+          "dataEmissao": "25/06/2026",
+          "vencimento": "25/06/2031",
+          "indexador": "DI",
+          "taxa": "2,7",
+          "incentivada": false,
+          "coordenador": "BANCO BRADESCO BBI S/A"
+        },
+        {
+          "ticker": "RBRAD9",
+          "empresa": "OPEA SECURITIZADORA S/A",
+          "cnpj": "02773542000122",
+          "dataRegistro": "29/06/2026",
+          "dataEmissao": "19/06/2026",
+          "vencimento": "30/05/2031",
+          "indexador": "PRÉ",
+          "taxa": "0",
+          "incentivada": false,
+          "coordenador": "BCO VOTORANTIM S/A"
+        },
+        {
+          "ticker": "RBRAL0",
+          "empresa": "OPEA SECURITIZADORA S/A",
+          "cnpj": "02773542000122",
+          "dataRegistro": "29/06/2026",
+          "dataEmissao": "26/06/2026",
+          "vencimento": "26/06/2030",
+          "indexador": "DI",
+          "taxa": "0",
+          "incentivada": false,
+          "coordenador": "BANCO BRADESCO BBI S/A"
+        },
+        {
+          "ticker": "RBRAN1",
+          "empresa": "OPEA SECURITIZADORA S/A",
+          "cnpj": "02773542000122",
+          "dataRegistro": "29/06/2026",
+          "dataEmissao": "30/06/2026",
+          "vencimento": "04/01/2030",
+          "indexador": "PRÉ",
+          "taxa": "16,337",
+          "incentivada": false,
+          "coordenador": "BANCO BRADESCO BBI S/A"
+        },
+        {
+          "ticker": "RBRAO1",
+          "empresa": "OPEA SECURITIZADORA S/A",
+          "cnpj": "02773542000122",
+          "dataRegistro": "29/06/2026",
+          "dataEmissao": "30/06/2026",
+          "vencimento": "27/12/2030",
+          "indexador": "PRÉ",
+          "taxa": "15,498",
+          "incentivada": false,
+          "coordenador": "BANCO BRADESCO BBI S/A"
+        },
+        {
+          "ticker": "SITR12",
+          "empresa": "SILVANIA TRANSMISSORA DE ENERGIA S.A.",
+          "cnpj": "41554993000120",
+          "dataRegistro": "29/06/2026",
+          "dataEmissao": "25/06/2026",
+          "vencimento": "25/06/2027",
+          "indexador": "DI",
+          "taxa": "0,2",
+          "incentivada": false,
+          "coordenador": "ITAU UNIBANCO HOLDING S.A"
+        },
+        {
+          "ticker": "SRFC11",
+          "empresa": "SERRA DO FACAO ENERGIA S.A.",
+          "cnpj": "07727966000255",
+          "dataRegistro": "29/06/2026",
+          "dataEmissao": "15/06/2026",
+          "vencimento": "15/06/2033",
+          "indexador": "DI",
+          "taxa": "0,85",
+          "incentivada": false,
+          "coordenador": "ITAU UNIBANCO HOLDING S.A"
+        }
+      ],
+      "saidas": [],
+      "temSnapshotAnterior": false
+    },
+    "captacao": {
+      "12431": null,
+      "trad": null
+    },
+    "gestores": {
+      "top12431Captacao": [],
+      "top12431Resgate": [],
+      "topTradCaptacao": [],
+      "topTradResgate": []
+    },
+    "anbima": {
+      "aberturas": [],
+      "fechamentos": [],
+      "atual": null,
+      "anterior": null,
+      "semAnterior": true
+    },
+    "fundos": {
+      "novos": [],
+      "removidos": [],
+      "semAnterior": true
+    },
+    "perf": {
+      "top12431Pos": [],
+      "top12431Neg": [],
+      "topTradPos": [],
+      "topTradNeg": []
+    },
+    "inclusoes": {
+      "novosDebentures": [
+        "DUXC12",
+        "RBRAD9",
+        "RBRAL0",
+        "RBRAN1",
+        "RBRAO1",
+        "SITR12",
+        "SRFC11"
+      ],
+      "novosBlc": [],
+      "temSnapshotBlc": false
+    },
+    "alertas": [
+      {
+        "tipo": "blc-sem-cadastro",
+        "texto": "70 ativo(s) no BLC sem correspondencia em Debentures.csv"
+      },
+      {
+        "tipo": "anbima-sem-anterior",
+        "texto": "ANBIMA sem dia anterior disponivel para comparacao (comeca a partir do proximo snapshot)"
+      }
+    ]
+  }
+}

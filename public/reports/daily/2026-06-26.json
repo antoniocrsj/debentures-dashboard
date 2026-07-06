@@ -1,0 +1,90 @@
+{
+  "date": "2026-06-26",
+  "label": "26/06/2026",
+  "previousDate": "2026-06-25",
+  "sourceDates": {
+    "debentures": "2026-06-26",
+    "cap12431": null,
+    "capTrad": null,
+    "perf12431": null,
+    "perfTrad": null,
+    "anbima": null,
+    "blc": null,
+    "fundos": null
+  },
+  "summary": [
+    {
+      "texto": "1 nova(s) debênture(s) cadastrada(s)",
+      "tom": "pos"
+    },
+    {
+      "texto": "2 alerta(s) de qualidade",
+      "tom": "warn"
+    }
+  ],
+  "sections": {
+    "debentures": {
+      "novas": [
+        {
+          "ticker": "RENTH7",
+          "empresa": "LOCALIZA RENT A CAR S/A",
+          "cnpj": "16670085000155",
+          "dataRegistro": "26/06/2026",
+          "dataEmissao": "23/06/2026",
+          "vencimento": "23/06/2033",
+          "indexador": "DI",
+          "taxa": "1,25",
+          "incentivada": false,
+          "coordenador": "BANCO BRADESCO BBI S/A"
+        }
+      ],
+      "saidas": [],
+      "temSnapshotAnterior": false
+    },
+    "captacao": {
+      "12431": null,
+      "trad": null
+    },
+    "gestores": {
+      "top12431Captacao": [],
+      "top12431Resgate": [],
+      "topTradCaptacao": [],
+      "topTradResgate": []
+    },
+    "anbima": {
+      "aberturas": [],
+      "fechamentos": [],
+      "atual": null,
+      "anterior": null,
+      "semAnterior": true
+    },
+    "fundos": {
+      "novos": [],
+      "removidos": [],
+      "semAnterior": true
+    },
+    "perf": {
+      "top12431Pos": [],
+      "top12431Neg": [],
+      "topTradPos": [],
+      "topTradNeg": []
+    },
+    "inclusoes": {
+      "novosDebentures": [
+        "RENTH7"
+      ],
+      "novosBlc": [],
+      "temSnapshotBlc": false
+    },
+    "alertas": [
+      {
+        "tipo": "blc-sem-cadastro",
+        "texto": "70 ativo(s) no BLC sem correspondencia em Debentures.csv"
+      },
+      {
+        "tipo": "anbima-sem-anterior",
+        "texto": "ANBIMA sem dia anterior disponivel para comparacao (comeca a partir do proximo snapshot)"
+      }
+    ]
+  }
+}

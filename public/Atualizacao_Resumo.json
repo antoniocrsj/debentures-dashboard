@@ -1,13 +1,13 @@
 {
-    "timestamp":  "2026-07-06T09:33:34",
+    "timestamp":  "2026-07-06T13:14:31",
     "captacaoModo":  "Auto",
     "etapas":  {
-                   "Debentures":  "OK",
+                   "Debentures":  "PULADO",
                    "Fundos":  "PULADO por parametro -SkipFundos",
-                   "Captacao":  "OK (incremental)",
-                   "BLC":  "PULADO (mes 202602 ja registrado)",
-                   "ANBIMA":  "OK",
-                   "Ofertas":  "OK (4 emissao(oes) registrada(s) na CVM ainda nao no cadastro)"
+                   "Captacao":  "PULADO",
+                   "BLC":  "PULADO",
+                   "ANBIMA":  "PULADO por parametro -SkipAnbima",
+                   "Ofertas":  "PULADO por parametro -SkipOfertas"
                },
     "impacto":  {
                     "fundos":  {
@@ -38,7 +38,7 @@
                                                                "depois":  "2026-06-29"
                                                            },
                                           "LiquidoRecente":  {
-                                                                 "antes":  -1298582061.9199996,
+                                                                 "antes":  -1300629186.8599997,
                                                                  "depois":  -1300629186.8599997
                                                              },
                                           "CaptacaoRecente":  {
@@ -46,11 +46,11 @@
                                                                   "depois":  582854319
                                                               },
                                           "ResgateRecente":  {
-                                                                 "antes":  1881436380.9199996,
+                                                                 "antes":  1883483505.8599997,
                                                                  "depois":  1883483505.8599997
                                                              },
                                           "PLRecente":  {
-                                                            "antes":  295483713625.00006,
+                                                            "antes":  295483304201.60004,
                                                             "depois":  295483304201.60004
                                                         }
                                       },
@@ -68,7 +68,7 @@
                                                               "depois":  "2026-06-29"
                                                           },
                                          "LiquidoRecente":  {
-                                                                "antes":  -1021101628.8100033,
+                                                                "antes":  -1022170056.6100035,
                                                                 "depois":  -1022170056.6100035
                                                             },
                                          "CaptacaoRecente":  {
@@ -76,11 +76,11 @@
                                                                  "depois":  6811450264.8299971
                                                              },
                                          "ResgateRecente":  {
-                                                                "antes":  7832551893.64,
+                                                                "antes":  7833620321.4400005,
                                                                 "depois":  7833620321.4400005
                                                             },
                                          "PLRecente":  {
-                                                           "antes":  1062791494851.1403,
+                                                           "antes":  1062791152702.8002,
                                                            "depois":  1062791152702.8002
                                                        }
                                      },
@@ -136,37 +136,6 @@
                                }
                 },
     "novasEmissoes":  [
-                          {
-                              "dataRegistro":  "2026-06-29",
-                              "emissor":  "VERDE TRANSMISSAO DE ENERGIA S.A.",
-                              "emissao":  3,
-                              "valor":  1585000000,
-                              "incentivada":  false,
-                              "lider":  "BANCO NACIONAL DE DESENVOLVIMENTO ECONÔMICO E SOCIAL - BNDES"
-                          },
-                          {
-                              "dataRegistro":  "2026-06-29",
-                              "emissor":  "BURITI TRANSMISSAO DE ENERGIA S.A.",
-                              "emissao":  2,
-                              "valor":  618000000,
-                              "incentivada":  false,
-                              "lider":  "BANCO NACIONAL DE DESENVOLVIMENTO ECONÔMICO E SOCIAL - BNDES"
-                          },
-                          {
-                              "dataRegistro":  "2026-07-01",
-                              "emissor":  "IOCHPE MAXION SA",
-                              "emissao":  17,
-                              "valor":  400000000,
-                              "incentivada":  false,
-                              "lider":  "ITAU BBA ASSESSORIA FINANCEIRA S.A"
-                          },
-                          {
-                              "dataRegistro":  "2026-07-03",
-                              "emissor":  "TRANSMISSORA ALIANÇA DE ENERGIA ELÉTRICA S.A.",
-                              "emissao":  22,
-                              "valor":  1700000000,
-                              "incentivada":  false,
-                              "lider":  "BANCO BRADESCO BBI S.A."
-                          }
+
                       ]
 }

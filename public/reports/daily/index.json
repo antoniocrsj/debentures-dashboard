@@ -1,0 +1,84 @@
+{
+  "reports": [
+    {
+      "date": "2026-07-03",
+      "label": "03/07/2026",
+      "json": "/reports/daily/2026-07-03.json",
+      "html": "/reports/daily/2026-07-03.html",
+      "sourceDates": {
+        "debentures": "2026-07-02",
+        "cap12431": null,
+        "capTrad": null,
+        "perf12431": null,
+        "perfTrad": null,
+        "anbima": "2026-07-03",
+        "blc": null,
+        "fundos": null
+      }
+    },
+    {
+      "date": "2026-07-02",
+      "label": "02/07/2026",
+      "json": "/reports/daily/2026-07-02.json",
+      "html": "/reports/daily/2026-07-02.html",
+      "sourceDates": {
+        "debentures": "2026-07-02",
+        "cap12431": null,
+        "capTrad": null,
+        "perf12431": null,
+        "perfTrad": null,
+        "anbima": null,
+        "blc": null,
+        "fundos": null
+      }
+    },
+    {
+      "date": "2026-06-29",
+      "label": "29/06/2026",
+      "json": "/reports/daily/2026-06-29.json",
+      "html": "/reports/daily/2026-06-29.html",
+      "sourceDates": {
+        "debentures": "2026-06-29",
+        "cap12431": null,
+        "capTrad": null,
+        "perf12431": null,
+        "perfTrad": null,
+        "anbima": null,
+        "blc": null,
+        "fundos": null
+      }
+    },
+    {
+      "date": "2026-06-26",
+      "label": "26/06/2026",
+      "json": "/reports/daily/2026-06-26.json",
+      "html": "/reports/daily/2026-06-26.html",
+      "sourceDates": {
+        "debentures": "2026-06-26",
+        "cap12431": null,
+        "capTrad": null,
+        "perf12431": null,
+        "perfTrad": null,
+        "anbima": null,
+        "blc": null,
+        "fundos": null
+      }
+    },
+    {
+      "date": "2026-06-25",
+      "label": "25/06/2026",
+      "json": "/reports/daily/2026-06-25.json",
+      "html": "/reports/daily/2026-06-25.html",
+      "sourceDates": {
+        "debentures": "2026-06-25",
+        "cap12431": null,
+        "capTrad": null,
+        "perf12431": null,
+        "perfTrad": null,
+        "anbima": null,
+        "blc": null,
+        "fundos": null
+      }
+    }
+  ]
+}

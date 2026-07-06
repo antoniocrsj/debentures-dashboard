@@ -1,0 +1,71 @@
+{
+  "date": "2026-07-03",
+  "label": "03/07/2026",
+  "previousDate": "2026-07-02",
+  "sourceDates": {
+    "debentures": "2026-07-02",
+    "cap12431": null,
+    "capTrad": null,
+    "perf12431": null,
+    "perfTrad": null,
+    "anbima": "2026-07-03",
+    "blc": null,
+    "fundos": null
+  },
+  "summary": [
+    {
+      "texto": "2 alerta(s) de qualidade",
+      "tom": "warn"
+    }
+  ],
+  "sections": {
+    "debentures": {
+      "novas": [],
+      "saidas": [],
+      "temSnapshotAnterior": false
+    },
+    "captacao": {
+      "12431": null,
+      "trad": null
+    },
+    "gestores": {
+      "top12431Captacao": [],
+      "top12431Resgate": [],
+      "topTradCaptacao": [],
+      "topTradResgate": []
+    },
+    "anbima": {
+      "aberturas": [],
+      "fechamentos": [],
+      "atual": "2026-07-03",
+      "anterior": null,
+      "semAnterior": true
+    },
+    "fundos": {
+      "novos": [],
+      "removidos": [],
+      "semAnterior": true
+    },
+    "perf": {
+      "top12431Pos": [],
+      "top12431Neg": [],
+      "topTradPos": [],
+      "topTradNeg": []
+    },
+    "inclusoes": {
+      "novosDebentures": [],
+      "novosBlc": [],
+      "temSnapshotBlc": false
+    },
+    "alertas": [
+      {
+        "tipo": "blc-sem-cadastro",
+        "texto": "70 ativo(s) no BLC sem correspondencia em Debentures.csv"
+      },
+      {
+        "tipo": "anbima-sem-anterior",
+        "texto": "ANBIMA sem dia anterior disponivel para comparacao (comeca a partir do proximo snapshot)"
+      }
+    ]
+  }
+}
