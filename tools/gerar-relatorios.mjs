@@ -374,7 +374,28 @@ function buildAlertas(src, D, sections, flow) {
 }
 
 // ─── Monta um relatorio completo para a data D ─────────────────────────────
-function buildReport(src, D, allDates) {
+// Emissoes ja registradas na CVM (oferta_distribuicao / Resolucao 160) que ainda
+// nao entraram no cadastro. A etapa "Ofertas CVM" grava public/data/Novas_Emissoes_CVM.json.
+// E uma lista de "pendencias" (asOf), so anexada ao relatorio mais recente.
+function loadEmissoesCVM() {
+  const f = path.join(DATA, 'Novas_Emissoes_CVM.json')
+  if (!fs.existsSync(f)) return null
+  try {
+    const j = JSON.parse(fs.readFileSync(f, 'utf8'))
+    const itens = (j.itens || []).map(e => ({
+      dataRegistro: e.dataRegistro || '',
+      emissor: repairText((e.emissor || '').trim()),
+      cnpj: digits(e.cnpj),
+      emissao: e.emissao,
+      valor: parseNum(e.valor),
+      incentivada: !!e.incentivada,
+      lider: repairText((e.lider || '').trim()),
+    })).sort((a, b) => (a.dataRegistro < b.dataRegistro ? 1 : a.dataRegistro > b.dataRegistro ? -1 : 0))
+    return { asOf: j.asOf || j.geradoEm || '', itens }
+  } catch { return null }
+}
+
+function buildReport(src, D, allDates, emissoesCVM = null) {
   const sd = perSourceDates(src)
   // Fluxo (captacao/perf) resolvido para o ultimo dia COMPLETO <= D (pula dias
   // parciais do Informe Diario); as demais fontes usam a data mais recente <= D.
@@ -413,7 +434,7 @@ function buildReport(src, D, allDates) {
     previousDate: previousDateOverall,
     sourceDates,
     summary: summarize(summaryInput),
-    sections: { ...sections, alertas },
+    sections: { ...sections, alertas, emissoesCVM },
   }
 }
 
@@ -452,6 +473,17 @@ function renderHtml(rep) {
         s.debentures.novas.map(d => `<tr><td>${esc(d.ticker)}</td><td>${esc(d.empresa)}</td><td>${esc(d.dataRegistro)}</td><td>${esc(d.vencimento)}</td><td>${esc(d.indexador)}</td><td>${esc(d.taxa)}</td><td>${d.incentivada ? 'Sim' : 'Não'}</td></tr>`).join('')
       }</tbody></table></div>`
     : empty('Sem novas debêntures neste dia.')
+
+  // Emissoes registradas na CVM ainda nao cadastradas (so no relatorio mais recente).
+  const cvm = s.emissoesCVM
+  const cvmBlock = cvm
+    ? (cvm.itens.length
+        ? `<h4>Registradas na CVM, ainda não no cadastro${cvm.asOf ? ` <span class="cap-dia">posição em ${esc(fmtDia(cvm.asOf))}</span>` : ''}</h4>
+           <div class="tw"><table><thead><tr><th>Registro</th><th>Emissor</th><th>Emissão</th><th>Valor</th><th>12.431</th><th>Líder</th></tr></thead><tbody>${
+             cvm.itens.map(e => `<tr><td>${esc(fmtDia(e.dataRegistro))}</td><td>${esc(e.emissor)}</td><td>${esc(String(e.emissao ?? ''))}ª</td><td>${esc(money(e.valor))}</td><td>${e.incentivada ? 'Sim' : 'Não'}</td><td>${esc(e.lider)}</td></tr>`).join('')
+           }</tbody></table></div>`
+        : `<h4>Registradas na CVM, ainda não no cadastro</h4>${empty('Nenhuma emissão pendente na CVM neste momento.')}`)
+    : ''
 
   const capBlock = `<div class="cap-grid">${['12431', 'trad'].map(seg => {
     const c = s.captacao[seg]
@@ -567,7 +599,7 @@ function renderHtml(rep) {
   <p class="sub">Comparado ao dia anterior disponível de cada fonte. Gerado a partir da data dos dados, não do calendário.</p>
 </div>
 <section><h2><span class="n">1.</span> Sumário executivo</h2>${bullets}</section>
-<section><h2><span class="n">2.</span> Novas debêntures cadastradas</h2>${debTable}</section>
+<section><h2><span class="n">2.</span> Novas debêntures cadastradas</h2>${debTable}${cvmBlock}</section>
 <section><h2><span class="n">3.</span> Captação líquida do dia</h2>${capBlock}</section>
 <section><h2><span class="n">4.</span> Destaques por gestor</h2>
 ${gestTop(s.gestores.top12431Captacao, 'Top captação 12.431')}
@@ -644,9 +676,10 @@ function main() {
     return
   }
   const utf8 = { encoding: 'utf8' }
+  const emissoesCVM = loadEmissoesCVM()   // pendencias da CVM: so no relatorio mais recente
   const index = []
   for (const D of datas) {
-    const rep = buildReport(src, D, datas)
+    const rep = buildReport(src, D, datas, D === datas[0] ? emissoesCVM : null)
     fs.writeFileSync(path.join(REPORTS, `${D}.json`), JSON.stringify(rep, null, 2) + '\n', utf8)
     fs.writeFileSync(path.join(REPORTS, `${D}.html`), renderHtml(rep), utf8)
     index.push({ date: D, label: rep.label, json: `/reports/daily/${D}.json`, html: `/reports/daily/${D}.html`, sourceDates: rep.sourceDates })
