@@ -3,8 +3,17 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import {
   parseDia, fmtDia, diffKeyed, topMovers,
-  pickReportDates, previousDate, sourceDateFor, summarize,
+  pickReportDates, previousDate, sourceDateFor, summarize, repairText,
 } from '../src/utils/reports.js'
+
+test('repairText: conserta mojibake UTF-8-lido-como-latin1, não toca texto limpo', () => {
+  assert.equal(repairText('PrÃ©-Fixado 16.3433%'), 'Pré-Fixado 16.3433%')
+  assert.equal(repairText('IPCA + 7.0718%'), 'IPCA + 7.0718%')   // intacto
+  assert.equal(repairText('DI + 3.4000%'), 'DI + 3.4000%')
+  assert.equal(repairText('normal'), 'normal')
+  assert.equal(repairText(''), '')
+  assert.equal(repairText(null), '')
+})
 
 test('parseDia entende ISO e BR, data local (sem UTC)', () => {
   assert.equal(parseDia('2026-07-03').key, '2026-07-03')

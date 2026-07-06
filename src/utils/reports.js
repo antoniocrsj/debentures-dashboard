@@ -32,6 +32,24 @@ export function fmtDia(key) {
 }
 
 /**
+ * Repara "mojibake" clássico: texto UTF-8 que foi lido como latin-1 (ex.:
+ * "PrÃ©-Fixado" → "Pré-Fixado"). Conservador: só age se detectar o padrão
+ * (Ã/Â seguidos de byte de continuação) E o re-decode UTF-8 for válido.
+ * Usado no relatório pra não propagar erro de encoding de fontes (ex.: ANBIMA).
+ */
+export function repairText(s) {
+  const str = String(s == null ? '' : s)
+  if (!/[ÃÂ][-¿]/.test(str)) return str
+  try {
+    const bytes = Uint8Array.from([...str], c => c.charCodeAt(0) & 0xff)
+    const dec = new TextDecoder('utf-8', { fatal: true }).decode(bytes)
+    return dec
+  } catch {
+    return str
+  }
+}
+
+/**
  * Diff entre dois conjuntos de linhas indexados por uma chave.
  * Retorna { added, removed, changed } — changed só quando `changed(a,b)` é true.
  * prevRows/currRows: arrays; keyFn: linha → string; changedFn(prev,curr)→bool (opcional).

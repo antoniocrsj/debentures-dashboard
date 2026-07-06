@@ -17,7 +17,7 @@ import { parseCSV } from '../src/utils/csv.js'
 import { fmtBRL, parseNum, isYes } from '../src/utils/format.js'
 import {
   parseDia, fmtDia, diffKeyed, topMovers,
-  pickReportDates, previousDate, sourceDateFor, summarize,
+  pickReportDates, previousDate, sourceDateFor, summarize, repairText,
 } from '../src/utils/reports.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -108,7 +108,7 @@ function buildDebentures(src, D) {
   })
   const map = r => ({
     ticker: (r['Codigo do Ativo'] || '').trim(),
-    empresa: (r['Empresa'] || '').trim(),
+    empresa: repairText((r['Empresa'] || '').trim()),
     cnpj: digits(r['CNPJ']),
     dataRegistro: r['Data de Registro CVM da Emissao'] || '',
     dataEmissao: r['Data de Emissao'] || '',
@@ -192,7 +192,7 @@ function buildAnbima(src, sourceDates) {
     const delta = t1 - t0
     if (Math.abs(delta) < 1e-9) continue
     movs.push({
-      ticker: key(r), indexador: (r.indexadorAnbima || '').trim(),
+      ticker: key(r), indexador: repairText((r.indexadorAnbima || '').trim()),
       taxaAnterior: t0, taxaAtual: t1, variacao: delta,
       duration: (r.durationAnbimaAnos || '').trim(),
       status: (r.statusCalculoAnbima || '').trim(),
@@ -217,7 +217,7 @@ function buildFundos(src, D) {
   ]
   const kf = r => digits(r.CNPJ_FUNDO_CLASSE)
   const d = diffKeyed(prev, curr, kf)
-  const map = r => ({ cnpj: kf(r), nome: (r.DENOM_SOCIAL || '').trim(), segmento: r.__seg || '' })
+  const map = r => ({ cnpj: kf(r), nome: repairText((r.DENOM_SOCIAL || '').trim()), segmento: r.__seg || '' })
   return { novos: d.added.map(map), removidos: d.removed.map(map), semAnterior: false }
 }
 
@@ -225,7 +225,7 @@ function buildFundos(src, D) {
 function buildPerf(src, sourceDates) {
   const nomePorCnpj = new Map()
   for (const r of [...src.fundos12431, ...src.fundosCdi]) {
-    const c = digits(r.CNPJ_FUNDO_CLASSE); if (c) nomePorCnpj.set(c, (r.DENOM_SOCIAL || '').trim())
+    const c = digits(r.CNPJ_FUNDO_CLASSE); if (c) nomePorCnpj.set(c, repairText((r.DENOM_SOCIAL || '').trim()))
   }
   const out = {}
   for (const [seg, key] of [['12431', 'perf12431'], ['trad', 'perfTrad']]) {
@@ -236,8 +236,9 @@ function buildPerf(src, sourceDates) {
       gestor: (r.Gestor_Apelido || '').trim(), segmento: seg,
       retorno: parseNum(r.RetornoCota), pl: parseNum(r.PL),
     }))
-    out[`top${seg === '12431' ? '12431' : 'Trad'}Pos`] = topMovers(rows, r => r.retorno, 5, 'desc')
-    out[`top${seg === '12431' ? '12431' : 'Trad'}Neg`] = topMovers(rows, r => r.retorno, 5, 'asc')
+    // Altas = só retorno positivo; quedas = só negativo (evita "alta" negativa).
+    out[`top${seg === '12431' ? '12431' : 'Trad'}Pos`] = topMovers(rows, r => r.retorno, 5, 'desc').filter(r => r.retorno > 0)
+    out[`top${seg === '12431' ? '12431' : 'Trad'}Neg`] = topMovers(rows, r => r.retorno, 5, 'asc').filter(r => r.retorno < 0)
   }
   return out
 }
@@ -323,90 +324,156 @@ function buildReport(src, D, allDates) {
 // ─── HTML self-contained ───────────────────────────────────────────────────
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])) }
 function money(v) { return fmtBRL(typeof v === 'number' ? v : parseNum(v)) }
+// Valor monetário com cor pelo sinal (verde positivo / vermelho negativo),
+// seguindo a identidade do app (fluxo positivo = captação, negativo = resgate).
+function moneyC(v) {
+  const n = typeof v === 'number' ? v : parseNum(v)
+  const cls = n > 0 ? 'val pos' : n < 0 ? 'val neg' : 'val'
+  return `<span class="${cls}">${esc(money(v))}</span>`
+}
+function pct(v, casas = 2) {
+  const n = Number(v)
+  const cls = n > 0 ? 'val pos' : n < 0 ? 'val neg' : 'val'
+  return `<span class="${cls}">${n.toFixed(casas)}%</span>`
+}
 
 function renderHtml(rep) {
   const s = rep.sections
   const empty = txt => `<p class="empty">${esc(txt)}</p>`
   const bullets = rep.summary.length
-    ? `<ul>${rep.summary.map(b => `<li class="${esc(b.tom || '')}">${esc(b.texto)}</li>`).join('')}</ul>`
+    ? `<ul class="sumario">${rep.summary.map(b => `<li class="${esc(b.tom || '')}">${esc(b.texto)}</li>`).join('')}</ul>`
     : empty('Sem eventos relevantes neste dia.')
 
   const debTable = s.debentures.novas.length
-    ? `<table><thead><tr><th>Ativo</th><th>Empresa</th><th>Registro</th><th>Venc.</th><th>Indexador</th><th>Taxa</th><th>12.431</th></tr></thead><tbody>${
-        s.debentures.novas.map(d => `<tr><td>${esc(d.ticker)}</td><td>${esc(d.empresa)}</td><td>${esc(d.dataRegistro)}</td><td>${esc(d.vencimento)}</td><td>${esc(d.indexador)}</td><td>${esc(d.taxa)}</td><td>${d.incentivada ? 'Sim' : 'Nao'}</td></tr>`).join('')
-      }</tbody></table>`
-    : empty('Sem novas debentures neste dia.')
+    ? `<div class="tw"><table><thead><tr><th>Ativo</th><th>Empresa</th><th>Registro</th><th>Venc.</th><th>Indexador</th><th>Taxa</th><th>12.431</th></tr></thead><tbody>${
+        s.debentures.novas.map(d => `<tr><td>${esc(d.ticker)}</td><td>${esc(d.empresa)}</td><td>${esc(d.dataRegistro)}</td><td>${esc(d.vencimento)}</td><td>${esc(d.indexador)}</td><td>${esc(d.taxa)}</td><td>${d.incentivada ? 'Sim' : 'Não'}</td></tr>`).join('')
+      }</tbody></table></div>`
+    : empty('Sem novas debêntures neste dia.')
 
-  const capBlock = ['12431', 'trad'].map(seg => {
+  const capBlock = `<div class="cap-grid">${['12431', 'trad'].map(seg => {
     const c = s.captacao[seg]
-    const nome = seg === '12431' ? 'Incentivados (12.431)' : 'Credito Tradicional'
-    if (!c) return `<h4>${nome}</h4>${empty('Sem dado de captacao neste dia.')}`
-    return `<h4>${nome} — ${esc(fmtDia(c.dia))}</h4><table><tbody>
-      <tr><td>Captacao</td><td>${money(c.captacao)}</td></tr>
-      <tr><td>Resgate</td><td>${money(c.resgate)}</td></tr>
-      <tr><td>Liquido</td><td>${money(c.liquido)}</td></tr>
-      <tr><td>PL</td><td>${money(c.pl)}</td></tr>
-      <tr><td>Nº fundos</td><td>${c.numFundos}</td></tr>
-      ${c.anterior ? `<tr><td>Liquido (dia anterior ${esc(fmtDia(c.anterior.dia))})</td><td>${money(c.anterior.liquido)}</td></tr>` : ''}
-    </tbody></table>`
-  }).join('')
+    const nome = seg === '12431' ? 'Incentivados (12.431)' : 'Crédito Tradicional'
+    if (!c) return `<div class="cap-card"><h4>${nome}</h4>${empty('Sem dado de captação neste dia.')}</div>`
+    return `<div class="cap-card"><h4>${nome} <span class="cap-dia">${esc(fmtDia(c.dia))}</span></h4><table class="kv"><tbody>
+      <tr><td>Captação</td><td>${moneyC(c.captacao)}</td></tr>
+      <tr><td>Resgate</td><td>${moneyC(-Math.abs(parseNum(c.resgate)))}</td></tr>
+      <tr><td>Líquido</td><td>${moneyC(c.liquido)}</td></tr>
+      <tr><td>PL</td><td><span class="val">${esc(money(c.pl))}</span></td></tr>
+      <tr><td>Nº fundos</td><td><span class="val">${c.numFundos}</span></td></tr>
+      ${c.anterior ? `<tr class="ant"><td>Líquido (dia anterior ${esc(fmtDia(c.anterior.dia))})</td><td>${moneyC(c.anterior.liquido)}</td></tr>` : ''}
+    </tbody></table></div>`
+  }).join('')}</div>`
 
   const gestTop = (arr, titulo) => arr && arr.length
-    ? `<h4>${esc(titulo)}</h4><ol>${arr.map(g => `<li>${esc(g.gestor)}: ${money(g.liquido)}</li>`).join('')}</ol>`
+    ? `<h4>${esc(titulo)}</h4><ol class="rank">${arr.map(g => `<li><span class="g-nome">${esc(g.gestor)}</span><span class="g-val">${moneyC(g.liquido)}</span></li>`).join('')}</ol>`
     : `<h4>${esc(titulo)}</h4>${empty('Sem destaques.')}`
 
+  const anbimaVar = v => `<span class="${v > 0 ? 'val neg' : v < 0 ? 'val pos' : 'val'}">${v > 0 ? '+' : ''}${v.toFixed(3)}</span>`
   const anbimaBlock = s.anbima.semAnterior
-    ? empty('Sem dia anterior de ANBIMA para comparar (comeca no proximo snapshot).')
-    : `${s.anbima.altas.length ? `<h4>Maiores altas de taxa/spread</h4><ol>${s.anbima.altas.map(a => `<li>${esc(a.ticker)} (${esc(a.indexador)}): ${a.taxaAnterior} → ${a.taxaAtual} (${a.variacao > 0 ? '+' : ''}${a.variacao.toFixed(3)})</li>`).join('')}</ol>` : ''}
-       ${s.anbima.quedas.length ? `<h4>Maiores quedas de taxa/spread</h4><ol>${s.anbima.quedas.map(a => `<li>${esc(a.ticker)} (${esc(a.indexador)}): ${a.taxaAnterior} → ${a.taxaAtual} (${a.variacao.toFixed(3)})</li>`).join('')}</ol>` : ''}
-       ${!s.anbima.altas.length && !s.anbima.quedas.length ? empty('Sem variacoes de taxa neste dia.') : ''}`
+    ? empty('Sem dia anterior de ANBIMA para comparar (começa no próximo snapshot).')
+    : `${s.anbima.altas.length ? `<h4>Maiores altas de taxa/spread</h4><ol class="rank">${s.anbima.altas.map(a => `<li><span class="g-nome">${esc(a.ticker)} <em>(${esc(a.indexador)})</em></span><span class="g-val">${a.taxaAnterior} → ${a.taxaAtual} · ${anbimaVar(a.variacao)}</span></li>`).join('')}</ol>` : ''}
+       ${s.anbima.quedas.length ? `<h4>Maiores quedas de taxa/spread</h4><ol class="rank">${s.anbima.quedas.map(a => `<li><span class="g-nome">${esc(a.ticker)} <em>(${esc(a.indexador)})</em></span><span class="g-val">${a.taxaAnterior} → ${a.taxaAtual} · ${anbimaVar(a.variacao)}</span></li>`).join('')}</ol>` : ''}
+       ${!s.anbima.altas.length && !s.anbima.quedas.length ? empty('Sem variações de taxa neste dia.') : ''}`
 
   const perfBlock = ['12431', 'Trad'].map(seg => {
     const pos = s.perf[`top${seg}Pos`] || [], neg = s.perf[`top${seg}Neg`] || []
     const nome = seg === '12431' ? 'Incentivados' : 'Tradicional'
-    if (!pos.length && !neg.length) return `<h4>${nome}</h4>${empty('Sem performance diaria neste dia.')}`
-    const li = f => `<li>${esc(f.nome)} (${esc(f.gestor)}): ${f.retorno.toFixed(2)}%</li>`
-    return `<h4>${nome} — maiores altas</h4><ol>${pos.map(li).join('')}</ol><h4>${nome} — maiores quedas</h4><ol>${neg.map(li).join('')}</ol>`
+    if (!pos.length && !neg.length) return `<h4>${nome}</h4>${empty('Sem performance diária neste dia.')}`
+    const li = f => `<li><span class="g-nome">${esc(f.nome)} <em>(${esc(f.gestor)})</em></span><span class="g-val">${pct(f.retorno)}</span></li>`
+    return `${pos.length ? `<h4>${nome} — maiores altas</h4><ol class="rank">${pos.map(li).join('')}</ol>` : ''}${neg.length ? `<h4>${nome} — maiores quedas</h4><ol class="rank">${neg.map(li).join('')}</ol>` : ''}`
   }).join('')
 
   const fundosBlock = s.fundos.semAnterior
-    ? empty('Sem snapshot anterior do universo de fundos (comeca no proximo).')
-    : `<p>Novos: ${s.fundos.novos.length} · Removidos: ${s.fundos.removidos.length}</p>${
-        s.fundos.novos.length ? `<h4>Novos</h4><ul>${s.fundos.novos.slice(0, 20).map(f => `<li>${esc(f.nome || f.cnpj)} (${esc(f.segmento)})</li>`).join('')}</ul>` : ''}`
+    ? empty('Sem snapshot anterior do universo de fundos (começa no próximo).')
+    : `<p class="tally">Novos: <strong>${s.fundos.novos.length}</strong> · Removidos: <strong>${s.fundos.removidos.length}</strong></p>${
+        s.fundos.novos.length ? `<h4>Novos</h4><ul class="chips">${s.fundos.novos.slice(0, 20).map(f => `<li>${esc(f.nome || f.cnpj)} <em>(${esc(f.segmento)})</em></li>`).join('')}</ul>` : ''}`
 
   const alertasBlock = s.alertas.length
-    ? `<ul>${s.alertas.map(a => `<li>${esc(a.texto)}</li>`).join('')}</ul>`
+    ? `<ul class="alertas">${s.alertas.map(a => `<li>${esc(a.texto)}</li>`).join('')}</ul>`
     : empty('Nenhum alerta de qualidade.')
 
   return `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Resumo do Dia ${esc(rep.label)}</title>
 <style>
-  body{font-family:system-ui,Segoe UI,Arial,sans-serif;max-width:820px;margin:0 auto;padding:24px;color:#1e293b}
-  h1{font-size:22px;margin:0 0 2px} .sub{color:#64748b;margin:0 0 20px;font-size:13px}
-  h2{font-size:16px;border-bottom:2px solid #e2e8f0;padding-bottom:4px;margin-top:28px}
-  h4{font-size:13px;margin:14px 0 6px;color:#334155}
-  table{border-collapse:collapse;width:100%;font-size:12.5px;margin:6px 0}
-  th,td{border:1px solid #e2e8f0;padding:5px 8px;text-align:left}
-  th{background:#f1f5f9}
-  ol,ul{margin:6px 0;padding-left:22px;font-size:13px}
-  .empty{color:#94a3b8;font-style:italic;font-size:13px}
-  li.pos{color:#047857} li.neg{color:#b91c1c} li.warn{color:#92400e}
+  :root{
+    --primary:#1f4e9c; --primary-dark:#14253f; --primary-light:#e9eef7;
+    --primary-border:#cdd9ea; --bg:#eef1f5; --card:#fff; --text:#1e293b;
+    --text-muted:#64748b; --border:#e2e8f0; --success:#059669; --danger:#b91c1c;
+    --warn:#92400e;
+  }
+  *{box-sizing:border-box}
+  body{font-family:system-ui,Segoe UI,Arial,sans-serif;max-width:860px;margin:0 auto;
+    padding:24px 20px 48px;color:var(--text);background:var(--bg);line-height:1.5}
+  .head{background:var(--primary-dark);color:#fff;border-radius:12px;padding:18px 22px;margin-bottom:18px}
+  h1{font-size:22px;margin:0 0 4px;font-weight:600}
+  .head .sub{color:#c7d3e6;margin:0;font-size:12.5px}
+  section{background:var(--card);border:1px solid var(--border);border-radius:12px;
+    padding:16px 18px;margin-bottom:14px}
+  h2{font-size:15px;margin:0 0 10px;color:var(--primary-dark);font-weight:600;
+    border-bottom:2px solid var(--primary-light);padding-bottom:6px}
+  h2 .n{display:inline-block;min-width:22px;color:var(--primary)}
+  h4{font-size:12.5px;margin:14px 0 6px;color:var(--primary);font-weight:600;text-transform:none}
+  h4:first-of-type{margin-top:4px}
+  .cap-dia{font-weight:400;color:var(--text-muted);font-size:11px}
+  .tw{overflow-x:auto}
+  table{border-collapse:collapse;width:100%;font-size:12.5px;margin:4px 0}
+  th,td{border:1px solid var(--border);padding:6px 9px;text-align:left;vertical-align:top}
+  th{background:var(--primary-light);color:var(--primary-dark);font-weight:600;white-space:nowrap}
+  table.kv td:first-child{color:var(--text-muted);width:52%}
+  table.kv td:last-child{text-align:right;font-variant-numeric:tabular-nums}
+  table.kv tr.ant td{border-top:2px solid var(--border);color:var(--text-muted);font-size:11.5px}
+  .cap-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .cap-card{min-width:0}
+  ol.rank,ul.chips,ul.sumario,ul.alertas{margin:6px 0;padding:0;list-style:none}
+  ol.rank{counter-reset:r}
+  ol.rank li{counter-increment:r;display:flex;justify-content:space-between;gap:12px;
+    align-items:baseline;padding:4px 0;border-bottom:1px solid var(--primary-light);font-size:12.5px}
+  ol.rank li:last-child{border-bottom:0}
+  ol.rank li::before{content:counter(r);color:var(--primary);font-weight:600;
+    min-width:16px;font-size:11px}
+  .g-nome{flex:1;min-width:0}
+  .g-nome em{color:var(--text-muted);font-style:normal;font-size:11px}
+  .g-val{white-space:nowrap;font-variant-numeric:tabular-nums;text-align:right}
+  .val{font-variant-numeric:tabular-nums}
+  .val.pos{color:var(--success);font-weight:600} .val.neg{color:var(--danger);font-weight:600}
+  ul.sumario li{padding:5px 0 5px 14px;position:relative;font-size:13px;border-bottom:1px solid var(--primary-light)}
+  ul.sumario li:last-child{border-bottom:0}
+  ul.sumario li::before{content:"";position:absolute;left:0;top:11px;width:6px;height:6px;
+    border-radius:50%;background:var(--primary)}
+  ul.sumario li.pos::before{background:var(--success)} ul.sumario li.pos{color:#065f46}
+  ul.sumario li.neg::before{background:var(--danger)} ul.sumario li.neg{color:#7f1d1d}
+  ul.sumario li.warn::before{background:var(--warn)} ul.sumario li.warn{color:var(--warn)}
+  ul.chips{display:flex;flex-wrap:wrap;gap:6px}
+  ul.chips li{background:var(--primary-light);border:1px solid var(--primary-border);
+    border-radius:14px;padding:3px 10px;font-size:11.5px}
+  ul.chips li em{color:var(--text-muted);font-style:normal}
+  ul.alertas li{padding:5px 0 5px 14px;position:relative;font-size:12.5px;color:var(--warn)}
+  ul.alertas li::before{content:"!";position:absolute;left:0;color:var(--warn);font-weight:700}
+  .tally{font-size:13px;margin:2px 0 6px} .tally strong{color:var(--primary-dark)}
+  .empty{color:#94a3b8;font-style:italic;font-size:12.5px;margin:4px 0}
+  @media(max-width:560px){
+    body{padding:14px 12px 32px} .cap-grid{grid-template-columns:1fr}
+    ol.rank li{flex-wrap:wrap;gap:2px}
+  }
 </style></head><body>
-<h1>Resumo do Dia — ${esc(rep.label)}</h1>
-<p class="sub">Comparado ao dia anterior disponivel de cada fonte. Gerado a partir da data dos dados, nao do calendario.</p>
-<h2>1. Sumario executivo</h2>${bullets}
-<h2>2. Novas debentures cadastradas</h2>${debTable}
-<h2>3. Captacao liquida do dia</h2>${capBlock}
-<h2>4. Destaques por gestor</h2>
-${gestTop(s.gestores.top12431Captacao, 'Top captacao 12.431')}
+<div class="head">
+  <h1>Resumo do Dia — ${esc(rep.label)}</h1>
+  <p class="sub">Comparado ao dia anterior disponível de cada fonte. Gerado a partir da data dos dados, não do calendário.</p>
+</div>
+<section><h2><span class="n">1.</span> Sumário executivo</h2>${bullets}</section>
+<section><h2><span class="n">2.</span> Novas debêntures cadastradas</h2>${debTable}</section>
+<section><h2><span class="n">3.</span> Captação líquida do dia</h2>${capBlock}</section>
+<section><h2><span class="n">4.</span> Destaques por gestor</h2>
+${gestTop(s.gestores.top12431Captacao, 'Top captação 12.431')}
 ${gestTop(s.gestores.top12431Resgate, 'Top resgate 12.431')}
-${gestTop(s.gestores.topTradCaptacao, 'Top captacao Tradicional')}
-${gestTop(s.gestores.topTradResgate, 'Top resgate Tradicional')}
-<h2>5. Variacao ANBIMA (taxa/spread)</h2>${anbimaBlock}
-<h2>6. Ativos incluidos</h2><p>Novos em Debentures: ${s.inclusoes.novosDebentures.length}${s.inclusoes.temSnapshotBlc ? ` · Novos no BLC: ${s.inclusoes.novosBlc.length}` : ''}</p>
-<h2>7. Fundos incluidos/excluidos</h2>${fundosBlock}
-<h2>8. Performance de fundos</h2>${perfBlock}
-<h2>9. Alertas de qualidade</h2>${alertasBlock}
+${gestTop(s.gestores.topTradCaptacao, 'Top captação Tradicional')}
+${gestTop(s.gestores.topTradResgate, 'Top resgate Tradicional')}</section>
+<section><h2><span class="n">5.</span> Variação ANBIMA (taxa/spread)</h2>${anbimaBlock}</section>
+<section><h2><span class="n">6.</span> Ativos incluídos</h2><p class="tally">Novos em Debêntures: <strong>${s.inclusoes.novosDebentures.length}</strong>${s.inclusoes.temSnapshotBlc ? ` · Novos no BLC: <strong>${s.inclusoes.novosBlc.length}</strong>` : ''}</p></section>
+<section><h2><span class="n">7.</span> Fundos incluídos/excluídos</h2>${fundosBlock}</section>
+<section><h2><span class="n">8.</span> Performance de fundos</h2>${perfBlock}</section>
+<section><h2><span class="n">9.</span> Alertas de qualidade</h2>${alertasBlock}</section>
 </body></html>`
 }
 
