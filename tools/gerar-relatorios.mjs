@@ -142,12 +142,59 @@ function aggDiaSegmento(rows, dia) {
   }
   return { dia, captacao: cap, resgate: res, liquido: cap - res, pl, numFundos: Math.round(nf) }
 }
-function buildCaptacao(src, sourceDates) {
+// O ultimo dia do Informe Diario da CVM quase sempre chega incompleto (os fundos
+// reportam com defasagem). Detectamos "dias parciais" pela cobertura (nº de fundos
+// que reportaram) e, para captacao/gestores/performance, usamos o ultimo dia
+// COMPLETO <= D -- nunca um dia parcial que enganaria a leitura.
+const COBERTURA_MIN_FRAC = 0.5
+
+function coberturaPorDia(rows, diaCol, contaFn) {
+  const m = new Map()
+  for (const r of rows || []) {
+    const k = (parseDia(r[diaCol]) || {}).key
+    if (!k) continue
+    m.set(k, (m.get(k) || 0) + contaFn(r))
+  }
+  return m
+}
+
+function mediana(nums) {
+  const a = nums.filter(n => n > 0).sort((x, y) => x - y)
+  if (!a.length) return 0
+  const mid = Math.floor(a.length / 2)
+  return a.length % 2 ? a[mid] : (a[mid - 1] + a[mid]) / 2
+}
+
+// Resolve, para uma base diaria de fluxo, o ultimo dia completo <= D, o dia
+// completo anterior (para comparar), e o dia parcial mais recente que foi pulado.
+function resolverDiaFluxo(cov, D) {
+  const med = mediana([...cov.values()])
+  const limite = med * COBERTURA_MIN_FRAC
+  const completos = [...cov.keys()].filter(k => k <= D && cov.get(k) >= limite).sort()
+  const atual = completos.length ? completos[completos.length - 1] : null
+  const anterior = completos.length > 1 ? completos[completos.length - 2] : null
+  const pulados = [...cov.keys()].filter(k => k <= D && (!atual || k > atual)).sort()
+  const parcialRecente = pulados.length
+    ? { dia: pulados[pulados.length - 1], cobertura: cov.get(pulados[pulados.length - 1]), normal: Math.round(med) }
+    : null
+  return { atual, anterior, parcialRecente }
+}
+
+// Datas de fluxo (captacao/perf) por segmento, ja resolvidas para dias completos.
+function resolverFluxos(src, D) {
+  return {
+    cap12431:  resolverDiaFluxo(coberturaPorDia(src.dia['12431'], 'Dia', r => parseNum(r.Num_Fundos)), D),
+    capTrad:   resolverDiaFluxo(coberturaPorDia(src.dia.trad,    'Dia', r => parseNum(r.Num_Fundos)), D),
+    perf12431: resolverDiaFluxo(coberturaPorDia(src.perf['12431'], 'Dia', () => 1), D),
+    perfTrad:  resolverDiaFluxo(coberturaPorDia(src.perf.trad,    'Dia', () => 1), D),
+  }
+}
+
+function buildCaptacao(src, flow) {
   const out = {}
   for (const [seg, key] of [['12431', 'cap12431'], ['trad', 'capTrad']]) {
-    const dias = distinctDates(src.dia[seg], 'Dia')
-    const atual = sourceDates[key]
-    const anterior = previousDate(dias, atual)
+    const atual = flow[key].atual
+    const anterior = flow[key].anterior
     const cur = atual ? aggDiaSegmento(src.dia[seg], atual) : null
     const prev = anterior ? aggDiaSegmento(src.dia[seg], anterior) : null
     out[seg] = cur ? { ...cur, anterior: prev } : null
@@ -294,8 +341,19 @@ function buildInclusoes(src, D, secDeb) {
 }
 
 // §9 Alertas de qualidade.
-function buildAlertas(src, D, sections) {
+function buildAlertas(src, D, sections, flow) {
   const alertas = []
+  // Dia parcial do Informe Diario: avisa quando o dia mais recente veio incompleto
+  // e a captacao/performance estao exibindo o ultimo dia completo.
+  for (const [key, rotulo] of [['cap12431', 'Incentivados'], ['capTrad', 'Tradicional']]) {
+    const pr = flow?.[key]?.parcialRecente
+    if (pr && flow[key].atual) {
+      alertas.push({
+        tipo: 'dia-parcial',
+        texto: `Dia ${fmtDia(pr.dia)} parcial no segmento ${rotulo} (${pr.cobertura} fundos vs ~${pr.normal}); captacao/performance exibem ${fmtDia(flow[key].atual)} (ultimo dia completo)`,
+      })
+    }
+  }
   // BLC com ativos que nao existem em Debentures.csv.
   const tickersDeb = new Set(src.debentures.map(r => (r['Codigo do Ativo'] || '').trim()).filter(Boolean))
   const semCadastro = new Set()
@@ -316,27 +374,51 @@ function buildAlertas(src, D, sections) {
 }
 
 // ─── Monta um relatorio completo para a data D ─────────────────────────────
-function buildReport(src, D, allDates) {
+// Emissoes ja registradas na CVM (oferta_distribuicao / Resolucao 160) que ainda
+// nao entraram no cadastro. A etapa "Ofertas CVM" grava public/data/Novas_Emissoes_CVM.json.
+// E uma lista de "pendencias" (asOf), so anexada ao relatorio mais recente.
+function loadEmissoesCVM() {
+  const f = path.join(DATA, 'Novas_Emissoes_CVM.json')
+  if (!fs.existsSync(f)) return null
+  try {
+    const j = JSON.parse(fs.readFileSync(f, 'utf8'))
+    const itens = (j.itens || []).map(e => ({
+      dataRegistro: e.dataRegistro || '',
+      emissor: repairText((e.emissor || '').trim()),
+      cnpj: digits(e.cnpj),
+      emissao: e.emissao,
+      valor: parseNum(e.valor),
+      incentivada: !!e.incentivada,
+      lider: repairText((e.lider || '').trim()),
+    })).sort((a, b) => (a.dataRegistro < b.dataRegistro ? 1 : a.dataRegistro > b.dataRegistro ? -1 : 0))
+    return { asOf: j.asOf || j.geradoEm || '', itens }
+  } catch { return null }
+}
+
+function buildReport(src, D, allDates, emissoesCVM = null) {
   const sd = perSourceDates(src)
+  // Fluxo (captacao/perf) resolvido para o ultimo dia COMPLETO <= D (pula dias
+  // parciais do Informe Diario); as demais fontes usam a data mais recente <= D.
+  const flow = resolverFluxos(src, D)
   const sourceDates = {
     debentures: sourceDateFor(sd.debentures, D),
-    cap12431: sourceDateFor(sd.cap12431, D),
-    capTrad: sourceDateFor(sd.capTrad, D),
-    perf12431: sourceDateFor(sd.perf12431, D),
-    perfTrad: sourceDateFor(sd.perfTrad, D),
+    cap12431: flow.cap12431.atual,
+    capTrad: flow.capTrad.atual,
+    perf12431: flow.perf12431.atual,
+    perfTrad: flow.perfTrad.atual,
     anbima: sourceDateFor(sd.anbima, D),
     blc: sourceDateFor(sd.blc, D),
     fundos: sourceDateFor(sd.fundos, D),
   }
   const debentures = buildDebentures(src, D)
-  const captacao = buildCaptacao(src, sourceDates)
+  const captacao = buildCaptacao(src, flow)
   const gestores = buildGestores(src, sourceDates)
   const anbima = buildAnbima(src, sourceDates)
   const fundos = buildFundos(src, D)
   const perf = buildPerf(src, sourceDates)
   const inclusoes = buildInclusoes(src, D, debentures)
   const sections = { debentures, captacao, gestores, anbima, fundos, perf, inclusoes }
-  const alertas = buildAlertas(src, D, sections)
+  const alertas = buildAlertas(src, D, sections, flow)
   const summaryInput = {
     debentures, captacao,
     gestores: {
@@ -352,7 +434,7 @@ function buildReport(src, D, allDates) {
     previousDate: previousDateOverall,
     sourceDates,
     summary: summarize(summaryInput),
-    sections: { ...sections, alertas },
+    sections: { ...sections, alertas, emissoesCVM },
   }
 }
 
@@ -391,6 +473,17 @@ function renderHtml(rep) {
         s.debentures.novas.map(d => `<tr><td>${esc(d.ticker)}</td><td>${esc(d.empresa)}</td><td>${esc(d.dataRegistro)}</td><td>${esc(d.vencimento)}</td><td>${esc(d.indexador)}</td><td>${esc(d.taxa)}</td><td>${d.incentivada ? 'Sim' : 'Não'}</td></tr>`).join('')
       }</tbody></table></div>`
     : empty('Sem novas debêntures neste dia.')
+
+  // Emissoes registradas na CVM ainda nao cadastradas (so no relatorio mais recente).
+  const cvm = s.emissoesCVM
+  const cvmBlock = cvm
+    ? (cvm.itens.length
+        ? `<h4>Registradas na CVM, ainda não no cadastro${cvm.asOf ? ` <span class="cap-dia">posição em ${esc(fmtDia(cvm.asOf))}</span>` : ''}</h4>
+           <div class="tw"><table><thead><tr><th>Registro</th><th>Emissor</th><th>Emissão</th><th>Valor</th><th>12.431</th><th>Líder</th></tr></thead><tbody>${
+             cvm.itens.map(e => `<tr><td>${esc(fmtDia(e.dataRegistro))}</td><td>${esc(e.emissor)}</td><td>${esc(String(e.emissao ?? ''))}ª</td><td>${esc(money(e.valor))}</td><td>${e.incentivada ? 'Sim' : 'Não'}</td><td>${esc(e.lider)}</td></tr>`).join('')
+           }</tbody></table></div>`
+        : `<h4>Registradas na CVM, ainda não no cadastro</h4>${empty('Nenhuma emissão pendente na CVM neste momento.')}`)
+    : ''
 
   const capBlock = `<div class="cap-grid">${['12431', 'trad'].map(seg => {
     const c = s.captacao[seg]
@@ -506,7 +599,7 @@ function renderHtml(rep) {
   <p class="sub">Comparado ao dia anterior disponível de cada fonte. Gerado a partir da data dos dados, não do calendário.</p>
 </div>
 <section><h2><span class="n">1.</span> Sumário executivo</h2>${bullets}</section>
-<section><h2><span class="n">2.</span> Novas debêntures cadastradas</h2>${debTable}</section>
+<section><h2><span class="n">2.</span> Novas debêntures cadastradas</h2>${debTable}${cvmBlock}</section>
 <section><h2><span class="n">3.</span> Captação líquida do dia</h2>${capBlock}</section>
 <section><h2><span class="n">4.</span> Destaques por gestor</h2>
 ${gestTop(s.gestores.top12431Captacao, 'Top captação 12.431')}
@@ -583,9 +676,10 @@ function main() {
     return
   }
   const utf8 = { encoding: 'utf8' }
+  const emissoesCVM = loadEmissoesCVM()   // pendencias da CVM: so no relatorio mais recente
   const index = []
   for (const D of datas) {
-    const rep = buildReport(src, D, datas)
+    const rep = buildReport(src, D, datas, D === datas[0] ? emissoesCVM : null)
     fs.writeFileSync(path.join(REPORTS, `${D}.json`), JSON.stringify(rep, null, 2) + '\n', utf8)
     fs.writeFileSync(path.join(REPORTS, `${D}.html`), renderHtml(rep), utf8)
     index.push({ date: D, label: rep.label, json: `/reports/daily/${D}.json`, html: `/reports/daily/${D}.html`, sourceDates: rep.sourceDates })

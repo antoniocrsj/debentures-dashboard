@@ -1183,6 +1183,8 @@ a { color: var(--primary); }
 .rd-table th { color: var(--text-muted); font-weight: 600; }
 .rd-strong { font-weight: 700; }
 .rd-empresa { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; vertical-align: bottom; }
+.rd-cvm { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--primary-border); }
+.rd-cvm h4 { font-size: 12.5px; margin: 0 0 6px; color: var(--text); }
 .rd-cap { display: flex; gap: 18px; flex-wrap: wrap; }
 .rd-cap-seg { flex: 1; min-width: 220px; }
 .rd-cap-seg h4, .rd-top h4 { font-size: 12.5px; margin: 10px 0 6px; color: var(--text); }

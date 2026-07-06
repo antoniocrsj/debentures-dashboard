@@ -33,27 +33,67 @@ function Bullets({ items }) {
   )
 }
 
-function Debentures({ sec }) {
-  if (!sec?.novas?.length) return <Empty>Sem novas debêntures cadastradas neste dia.</Empty>
+function Debentures({ sec, cvm }) {
+  const temNovas = sec?.novas?.length > 0
   return (
     <div className="rd-tablewrap">
-      <table className="rd-table">
-        <thead><tr><th>Ativo</th><th>Empresa</th><th>Venc.</th><th>Indexador</th><th>Taxa</th><th>12.431</th></tr></thead>
-        <tbody>
-          {sec.novas.map((d, i) => (
-            <tr key={d.ticker || i}>
-              <td className="rd-strong">{d.ticker}</td>
-              <td className="rd-empresa" title={d.empresa}>{d.empresa}</td>
-              <td>{d.vencimento}</td>
-              <td>{d.indexador}</td>
-              <td>{d.taxa}</td>
-              <td>{d.incentivada ? '✓' : '—'}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      {sec.saidas?.length > 0 && (
-        <p className="rd-note">{sec.saidas.length} debênture(s) saíram da base.</p>
+      {temNovas ? (
+        <>
+          <table className="rd-table">
+            <thead><tr><th>Ativo</th><th>Empresa</th><th>Venc.</th><th>Indexador</th><th>Taxa</th><th>12.431</th></tr></thead>
+            <tbody>
+              {sec.novas.map((d, i) => (
+                <tr key={d.ticker || i}>
+                  <td className="rd-strong">{d.ticker}</td>
+                  <td className="rd-empresa" title={d.empresa}>{d.empresa}</td>
+                  <td>{d.vencimento}</td>
+                  <td>{d.indexador}</td>
+                  <td>{d.taxa}</td>
+                  <td>{d.incentivada ? '✓' : '—'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {sec.saidas?.length > 0 && (
+            <p className="rd-note">{sec.saidas.length} debênture(s) saíram da base.</p>
+          )}
+        </>
+      ) : (
+        <Empty>Sem novas debêntures cadastradas neste dia.</Empty>
+      )}
+      <EmissoesCVM cvm={cvm} />
+    </div>
+  )
+}
+
+// Emissões registradas na CVM (oferta_distribuicao) ainda não no cadastro.
+// Lista de pendências (posição atual), só presente no relatório mais recente.
+function EmissoesCVM({ cvm }) {
+  if (!cvm) return null
+  return (
+    <div className="rd-cvm">
+      <h4>
+        Registradas na CVM, ainda não no cadastro
+        {cvm.asOf && <span className="rd-cap-dia"> · posição em {fmtDia(cvm.asOf)}</span>}
+      </h4>
+      {cvm.itens?.length ? (
+        <table className="rd-table">
+          <thead><tr><th>Registro</th><th>Emissor</th><th>Emissão</th><th>Valor</th><th>12.431</th><th>Líder</th></tr></thead>
+          <tbody>
+            {cvm.itens.map((e, i) => (
+              <tr key={`${e.cnpj}-${e.emissao}-${i}`}>
+                <td>{fmtDia(e.dataRegistro)}</td>
+                <td className="rd-empresa" title={e.emissor}>{e.emissor}</td>
+                <td>{e.emissao != null ? `${e.emissao}ª` : '—'}</td>
+                <td>{money(e.valor)}</td>
+                <td>{e.incentivada ? '✓' : '—'}</td>
+                <td className="rd-empresa" title={e.lider}>{e.lider || '—'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <Empty>Nenhuma emissão pendente na CVM neste momento.</Empty>
       )}
     </div>
   )
@@ -197,7 +237,7 @@ export default function ResumoDoDiaModal({ index, report, loadingReport, selecte
           {!loadingReport && report && (
             <>
               <Section title="1. Sumário executivo"><Bullets items={report.summary} /></Section>
-              <Section title="2. Novas debêntures cadastradas"><Debentures sec={s.debentures} /></Section>
+              <Section title="2. Novas debêntures cadastradas"><Debentures sec={s.debentures} cvm={s.emissoesCVM} /></Section>
               <Section title="3. Captação líquida do dia"><Captacao sec={s.captacao} /></Section>
               <Section title="4. Destaques por gestor">
                 <TopGestores arr={s.gestores?.top12431Captacao} titulo="Top captação 12.431" />

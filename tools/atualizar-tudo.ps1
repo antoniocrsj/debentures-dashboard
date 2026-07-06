@@ -378,6 +378,30 @@ function Get-ResumoFonte($before, $after, [string[]]$campos) {
 # pelo painel de controle local quanto pelo icone novo do header no app
 # publicado. Nao inclui o status de Publicacao (so' se sabe DEPOIS deste
 # arquivo ja' ter sido gravado/staged) -- esse status fica so' no console.
+function Write-NovasEmissoesCVM($novasEmissoes, [string]$dataDir) {
+  # Grava a lista de emissoes registradas na CVM ainda nao cadastradas, para o
+  # Resumo do Dia (bloco de pendencias no relatorio mais recente). asOf = hoje.
+  New-Item -ItemType Directory -Force -Path $dataDir | Out-Null
+  $doc = [ordered]@{
+    asOf = (Get-Date).ToString('yyyy-MM-dd')
+    geradoEm = (Get-Date).ToString('s')
+    itens = @($novasEmissoes | ForEach-Object {
+      [ordered]@{
+        dataRegistro = $_.DataRegistro
+        emissor = $_.Emissor
+        cnpj = $_.Cnpj
+        emissao = $_.Emissao
+        valor = $_.Valor
+        incentivada = $_.Incentivada
+        lider = $_.Lider
+      }
+    })
+  }
+  $utf8 = New-Object System.Text.UTF8Encoding($false)
+  $path = Join-Path $dataDir 'Novas_Emissoes_CVM.json'
+  [System.IO.File]::WriteAllText($path, (($doc | ConvertTo-Json -Depth 6) + "`r`n"), $utf8)
+}
+
 function Write-ResumoPublicado($before, $after, $summary, [string]$captacaoModo, $novasEmissoes) {
   $resumo = [ordered]@{
     timestamp = (Get-Date).ToString('s')
@@ -585,6 +609,8 @@ if ($SkipOfertas) {
     foreach ($e in $novasEmissoes) {
       Write-Host ("    {0} | {1} | {2}a emissao | {3}" -f $e.DataRegistro, $e.Emissor, $e.Emissao, (Format-Money $e.Valor)) -ForegroundColor Yellow
     }
+    # Persiste a lista para o app (Resumo do Dia le public/data/Novas_Emissoes_CVM.json).
+    Write-NovasEmissoesCVM $novasEmissoes (Join-Path $PublicDir 'data')
   } catch {
     $summary.Ofertas = "FALHOU sem travar: $($_.Exception.Message)"
     Warn $summary.Ofertas
