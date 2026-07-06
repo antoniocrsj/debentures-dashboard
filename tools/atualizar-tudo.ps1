@@ -29,6 +29,7 @@ param(
   [switch]$ForceBlc,
   [switch]$SkipAnbima,
   [switch]$SkipOfertas,
+  [switch]$SkipRelatorios,
   [switch]$NoPublishPrompt,
   [ValidateSet('Auto', 'Incremental', 'Completa')]
   [string]$CaptacaoModo = 'Auto',
@@ -53,6 +54,7 @@ $summary = [ordered]@{
   BLC      = 'nao executado'
   ANBIMA   = 'nao executado'
   Ofertas  = 'nao executado'
+  Relatorios = 'nao executado'
   Publicacao = 'nao executada'
 }
 $fundosAplicados = $false
@@ -67,6 +69,7 @@ if (-not $SkipCaptacao)   { $script:StepsAtivos.Add('Captacao') }
 if (-not $SkipBlc)        { $script:StepsAtivos.Add('BLC') }
 if (-not $SkipAnbima)     { $script:StepsAtivos.Add('ANBIMA') }
 if (-not $SkipOfertas)    { $script:StepsAtivos.Add('Ofertas') }
+if (-not $SkipRelatorios) { $script:StepsAtivos.Add('Relatorios') }
 $script:StepsAtivos.Add('Resumo')
 $script:StepTotal = $script:StepsAtivos.Count
 $script:StepIndex = 0
@@ -585,6 +588,24 @@ if ($SkipOfertas) {
   } catch {
     $summary.Ofertas = "FALHOU sem travar: $($_.Exception.Message)"
     Warn $summary.Ofertas
+  }
+}
+
+# 5c. Resumo do Dia (relatorios diarios) - gerador Node, best-effort. Roda por
+# ultimo pra ter todas as bases frescas + salvar snapshots do dia.
+if ($SkipRelatorios) {
+  $summary.Relatorios = 'PULADO por parametro -SkipRelatorios'
+  Warn $summary.Relatorios
+} else {
+  Progress 'Resumo do Dia (relatorios)'
+  try {
+    & node (Join-Path $PSScriptRoot 'gerar-relatorios.mjs')
+    if ($LASTEXITCODE -ne 0) { throw "node saiu com codigo $LASTEXITCODE" }
+    $summary.Relatorios = 'OK'
+    Ok "Relatorios diarios gerados em public\reports\daily\."
+  } catch {
+    $summary.Relatorios = "FALHOU sem travar: $($_.Exception.Message)"
+    Warn "$($summary.Relatorios) (Node instalado? 'node -v')"
   }
 }
 

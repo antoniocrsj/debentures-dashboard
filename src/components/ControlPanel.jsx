@@ -53,7 +53,7 @@ function LogLine({ entry }) {
 export default function ControlPanel() {
   const [modo, setModo] = useState('Auto')
   // Etapas ligadas/desligadas (checkbox). Fundos é ação separada (não entra aqui).
-  const [steps, setSteps] = useState({ debentures: true, captacao: true, blc: false, anbima: true, ofertas: true })
+  const [steps, setSteps] = useState({ debentures: true, captacao: true, blc: false, anbima: true, ofertas: true, relatorios: true })
   const [blcMes, setBlcMes] = useState(blcMesAlvo())
 
   const [log, setLog] = useState([])
@@ -147,6 +147,7 @@ export default function ControlPanel() {
         blcMesAno: steps.blc ? blcMes : '',
         skipAnbima: !steps.anbima,
         skipOfertas: !steps.ofertas,
+        skipRelatorios: !steps.relatorios,
       }),
     },
   )
@@ -181,6 +182,7 @@ export default function ControlPanel() {
           <StepCheck k="blc" label="BLC / Alocação" hint="Carteira dos fundos (mensal)" />
           <StepCheck k="anbima" label="ANBIMA" hint="Taxas indicativas" />
           <StepCheck k="ofertas" label="Ofertas CVM" hint="Novas emissões registradas na CVM" />
+          <StepCheck k="relatorios" label="Resumo do Dia" hint="Gera os relatórios diários (public/reports)" />
         </div>
 
         {steps.captacao && (

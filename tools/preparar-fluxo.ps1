@@ -33,6 +33,11 @@
            (%CDI do PROPRIO fundo - cota do fundo vs CDI, nao ponderado.)
        Os dois arquivos por fundo alimentam a tabela de fundos que abre ao
        clicar numa gestora na Captacao (mesmas colunas do ranking de gestores).
+         Fluxo_Diario_12431.csv / Fluxo_Diario_Trad.csv (por dia|gestor)
+           Colunas: Dia,Gestor_Apelido,Captacao,Resgate,Liquido,PL,Num_Fundos
+         Perf_Diario_12431.csv / Perf_Diario_Trad.csv (retorno da cota por dia)
+           Colunas: Dia,CNPJ_Fundo,Gestor_Apelido,RetornoCota,PL (janela ~40 dias)
+       Essas bases diarias alimentam o "Resumo do Dia" (relatorio diario).
        Tambem grava public\PL_Gestores.csv (PL mais recente por gestor, consumido
        pela aba Gestores do app) e public\data\Fluxo_Atualizacao.json (resumo
        estruturado desta rodada, usado pelo painel de controle web).
@@ -223,6 +228,7 @@ $utf8Meta = New-Object System.Text.UTF8Encoding($false)
 
 $agg      = @{ '12431' = @{}; 'trad' = @{} }
 $aggFundo = @{ '12431' = @{}; 'trad' = @{} }   # mesmo que $agg, mas por (semana|cnpj)
+$aggDia   = @{ '12431' = @{}; 'trad' = @{} }   # captacao/resgate/PL por (dia|gestor) - Resumo do Dia
 $seen     = @{ '12431' = @{}; 'trad' = @{} }
 $weekMax  = @{ '12431' = @{}; 'trad' = @{} }
 $aggMonth = @{ '12431' = @{}; 'trad' = @{} }
@@ -306,6 +312,12 @@ foreach ($mes in $Meses) {
       $mb = $aggMonth[$tipo][$mk]
       if (-not $mb) { $mb = @{ cap = 0.0; resg = 0.0 }; $aggMonth[$tipo][$mk] = $mb }
       $mb.cap += $cap; $mb.resg += [Math]::Abs($res)
+
+      # Captacao DIARIA por gestor (chave dia|gestor) - alimenta o Resumo do Dia.
+      $dk = $dt.ToString('yyyy-MM-dd') + '|' + $gestor
+      $db = $aggDia[$tipo][$dk]
+      if (-not $db) { $db = @{ cap = 0.0; resg = 0.0; plSum = 0.0; cnpjs = @{} }; $aggDia[$tipo][$dk] = $db }
+      $db.cap += $cap; $db.resg += [Math]::Abs($res); $db.plSum += $pl; $db.cnpjs[$cnpj] = $true
 
       if ($null -eq $minDate -or $dt -lt $minDate) { $minDate = $dt }
       if ($null -eq $maxDate -or $dt -gt $maxDate) { $maxDate = $dt }
@@ -509,6 +521,68 @@ function Write-BaseRentabilidade($tipo, $outFile) {
   return $linhas.Count
 }
 
+# ─── Bases DIARIAS (Resumo do Dia) ─────────────────────────────────────────
+# Captacao/resgate/PL por (dia, gestor). PL do dia = soma dos PLs dos fundos
+# naquele dia (estoque, nao media). Mesclada pela Merge-Semanal (1a coluna=Dia).
+function Write-BaseDiaria($tipo, $outFile) {
+  $sb = New-Object System.Text.StringBuilder
+  [void]$sb.AppendLine('Dia,Gestor_Apelido,Captacao,Resgate,Liquido,PL,Num_Fundos')
+  $ci = [System.Globalization.CultureInfo]::InvariantCulture
+  $keys = $aggDia[$tipo].Keys | Sort-Object
+  foreach ($k in $keys) {
+    $b = $aggDia[$tipo][$k]
+    $parts = $k -split '\|', 2
+    $dia = $parts[0]; $gestor = $parts[1].Replace('"', '""')
+    $liq = [Math]::Round($b.cap - $b.resg, 2)
+    [void]$sb.AppendLine(('{0},"{1}",{2},{3},{4},{5},{6}' -f $dia, $gestor,
+      ([Math]::Round($b.cap,2)).ToString($ci), ([Math]::Round($b.resg,2)).ToString($ci),
+      $liq.ToString($ci), ([Math]::Round($b.plSum,2)).ToString($ci), $b.cnpjs.Count))
+  }
+  $utf8 = New-Object System.Text.UTF8Encoding($false)
+  [System.IO.File]::WriteAllText($outFile, $sb.ToString(), $utf8)
+  return $keys.Count
+}
+
+# Performance DIARIA por fundo: retorno da cota (quota[d]/quota[d-1]-1) por dia.
+# Janela movel dos ~$JanelaDias dias mais recentes (historico completo e' grande
+# e o Resumo do Dia so' le os 5 ultimos dias). Mesclada pela Merge-Semanal.
+function Write-PerfDiaria($tipo, $outFile, [int]$JanelaDias = 40) {
+  $ci = [System.Globalization.CultureInfo]::InvariantCulture
+  # Dias mais recentes (uniao entre fundos), limitados a $JanelaDias.
+  $todosDias = New-Object System.Collections.Generic.SortedSet[string]
+  foreach ($cnpj in $quotaSeries[$tipo].Keys) {
+    foreach ($d in $quotaSeries[$tipo][$cnpj].Keys) { [void]$todosDias.Add($d) }
+  }
+  $diasOrd = @($todosDias)
+  $diasJanela = @{}
+  $ini = [Math]::Max(0, $diasOrd.Count - $JanelaDias)
+  for ($i = $ini; $i -lt $diasOrd.Count; $i++) { $diasJanela[$diasOrd[$i]] = $true }
+
+  $sb = New-Object System.Text.StringBuilder
+  [void]$sb.AppendLine('Dia,CNPJ_Fundo,Gestor_Apelido,RetornoCota,PL')
+  $n = 0
+  foreach ($cnpj in ($quotaSeries[$tipo].Keys | Sort-Object)) {
+    $serie = $quotaSeries[$tipo][$cnpj]
+    if ($serie.Count -lt 2) { continue }
+    $gestor = if ($tipos[$tipo].ContainsKey($cnpj)) { $tipos[$tipo][$cnpj].Replace('"', '""') } else { '' }
+    $ds = @($serie.Keys | Sort-Object)
+    for ($i = 1; $i -lt $ds.Count; $i++) {
+      $dia = $ds[$i]
+      if (-not $diasJanela.ContainsKey($dia)) { continue }
+      $qPrev = $serie[$ds[$i - 1]].quota; $qCur = $serie[$dia].quota
+      if ($qPrev -le 0) { continue }
+      $ret = ($qCur / $qPrev) - 1.0
+      $pl = $serie[$dia].pl
+      [void]$sb.AppendLine(('{0},{1},"{2}",{3},{4}' -f $dia, $cnpj, $gestor,
+        ([Math]::Round($ret * 100.0, 4)).ToString($ci), ([Math]::Round($pl, 2)).ToString($ci)))
+      $n++
+    }
+  }
+  $utf8 = New-Object System.Text.UTF8Encoding($false)
+  [System.IO.File]::WriteAllText($outFile, $sb.ToString(), $utf8)
+  return $n
+}
+
 # 4. Escreve as bases
 function Write-Base($tipo, $outFile) {
   $sb = New-Object System.Text.StringBuilder
@@ -578,10 +652,14 @@ $outMes12431 = Join-Path $OutDir 'Fluxo_Mensal_12431.csv'
 $outMesTrad  = Join-Path $OutDir 'Fluxo_Mensal_Trad.csv'
 $outFun12431 = Join-Path $OutDir 'Fluxo_Semanal_Fundos_12431.csv'
 $outFunTrad  = Join-Path $OutDir 'Fluxo_Semanal_Fundos_Trad.csv'
+$outDia12431 = Join-Path $OutDir 'Fluxo_Diario_12431.csv'
+$outDiaTrad  = Join-Path $OutDir 'Fluxo_Diario_Trad.csv'
+$outPerf12431 = Join-Path $OutDir 'Perf_Diario_12431.csv'
+$outPerfTrad  = Join-Path $OutDir 'Perf_Diario_Trad.csv'
 
 # Salva conteudo antigo ANTES de sobrescrever (necessario para o merge incremental)
 $oldSem12431 = @(); $oldSemTrad = @(); $oldMes12431Lines = @(); $oldMesTradLines = @()
-$oldFun12431 = @(); $oldFunTrad = @()
+$oldFun12431 = @(); $oldFunTrad = @(); $oldDia12431 = @(); $oldDiaTrad = @()
 if ($Incremental) {
   if (Test-Path $out12431)    { $oldSem12431      = [System.IO.File]::ReadAllLines($out12431) }
   if (Test-Path $outTrad)     { $oldSemTrad       = [System.IO.File]::ReadAllLines($outTrad) }
@@ -589,6 +667,8 @@ if ($Incremental) {
   if (Test-Path $outMesTrad)  { $oldMesTradLines  = [System.IO.File]::ReadAllLines($outMesTrad) }
   if (Test-Path $outFun12431) { $oldFun12431      = [System.IO.File]::ReadAllLines($outFun12431) }
   if (Test-Path $outFunTrad)  { $oldFunTrad       = [System.IO.File]::ReadAllLines($outFunTrad) }
+  if (Test-Path $outDia12431) { $oldDia12431      = [System.IO.File]::ReadAllLines($outDia12431) }
+  if (Test-Path $outDiaTrad)  { $oldDiaTrad       = [System.IO.File]::ReadAllLines($outDiaTrad) }
 }
 
 $n12431    = Write-Base       '12431' $out12431
@@ -597,6 +677,11 @@ $nMes12431 = Write-BaseMensal '12431' $outMes12431
 $nMesTrad  = Write-BaseMensal 'trad'  $outMesTrad
 $nFun12431 = Write-BaseFundos '12431' $outFun12431
 $nFunTrad  = Write-BaseFundos 'trad'  $outFunTrad
+$nDia12431 = Write-BaseDiaria '12431' $outDia12431
+$nDiaTrad  = Write-BaseDiaria 'trad'  $outDiaTrad
+# Perf diaria NAO e' mesclada (janela movel recalculada a cada rodada, como a rentabilidade).
+$nPerf12431 = Write-PerfDiaria '12431' $outPerf12431
+$nPerfTrad  = Write-PerfDiaria 'trad'  $outPerfTrad
 
 # Rentabilidade nao e' mesclada com o historico (diferente de Semanal/Mensal):
 # cada janela (1s..12m) precisa da serie de cota do periodo INTEIRO presente
@@ -633,6 +718,13 @@ if ($Incremental) {
   # Base por fundo: mesma chave de semana (Merge-Semanal filtra pela 1a coluna).
   Merge-Semanal $oldFun12431      $outFun12431 $newWeek12431
   Merge-Semanal $oldFunTrad       $outFunTrad  $newWeekTrad
+  # Base diaria: chave = dia (1a coluna). Mescla os dias fora desta rodada.
+  $newDia12431 = New-Object System.Collections.Generic.HashSet[string]
+  $aggDia['12431'].Keys | ForEach-Object { [void]$newDia12431.Add(($_ -split '\|', 2)[0]) }
+  $newDiaTrad = New-Object System.Collections.Generic.HashSet[string]
+  $aggDia['trad'].Keys | ForEach-Object { [void]$newDiaTrad.Add(($_ -split '\|', 2)[0]) }
+  Merge-Semanal $oldDia12431      $outDia12431 $newDia12431
+  Merge-Semanal $oldDiaTrad       $outDiaTrad  $newDiaTrad
 }
 
 # 5. PL_Gestores.csv - PL mais recente por gestor (12431 + Trad somados), consumido pela aba Gestores do app.
@@ -693,6 +785,10 @@ Write-Host ("    $outFun12431  (semanal por fundo: $nFun12431 linhas)") -Foregro
 Write-Host ("    $outFunTrad  (semanal por fundo: $nFunTrad linhas)")  -ForegroundColor Yellow
 Write-Host ("    $outFundos12431  (fundos: $nFundos12431)") -ForegroundColor Yellow
 Write-Host ("    $outFundosTrad  (fundos: $nFundosTrad)")  -ForegroundColor Yellow
+Write-Host ("    $outDia12431  (diario: $nDia12431 linhas)") -ForegroundColor Yellow
+Write-Host ("    $outDiaTrad  (diario: $nDiaTrad linhas)")  -ForegroundColor Yellow
+Write-Host ("    $outPerf12431  (perf diaria: $nPerf12431 linhas)") -ForegroundColor Yellow
+Write-Host ("    $outPerfTrad  (perf diaria: $nPerfTrad linhas)")  -ForegroundColor Yellow
 Write-Host ("    $outPlGestores  ($($plByGestor.Count) gestoras)") -ForegroundColor Yellow
 Write-Host ""
 Write-Host "  Proximo: revise os CSVs, troque FLUXO_IS_MOCK para false em src/hooks/useFluxo.js e publique." -ForegroundColor White

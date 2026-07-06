@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback, useEffect, Suspense } from 'react'
 import { useDebentures, BLC_DEFAULT_URL } from './hooks/useDebentures.js'
-import { useAtualizacaoResumo } from './hooks/useAtualizacaoResumo.js'
+import { useDailyReports } from './hooks/useDailyReports.js'
 import {
   buildIndexes, buildBlcIndex, buildAnbimaIndex, buildPlByGestor,
   enrichDebenture, computeManagers, computeGroups, recomputeAlocByGestor
@@ -14,8 +14,10 @@ import AssetModal from './components/AssetModal.jsx'
 import ManagerRanking from './components/ManagerRanking.jsx'
 import GroupRanking from './components/GroupRanking.jsx'
 import MonthSelector from './components/MonthSelector.jsx'
-import AtualizacaoResumoModal from './components/AtualizacaoResumoModal.jsx'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
+
+// Resumo do Dia (modal do relógio) — carregado sob demanda.
+const ResumoDoDiaModal = lazyWithRetry(() => import('./components/ResumoDoDiaModal.jsx'))
 
 // Aba Captação carregada sob demanda (Recharts só entra ao abrir a aba).
 // lazyWithRetry: re-tenta o import se o chunk falhar (evita tela em branco).
@@ -56,7 +58,8 @@ export default function App() {
   const [selectedAsset, setSelected]  = useState(null)
   const [showMonths, setShowMonths]   = useState(false)
   const [showResumo, setShowResumo]   = useState(false)
-  const { resumo } = useAtualizacaoResumo()
+  const [resumoDate, setResumoDate]   = useState('')
+  const { index: reportsIndex, report, loadingReport, loadReport } = useDailyReports()
   const [showAll, setShowAll]         = useState(false)
   const [desktop, setDesktop]         = useState(() => {
     try { return localStorage.getItem('view-desktop') === '1' && window.innerWidth >= 700 } catch { return false }
@@ -274,8 +277,12 @@ export default function App() {
         onToggleView={toggleDesktop}
         section={section}
         onSection={selectSection}
-        hasResumo={!!resumo}
-        onOpenResumo={() => setShowResumo(true)}
+        hasResumo={!!reportsIndex}
+        onOpenResumo={() => {
+          const first = reportsIndex?.reports?.[0]?.date
+          if (first) { setResumoDate(first); loadReport(first) }
+          setShowResumo(true)
+        }}
       />
 
       {/* Filters + tabs scroll together as one sticky block */}
@@ -431,8 +438,17 @@ export default function App() {
         />
       )}
 
-      {showResumo && resumo && (
-        <AtualizacaoResumoModal resumo={resumo} onClose={() => setShowResumo(false)} />
+      {showResumo && reportsIndex && (
+        <Suspense fallback={null}>
+          <ResumoDoDiaModal
+            index={reportsIndex}
+            report={report}
+            loadingReport={loadingReport}
+            selectedDate={resumoDate}
+            onSelectDate={d => { setResumoDate(d); loadReport(d) }}
+            onClose={() => setShowResumo(false)}
+          />
+        </Suspense>
       )}
 
     </div>

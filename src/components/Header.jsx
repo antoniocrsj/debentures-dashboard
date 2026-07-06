@@ -81,15 +81,15 @@ export default function Header({
         </nav>
       )}
 
-      {/* Resumo da última atualização: visível em desktop e compacto (não é uma
-          "seção" de navegação, é um atalho pontual) — só aparece quando o
-          arquivo existe (useAtualizacaoResumo retornou algo). */}
+      {/* Resumo do Dia: visível em desktop e compacto (não é uma "seção" de
+          navegação, é um atalho pontual) — só aparece quando há relatórios
+          diários gerados (useDailyReports retornou o índice). */}
       {hasResumo && (
         <button
           type="button"
           className="section-btn"
-          aria-label="Última atualização"
-          title="Última atualização"
+          aria-label="Resumo do Dia"
+          title="Resumo do Dia"
           onClick={onOpenResumo}
         >
           <ResumoIcon />

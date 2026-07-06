@@ -347,6 +347,7 @@ export default defineConfig({
             else if (/^\d{6}$/.test(String(body.blcMesAno || ''))) args.push('-BlcMesAno', String(body.blcMesAno))
             if (body.skipAnbima)     args.push('-SkipAnbima')
             if (body.skipOfertas)    args.push('-SkipOfertas')
+            if (body.skipRelatorios) args.push('-SkipRelatorios')
             const { cmd, args: psArgs } = psCommand(path.join(TOOLS_DIR, 'atualizar-tudo.ps1'), args)
             const run = await runSequence('atualizar-tudo', [{ cmd, args: psArgs }])
             return sendJson(res, 200, { id: run.id })

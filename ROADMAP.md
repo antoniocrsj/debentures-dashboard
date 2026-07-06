@@ -54,6 +54,7 @@ O app tem **duas seções**: **Debêntures** e **Captação**. Cada tabela receb
 | **CAP-3** | Coluna **PL** na **C1** (Gestores da Captação) | Captação | Baixa | Baixo | Média | ✅ Concluído |
 | **GER-2** | Navegação por **ícones** entre seções no app compacto | Geral | Média | Baixo–Médio | Média–Alta | ✅ Concluído |
 | **GER-3** | Painel de controle da atualização (dev) + resumo no header | Geral | Alta | Médio–Alto | Média–Alta | ✅ Concluído |
+| **GER-4** | **Resumo do Dia** — relatório diário por data dos dados (botão do relógio) | Geral | Alta | Alto | Alta | ✅ Concluído |
 | **DEB-1** | Enriquecer o **Modal do Ativo** (janela (i)) | Debêntures | Baixa–Média | Baixo | Média–Alta | ⏸️ Pausado |
 | **CAP-1** | **Performance** dos fundos (rentabilidade %CDI por gestor) | Captação | Alta | Médio–Alto | Alta | ✅ Concluído |
 | **CAP-2** | Regra de seleção do universo de fundos via dados **CVM** | Captação | Alta | Alto | Alta | 🔵 Fase 2 (fundacional) |
