@@ -142,12 +142,59 @@ function aggDiaSegmento(rows, dia) {
   }
   return { dia, captacao: cap, resgate: res, liquido: cap - res, pl, numFundos: Math.round(nf) }
 }
-function buildCaptacao(src, sourceDates) {
+// O ultimo dia do Informe Diario da CVM quase sempre chega incompleto (os fundos
+// reportam com defasagem). Detectamos "dias parciais" pela cobertura (nº de fundos
+// que reportaram) e, para captacao/gestores/performance, usamos o ultimo dia
+// COMPLETO <= D -- nunca um dia parcial que enganaria a leitura.
+const COBERTURA_MIN_FRAC = 0.5
+
+function coberturaPorDia(rows, diaCol, contaFn) {
+  const m = new Map()
+  for (const r of rows || []) {
+    const k = (parseDia(r[diaCol]) || {}).key
+    if (!k) continue
+    m.set(k, (m.get(k) || 0) + contaFn(r))
+  }
+  return m
+}
+
+function mediana(nums) {
+  const a = nums.filter(n => n > 0).sort((x, y) => x - y)
+  if (!a.length) return 0
+  const mid = Math.floor(a.length / 2)
+  return a.length % 2 ? a[mid] : (a[mid - 1] + a[mid]) / 2
+}
+
+// Resolve, para uma base diaria de fluxo, o ultimo dia completo <= D, o dia
+// completo anterior (para comparar), e o dia parcial mais recente que foi pulado.
+function resolverDiaFluxo(cov, D) {
+  const med = mediana([...cov.values()])
+  const limite = med * COBERTURA_MIN_FRAC
+  const completos = [...cov.keys()].filter(k => k <= D && cov.get(k) >= limite).sort()
+  const atual = completos.length ? completos[completos.length - 1] : null
+  const anterior = completos.length > 1 ? completos[completos.length - 2] : null
+  const pulados = [...cov.keys()].filter(k => k <= D && (!atual || k > atual)).sort()
+  const parcialRecente = pulados.length
+    ? { dia: pulados[pulados.length - 1], cobertura: cov.get(pulados[pulados.length - 1]), normal: Math.round(med) }
+    : null
+  return { atual, anterior, parcialRecente }
+}
+
+// Datas de fluxo (captacao/perf) por segmento, ja resolvidas para dias completos.
+function resolverFluxos(src, D) {
+  return {
+    cap12431:  resolverDiaFluxo(coberturaPorDia(src.dia['12431'], 'Dia', r => parseNum(r.Num_Fundos)), D),
+    capTrad:   resolverDiaFluxo(coberturaPorDia(src.dia.trad,    'Dia', r => parseNum(r.Num_Fundos)), D),
+    perf12431: resolverDiaFluxo(coberturaPorDia(src.perf['12431'], 'Dia', () => 1), D),
+    perfTrad:  resolverDiaFluxo(coberturaPorDia(src.perf.trad,    'Dia', () => 1), D),
+  }
+}
+
+function buildCaptacao(src, flow) {
   const out = {}
   for (const [seg, key] of [['12431', 'cap12431'], ['trad', 'capTrad']]) {
-    const dias = distinctDates(src.dia[seg], 'Dia')
-    const atual = sourceDates[key]
-    const anterior = previousDate(dias, atual)
+    const atual = flow[key].atual
+    const anterior = flow[key].anterior
     const cur = atual ? aggDiaSegmento(src.dia[seg], atual) : null
     const prev = anterior ? aggDiaSegmento(src.dia[seg], anterior) : null
     out[seg] = cur ? { ...cur, anterior: prev } : null
@@ -294,8 +341,19 @@ function buildInclusoes(src, D, secDeb) {
 }
 
 // §9 Alertas de qualidade.
-function buildAlertas(src, D, sections) {
+function buildAlertas(src, D, sections, flow) {
   const alertas = []
+  // Dia parcial do Informe Diario: avisa quando o dia mais recente veio incompleto
+  // e a captacao/performance estao exibindo o ultimo dia completo.
+  for (const [key, rotulo] of [['cap12431', 'Incentivados'], ['capTrad', 'Tradicional']]) {
+    const pr = flow?.[key]?.parcialRecente
+    if (pr && flow[key].atual) {
+      alertas.push({
+        tipo: 'dia-parcial',
+        texto: `Dia ${fmtDia(pr.dia)} parcial no segmento ${rotulo} (${pr.cobertura} fundos vs ~${pr.normal}); captacao/performance exibem ${fmtDia(flow[key].atual)} (ultimo dia completo)`,
+      })
+    }
+  }
   // BLC com ativos que nao existem em Debentures.csv.
   const tickersDeb = new Set(src.debentures.map(r => (r['Codigo do Ativo'] || '').trim()).filter(Boolean))
   const semCadastro = new Set()
@@ -318,25 +376,28 @@ function buildAlertas(src, D, sections) {
 // ─── Monta um relatorio completo para a data D ─────────────────────────────
 function buildReport(src, D, allDates) {
   const sd = perSourceDates(src)
+  // Fluxo (captacao/perf) resolvido para o ultimo dia COMPLETO <= D (pula dias
+  // parciais do Informe Diario); as demais fontes usam a data mais recente <= D.
+  const flow = resolverFluxos(src, D)
   const sourceDates = {
     debentures: sourceDateFor(sd.debentures, D),
-    cap12431: sourceDateFor(sd.cap12431, D),
-    capTrad: sourceDateFor(sd.capTrad, D),
-    perf12431: sourceDateFor(sd.perf12431, D),
-    perfTrad: sourceDateFor(sd.perfTrad, D),
+    cap12431: flow.cap12431.atual,
+    capTrad: flow.capTrad.atual,
+    perf12431: flow.perf12431.atual,
+    perfTrad: flow.perfTrad.atual,
     anbima: sourceDateFor(sd.anbima, D),
     blc: sourceDateFor(sd.blc, D),
     fundos: sourceDateFor(sd.fundos, D),
   }
   const debentures = buildDebentures(src, D)
-  const captacao = buildCaptacao(src, sourceDates)
+  const captacao = buildCaptacao(src, flow)
   const gestores = buildGestores(src, sourceDates)
   const anbima = buildAnbima(src, sourceDates)
   const fundos = buildFundos(src, D)
   const perf = buildPerf(src, sourceDates)
   const inclusoes = buildInclusoes(src, D, debentures)
   const sections = { debentures, captacao, gestores, anbima, fundos, perf, inclusoes }
-  const alertas = buildAlertas(src, D, sections)
+  const alertas = buildAlertas(src, D, sections, flow)
   const summaryInput = {
     debentures, captacao,
     gestores: {
