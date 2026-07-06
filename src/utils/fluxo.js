@@ -280,6 +280,106 @@ export function mergeRentabilidade(ranking, rentMap) {
   })
 }
 
+// ───────────────────────── Fundos de um gestor (Captação) ─────────────────────────
+// Base semanal POR FUNDO (Fluxo_Semanal_Fundos_*.csv): mesma estrutura da base de
+// gestores, com CNPJ_Fundo no lugar. Alimenta a tabela que abre ao clicar numa
+// gestora — as colunas de fluxo reagem ao período pelo MESMO caminho de cálculo do
+// ranking de gestores (filterFluxo + aggregate), então os fundos somam o total do
+// gestor. O %CDI de cada fundo (do próprio fundo) vem de Fluxo_Fundos_*.csv.
+
+/** Normaliza uma linha da base semanal por fundo. */
+export function normalizeFundoRow(row) {
+  const wk = parseSemana(row.Semana ?? row.semana)
+  const cnpj = String(row.CNPJ_Fundo ?? row.cnpj ?? '').replace(/\D/g, '')
+  if (!wk || !cnpj) return null
+  const captacao = Math.abs(parseNum(row.Captacao))
+  const resgate  = Math.abs(parseNum(row.Resgate))
+  const base = parseSemana(row.DataBase ?? row.dataBase)
+  return {
+    weekKey: wk.key,
+    weekDate: wk.date,
+    dataBase: base ? base.key : wk.key,
+    cnpj,
+    gestor: String(row.Gestor_Apelido ?? row.gestor ?? '').trim(),
+    captacao,
+    resgate,
+    liquido: captacao - resgate,
+    plSemana: parseNum(row.PL_Medio),
+  }
+}
+
+export function normalizeFluxoFundos(rawRows) {
+  const rows = []
+  for (const r of rawRows || []) { const n = normalizeFundoRow(r); if (n) rows.push(n) }
+  rows.sort((a, b) => a.weekDate - b.weekDate)
+  return rows
+}
+
+/** Filtra linhas de fundo por gestor e intervalo [start, end] (mesma lógica de filterFluxo). */
+export function filterFundos(rows, { gestor = '', start = null, end = null } = {}) {
+  return (rows || []).filter(r => {
+    if (gestor && r.gestor !== gestor) return false
+    if (start && r.weekDate < start) return false
+    if (end && r.weekDate > end) return false
+    return true
+  })
+}
+
+/** Agrega por fundo (soma sobre o recorte), espelhando aggregateByGestor. */
+export function aggregateByFundo(rows) {
+  const map = new Map()
+  for (const r of rows || []) {
+    let f = map.get(r.cnpj)
+    if (!f) { f = { cnpj: r.cnpj, gestor: r.gestor, captacao: 0, resgate: 0, lastDate: null, lastPL: 0 }; map.set(r.cnpj, f) }
+    f.captacao += r.captacao
+    f.resgate  += r.resgate
+    if (!f.lastDate || r.weekDate > f.lastDate) { f.lastDate = r.weekDate; f.lastPL = r.plSemana }
+  }
+  return [...map.values()].map(f => ({
+    cnpj: f.cnpj,
+    gestor: f.gestor,
+    captacao: f.captacao,
+    resgate: f.resgate,
+    liquido: f.captacao - f.resgate,
+    plRecente: f.lastPL,
+  }))
+}
+
+/** Mapa CNPJ → { nome, gestor, pctCdi* }, a partir do CSV Fluxo_Fundos_*.csv. */
+export function normalizeFundosMeta(rawRows) {
+  const map = new Map()
+  for (const r of rawRows || []) {
+    const cnpj = String(r.CNPJ_Fundo ?? r.cnpj ?? '').replace(/\D/g, '')
+    if (!cnpj) continue
+    map.set(cnpj, {
+      nome: String(r.Nome_Fundo ?? r.nome ?? '').trim(),
+      gestor: String(r.Gestor_Apelido ?? r.gestor ?? '').trim(),
+      pctCdi1s:  numOrNull(r.PctCDI_1s),
+      pctCdi1m:  numOrNull(r.PctCDI_1m),
+      pctCdi3m:  numOrNull(r.PctCDI_3m),
+      pctCdi6m:  numOrNull(r.PctCDI_6m),
+      pctCdi12m: numOrNull(r.PctCDI_12m),
+    })
+  }
+  return map
+}
+
+/** Junta nome + %CDI (do próprio fundo) nas linhas agregadas por fundo. */
+export function mergeFundos(fundoRows, metaMap) {
+  return (fundoRows || []).map(f => {
+    const m = metaMap?.get(f.cnpj)
+    return {
+      ...f,
+      nome: m?.nome || f.cnpj,
+      pctCdi1s:  m ? m.pctCdi1s  : null,
+      pctCdi1m:  m ? m.pctCdi1m  : null,
+      pctCdi3m:  m ? m.pctCdi3m  : null,
+      pctCdi6m:  m ? m.pctCdi6m  : null,
+      pctCdi12m: m ? m.pctCdi12m : null,
+    }
+  })
+}
+
 /** Indicadores agregados do período (cards). */
 export function computeCards(rows) {
   const weeks = aggregateByWeek(rows)

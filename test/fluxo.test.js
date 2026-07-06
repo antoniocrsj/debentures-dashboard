@@ -9,6 +9,7 @@ import {
   fmtFluxo, fmtFluxoSigned,
   parseMes, normalizeMonthRow, filterMensal, aggregateByMonth,
   normalizeRentabilidade, mergeRentabilidade,
+  normalizeFluxoFundos, filterFundos, aggregateByFundo, normalizeFundosMeta, mergeFundos,
 } from '../src/utils/fluxo.js'
 
 const norm = s => s.replace(/ /g, ' ')   // troca espaço não-separável por comum
@@ -136,6 +137,49 @@ test('mergeRentabilidade: junta por gestor; sem match vira null, não quebra a l
   assert.equal(a.pctCdi3m, null)
   assert.equal(b.pctCdi1s, null)   // B nao esta' no rentMap
   assert.equal(b.captacao, ranking.find(x => x.gestor === 'B').captacao) // resto da linha intacto
+})
+
+const FUNDOS = normalizeFluxoFundos([
+  { Semana: '2026-01-05', CNPJ_Fundo: '11.111/0001-11', Gestor_Apelido: 'A', Captacao: '1000', Resgate: '200', PL_Medio: '10000' },
+  { Semana: '2026-01-12', CNPJ_Fundo: '11.111/0001-11', Gestor_Apelido: 'A', Captacao: '500',  Resgate: '100', PL_Medio: '11000' },
+  { Semana: '2026-01-05', CNPJ_Fundo: '22.222/0001-22', Gestor_Apelido: 'A', Captacao: '300',  Resgate: '50',  PL_Medio: '4000' },
+  { Semana: '2026-01-05', CNPJ_Fundo: '33.333/0001-33', Gestor_Apelido: 'B', Captacao: '900',  Resgate: '0',   PL_Medio: '9000' },
+])
+
+test('normalizeFluxoFundos + filterFundos: CNPJ so digitos, filtra por gestor/período', () => {
+  assert.equal(FUNDOS.length, 4)
+  assert.equal(FUNDOS[0].cnpj, '11111000111')
+  const soA = filterFundos(FUNDOS, { gestor: 'A' })
+  assert.equal(soA.length, 3)
+  const desde12 = filterFundos(FUNDOS, { gestor: 'A', start: new Date(2026, 0, 10) })
+  assert.equal(desde12.length, 1)   // só a semana 12/01 do fundo 11111
+})
+
+test('aggregateByFundo: soma por fundo, líquido e PL recente; fundos somam o total do gestor', () => {
+  const fa = aggregateByFundo(filterFundos(FUNDOS, { gestor: 'A' }))
+  const f1 = fa.find(x => x.cnpj === '11111000111')
+  assert.equal(f1.captacao, 1500)      // 1000 + 500
+  assert.equal(f1.resgate, 300)
+  assert.equal(f1.liquido, 1200)
+  assert.equal(f1.plRecente, 11000)    // semana mais recente
+  // soma dos fundos de A = total do gestor A
+  const totalCap = fa.reduce((s, f) => s + f.captacao, 0)
+  assert.equal(totalCap, 1800)         // 1500 (11111) + 300 (22222)
+})
+
+test('mergeFundos: junta nome + %CDI do fundo; sem meta usa CNPJ e %CDI null', () => {
+  const meta = normalizeFundosMeta([
+    { CNPJ_Fundo: '11111000111', Nome_Fundo: 'Fundo Um', Gestor_Apelido: 'A', PctCDI_1s: '112,4', PctCDI_3m: '', PctCDI_12m: '104.8' },
+  ])
+  const merged = mergeFundos(aggregateByFundo(filterFundos(FUNDOS, { gestor: 'A' })), meta)
+  const f1 = merged.find(x => x.cnpj === '11111000111')
+  const f2 = merged.find(x => x.cnpj === '22222000122')
+  assert.equal(f1.nome, 'Fundo Um')
+  assert.equal(f1.pctCdi1s, 112.4)
+  assert.equal(f1.pctCdi3m, null)      // célula vazia = null
+  assert.equal(f1.pctCdi12m, 104.8)
+  assert.equal(f2.nome, '22222000122') // sem meta → cai pro CNPJ
+  assert.equal(f2.pctCdi1s, null)
 })
 
 test('sortRows: numérico por valor, nulos no fim, não muta a base', () => {

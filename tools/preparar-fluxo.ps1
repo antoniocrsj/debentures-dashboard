@@ -26,6 +26,13 @@
                     PctCDI_1s,PctCDI_1m,PctCDI_3m,PctCDI_6m,PctCDI_12m,DataBase
            (Retorno e PctCDI ja' em pontos percentuais, ex 1.23 = 1,23%. Celula
             vazia = sem historico suficiente para aquela janela ainda.)
+         Fluxo_Semanal_Fundos_12431.csv / Fluxo_Semanal_Trad.csv (por fundo)
+           Colunas: Semana,CNPJ_Fundo,Gestor_Apelido,Captacao,Resgate,PL_Medio,DataBase
+         Fluxo_Fundos_12431.csv / Fluxo_Fundos_Trad.csv (um registro por fundo)
+           Colunas: CNPJ_Fundo,Nome_Fundo,Gestor_Apelido,PctCDI_1s..PctCDI_12m
+           (%CDI do PROPRIO fundo - cota do fundo vs CDI, nao ponderado.)
+       Os dois arquivos por fundo alimentam a tabela de fundos que abre ao
+       clicar numa gestora na Captacao (mesmas colunas do ranking de gestores).
        Tambem grava public\PL_Gestores.csv (PL mais recente por gestor, consumido
        pela aba Gestores do app) e public\data\Fluxo_Atualizacao.json (resumo
        estruturado desta rodada, usado pelo painel de controle web).
@@ -215,6 +222,7 @@ $utf8Meta = New-Object System.Text.UTF8Encoding($false)
 [System.IO.File]::WriteAllText((Join-Path $OutDir 'Fluxo_Meta.json'), (($fluxoMeta | ConvertTo-Json -Depth 6) + "`r`n"), $utf8Meta)
 
 $agg      = @{ '12431' = @{}; 'trad' = @{} }
+$aggFundo = @{ '12431' = @{}; 'trad' = @{} }   # mesmo que $agg, mas por (semana|cnpj)
 $seen     = @{ '12431' = @{}; 'trad' = @{} }
 $weekMax  = @{ '12431' = @{}; 'trad' = @{} }
 $aggMonth = @{ '12431' = @{}; 'trad' = @{} }
@@ -222,6 +230,11 @@ $tipos    = @{ '12431' = $bridge12431.map; 'trad' = $bridgeCdi.map }
 # Serie diaria de cota+PL por fundo (necessaria pra rentabilidade - retorno nao
 # e' soma, precisa da cota dia a dia). $quotaSeries[$tipo][$cnpj][dataYyyyMmDd] = @{quota=;pl=}
 $quotaSeries = @{ '12431' = @{}; 'trad' = @{} }
+
+# Mapa CNPJ_FUNDO_CLASSE -> DENOM_SOCIAL (nome do fundo), lido das listas locais.
+$nomeFundo = @{ '12431' = @{}; 'trad' = @{} }
+foreach ($r in (Read-FundosRows (Join-Path $PSScriptRoot 'Fundos_12431.csv') '12431')) { $nomeFundo['12431'][$r.Cnpj] = $r.Denom }
+foreach ($r in (Read-FundosRows (Join-Path $PSScriptRoot 'Fundos_CDI.csv')   'trad'))  { $nomeFundo['trad'][$r.Cnpj]  = $r.Denom }
 
 $mesesOk = @(); $mesesFalha = @(); $invalidas = 0; $minDate = $null; $maxDate = $null
 
@@ -280,6 +293,14 @@ foreach ($mes in $Meses) {
       $b.cap += $cap; $b.resg += [Math]::Abs($res); $b.plSum += $pl
       $b.dates[$dtRaw] = $true; $b.cnpjs[$cnpj] = $true
       $seen[$tipo][$cnpj] = $true
+
+      # Mesma agregacao semanal, mas por fundo (chave semana|cnpj) - alimenta a
+      # tabela de fundos que abre ao clicar numa gestora na Captacao.
+      $keyF = "$wkKey|$cnpj"
+      $bf = $aggFundo[$tipo][$keyF]
+      if (-not $bf) { $bf = @{ cap = 0.0; resg = 0.0; plSum = 0.0; dates = @{}; gestor = $gestor }; $aggFundo[$tipo][$keyF] = $bf }
+      $bf.cap += $cap; $bf.resg += [Math]::Abs($res); $bf.plSum += $pl
+      $bf.dates[$dtRaw] = $true
 
       $mk = ($dt.ToString('yyyy-MM')) + '|' + $gestor
       $mb = $aggMonth[$tipo][$mk]
@@ -414,6 +435,61 @@ foreach ($tipo in @('12431', 'trad')) {
   $rentPorTipo[$tipo] = $linhas
 }
 
+# Rentabilidade %CDI POR FUNDO (retorno da cota do proprio fundo, sem ponderar
+# pelo PL - diferente do gestor). Alimenta a tabela de fundos da Captacao.
+$rentFundoPorTipo = @{}
+foreach ($tipo in @('12431', 'trad')) {
+  $linhasF = @{}
+  foreach ($cnpj in $quotaSeries[$tipo].Keys) {
+    $serieFundo = $quotaSeries[$tipo][$cnpj]
+    if ($serieFundo.Count -lt 2) { continue }
+    $datasOrd = @($serieFundo.Keys | Sort-Object)
+    $retDatas = New-Object System.Collections.Generic.List[string]
+    $retVals  = New-Object System.Collections.Generic.List[double]
+    for ($i = 1; $i -lt $datasOrd.Count; $i++) {
+      $qPrev = $serieFundo[$datasOrd[$i - 1]].quota; $qCur = $serieFundo[$datasOrd[$i]].quota
+      if ($qPrev -gt 0) { $retDatas.Add($datasOrd[$i]); $retVals.Add(($qCur / $qPrev) - 1.0) }
+    }
+    if ($retDatas.Count -lt 1) { continue }
+    $fimRef = [datetime]::ParseExact($retDatas[$retDatas.Count - 1], 'yyyy-MM-dd', $null)
+    $linha = @{}
+    foreach ($jk in $ORDEM_JANELAS) {
+      $inicio = if ($JANELAS_DIAS.ContainsKey($jk)) { $fimRef.AddDays(-$JANELAS_DIAS[$jk]) } else { $fimRef.AddMonths(-$JANELAS_MESES[$jk]) }
+      $retFundo = Get-RetornoJanela $retDatas $retVals $inicio $fimRef
+      $retCdi = Get-CdiRetornoJanela $cdiMap $inicio $fimRef
+      $linha["pctcdi_$jk"] = if ($null -ne $retFundo -and $null -ne $retCdi -and $retCdi -ne 0) { ($retFundo / $retCdi) * 100.0 } else { $null }
+    }
+    $linhasF[$cnpj] = $linha
+  }
+  $rentFundoPorTipo[$tipo] = $linhasF
+}
+
+# Fluxo_Fundos_{tipo}.csv: um registro por fundo (nome + gestor + %CDI proprio).
+# Inclui todo fundo da curadoria que apareceu no Informe Diario ($seen), mesmo
+# sem %CDI (janelas vazias = sem historico suficiente na rodada).
+function Write-BaseFundosRentabilidade($tipo, $outFile) {
+  $sb = New-Object System.Text.StringBuilder
+  [void]$sb.AppendLine('CNPJ_Fundo,Nome_Fundo,Gestor_Apelido,PctCDI_1s,PctCDI_1m,PctCDI_3m,PctCDI_6m,PctCDI_12m')
+  $ci = [System.Globalization.CultureInfo]::InvariantCulture
+  $rent = $rentFundoPorTipo[$tipo]
+  $n = 0
+  foreach ($cnpj in ($seen[$tipo].Keys | Sort-Object)) {
+    $nome = if ($nomeFundo[$tipo].ContainsKey($cnpj)) { $nomeFundo[$tipo][$cnpj] } else { '' }
+    $gestor = if ($tipos[$tipo].ContainsKey($cnpj)) { $tipos[$tipo][$cnpj] } else { '' }
+    $cols = New-Object System.Collections.Generic.List[string]
+    $cols.Add($cnpj)
+    $cols.Add('"' + $nome.Replace('"', '""') + '"')
+    $cols.Add('"' + $gestor.Replace('"', '""') + '"')
+    $l = if ($rent.ContainsKey($cnpj)) { $rent[$cnpj] } else { @{} }
+    foreach ($jk in $ORDEM_JANELAS) { $cols.Add((Fmt-PctOuVazio $l["pctcdi_$jk"] $ci)) }
+    [void]$sb.AppendLine(($cols -join ','))
+    $n++
+  }
+  $utf8 = New-Object System.Text.UTF8Encoding($false)
+  [System.IO.File]::WriteAllText($outFile, $sb.ToString(), $utf8)
+  return $n
+}
+
 function Write-BaseRentabilidade($tipo, $outFile) {
   $sb = New-Object System.Text.StringBuilder
   [void]$sb.AppendLine('Gestor_Apelido,Retorno_1s,Retorno_1m,Retorno_3m,Retorno_6m,Retorno_12m,PctCDI_1s,PctCDI_1m,PctCDI_3m,PctCDI_6m,PctCDI_12m,DataBase')
@@ -456,6 +532,28 @@ function Write-Base($tipo, $outFile) {
   return $keys.Count
 }
 
+function Write-BaseFundos($tipo, $outFile) {
+  $sb = New-Object System.Text.StringBuilder
+  [void]$sb.AppendLine('Semana,CNPJ_Fundo,Gestor_Apelido,Captacao,Resgate,PL_Medio,DataBase')
+  $ci = [System.Globalization.CultureInfo]::InvariantCulture
+  $keys = $aggFundo[$tipo].Keys | Sort-Object
+  foreach ($k in $keys) {
+    $b = $aggFundo[$tipo][$k]
+    $parts = $k -split '\|', 2
+    $semana = $parts[0]; $cnpj = $parts[1]
+    $gestor = $b.gestor.Replace('"', '""')
+    $dataBase = if ($weekMax[$tipo].ContainsKey($semana)) { $weekMax[$tipo][$semana].ToString('yyyy-MM-dd') } else { $semana }
+    $nDates = [Math]::Max(1, $b.dates.Count)
+    $plMedio = [Math]::Round($b.plSum / $nDates, 2)
+    [void]$sb.AppendLine(('{0},{1},"{2}",{3},{4},{5},{6}' -f $semana, $cnpj, $gestor,
+      ([Math]::Round($b.cap,2)).ToString($ci), ([Math]::Round($b.resg,2)).ToString($ci),
+      $plMedio.ToString($ci), $dataBase))
+  }
+  $utf8 = New-Object System.Text.UTF8Encoding($false)
+  [System.IO.File]::WriteAllText($outFile, $sb.ToString(), $utf8)
+  return $keys.Count
+}
+
 function Write-BaseMensal($tipo, $outFile) {
   $sb = New-Object System.Text.StringBuilder
   [void]$sb.AppendLine('Mes,Gestor_Apelido,Captacao,Resgate,Liquido')
@@ -478,20 +576,27 @@ $out12431    = Join-Path $OutDir 'Fluxo_Semanal_12431.csv'
 $outTrad     = Join-Path $OutDir 'Fluxo_Semanal_Trad.csv'
 $outMes12431 = Join-Path $OutDir 'Fluxo_Mensal_12431.csv'
 $outMesTrad  = Join-Path $OutDir 'Fluxo_Mensal_Trad.csv'
+$outFun12431 = Join-Path $OutDir 'Fluxo_Semanal_Fundos_12431.csv'
+$outFunTrad  = Join-Path $OutDir 'Fluxo_Semanal_Fundos_Trad.csv'
 
 # Salva conteudo antigo ANTES de sobrescrever (necessario para o merge incremental)
 $oldSem12431 = @(); $oldSemTrad = @(); $oldMes12431Lines = @(); $oldMesTradLines = @()
+$oldFun12431 = @(); $oldFunTrad = @()
 if ($Incremental) {
   if (Test-Path $out12431)    { $oldSem12431      = [System.IO.File]::ReadAllLines($out12431) }
   if (Test-Path $outTrad)     { $oldSemTrad       = [System.IO.File]::ReadAllLines($outTrad) }
   if (Test-Path $outMes12431) { $oldMes12431Lines = [System.IO.File]::ReadAllLines($outMes12431) }
   if (Test-Path $outMesTrad)  { $oldMesTradLines  = [System.IO.File]::ReadAllLines($outMesTrad) }
+  if (Test-Path $outFun12431) { $oldFun12431      = [System.IO.File]::ReadAllLines($outFun12431) }
+  if (Test-Path $outFunTrad)  { $oldFunTrad       = [System.IO.File]::ReadAllLines($outFunTrad) }
 }
 
 $n12431    = Write-Base       '12431' $out12431
 $nTrad     = Write-Base       'trad'  $outTrad
 $nMes12431 = Write-BaseMensal '12431' $outMes12431
 $nMesTrad  = Write-BaseMensal 'trad'  $outMesTrad
+$nFun12431 = Write-BaseFundos '12431' $outFun12431
+$nFunTrad  = Write-BaseFundos 'trad'  $outFunTrad
 
 # Rentabilidade nao e' mesclada com o historico (diferente de Semanal/Mensal):
 # cada janela (1s..12m) precisa da serie de cota do periodo INTEIRO presente
@@ -502,6 +607,13 @@ $outRent12431 = Join-Path $OutDir 'Fluxo_Rentabilidade_12431.csv'
 $outRentTrad  = Join-Path $OutDir 'Fluxo_Rentabilidade_Trad.csv'
 $nRent12431 = Write-BaseRentabilidade '12431' $outRent12431
 $nRentTrad  = Write-BaseRentabilidade 'trad'  $outRentTrad
+
+# Fluxo_Fundos (nome + gestor + %CDI proprio por fundo). Igual a rentabilidade
+# do gestor, NAO e' mesclado: so' lista os fundos vistos nesta rodada.
+$outFundos12431 = Join-Path $OutDir 'Fluxo_Fundos_12431.csv'
+$outFundosTrad  = Join-Path $OutDir 'Fluxo_Fundos_Trad.csv'
+$nFundos12431 = Write-BaseFundosRentabilidade '12431' $outFundos12431
+$nFundosTrad  = Write-BaseFundosRentabilidade 'trad'  $outFundosTrad
 
 if ($Incremental) {
   Step "Mesclando com historico existente..."
@@ -518,6 +630,9 @@ if ($Incremental) {
   Merge-Semanal $oldSemTrad       $outTrad     $newWeekTrad
   Merge-Mensal  $oldMes12431Lines $outMes12431 $newMonth12431
   Merge-Mensal  $oldMesTradLines  $outMesTrad  $newMonthTrad
+  # Base por fundo: mesma chave de semana (Merge-Semanal filtra pela 1a coluna).
+  Merge-Semanal $oldFun12431      $outFun12431 $newWeek12431
+  Merge-Semanal $oldFunTrad       $outFunTrad  $newWeekTrad
 }
 
 # 5. PL_Gestores.csv - PL mais recente por gestor (12431 + Trad somados), consumido pela aba Gestores do app.
@@ -574,6 +689,10 @@ Write-Host ("    $outMes12431  (mensal: $nMes12431 linhas)") -ForegroundColor Ye
 Write-Host ("    $outMesTrad  (mensal: $nMesTrad linhas)")  -ForegroundColor Yellow
 Write-Host ("    $outRent12431  (rentabilidade: $nRent12431 gestoras)") -ForegroundColor Yellow
 Write-Host ("    $outRentTrad  (rentabilidade: $nRentTrad gestoras)")  -ForegroundColor Yellow
+Write-Host ("    $outFun12431  (semanal por fundo: $nFun12431 linhas)") -ForegroundColor Yellow
+Write-Host ("    $outFunTrad  (semanal por fundo: $nFunTrad linhas)")  -ForegroundColor Yellow
+Write-Host ("    $outFundos12431  (fundos: $nFundos12431)") -ForegroundColor Yellow
+Write-Host ("    $outFundosTrad  (fundos: $nFundosTrad)")  -ForegroundColor Yellow
 Write-Host ("    $outPlGestores  ($($plByGestor.Count) gestoras)") -ForegroundColor Yellow
 Write-Host ""
 Write-Host "  Proximo: revise os CSVs, troque FLUXO_IS_MOCK para false em src/hooks/useFluxo.js e publique." -ForegroundColor White

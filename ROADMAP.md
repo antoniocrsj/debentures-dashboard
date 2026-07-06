@@ -35,9 +35,10 @@ O app tem **duas seções**: **Debêntures** e **Captação**. Cada tabela receb
 ### Seção Captação
 | Código | Nome | Componente | Colunas hoje |
 |--------|------|------------|--------------|
-| **C1** | Gestores (Captação) | `src/components/fluxo/GestorFlowRanking.jsx` | Gestor · Cap. Líquida · Captação · Resgate |
+| **C1** | Gestores (Captação) | `src/components/fluxo/GestorFlowRanking.jsx` | Gestor · Cap. Líquida · Captação · Resgate · PL · %CDI 1s/1m/3m/6m/12m |
 | **C2** | Semanas | `src/components/fluxo/FluxoTable.jsx` | Semana · Cap. Líquida · Captação · Resgate |
 | **C3** | Meses | `src/components/fluxo/FluxoMonthlyTable.jsx` | Mês · Cap. Líquida · Captação · Resgate |
+| **C4** | Fundos do gestor | `src/components/fluxo/FundoFlowTable.jsx` | Fundo · Cap. Líquida · Captação · Resgate · PL · %CDI 1s/1m/3m/6m/12m *(abre ao clicar numa gestora na C1)* |
 
 > **Uso:** *"adiciona coluna X na **C1**"* ou *"ordena a **C3** por Captação"*.
 > A janela aberta pelo ícone **(i)** na **D1** é chamada de **Modal do Ativo**.

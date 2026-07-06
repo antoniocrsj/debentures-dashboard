@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { parseCSV } from '../utils/csv.js'
-import { normalizeFluxo, normalizeMensal, normalizeRentabilidade } from '../utils/fluxo.js'
+import { normalizeFluxo, normalizeMensal, normalizeRentabilidade, normalizeFluxoFundos, normalizeFundosMeta } from '../utils/fluxo.js'
 
 export const FLUXO_SOURCES = {
   '12431': '/data/Fluxo_Semanal_12431.csv',
@@ -15,6 +15,18 @@ export const FLUXO_SOURCES_MENSAL = {
 export const FLUXO_SOURCES_RENT = {
   '12431': '/data/Fluxo_Rentabilidade_12431.csv',
   trad: '/data/Fluxo_Rentabilidade_Trad.csv',
+}
+
+// Base semanal por fundo (flows que reagem ao período) + meta por fundo
+// (nome + %CDI do próprio fundo). Alimentam a tabela de fundos de um gestor.
+export const FLUXO_SOURCES_FUNDOS = {
+  '12431': '/data/Fluxo_Semanal_Fundos_12431.csv',
+  trad: '/data/Fluxo_Semanal_Fundos_Trad.csv',
+}
+
+export const FLUXO_SOURCES_FUNDOS_META = {
+  '12431': '/data/Fluxo_Fundos_12431.csv',
+  trad: '/data/Fluxo_Fundos_Trad.csv',
 }
 
 export const FLUXO_META_URL = '/data/Fluxo_Meta.json'
@@ -34,6 +46,8 @@ export function useFluxo(tipo) {
     monthly: [],
     meta: null,
     rentabilidade: new Map(),
+    fundosSemana: [],
+    fundosMeta: new Map(),
   })
   const reqId = useRef(0)
 
@@ -41,6 +55,8 @@ export function useFluxo(tipo) {
     const src = FLUXO_SOURCES[tipo]
     const srcMes = FLUXO_SOURCES_MENSAL[tipo]
     const srcRent = FLUXO_SOURCES_RENT[tipo]
+    const srcFun = FLUXO_SOURCES_FUNDOS[tipo]
+    const srcFunMeta = FLUXO_SOURCES_FUNDOS_META[tipo]
     const id = ++reqId.current
     setState(s => ({ ...s, loading: true, error: null }))
 
@@ -53,6 +69,8 @@ export function useFluxo(tipo) {
         monthly: [],
         meta: null,
         rentabilidade: new Map(),
+        fundosSemana: [],
+        fundosMeta: new Map(),
       })
       return
     }
@@ -89,10 +107,30 @@ export function useFluxo(tipo) {
         return null
       })
 
-    Promise.all([loadWeekly, loadMonthly, loadRent, loadMeta])
-      .then(([{ rows, invalid }, monthly, rentabilidade, meta]) => {
+    // Fundos de um gestor (tabela que abre ao clicar numa gestora) — opcionais:
+    // se faltarem/quebrarem, a Captação segue funcionando sem essa tabela.
+    const loadFundos = srcFun
+      ? fetch(srcFun)
+          .then(async res => (res.ok ? normalizeFluxoFundos(parseCSV(await res.text())) : []))
+          .catch(err => {
+            console.error(`[useFluxo] base por fundo indisponivel (${srcFun}):`, err)
+            return []
+          })
+      : Promise.resolve([])
+
+    const loadFundosMeta = srcFunMeta
+      ? fetch(srcFunMeta)
+          .then(async res => (res.ok ? normalizeFundosMeta(parseCSV(await res.text())) : new Map()))
+          .catch(err => {
+            console.error(`[useFluxo] meta por fundo indisponivel (${srcFunMeta}):`, err)
+            return new Map()
+          })
+      : Promise.resolve(new Map())
+
+    Promise.all([loadWeekly, loadMonthly, loadRent, loadMeta, loadFundos, loadFundosMeta])
+      .then(([{ rows, invalid }, monthly, rentabilidade, meta, fundosSemana, fundosMeta]) => {
         if (id === reqId.current) {
-          setState({ loading: false, error: null, rows, invalid, monthly, meta, rentabilidade })
+          setState({ loading: false, error: null, rows, invalid, monthly, meta, rentabilidade, fundosSemana, fundosMeta })
         }
       })
       .catch(err => {
@@ -106,6 +144,8 @@ export function useFluxo(tipo) {
             monthly: [],
             meta: null,
             rentabilidade: new Map(),
+            fundosSemana: [],
+            fundosMeta: new Map(),
           })
         }
       })

@@ -745,6 +745,10 @@ a { color: var(--primary); }
 .fluxo-ranking-block, .fluxo-table-block { margin-bottom: 18px; }
 .fluxo-table .col-num { text-align: center; white-space: nowrap; }
 .fluxo-table .col-gestor { white-space: nowrap; }
+/* Nome de fundo é longo: trunca com reticências, largura controlada. */
+.fluxo-fundos-block .col-gestor { max-width: 260px; }
+.fundo-nome { display: inline-block; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: bottom; }
+.fluxo-fundos-block { margin-top: 4px; }
 .liq-cell.pos { color: #047857; font-weight: 600; }
 .liq-cell.neg { color: #b91c1c; font-weight: 600; }
 .rent-cell.pos { color: #047857; font-weight: 600; }

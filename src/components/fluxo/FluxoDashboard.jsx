@@ -4,6 +4,7 @@ import {
   filterFluxo, aggregateByWeek, aggregateByGestor, computeCards,
   gestorOptions, startForMonths, periodBounds, fmtWeekFull, latestBaseDate,
   filterMensal, aggregateByMonth, mergeRentabilidade,
+  filterFundos, aggregateByFundo, mergeFundos,
 } from '../../utils/fluxo.js'
 import { lazyWithRetry } from '../../utils/lazyWithRetry.js'
 import FluxoFilters from './FluxoFilters.jsx'
@@ -11,6 +12,7 @@ import FluxoSummaryCards from './FluxoSummaryCards.jsx'
 import FluxoTable from './FluxoTable.jsx'
 import FluxoMonthlyTable from './FluxoMonthlyTable.jsx'
 import GestorFlowRanking from './GestorFlowRanking.jsx'
+import FundoFlowTable from './FundoFlowTable.jsx'
 
 // Recharts só carrega ao abrir a aba (preserva a carga inicial do app).
 // lazyWithRetry: re-tenta o import se o chunk do gráfico falhar.
@@ -24,7 +26,7 @@ export default function FluxoDashboard({ compact = false }) {
   const [gestor, setGestor] = useState('')
   const [months, setMonths] = useState(DEFAULT_MONTHS)   // null = todo o histórico
 
-  const { loading, error, rows, invalid, isMock, reload, monthly, meta, rentabilidade } = useFluxo(tipo)
+  const { loading, error, rows, invalid, isMock, reload, monthly, meta, rentabilidade, fundosSemana, fundosMeta } = useFluxo(tipo)
   const tipoLabel = FLUXO_TIPOS.find(t => t.id === tipo)?.label ?? tipo
 
   const gestores = useMemo(() => gestorOptions(rows), [rows])
@@ -58,6 +60,14 @@ export default function FluxoDashboard({ compact = false }) {
   const ranking = useMemo(
     () => (gestor ? [] : mergeRentabilidade(aggregateByGestor(filtered), rentabilidade)),
     [filtered, gestor, rentabilidade]
+  )
+  // Fundos do gestor selecionado: mesmo gestor/período da seção. Passa pela
+  // MESMA via de cálculo do ranking (filtra + agrega), então soma o total do gestor.
+  const fundosDoGestor = useMemo(
+    () => (gestor
+      ? mergeFundos(aggregateByFundo(filterFundos(fundosSemana, { gestor, start: effStart, end: effEnd })), fundosMeta)
+      : []),
+    [fundosSemana, fundosMeta, gestor, effStart, effEnd]
   )
 
   // Período efetivo (datas reais usadas) e data de referência da base do segmento
@@ -152,6 +162,9 @@ export default function FluxoDashboard({ compact = false }) {
             <FluxoTable weekly={weekly} />
             <FluxoMonthlyTable months={monthlyAgg} />
           </div>
+
+          {/* Ao filtrar por um gestor: lista de fundos que o compõem, mesmas colunas do ranking. */}
+          {gestor && <FundoFlowTable fundos={fundosDoGestor} gestor={gestor} />}
 
           {invalid > 0 && (
             <p className="fluxo-note">{invalid} linha(s) ignorada(s) por dados inválidos.</p>
