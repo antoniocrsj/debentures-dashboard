@@ -50,9 +50,11 @@ const PAGE_SIZE    = 100  // mostra os 100 mais recentes ao abrir
 export default function App() {
   const [months, setMonths]           = useState(loadMonths)
   const [monthIdx, setMonthIdx]       = useState(0)
-  const [tab, setTab]                 = useState(() =>
-    localStorage.getItem('view-desktop') === '1' && window.innerWidth >= 700 ? 'debentures' : 'ativos'
-  )
+  const [tab, setTab]                 = useState(() => {
+    // Atalho da area de trabalho: abre direto no painel (só em dev, onde ele existe).
+    if (import.meta.env.DEV && window.location.hash === '#atualizacao') return 'atualizacao'
+    return localStorage.getItem('view-desktop') === '1' && window.innerWidth >= 700 ? 'debentures' : 'ativos'
+  })
   const [filters, setFilters]         = useState(INIT_FILTERS)
   const [sort, setSort]               = useState(INIT_SORT)
   const [selectedAsset, setSelected]  = useState(null)
