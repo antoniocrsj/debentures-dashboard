@@ -1,12 +1,13 @@
 {
-    "timestamp":  "2026-07-05T20:16:50",
+    "timestamp":  "2026-07-05T21:07:32",
     "captacaoModo":  "Auto",
     "etapas":  {
                    "Debentures":  "OK",
                    "Fundos":  "PULADO por parametro -SkipFundos",
                    "Captacao":  "OK (incremental)",
                    "BLC":  "PULADO (mes 202602 ja registrado)",
-                   "ANBIMA":  "OK"
+                   "ANBIMA":  "OK",
+                   "Ofertas":  "OK (4 emissao(oes) registrada(s) na CVM ainda nao no cadastro)"
                },
     "impacto":  {
                     "fundos":  {
@@ -37,19 +38,19 @@
                                                                "depois":  "2026-06-29"
                                                            },
                                           "LiquidoRecente":  {
-                                                                 "antes":  -1041124095.4200004,
+                                                                 "antes":  -1298558373.6299996,
                                                                  "depois":  -1298558373.6299996
                                                              },
                                           "CaptacaoRecente":  {
-                                                                  "antes":  465691994.27999985,
+                                                                  "antes":  582846108.3,
                                                                   "depois":  582846108.3
                                                               },
                                           "ResgateRecente":  {
-                                                                 "antes":  1506816089.7000003,
+                                                                 "antes":  1881404481.9299996,
                                                                  "depois":  1881404481.9299996
                                                              },
                                           "PLRecente":  {
-                                                            "antes":  318869577736.2099,
+                                                            "antes":  313987859482.74,
                                                             "depois":  313987859482.74
                                                         }
                                       },
@@ -67,19 +68,19 @@
                                                               "depois":  "2026-06-29"
                                                           },
                                          "LiquidoRecente":  {
-                                                                "antes":  -800630336.72999954,
+                                                                "antes":  -1014730740.050005,
                                                                 "depois":  -1014730740.050005
                                                             },
                                          "CaptacaoRecente":  {
-                                                                 "antes":  5281071917.8900013,
+                                                                 "antes":  6809706854.1899958,
                                                                  "depois":  6809706854.1899958
                                                              },
                                          "ResgateRecente":  {
-                                                                "antes":  6081702254.6200008,
+                                                                "antes":  7824437594.2400007,
                                                                 "depois":  7824437594.2400007
                                                             },
                                          "PLRecente":  {
-                                                           "antes":  1080690969384.7599,
+                                                           "antes":  1076974256089.4104,
                                                            "depois":  1076974256089.4104
                                                        }
                                      },
@@ -133,5 +134,39 @@
                                                    "depois":  1220
                                                }
                                }
-                }
+                },
+    "novasEmissoes":  [
+                          {
+                              "dataRegistro":  "2026-06-26",
+                              "emissor":  "VITAL ENGENHARIA AMBIENTAL S.A.",
+                              "emissao":  4,
+                              "valor":  300000000,
+                              "incentivada":  false,
+                              "lider":  "XP INVESTIMENTOS CCTVM S.A."
+                          },
+                          {
+                              "dataRegistro":  "2026-06-29",
+                              "emissor":  "VERDE TRANSMISSAO DE ENERGIA S.A.",
+                              "emissao":  3,
+                              "valor":  1585000000,
+                              "incentivada":  false,
+                              "lider":  "BANCO NACIONAL DE DESENVOLVIMENTO ECONÔMICO E SOCIAL - BNDES"
+                          },
+                          {
+                              "dataRegistro":  "2026-06-29",
+                              "emissor":  "BURITI TRANSMISSAO DE ENERGIA S.A.",
+                              "emissao":  2,
+                              "valor":  618000000,
+                              "incentivada":  false,
+                              "lider":  "BANCO NACIONAL DE DESENVOLVIMENTO ECONÔMICO E SOCIAL - BNDES"
+                          },
+                          {
+                              "dataRegistro":  "2026-07-01",
+                              "emissor":  "IOCHPE MAXION SA",
+                              "emissao":  17,
+                              "valor":  400000000,
+                              "incentivada":  false,
+                              "lider":  "ITAU BBA ASSESSORIA FINANCEIRA S.A"
+                          }
+                      ]
 }
