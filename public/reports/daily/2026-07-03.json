@@ -4,15 +4,31 @@
   "previousDate": "2026-07-02",
   "sourceDates": {
     "debentures": "2026-07-02",
-    "cap12431": null,
-    "capTrad": null,
-    "perf12431": null,
-    "perfTrad": null,
+    "cap12431": "2026-07-03",
+    "capTrad": "2026-07-03",
+    "perf12431": "2026-07-03",
+    "perfTrad": "2026-07-03",
     "anbima": "2026-07-03",
-    "blc": null,
-    "fundos": null
+    "blc": "2026-07-03",
+    "fundos": "2026-07-03"
   },
   "summary": [
+    {
+      "texto": "Captação líquida Incentivados: −R$ 0 mi",
+      "tom": "neg"
+    },
+    {
+      "texto": "Captação líquida Tradicional: +R$ 0 mi",
+      "tom": "pos"
+    },
+    {
+      "texto": "Maior captação: Augme (+R$ 0 mi)",
+      "tom": "pos"
+    },
+    {
+      "texto": "Maior resgate: ASA (−R$ 0 mi)",
+      "tom": "neg"
+    },
     {
       "texto": "2 alerta(s) de qualidade",
       "tom": "warn"
@@ -25,14 +41,97 @@
       "temSnapshotAnterior": false
     },
     "captacao": {
-      "12431": null,
-      "trad": null
+      "12431": {
+        "dia": "2026-07-03",
+        "captacao": 22601.75,
+        "resgate": 127341.24,
+        "liquido": -104739.49,
+        "pl": 19732926784.18,
+        "numFundos": 12,
+        "anterior": {
+          "dia": "2026-07-02",
+          "captacao": 114027593.03,
+          "resgate": 363228273.68999994,
+          "liquido": -249200680.65999994,
+          "pl": 261023719005.23,
+          "numFundos": 1531
+        }
+      },
+      "trad": {
+        "dia": "2026-07-03",
+        "captacao": 1738910.64,
+        "resgate": 1273731.6800000002,
+        "liquido": 465178.95999999973,
+        "pl": 3662387261.4099994,
+        "numFundos": 16,
+        "anterior": {
+          "dia": "2026-07-02",
+          "captacao": 1524796225.9600008,
+          "resgate": 1651823895.9299998,
+          "liquido": -127027669.96999907,
+          "pl": 1057471501988.8097,
+          "numFundos": 793
+        }
+      }
     },
     "gestores": {
-      "top12431Captacao": [],
-      "top12431Resgate": [],
-      "topTradCaptacao": [],
-      "topTradResgate": []
+      "top12431Captacao": [
+        {
+          "gestor": "Augme",
+          "captacao": 4601.75,
+          "resgate": 0,
+          "liquido": 4601.75,
+          "pl": 84497772.24
+        }
+      ],
+      "top12431Resgate": [
+        {
+          "gestor": "ASA",
+          "captacao": 18000,
+          "resgate": 127341.24,
+          "liquido": -109341.24,
+          "pl": 94818778.49
+        }
+      ],
+      "topTradCaptacao": [
+        {
+          "gestor": "VLGI",
+          "captacao": 1580960.24,
+          "resgate": 490583.38,
+          "liquido": 1090376.8599999999,
+          "pl": 227848052.02
+        },
+        {
+          "gestor": "Porto Asset",
+          "captacao": 89000,
+          "resgate": 0,
+          "liquido": 89000,
+          "pl": 663926332.28
+        },
+        {
+          "gestor": "BNP",
+          "captacao": 19000,
+          "resgate": 0,
+          "liquido": 19000,
+          "pl": 138575746.68
+        }
+      ],
+      "topTradResgate": [
+        {
+          "gestor": "AZ Quest",
+          "captacao": 36850.4,
+          "resgate": 535948.3,
+          "liquido": -499097.9,
+          "pl": 607254919.31
+        },
+        {
+          "gestor": "Vinci",
+          "captacao": 13100,
+          "resgate": 247200,
+          "liquido": -234100,
+          "pl": 165243259.1
+        }
+      ]
     },
     "anbima": {
       "aberturas": [],
@@ -47,9 +146,91 @@
       "semAnterior": true
     },
     "perf": {
-      "top12431Pos": [],
+      "top12431Pos": [
+        {
+          "cnpj": "34370754000155",
+          "nome": "CORLETO PERTICARA FUNDO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA CRÉDITO PRIVADO",
+          "gestor": "XPG",
+          "segmento": "12431",
+          "retorno": 0.5665,
+          "pl": 26961490.01
+        },
+        {
+          "cnpj": "55089131000189",
+          "nome": "ASTERI CLASSE DE INVESTIMENTO INCENTIVADO EM INFRAESTRUTURA RENDA FIXA - RESP LIMITADA",
+          "gestor": "BTG WM",
+          "segmento": "12431",
+          "retorno": 0.5472,
+          "pl": 62395031.53
+        },
+        {
+          "cnpj": "59995885000159",
+          "nome": "NSEG2025 FUNDO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA CRÉDITO PRIVADO",
+          "gestor": "XPG",
+          "segmento": "12431",
+          "retorno": 0.4218,
+          "pl": 20334371.57
+        },
+        {
+          "cnpj": "57897828000101",
+          "nome": "PIRAQUARA FUNDO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA CRÉDITO PRIVADO",
+          "gestor": "XPG",
+          "segmento": "12431",
+          "retorno": 0.414,
+          "pl": 28766675.69
+        },
+        {
+          "cnpj": "47610743000147",
+          "nome": "BUDAPESTE CLASSE DE INVESTIMENTO RENDA  FIXA INCENTIVADO EM INFRAESTRUTURA - RESP LIMITADA",
+          "gestor": "ASA",
+          "segmento": "12431",
+          "retorno": 0.4031,
+          "pl": 26095722.58
+        }
+      ],
       "top12431Neg": [],
-      "topTradPos": [],
+      "topTradPos": [
+        {
+          "cnpj": "64142774000130",
+          "nome": "HNRQ CLASSE DE INVESTIMENTO RENDA FIXA INCENTIVADA EM INFRAESTRUTURA - RESPONSABILIDADE LIMITADA",
+          "gestor": "ASA",
+          "segmento": "trad",
+          "retorno": 0.5451,
+          "pl": 9237845.43
+        },
+        {
+          "cnpj": "03960349000163",
+          "nome": "UNIMED RV 15 FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO RESPONSABILIDADE LIMITADA",
+          "gestor": "Vinci",
+          "segmento": "trad",
+          "retorno": 0.1133,
+          "pl": 165243259.1
+        },
+        {
+          "cnpj": "33953262000120",
+          "nome": "SPS PREV CLASSE DE INVESTIMENTO  MULTIMERCADO CRÉDITO PRIVADO - RESP LIMITADA",
+          "gestor": "Berkana",
+          "segmento": "trad",
+          "retorno": 0.1089,
+          "pl": 34867458.17
+        },
+        {
+          "cnpj": "08868449000188",
+          "nome": "RHODES CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO - RESP LIMITADA",
+          "gestor": "ASA",
+          "segmento": "trad",
+          "retorno": 0.0857,
+          "pl": 48759651.02
+        },
+        {
+          "cnpj": "45494496000135",
+          "nome": "AZ QUEST LUCE PREV MASTER FIFE FIF RENDA FIXA CRÉDITO PRIVADO RESP LIMITADA",
+          "gestor": "AZ Quest",
+          "segmento": "trad",
+          "retorno": 0.0653,
+          "pl": 607254919.31
+        }
+      ],
       "topTradNeg": []
     },
     "inclusoes": {

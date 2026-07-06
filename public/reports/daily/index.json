@@ -7,13 +7,13 @@
       "html": "/reports/daily/2026-07-03.html",
       "sourceDates": {
         "debentures": "2026-07-02",
-        "cap12431": null,
-        "capTrad": null,
-        "perf12431": null,
-        "perfTrad": null,
+        "cap12431": "2026-07-03",
+        "capTrad": "2026-07-03",
+        "perf12431": "2026-07-03",
+        "perfTrad": "2026-07-03",
         "anbima": "2026-07-03",
-        "blc": null,
-        "fundos": null
+        "blc": "2026-07-03",
+        "fundos": "2026-07-03"
       }
     },
     {
@@ -23,10 +23,42 @@
       "html": "/reports/daily/2026-07-02.html",
       "sourceDates": {
         "debentures": "2026-07-02",
-        "cap12431": null,
-        "capTrad": null,
-        "perf12431": null,
-        "perfTrad": null,
+        "cap12431": "2026-07-02",
+        "capTrad": "2026-07-02",
+        "perf12431": "2026-07-02",
+        "perfTrad": "2026-07-02",
+        "anbima": null,
+        "blc": null,
+        "fundos": null
+      }
+    },
+    {
+      "date": "2026-07-01",
+      "label": "01/07/2026",
+      "json": "/reports/daily/2026-07-01.json",
+      "html": "/reports/daily/2026-07-01.html",
+      "sourceDates": {
+        "debentures": "2026-06-29",
+        "cap12431": "2026-07-01",
+        "capTrad": "2026-07-01",
+        "perf12431": "2026-07-01",
+        "perfTrad": "2026-07-01",
+        "anbima": null,
+        "blc": null,
+        "fundos": null
+      }
+    },
+    {
+      "date": "2026-06-30",
+      "label": "30/06/2026",
+      "json": "/reports/daily/2026-06-30.json",
+      "html": "/reports/daily/2026-06-30.html",
+      "sourceDates": {
+        "debentures": "2026-06-29",
+        "cap12431": "2026-06-30",
+        "capTrad": "2026-06-30",
+        "perf12431": "2026-06-30",
+        "perfTrad": "2026-06-30",
         "anbima": null,
         "blc": null,
         "fundos": null
@@ -39,42 +71,10 @@
       "html": "/reports/daily/2026-06-29.html",
       "sourceDates": {
         "debentures": "2026-06-29",
-        "cap12431": null,
-        "capTrad": null,
-        "perf12431": null,
-        "perfTrad": null,
-        "anbima": null,
-        "blc": null,
-        "fundos": null
-      }
-    },
-    {
-      "date": "2026-06-26",
-      "label": "26/06/2026",
-      "json": "/reports/daily/2026-06-26.json",
-      "html": "/reports/daily/2026-06-26.html",
-      "sourceDates": {
-        "debentures": "2026-06-26",
-        "cap12431": null,
-        "capTrad": null,
-        "perf12431": null,
-        "perfTrad": null,
-        "anbima": null,
-        "blc": null,
-        "fundos": null
-      }
-    },
-    {
-      "date": "2026-06-25",
-      "label": "25/06/2026",
-      "json": "/reports/daily/2026-06-25.json",
-      "html": "/reports/daily/2026-06-25.html",
-      "sourceDates": {
-        "debentures": "2026-06-25",
-        "cap12431": null,
-        "capTrad": null,
-        "perf12431": null,
-        "perfTrad": null,
+        "cap12431": "2026-06-29",
+        "capTrad": "2026-06-29",
+        "perf12431": "2026-06-29",
+        "perfTrad": "2026-06-29",
         "anbima": null,
         "blc": null,
         "fundos": null

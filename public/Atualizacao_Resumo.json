@@ -1,10 +1,10 @@
 {
-    "timestamp":  "2026-07-06T13:14:31",
+    "timestamp":  "2026-07-06T13:25:34",
     "captacaoModo":  "Auto",
     "etapas":  {
                    "Debentures":  "PULADO",
                    "Fundos":  "PULADO por parametro -SkipFundos",
-                   "Captacao":  "PULADO",
+                   "Captacao":  "OK (incremental)",
                    "BLC":  "PULADO",
                    "ANBIMA":  "PULADO por parametro -SkipAnbima",
                    "Ofertas":  "PULADO por parametro -SkipOfertas"

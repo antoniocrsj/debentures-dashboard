@@ -1,0 +1,425 @@
+{
+  "date": "2026-07-01",
+  "label": "01/07/2026",
+  "previousDate": "2026-06-30",
+  "sourceDates": {
+    "debentures": "2026-06-29",
+    "cap12431": "2026-07-01",
+    "capTrad": "2026-07-01",
+    "perf12431": "2026-07-01",
+    "perfTrad": "2026-07-01",
+    "anbima": null,
+    "blc": null,
+    "fundos": null
+  },
+  "summary": [
+    {
+      "texto": "Captação líquida Incentivados: −R$ 99 mi",
+      "tom": "neg"
+    },
+    {
+      "texto": "Captação líquida Tradicional: −R$ 187 mi",
+      "tom": "neg"
+    },
+    {
+      "texto": "Maior captação: Absolute (+R$ 41 mi)",
+      "tom": "pos"
+    },
+    {
+      "texto": "Maior resgate: SAM (−R$ 41 mi)",
+      "tom": "neg"
+    },
+    {
+      "texto": "2 alerta(s) de qualidade",
+      "tom": "warn"
+    }
+  ],
+  "sections": {
+    "debentures": {
+      "novas": [],
+      "saidas": [],
+      "temSnapshotAnterior": false
+    },
+    "captacao": {
+      "12431": {
+        "dia": "2026-07-01",
+        "captacao": 199936846.42999998,
+        "resgate": 298645575.61999995,
+        "liquido": -98708729.18999997,
+        "pl": 276015791415.32,
+        "numFundos": 1599,
+        "anterior": {
+          "dia": "2026-06-30",
+          "captacao": 207177296.21000004,
+          "resgate": 369195433.8800001,
+          "liquido": -162018137.67000008,
+          "pl": 298430137806.88007,
+          "numFundos": 1588
+        }
+      },
+      "trad": {
+        "dia": "2026-07-01",
+        "captacao": 1700321212.84,
+        "resgate": 1887047992.2400002,
+        "liquido": -186726779.40000033,
+        "pl": 1079465762162.5706,
+        "numFundos": 812,
+        "anterior": {
+          "dia": "2026-06-30",
+          "captacao": 1858026211.0200005,
+          "resgate": 2321032207.649999,
+          "liquido": -463005996.6299987,
+          "pl": 1080056528451.6704,
+          "numFundos": 813
+        }
+      }
+    },
+    "gestores": {
+      "top12431Captacao": [
+        {
+          "gestor": "Absolute",
+          "captacao": 67948676.93,
+          "resgate": 27126744.27,
+          "liquido": 40821932.66000001,
+          "pl": 11335272268.91
+        },
+        {
+          "gestor": "JGP",
+          "captacao": 14663873.89,
+          "resgate": 2015923.69,
+          "liquido": 12647950.200000001,
+          "pl": 3690691016.97
+        },
+        {
+          "gestor": "IAM",
+          "captacao": 67263727.75,
+          "resgate": 56843124.49,
+          "liquido": 10420603.259999998,
+          "pl": 55050228833.79
+        },
+        {
+          "gestor": "San WM",
+          "captacao": 8348616.11,
+          "resgate": 4596200,
+          "liquido": 3752416.1100000003,
+          "pl": 6541698700.45
+        },
+        {
+          "gestor": "EQI",
+          "captacao": 2045208.95,
+          "resgate": 335656.44,
+          "liquido": 1709552.51,
+          "pl": 102924022.03
+        }
+      ],
+      "top12431Resgate": [
+        {
+          "gestor": "SAM",
+          "captacao": 3451371.32,
+          "resgate": 44394640,
+          "liquido": -40943268.68,
+          "pl": 10612111266.13
+        },
+        {
+          "gestor": "Safra Asset",
+          "captacao": 3714290.76,
+          "resgate": 21744343.83,
+          "liquido": -18030053.07,
+          "pl": 9813030542.35
+        },
+        {
+          "gestor": "Icatu",
+          "captacao": 700528.12,
+          "resgate": 15752330.57,
+          "liquido": -15051802.450000001,
+          "pl": 4964449631.13
+        },
+        {
+          "gestor": "BB Asset",
+          "captacao": 1918215.28,
+          "resgate": 14247914.71,
+          "liquido": -12329699.430000002,
+          "pl": 20040145569.72
+        },
+        {
+          "gestor": "Legacy",
+          "captacao": 1911491.84,
+          "resgate": 12487574.04,
+          "liquido": -10576082.2,
+          "pl": 3708418734.83
+        }
+      ],
+      "topTradCaptacao": [
+        {
+          "gestor": "BB Asset",
+          "captacao": 802537577.9,
+          "resgate": 435664404.13,
+          "liquido": 366873173.77,
+          "pl": 209188927113.37
+        },
+        {
+          "gestor": "Chromo",
+          "captacao": 31491002.98,
+          "resgate": 2000,
+          "liquido": 31489002.98,
+          "pl": 85129127.43
+        },
+        {
+          "gestor": "Regia",
+          "captacao": 36680535.25,
+          "resgate": 11275947.53,
+          "liquido": 25404587.72,
+          "pl": 16797740050.16
+        },
+        {
+          "gestor": "SAM",
+          "captacao": 45518554.72,
+          "resgate": 22898115,
+          "liquido": 22620439.72,
+          "pl": 45507255322.18
+        },
+        {
+          "gestor": "BRAM",
+          "captacao": 140327748.11,
+          "resgate": 119397233.02,
+          "liquido": 20930515.09000002,
+          "pl": 100237981968.78
+        }
+      ],
+      "topTradResgate": [
+        {
+          "gestor": "XPG",
+          "captacao": 10574589.99,
+          "resgate": 386280507.2,
+          "liquido": -375705917.21,
+          "pl": 15773283378.27
+        },
+        {
+          "gestor": "Augme",
+          "captacao": 0,
+          "resgate": 90000000.02,
+          "liquido": -90000000.02,
+          "pl": 1725234613.97
+        },
+        {
+          "gestor": "IAM",
+          "captacao": 103443215.37,
+          "resgate": 185517779.91,
+          "liquido": -82074564.53999999,
+          "pl": 217324736321.7
+        },
+        {
+          "gestor": "BTG WM",
+          "captacao": 0,
+          "resgate": 31466519.43,
+          "liquido": -31466519.43,
+          "pl": 4267191975.37
+        },
+        {
+          "gestor": "Safra Asset",
+          "captacao": 67276069.97,
+          "resgate": 98116449.64,
+          "liquido": -30840379.67,
+          "pl": 52677346894.1
+        }
+      ]
+    },
+    "anbima": {
+      "aberturas": [],
+      "fechamentos": [],
+      "atual": null,
+      "anterior": null,
+      "semAnterior": true
+    },
+    "fundos": {
+      "novos": [],
+      "removidos": [],
+      "semAnterior": true
+    },
+    "perf": {
+      "top12431Pos": [
+        {
+          "cnpj": "54341666000132",
+          "nome": "V7 FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
+          "gestor": "BTG WM",
+          "segmento": "12431",
+          "retorno": 1.141,
+          "pl": 125331498.08
+        },
+        {
+          "cnpj": "62360992000115",
+          "nome": "BB MASTER II RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
+          "gestor": "BB Asset",
+          "segmento": "12431",
+          "retorno": 0.8426,
+          "pl": 340864773.57
+        },
+        {
+          "cnpj": "62805867000171",
+          "nome": "SANTANDER PB JFA INVESTIMENTO EM INFRA RENDA FIXA - FIF RESP LIMITADA",
+          "gestor": "San WM",
+          "segmento": "12431",
+          "retorno": 0.4134,
+          "pl": 22989945.06
+        },
+        {
+          "cnpj": "55384132000156",
+          "nome": "SAFRA INFRA CDI MASTER II FIF INV EM INFRA CLASSE DE INV EM INFRA  RF LONGO PRAZO RESP LIMITADA",
+          "gestor": "Safra Asset",
+          "segmento": "12431",
+          "retorno": 0.2999,
+          "pl": 1768343467.17
+        },
+        {
+          "cnpj": "54980234000171",
+          "nome": "FUNDO DE INVESTIMENTO FINANCEIRO - CI RENDA FIXA INCENTIVADA INVESTIMENTO EM INFRA G5 ICELAND",
+          "gestor": "G5",
+          "segmento": "12431",
+          "retorno": 0.2344,
+          "pl": 39984311.7
+        }
+      ],
+      "top12431Neg": [
+        {
+          "cnpj": "63942021000146",
+          "nome": "OCCAM BB INFRA LINEAR FI FINANCEIRO RENDA FIXA INVESTIMENTO EM INFRAESTRUTURA - RESP LIMITADA",
+          "gestor": "Occam",
+          "segmento": "12431",
+          "retorno": -7.4585,
+          "pl": 115644724.08
+        },
+        {
+          "cnpj": "60775750000167",
+          "nome": "G5 ALLOCATION II FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "gestor": "G5",
+          "segmento": "12431",
+          "retorno": -3.0428,
+          "pl": 35599308.58
+        },
+        {
+          "cnpj": "60627132000170",
+          "nome": "FP FOF CAPITÂNIA FIF - CLASSE DE INVESTIMENTO RF CRED PRIV - RESP LIMITADA",
+          "gestor": "Capitânia",
+          "segmento": "12431",
+          "retorno": -1.1935,
+          "pl": 49320793.69
+        },
+        {
+          "cnpj": "54384609000130",
+          "nome": "CS EVOLUTION LORENA FUNDO DE INVESTIMENTO EM INFRAESTRUTURA - RENDA FIXA CRED PRIV RESP LIMITADA",
+          "gestor": "UBS",
+          "segmento": "12431",
+          "retorno": -0.9847,
+          "pl": 15648437.93
+        },
+        {
+          "cnpj": "63159694000124",
+          "nome": "SANTANDER PB CAIS INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "gestor": "San WM",
+          "segmento": "12431",
+          "retorno": -0.9354,
+          "pl": 15645970.3
+        }
+      ],
+      "topTradPos": [
+        {
+          "cnpj": "51977823000102",
+          "nome": "CATTUS FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
+          "gestor": "Starboard",
+          "segmento": "trad",
+          "retorno": 1.1695,
+          "pl": 39169683.09
+        },
+        {
+          "cnpj": "12059831000118",
+          "nome": "DHF-M FUNDO DE INVESTIMENTO FINANCEIRO",
+          "gestor": "Dynamo",
+          "segmento": "trad",
+          "retorno": 1.1121,
+          "pl": 192264313.26
+        },
+        {
+          "cnpj": "57555092000193",
+          "nome": "BTG PACTUAL BRASLIGHT EOS FUNDO DE INVESTIMENTO FINANCEIRO",
+          "gestor": "BTG Asset",
+          "segmento": "trad",
+          "retorno": 1.0443,
+          "pl": 71668533.92
+        },
+        {
+          "cnpj": "11435262000103",
+          "nome": "PIRAHY FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "gestor": "BTG WM",
+          "segmento": "trad",
+          "retorno": 0.8233,
+          "pl": 16556006.75
+        },
+        {
+          "cnpj": "50677561000106",
+          "nome": "STUTTGART FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "gestor": "Rubik",
+          "segmento": "trad",
+          "retorno": 0.6606,
+          "pl": 7889212.46
+        }
+      ],
+      "topTradNeg": [
+        {
+          "cnpj": "26664935000166",
+          "nome": "DEVANT AUDAX FUNDO DE INVESTIMENTO FINANCEIRO RESPONSABILIDADE LIMITADA",
+          "gestor": "Devant",
+          "segmento": "trad",
+          "retorno": -1.6971,
+          "pl": 6755104.92
+        },
+        {
+          "cnpj": "52273351000170",
+          "nome": "PORTFOLIO RF II PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "gestor": "XPG",
+          "segmento": "trad",
+          "retorno": -1.1538,
+          "pl": 11078037.15
+        },
+        {
+          "cnpj": "45295157000120",
+          "nome": "VALORA ARKA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "gestor": "Valora",
+          "segmento": "trad",
+          "retorno": -0.7933,
+          "pl": 174348332.75
+        },
+        {
+          "cnpj": "54776180000127",
+          "nome": "AUGME FRG CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO - RESP LIMITADA",
+          "gestor": "Augme",
+          "segmento": "trad",
+          "retorno": -0.4836,
+          "pl": 113616825.61
+        },
+        {
+          "cnpj": "55893460000188",
+          "nome": "CSHG FRG FIF - CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO - RESP LIMITADA",
+          "gestor": "UBS",
+          "segmento": "trad",
+          "retorno": -0.423,
+          "pl": 114138000.87
+        }
+      ]
+    },
+    "inclusoes": {
+      "novosDebentures": [],
+      "novosBlc": [],
+      "temSnapshotBlc": false
+    },
+    "alertas": [
+      {
+        "tipo": "blc-sem-cadastro",
+        "texto": "70 ativo(s) no BLC sem correspondencia em Debentures.csv"
+      },
+      {
+        "tipo": "anbima-sem-anterior",
+        "texto": "ANBIMA sem dia anterior disponivel para comparacao (comeca a partir do proximo snapshot)"
+      }
+    ]
+  }
+}
