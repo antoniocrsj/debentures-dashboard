@@ -5,7 +5,13 @@ import { downloadFile } from '../utils/download.js'
 
 const money = v => fmtBRL(typeof v === 'number' ? v : Number(v))
 const pct = v => (v == null || Number.isNaN(+v) ? '—' : `${(+v).toFixed(2)}%`)
-const sinalTaxa = d => (d > 0 ? `+${d.toFixed(3)}` : d.toFixed(3))
+// Variação em bps, com sinal e minus tipográfico; 1 casa, sem zero à direita.
+const sinalBps = v => {
+  const r = Math.round(Number(v) * 10) / 10
+  const sinal = r > 0 ? '+' : r < 0 ? '−' : ''
+  const abs = Math.abs(r).toFixed(1).replace(/\.0$/, '').replace('.', ',')
+  return `${sinal}${abs} bps`
+}
 
 function Empty({ children }) { return <p className="rd-empty">{children}</p> }
 
@@ -98,15 +104,16 @@ function Anbima({ sec }) {
         <ol className="rd-ol">
           {arr.map((a, i) => (
             <li key={a.ticker || i}>
-              <span>{a.ticker} <em>{a.indexador}</em></span>
-              <b>{a.taxaAnterior} → {a.taxaAtual} ({sinalTaxa(a.variacao)})</b>
+              <span className="rd-empresa">{a.ticker} <em>{a.fmtAnterior} → {a.fmtAtual}</em></span>
+              {/* abertura de spread (+bps) = vermelho; fechamento (−bps) = verde */}
+              <b className={a.variacaoBps > 0 ? 'rd-neg' : a.variacaoBps < 0 ? 'rd-pos' : ''}>{sinalBps(a.variacaoBps)}</b>
             </li>
           ))}
         </ol>
       </div>
     ) : null
-  if (!sec?.altas?.length && !sec?.quedas?.length) return <Empty>Sem variações de taxa/spread neste dia.</Empty>
-  return <>{lista(sec.altas, 'Maiores altas de taxa/spread')}{lista(sec.quedas, 'Maiores quedas de taxa/spread')}</>
+  if (!sec?.aberturas?.length && !sec?.fechamentos?.length) return <Empty>Sem variações de spread neste dia.</Empty>
+  return <>{lista(sec.aberturas, 'Maiores aberturas de spread (bps)')}{lista(sec.fechamentos, 'Maiores fechamentos de spread (bps)')}</>
 }
 
 function Perf({ sec }) {

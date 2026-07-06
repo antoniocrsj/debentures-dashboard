@@ -79,7 +79,7 @@ test('summarize: bullets só do que tem conteúdo', () => {
     debentures: { novas: [{}, {}], saidas: [] },
     captacao: { '12431': { captacao: 100, resgate: 40, liquido: 60 }, trad: null },
     gestores: { top12431Captacao: [{ gestor: 'ARX', liquido: 120e6 }], top12431Resgate: [{ gestor: 'Z', liquido: -90e6 }] },
-    anbima: { altas: [{}], quedas: [] },
+    anbima: { aberturas: [{}], fechamentos: [] },
     fundos: { novos: [{}], removidos: [] },
     alertas: [{}, {}],
   })

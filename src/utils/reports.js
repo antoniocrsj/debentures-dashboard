@@ -152,9 +152,9 @@ export function summarize(sections) {
   const topRes = s.gestores?.top12431Resgate?.[0] || s.gestores?.topTradResgate?.[0]
   if (topRes) out.push({ texto: `Maior resgate: ${topRes.gestor} (${sinalMi(topRes.liquido)})`, tom: 'neg' })
 
-  const anbimaUp = n(s.anbima?.altas)
-  const anbimaDown = n(s.anbima?.quedas)
-  if (anbimaUp || anbimaDown) out.push({ texto: `ANBIMA: ${anbimaUp} alta(s) e ${anbimaDown} queda(s) de taxa/spread` })
+  const anbimaUp = n(s.anbima?.aberturas)
+  const anbimaDown = n(s.anbima?.fechamentos)
+  if (anbimaUp || anbimaDown) out.push({ texto: `ANBIMA: ${anbimaUp} abertura(s) e ${anbimaDown} fechamento(s) de spread (bps)` })
 
   const fNovos = n(s.fundos?.novos), fRem = n(s.fundos?.removidos)
   if (fNovos || fRem) out.push({ texto: `Fundos: +${fNovos} / -${fRem} no universo` })

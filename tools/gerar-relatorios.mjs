@@ -172,35 +172,70 @@ function buildGestores(src, sourceDates) {
   return out
 }
 
-// §5 Variacao ANBIMA (taxa/spread — NUNCA preco). Precisa de snapshot anterior.
+// Extrai o "spread de mercado" de uma linha ANBIMA, sempre em bps, reaproveitando
+// as colunas que o pipeline ja calcula. A variacao do Resumo do Dia e SEMPRE a
+// diferenca desse spread (curr - prev) em bps, comparando so bases iguais:
+//   DI_SPREAD      -> taxaAnbimaOriginal ja e o CDI+ (%). bps = %*100.  base 'CDI'
+//   DI_PERCENTUAL  -> %CDI ja convertido pra CDI+ em spreadCdiEquivalente. base 'CDI'
+//   IPCA_SPREAD    -> spread sobre a NTN-B de referencia, ja em bps.     base = B32/B35...
+//   PREFIXADO/IGP-M-> sem benchmark de spread; variacao do proprio yield. base 'Pre'/'IGP-M'
+function spreadInfo(r) {
+  const tipo = (r.tipoTaxaAnbima || '').trim()
+  if (tipo === 'IPCA_SPREAD') {
+    const bps = parseNum(r.spreadNtnbBps)
+    if (Number.isNaN(bps)) return null
+    return { bps, base: (r.codigoNtnbExibicao || 'NTN-B').trim() || 'NTN-B', tipo: 'ipca' }
+  }
+  if (tipo === 'DI_PERCENTUAL') {
+    const s = parseNum(r.spreadCdiEquivalente)   // %CDI ja convertido pra CDI+ pelo pipeline
+    if (Number.isNaN(s)) return null
+    return { bps: s * 100, base: 'CDI', tipo: 'cdi' }
+  }
+  if (tipo === 'DI_SPREAD') {
+    const s = parseNum(r.taxaAnbimaOriginal)     // ja e o proprio CDI+ (%)
+    if (Number.isNaN(s)) return null
+    return { bps: s * 100, base: 'CDI', tipo: 'cdi' }
+  }
+  const y = parseNum(r.taxaAnbimaOriginal)       // prefixado / IGP-M: variacao do yield
+  if (Number.isNaN(y)) return null
+  const base = tipo === 'PREFIXADO' ? 'Pré' : tipo === 'IGP-M' ? 'IGP-M' : (tipo || 'yield')
+  return { bps: y * 100, base, tipo: 'yield' }
+}
+
+// §5 Variacao ANBIMA — sempre em bps, sobre o spread (taxa/spread, NUNCA preco).
+// Precisa de snapshot anterior da fonte.
 function buildAnbima(src, sourceDates) {
   const atual = sourceDates.anbima
   const anterior = previousDate(perSourceDates(src).anbima, atual)
-  if (!atual || !anterior) return { altas: [], quedas: [], atual, anterior, semAnterior: true }
+  if (!atual || !anterior) return { aberturas: [], fechamentos: [], atual, anterior, semAnterior: true }
   const prev = readSnapshot('anbima', anterior) || (anterior === distinctDates(src.anbima, 'dataReferenciaAnbima')[0] ? src.anbima : null)
   const curr = readSnapshot('anbima', atual) || src.anbima
-  if (!prev) return { altas: [], quedas: [], atual, anterior, semAnterior: true }
+  if (!prev) return { aberturas: [], fechamentos: [], atual, anterior, semAnterior: true }
   const key = r => (r.ticker || '').trim()
-  const val = r => parseNum(r.taxaAnbimaOriginal)
   const prevMap = new Map(prev.map(r => [key(r), r]))
   const movs = []
   for (const r of curr) {
     const p = prevMap.get(key(r))
     if (!p) continue
-    const t0 = val(p), t1 = val(r)
-    if (Number.isNaN(t0) || Number.isNaN(t1)) continue
-    const delta = t1 - t0
-    if (Math.abs(delta) < 1e-9) continue
+    const si = spreadInfo(r), sp = spreadInfo(p)
+    if (!si || !sp) continue
+    if (si.base !== sp.base) continue           // benchmark girou (ex.: B35->B33): spread incomparavel
+    const variacaoBps = si.bps - sp.bps
+    if (Math.abs(variacaoBps) < 0.05) continue  // ruido sub-0,05 bps
     movs.push({
       ticker: key(r), indexador: repairText((r.indexadorAnbima || '').trim()),
-      taxaAnterior: t0, taxaAtual: t1, variacao: delta,
+      base: si.base, tipo: si.tipo,
+      spreadAnteriorBps: sp.bps, spreadAtualBps: si.bps, variacaoBps,
+      fmtAnterior: repairText((p.txAnbimaFormatada || '').trim()),
+      fmtAtual: repairText((r.txAnbimaFormatada || '').trim()),
       duration: (r.durationAnbimaAnos || '').trim(),
       status: (r.statusCalculoAnbima || '').trim(),
     })
   }
   return {
-    altas: topMovers(movs, m => m.variacao, 8, 'desc').filter(m => m.variacao > 0),
-    quedas: topMovers(movs, m => m.variacao, 8, 'asc').filter(m => m.variacao < 0),
+    // abertura = spread abriu (+bps); fechamento = spread fechou (-bps)
+    aberturas: topMovers(movs, m => m.variacaoBps, 8, 'desc').filter(m => m.variacaoBps > 0),
+    fechamentos: topMovers(movs, m => m.variacaoBps, 8, 'asc').filter(m => m.variacaoBps < 0),
     atual, anterior, semAnterior: false,
   }
 }
@@ -336,6 +371,13 @@ function pct(v, casas = 2) {
   const cls = n > 0 ? 'val pos' : n < 0 ? 'val neg' : 'val'
   return `<span class="${cls}">${n.toFixed(casas)}%</span>`
 }
+// Variacao em bps com sinal e minus tipografico; 1 casa, sem zero a direita.
+function fmtBps(v) {
+  const r = Math.round(v * 10) / 10
+  const sinal = r > 0 ? '+' : r < 0 ? '−' : ''
+  const abs = Math.abs(r).toFixed(1).replace(/\.0$/, '').replace('.', ',')
+  return `${sinal}${abs} bps`
+}
 
 function renderHtml(rep) {
   const s = rep.sections
@@ -368,12 +410,14 @@ function renderHtml(rep) {
     ? `<h4>${esc(titulo)}</h4><ol class="rank">${arr.map(g => `<li><span class="g-nome">${esc(g.gestor)}</span><span class="g-val">${moneyC(g.liquido)}</span></li>`).join('')}</ol>`
     : `<h4>${esc(titulo)}</h4>${empty('Sem destaques.')}`
 
-  const anbimaVar = v => `<span class="${v > 0 ? 'val neg' : v < 0 ? 'val pos' : 'val'}">${v > 0 ? '+' : ''}${v.toFixed(3)}</span>`
+  // abertura de spread (+bps) = vermelho; fechamento (−bps) = verde.
+  const anbimaVar = v => `<span class="${v > 0 ? 'val neg' : v < 0 ? 'val pos' : 'val'}">${fmtBps(v)}</span>`
+  const anbimaLi = a => `<li><span class="g-nome">${esc(a.ticker)} <em>(${esc(a.indexador)})</em></span><span class="g-val">${esc(a.fmtAnterior || '—')} → ${esc(a.fmtAtual || '—')} · ${anbimaVar(a.variacaoBps)}</span></li>`
   const anbimaBlock = s.anbima.semAnterior
     ? empty('Sem dia anterior de ANBIMA para comparar (começa no próximo snapshot).')
-    : `${s.anbima.altas.length ? `<h4>Maiores altas de taxa/spread</h4><ol class="rank">${s.anbima.altas.map(a => `<li><span class="g-nome">${esc(a.ticker)} <em>(${esc(a.indexador)})</em></span><span class="g-val">${a.taxaAnterior} → ${a.taxaAtual} · ${anbimaVar(a.variacao)}</span></li>`).join('')}</ol>` : ''}
-       ${s.anbima.quedas.length ? `<h4>Maiores quedas de taxa/spread</h4><ol class="rank">${s.anbima.quedas.map(a => `<li><span class="g-nome">${esc(a.ticker)} <em>(${esc(a.indexador)})</em></span><span class="g-val">${a.taxaAnterior} → ${a.taxaAtual} · ${anbimaVar(a.variacao)}</span></li>`).join('')}</ol>` : ''}
-       ${!s.anbima.altas.length && !s.anbima.quedas.length ? empty('Sem variações de taxa neste dia.') : ''}`
+    : `${s.anbima.aberturas.length ? `<h4>Maiores aberturas de spread (bps)</h4><ol class="rank">${s.anbima.aberturas.map(anbimaLi).join('')}</ol>` : ''}
+       ${s.anbima.fechamentos.length ? `<h4>Maiores fechamentos de spread (bps)</h4><ol class="rank">${s.anbima.fechamentos.map(anbimaLi).join('')}</ol>` : ''}
+       ${!s.anbima.aberturas.length && !s.anbima.fechamentos.length ? empty('Sem variações de spread neste dia.') : ''}`
 
   const perfBlock = ['12431', 'Trad'].map(seg => {
     const pos = s.perf[`top${seg}Pos`] || [], neg = s.perf[`top${seg}Neg`] || []
