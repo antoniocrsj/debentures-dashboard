@@ -22,13 +22,18 @@
 #>
 
 param(
+  [switch]$SkipDebentures,
   [switch]$SkipFundos,
+  [switch]$SkipCaptacao,
+  [switch]$SkipBlc,
   [switch]$ForceBlc,
   [switch]$SkipAnbima,
   [switch]$SkipOfertas,
   [switch]$NoPublishPrompt,
   [ValidateSet('Auto', 'Incremental', 'Completa')]
   [string]$CaptacaoModo = 'Auto',
+  [string]$BlcMesAno = '',                 # AAAAMM explicito; sobrescreve sempre (ignora o "ja registrado")
+  [int]$AnbimaMaxSegundos = 180,           # limite de tempo do passo ANBIMA (evita travar tudo)
   # "C:\Projeto Credito\CVM _ofertas" - [char]233 = e-acento (mantem o .ps1 em ASCII)
   [string]$OfertaDir = ("C:\Projeto Cr" + [char]233 + "dito\CVM _ofertas")
 )
@@ -51,6 +56,26 @@ $summary = [ordered]@{
   Publicacao = 'nao executada'
 }
 $fundosAplicados = $false
+
+# Progresso por etapa: conta so' as etapas que VAO rodar (as puladas nao entram
+# no total, pra barra do painel ficar honesta). Emite ##PROGRESS n/total titulo##
+# (linha lida e escondida pelo painel) + a mesma info no log humano.
+$script:StepsAtivos = New-Object System.Collections.Generic.List[string]
+if (-not $SkipDebentures) { $script:StepsAtivos.Add('Debentures') }
+if (-not $SkipFundos)     { $script:StepsAtivos.Add('Fundos') }
+if (-not $SkipCaptacao)   { $script:StepsAtivos.Add('Captacao') }
+if (-not $SkipBlc)        { $script:StepsAtivos.Add('BLC') }
+if (-not $SkipAnbima)     { $script:StepsAtivos.Add('ANBIMA') }
+if (-not $SkipOfertas)    { $script:StepsAtivos.Add('Ofertas') }
+$script:StepsAtivos.Add('Resumo')
+$script:StepTotal = $script:StepsAtivos.Count
+$script:StepIndex = 0
+
+function Progress([string]$title) {
+  $script:StepIndex++
+  Write-Host ("##PROGRESS {0}/{1} {2}##" -f $script:StepIndex, $script:StepTotal, $title)
+  Step ("[$($script:StepIndex)/$($script:StepTotal)] $title")
+}
 $novasEmissoes = @()
 
 function Step([string]$msg) {
@@ -394,24 +419,29 @@ Write-Host "Pasta: $Root"
 
 $snapshotBefore = Get-DataSnapshot
 
-# 1. Cadastro de debentures sempre
-Step "1/7 Cadastro de Debentures"
-try {
-  & (Join-Path $PSScriptRoot 'preparar-debentures.ps1')
-  $summary.Debentures = 'OK'
-  Ok "Cadastro de debentures atualizado."
-} catch {
-  $summary.Debentures = "FALHOU: $($_.Exception.Message)"
-  Fail $summary.Debentures
-  throw "Interrompido: cadastro de debentures falhou."
+# 1. Cadastro de debentures
+if ($SkipDebentures) {
+  $summary.Debentures = 'PULADO'
+  Warn "Debentures pulado (mantendo cadastro atual)."
+} else {
+  Progress 'Cadastro de Debentures'
+  try {
+    & (Join-Path $PSScriptRoot 'preparar-debentures.ps1')
+    $summary.Debentures = 'OK'
+    Ok "Cadastro de debentures atualizado."
+  } catch {
+    $summary.Debentures = "FALHOU: $($_.Exception.Message)"
+    Fail $summary.Debentures
+    throw "Interrompido: cadastro de debentures falhou."
+  }
 }
 
 # 2. Lista de fundos 12431/CDI: avalia sempre, aplica so com confirmacao.
-Step "2/7 Lista de Fundos 12431/CDI"
 if ($SkipFundos) {
   $summary.Fundos = 'PULADO por parametro -SkipFundos'
   Warn $summary.Fundos
 } else {
+  Progress 'Lista de Fundos 12431/CDI'
   try {
     & (Join-Path $PSScriptRoot 'selecionar-fundos.ps1')
     $fundosAtuais = Get-FundosMetrics $PSScriptRoot
@@ -452,66 +482,80 @@ if ($SkipFundos) {
   }
 }
 
-# 3. Captacao sempre
-Step "3/7 Captacao"
-try {
-  $captacaoCompleta = ($CaptacaoModo -eq 'Completa') -or (($CaptacaoModo -eq 'Auto') -and $fundosAplicados)
-  if ($captacaoCompleta) {
-    if ($CaptacaoModo -eq 'Completa') {
-      Ok "Modo Completa solicitado: recalculando ultimos 12 meses (repopula rentabilidade)."
-    } else {
-      Warn "Lista de fundos mudou; vou recalcular a captacao completa para evitar historico misto."
-    }
-    & (Join-Path $PSScriptRoot 'preparar-fluxo.ps1')
-    $summary.Captacao = 'OK (recalculo completo)'
-  } else {
-    & (Join-Path $PSScriptRoot 'preparar-fluxo.ps1') -Incremental
-    $summary.Captacao = 'OK (incremental)'
-  }
-  Ok "Captacao atualizada."
-} catch {
-  $summary.Captacao = "FALHOU: $($_.Exception.Message)"
-  Fail $summary.Captacao
-  throw "Interrompido: Captacao e a atualizacao principal."
-}
-
-# 4. BLC se necessario
-Step "4/7 BLC / Alocacao"
-$targetMonth = Get-CdaTargetMonth
-$meta = Read-BlcMeta
-$blcFile = Join-Path $PublicDir 'BLC_tratado.csv'
-$blcAlreadyCurrent = (
-  -not $ForceBlc -and
-  $meta -and
-  $meta.mesAno -eq $targetMonth -and
-  (Test-Path $blcFile)
-)
-
-if ($blcAlreadyCurrent) {
-  $summary.BLC = "PULADO (mes $targetMonth ja registrado)"
-  Ok $summary.BLC
+# 3. Captacao
+if ($SkipCaptacao) {
+  $summary.Captacao = 'PULADO'
+  Warn "Captacao pulada (mantendo bases atuais)."
 } else {
+  Progress 'Captacao'
   try {
-    Write-Host "  Mes-alvo: $targetMonth"
-    & (Join-Path $PSScriptRoot 'preparar-blc.ps1') -MesAno $targetMonth
-    Write-BlcMeta $targetMonth
-    $summary.BLC = "OK (mes $targetMonth)"
-    Ok "BLC atualizado e BLC_meta.json registrado."
+    $captacaoCompleta = ($CaptacaoModo -eq 'Completa') -or (($CaptacaoModo -eq 'Auto') -and $fundosAplicados)
+    if ($captacaoCompleta) {
+      if ($CaptacaoModo -eq 'Completa') {
+        Ok "Modo Completa solicitado: recalculando ultimos 12 meses (repopula rentabilidade)."
+      } else {
+        Warn "Lista de fundos mudou; vou recalcular a captacao completa para evitar historico misto."
+      }
+      & (Join-Path $PSScriptRoot 'preparar-fluxo.ps1')
+      $summary.Captacao = 'OK (recalculo completo)'
+    } else {
+      & (Join-Path $PSScriptRoot 'preparar-fluxo.ps1') -Incremental
+      $summary.Captacao = 'OK (incremental)'
+    }
+    Ok "Captacao atualizada."
   } catch {
-    $summary.BLC = "FALHOU: $($_.Exception.Message)"
-    Fail $summary.BLC
-    throw "Interrompido: BLC falhou."
+    $summary.Captacao = "FALHOU: $($_.Exception.Message)"
+    Fail $summary.Captacao
+    throw "Interrompido: Captacao e a atualizacao principal."
   }
 }
 
-# 5. ANBIMA opcional
-Step "5/7 ANBIMA"
+# 4. BLC / Alocacao. Se -BlcMesAno vier, usa esse mes e SOBRESCREVE sempre.
+# Senao, mes-alvo automatico (regra de defasagem) e pula se ja registrado.
+if ($SkipBlc) {
+  $summary.BLC = 'PULADO'
+  Warn "BLC pulado (mantendo alocacao atual)."
+} else {
+  Progress 'BLC / Alocacao'
+  $mesExplicito = ($BlcMesAno -match '^\d{6}$')
+  $targetMonth = if ($mesExplicito) { $BlcMesAno } else { Get-CdaTargetMonth }
+  $meta = Read-BlcMeta
+  $blcFile = Join-Path $PublicDir 'BLC_tratado.csv'
+  $blcAlreadyCurrent = (
+    -not $mesExplicito -and
+    -not $ForceBlc -and
+    $meta -and
+    $meta.mesAno -eq $targetMonth -and
+    (Test-Path $blcFile)
+  )
+
+  if ($blcAlreadyCurrent) {
+    $summary.BLC = "PULADO (mes $targetMonth ja registrado)"
+    Ok $summary.BLC
+  } else {
+    try {
+      if ($mesExplicito) { Write-Host "  Mes escolhido: $targetMonth (sobrescreve o atual)" }
+      else { Write-Host "  Mes-alvo: $targetMonth" }
+      & (Join-Path $PSScriptRoot 'preparar-blc.ps1') -MesAno $targetMonth
+      Write-BlcMeta $targetMonth
+      $summary.BLC = "OK (mes $targetMonth)"
+      Ok "BLC atualizado e BLC_meta.json registrado."
+    } catch {
+      $summary.BLC = "FALHOU: $($_.Exception.Message)"
+      Fail $summary.BLC
+      throw "Interrompido: BLC falhou."
+    }
+  }
+}
+
+# 5. ANBIMA opcional (com limite de tempo pra nao segurar o resto)
 if ($SkipAnbima) {
   $summary.ANBIMA = 'PULADO por parametro -SkipAnbima'
   Warn $summary.ANBIMA
 } else {
+  Progress 'ANBIMA'
   try {
-    & (Join-Path $PSScriptRoot 'preparar-anbima.ps1')
+    & (Join-Path $PSScriptRoot 'preparar-anbima.ps1') -MaxSegundos $AnbimaMaxSegundos
     $summary.ANBIMA = 'OK'
     Ok "ANBIMA atualizada."
   } catch {
@@ -523,11 +567,11 @@ if ($SkipAnbima) {
 # 5b. Ofertas CVM: reconciliacao (best-effort, nao trava a atualizacao).
 # Compara as ofertas de debentures ja registradas na CVM (Resolucao 160) com
 # o nosso cadastro (recem-gerado no passo 1) e lista as que ainda nao entraram.
-Step "Ofertas CVM (novas emissoes)"
 if ($SkipOfertas) {
   $summary.Ofertas = 'PULADO por parametro -SkipOfertas'
   Warn $summary.Ofertas
 } else {
+  Progress 'Ofertas CVM (novas emissoes)'
   try {
     $ofertaExtractDir = Get-OfertaDistribDir $OfertaDir
     $ofertaCsv = Join-Path $ofertaExtractDir 'oferta_resolucao_160.csv'
@@ -545,7 +589,7 @@ if ($SkipOfertas) {
 }
 
 # 6. Resumo
-Step "6/7 Resumo"
+Progress 'Resumo'
 $snapshotAfter = Get-DataSnapshot
 Write-ImpactReport $snapshotBefore $snapshotAfter
 

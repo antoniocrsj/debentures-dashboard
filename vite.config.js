@@ -192,11 +192,29 @@ function spawnStep(run, cmd, args, cwd) {
   return new Promise(resolve => {
     pushLine(run, 'meta', `$ ${cmd} ${args.join(' ')}`)
     const child = spawn(cmd, args, { cwd: cwd || REPO_ROOT, windowsHide: true })
+    run.child = child
     child.stdout.on('data', d => pushLine(run, 'stdout', d.toString('utf8')))
     child.stderr.on('data', d => pushLine(run, 'stderr', d.toString('utf8')))
     child.on('error', err => { pushLine(run, 'stderr', `[erro ao iniciar] ${err.message}`); resolve(1) })
-    child.on('close', code => resolve(code == null ? 1 : code))
+    child.on('close', code => { if (run.child === child) run.child = null; resolve(code == null ? 1 : code) })
   })
+}
+
+// Mata o processo do run em andamento (e a arvore de filhos no Windows).
+function killRun(run) {
+  const child = run && run.child
+  if (!child || child.killed) return false
+  run.cancelled = true
+  pushLine(run, 'meta', '[cancelado pelo usuario]')
+  try {
+    if (process.platform === 'win32') {
+      // taskkill /T mata a arvore inteira (powershell + qualquer filho externo).
+      spawn('taskkill', ['/pid', String(child.pid), '/T', '/F'], { windowsHide: true })
+    } else {
+      child.kill('SIGTERM')
+    }
+  } catch { /* ignore */ }
+  return true
 }
 
 // Roda uma sequencia de passos no MESMO run/buffer, parando no primeiro que falhar.
@@ -205,7 +223,9 @@ async function runSequence(label, steps) {
   ;(async () => {
     let code = 0
     for (const step of steps) {
+      if (run.cancelled) { code = 130; break }
       code = await spawnStep(run, step.cmd, step.args, step.cwd)
+      if (run.cancelled) { code = 130; break }
       if (code !== 0) break
     }
     finishRun(run, code)
@@ -313,16 +333,29 @@ export default defineConfig({
             return
           }
 
-          // POST /api/atualizar/rodar — { modo: 'Auto'|'Incremental'|'Completa', skipAnbima }
+          // POST /api/atualizar/rodar — seleção de etapas + modo + mês do BLC.
+          // { modo, skipDebentures, skipCaptacao, skipBlc, blcMesAno, skipAnbima, skipOfertas }
+          // Fundos nunca roda por aqui (é ação separada) → sempre -SkipFundos.
           if (urlPath === '/api/atualizar/rodar' && req.method === 'POST') {
             if (currentRun && currentRun.running) return sendJson(res, 409, { erro: 'Ja ha uma atualizacao em andamento.' })
             const body = await readJsonBody(req)
             const modo = ['Auto', 'Incremental', 'Completa'].includes(body.modo) ? body.modo : 'Auto'
             const args = ['-SkipFundos', '-NoPublishPrompt', '-CaptacaoModo', modo]
-            if (body.skipAnbima) args.push('-SkipAnbima')
+            if (body.skipDebentures) args.push('-SkipDebentures')
+            if (body.skipCaptacao)   args.push('-SkipCaptacao')
+            if (body.skipBlc)        args.push('-SkipBlc')
+            else if (/^\d{6}$/.test(String(body.blcMesAno || ''))) args.push('-BlcMesAno', String(body.blcMesAno))
+            if (body.skipAnbima)     args.push('-SkipAnbima')
+            if (body.skipOfertas)    args.push('-SkipOfertas')
             const { cmd, args: psArgs } = psCommand(path.join(TOOLS_DIR, 'atualizar-tudo.ps1'), args)
             const run = await runSequence('atualizar-tudo', [{ cmd, args: psArgs }])
             return sendJson(res, 200, { id: run.id })
+          }
+
+          // POST /api/atualizar/cancelar — mata o processo em andamento.
+          if (urlPath === '/api/atualizar/cancelar' && req.method === 'POST') {
+            const ok = currentRun && currentRun.running ? killRun(currentRun) : false
+            return sendJson(res, 200, { cancelado: ok })
           }
 
           // POST /api/atualizar/fundos/sugestao — roda selecionar-fundos.ps1 sozinho.

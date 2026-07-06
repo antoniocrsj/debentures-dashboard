@@ -1127,7 +1127,19 @@ a { color: var(--primary); }
 .cp-modo-btn.active { background: var(--primary-dark); border-color: var(--primary-dark); color: #fff; }
 .cp-modo-btn:disabled { opacity: .5; cursor: default; }
 .cp-checkbox { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text); margin-bottom: 12px; }
+.cp-steps { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+.cp-step { display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text); cursor: pointer; }
+.cp-sub { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0 0 12px 22px; padding-left: 10px; border-left: 2px solid var(--primary-border); }
+.cp-sub-label { font-size: 12.5px; color: var(--text-muted); }
+.cp-select { padding: 5px 10px; border-radius: 8px; border: 1px solid var(--navy-light); background: #fff; color: var(--text); font-size: 13px; }
+.cp-select:disabled { opacity: .5; }
 .cp-btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+/* Barra de progresso das etapas */
+.cp-progress-head { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.cp-progress-time { font-size: 12px; font-weight: 400; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.cp-progress-track { height: 8px; border-radius: 99px; background: var(--primary-border); overflow: hidden; }
+.cp-progress-bar { height: 100%; background: var(--primary-dark); border-radius: 99px; transition: width .3s ease; }
+.cp-warn { margin: 8px 0 0; font-size: 12.5px; color: #92400e; background: #fef3c7; border-radius: 6px; padding: 6px 10px; }
 .cp-btn {
   padding: 8px 16px; border-radius: 8px; border: 1px solid var(--navy-light);
   background: #fff; color: var(--navy-light); font-size: 13px; font-weight: 600; cursor: pointer;

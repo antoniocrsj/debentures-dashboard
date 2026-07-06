@@ -35,11 +35,16 @@ param(
   [switch]$Force,           # re-baixa mesmo se ja existir no cache
   [string]$DebFile = '',    # modo manual: caminho do .xls de debentures
   [string]$TpfFile = '',    # modo manual: caminho do .txt de titulos publicos
-  [int]$MaxFallbackDays = 8 # quantos dias volta procurando o arquivo mais recente
+  [int]$MaxFallbackDays = 8,# quantos dias volta procurando o arquivo mais recente
+  [int]$MaxSegundos = 0     # >0: limite de tempo da paginacao da API (0 = sem limite)
 )
 
 $ErrorActionPreference = 'Stop'
 $ci = [System.Globalization.CultureInfo]::InvariantCulture
+
+# Marco de tempo pro orcamento da API ANBIMA (ver -MaxSegundos). Guardado como
+# script-scope pra Load-AnbimaDataApi checar sem receber o relogio por parametro.
+$script:AnbimaDeadline = if ($MaxSegundos -gt 0) { (Get-Date).AddSeconds($MaxSegundos) } else { $null }
 
 # ---- Pastas (camada de dados, separada do app) ----------------------------
 $Root      = Split-Path $PSScriptRoot -Parent
@@ -178,6 +183,10 @@ function Load-AnbimaDataApi {
   $totalPages = [int]$first.total_pages
   foreach ($x in $first.content) { $debRows.Add($x) }
   for ($p=1; $p -lt $totalPages; $p++) {
+    if ($script:AnbimaDeadline -and (Get-Date) -gt $script:AnbimaDeadline) {
+      Log ("Limite de tempo da API atingido na pagina $p/$totalPages de debentures; seguindo com o que ja baixou.") 'Yellow'
+      break
+    }
     $j = Invoke-AnbimaDataApi '/web-bff/v1/debentures' ([ordered]@{
       view='precos'; page=$p; size=$pageSize; field='codigo_b3'; order='asc'
     })
@@ -190,6 +199,10 @@ function Load-AnbimaDataApi {
   })
   foreach ($x in $tp.content) { $tpfRows.Add($x) }
   for ($p=1; $p -lt [int]$tp.total_pages; $p++) {
+    if ($script:AnbimaDeadline -and (Get-Date) -gt $script:AnbimaDeadline) {
+      Log ("Limite de tempo da API atingido nos titulos publicos; seguindo com o que ja baixou.") 'Yellow'
+      break
+    }
     $j = Invoke-AnbimaDataApi '/web-bff/v1/titulos-publicos' ([ordered]@{
       view='precos'; page=$p; size=200; field='data_vencimento'; order='asc'
     })

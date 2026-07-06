@@ -11,6 +11,30 @@ const MODOS = [
   { id: 'Completa', label: 'Completa', hint: 'últimos 12 meses — repopula %CDI 3m/6m/12m' },
 ]
 
+const MESES_PT = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez']
+const fmtMesAno = yyyymm => `${MESES_PT[+yyyymm.slice(4, 6) - 1]}/${yyyymm.slice(2, 4)}`
+
+// Últimos 6 meses em AAAAMM (do mais recente ao mais antigo).
+function ultimosMeses(n = 6) {
+  const now = new Date()
+  const out = []
+  for (let i = 0; i < n; i++) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1)
+    out.push(`${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}`)
+  }
+  return out
+}
+
+// Mês-alvo do BLC pela regra de defasagem da CVM (dia<=15 → -5; senão -4).
+function blcMesAlvo() {
+  const now = new Date()
+  const lag = now.getDate() <= 15 ? 5 : 4
+  const d = new Date(now.getFullYear(), now.getMonth() - lag, 1)
+  return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}`
+}
+
+const PROGRESS_RE = /^##PROGRESS (\d+)\/(\d+) (.+)##$/
+
 function LogLine({ entry }) {
   const cls = {
     meta: 'cp-log-meta',
@@ -19,6 +43,7 @@ function LogLine({ entry }) {
     done: 'cp-log-done',
   }[entry.stream] || 'cp-log-stdout'
   if (entry.stream === 'done') {
+    if (entry.text === '130') return <div className="cp-log-stderr">■ cancelado</div>
     const ok = entry.text === '0'
     return <div className={cls}>{ok ? '✔ concluído (código 0)' : `✘ terminou com código ${entry.text}`}</div>
   }
@@ -27,13 +52,21 @@ function LogLine({ entry }) {
 
 export default function ControlPanel() {
   const [modo, setModo] = useState('Auto')
-  const [skipAnbima, setSkipAnbima] = useState(false)
+  // Etapas ligadas/desligadas (checkbox). Fundos é ação separada (não entra aqui).
+  const [steps, setSteps] = useState({ debentures: true, captacao: true, blc: false, anbima: true, ofertas: true })
+  const [blcMes, setBlcMes] = useState(blcMesAlvo())
+
   const [log, setLog] = useState([])
   const [running, setRunning] = useState(false)
   const [actionLabel, setActionLabel] = useState('')
   const [error, setError] = useState('')
   const [resumo, setResumo] = useState(null)
+  const [progress, setProgress] = useState(null)   // { n, total, title }
+  const [stepElapsed, setStepElapsed] = useState(0) // segundos na etapa atual
   const esRef = useRef(null)
+  const stepStartRef = useRef(0)
+
+  const toggleStep = k => setSteps(s => ({ ...s, [k]: !s[k] }))
 
   const closeStream = useCallback(() => {
     if (esRef.current) { esRef.current.close(); esRef.current = null }
@@ -41,12 +74,22 @@ export default function ControlPanel() {
 
   useEffect(() => () => closeStream(), [closeStream])
 
+  // Cronômetro da etapa atual (pra detectar demora/travamento).
+  useEffect(() => {
+    if (!running) return
+    const t = setInterval(() => setStepElapsed(Math.floor((Date.now() - stepStartRef.current) / 1000)), 1000)
+    return () => clearInterval(t)
+  }, [running, progress])
+
   const attachStream = useCallback((label) => {
     closeStream()
     setLog([])
     setRunning(true)
     setActionLabel(label)
     setError('')
+    setProgress(null)
+    stepStartRef.current = Date.now()
+    setStepElapsed(0)
     const es = new EventSource('/api/atualizar/stream?since=0')
     esRef.current = es
     es.addEventListener('run', e => {
@@ -54,10 +97,17 @@ export default function ControlPanel() {
     })
     es.onmessage = e => {
       const entry = JSON.parse(e.data)
+      // Marcador de progresso: atualiza a barra e NÃO entra no log visível.
+      const m = entry.stream === 'stdout' && PROGRESS_RE.exec(entry.text.trim())
+      if (m) {
+        setProgress({ n: +m[1], total: +m[2], title: m[3] })
+        stepStartRef.current = Date.now()
+        setStepElapsed(0)
+        return
+      }
       if (entry.stream === 'done') {
         setRunning(false)
         es.close()
-        // Recarrega os resumos publicados (cache-busted) após terminar.
         fetch(`/Atualizacao_Resumo.json?t=${Date.now()}`)
           .then(r => (r.ok ? r.json() : null))
           .then(setResumo)
@@ -86,12 +136,35 @@ export default function ControlPanel() {
   const rodar = () => startAction(
     'atualizar-tudo',
     '/api/atualizar/rodar',
-    { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ modo, skipAnbima }) },
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        modo: steps.captacao ? modo : 'Auto',
+        skipDebentures: !steps.debentures,
+        skipCaptacao: !steps.captacao,
+        skipBlc: !steps.blc,
+        blcMesAno: steps.blc ? blcMes : '',
+        skipAnbima: !steps.anbima,
+        skipOfertas: !steps.ofertas,
+      }),
+    },
   )
   const verSugestaoFundos = () => startAction('fundos-sugestao', '/api/atualizar/fundos/sugestao', { method: 'POST' })
   const aplicarSugestaoFundos = () => startAction('fundos-aplicar', '/api/atualizar/fundos/aplicar', { method: 'POST' })
   const conferirPublicar = () => startAction('publicar-status', '/api/atualizar/publicar/status', { method: 'GET' })
   const publicar = () => startAction('publicar', '/api/atualizar/publicar', { method: 'POST' })
+  const cancelar = () => fetch('/api/atualizar/cancelar', { method: 'POST' }).catch(() => {})
+
+  const pct = progress ? Math.round((progress.n / progress.total) * 100) : 0
+  const demorou = running && stepElapsed >= 180   // 3 min na mesma etapa
+
+  const StepCheck = ({ k, label, hint }) => (
+    <label className="cp-step" title={hint}>
+      <input type="checkbox" checked={steps[k]} onChange={() => toggleStep(k)} disabled={running} />
+      {label}
+    </label>
+  )
 
   return (
     <section className="control-panel" aria-label="Painel de controle da atualização">
@@ -101,28 +174,44 @@ export default function ControlPanel() {
       </header>
 
       <div className="cp-block">
-        <h3 className="cp-block-title">1. Atualizar dados (Debêntures + Fundos + Captação + BLC + ANBIMA)</h3>
-        <div className="cp-modos">
-          {MODOS.map(m => (
-            <button
-              key={m.id}
-              type="button"
-              className={`cp-modo-btn${modo === m.id ? ' active' : ''}`}
-              onClick={() => setModo(m.id)}
-              disabled={running}
-              title={m.hint}
-            >
-              {m.label}
-            </button>
-          ))}
+        <h3 className="cp-block-title">1. Atualizar dados — escolha as etapas</h3>
+        <div className="cp-steps">
+          <StepCheck k="debentures" label="Debêntures (cadastro)" hint="Regenera public/Debentures.csv" />
+          <StepCheck k="captacao" label="Captação" hint="Fluxo semanal/mensal, rentabilidade e fundos" />
+          <StepCheck k="blc" label="BLC / Alocação" hint="Carteira dos fundos (mensal)" />
+          <StepCheck k="anbima" label="ANBIMA" hint="Taxas indicativas" />
+          <StepCheck k="ofertas" label="Ofertas CVM" hint="Novas emissões registradas na CVM" />
         </div>
-        <label className="cp-checkbox">
-          <input type="checkbox" checked={skipAnbima} onChange={e => setSkipAnbima(e.target.checked)} disabled={running} />
-          Pular ANBIMA nesta rodada
-        </label>
-        <button type="button" className="cp-btn cp-btn-primary" onClick={rodar} disabled={running}>
-          {running && actionLabel === 'atualizar-tudo' ? 'Rodando…' : 'Iniciar atualização'}
-        </button>
+
+        {steps.captacao && (
+          <div className="cp-sub">
+            <span className="cp-sub-label">Modo da Captação:</span>
+            <div className="cp-modos">
+              {MODOS.map(m => (
+                <button key={m.id} type="button" className={`cp-modo-btn${modo === m.id ? ' active' : ''}`}
+                  onClick={() => setModo(m.id)} disabled={running} title={m.hint}>{m.label}</button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {steps.blc && (
+          <div className="cp-sub">
+            <span className="cp-sub-label">Mês do BLC (sobrescreve o atual):</span>
+            <select className="cp-select" value={blcMes} onChange={e => setBlcMes(e.target.value)} disabled={running}>
+              {ultimosMeses(6).map(m => <option key={m} value={m}>{fmtMesAno(m)}</option>)}
+            </select>
+          </div>
+        )}
+
+        <div className="cp-btn-row">
+          <button type="button" className="cp-btn cp-btn-primary" onClick={rodar} disabled={running}>
+            {running && actionLabel === 'atualizar-tudo' ? 'Rodando…' : 'Iniciar atualização'}
+          </button>
+          {running && (
+            <button type="button" className="cp-btn cp-btn-danger" onClick={cancelar}>Cancelar</button>
+          )}
+        </div>
       </div>
 
       <div className="cp-block">
@@ -142,6 +231,19 @@ export default function ControlPanel() {
       </div>
 
       {error && <p className="cp-error">{error}</p>}
+
+      {progress && (
+        <div className="cp-block">
+          <div className="cp-progress-head">
+            <span>Passo {progress.n} de {progress.total} — {progress.title}</span>
+            <span className="cp-progress-time">{stepElapsed}s{running ? '' : ' (fim)'}</span>
+          </div>
+          <div className="cp-progress-track"><div className="cp-progress-bar" style={{ width: `${pct}%` }} /></div>
+          {demorou && (
+            <p className="cp-warn">⚠️ Essa etapa está demorando mais que o normal ({stepElapsed}s). Pode ter travado — se precisar, clique em Cancelar.</p>
+          )}
+        </div>
+      )}
 
       {(log.length > 0 || running) && (
         <div className="cp-block">
