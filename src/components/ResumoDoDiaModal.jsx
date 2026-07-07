@@ -44,16 +44,15 @@ function Debentures({ sec, cvm, faltantes }) {
       {temNovas ? (
         <>
           <table className="rd-table">
-            <thead><tr><th>Ativo</th><th>Empresa</th><th>Venc.</th><th>Indexador</th><th>Taxa</th><th>12.431</th></tr></thead>
+            <thead><tr><th>Ativo</th><th>Emis.</th><th>Venc.</th><th>Taxa</th><th className="rd-num">Vol. emit.</th></tr></thead>
             <tbody>
               {sec.novas.map((d, i) => (
                 <tr key={d.ticker || i}>
-                  <td className="rd-strong">{d.ticker}</td>
-                  <td className="rd-empresa" title={d.empresa}>{d.empresa}</td>
-                  <td>{d.vencimento}</td>
-                  <td>{d.indexador}</td>
+                  <td className="rd-strong">{d.ticker}{d.grupo && <span className="rd-sub">{d.grupo}</span>}</td>
+                  <td>{fmtDia(d.dataEmissao)}</td>
+                  <td>{fmtDia(d.vencimento)}</td>
                   <td>{d.taxa}</td>
-                  <td>{d.incentivada ? '✓' : '—'}</td>
+                  <td className="rd-num">{d.volumeEmitido > 0 ? money(d.volumeEmitido) : '-'}</td>
                 </tr>
               ))}
             </tbody>

@@ -101,7 +101,7 @@ function perSourceDates(src) {
 
 // ─── Secoes ─────────────────────────────────────────────────────────────
 // §2 Novas debentures cadastradas (registro CVM == D). "Saiu" precisa snapshot.
-function buildDebentures(src, D) {
+function buildDebentures(src, D, emissoresMap = new Map()) {
   const novasRows = src.debentures.filter(r => {
     const p = parseDia(r['Data de Registro CVM da Emissao'])
     return p && p.key === D
@@ -109,12 +109,15 @@ function buildDebentures(src, D) {
   const map = r => ({
     ticker: (r['Codigo do Ativo'] || '').trim(),
     empresa: repairText((r['Empresa'] || '').trim()),
+    grupo: (emissoresMap.get(digits(r['CNPJ'])) || {}).grupo || '',
     cnpj: digits(r['CNPJ']),
     dataRegistro: r['Data de Registro CVM da Emissao'] || '',
     dataEmissao: r['Data de Emissao'] || '',
     vencimento: r['Data de Vencimento'] || '',
     indexador: (r['indice'] || '').trim(),
     taxa: (r['Juros Criterio Novo - Taxa'] || '').trim(),
+    // Volume emitido = Quantidade Emitida x Valor Nominal na Emissao (mesma conta do app).
+    volumeEmitido: parseNum(r['Quantidade Emitida']) * parseNum(r['Valor Nominal na Emissao']),
     incentivada: isYes(r['Deb. Incent. (Lei 12.431)']),
     coordenador: (r['Coordenador Lider'] || '').trim(),
   })
@@ -477,7 +480,7 @@ function buildReport(src, D, allDates, emissoesCVM = null, emissoresMap = new Ma
     blc: sourceDateFor(sd.blc, D),
     fundos: sourceDateFor(sd.fundos, D),
   }
-  const debentures = buildDebentures(src, D)
+  const debentures = buildDebentures(src, D, emissoresMap)
   const captacao = buildCaptacao(src, flow)
   const gestores = buildGestores(src, sourceDates)
   const anbima = buildAnbima(src, sourceDates, buildTickerInfo(src, emissoresMap))
@@ -546,8 +549,8 @@ function renderHtml(rep) {
     : empty('Sem eventos relevantes neste dia.')
 
   const debTable = s.debentures.novas.length
-    ? `<div class="tw"><table><thead><tr><th>Ativo</th><th>Empresa</th><th>Registro</th><th>Venc.</th><th>Indexador</th><th>Taxa</th><th>12.431</th></tr></thead><tbody>${
-        s.debentures.novas.map(d => `<tr><td>${esc(d.ticker)}</td><td>${esc(d.empresa)}</td><td>${esc(d.dataRegistro)}</td><td>${esc(d.vencimento)}</td><td>${esc(d.indexador)}</td><td>${esc(d.taxa)}</td><td>${d.incentivada ? 'Sim' : 'Não'}</td></tr>`).join('')
+    ? `<div class="tw"><table><thead><tr><th>Ativo</th><th>Emis.</th><th>Venc.</th><th>Taxa</th><th class="num">Vol. emit.</th></tr></thead><tbody>${
+        s.debentures.novas.map(d => `<tr><td><strong>${esc(d.ticker)}</strong>${d.grupo ? `<br><span class="cap-dia">${esc(d.grupo)}</span>` : ''}</td><td>${esc(fmtDia(d.dataEmissao))}</td><td>${esc(fmtDia(d.vencimento))}</td><td>${esc(d.taxa)}</td><td class="num">${d.volumeEmitido > 0 ? esc(money(d.volumeEmitido)) : '-'}</td></tr>`).join('')
       }</tbody></table></div>`
     : empty('Sem novas debêntures neste dia.')
 
