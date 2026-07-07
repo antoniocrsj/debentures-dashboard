@@ -388,6 +388,7 @@ function Write-NovasEmissoesCVM($novasEmissoes, [string]$dataDir) {
     itens = @($novasEmissoes | ForEach-Object {
       [ordered]@{
         dataRegistro = $_.DataRegistro
+        dataRequerimento = $_.DataRequerimento
         emissor = $_.Emissor
         cnpj = $_.Cnpj
         emissao = $_.Emissao

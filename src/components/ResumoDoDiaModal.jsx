@@ -5,6 +5,11 @@ import { downloadFile } from '../utils/download.js'
 
 const money = v => fmtBRL(typeof v === 'number' ? v : Number(v))
 const pct = v => (v == null || Number.isNaN(+v) ? '—' : `${(+v).toFixed(2)}%`)
+// Valor em milhões de reais (R$ MM), 1 casa, separador pt-BR (só o número).
+const mm = v => {
+  const n = Number(v) / 1e6
+  return Number.isFinite(n) ? n.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) : '—'
+}
 // Variação em bps, com sinal e minus tipográfico; 1 casa, sem zero à direita.
 const sinalBps = v => {
   const r = Math.round(Number(v) * 10) / 10
@@ -99,16 +104,16 @@ function EmissoesCVM({ cvm }) {
       </h4>
       {cvm.itens?.length ? (
         <table className="rd-table">
-          <thead><tr><th>Registro</th><th>Emissor</th><th>Emissão</th><th>Valor</th><th>12.431</th><th>Líder</th></tr></thead>
+          <thead><tr><th>Data req.</th><th>Emissão</th><th>Emissor</th><th>Grupo</th><th>Líder</th><th className="rd-num">Valor (R$ MM)</th></tr></thead>
           <tbody>
             {cvm.itens.map((e, i) => (
               <tr key={`${e.cnpj}-${e.emissao}-${i}`}>
-                <td>{fmtDia(e.dataRegistro)}</td>
-                <td className="rd-empresa" title={e.emissor}>{e.emissor}</td>
+                <td>{fmtDia(e.dataRequerimento || e.dataRegistro)}</td>
                 <td>{e.emissao != null ? `${e.emissao}ª` : '—'}</td>
-                <td>{money(e.valor)}</td>
-                <td>{e.incentivada ? '✓' : '—'}</td>
+                <td className="rd-empresa" title={e.emissor}>{e.emissor}</td>
+                <td className="rd-empresa" title={e.grupo}>{e.grupo || '—'}</td>
                 <td className="rd-empresa" title={e.lider}>{e.lider || '—'}</td>
+                <td className="rd-num">{mm(e.valor)}</td>
               </tr>
             ))}
           </tbody>

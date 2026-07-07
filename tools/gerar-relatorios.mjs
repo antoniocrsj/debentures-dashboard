@@ -384,13 +384,17 @@ function loadEmissoesCVM() {
     const j = JSON.parse(fs.readFileSync(f, 'utf8'))
     const itens = (j.itens || []).map(e => ({
       dataRegistro: e.dataRegistro || '',
+      dataRequerimento: e.dataRequerimento || '',
       emissor: repairText((e.emissor || '').trim()),
       cnpj: digits(e.cnpj),
       emissao: e.emissao,
       valor: parseNum(e.valor),
       incentivada: !!e.incentivada,
       lider: repairText((e.lider || '').trim()),
-    })).sort((a, b) => (a.dataRegistro < b.dataRegistro ? 1 : a.dataRegistro > b.dataRegistro ? -1 : 0))
+    })).sort((a, b) => {
+      const ka = a.dataRequerimento || a.dataRegistro, kb = b.dataRequerimento || b.dataRegistro
+      return ka < kb ? 1 : ka > kb ? -1 : 0
+    })
     return { asOf: j.asOf || j.geradoEm || '', itens }
   } catch { return null }
 }
@@ -462,19 +466,30 @@ function buildReport(src, D, allDates, emissoesCVM = null, emissoresMap = new Ma
     anbima, fundos, alertas,
   }
   const previousDateOverall = allDates.filter(d => d < D).sort().pop() || null
+  // Enriquece cada oferta CVM com o grupo economico do cadastro (join por CNPJ).
+  const emissoesCVMenriquecido = emissoesCVM ? {
+    ...emissoesCVM,
+    itens: emissoesCVM.itens.map(e => ({ ...e, grupo: (emissoresMap.get(digits(e.cnpj)) || {}).grupo || '' })),
+  } : null
   return {
     date: D,
     label: fmtDia(D),
     previousDate: previousDateOverall,
     sourceDates,
     summary: summarize(summaryInput),
-    sections: { ...sections, alertas, emissoesCVM, emissoresFaltantes: buildEmissoresFaltantes(emissoresMap, emissoesCVM) },
+    sections: { ...sections, alertas, emissoesCVM: emissoesCVMenriquecido, emissoresFaltantes: buildEmissoresFaltantes(emissoresMap, emissoesCVM) },
   }
 }
 
 // ─── HTML self-contained ───────────────────────────────────────────────────
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])) }
 function money(v) { return fmtBRL(typeof v === 'number' ? v : parseNum(v)) }
+// Valor em milhoes de reais (R$ MM), 1 casa, separador pt-BR. So o numero.
+function fmtMM(v) {
+  const n = (typeof v === 'number' ? v : parseNum(v)) / 1e6
+  if (!Number.isFinite(n)) return '—'
+  return n.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })
+}
 // Valor monetário com cor pelo sinal (verde positivo / vermelho negativo),
 // seguindo a identidade do app (fluxo positivo = captação, negativo = resgate).
 function moneyC(v) {
@@ -513,8 +528,8 @@ function renderHtml(rep) {
   const cvmBlock = cvm
     ? (cvm.itens.length
         ? `<h4>Registradas na CVM, ainda não no cadastro${cvm.asOf ? ` <span class="cap-dia">posição em ${esc(fmtDia(cvm.asOf))}</span>` : ''}</h4>
-           <div class="tw"><table><thead><tr><th>Registro</th><th>Emissor</th><th>Emissão</th><th>Valor</th><th>12.431</th><th>Líder</th></tr></thead><tbody>${
-             cvm.itens.map(e => `<tr><td>${esc(fmtDia(e.dataRegistro))}</td><td>${esc(e.emissor)}</td><td>${esc(String(e.emissao ?? ''))}ª</td><td>${esc(money(e.valor))}</td><td>${e.incentivada ? 'Sim' : 'Não'}</td><td>${esc(e.lider)}</td></tr>`).join('')
+           <div class="tw"><table><thead><tr><th>Data req.</th><th>Emissão</th><th>Emissor</th><th>Grupo</th><th>Líder</th><th>Valor (R$ MM)</th></tr></thead><tbody>${
+             cvm.itens.map(e => `<tr><td>${esc(fmtDia(e.dataRequerimento || e.dataRegistro))}</td><td>${esc(String(e.emissao ?? ''))}ª</td><td>${esc(e.emissor)}</td><td>${esc(e.grupo || '—')}</td><td>${esc(e.lider)}</td><td class="num">${esc(fmtMM(e.valor))}</td></tr>`).join('')
            }</tbody></table></div>`
         : `<h4>Registradas na CVM, ainda não no cadastro</h4>${empty('Nenhuma emissão pendente na CVM neste momento.')}`)
     : ''
@@ -600,6 +615,7 @@ function renderHtml(rep) {
   .tw{overflow-x:auto}
   table{border-collapse:collapse;width:100%;font-size:12.5px;margin:4px 0}
   th,td{border:1px solid var(--border);padding:6px 9px;text-align:left;vertical-align:top}
+  td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
   th{background:var(--primary-light);color:var(--primary-dark);font-weight:600;white-space:nowrap}
   table.kv td:first-child{color:var(--text-muted);width:52%}
   table.kv td:last-child{text-align:right;font-variant-numeric:tabular-nums}

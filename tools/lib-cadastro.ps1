@@ -877,6 +877,7 @@ function Get-OfertasDebNaoCadastradas([string]$ofertaCsvPath, [string]$debenture
   $idx = $rc.idx
   $iVm = $idx['Valor_Mobiliario']; $iStatus = $idx['Status_Requerimento']
   $iDataReg = $idx['Data_Registro']; $iCnpj = $idx['CNPJ_Emissor']; $iNome = $idx['Nome_Emissor']
+  $iDataReq = $idx['Data_requerimento']
   $iEmis = $idx['Emissao']; $iValor = $idx['Valor_Total_Registrado']
   $iIncent = $idx['Titulo_incentivado']; $iLider = $idx['Nome_Lider']
   if ($null -eq $iVm -or $null -eq $iStatus -or $null -eq $iDataReg -or $null -eq $iCnpj -or $null -eq $iEmis) {
@@ -912,8 +913,10 @@ function Get-OfertasDebNaoCadastradas([string]$ofertaCsvPath, [string]$debenture
     }
     $incent = if ($null -ne $iIncent -and $c.Count -gt $iIncent) { $c[$iIncent].Trim() } else { '' }
     $lider = if ($null -ne $iLider -and $c.Count -gt $iLider) { $c[$iLider].Trim() } else { '' }
+    $dataReq = if ($null -ne $iDataReq -and $c.Count -gt $iDataReq) { $c[$iDataReq].Trim() } else { '' }
     $resultado.Add([pscustomobject]@{
       DataRegistro = $c[$iDataReg].Trim()
+      DataRequerimento = $dataReq
       Emissor = $c[$iNome].Trim()
       Cnpj = $cnpj
       Emissao = [int]$emisDigits
