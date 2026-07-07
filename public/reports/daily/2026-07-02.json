@@ -44,12 +44,14 @@
         {
           "ticker": "AXIA19",
           "empresa": "AXIA ENERGIA S.A.",
+          "grupo": "Axia",
           "cnpj": "00001180000126",
           "dataRegistro": "02/07/2026",
           "dataEmissao": "15/06/2026",
           "vencimento": "15/06/2036",
           "indexador": "IPCA",
           "taxa": "8,0036",
+          "volumeEmitido": 1000000000,
           "incentivada": true,
           "coordenador": "BTG PACTUAL INVESTMENT BANKING LTDA."
         }
@@ -440,6 +442,7 @@
         "texto": "ANBIMA sem dia anterior disponivel para comparacao (comeca a partir do proximo snapshot)"
       }
     ],
-    "emissoesCVM": null
+    "emissoesCVM": null,
+    "emissoresFaltantes": null
   }
 }

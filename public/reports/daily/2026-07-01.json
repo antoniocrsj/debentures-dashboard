@@ -44,12 +44,14 @@
         {
           "ticker": "IOCHA7",
           "empresa": "IOCHPE-MAXION S/A",
+          "grupo": "Iochpe-Maxion",
           "cnpj": "61156113000175",
           "dataRegistro": "01/07/2026",
           "dataEmissao": "07/07/2026",
           "vencimento": "07/07/2030",
           "indexador": "DI",
           "taxa": "1,6",
+          "volumeEmitido": 400000000,
           "incentivada": false,
           "coordenador": "ITAU UNIBANCO HOLDING S.A"
         }
@@ -440,6 +442,7 @@
         "texto": "ANBIMA sem dia anterior disponivel para comparacao (comeca a partir do proximo snapshot)"
       }
     ],
-    "emissoesCVM": null
+    "emissoesCVM": null,
+    "emissoresFaltantes": null
   }
 }

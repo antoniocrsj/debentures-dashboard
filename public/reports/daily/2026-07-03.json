@@ -44,12 +44,14 @@
         {
           "ticker": "TAEEE2",
           "empresa": "TRANSMISSORA ALIANCA DE ENERGIA ELETRICA S/A",
+          "grupo": "Taesa",
           "cnpj": "07859971000130",
           "dataRegistro": "03/07/2026",
           "dataEmissao": "03/07/2026",
           "vencimento": "03/01/2028",
           "indexador": "DI",
           "taxa": "0,4",
+          "volumeEmitido": 1700000000,
           "incentivada": false,
           "coordenador": "BANCO BRADESCO BBI S/A"
         }
@@ -440,6 +442,7 @@
         "texto": "ANBIMA sem dia anterior disponivel para comparacao (comeca a partir do proximo snapshot)"
       }
     ],
-    "emissoesCVM": null
+    "emissoesCVM": null,
+    "emissoresFaltantes": null
   }
 }
