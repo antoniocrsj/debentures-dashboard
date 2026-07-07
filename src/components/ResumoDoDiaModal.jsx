@@ -33,7 +33,7 @@ function Bullets({ items }) {
   )
 }
 
-function Debentures({ sec, cvm }) {
+function Debentures({ sec, cvm, faltantes }) {
   const temNovas = sec?.novas?.length > 0
   return (
     <div className="rd-tablewrap">
@@ -62,6 +62,27 @@ function Debentures({ sec, cvm }) {
         <Empty>Sem novas debêntures cadastradas neste dia.</Empty>
       )}
       <EmissoesCVM cvm={cvm} />
+      <EmissoresFaltantes faltantes={faltantes} />
+    </div>
+  )
+}
+
+// Emissores das emissões novas ainda sem grupo cadastrado — o usuário classifica
+// e adiciona ao Cadastro_Emissores (lista também em Emissores_Faltantes.csv).
+function EmissoresFaltantes({ faltantes }) {
+  if (!faltantes?.itens?.length) return null
+  return (
+    <div className="rd-cvm">
+      <h4>Emissores novos sem grupo cadastrado <span className="rd-cap-dia">· {faltantes.itens.length}</span></h4>
+      <p className="rd-note">Classifique o grupo econômico e adicione ao seu cadastro (lista em <code>Emissores_Faltantes.csv</code>).</p>
+      <table className="rd-table">
+        <thead><tr><th>CNPJ</th><th>Emissor</th></tr></thead>
+        <tbody>
+          {faltantes.itens.map((e, i) => (
+            <tr key={e.cnpj || i}><td>{e.cnpj}</td><td className="rd-empresa" title={e.emissor}>{e.emissor}</td></tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   )
 }
@@ -237,7 +258,7 @@ export default function ResumoDoDiaModal({ index, report, loadingReport, selecte
           {!loadingReport && report && (
             <>
               <Section title="1. Sumário executivo"><Bullets items={report.summary} /></Section>
-              <Section title="2. Novas debêntures cadastradas"><Debentures sec={s.debentures} cvm={s.emissoesCVM} /></Section>
+              <Section title="2. Novas debêntures cadastradas"><Debentures sec={s.debentures} cvm={s.emissoesCVM} faltantes={s.emissoresFaltantes} /></Section>
               <Section title="3. Captação líquida do dia"><Captacao sec={s.captacao} /></Section>
               <Section title="4. Destaques por gestor">
                 <TopGestores arr={s.gestores?.top12431Captacao} titulo="Top captação 12.431" />

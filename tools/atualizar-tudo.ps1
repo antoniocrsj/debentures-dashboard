@@ -624,6 +624,14 @@ if ($SkipRelatorios) {
   Warn $summary.Relatorios
 } else {
   Progress 'Resumo do Dia (relatorios)'
+  # Snapshot do cadastro de emissores (grupo economico) antes de gerar: o gerador
+  # e offline e usa public/Emissores.csv para a coluna Grupo e para detectar
+  # emissores novos ainda nao classificados. Best-effort: nao trava a geracao.
+  try {
+    & (Join-Path $PSScriptRoot 'preparar-emissores.ps1')
+  } catch {
+    Warn "Cadastro de emissores nao atualizado ($($_.Exception.Message)); seguindo com o snapshot anterior."
+  }
   try {
     & node (Join-Path $PSScriptRoot 'gerar-relatorios.mjs')
     if ($LASTEXITCODE -ne 0) { throw "node saiu com codigo $LASTEXITCODE" }

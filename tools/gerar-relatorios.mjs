@@ -395,7 +395,41 @@ function loadEmissoesCVM() {
   } catch { return null }
 }
 
-function buildReport(src, D, allDates, emissoesCVM = null) {
+// Cadastro de emissores (CNPJ -> grupo/setor) — inteligencia do usuario, snapshot
+// em public/Emissores.csv pela pipeline (preparar-emissores.ps1). Usado para a
+// coluna Grupo (ANBIMA) e para detectar emissores novos ainda nao classificados.
+function loadEmissores() {
+  const f = path.join(PUBLIC, 'Emissores.csv')
+  if (!fs.existsSync(f)) return new Map()
+  const pick = (r, names) => { for (const n of names) { const v = r[n]; if (v != null && String(v).trim() !== '') return String(v).trim() } return '' }
+  const CNPJ = ['CNPJ Emissor', 'CNPJ do Emissor', 'CNPJ_EMISSOR', 'CNPJ']
+  const EMP = ['Emissor', 'Empresa', 'Nome Empresa', 'Razao Social', 'Razão Social', 'Nome']
+  const GRP = ['Grupo', 'Grupo Economico', 'Grupo Econômico']
+  const SET = ['Setor', 'Segmento', 'Setor Economico']
+  const map = new Map()
+  for (const r of readCsv(f)) {
+    const c = digits(pick(r, CNPJ)); if (!c) continue
+    map.set(c, { grupo: repairText(pick(r, GRP)), setor: repairText(pick(r, SET)), empresa: repairText(pick(r, EMP)) })
+  }
+  return map
+}
+
+// Emissores que aparecem nas EMISSOES NOVAS (ofertas CVM) mas ainda nao estao no
+// cadastro do usuario — ele precisa classificar o grupo economico (o ouro dele).
+function buildEmissoresFaltantes(emissoresMap, emissoesCVM) {
+  if (!emissoesCVM) return null
+  const seen = new Set()
+  const itens = []
+  for (const e of emissoesCVM.itens || []) {
+    const c = digits(e.cnpj)
+    if (!c || seen.has(c)) continue
+    seen.add(c)
+    if (!emissoresMap.has(c)) itens.push({ cnpj: c, emissor: e.emissor })
+  }
+  return { itens, asOf: emissoesCVM.asOf }
+}
+
+function buildReport(src, D, allDates, emissoesCVM = null, emissoresMap = new Map()) {
   const sd = perSourceDates(src)
   // Fluxo (captacao/perf) resolvido para o ultimo dia COMPLETO <= D (pula dias
   // parciais do Informe Diario); as demais fontes usam a data mais recente <= D.
@@ -434,7 +468,7 @@ function buildReport(src, D, allDates, emissoesCVM = null) {
     previousDate: previousDateOverall,
     sourceDates,
     summary: summarize(summaryInput),
-    sections: { ...sections, alertas, emissoesCVM },
+    sections: { ...sections, alertas, emissoesCVM, emissoresFaltantes: buildEmissoresFaltantes(emissoresMap, emissoesCVM) },
   }
 }
 
@@ -483,6 +517,16 @@ function renderHtml(rep) {
              cvm.itens.map(e => `<tr><td>${esc(fmtDia(e.dataRegistro))}</td><td>${esc(e.emissor)}</td><td>${esc(String(e.emissao ?? ''))}ª</td><td>${esc(money(e.valor))}</td><td>${e.incentivada ? 'Sim' : 'Não'}</td><td>${esc(e.lider)}</td></tr>`).join('')
            }</tbody></table></div>`
         : `<h4>Registradas na CVM, ainda não no cadastro</h4>${empty('Nenhuma emissão pendente na CVM neste momento.')}`)
+    : ''
+
+  // Emissores das emissoes novas que ainda nao estao no cadastro do usuario.
+  const falt = s.emissoresFaltantes
+  const faltantesBlock = falt && falt.itens.length
+    ? `<h4>Emissores novos sem grupo cadastrado <span class="cap-dia">(${falt.itens.length})</span></h4>
+       <p class="tally">Classifique o grupo econômico e adicione ao seu cadastro — lista também em <code>Emissores_Faltantes.csv</code>.</p>
+       <div class="tw"><table><thead><tr><th>CNPJ</th><th>Emissor</th></tr></thead><tbody>${
+         falt.itens.map(e => `<tr><td>${esc(e.cnpj)}</td><td>${esc(e.emissor)}</td></tr>`).join('')
+       }</tbody></table></div>`
     : ''
 
   const capBlock = `<div class="cap-grid">${['12431', 'trad'].map(seg => {
@@ -599,7 +643,7 @@ function renderHtml(rep) {
   <p class="sub">Comparado ao dia anterior disponível de cada fonte. Gerado a partir da data dos dados, não do calendário.</p>
 </div>
 <section><h2><span class="n">1.</span> Sumário executivo</h2>${bullets}</section>
-<section><h2><span class="n">2.</span> Novas debêntures cadastradas</h2>${debTable}${cvmBlock}</section>
+<section><h2><span class="n">2.</span> Novas debêntures cadastradas</h2>${debTable}${cvmBlock}${faltantesBlock}</section>
 <section><h2><span class="n">3.</span> Captação líquida do dia</h2>${capBlock}</section>
 <section><h2><span class="n">4.</span> Destaques por gestor</h2>
 ${gestTop(s.gestores.top12431Captacao, 'Top captação 12.431')}
@@ -661,6 +705,17 @@ function anchorDate(sd) {
   return flow.length ? flow[flow.length - 1] : null
 }
 
+// Arquivo de apoio: emissores novos sem grupo cadastrado. O usuario preenche
+// Grupo/Setor (o julgamento dele) e cola no Cadastro_Emissores; na proxima
+// rodada eles somem daqui. Sempre grava (mesmo vazio) para o arquivo existir.
+function writeEmissoresFaltantesCsv(faltantes) {
+  ensureDir(DATA)
+  const q = s => `"${String(s == null ? '' : s).replace(/"/g, '""')}"`
+  const linhas = ['CNPJ,Nome_Emissor,Grupo,Setor']
+  for (const e of faltantes?.itens || []) linhas.push([q(e.cnpj), q(e.emissor), q(''), q('')].join(','))
+  fs.writeFileSync(path.join(DATA, 'Emissores_Faltantes.csv'), linhas.join('\n') + '\n', { encoding: 'utf8' })
+}
+
 function main() {
   ensureDir(REPORTS)
   const src = loadSources()
@@ -677,14 +732,18 @@ function main() {
   }
   const utf8 = { encoding: 'utf8' }
   const emissoesCVM = loadEmissoesCVM()   // pendencias da CVM: so no relatorio mais recente
+  const emissoresMap = loadEmissores()    // cadastro do usuario (grupo/setor por CNPJ)
   const index = []
+  let latestRep = null
   for (const D of datas) {
-    const rep = buildReport(src, D, datas, D === datas[0] ? emissoesCVM : null)
+    const rep = buildReport(src, D, datas, D === datas[0] ? emissoesCVM : null, emissoresMap)
+    if (!latestRep) latestRep = rep   // datas[0] = mais recente
     fs.writeFileSync(path.join(REPORTS, `${D}.json`), JSON.stringify(rep, null, 2) + '\n', utf8)
     fs.writeFileSync(path.join(REPORTS, `${D}.html`), renderHtml(rep), utf8)
     index.push({ date: D, label: rep.label, json: `/reports/daily/${D}.json`, html: `/reports/daily/${D}.html`, sourceDates: rep.sourceDates })
   }
   fs.writeFileSync(path.join(REPORTS, 'index.json'), JSON.stringify({ reports: index }, null, 2) + '\n', utf8)
+  writeEmissoresFaltantesCsv(latestRep?.sections?.emissoresFaltantes)
   console.log(`  Resumo do Dia: ${datas.length} relatorio(s) gerado(s) (${datas.join(', ')}).`)
 
   // Salva snapshots DEPOIS de gerar (para o dia-a-dia da PROXIMA rodada).
