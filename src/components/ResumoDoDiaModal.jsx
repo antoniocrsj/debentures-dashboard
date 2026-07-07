@@ -12,10 +12,9 @@ const mm = v => {
 }
 // Variação em bps, com sinal e minus tipográfico; 1 casa, sem zero à direita.
 const sinalBps = v => {
-  const r = Math.round(Number(v) * 10) / 10
+  const r = Math.round(Number(v))   // bps já é granular: inteiro, sem sufixo (header já diz "bps")
   const sinal = r > 0 ? '+' : r < 0 ? '−' : ''
-  const abs = Math.abs(r).toFixed(1).replace(/\.0$/, '').replace('.', ',')
-  return `${sinal}${abs} bps`
+  return `${sinal}${Math.abs(r)}`
 }
 
 function Empty({ children }) { return <p className="rd-empty">{children}</p> }

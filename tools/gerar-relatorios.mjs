@@ -533,10 +533,9 @@ function pct(v, casas = 2) {
 }
 // Variacao em bps com sinal e minus tipografico; 1 casa, sem zero a direita.
 function fmtBps(v) {
-  const r = Math.round(v * 10) / 10
+  const r = Math.round(v)   // bps ja e granular: inteiro, sem sufixo (o header diz "bps")
   const sinal = r > 0 ? '+' : r < 0 ? '−' : ''
-  const abs = Math.abs(r).toFixed(1).replace(/\.0$/, '').replace('.', ',')
-  return `${sinal}${abs} bps`
+  return `${sinal}${Math.abs(r)}`
 }
 
 function renderHtml(rep) {
