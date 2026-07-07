@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { fmtFluxo, fmtFluxoSigned, sortRows, fmtWeekFull, fmtInt } from '../../utils/fluxo.js'
+import { fmtFluxo, fmtFluxoSigned, sortRows, fmtWeekFull, fmtInt, parseSemana } from '../../utils/fluxo.js'
 import SortableTh, { cycleSort } from './SortableTh.jsx'
 
 const PAGE = 16
@@ -21,10 +21,15 @@ export default function FluxoTable({ weekly }) {
     [weekly, sort]
   )
 
+  // Semana mais recente da base (independe da ordenação escolhida): nela mostramos
+  // até que dia os dados vão ("até DD/MM") e, se ainda em andamento, marca "parcial".
+  const latestKey = useMemo(() => weekly.reduce((mx, w) => (w.weekKey > mx ? w.weekKey : mx), ''), [weekly])
+
   if (!weekly || !weekly.length) return null
 
   const onSort = col => setSort(s => cycleSort(s, col, DEFAULT_SORT))
   const shown = showAll ? sorted : sorted.slice(0, PAGE)
+  const ddmm = key => parseSemana(key)?.label || ''
 
   return (
     <div className="fluxo-table-block">
@@ -42,9 +47,22 @@ export default function FluxoTable({ weekly }) {
           <tbody>
             {shown.map(w => {
               const pos = w.liquido > 0, neg = w.liquido < 0
+              const isLatest = w.weekKey === latestKey
               return (
                 <tr key={w.weekKey}>
-                  <td className="col-sticky col-ativo"><span className="ativo-code">{fmtWeekFull(w.weekKey)}</span></td>
+                  <td className="col-sticky col-ativo">
+                    <span className="ativo-code">{fmtWeekFull(w.weekKey)}</span>
+                    {isLatest && w.dataBase && (
+                      <span
+                        className={`semana-cobertura${w.parcial ? ' parcial' : ''}`}
+                        title={w.parcial
+                          ? `Semana em andamento — dados até ${fmtWeekFull(w.dataBase)}`
+                          : `Cobre até ${fmtWeekFull(w.dataBase)}`}
+                      >
+                        {w.parcial ? 'parcial · ' : ''}até {ddmm(w.dataBase)}
+                      </span>
+                    )}
+                  </td>
                   <td className={`col-num liq-cell${pos ? ' pos' : neg ? ' neg' : ''}`}>{fmtFluxoSigned(w.liquido)}</td>
                   <td className="col-num">{fmtFluxo(w.captacao)}</td>
                   <td className="col-num">{fmtFluxo(w.resgate)}</td>

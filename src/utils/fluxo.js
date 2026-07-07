@@ -183,18 +183,28 @@ export function aggregateByMonth(rows, start, end, allRows) {
  * plTotal  = soma de plSemana entre gestores (PL total da semana).
  * numFundos = soma dos fundos (cada fundo é de um único gestor → sem dupla contagem).
  */
+/** Semana "em andamento": a DataBase (último dia com dado) é anterior à sexta
+ *  daquela semana (segunda + 4). Ex.: dado até quarta → semana ainda incompleta. */
+export function semanaParcial(weekKey, dataBase) {
+  const wk = parseSemana(weekKey), db = parseSemana(dataBase)
+  if (!wk || !db) return false
+  const sexta = new Date(wk.date); sexta.setDate(sexta.getDate() + 4)
+  return db.date < sexta
+}
+
 export function aggregateByWeek(rows) {
   const map = new Map()
   for (const r of rows || []) {
     let w = map.get(r.weekKey)
-    if (!w) { w = { weekKey: r.weekKey, weekDate: r.weekDate, weekLabel: r.weekLabel, captacao: 0, resgate: 0, plTotal: 0, numFundos: 0 }; map.set(r.weekKey, w) }
+    if (!w) { w = { weekKey: r.weekKey, weekDate: r.weekDate, weekLabel: r.weekLabel, dataBase: r.dataBase || '', captacao: 0, resgate: 0, plTotal: 0, numFundos: 0 }; map.set(r.weekKey, w) }
+    else if ((r.dataBase || '') > w.dataBase) w.dataBase = r.dataBase
     w.captacao += r.captacao
     w.resgate  += r.resgate
     w.plTotal  += r.plSemana
     w.numFundos += r.numFundos
   }
   return [...map.values()]
-    .map(w => ({ ...w, liquido: w.captacao - w.resgate }))
+    .map(w => ({ ...w, liquido: w.captacao - w.resgate, parcial: semanaParcial(w.weekKey, w.dataBase) }))
     .sort((a, b) => a.weekDate - b.weekDate)
 }
 
