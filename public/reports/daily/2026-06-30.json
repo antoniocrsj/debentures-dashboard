@@ -1,7 +1,7 @@
 {
   "date": "2026-06-30",
   "label": "30/06/2026",
-  "previousDate": "2026-06-29",
+  "previousDate": null,
   "sourceDates": {
     "debentures": "2026-06-29",
     "cap12431": "2026-06-30",
@@ -43,34 +43,34 @@
     "captacao": {
       "12431": {
         "dia": "2026-06-30",
-        "captacao": 207177296.21000004,
-        "resgate": 369195433.8800001,
-        "liquido": -162018137.67000008,
-        "pl": 298430137806.88007,
-        "numFundos": 1588,
+        "captacao": 207542296.21000004,
+        "resgate": 369445433.8800001,
+        "liquido": -161903137.67000008,
+        "pl": 300497929583.3601,
+        "numFundos": 1605,
         "anterior": {
           "dia": "2026-06-29",
           "captacao": 61689981.580000006,
-          "resgate": 852286881.4300001,
-          "liquido": -790596899.85,
-          "pl": 335573486978.2601,
-          "numFundos": 1616
+          "resgate": 846792081.4300001,
+          "liquido": -785102099.85,
+          "pl": 335619893801.85004,
+          "numFundos": 1617
         }
       },
       "trad": {
         "dia": "2026-06-30",
-        "captacao": 1858026211.0200005,
-        "resgate": 2321032207.649999,
-        "liquido": -463005996.6299987,
-        "pl": 1080056528451.6704,
-        "numFundos": 813,
+        "captacao": 1858215407.3000004,
+        "resgate": 2320782493.549999,
+        "liquido": -462567086.2499988,
+        "pl": 1080513081284.3105,
+        "numFundos": 818,
         "anterior": {
           "dia": "2026-06-29",
-          "captacao": 1726567704.3700001,
-          "resgate": 1972442493.9400008,
-          "liquido": -245874789.57000065,
-          "pl": 1090826369365.6396,
-          "numFundos": 820
+          "captacao": 1726756900.65,
+          "resgate": 1972253493.2100008,
+          "liquido": -245496592.56000066,
+          "pl": 1090837935427.2695,
+          "numFundos": 821
         }
       }
     },
@@ -99,17 +99,17 @@
         },
         {
           "gestor": "Icatu",
-          "captacao": 1811038.33,
-          "resgate": 0,
-          "liquido": 1811038.33,
-          "pl": 3539622456.91
+          "captacao": 2176038.33,
+          "resgate": 250000,
+          "liquido": 1926038.33,
+          "pl": 4978049589.65
         },
         {
           "gestor": "XPG",
           "captacao": 1073331.05,
           "resgate": 0,
           "liquido": 1073331.05,
-          "pl": 7305876501.62
+          "pl": 7306383677.26
         }
       ],
       "top12431Resgate": [
@@ -199,14 +199,14 @@
           "captacao": 11886864.37,
           "resgate": 118860146.89,
           "liquido": -106973282.52,
-          "pl": 16178860242.02
+          "pl": 16243544042.16
         },
         {
           "gestor": "JGP",
           "captacao": 15341172.41,
           "resgate": 66278141.07,
           "liquido": -50936968.66,
-          "pl": 14474535402.56
+          "pl": 14675493822.44
         },
         {
           "gestor": "IAM",
@@ -255,14 +255,6 @@
           "pl": 36716508.79
         },
         {
-          "cnpj": "34793170000192",
-          "nome": "ICATU VANGUARDA FIF - CLASSE INCENTIVADA DE INVESTIMENTO EM INFRA RENDA FIXA LP - RESP LIMITADA",
-          "gestor": "Icatu",
-          "segmento": "12431",
-          "retorno": 0.8092,
-          "pl": 29272113.93
-        },
-        {
           "cnpj": "58443366000115",
           "nome": "AUGME BB FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
           "gestor": "Augme",
@@ -277,6 +269,14 @@
           "segmento": "12431",
           "retorno": 0.4093,
           "pl": 127082220.27
+        },
+        {
+          "cnpj": "62283336000166",
+          "nome": "ITAÚ DEB INCENTIVADAS PRÉ TARGET 2030 SHIFT FIIF EM INFRA RF CRÉD PRIV RESP LIMITADA",
+          "gestor": "IAM",
+          "segmento": "12431",
+          "retorno": 0.4025,
+          "pl": 247733096.08
         }
       ],
       "top12431Neg": [
@@ -287,6 +287,22 @@
           "segmento": "12431",
           "retorno": -26.0466,
           "pl": 566169739.18
+        },
+        {
+          "cnpj": "63706652000166",
+          "nome": "VINLAND INC XP FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA FIF RF CRED PRIV RESP LIMITADA",
+          "gestor": "Vinland",
+          "segmento": "12431",
+          "retorno": -14.7048,
+          "pl": 36183770.52
+        },
+        {
+          "cnpj": "60276080000134",
+          "nome": "DAYCOVAL FI INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RF CRÉD PRIV LP RESP LIMITADA",
+          "gestor": "Daycoval",
+          "segmento": "12431",
+          "retorno": -4.1381,
+          "pl": 39880329.97
         },
         {
           "cnpj": "41953322000132",
@@ -303,22 +319,6 @@
           "segmento": "12431",
           "retorno": -0.936,
           "pl": 238903419.6
-        },
-        {
-          "cnpj": "57110842000113",
-          "nome": "SPARTA INFRA CDI MASTER V FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
-          "gestor": "Sparta",
-          "segmento": "12431",
-          "retorno": -0.9195,
-          "pl": 953249768.02
-        },
-        {
-          "cnpj": "48970212000128",
-          "nome": "SPARTA INFRA CDI MASTER I FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
-          "gestor": "Sparta",
-          "segmento": "12431",
-          "retorno": -0.9059,
-          "pl": 150300265.54
         }
       ],
       "topTradPos": [
@@ -373,6 +373,14 @@
           "pl": 17228415.8
         },
         {
+          "cnpj": "38150833000101",
+          "nome": "G5 TORONTO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "gestor": "G5",
+          "segmento": "trad",
+          "retorno": -1.4012,
+          "pl": 60676241.47
+        },
+        {
           "cnpj": "12059831000118",
           "nome": "DHF-M FUNDO DE INVESTIMENTO FINANCEIRO",
           "gestor": "Dynamo",
@@ -395,14 +403,6 @@
           "segmento": "trad",
           "retorno": -0.666,
           "pl": 202605967.24
-        },
-        {
-          "cnpj": "36327365000172",
-          "nome": "CAPITÂNIA REIT PREV ADVISORY XP SEGUROS FIFE FIF MULTIMERCADO CRÉD PRIV - RESPONSABILIDADE LIMITADA",
-          "gestor": "Capitânia",
-          "segmento": "trad",
-          "retorno": -0.5807,
-          "pl": 18834819.83
         }
       ]
     },

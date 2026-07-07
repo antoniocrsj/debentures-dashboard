@@ -1,16 +1,32 @@
 {
   "reports": [
     {
+      "date": "2026-07-06",
+      "label": "06/07/2026",
+      "json": "/reports/daily/2026-07-06.json",
+      "html": "/reports/daily/2026-07-06.html",
+      "sourceDates": {
+        "debentures": "2026-07-03",
+        "cap12431": "2026-07-03",
+        "capTrad": "2026-07-03",
+        "perf12431": "2026-07-03",
+        "perfTrad": "2026-07-03",
+        "anbima": "2026-07-06",
+        "blc": "2026-07-03",
+        "fundos": "2026-07-03"
+      }
+    },
+    {
       "date": "2026-07-03",
       "label": "03/07/2026",
       "json": "/reports/daily/2026-07-03.json",
       "html": "/reports/daily/2026-07-03.html",
       "sourceDates": {
-        "debentures": "2026-07-02",
-        "cap12431": "2026-07-02",
-        "capTrad": "2026-07-02",
-        "perf12431": "2026-07-02",
-        "perfTrad": "2026-07-02",
+        "debentures": "2026-07-03",
+        "cap12431": "2026-07-03",
+        "capTrad": "2026-07-03",
+        "perf12431": "2026-07-03",
+        "perfTrad": "2026-07-03",
         "anbima": "2026-07-03",
         "blc": "2026-07-03",
         "fundos": "2026-07-03"
@@ -38,7 +54,7 @@
       "json": "/reports/daily/2026-07-01.json",
       "html": "/reports/daily/2026-07-01.html",
       "sourceDates": {
-        "debentures": "2026-06-29",
+        "debentures": "2026-07-01",
         "cap12431": "2026-07-01",
         "capTrad": "2026-07-01",
         "perf12431": "2026-07-01",
@@ -59,22 +75,6 @@
         "capTrad": "2026-06-30",
         "perf12431": "2026-06-30",
         "perfTrad": "2026-06-30",
-        "anbima": null,
-        "blc": null,
-        "fundos": null
-      }
-    },
-    {
-      "date": "2026-06-29",
-      "label": "29/06/2026",
-      "json": "/reports/daily/2026-06-29.json",
-      "html": "/reports/daily/2026-06-29.html",
-      "sourceDates": {
-        "debentures": "2026-06-29",
-        "cap12431": "2026-06-29",
-        "capTrad": "2026-06-29",
-        "perf12431": "2026-06-29",
-        "perfTrad": "2026-06-29",
         "anbima": null,
         "blc": null,
         "fundos": null

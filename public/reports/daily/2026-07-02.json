@@ -18,11 +18,11 @@
       "tom": "pos"
     },
     {
-      "texto": "Captação líquida Incentivados: −R$ 249 mi",
+      "texto": "Captação líquida Incentivados: −R$ 254 mi",
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional: −R$ 127 mi",
+      "texto": "Captação líquida Tradicional: −R$ 113 mi",
       "tom": "neg"
     },
     {
@@ -60,34 +60,34 @@
     "captacao": {
       "12431": {
         "dia": "2026-07-02",
-        "captacao": 114027593.03,
-        "resgate": 363228273.68999994,
-        "liquido": -249200680.65999994,
-        "pl": 261023719005.23,
-        "numFundos": 1531,
+        "captacao": 115565228.13,
+        "resgate": 369162788.66999996,
+        "liquido": -253597560.53999996,
+        "pl": 273544618910.62003,
+        "numFundos": 1597,
         "anterior": {
           "dia": "2026-07-01",
-          "captacao": 199936846.42999998,
-          "resgate": 298645575.61999995,
-          "liquido": -98708729.18999997,
-          "pl": 276015791415.32,
-          "numFundos": 1599
+          "captacao": 200034194.79,
+          "resgate": 299005575.61999995,
+          "liquido": -98971380.82999995,
+          "pl": 276100365674.86,
+          "numFundos": 1601
         }
       },
       "trad": {
         "dia": "2026-07-02",
-        "captacao": 1524796225.9600008,
-        "resgate": 1651823895.9299998,
-        "liquido": -127027669.96999907,
-        "pl": 1057471501988.8097,
-        "numFundos": 793,
+        "captacao": 1681768570.1600006,
+        "resgate": 1794447442.8700001,
+        "liquido": -112678872.70999956,
+        "pl": 1077846548824.6798,
+        "numFundos": 803,
         "anterior": {
           "dia": "2026-07-01",
-          "captacao": 1700321212.84,
-          "resgate": 1887047992.2400002,
-          "liquido": -186726779.40000033,
-          "pl": 1079465762162.5706,
-          "numFundos": 812
+          "captacao": 1809059145.1399996,
+          "resgate": 1885336901.0000002,
+          "liquido": -76277755.86000061,
+          "pl": 1081088474357.6604,
+          "numFundos": 818
         }
       }
     },
@@ -135,7 +135,7 @@
           "captacao": 21285762.64,
           "resgate": 80707447.64,
           "liquido": -59421685,
-          "pl": 54984122878.57
+          "pl": 54983762617.44
         },
         {
           "gestor": "Kinea",
@@ -146,17 +146,17 @@
         },
         {
           "gestor": "BRAM",
-          "captacao": 2907858.93,
-          "resgate": 26887020.93,
-          "liquido": -23979162,
-          "pl": 28312588689.63
+          "captacao": 1260020,
+          "resgate": 26903711.24,
+          "liquido": -25643691.24,
+          "pl": 28308386293.87
         },
         {
           "gestor": "Safra Asset",
-          "captacao": 156852.98,
-          "resgate": 20450308.17,
-          "liquido": -20293455.19,
-          "pl": 8260684545.39
+          "captacao": 742899.33,
+          "resgate": 22362773.45,
+          "liquido": -21619874.12,
+          "pl": 9787765429.19
         },
         {
           "gestor": "SAM",
@@ -168,6 +168,13 @@
       ],
       "topTradCaptacao": [
         {
+          "gestor": "BB Asset",
+          "captacao": 635584085.18,
+          "resgate": 456472894.15,
+          "liquido": 179111191.02999997,
+          "pl": 209487152627.88
+        },
+        {
           "gestor": "CEF Asset",
           "captacao": 186375351.25,
           "resgate": 67755384.2,
@@ -175,18 +182,11 @@
           "pl": 68530209917.18
         },
         {
-          "gestor": "BB Asset",
-          "captacao": 452881698.48,
-          "resgate": 345333031.77,
-          "liquido": 107548666.71000004,
-          "pl": 190217527292.02
-        },
-        {
           "gestor": "BRAM",
-          "captacao": 122068574.23,
-          "resgate": 39524321.36,
-          "liquido": 82544252.87,
-          "pl": 100390884707.95
+          "captacao": 124119204.61,
+          "resgate": 68191726.9,
+          "liquido": 55927477.70999999,
+          "pl": 100351732423.59
         },
         {
           "gestor": "Regia",
@@ -196,11 +196,11 @@
           "pl": 16849958154.2
         },
         {
-          "gestor": "Chromo",
-          "captacao": 31491002.98,
-          "resgate": 2000,
-          "liquido": 31489002.98,
-          "pl": 85129127.43
+          "gestor": "BNP",
+          "captacao": 27119044.75,
+          "resgate": 25000,
+          "liquido": 27094044.75,
+          "pl": 7088369732
         }
       ],
       "topTradResgate": [
@@ -223,7 +223,7 @@
           "captacao": 12754610.46,
           "resgate": 108988522.65,
           "liquido": -96233912.19,
-          "pl": 15624403212.21
+          "pl": 15724715979.3
         },
         {
           "gestor": "Kinea",
@@ -264,14 +264,6 @@
           "pl": 203980597.86
         },
         {
-          "cnpj": "60627132000170",
-          "nome": "FP FOF CAPITÂNIA FIF - CLASSE DE INVESTIMENTO RF CRED PRIV - RESP LIMITADA",
-          "gestor": "Capitânia",
-          "segmento": "12431",
-          "retorno": 1.3076,
-          "pl": 49965715.77
-        },
-        {
           "cnpj": "61141536000111",
           "nome": "BB MASTER RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
           "gestor": "BB Asset",
@@ -294,6 +286,14 @@
           "segmento": "12431",
           "retorno": 0.4639,
           "pl": 550433468.12
+        },
+        {
+          "cnpj": "62360992000115",
+          "nome": "BB MASTER II RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
+          "gestor": "BB Asset",
+          "segmento": "12431",
+          "retorno": 0.4433,
+          "pl": 342375802.12
         }
       ],
       "top12431Neg": [
@@ -356,6 +356,14 @@
           "pl": 144052040.96
         },
         {
+          "cnpj": "65028465000104",
+          "nome": "CAPITÂNIA MASTER INFRA GERAL ADVISORY RENDA FIXA FUNDO DE INVESTIMENTO EM INFRAESTRUTURA RL",
+          "gestor": "Capitânia",
+          "segmento": "trad",
+          "retorno": 0.3545,
+          "pl": 38755324.8
+        },
+        {
           "cnpj": "52333139000150",
           "nome": "CARBYNE FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
           "gestor": "BRM",
@@ -370,14 +378,6 @@
           "segmento": "trad",
           "retorno": 0.2774,
           "pl": 11441747.35
-        },
-        {
-          "cnpj": "17913386000125",
-          "nome": "FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO GIDU INVEST NO EXTERIOR CRÉD PRIV - RESP LIMITADA",
-          "gestor": "BTG WM",
-          "segmento": "trad",
-          "retorno": 0.235,
-          "pl": 27490395.94
         }
       ],
       "topTradNeg": [
