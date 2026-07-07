@@ -1182,6 +1182,7 @@ a { color: var(--primary); }
 .rd-table th, .rd-table td { border-bottom: 1px solid var(--primary-border); padding: 5px 8px; text-align: left; white-space: nowrap; }
 .rd-table th { color: var(--text-muted); font-weight: 600; }
 .rd-table .rd-num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.rd-table tr.rd-sep td { border-bottom: 2px solid var(--primary-border); padding: 0; height: 2px; }
 .rd-strong { font-weight: 700; }
 .rd-empresa { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; vertical-align: bottom; }
 .rd-cvm { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--primary-border); }

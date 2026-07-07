@@ -149,37 +149,64 @@ function Captacao({ sec }) {
   )
 }
 
-function TopGestores({ arr, titulo }) {
-  if (!arr?.length) return <div className="rd-top"><h4>{titulo}</h4><Empty>Sem destaques.</Empty></div>
+// Duas tabelas lado a lado (Incentivados | Tradicional), cada uma com o Top 5 de
+// captação líquida positiva (verde) e negativa (vermelho).
+function GestoresLado({ gestores }) {
+  const seg = (capArr, resArr, nome) => {
+    const cap = capArr || [], res = resArr || []
+    return (
+      <div className="rd-cap-seg">
+        <h4>{nome}</h4>
+        {cap.length || res.length ? (
+          <table className="rd-table">
+            <thead><tr><th>Gestor</th><th className="rd-num">Cap. líquida</th></tr></thead>
+            <tbody>
+              {cap.map((g, i) => <tr key={'p' + i}><td className="rd-empresa" title={g.gestor}>{g.gestor}</td><td className="rd-num rd-pos">{money(g.liquido)}</td></tr>)}
+              {cap.length > 0 && res.length > 0 && <tr className="rd-sep"><td colSpan={2}></td></tr>}
+              {res.map((g, i) => <tr key={'n' + i}><td className="rd-empresa" title={g.gestor}>{g.gestor}</td><td className="rd-num rd-neg">{money(g.liquido)}</td></tr>)}
+            </tbody>
+          </table>
+        ) : <Empty>Sem destaques.</Empty>}
+      </div>
+    )
+  }
   return (
-    <div className="rd-top">
-      <h4>{titulo}</h4>
-      <ol className="rd-ol">
-        {arr.map((g, i) => <li key={g.gestor || i}><span>{g.gestor}</span><b className={g.liquido >= 0 ? 'rd-pos' : 'rd-neg'}>{money(g.liquido)}</b></li>)}
-      </ol>
+    <div className="rd-cap">
+      {seg(gestores?.top12431Captacao, gestores?.top12431Resgate, 'Incentivados (12.431)')}
+      {seg(gestores?.topTradCaptacao, gestores?.topTradResgate, 'Crédito Tradicional')}
     </div>
   )
 }
 
+// Tabela de variação de spread (top 15). Abertura (+bps) = vermelho; fechamento
+// (−bps) = verde. Nunca taxa nominal — sempre spread.
 function Anbima({ sec }) {
   if (sec?.semAnterior) return <Empty>Sem dia anterior de ANBIMA para comparar — começa a partir do próximo snapshot.</Empty>
-  const lista = (arr, titulo) => arr?.length
-    ? (
-      <div className="rd-top">
-        <h4>{titulo}</h4>
-        <ol className="rd-ol">
-          {arr.map((a, i) => (
-            <li key={a.ticker || i}>
-              <span className="rd-empresa">{a.ticker} <em>{a.fmtAnterior} → {a.fmtAtual}</em></span>
-              {/* abertura de spread (+bps) = vermelho; fechamento (−bps) = verde */}
-              <b className={a.variacaoBps > 0 ? 'rd-neg' : a.variacaoBps < 0 ? 'rd-pos' : ''}>{sinalBps(a.variacaoBps)}</b>
-            </li>
-          ))}
-        </ol>
+  const tabela = (arr, titulo) => arr?.length ? (
+    <div className="rd-top">
+      <h4>{titulo}</h4>
+      <div className="rd-tablewrap">
+        <table className="rd-table">
+          <thead><tr><th>Ativo</th><th>Grupo</th><th>Emissor</th><th>Indexador</th><th>Spread atual</th><th className="rd-num">Duration (a)</th><th className="rd-num">Var. (bps)</th></tr></thead>
+          <tbody>
+            {arr.map((a, i) => (
+              <tr key={a.ticker || i}>
+                <td className="rd-strong">{a.ticker}</td>
+                <td className="rd-empresa" title={a.grupo}>{a.grupo || '—'}</td>
+                <td className="rd-empresa" title={a.emissor}>{a.emissor || '—'}</td>
+                <td>{a.indexadorFamilia}</td>
+                <td>{a.fmtAtual}</td>
+                <td className="rd-num">{a.durationAnos != null ? a.durationAnos.toFixed(2) : '—'}</td>
+                <td className={'rd-num ' + (a.variacaoBps > 0 ? 'rd-neg' : a.variacaoBps < 0 ? 'rd-pos' : '')}>{sinalBps(a.variacaoBps)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
-    ) : null
+    </div>
+  ) : null
   if (!sec?.aberturas?.length && !sec?.fechamentos?.length) return <Empty>Sem variações de spread neste dia.</Empty>
-  return <>{lista(sec.aberturas, 'Maiores aberturas de spread (bps)')}{lista(sec.fechamentos, 'Maiores fechamentos de spread (bps)')}</>
+  return <>{tabela(sec.aberturas, 'Maiores aberturas de spread')}{tabela(sec.fechamentos, 'Maiores fechamentos de spread')}</>
 }
 
 function Perf({ sec }) {
@@ -193,7 +220,7 @@ function Perf({ sec }) {
       </div>
     )
   }
-  return <>{bloco(sec?.top12431Pos, sec?.top12431Neg, 'Incentivados')}{bloco(sec?.topTradPos, sec?.topTradNeg, 'Tradicional')}</>
+  return <><p className="rd-note">Retorno nominal da cota no dia (não é %CDI).</p>{bloco(sec?.top12431Pos, sec?.top12431Neg, 'Incentivados')}{bloco(sec?.topTradPos, sec?.topTradNeg, 'Tradicional')}</>
 }
 
 function Fundos({ sec }) {
@@ -263,24 +290,20 @@ export default function ResumoDoDiaModal({ index, report, loadingReport, selecte
           {!loadingReport && report && (
             <>
               <Section title="1. Sumário executivo"><Bullets items={report.summary} /></Section>
-              <Section title="2. Novas debêntures cadastradas"><Debentures sec={s.debentures} cvm={s.emissoesCVM} faltantes={s.emissoresFaltantes} /></Section>
+              <Section title="2. Novas debêntures e emissões">
+                <Debentures sec={s.debentures} cvm={s.emissoesCVM} faltantes={s.emissoresFaltantes} />
+                {inc?.temSnapshotBlc && inc.novosBlc?.length > 0 && (
+                  <p className="rd-note">Novos ativos no BLC/alocação: {inc.novosBlc.length}</p>
+                )}
+              </Section>
               <Section title="3. Captação líquida do dia"><Captacao sec={s.captacao} /></Section>
-              <Section title="4. Destaques por gestor">
-                <TopGestores arr={s.gestores?.top12431Captacao} titulo="Top captação 12.431" />
-                <TopGestores arr={s.gestores?.top12431Resgate} titulo="Top resgate 12.431" />
-                <TopGestores arr={s.gestores?.topTradCaptacao} titulo="Top captação Tradicional" />
-                <TopGestores arr={s.gestores?.topTradResgate} titulo="Top resgate Tradicional" />
+              <Section title="4. Destaques por gestor (captação líquida)">
+                <GestoresLado gestores={s.gestores} />
               </Section>
-              <Section title="5. Variação ANBIMA (taxa/spread)"><Anbima sec={s.anbima} /></Section>
-              <Section title="6. Ativos incluídos">
-                <p className="rd-note">
-                  Novos em Debêntures: {inc?.novosDebentures?.length || 0}
-                  {inc?.temSnapshotBlc ? ` · Novos no BLC: ${inc.novosBlc.length}` : ''}
-                </p>
-              </Section>
-              <Section title="7. Fundos incluídos/excluídos"><Fundos sec={s.fundos} /></Section>
-              <Section title="8. Performance de fundos"><Perf sec={s.perf} /></Section>
-              <Section title="9. Alertas de qualidade"><Alertas arr={s.alertas} /></Section>
+              <Section title="5. Variação ANBIMA (spread)"><Anbima sec={s.anbima} /></Section>
+              <Section title="6. Fundos incluídos/excluídos"><Fundos sec={s.fundos} /></Section>
+              <Section title="7. Performance de fundos"><Perf sec={s.perf} /></Section>
+              <Section title="8. Alertas de qualidade"><Alertas arr={s.alertas} /></Section>
             </>
           )}
         </div>

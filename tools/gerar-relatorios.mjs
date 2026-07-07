@@ -249,9 +249,21 @@ function spreadInfo(r) {
   return { bps: y * 100, base, tipo: 'yield' }
 }
 
+// Familia do indexador (para exibir), a partir do tipo de taxa da ANBIMA.
+function indexadorFamilia(tipo) {
+  const t = (tipo || '').trim()
+  if (t === 'DI_SPREAD') return 'CDI+'
+  if (t === 'DI_PERCENTUAL') return '%CDI'
+  if (t === 'IPCA_SPREAD') return 'IPCA+'
+  if (t === 'PREFIXADO') return 'Pré'
+  if (t === 'IGP-M') return 'IGP-M'
+  return t || '—'
+}
+
 // §5 Variacao ANBIMA — sempre em bps, sobre o spread (taxa/spread, NUNCA preco).
+// Top 15. Enriquece com emissor+grupo (join ticker->Debentures->cadastro).
 // Precisa de snapshot anterior da fonte.
-function buildAnbima(src, sourceDates) {
+function buildAnbima(src, sourceDates, tickerInfo) {
   const atual = sourceDates.anbima
   const anterior = previousDate(perSourceDates(src).anbima, atual)
   if (!atual || !anterior) return { aberturas: [], fechamentos: [], atual, anterior, semAnterior: true }
@@ -269,20 +281,24 @@ function buildAnbima(src, sourceDates) {
     if (si.base !== sp.base) continue           // benchmark girou (ex.: B35->B33): spread incomparavel
     const variacaoBps = si.bps - sp.bps
     if (Math.abs(variacaoBps) < 0.05) continue  // ruido sub-0,05 bps
+    const ti = tickerInfo.get(key(r)) || {}
+    const dur = parseNum(r.durationAnbimaAnos)
     movs.push({
       ticker: key(r), indexador: repairText((r.indexadorAnbima || '').trim()),
+      indexadorFamilia: indexadorFamilia(r.tipoTaxaAnbima),
+      emissor: ti.empresa || '', grupo: ti.grupo || '',
       base: si.base, tipo: si.tipo,
       spreadAnteriorBps: sp.bps, spreadAtualBps: si.bps, variacaoBps,
       fmtAnterior: repairText((p.txAnbimaFormatada || '').trim()),
       fmtAtual: repairText((r.txAnbimaFormatada || '').trim()),
-      duration: (r.durationAnbimaAnos || '').trim(),
+      durationAnos: Number.isNaN(dur) ? null : dur,
       status: (r.statusCalculoAnbima || '').trim(),
     })
   }
   return {
     // abertura = spread abriu (+bps); fechamento = spread fechou (-bps)
-    aberturas: topMovers(movs, m => m.variacaoBps, 8, 'desc').filter(m => m.variacaoBps > 0),
-    fechamentos: topMovers(movs, m => m.variacaoBps, 8, 'asc').filter(m => m.variacaoBps < 0),
+    aberturas: topMovers(movs, m => m.variacaoBps, 15, 'desc').filter(m => m.variacaoBps > 0),
+    fechamentos: topMovers(movs, m => m.variacaoBps, 15, 'asc').filter(m => m.variacaoBps < 0),
     atual, anterior, semAnterior: false,
   }
 }
@@ -433,6 +449,19 @@ function buildEmissoresFaltantes(emissoresMap, emissoesCVM) {
   return { itens, asOf: emissoesCVM.asOf }
 }
 
+// Mapa ticker (Codigo do Ativo) -> { empresa, grupo } a partir do Debentures.csv
+// + cadastro de emissores (por CNPJ). Usado para enriquecer a tabela de ANBIMA.
+function buildTickerInfo(src, emissoresMap) {
+  const m = new Map()
+  for (const r of src.debentures) {
+    const t = (r['Codigo do Ativo'] || '').trim()
+    if (!t) continue
+    const grupo = (emissoresMap.get(digits(r['CNPJ'])) || {}).grupo || ''
+    m.set(t, { empresa: repairText((r['Empresa'] || '').trim()), grupo })
+  }
+  return m
+}
+
 function buildReport(src, D, allDates, emissoesCVM = null, emissoresMap = new Map()) {
   const sd = perSourceDates(src)
   // Fluxo (captacao/perf) resolvido para o ultimo dia COMPLETO <= D (pula dias
@@ -451,7 +480,7 @@ function buildReport(src, D, allDates, emissoesCVM = null, emissoresMap = new Ma
   const debentures = buildDebentures(src, D)
   const captacao = buildCaptacao(src, flow)
   const gestores = buildGestores(src, sourceDates)
-  const anbima = buildAnbima(src, sourceDates)
+  const anbima = buildAnbima(src, sourceDates, buildTickerInfo(src, emissoresMap))
   const fundos = buildFundos(src, D)
   const perf = buildPerf(src, sourceDates)
   const inclusoes = buildInclusoes(src, D, debentures)
@@ -534,6 +563,11 @@ function renderHtml(rep) {
         : `<h4>Registradas na CVM, ainda não no cadastro</h4>${empty('Nenhuma emissão pendente na CVM neste momento.')}`)
     : ''
 
+  // Inclusoes no BLC (antigo §6, agora dentro do §2).
+  const inclNote = s.inclusoes.temSnapshotBlc && s.inclusoes.novosBlc.length
+    ? `<p class="tally">Novos ativos no BLC/alocação: <strong>${s.inclusoes.novosBlc.length}</strong></p>`
+    : ''
+
   // Emissores das emissoes novas que ainda nao estao no cadastro do usuario.
   const falt = s.emissoresFaltantes
   const faltantesBlock = falt && falt.itens.length
@@ -558,20 +592,31 @@ function renderHtml(rep) {
     </tbody></table></div>`
   }).join('')}</div>`
 
-  const gestTop = (arr, titulo) => arr && arr.length
-    ? `<h4>${esc(titulo)}</h4><ol class="rank">${arr.map(g => `<li><span class="g-nome">${esc(g.gestor)}</span><span class="g-val">${moneyC(g.liquido)}</span></li>`).join('')}</ol>`
-    : `<h4>${esc(titulo)}</h4>${empty('Sem destaques.')}`
+  // §4 gestor: duas tabelas lado a lado (12.431 | Tradicional), cada uma com
+  // Top 5 captacao liquida positiva (verde) e negativa (vermelho).
+  const gestSeg = (cap, res, nome) => {
+    const linha = g => `<tr><td>${esc(g.gestor)}</td><td class="num ${g.liquido >= 0 ? 'pos' : 'neg'}">${esc(money(g.liquido))}</td></tr>`
+    if (!(cap && cap.length) && !(res && res.length)) return `<div class="cap-card"><h4>${nome}</h4>${empty('Sem destaques.')}</div>`
+    return `<div class="cap-card"><h4>${nome}</h4><table><thead><tr><th>Gestor</th><th class="num">Cap. líquida</th></tr></thead><tbody>${
+      (cap || []).map(linha).join('')}${(res || []).map(linha).join('')
+    }</tbody></table></div>`
+  }
+  const gestBlock = `<div class="cap-grid">${
+    gestSeg(s.gestores.top12431Captacao, s.gestores.top12431Resgate, 'Incentivados (12.431)')
+  }${gestSeg(s.gestores.topTradCaptacao, s.gestores.topTradResgate, 'Crédito Tradicional')}</div>`
 
-  // abertura de spread (+bps) = vermelho; fechamento (−bps) = verde.
+  // §5 ANBIMA: tabela de spread (top 15). abertura (+bps)=vermelho; fechamento (−bps)=verde.
   const anbimaVar = v => `<span class="${v > 0 ? 'val neg' : v < 0 ? 'val pos' : 'val'}">${fmtBps(v)}</span>`
-  const anbimaLi = a => `<li><span class="g-nome">${esc(a.ticker)} <em>(${esc(a.indexador)})</em></span><span class="g-val">${esc(a.fmtAnterior || '—')} → ${esc(a.fmtAtual || '—')} · ${anbimaVar(a.variacaoBps)}</span></li>`
+  const anbimaTable = arr => `<div class="tw"><table><thead><tr><th>Ativo</th><th>Grupo</th><th>Emissor</th><th>Indexador</th><th>Spread atual</th><th class="num">Duration (a)</th><th class="num">Var. (bps)</th></tr></thead><tbody>${
+    arr.map(a => `<tr><td>${esc(a.ticker)}</td><td>${esc(a.grupo || '—')}</td><td>${esc(a.emissor || '—')}</td><td>${esc(a.indexadorFamilia)}</td><td>${esc(a.fmtAtual || '—')}</td><td class="num">${a.durationAnos != null ? a.durationAnos.toFixed(2) : '—'}</td><td class="num">${anbimaVar(a.variacaoBps)}</td></tr>`).join('')
+  }</tbody></table></div>`
   const anbimaBlock = s.anbima.semAnterior
     ? empty('Sem dia anterior de ANBIMA para comparar (começa no próximo snapshot).')
-    : `${s.anbima.aberturas.length ? `<h4>Maiores aberturas de spread (bps)</h4><ol class="rank">${s.anbima.aberturas.map(anbimaLi).join('')}</ol>` : ''}
-       ${s.anbima.fechamentos.length ? `<h4>Maiores fechamentos de spread (bps)</h4><ol class="rank">${s.anbima.fechamentos.map(anbimaLi).join('')}</ol>` : ''}
+    : `${s.anbima.aberturas.length ? `<h4>Maiores aberturas de spread</h4>${anbimaTable(s.anbima.aberturas)}` : ''}
+       ${s.anbima.fechamentos.length ? `<h4>Maiores fechamentos de spread</h4>${anbimaTable(s.anbima.fechamentos)}` : ''}
        ${!s.anbima.aberturas.length && !s.anbima.fechamentos.length ? empty('Sem variações de spread neste dia.') : ''}`
 
-  const perfBlock = ['12431', 'Trad'].map(seg => {
+  const perfBlock = `<p class="tally">Retorno nominal da cota no dia (não é %CDI).</p>` + ['12431', 'Trad'].map(seg => {
     const pos = s.perf[`top${seg}Pos`] || [], neg = s.perf[`top${seg}Neg`] || []
     const nome = seg === '12431' ? 'Incentivados' : 'Tradicional'
     if (!pos.length && !neg.length) return `<h4>${nome}</h4>${empty('Sem performance diária neste dia.')}`
@@ -616,6 +661,8 @@ function renderHtml(rep) {
   table{border-collapse:collapse;width:100%;font-size:12.5px;margin:4px 0}
   th,td{border:1px solid var(--border);padding:6px 9px;text-align:left;vertical-align:top}
   td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  th.num{text-align:right}
+  td.num.pos{color:var(--success);font-weight:600} td.num.neg{color:var(--danger);font-weight:600}
   th{background:var(--primary-light);color:var(--primary-dark);font-weight:600;white-space:nowrap}
   table.kv td:first-child{color:var(--text-muted);width:52%}
   table.kv td:last-child{text-align:right;font-variant-numeric:tabular-nums}
@@ -659,18 +706,13 @@ function renderHtml(rep) {
   <p class="sub">Comparado ao dia anterior disponível de cada fonte. Gerado a partir da data dos dados, não do calendário.</p>
 </div>
 <section><h2><span class="n">1.</span> Sumário executivo</h2>${bullets}</section>
-<section><h2><span class="n">2.</span> Novas debêntures cadastradas</h2>${debTable}${cvmBlock}${faltantesBlock}</section>
+<section><h2><span class="n">2.</span> Novas debêntures e emissões</h2>${debTable}${cvmBlock}${faltantesBlock}${inclNote}</section>
 <section><h2><span class="n">3.</span> Captação líquida do dia</h2>${capBlock}</section>
-<section><h2><span class="n">4.</span> Destaques por gestor</h2>
-${gestTop(s.gestores.top12431Captacao, 'Top captação 12.431')}
-${gestTop(s.gestores.top12431Resgate, 'Top resgate 12.431')}
-${gestTop(s.gestores.topTradCaptacao, 'Top captação Tradicional')}
-${gestTop(s.gestores.topTradResgate, 'Top resgate Tradicional')}</section>
-<section><h2><span class="n">5.</span> Variação ANBIMA (taxa/spread)</h2>${anbimaBlock}</section>
-<section><h2><span class="n">6.</span> Ativos incluídos</h2><p class="tally">Novos em Debêntures: <strong>${s.inclusoes.novosDebentures.length}</strong>${s.inclusoes.temSnapshotBlc ? ` · Novos no BLC: <strong>${s.inclusoes.novosBlc.length}</strong>` : ''}</p></section>
-<section><h2><span class="n">7.</span> Fundos incluídos/excluídos</h2>${fundosBlock}</section>
-<section><h2><span class="n">8.</span> Performance de fundos</h2>${perfBlock}</section>
-<section><h2><span class="n">9.</span> Alertas de qualidade</h2>${alertasBlock}</section>
+<section><h2><span class="n">4.</span> Destaques por gestor (captação líquida)</h2>${gestBlock}</section>
+<section><h2><span class="n">5.</span> Variação ANBIMA (spread)</h2>${anbimaBlock}</section>
+<section><h2><span class="n">6.</span> Fundos incluídos/excluídos</h2>${fundosBlock}</section>
+<section><h2><span class="n">7.</span> Performance de fundos</h2>${perfBlock}</section>
+<section><h2><span class="n">8.</span> Alertas de qualidade</h2>${alertasBlock}</section>
 </body></html>`
 }
 
