@@ -53,9 +53,12 @@ export default function FluxoDashboard({ compact = false }) {
     }
   }, [filtered, meta, tipo, gestor])
   // Mensal: mesmo gestor/período da seção; agregação por mês (do diário), zero-fill.
+  // Fim = último mês COM dado (dataMax, dentro do aggregate), não effEnd — este é a
+  // semana-início da base semanal (ex.: 29/06), que escondia o mês corrente (julho)
+  // mesmo havendo dado mensal dele. O período só limita o INÍCIO; o fim é "agora".
   const monthlyAgg = useMemo(
-    () => aggregateByMonth(filterMensal(monthly, gestor), effStart, effEnd, monthly),
-    [monthly, gestor, effStart, effEnd]
+    () => aggregateByMonth(filterMensal(monthly, gestor), effStart, null, monthly),
+    [monthly, gestor, effStart]
   )
   const ranking = useMemo(
     () => (gestor ? [] : mergeRentabilidade(aggregateByGestor(filtered), rentabilidade)),
