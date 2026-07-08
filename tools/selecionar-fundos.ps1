@@ -66,7 +66,11 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$NOME_12431_REGEX = 'INCENTIV|INFRAESTR|\bINFRA\b|INFRA[- ]|12\.?431|12431'
+# Padrao de nome de fundo incentivado/infra (12.431). Calibrado contra a lista
+# curada atual: cobre 98,5% dos 12.431 sem gerar falso-positivo novo no Trad.
+# Alem de INCENTIV/INFRAESTR/INFRA, cobre abreviacoes vistas na base:
+# "INFR" (sem A) e "DEBENTURES DE INF..." (Ex.: Santander PB, Sellas, Strix).
+$NOME_12431_REGEX = 'INCENTIV|INFRAESTR|\bINFRA?\b|INFRA[- ]|DEB\S* DE INF|12\.?431|12431'
 
 . (Join-Path $PSScriptRoot 'lib-cadastro.ps1')
 
@@ -326,6 +330,43 @@ $outFinalCdi   = Join-Path $OutDir 'Sugestao_Lista_Final_CDI.csv'
 Write-ListaFinal (@($candidatos | Where-Object { $_.Segmento -eq '12431' })) $outFinal12431
 Write-ListaFinal (@($candidatos | Where-Object { $_.Segmento -eq 'CDI' }))   $outFinalCdi
 
+# ---- 6b. Candidatos novos (12.431 que ainda nao aparecem no CDA) ------------
+# O loop de classificacao acima so' enxerga fundos que JA tem posicao em
+# debentures no CDA. Um fundo novo (nascido depois da carteira de referencia)
+# fica invisivel ate' o CDA alcanca-lo (defasagem de 4-5 meses) - e' o buraco
+# que faz a gente "perder" captacao de fundos de infra recem-lancados.
+# Para cobrir isso, varremos o UNIVERSO de classes ativas por NOME (infra/
+# incentivado): ativos, PL > MinPl, tipo elegivel, AINDA sem posicao no CDA e
+# AINDA fora das abas atuais. E' uma lista de REVISAO MANUAL: o nome sugere
+# 12.431, mas sem a carteira nao da' pra confirmar o %debentures - por isso nao
+# entra em nenhuma sugestao automatica, so' aponta o que voce deve olhar.
+Step "Procurando candidatos novos de 12.431 (nome infra, ainda fora do CDA)..."
+$candidatosNovos = New-Object System.Collections.Generic.List[object]
+foreach ($cnpj in $classeInfo.Keys) {
+  if ($debPorFundo.ContainsKey($cnpj)) { continue }   # ja visto no CDA (tratado acima)
+  if ($atuais.Contains($cnpj)) { continue }           # ja esta numa aba curada
+  $info = $classeInfo[$cnpj]
+  if ($info.PL -le $MinPl) { continue }
+  if (-not (Test-FundoCreditoElegivel $info)) { continue }
+  if (-not [regex]::IsMatch((Normalize-Text $info.Denom), $NOME_12431_REGEX)) { continue }
+  $cnpjGestor = if ($fundoGestorCvm.ContainsKey($info.IdFundo)) { $fundoGestorCvm[$info.IdFundo] } else { '' }
+  $apelido = if ($cnpjGestor -ne '' -and $gestorApelidoMap.ContainsKey($cnpjGestor)) { $gestorApelidoMap[$cnpjGestor] } else { '' }
+  $candidatosNovos.Add([pscustomobject]@{
+    Cnpj = $cnpj; Denom = $info.Denom; PL = $info.PL; Forma = $info.Forma
+    TipoClasse = $info.TipoClasse; DataRegistro = $info.DataRegistro; DataInicio = $info.DataInicio
+    CnpjGestor = $cnpjGestor; Apelido = $apelido
+  })
+}
+Step "  $($candidatosNovos.Count) candidato(s) novo(s) de 12.431 para revisar"
+$outCandNovos = Join-Path $OutDir 'Sugestao_Candidatos_Novos_12431.csv'
+$sbC = New-Object System.Text.StringBuilder
+[void]$sbC.AppendLine('CNPJ_FUNDO_CLASSE,DENOM_SOCIAL,Data_Registro,Data_Inicio,Forma_Condominio,PL,Tipo_Classe,CNPJ Gestor,Apelido Gestor')
+foreach ($c in ($candidatosNovos | Sort-Object DataRegistro -Descending)) {
+  $plFmt = ([Math]::Round($c.PL, 2)).ToString($ci)
+  [void]$sbC.AppendLine(('"{0}","{1}","{2}","{3}","{4}",{5},"{6}","{7}","{8}"' -f $c.Cnpj, ([string]$c.Denom).Replace('"', '""'), $c.DataRegistro, $c.DataInicio, $c.Forma, $plFmt, ([string]$c.TipoClasse).Replace('"', '""'), $c.CnpjGestor, ([string]$c.Apelido).Replace('"', '""')))
+}
+[System.IO.File]::WriteAllText($outCandNovos, $sbC.ToString(), $utf8)
+
 # ---- 7. Relatorio -----------------------------------------------------------
 Write-Host ""
 Write-Host "=== RELATORIO ===" -ForegroundColor Green
@@ -336,6 +377,7 @@ Write-Host "  Regra base                         : > $($LimiarPct*100)% do PL em
 Write-Host "  Regra 12431                        : >= $($LimiarLei12431Pct*100)% Lei 12.431 + nome infra/incentivado; ou > $($LimiarLei12431FortePct*100)% Lei 12.431 mesmo sem nome"
 Write-Host "  Fundos qualificados no CDA atual   : $($candidatos.Count) (12431: $n12431 | CDI nao-isento: $nCdi)"
 Write-Host "  Novos (nao estao nas abas hoje)    : $($novos.Count)"
+Write-Host "  Candidatos novos 12.431 (fora CDA) : $($candidatosNovos.Count) - fundos com nome infra ainda sem carteira/aba (revisar)"
 Write-Host "  Para remover (nao qualificam mais) : $($removerCnpjs.Count)"
 Write-Host "  Alertas 12431 para revisar         : nome sem carteira=$nome12431SemCarteira | carteira 5%-20% sem nome=$carteira12431SemNome | >20% sem nome incluidos=$carteiraForteSemNome"
 Write-Host ""
@@ -344,4 +386,5 @@ Write-Host "    $outNovos"       -ForegroundColor Yellow
 Write-Host "    $outRemover"     -ForegroundColor Yellow
 Write-Host "    $outFinal12431  ($n12431 fundos - lista completa, nao so' a diferenca)" -ForegroundColor Yellow
 Write-Host "    $outFinalCdi  ($nCdi fundos - lista completa, nao so' a diferenca)" -ForegroundColor Yellow
+Write-Host "    $outCandNovos  ($($candidatosNovos.Count) candidatos novos 12.431 - nome infra, ainda fora do CDA)" -ForegroundColor Yellow
 Write-Host ""
