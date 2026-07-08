@@ -194,13 +194,16 @@ function resolverFluxos(src, D) {
 }
 
 function buildCaptacao(src, flow) {
+  // Tamanho da lista CURADA (constante — so muda com "Aplicar sugestao de fundos").
+  // numFundos = quantos desses reportaram no dia; curados = o total da lista.
+  const curados = { '12431': (src.fundos12431 || []).length, trad: (src.fundosCdi || []).length }
   const out = {}
   for (const [seg, key] of [['12431', 'cap12431'], ['trad', 'capTrad']]) {
     const atual = flow[key].atual
     const anterior = flow[key].anterior
     const cur = atual ? aggDiaSegmento(src.dia[seg], atual) : null
     const prev = anterior ? aggDiaSegmento(src.dia[seg], anterior) : null
-    out[seg] = cur ? { ...cur, anterior: prev } : null
+    out[seg] = cur ? { ...cur, curados: curados[seg], anterior: prev } : null
   }
   return out
 }
@@ -610,7 +613,7 @@ function renderHtml(rep) {
       <tr><td>Resgate</td><td>${moneyC(-Math.abs(parseNum(c.resgate)))}</td></tr>
       <tr><td>Líquido</td><td>${moneyC(c.liquido)}</td></tr>
       <tr><td>PL</td><td><span class="val">${esc(money(c.pl))}</span></td></tr>
-      <tr><td>Nº fundos</td><td><span class="val">${c.numFundos}</span></td></tr>
+      <tr><td>Fundos reportados</td><td><span class="val">${c.numFundos}${c.curados ? ` <span class="cap-dia">de ${c.curados}</span>` : ''}</span></td></tr>
       ${c.anterior ? `<tr class="ant"><td>Líquido (dia anterior ${esc(fmtDia(c.anterior.dia))})</td><td>${moneyC(c.anterior.liquido)}</td></tr>` : ''}
     </tbody></table></div>`
   }).join('')}</div>`

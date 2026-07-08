@@ -134,7 +134,10 @@ function Captacao({ sec }) {
         <div className="rd-kv"><span>Resgate</span><b>{money(c.resgate)}</b></div>
         <div className="rd-kv"><span>Líquido</span><b className={pos ? 'rd-pos' : 'rd-neg'}>{money(c.liquido)}</b></div>
         <div className="rd-kv"><span>PL</span><b>{money(c.pl)}</b></div>
-        <div className="rd-kv"><span>Nº fundos</span><b>{c.numFundos}</b></div>
+        <div className="rd-kv" title="Fundos da sua lista curada que reportaram no Informe Diário deste dia (a lista é constante)">
+          <span>Fundos reportados</span>
+          <b>{c.numFundos}{c.curados ? <span className="rd-cap-dia"> de {c.curados}</span> : ''}</b>
+        </div>
         {c.anterior && <div className="rd-kv rd-muted"><span>Líquido {fmtDia(c.anterior.dia)}</span><b>{money(c.anterior.liquido)}</b></div>}
       </div>
     )
