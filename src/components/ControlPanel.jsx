@@ -174,41 +174,16 @@ export default function ControlPanel() {
         <p className="cp-subtitle">Só funciona aqui, no `npm run dev` local. Nunca vai para produção.</p>
       </header>
 
-      <div className="cp-block">
-        <h3 className="cp-block-title">1. Atualizar dados — escolha as etapas</h3>
-        <div className="cp-steps">
-          <StepCheck k="debentures" label="Debêntures (cadastro)" hint="Regenera public/Debentures.csv" />
-          <StepCheck k="captacao" label="Captação" hint="Fluxo semanal/mensal, rentabilidade e fundos" />
-          <StepCheck k="blc" label="BLC / Alocação" hint="Carteira dos fundos (mensal)" />
-          <StepCheck k="anbima" label="ANBIMA" hint="Taxas indicativas" />
-          <StepCheck k="ofertas" label="Ofertas CVM" hint="Novas emissões registradas na CVM" />
-          <StepCheck k="relatorios" label="Resumo do Dia" hint="Gera os relatórios diários (public/reports)" />
-        </div>
-
-        {steps.captacao && (
-          <div className="cp-sub">
-            <span className="cp-sub-label">Modo da Captação:</span>
-            <div className="cp-modos">
-              {MODOS.map(m => (
-                <button key={m.id} type="button" className={`cp-modo-btn${modo === m.id ? ' active' : ''}`}
-                  onClick={() => setModo(m.id)} disabled={running} title={m.hint}>{m.label}</button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {steps.blc && (
-          <div className="cp-sub">
-            <span className="cp-sub-label">Mês do BLC (sobrescreve o atual):</span>
-            <select className="cp-select" value={blcMes} onChange={e => setBlcMes(e.target.value)} disabled={running}>
-              {ultimosMeses(6).map(m => <option key={m} value={m}>{fmtMesAno(m)}</option>)}
-            </select>
-          </div>
-        )}
-
+      {/* Rotina diária: só 2 cliques. */}
+      <div className="cp-block cp-daily">
+        <h3 className="cp-block-title">Atualização diária</h3>
+        <p className="cp-daily-hint">No dia a dia é só isto: <strong>1) Iniciar atualização</strong> e, quando terminar, <strong>2) Publicar agora</strong>.</p>
         <div className="cp-btn-row">
-          <button type="button" className="cp-btn cp-btn-primary" onClick={rodar} disabled={running}>
-            {running && actionLabel === 'atualizar-tudo' ? 'Rodando…' : 'Iniciar atualização'}
+          <button type="button" className="cp-btn cp-btn-primary cp-btn-big" onClick={rodar} disabled={running}>
+            {running && actionLabel === 'atualizar-tudo' ? 'Rodando…' : '1 · Iniciar atualização'}
+          </button>
+          <button type="button" className="cp-btn cp-btn-danger cp-btn-big" onClick={publicar} disabled={running}>
+            {running && actionLabel === 'publicar' ? 'Publicando…' : '2 · Publicar agora'}
           </button>
           {running && (
             <button type="button" className="cp-btn cp-btn-danger" onClick={cancelar}>Cancelar</button>
@@ -216,21 +191,59 @@ export default function ControlPanel() {
         </div>
       </div>
 
-      <div className="cp-block">
-        <h3 className="cp-block-title">2. Lista de fundos 12.431 / CDI</h3>
-        <div className="cp-btn-row">
-          <button type="button" className="cp-btn" onClick={verSugestaoFundos} disabled={running}>Ver sugestão de fundos</button>
-          <button type="button" className="cp-btn" onClick={aplicarSugestaoFundos} disabled={running}>Aplicar sugestão de fundos</button>
-        </div>
-      </div>
+      {/* Controles detalhados — só quando precisar mexer em algo. */}
+      <details className="cp-advanced">
+        <summary className="cp-advanced-summary">Opções avançadas — etapas, modo da captação, mês do BLC, fundos, conferência</summary>
 
-      <div className="cp-block">
-        <h3 className="cp-block-title">3. Publicar</h3>
-        <div className="cp-btn-row">
-          <button type="button" className="cp-btn" onClick={conferirPublicar} disabled={running}>Conferir o que vai ser publicado</button>
-          <button type="button" className="cp-btn cp-btn-danger" onClick={publicar} disabled={running}>Publicar agora (git add/commit/push)</button>
+        <div className="cp-block">
+          <h3 className="cp-block-title">Etapas do "Iniciar atualização"</h3>
+          <div className="cp-steps">
+            <StepCheck k="debentures" label="Debêntures (cadastro)" hint="Regenera public/Debentures.csv" />
+            <StepCheck k="captacao" label="Captação" hint="Fluxo semanal/mensal, rentabilidade e fundos" />
+            <StepCheck k="blc" label="BLC / Alocação" hint="Carteira dos fundos (mensal)" />
+            <StepCheck k="anbima" label="ANBIMA" hint="Taxas indicativas" />
+            <StepCheck k="ofertas" label="Ofertas CVM" hint="Novas emissões registradas na CVM" />
+            <StepCheck k="relatorios" label="Resumo do Dia" hint="Gera os relatórios diários (public/reports)" />
+          </div>
+
+          {steps.captacao && (
+            <div className="cp-sub">
+              <span className="cp-sub-label">Modo da Captação:</span>
+              <div className="cp-modos">
+                {MODOS.map(m => (
+                  <button key={m.id} type="button" className={`cp-modo-btn${modo === m.id ? ' active' : ''}`}
+                    onClick={() => setModo(m.id)} disabled={running} title={m.hint}>{m.label}</button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {steps.blc && (
+            <div className="cp-sub">
+              <span className="cp-sub-label">Mês do BLC (sobrescreve o atual):</span>
+              <select className="cp-select" value={blcMes} onChange={e => setBlcMes(e.target.value)} disabled={running}>
+                {ultimosMeses(6).map(m => <option key={m} value={m}>{fmtMesAno(m)}</option>)}
+              </select>
+            </div>
+          )}
+          <p className="cp-note">As etapas marcadas aqui valem para o botão "Iniciar atualização" lá em cima.</p>
         </div>
-      </div>
+
+        <div className="cp-block">
+          <h3 className="cp-block-title">Lista de fundos 12.431 / CDI</h3>
+          <div className="cp-btn-row">
+            <button type="button" className="cp-btn" onClick={verSugestaoFundos} disabled={running}>Ver sugestão de fundos</button>
+            <button type="button" className="cp-btn" onClick={aplicarSugestaoFundos} disabled={running}>Aplicar sugestão de fundos</button>
+          </div>
+        </div>
+
+        <div className="cp-block">
+          <h3 className="cp-block-title">Conferir antes de publicar</h3>
+          <div className="cp-btn-row">
+            <button type="button" className="cp-btn" onClick={conferirPublicar} disabled={running}>Conferir o que vai ser publicado</button>
+          </div>
+        </div>
+      </details>
 
       {error && <p className="cp-error">{error}</p>}
 

@@ -1149,6 +1149,15 @@ a { color: var(--primary); }
 .cp-btn:disabled { opacity: .5; cursor: default; }
 .cp-btn-primary { background: var(--primary-dark); border-color: var(--primary-dark); color: #fff; }
 .cp-btn-danger { border-color: #b91c1c; color: #b91c1c; }
+/* Rotina diária: 2 botões grandes em destaque. */
+.cp-daily { border: 2px solid var(--primary-border); background: var(--primary-light); }
+.cp-daily-hint { font-size: 13px; color: var(--text); margin: 0 0 12px; }
+.cp-btn-big { padding: 14px 22px; font-size: 15px; flex: 1 1 220px; }
+.cp-btn-danger.cp-btn-big { background: #b91c1c; border-color: #b91c1c; color: #fff; }
+/* Controles detalhados recolhidos. */
+.cp-advanced { margin: 4px 0 8px; }
+.cp-advanced-summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--navy-light); padding: 8px 0; }
+.cp-note { font-size: 12px; color: var(--text-muted); margin: 10px 0 0; }
 .cp-error { color: #b91c1c; font-size: 13px; font-weight: 600; }
 .cp-log {
   background: #0f172a; color: #e2e8f0; border-radius: 8px; padding: 10px 12px;
