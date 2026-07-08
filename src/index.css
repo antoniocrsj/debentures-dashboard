@@ -11,8 +11,10 @@
   --text:          #1e293b;   /* cinza bem escuro (nunca preto puro) */
   --text-muted:    #64748b;
   --border:        #e2e8f0;
-  --success:       #059669;
-  --danger:        #dc2626;
+  --pos:           #047857;    /* verde canonico: ganho / valor positivo */
+  --neg:           #b91c1c;    /* vermelho canonico: perda / valor negativo */
+  --success:       var(--pos); /* alias semantico (um verde so' no app) */
+  --danger:        var(--neg); /* alias semantico (um vermelho so' no app) */
   --warn:          #d97706;
   --shadow:        0 1px 3px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.06);
   --radius:        10px;
@@ -734,8 +736,8 @@ a { color: var(--primary); }
 .fluxo-card-value { font-size: 15px; font-weight: 600; color: var(--text); white-space: nowrap; }
 .fluxo-card-liquido.pos { background: #ecfdf5; border-color: #a7f3d0; }
 .fluxo-card-liquido.neg { background: #fef2f2; border-color: #fecaca; }
-.fluxo-card-liquido.pos .fluxo-card-value { color: #047857; }
-.fluxo-card-liquido.neg .fluxo-card-value { color: #b91c1c; }
+.fluxo-card-liquido.pos .fluxo-card-value { color: var(--pos); }
+.fluxo-card-liquido.neg .fluxo-card-value { color: var(--neg); }
 .liq-arrow { font-size: 13px; margin-right: 3px; }
 
 /* Gráfico (altura fixa: o ResponsiveContainer usa height:100%) */
@@ -766,10 +768,10 @@ a { color: var(--primary); }
   color: #92400e; background: #fef3c7; border: 1px solid #fde68a;
 }
 .fluxo-fundos-block { margin-top: 4px; }
-.liq-cell.pos { color: #047857; font-weight: 600; }
-.liq-cell.neg { color: #b91c1c; font-weight: 600; }
-.rent-cell.pos { color: #047857; font-weight: 600; }
-.rent-cell.neg { color: #b91c1c; font-weight: 600; }
+.liq-cell.pos { color: var(--pos); font-weight: 600; }
+.liq-cell.neg { color: var(--neg); font-weight: 600; }
+.rent-cell.pos { color: var(--pos); font-weight: 600; }
+.rent-cell.neg { color: var(--neg); font-weight: 600; }
 .fluxo-note { font-size: 11.5px; color: #94a3b8; margin: 4px 2px 0; }
 .fluxo-note-warn { color: #b45309; }
 
@@ -1165,17 +1167,17 @@ a { color: var(--primary); }
 }
 .cp-btn:disabled { opacity: .5; cursor: default; }
 .cp-btn-primary { background: var(--primary-dark); border-color: var(--primary-dark); color: #fff; }
-.cp-btn-danger { border-color: #b91c1c; color: #b91c1c; }
+.cp-btn-danger { border-color: var(--neg); color: var(--neg); }
 /* Rotina diária: 2 botões grandes em destaque. */
 .cp-daily { border: 2px solid var(--primary-border); background: var(--primary-light); }
 .cp-daily-hint { font-size: 13px; color: var(--text); margin: 0 0 12px; }
 .cp-btn-big { padding: 14px 22px; font-size: 15px; flex: 1 1 220px; }
-.cp-btn-danger.cp-btn-big { background: #b91c1c; border-color: #b91c1c; color: #fff; }
+.cp-btn-danger.cp-btn-big { background: var(--neg); border-color: var(--neg); color: #fff; }
 /* Controles detalhados recolhidos. */
 .cp-advanced { margin: 4px 0 8px; }
 .cp-advanced-summary { cursor: pointer; font-size: 13px; font-weight: 600; color: var(--navy-light); padding: 8px 0; }
 .cp-note { font-size: 12px; color: var(--text-muted); margin: 10px 0 0; }
-.cp-error { color: #b91c1c; font-size: 13px; font-weight: 600; }
+.cp-error { color: var(--neg); font-size: 13px; font-weight: 600; }
 .cp-log {
   background: #0f172a; color: #e2e8f0; border-radius: 8px; padding: 10px 12px;
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
@@ -1204,7 +1206,7 @@ a { color: var(--primary); }
 .rd-empty { color: var(--text-muted); font-style: italic; font-size: 12.5px; margin: 2px 0; }
 .rd-note { font-size: 12px; color: var(--text-muted); margin: 6px 0 0; }
 .rd-bullets { margin: 0; padding-left: 20px; font-size: 13px; line-height: 1.6; }
-.rd-pos { color: #047857; } .rd-neg { color: #b91c1c; } .rd-warn { color: #92400e; }
+.rd-pos { color: var(--pos); } .rd-neg { color: var(--neg); } .rd-warn { color: #92400e; }
 .rd-tablewrap { overflow-x: auto; }
 .rd-table { border-collapse: collapse; width: 100%; font-size: 12px; }
 .rd-table th, .rd-table td { border-bottom: 1px solid var(--primary-border); padding: 5px 8px; text-align: left; white-space: nowrap; }
