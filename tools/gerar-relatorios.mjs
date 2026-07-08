@@ -705,7 +705,9 @@ function renderHtml(rep) {
   :root{
     --primary:#1f4e9c; --primary-dark:#14253f; --primary-light:#e9eef7;
     --primary-border:#cdd9ea; --bg:#eef1f5; --card:#fff; --text:#1e293b;
-    --text-muted:#64748b; --border:#e2e8f0; --success:#059669; --danger:#b91c1c;
+    --text-muted:#64748b; --border:#e2e8f0;
+    /* mesma dupla canonica do app: um verde (--pos) e um vermelho (--neg) */
+    --pos:#047857; --neg:#b91c1c; --success:#047857; --danger:#b91c1c;
     --warn:#92400e;
   }
   *{box-sizing:border-box}
@@ -750,8 +752,8 @@ function renderHtml(rep) {
   ul.sumario li:last-child{border-bottom:0}
   ul.sumario li::before{content:"";position:absolute;left:0;top:11px;width:6px;height:6px;
     border-radius:50%;background:var(--primary)}
-  ul.sumario li.pos::before{background:var(--success)} ul.sumario li.pos{color:#065f46}
-  ul.sumario li.neg::before{background:var(--danger)} ul.sumario li.neg{color:#7f1d1d}
+  ul.sumario li.pos::before{background:var(--success)} ul.sumario li.pos{color:var(--pos)}
+  ul.sumario li.neg::before{background:var(--danger)} ul.sumario li.neg{color:var(--neg)}
   ul.sumario li.warn::before{background:var(--warn)} ul.sumario li.warn{color:var(--warn)}
   ul.chips{display:flex;flex-wrap:wrap;gap:6px}
   ul.chips li{background:var(--primary-light);border:1px solid var(--primary-border);
