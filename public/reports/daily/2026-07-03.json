@@ -67,6 +67,8 @@
         "liquido": -131639146.25,
         "pl": 318445839793.10016,
         "numFundos": 1606,
+        "curados": 1632,
+        "fechados": 280,
         "anterior": {
           "dia": "2026-07-02",
           "captacao": 115565228.13,
@@ -83,6 +85,8 @@
         "liquido": -308466726.87000036,
         "pl": 1080373968100.3301,
         "numFundos": 814,
+        "curados": 827,
+        "fechados": 29,
         "anterior": {
           "dia": "2026-07-02",
           "captacao": 1681768570.1600006,

@@ -9,8 +9,8 @@
     "perf12431": "2026-07-06",
     "perfTrad": "2026-07-06",
     "anbima": "2026-07-06",
-    "blc": "2026-07-03",
-    "fundos": "2026-07-03"
+    "blc": "2026-07-06",
+    "fundos": "2026-07-06"
   },
   "summary": [
     {
@@ -51,6 +51,8 @@
         "liquido": -351342160.4299998,
         "pl": 313638730791.29,
         "numFundos": 1594,
+        "curados": 1632,
+        "fechados": 280,
         "anterior": {
           "dia": "2026-07-03",
           "captacao": 149555391.71999997,
@@ -67,6 +69,8 @@
         "liquido": -776215012.2699997,
         "pl": 1077286232453.5099,
         "numFundos": 795,
+        "curados": 827,
+        "fechados": 29,
         "anterior": {
           "dia": "2026-07-03",
           "captacao": 1301954592.7299995,
@@ -242,6 +246,7 @@
           "variacaoBps": 64.19999999999982,
           "fmtAnterior": "CDI + 17,27%",
           "fmtAtual": "CDI + 17,91%",
+          "spreadAtual": "CDI + 17,91%",
           "durationAnos": 1.56,
           "status": "ok"
         },
@@ -258,6 +263,7 @@
           "variacaoBps": 61,
           "fmtAnterior": "B33 + 902 bps",
           "fmtAtual": "B33 + 963 bps",
+          "spreadAtual": "B33 + 963 bps",
           "durationAnos": 5.89,
           "status": "ok"
         },
@@ -274,6 +280,7 @@
           "variacaoBps": 57,
           "fmtAnterior": "B30 + 1910 bps",
           "fmtAtual": "B30 + 1967 bps",
+          "spreadAtual": "B30 + 1967 bps",
           "durationAnos": 3.19,
           "status": "ok"
         },
@@ -290,6 +297,7 @@
           "variacaoBps": 53.320000000000164,
           "fmtAnterior": "13,54%",
           "fmtAtual": "14,07%",
+          "spreadAtual": "14,07%",
           "durationAnos": 4.51,
           "status": "ok"
         },
@@ -306,6 +314,7 @@
           "variacaoBps": 48,
           "fmtAnterior": "B35 - 25 bps",
           "fmtAtual": "B35 + 23 bps",
+          "spreadAtual": "B35 + 23 bps",
           "durationAnos": 6.33,
           "status": "ok"
         },
@@ -322,6 +331,7 @@
           "variacaoBps": 43,
           "fmtAnterior": "B32 + 1094 bps",
           "fmtAtual": "B32 + 1137 bps",
+          "spreadAtual": "B32 + 1137 bps",
           "durationAnos": 4.79,
           "status": "ok"
         },
@@ -338,6 +348,7 @@
           "variacaoBps": 34,
           "fmtAnterior": "B35 + 869 bps",
           "fmtAtual": "B35 + 903 bps",
+          "spreadAtual": "B35 + 903 bps",
           "durationAnos": 6.33,
           "status": "ok"
         },
@@ -354,6 +365,7 @@
           "variacaoBps": 31,
           "fmtAnterior": "B31 + 1074 bps",
           "fmtAtual": "B31 + 1105 bps",
+          "spreadAtual": "B31 + 1105 bps",
           "durationAnos": 4.34,
           "status": "ok"
         },
@@ -370,6 +382,7 @@
           "variacaoBps": 31,
           "fmtAnterior": "B32 + 562 bps",
           "fmtAtual": "B32 + 593 bps",
+          "spreadAtual": "B32 + 593 bps",
           "durationAnos": 4.91,
           "status": "ok"
         },
@@ -386,6 +399,7 @@
           "variacaoBps": 28.650000000000034,
           "fmtAnterior": "CDI + 2,63%",
           "fmtAtual": "CDI + 2,91%",
+          "spreadAtual": "CDI + 2,91%",
           "durationAnos": 1.52,
           "status": "ok"
         },
@@ -402,6 +416,7 @@
           "variacaoBps": 28.419999999999845,
           "fmtAnterior": "14,85%",
           "fmtAtual": "15,14%",
+          "spreadAtual": "15,14%",
           "durationAnos": 3.14,
           "status": "ok"
         },
@@ -418,6 +433,7 @@
           "variacaoBps": 27.829999999999984,
           "fmtAnterior": "CDI + 3,81%",
           "fmtAtual": "CDI + 4,08%",
+          "spreadAtual": "CDI + 4,08%",
           "durationAnos": 0.84,
           "status": "ok"
         },
@@ -434,6 +450,7 @@
           "variacaoBps": 25.920000000000016,
           "fmtAnterior": "CDI + 1,51%",
           "fmtAtual": "CDI + 1,77%",
+          "spreadAtual": "CDI + 1,77%",
           "durationAnos": 2.73,
           "status": "ok"
         },
@@ -450,6 +467,7 @@
           "variacaoBps": 23.000000000000114,
           "fmtAnterior": "CDI + 5,84%",
           "fmtAtual": "CDI + 6,07%",
+          "spreadAtual": "CDI + 6,07%",
           "durationAnos": 1.46,
           "status": "ok"
         },
@@ -466,6 +484,7 @@
           "variacaoBps": 22.830000000000155,
           "fmtAnterior": "CDI + 14,23%",
           "fmtAtual": "CDI + 14,46%",
+          "spreadAtual": "CDI + 14,46%",
           "durationAnos": 0.87,
           "status": "ok"
         }
@@ -484,6 +503,7 @@
           "variacaoBps": -39.73000000000002,
           "fmtAnterior": "CDI + 1,53%",
           "fmtAtual": "CDI + 1,14%",
+          "spreadAtual": "CDI + 1,14%",
           "durationAnos": 1.57,
           "status": "ok"
         },
@@ -500,6 +520,7 @@
           "variacaoBps": -36.55999999999999,
           "fmtAnterior": "CDI + 1,33%",
           "fmtAtual": "CDI + 0,96%",
+          "spreadAtual": "CDI + 0,96%",
           "durationAnos": 2.9,
           "status": "ok"
         },
@@ -516,6 +537,7 @@
           "variacaoBps": -31.53000000000003,
           "fmtAnterior": "CDI + 4,27%",
           "fmtAtual": "CDI + 3,96%",
+          "spreadAtual": "CDI + 3,96%",
           "durationAnos": 4.06,
           "status": "ok"
         },
@@ -532,6 +554,7 @@
           "variacaoBps": -25.53000000000003,
           "fmtAnterior": "CDI + 3,54%",
           "fmtAtual": "CDI + 3,28%",
+          "spreadAtual": "CDI + 3,28%",
           "durationAnos": 2.35,
           "status": "ok"
         },
@@ -548,6 +571,7 @@
           "variacaoBps": -24.24000000000001,
           "fmtAnterior": "17,24%",
           "fmtAtual": "17,00%",
+          "spreadAtual": "17,00%",
           "durationAnos": 4.24,
           "status": "ok"
         },
@@ -564,6 +588,7 @@
           "variacaoBps": -22,
           "fmtAnterior": "B29 + 751 bps",
           "fmtAtual": "B29 + 729 bps",
+          "spreadAtual": "B29 + 729 bps",
           "durationAnos": 2.39,
           "status": "ok"
         },
@@ -580,6 +605,7 @@
           "variacaoBps": -14.88000000000011,
           "fmtAnterior": "17,08%",
           "fmtAtual": "16,93%",
+          "spreadAtual": "16,93%",
           "durationAnos": 4.31,
           "status": "ok"
         },
@@ -596,6 +622,7 @@
           "variacaoBps": -14.839999999999975,
           "fmtAnterior": "CDI + 3,49%",
           "fmtAtual": "CDI + 3,34%",
+          "spreadAtual": "CDI + 3,34%",
           "durationAnos": 1.72,
           "status": "ok"
         },
@@ -612,6 +639,7 @@
           "variacaoBps": -13.870000000000005,
           "fmtAnterior": "CDI + 2,70%",
           "fmtAtual": "CDI + 2,56%",
+          "spreadAtual": "CDI + 2,56%",
           "durationAnos": 1.68,
           "status": "ok"
         },
@@ -628,6 +656,7 @@
           "variacaoBps": -13.19999999999996,
           "fmtAnterior": "CDI + 2,35%",
           "fmtAtual": "CDI + 2,22%",
+          "spreadAtual": "CDI + 2,22%",
           "durationAnos": 1.57,
           "status": "ok"
         },
@@ -644,6 +673,7 @@
           "variacaoBps": -13.04,
           "fmtAnterior": "CDI + 0,70%",
           "fmtAtual": "CDI + 0,57%",
+          "spreadAtual": "CDI + 0,57%",
           "durationAnos": 2.21,
           "status": "ok"
         },
@@ -660,6 +690,7 @@
           "variacaoBps": -12,
           "fmtAnterior": "B30 + 397 bps",
           "fmtAtual": "B30 + 385 bps",
+          "spreadAtual": "B30 + 385 bps",
           "durationAnos": 3.37,
           "status": "ok"
         },
@@ -676,6 +707,7 @@
           "variacaoBps": -12,
           "fmtAnterior": "B35 - 21 bps",
           "fmtAtual": "B35 - 33 bps",
+          "spreadAtual": "B35 - 33 bps",
           "durationAnos": 6.27,
           "status": "ok"
         },
@@ -692,6 +724,7 @@
           "variacaoBps": -11.930000000000007,
           "fmtAnterior": "CDI + 0,63%",
           "fmtAtual": "CDI + 0,51%",
+          "spreadAtual": "CDI + 0,51%",
           "durationAnos": 2.87,
           "status": "ok"
         },
@@ -708,6 +741,7 @@
           "variacaoBps": -11.470000000000027,
           "fmtAnterior": "CDI + 5,38%",
           "fmtAtual": "CDI + 5,27%",
+          "spreadAtual": "CDI + 5,27%",
           "durationAnos": 4.07,
           "status": "ok"
         }

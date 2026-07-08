@@ -625,6 +625,15 @@ if ($SkipRelatorios) {
   Warn $summary.Relatorios
 } else {
   Progress 'Resumo do Dia (relatorios)'
+  # Atributos de cadastro dos fundos curados (Forma_Condominio/tipo/datas/PL) da
+  # CVM -> public/data/Fundos_Atributos.csv. O app/gerador rodam sem acesso a CVM,
+  # entao persistimos aqui o que precisamos offline (marcar fundos fechados etc).
+  # Best-effort: nao trava a geracao.
+  try {
+    & (Join-Path $PSScriptRoot 'preparar-atributos-fundos.ps1')
+  } catch {
+    Warn "Atributos de fundos nao atualizados ($($_.Exception.Message)); seguindo com o snapshot anterior."
+  }
   # Snapshot do cadastro de emissores (grupo economico) antes de gerar: o gerador
   # e offline e usa public/Emissores.csv para a coluna Grupo e para detectar
   # emissores novos ainda nao classificados. Best-effort: nao trava a geracao.

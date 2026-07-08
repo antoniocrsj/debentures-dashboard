@@ -138,6 +138,12 @@ function Captacao({ sec }) {
           <span>Fundos reportados</span>
           <b>{c.numFundos}{c.curados ? <span className="rd-cap-dia"> de {c.curados}</span> : ''}</b>
         </div>
+        {c.fechados ? (
+          <div className="rd-kv" title="Fundos de condomínio fechado na sua lista: captam por emissão de cotas (fluxo esporádico), não por aportes diários">
+            <span>Fundos fechados</span>
+            <b>{c.fechados} <span className="rd-cap-dia">condomínio fechado</span></b>
+          </div>
+        ) : null}
         {c.anterior && <div className="rd-kv rd-muted"><span>Líquido {fmtDia(c.anterior.dia)}</span><b>{money(c.anterior.liquido)}</b></div>}
       </div>
     )

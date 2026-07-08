@@ -426,6 +426,51 @@ function Read-RegistroClasse([string]$path) {
   return $map
 }
 
+# Le' registro_classe.csv e retorna hashtable com ATRIBUTOS por classe, SEM
+# filtrar por Situacao (a propria Situacao vira atributo). Usado para gerar
+# public/data/Fundos_Atributos.csv (forma de condominio Aberto/Fechado, tipo,
+# datas de registro/inicio, PL) - fonte para marcar fundos fechados e datar
+# fundos novos, sem depender de acesso a CVM no ambiente do app.
+#   CNPJ_Classe(norm) -> @{ Forma; Tipo; Situacao; DataRegistro; DataInicio; PL; Denom }
+function Read-RegistroClasseAtributos([string]$path) {
+  $rc = Read-RegistroCsv $path
+  $iCnpj = $rc.idx['CNPJ_Classe']; $iForma = $rc.idx['Forma_Condominio']
+  $iTipo = $rc.idx['Tipo_Classe']; $iSit = $rc.idx['Situacao']
+  $iDataReg = $rc.idx['Data_Registro']; $iDataIni = $rc.idx['Data_Inicio']
+  $iPL = $rc.idx['Patrimonio_Liquido']; $iDenom = $rc.idx['Denominacao_Social']
+  if ($null -eq $iCnpj) {
+    throw "registro_classe.csv: coluna CNPJ_Classe nao encontrada."
+  }
+  $ci = [System.Globalization.CultureInfo]::InvariantCulture
+  $map = @{}
+  for ($i = 1; $i -lt $rc.lines.Count; $i++) {
+    $l = $rc.lines[$i]; if ($l.Trim() -eq '') { continue }
+    $c = $l.Split(';')
+    if ($c.Count -le $iCnpj) { continue }
+    $cnpj = NormCNPJ $c[$iCnpj]
+    if ($cnpj -eq '') { continue }
+    $forma = if ($null -ne $iForma -and $c.Count -gt $iForma) { $c[$iForma].Trim() } else { '' }
+    $tipo = if ($null -ne $iTipo -and $c.Count -gt $iTipo) { $c[$iTipo].Trim() } else { '' }
+    $sit = if ($null -ne $iSit -and $c.Count -gt $iSit) { $c[$iSit].Trim() } else { '' }
+    $dReg = if ($null -ne $iDataReg -and $c.Count -gt $iDataReg) { $c[$iDataReg].Trim() } else { '' }
+    $dIni = if ($null -ne $iDataIni -and $c.Count -gt $iDataIni) { $c[$iDataIni].Trim() } else { '' }
+    $denom = if ($null -ne $iDenom -and $c.Count -gt $iDenom) { $c[$iDenom].Trim() } else { '' }
+    $plStr = if ($null -ne $iPL -and $c.Count -gt $iPL) { $c[$iPL].Trim() } else { '' }
+    $pl = 0.0
+    if ($plStr -ne '') { [double]::TryParse($plStr, [System.Globalization.NumberStyles]::Any, $ci, [ref]$pl) | Out-Null }
+    $map[$cnpj] = @{
+      Forma = $forma
+      Tipo = $tipo
+      Situacao = $sit
+      DataRegistro = $dReg
+      DataInicio = $dIni
+      PL = $pl
+      Denom = $denom
+    }
+  }
+  return $map
+}
+
 # Le' registro_fundo.csv e retorna hashtable: ID_Registro_Fundo -> CNPJ_Gestor(norm).
 function Read-RegistroFundoGestor([string]$path) {
   $rf = Read-RegistroCsv $path

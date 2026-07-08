@@ -54,7 +54,32 @@ function loadSources() {
     '12431': readCsv(path.join(DATA, 'Perf_Diario_12431.csv')),
     trad: readCsv(path.join(DATA, 'Perf_Diario_Trad.csv')),
   }
-  return { debentures, anbima, blc, fundos12431, fundosCdi, dia, perf }
+  const atributos = loadAtributos()
+  return { debentures, anbima, blc, fundos12431, fundosCdi, dia, perf, atributos }
+}
+
+// Atributos de cadastro (CVM) por fundo curado — persistidos em
+// public/data/Fundos_Atributos.csv pela pipeline (preparar-atributos-fundos.ps1),
+// ja que o gerador roda offline. Chave: CNPJ_FUNDO_CLASSE (so digitos).
+function loadAtributos() {
+  const f = path.join(DATA, 'Fundos_Atributos.csv')
+  const map = new Map()
+  if (!fs.existsSync(f)) return map
+  for (const r of readCsv(f)) {
+    const c = digits(r.CNPJ_FUNDO_CLASSE || r.CNPJ || '')
+    if (!c) continue
+    const forma = (r.Forma_Condominio || '').trim()
+    map.set(c, {
+      lista: (r.Lista || '').trim(),
+      forma,
+      fechado: /fechad/i.test(forma),
+      tipo: (r.Tipo_Classe || '').trim(),
+      situacao: (r.Situacao || '').trim(),
+      dataRegistro: (r.Data_Registro || '').trim(),
+      dataInicio: (r.Data_Inicio || '').trim(),
+    })
+  }
+  return map
 }
 
 // Le um snapshot de uma fonte numa data ('AAAA-MM-DD'), se existir.
@@ -197,13 +222,26 @@ function buildCaptacao(src, flow) {
   // Tamanho da lista CURADA (constante — so muda com "Aplicar sugestao de fundos").
   // numFundos = quantos desses reportaram no dia; curados = o total da lista.
   const curados = { '12431': (src.fundos12431 || []).length, trad: (src.fundosCdi || []).length }
+  // Fundos fechados na lista (condominio fechado captam via emissao de cotas —
+  // fluxo esporadico e "lumpy"; contamos para contextualizar a captacao do dia).
+  const atrib = src.atributos || new Map()
+  const listaCnpjs = { '12431': (src.fundos12431 || []), trad: (src.fundosCdi || []) }
+  const fechados = {}
+  for (const seg of ['12431', 'trad']) {
+    let n = 0
+    for (const r of listaCnpjs[seg]) {
+      const a = atrib.get(digits(r.CNPJ_FUNDO_CLASSE || r.CNPJ || ''))
+      if (a && a.fechado) n++
+    }
+    fechados[seg] = n
+  }
   const out = {}
   for (const [seg, key] of [['12431', 'cap12431'], ['trad', 'capTrad']]) {
     const atual = flow[key].atual
     const anterior = flow[key].anterior
     const cur = atual ? aggDiaSegmento(src.dia[seg], atual) : null
     const prev = anterior ? aggDiaSegmento(src.dia[seg], anterior) : null
-    out[seg] = cur ? { ...cur, curados: curados[seg], anterior: prev } : null
+    out[seg] = cur ? { ...cur, curados: curados[seg], fechados: fechados[seg], anterior: prev } : null
   }
   return out
 }
@@ -614,6 +652,7 @@ function renderHtml(rep) {
       <tr><td>Líquido</td><td>${moneyC(c.liquido)}</td></tr>
       <tr><td>PL</td><td><span class="val">${esc(money(c.pl))}</span></td></tr>
       <tr><td>Fundos reportados</td><td><span class="val">${c.numFundos}${c.curados ? ` <span class="cap-dia">de ${c.curados}</span>` : ''}</span></td></tr>
+      ${c.fechados ? `<tr><td>Fundos fechados</td><td><span class="val">${c.fechados}</span> <span class="cap-dia">condomínio fechado (captam por emissão de cotas)</span></td></tr>` : ''}
       ${c.anterior ? `<tr class="ant"><td>Líquido (dia anterior ${esc(fmtDia(c.anterior.dia))})</td><td>${moneyC(c.anterior.liquido)}</td></tr>` : ''}
     </tbody></table></div>`
   }).join('')}</div>`
