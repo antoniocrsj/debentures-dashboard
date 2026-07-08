@@ -1,7 +1,17 @@
 {
-    "asOf":  "2026-07-07",
-    "geradoEm":  "2026-07-07T10:51:34",
+    "asOf":  "2026-07-08",
+    "geradoEm":  "2026-07-08T09:16:13",
     "itens":  [
+                  {
+                      "dataRegistro":  "2026-06-29",
+                      "dataRequerimento":  "2026-06-29",
+                      "emissor":  "VERDE TRANSMISSAO DE ENERGIA S.A.",
+                      "cnpj":  "44323802000108",
+                      "emissao":  3,
+                      "valor":  1585000000,
+                      "incentivada":  false,
+                      "lider":  "BANCO NACIONAL DE DESENVOLVIMENTO ECONÔMICO E SOCIAL - BNDES"
+                  },
                   {
                       "dataRegistro":  "2026-06-29",
                       "dataRequerimento":  "2026-06-29",
@@ -13,12 +23,22 @@
                       "lider":  "BANCO NACIONAL DE DESENVOLVIMENTO ECONÔMICO E SOCIAL - BNDES"
                   },
                   {
-                      "dataRegistro":  "2026-06-29",
+                      "dataRegistro":  "2026-07-07",
+                      "dataRequerimento":  "2026-06-10",
+                      "emissor":  "VALE DO TIJUCO ACUCAR E ALCOOL S.A.",
+                      "cnpj":  "08493354000127",
+                      "emissao":  1,
+                      "valor":  200000000,
+                      "incentivada":  false,
+                      "lider":  "XP INVESTIMENTOS CCTVM S.A."
+                  },
+                  {
+                      "dataRegistro":  "2026-07-07",
                       "dataRequerimento":  "2026-06-29",
-                      "emissor":  "VERDE TRANSMISSAO DE ENERGIA S.A.",
-                      "cnpj":  "44323802000108",
-                      "emissao":  3,
-                      "valor":  1585000000,
+                      "emissor":  "GRANDE SERTAO I TRANSMISSORA DE ENERGIA S/A.",
+                      "cnpj":  "53191447000151",
+                      "emissao":  2,
+                      "valor":  239400000,
                       "incentivada":  false,
                       "lider":  "BANCO NACIONAL DE DESENVOLVIMENTO ECONÔMICO E SOCIAL - BNDES"
                   }

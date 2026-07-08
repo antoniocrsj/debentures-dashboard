@@ -65,15 +65,15 @@
         "captacao": 115565228.13,
         "resgate": 369162788.66999996,
         "liquido": -253597560.53999996,
-        "pl": 273544618910.62003,
-        "numFundos": 1597,
+        "pl": 315777233666.6099,
+        "numFundos": 1600,
         "anterior": {
           "dia": "2026-07-01",
           "captacao": 200034194.79,
           "resgate": 299005575.61999995,
           "liquido": -98971380.82999995,
-          "pl": 276100365674.86,
-          "numFundos": 1601
+          "pl": 316507466546.57,
+          "numFundos": 1603
         }
       },
       "trad": {
@@ -81,15 +81,15 @@
         "captacao": 1681768570.1600006,
         "resgate": 1794447442.8700001,
         "liquido": -112678872.70999956,
-        "pl": 1077846548824.6798,
-        "numFundos": 803,
+        "pl": 1078612150837.5698,
+        "numFundos": 808,
         "anterior": {
           "dia": "2026-07-01",
-          "captacao": 1809059145.1399996,
+          "captacao": 1808961564.5599997,
           "resgate": 1885336901.0000002,
-          "liquido": -76277755.86000061,
-          "pl": 1081088474357.6604,
-          "numFundos": 818
+          "liquido": -76375336.44000053,
+          "pl": 1081108110101.7805,
+          "numFundos": 819
         }
       }
     },
@@ -137,7 +137,7 @@
           "captacao": 21285762.64,
           "resgate": 80707447.64,
           "liquido": -59421685,
-          "pl": 54983762617.44
+          "pl": 83448832020.52
         },
         {
           "gestor": "Kinea",
@@ -225,7 +225,7 @@
           "captacao": 12754610.46,
           "resgate": 108988522.65,
           "liquido": -96233912.19,
-          "pl": 15724715979.3
+          "pl": 15819674317.63
         },
         {
           "gestor": "Kinea",
@@ -274,28 +274,28 @@
           "pl": 571400577.82
         },
         {
-          "cnpj": "50862124000154",
-          "nome": "VINLAND FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA ATIVO FIF RF CRÉD PRIV LP  RESP LIMITADA",
-          "gestor": "Vinland",
-          "segmento": "12431",
-          "retorno": 0.6023,
-          "pl": 1906055592.08
-        },
-        {
-          "cnpj": "50891130000130",
-          "nome": "LEGACY CAPITAL COMPOUND FIF INVESTIMENTO EM DEB DE INFRA CDI ATIVO RF CRED PRIV LP RESP LIMITADA",
-          "gestor": "Legacy",
-          "segmento": "12431",
-          "retorno": 0.4639,
-          "pl": 550433468.12
-        },
-        {
           "cnpj": "62360992000115",
           "nome": "BB MASTER II RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
           "gestor": "BB Asset",
           "segmento": "12431",
           "retorno": 0.4433,
           "pl": 342375802.12
+        },
+        {
+          "cnpj": "63942021000146",
+          "nome": "OCCAM BB INFRA LINEAR FI FINANCEIRO RENDA FIXA INVESTIMENTO EM INFRAESTRUTURA - RESP LIMITADA",
+          "gestor": "Occam",
+          "segmento": "12431",
+          "retorno": 0.4313,
+          "pl": 116143537.78
+        },
+        {
+          "cnpj": "60742785000108",
+          "nome": "PRODHOS FIF - CLASSE DE INVESTIMENTO RENDA FIXA INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA",
+          "gestor": "BRAM",
+          "segmento": "12431",
+          "retorno": 0.4248,
+          "pl": 3263165064.16
         }
       ],
       "top12431Neg": [
@@ -306,22 +306,6 @@
           "segmento": "12431",
           "retorno": -16.5815,
           "pl": 19684054.27
-        },
-        {
-          "cnpj": "57075698000121",
-          "nome": "VINLAND FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA IPCA RF CRED PRIV LP RESP LIMITADA",
-          "gestor": "Vinland",
-          "segmento": "12431",
-          "retorno": -8.874,
-          "pl": 162435893.3
-        },
-        {
-          "cnpj": "61543507000186",
-          "nome": "VINLAND 2 FI INCENTIVADO EM DEB DE INFRA ATIVO FIF RF CRED PRIV LP RESPONSABILIDADE LIMITADA",
-          "gestor": "Vinland",
-          "segmento": "12431",
-          "retorno": -1.8674,
-          "pl": 3416310.45
         },
         {
           "cnpj": "60775750000167",
@@ -338,6 +322,22 @@
           "segmento": "12431",
           "retorno": -0.7381,
           "pl": 15530488.26
+        },
+        {
+          "cnpj": "54384609000130",
+          "nome": "CS EVOLUTION LORENA FUNDO DE INVESTIMENTO EM INFRAESTRUTURA - RENDA FIXA CRED PRIV RESP LIMITADA",
+          "gestor": "UBS",
+          "segmento": "12431",
+          "retorno": -0.6286,
+          "pl": 15550063.98
+        },
+        {
+          "cnpj": "60450321000110",
+          "nome": "ITAÚ CONSULT DEBÊNTURES INCENTIVADAS IPCA 2035 FIF INCENTIVADO EM INFRA RF CRÉD PRIV RESP LIMITADA",
+          "gestor": "IAM",
+          "segmento": "12431",
+          "retorno": -0.4551,
+          "pl": 68382207.94
         }
       ],
       "topTradPos": [
@@ -358,20 +358,20 @@
           "pl": 144052040.96
         },
         {
+          "cnpj": "34475149000149",
+          "nome": "XP ADVISORY PORTFOLIO PRIVATE I PREV FIM CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "gestor": "XPG",
+          "segmento": "trad",
+          "retorno": 0.3733,
+          "pl": 3005800.93
+        },
+        {
           "cnpj": "65028465000104",
           "nome": "CAPITÂNIA MASTER INFRA GERAL ADVISORY RENDA FIXA FUNDO DE INVESTIMENTO EM INFRAESTRUTURA RL",
           "gestor": "Capitânia",
           "segmento": "trad",
           "retorno": 0.3545,
           "pl": 38755324.8
-        },
-        {
-          "cnpj": "52333139000150",
-          "nome": "CARBYNE FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
-          "gestor": "BRM",
-          "segmento": "trad",
-          "retorno": 0.3018,
-          "pl": 89940352.3
         },
         {
           "cnpj": "64089192000137",
@@ -416,12 +416,12 @@
           "pl": 11002737.83
         },
         {
-          "cnpj": "53726108000122",
-          "nome": "CL VI FUNDO DE INVESTIMENTO MULTIMERCADO",
-          "gestor": "Springs",
+          "cnpj": "27883656000156",
+          "nome": "DHF FUNDO DE INVESTIMENTO FINANCEIRO",
+          "gestor": "Dynamo",
           "segmento": "trad",
-          "retorno": -0.4396,
-          "pl": 17108656.28
+          "retorno": -0.6015,
+          "pl": 534443323.23
         }
       ]
     },
