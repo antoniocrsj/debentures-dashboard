@@ -25,8 +25,9 @@ export default function FluxoDashboard({ compact = false }) {
   const [tipo, setTipo]     = useState('12431')
   const [gestor, setGestor] = useState('')
   const [months, setMonths] = useState(DEFAULT_MONTHS)   // null = todo o histórico
+  const [hideFechados, setHideFechados] = useState(false)  // ocultar fundos de condomínio fechado
 
-  const { loading, error, rows, invalid, isMock, reload, monthly, meta, rentabilidade, fundosSemana, fundosMeta } = useFluxo(tipo)
+  const { loading, error, rows, invalid, isMock, reload, monthly, meta, rentabilidade, fundosSemana, fundosMeta, fechados } = useFluxo(tipo)
   const tipoLabel = FLUXO_TIPOS.find(t => t.id === tipo)?.label ?? tipo
 
   const gestores = useMemo(() => gestorOptions(rows), [rows])
@@ -68,9 +69,19 @@ export default function FluxoDashboard({ compact = false }) {
   // MESMA via de cálculo do ranking (filtra + agrega), então soma o total do gestor.
   const fundosDoGestor = useMemo(
     () => (gestor
-      ? mergeFundos(aggregateByFundo(filterFundos(fundosSemana, { gestor, start: effStart, end: effEnd })), fundosMeta)
+      ? mergeFundos(aggregateByFundo(filterFundos(fundosSemana, { gestor, start: effStart, end: effEnd })), fundosMeta, fechados)
       : []),
-    [fundosSemana, fundosMeta, gestor, effStart, effEnd]
+    [fundosSemana, fundosMeta, fechados, gestor, effStart, effEnd]
+  )
+  // Quantos dos fundos do gestor no período são fechados (para rótulo do filtro).
+  const numFechadosGestor = useMemo(
+    () => fundosDoGestor.reduce((n, f) => n + (f.fechado ? 1 : 0), 0),
+    [fundosDoGestor]
+  )
+  // Aplica o filtro de fundos fechados na tabela de fundos do gestor.
+  const fundosVisiveis = useMemo(
+    () => (hideFechados ? fundosDoGestor.filter(f => !f.fechado) : fundosDoGestor),
+    [fundosDoGestor, hideFechados]
   )
 
   // Período efetivo (datas reais usadas) e data de referência da base do segmento
@@ -80,7 +91,7 @@ export default function FluxoDashboard({ compact = false }) {
   const refDate = rows.length ? fmtWeekFull(latestBaseDate(rows)) : null
 
   const changeTipo   = useCallback(t => { setTipo(t); setGestor('') }, [])     // mantém o período
-  const clearFilters = useCallback(() => { setGestor(''); setMonths(DEFAULT_MONTHS) }, [])
+  const clearFilters = useCallback(() => { setGestor(''); setMonths(DEFAULT_MONTHS); setHideFechados(false) }, [])
 
   return (
     <section className="fluxo" aria-label="Captação dos fundos">
@@ -110,6 +121,9 @@ export default function FluxoDashboard({ compact = false }) {
         disabled={loading}
         defaultMonths={DEFAULT_MONTHS}
         compact={compact}
+        hideFechados={hideFechados}
+        onHideFechados={setHideFechados}
+        fechadosDisponivel={fechados.size > 0}
       />
 
       {/* Estados */}
@@ -167,7 +181,14 @@ export default function FluxoDashboard({ compact = false }) {
           </div>
 
           {/* Ao filtrar por um gestor: lista de fundos que o compõem, mesmas colunas do ranking. */}
-          {gestor && <FundoFlowTable fundos={fundosDoGestor} gestor={gestor} />}
+          {gestor && (
+            <FundoFlowTable
+              fundos={fundosVisiveis}
+              gestor={gestor}
+              hideFechados={hideFechados}
+              numFechados={numFechadosGestor}
+            />
+          )}
 
           {invalid > 0 && (
             <p className="fluxo-note">{invalid} linha(s) ignorada(s) por dados inválidos.</p>

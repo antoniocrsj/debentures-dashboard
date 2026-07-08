@@ -14,8 +14,9 @@ export default function FluxoFilters({
   gestores, gestor, onGestor,
   months, onMonths, periodLabel, onClear,
   disabled, defaultMonths = 12, compact = false,
+  hideFechados = false, onHideFechados, fechadosDisponivel = false,
 }) {
-  const hasFilter = gestor || months !== defaultMonths
+  const hasFilter = gestor || months !== defaultMonths || hideFechados
 
   return (
     <div className="fluxo-filters" aria-label="Filtros de captação">
@@ -50,6 +51,36 @@ export default function FluxoFilters({
             onChange={onGestor}
           />
         </div>
+
+        {/* Fundos fechados — incluir/ocultar (condomínio fechado capta por
+            emissão de cotas, fluxo esporádico). Mesmo controle no compacto e no desktop. */}
+        {onHideFechados && (
+          <div className="fluxo-field fluxo-field-fechados">
+            <span className="fluxo-field-label">Fundos fechados</span>
+            <div className="segmented" role="group" aria-label="Fundos fechados">
+              <button
+                type="button"
+                className={`segmented-btn${!hideFechados ? ' active' : ''}`}
+                onClick={() => onHideFechados(false)}
+                disabled={disabled}
+                aria-pressed={!hideFechados}
+                title="Incluir fundos de condomínio fechado"
+              >
+                Incluir
+              </button>
+              <button
+                type="button"
+                className={`segmented-btn${hideFechados ? ' active' : ''}`}
+                onClick={() => onHideFechados(true)}
+                disabled={disabled || !fechadosDisponivel}
+                aria-pressed={hideFechados}
+                title={fechadosDisponivel ? 'Ocultar fundos de condomínio fechado' : 'Sem dados de forma de condomínio (rode a atualização)'}
+              >
+                Ocultar
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Período — só atalhos */}
         <div className="fluxo-field fluxo-field-grow">

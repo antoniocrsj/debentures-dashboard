@@ -26,7 +26,7 @@ const LABELS = {
   rent1s: '%CDI 1s', rent1m: '%CDI 1m', rent3m: '%CDI 3m', rent6m: '%CDI 6m', rent12m: '%CDI 12m',
 }
 
-export default function FundoFlowTable({ fundos, gestor }) {
+export default function FundoFlowTable({ fundos, gestor, hideFechados = false, numFechados = 0 }) {
   const [sort, setSort] = useState(DEFAULT_SORT)
   const [showAll, setShowAll] = useState(false)
 
@@ -69,7 +69,12 @@ export default function FundoFlowTable({ fundos, gestor }) {
               const pos = f.liquido > 0, neg = f.liquido < 0
               return (
                 <tr key={f.cnpj} title={f.nome}>
-                  <td className="col-sticky col-gestor"><span className="ativo-code fundo-nome">{f.nome}</span></td>
+                  <td className="col-sticky col-gestor">
+                    <div className="fundo-nome-wrap">
+                      <span className="ativo-code fundo-nome">{f.nome}</span>
+                      {f.fechado && <span className="fundo-tag-fechado" title="Condomínio fechado (capta por emissão de cotas)">Fechado</span>}
+                    </div>
+                  </td>
                   <td className={`col-num liq-cell${pos ? ' pos' : neg ? ' neg' : ''}`}>{fmtFluxoSigned(f.liquido)}</td>
                   <td className="col-num">{fmtFluxo(f.captacao)}</td>
                   <td className="col-num">{fmtFluxo(f.resgate)}</td>
@@ -91,7 +96,12 @@ export default function FundoFlowTable({ fundos, gestor }) {
             Mostrando {LIMIT} de {fmtInt(sorted.length)} fundos — ver todos
           </button>
         )
-        : <p className="fluxo-note">{fmtInt(sorted.length)} fundo(s) de {gestor} no período.</p>}
+        : (
+          <p className="fluxo-note">
+            {fmtInt(sorted.length)} fundo(s) de {gestor} no período.
+            {hideFechados && numFechados > 0 && ` ${fmtInt(numFechados)} fundo(s) fechado(s) ocultado(s).`}
+          </p>
+        )}
     </div>
   )
 }

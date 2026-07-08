@@ -750,6 +750,14 @@ a { color: var(--primary); }
 /* Nome de fundo é longo: trunca com reticências, largura controlada. */
 .fluxo-fundos-block .col-gestor { max-width: 260px; }
 .fundo-nome { display: inline-block; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: bottom; }
+/* Nome + tag "Fechado" numa linha: o nome trunca, a tag nunca some. */
+.fundo-nome-wrap { display: flex; align-items: center; max-width: 260px; }
+.fundo-nome-wrap .fundo-nome { flex: 1 1 auto; min-width: 0; max-width: none; }
+.fundo-tag-fechado {
+  flex: 0 0 auto; margin-left: 6px; padding: 1px 6px; border-radius: 999px;
+  font-size: 10px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase;
+  color: #92400e; background: #fef3c7; border: 1px solid #fde68a;
+}
 .fluxo-fundos-block { margin-top: 4px; }
 .liq-cell.pos { color: #047857; font-weight: 600; }
 .liq-cell.neg { color: #b91c1c; font-weight: 600; }

@@ -374,13 +374,32 @@ export function normalizeFundosMeta(rawRows) {
   return map
 }
 
-/** Junta nome + %CDI (do próprio fundo) nas linhas agregadas por fundo. */
-export function mergeFundos(fundoRows, metaMap) {
+/**
+ * Conjunto de CNPJs de fundos de condomínio FECHADO, a partir de
+ * Fundos_Atributos.csv (col Forma_Condominio). Fundos fechados captam por
+ * emissão de cotas (fluxo esporádico), então o usuário pode querer ocultá-los
+ * da leitura de captação. Retorna Set<cnpj (só dígitos)>.
+ */
+export function normalizeFechados(rawRows) {
+  const set = new Set()
+  for (const r of rawRows || []) {
+    const cnpj = String(r.CNPJ_FUNDO_CLASSE ?? r.CNPJ ?? r.cnpj ?? '').replace(/\D/g, '')
+    if (!cnpj) continue
+    const forma = String(r.Forma_Condominio ?? r.forma ?? '').trim()
+    if (/fechad/i.test(forma)) set.add(cnpj)
+  }
+  return set
+}
+
+/** Junta nome + %CDI (do próprio fundo) nas linhas agregadas por fundo.
+ *  fechadosSet (opcional): marca cada fundo com `fechado` (condomínio fechado). */
+export function mergeFundos(fundoRows, metaMap, fechadosSet = null) {
   return (fundoRows || []).map(f => {
     const m = metaMap?.get(f.cnpj)
     return {
       ...f,
       nome: m?.nome || f.cnpj,
+      fechado: fechadosSet ? fechadosSet.has(f.cnpj) : false,
       pctCdi1s:  m ? m.pctCdi1s  : null,
       pctCdi1m:  m ? m.pctCdi1m  : null,
       pctCdi3m:  m ? m.pctCdi3m  : null,

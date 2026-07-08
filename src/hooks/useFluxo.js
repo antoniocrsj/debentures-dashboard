@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { parseCSV } from '../utils/csv.js'
-import { normalizeFluxo, normalizeMensal, normalizeRentabilidade, normalizeFluxoFundos, normalizeFundosMeta } from '../utils/fluxo.js'
+import { normalizeFluxo, normalizeMensal, normalizeRentabilidade, normalizeFluxoFundos, normalizeFundosMeta, normalizeFechados } from '../utils/fluxo.js'
 
 export const FLUXO_SOURCES = {
   '12431': '/data/Fluxo_Semanal_12431.csv',
@@ -30,6 +30,9 @@ export const FLUXO_SOURCES_FUNDOS_META = {
 }
 
 export const FLUXO_META_URL = '/data/Fluxo_Meta.json'
+// Atributos de cadastro dos fundos (CVM), incl. Forma_Condominio (Aberto/Fechado).
+// Arquivo único para os dois segmentos; usado para o filtro de fundos fechados.
+export const FLUXO_ATRIBUTOS_URL = '/data/Fundos_Atributos.csv'
 export const FLUXO_IS_MOCK = false
 
 export const FLUXO_TIPOS = [
@@ -48,6 +51,7 @@ export function useFluxo(tipo) {
     rentabilidade: new Map(),
     fundosSemana: [],
     fundosMeta: new Map(),
+    fechados: new Set(),
   })
   const reqId = useRef(0)
 
@@ -71,6 +75,7 @@ export function useFluxo(tipo) {
         rentabilidade: new Map(),
         fundosSemana: [],
         fundosMeta: new Map(),
+        fechados: new Set(),
       })
       return
     }
@@ -127,10 +132,19 @@ export function useFluxo(tipo) {
           })
       : Promise.resolve(new Map())
 
-    Promise.all([loadWeekly, loadMonthly, loadRent, loadMeta, loadFundos, loadFundosMeta])
-      .then(([{ rows, invalid }, monthly, rentabilidade, meta, fundosSemana, fundosMeta]) => {
+    // Fundos fechados (Forma_Condominio) — opcional: se faltar/quebrar, o filtro
+    // de fundos fechados simplesmente não terá o que ocultar.
+    const loadFechados = fetch(FLUXO_ATRIBUTOS_URL)
+      .then(async res => (res.ok ? normalizeFechados(parseCSV(await res.text())) : new Set()))
+      .catch(err => {
+        console.error(`[useFluxo] atributos de fundos indisponiveis (${FLUXO_ATRIBUTOS_URL}):`, err)
+        return new Set()
+      })
+
+    Promise.all([loadWeekly, loadMonthly, loadRent, loadMeta, loadFundos, loadFundosMeta, loadFechados])
+      .then(([{ rows, invalid }, monthly, rentabilidade, meta, fundosSemana, fundosMeta, fechados]) => {
         if (id === reqId.current) {
-          setState({ loading: false, error: null, rows, invalid, monthly, meta, rentabilidade, fundosSemana, fundosMeta })
+          setState({ loading: false, error: null, rows, invalid, monthly, meta, rentabilidade, fundosSemana, fundosMeta, fechados })
         }
       })
       .catch(err => {
@@ -146,6 +160,7 @@ export function useFluxo(tipo) {
             rentabilidade: new Map(),
             fundosSemana: [],
             fundosMeta: new Map(),
+            fechados: new Set(),
           })
         }
       })
