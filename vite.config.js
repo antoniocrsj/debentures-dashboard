@@ -224,9 +224,13 @@ async function runSequence(label, steps) {
     let code = 0
     for (const step of steps) {
       if (run.cancelled) { code = 130; break }
-      code = await spawnStep(run, step.cmd, step.args, step.cwd)
+      const c = await spawnStep(run, step.cmd, step.args, step.cwd)
       if (run.cancelled) { code = 130; break }
-      if (code !== 0) break
+      if (c !== 0) {
+        if (step.allowFail) continue   // erro benigno (ex.: "nada pra commitar"): segue adiante
+        code = c; break
+      }
+      code = 0
     }
     finishRun(run, code)
   })()
@@ -387,10 +391,15 @@ export default defineConfig({
           // POST /api/atualizar/publicar — git add/commit/push de fato.
           if (urlPath === '/api/atualizar/publicar' && req.method === 'POST') {
             if (currentRun && currentRun.running) return sendJson(res, 409, { erro: 'Ja ha uma atualizacao em andamento.' })
+            // add -> commit (tolera "nada novo") -> pull --rebase (integra o que ja
+            // esta no remoto, ex.: correcoes de codigo) -> push. Assim o "Publicar"
+            // nao falha mais com "fetch first"/remoto-a-frente. --autostash cobre
+            // qualquer mudanca solta; os dados (public/) e o codigo (src/) nao colidem.
             const run = await runSequence('publicar', [
               { cmd: 'git', args: ['add', 'public/', 'tools/Fundos_12431.csv', 'tools/Fundos_CDI.csv'] },
-              { cmd: 'git', args: ['commit', '-m', 'Atualiza dados (painel de controle)'] },
-              { cmd: 'git', args: ['push'] },
+              { cmd: 'git', args: ['commit', '-m', 'Atualiza dados (painel de controle)'], allowFail: true },
+              { cmd: 'git', args: ['pull', '--rebase', '--autostash', 'origin', 'main'] },
+              { cmd: 'git', args: ['push', '-u', 'origin', 'main'] },
             ])
             return sendJson(res, 200, { id: run.id })
           }

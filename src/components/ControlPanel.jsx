@@ -183,7 +183,7 @@ export default function ControlPanel() {
             {running && actionLabel === 'atualizar-tudo' ? 'Rodando…' : '1 · Iniciar atualização'}
           </button>
           <button type="button" className="cp-btn cp-btn-danger cp-btn-big" onClick={publicar} disabled={running}>
-            {running && actionLabel === 'publicar' ? 'Publicando…' : '2 · Publicar agora'}
+            {running && actionLabel === 'publicar' ? 'Publicando…' : '2 · Publicar'}
           </button>
           {running && (
             <button type="button" className="cp-btn cp-btn-danger" onClick={cancelar}>Cancelar</button>
