@@ -764,6 +764,7 @@ a { color: var(--primary); }
 .rent-cell.pos { color: #047857; font-weight: 600; }
 .rent-cell.neg { color: #b91c1c; font-weight: 600; }
 .fluxo-note { font-size: 11.5px; color: #94a3b8; margin: 4px 2px 0; }
+.fluxo-note-warn { color: #b45309; }
 
 /* Cabeçalhos ordenáveis */
 .fluxo-th-sort { padding: 0; }

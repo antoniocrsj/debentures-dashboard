@@ -16,7 +16,7 @@ const KEYS = {
   resgate:  m => m.resgate,
 }
 
-export default function FluxoMonthlyTable({ months }) {
+export default function FluxoMonthlyTable({ months, hideFechados = false }) {
   const [sort, setSort] = useState(DEFAULT_SORT)
   const sorted = useMemo(
     () => sortRows(months, KEYS[sort.col] || KEYS.mes, sort.dir),
@@ -29,6 +29,9 @@ export default function FluxoMonthlyTable({ months }) {
   return (
     <div className="fluxo-table-block">
       <h3 className="fluxo-section-title">Meses</h3>
+      {hideFechados && (
+        <p className="fluxo-note fluxo-note-warn">A visão mensal não exclui fundos fechados (sem base mensal por fundo).</p>
+      )}
       <div className="table-wrap">
         <table className="asset-table fluxo-table">
           <thead>

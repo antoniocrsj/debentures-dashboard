@@ -4,7 +4,7 @@ import {
   filterFluxo, aggregateByWeek, aggregateByGestor, computeCards,
   gestorOptions, startForMonths, periodBounds, fmtWeekFull, latestBaseDate,
   filterMensal, aggregateByMonth, mergeRentabilidade,
-  filterFundos, aggregateByFundo, mergeFundos,
+  filterFundos, aggregateByFundo, mergeFundos, excludeFechados,
 } from '../../utils/fluxo.js'
 import { lazyWithRetry } from '../../utils/lazyWithRetry.js'
 import FluxoFilters from './FluxoFilters.jsx'
@@ -37,13 +37,23 @@ export default function FluxoDashboard({ compact = false }) {
   const effStart = useMemo(() => (months == null ? null : startForMonths(rows, months)), [rows, months])
   const effEnd   = bounds.max
 
+  // Base de cabeçalho (cards/semanas/ranking). Ao ocultar fechados, subtrai o
+  // fluxo dos fundos de condomínio fechado de cada (semana, gestor) — a partir
+  // da base por fundo — antes de qualquer agregação.
+  const baseRows = useMemo(
+    () => (hideFechados ? excludeFechados(rows, fundosSemana, fechados) : rows),
+    [hideFechados, rows, fundosSemana, fechados]
+  )
   const filtered = useMemo(
-    () => filterFluxo(rows, { gestor, start: effStart, end: effEnd }),
-    [rows, gestor, effStart, effEnd]
+    () => filterFluxo(baseRows, { gestor, start: effStart, end: effEnd }),
+    [baseRows, gestor, effStart, effEnd]
   )
   const weekly  = useMemo(() => aggregateByWeek(filtered), [filtered])
   const cards   = useMemo(() => {
     const base = computeCards(filtered)
+    // Ao ocultar fechados, a contagem estática (lista curada) incluiria os fechados;
+    // usa a contagem computada da base já filtrada.
+    if (hideFechados) return base
     const metaTipo = meta?.[tipo]
     const staticFundos = gestor
       ? metaTipo?.porGestor?.[gestor]
@@ -52,7 +62,7 @@ export default function FluxoDashboard({ compact = false }) {
       ...base,
       numFundos: staticFundos ?? base.numFundos,
     }
-  }, [filtered, meta, tipo, gestor])
+  }, [filtered, meta, tipo, gestor, hideFechados])
   // Mensal: mesmo gestor/período da seção; agregação por mês (do diário), zero-fill.
   // Fim = último mês COM dado (dataMax, dentro do aggregate), não effEnd — este é a
   // semana-início da base semanal (ex.: 29/06), que escondia o mês corrente (julho)
@@ -177,7 +187,7 @@ export default function FluxoDashboard({ compact = false }) {
           {/* Desktop: Semanas + Meses lado a lado (há espaço). Mobile: empilhadas. */}
           <div className="fluxo-tables-row">
             <FluxoTable weekly={weekly} />
-            <FluxoMonthlyTable months={monthlyAgg} />
+            <FluxoMonthlyTable months={monthlyAgg} hideFechados={hideFechados} />
           </div>
 
           {/* Ao filtrar por um gestor: lista de fundos que o compõem, mesmas colunas do ranking. */}

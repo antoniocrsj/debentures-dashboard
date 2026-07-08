@@ -391,6 +391,45 @@ export function normalizeFechados(rawRows) {
   return set
 }
 
+/**
+ * Remove os fluxos de fundos FECHADOS das linhas por gestor (a base de cabeçalho:
+ * cards, semanas, ranking). Para cada (semana, gestor) subtrai captação/resgate/PL
+ * e a contagem dos fundos fechados, usando a base POR FUNDO (fundosSemana).
+ *
+ * Seguro por construção: um fundo fechado é subconjunto do próprio gestor, então
+ * o fluxo fechado nunca excede o total do gestor — a subtração nunca fica negativa.
+ * Onde a base por fundo estiver incompleta, subtrai de menos (conservador: deixa
+ * algum fluxo fechado), nunca demais. Se não há fechados, devolve as linhas como estão.
+ */
+export function excludeFechados(rows, fundosSemana, fechadosSet) {
+  if (!fechadosSet || fechadosSet.size === 0) return rows || []
+  const closed = new Map()   // `${weekKey}|${gestor}` → { cap, res, pl, cnpjs:Set }
+  for (const f of fundosSemana || []) {
+    if (!fechadosSet.has(f.cnpj)) continue
+    const k = `${f.weekKey}|${f.gestor}`
+    let c = closed.get(k)
+    if (!c) { c = { cap: 0, res: 0, pl: 0, cnpjs: new Set() }; closed.set(k, c) }
+    c.cap += f.captacao
+    c.res += f.resgate
+    c.pl  += f.plSemana
+    c.cnpjs.add(f.cnpj)
+  }
+  return (rows || []).map(r => {
+    const c = closed.get(`${r.weekKey}|${r.gestor}`)
+    if (!c) return r
+    const captacao = Math.max(0, r.captacao - c.cap)
+    const resgate  = Math.max(0, r.resgate  - c.res)
+    return {
+      ...r,
+      captacao,
+      resgate,
+      liquido: captacao - resgate,
+      plSemana: Math.max(0, r.plSemana - c.pl),
+      numFundos: Math.max(0, r.numFundos - c.cnpjs.size),
+    }
+  })
+}
+
 /** Junta nome + %CDI (do próprio fundo) nas linhas agregadas por fundo.
  *  fechadosSet (opcional): marca cada fundo com `fechado` (condomínio fechado). */
 export function mergeFundos(fundoRows, metaMap, fechadosSet = null) {

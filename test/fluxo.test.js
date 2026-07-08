@@ -10,9 +10,51 @@ import {
   parseMes, normalizeMonthRow, filterMensal, aggregateByMonth,
   normalizeRentabilidade, mergeRentabilidade,
   normalizeFluxoFundos, filterFundos, aggregateByFundo, normalizeFundosMeta, mergeFundos,
+  normalizeFechados, excludeFechados,
 } from '../src/utils/fluxo.js'
 
 const norm = s => s.replace(/ /g, ' ')   // troca espaço não-separável por comum
+
+test('normalizeFechados: só CNPJs com Forma_Condominio "Fechado"', () => {
+  const set = normalizeFechados([
+    { CNPJ_FUNDO_CLASSE: '11.111.111/0001-11', Forma_Condominio: 'Fechado' },
+    { CNPJ_FUNDO_CLASSE: '22222222000122', Forma_Condominio: 'Aberto' },
+    { CNPJ_FUNDO_CLASSE: '33333333000133', Forma_Condominio: '' },
+  ])
+  assert.equal(set.size, 1)
+  assert.ok(set.has('11111111000111'))   // normalizado para só dígitos
+  assert.ok(!set.has('22222222000122'))
+})
+
+test('excludeFechados: subtrai fluxo dos fundos fechados por (semana, gestor)', () => {
+  const { rows } = normalizeFluxo([
+    { Semana: '2026-06-01', Gestor_Apelido: 'A', Captacao: '100', Resgate: '30', PL_Medio: '1000', Num_Fundos: '3' },
+  ])
+  const fundos = normalizeFluxoFundos([
+    { Semana: '2026-06-01', CNPJ_Fundo: '11111111000111', Gestor_Apelido: 'A', Captacao: '40', Resgate: '10', PL_Medio: '400' },
+    { Semana: '2026-06-01', CNPJ_Fundo: '22222222000122', Gestor_Apelido: 'A', Captacao: '60', Resgate: '20', PL_Medio: '600' },
+  ])
+  const [r] = excludeFechados(rows, fundos, new Set(['11111111000111']))
+  assert.equal(r.captacao, 60)   // 100 - 40
+  assert.equal(r.resgate, 20)    // 30 - 10
+  assert.equal(r.liquido, 40)
+  assert.equal(r.plSemana, 600)  // 1000 - 400
+  assert.equal(r.numFundos, 2)   // 3 - 1 fechado
+})
+
+test('excludeFechados: sem fechados intacto; nunca fica negativo', () => {
+  const { rows } = normalizeFluxo([
+    { Semana: '2026-06-01', Gestor_Apelido: 'A', Captacao: '10', Resgate: '5', PL_Medio: '100', Num_Fundos: '1' },
+  ])
+  assert.deepEqual(excludeFechados(rows, [], new Set()), rows)
+  const fundos = normalizeFluxoFundos([
+    { Semana: '2026-06-01', CNPJ_Fundo: '11111111000111', Gestor_Apelido: 'A', Captacao: '999', Resgate: '999', PL_Medio: '999' },
+  ])
+  const [r] = excludeFechados(rows, fundos, new Set(['11111111000111']))
+  assert.equal(r.captacao, 0)
+  assert.equal(r.resgate, 0)
+  assert.equal(r.plSemana, 0)
+})
 
 test('parseMes e normalizeMonthRow (Mes/Gestor/Captacao/Resgate)', () => {
   assert.equal(parseMes('2026-06').key, '2026-06')
