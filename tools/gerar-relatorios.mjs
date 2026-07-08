@@ -229,26 +229,41 @@ function buildGestores(src, sourceDates) {
 //   DI_PERCENTUAL  -> %CDI ja convertido pra CDI+ em spreadCdiEquivalente. base 'CDI'
 //   IPCA_SPREAD    -> spread sobre a NTN-B de referencia, ja em bps.     base = B32/B35...
 //   PREFIXADO/IGP-M-> sem benchmark de spread; variacao do proprio yield. base 'Pre'/'IGP-M'
+// parseNum('') = 0 (nao NaN), entao precisamos tratar vazio como "ausente" para
+// nao confundir "sem conversao" com "spread zero".
+function numOrNull(v) {
+  const s = String(v == null ? '' : v).trim()
+  if (s === '') return null
+  const n = parseNum(s)
+  return Number.isNaN(n) ? null : n
+}
 function spreadInfo(r) {
   const tipo = (r.tipoTaxaAnbima || '').trim()
   if (tipo === 'IPCA_SPREAD') {
-    const bps = parseNum(r.spreadNtnbBps)
-    if (Number.isNaN(bps)) return null
+    const bps = numOrNull(r.spreadNtnbBps)
+    if (bps === null) return null
     return { bps, base: (r.codigoNtnbExibicao || 'NTN-B').trim() || 'NTN-B', tipo: 'ipca' }
   }
   if (tipo === 'DI_PERCENTUAL') {
-    const s = parseNum(r.spreadCdiEquivalente)   // %CDI ja convertido pra CDI+ pelo pipeline
-    if (Number.isNaN(s)) return null
+    const s = numOrNull(r.spreadCdiEquivalente)  // %CDI ja convertido pra CDI+ pelo pipeline
+    if (s === null) return null
     return { bps: s * 100, base: 'CDI', tipo: 'cdi' }
   }
   if (tipo === 'DI_SPREAD') {
-    const s = parseNum(r.taxaAnbimaOriginal)     // ja e o proprio CDI+ (%)
-    if (Number.isNaN(s)) return null
+    const s = numOrNull(r.taxaAnbimaOriginal)    // ja e o proprio CDI+ (%)
+    if (s === null) return null
     return { bps: s * 100, base: 'CDI', tipo: 'cdi' }
   }
-  const y = parseNum(r.taxaAnbimaOriginal)       // prefixado / IGP-M: variacao do yield
-  if (Number.isNaN(y)) return null
-  const base = tipo === 'PREFIXADO' ? 'Pré' : tipo === 'IGP-M' ? 'IGP-M' : (tipo || 'yield')
+  if (tipo === 'PREFIXADO') {
+    const s = numOrNull(r.spreadCdiEquivalente)  // convertido pra CDI+ pela pipeline (via LTN)
+    if (s !== null) return { bps: s * 100, base: 'CDI', tipo: 'cdi' }
+    const y = numOrNull(r.taxaAnbimaOriginal)    // sem LTN de referencia: cai pro yield
+    if (y === null) return null
+    return { bps: y * 100, base: 'Pré', tipo: 'yield' }
+  }
+  const y = numOrNull(r.taxaAnbimaOriginal)      // IGP-M / outros: variacao do yield
+  if (y === null) return null
+  const base = tipo === 'IGP-M' ? 'IGP-M' : (tipo || 'yield')
   return { bps: y * 100, base, tipo: 'yield' }
 }
 
@@ -286,6 +301,12 @@ function buildAnbima(src, sourceDates, tickerInfo) {
     if (Math.abs(variacaoBps) < 0.05) continue  // ruido sub-0,05 bps
     const ti = tickerInfo.get(key(r)) || {}
     const dur = parseNum(r.durationAnbimaAnos)
+    const fmtAtual = repairText((r.txAnbimaFormatada || '').trim())
+    // Spread atual exibido: tipo CDI (inclui Pré e %CDI convertidos) mostra "CDI ± X,XX%";
+    // IPCA mostra "B32 + N bps"; yield puro (IGP-M/Pré sem LTN) mostra a taxa.
+    const spreadAtual = si.tipo === 'cdi'
+      ? `CDI ${si.bps >= 0 ? '+' : '−'} ${Math.abs(si.bps / 100).toFixed(2).replace('.', ',')}%`
+      : fmtAtual
     movs.push({
       ticker: key(r), indexador: repairText((r.indexadorAnbima || '').trim()),
       indexadorFamilia: indexadorFamilia(r.tipoTaxaAnbima),
@@ -293,7 +314,7 @@ function buildAnbima(src, sourceDates, tickerInfo) {
       base: si.base, tipo: si.tipo,
       spreadAnteriorBps: sp.bps, spreadAtualBps: si.bps, variacaoBps,
       fmtAnterior: repairText((p.txAnbimaFormatada || '').trim()),
-      fmtAtual: repairText((r.txAnbimaFormatada || '').trim()),
+      fmtAtual, spreadAtual,
       durationAnos: Number.isNaN(dur) ? null : dur,
       status: (r.statusCalculoAnbima || '').trim(),
     })
@@ -610,7 +631,7 @@ function renderHtml(rep) {
   // §5 ANBIMA: tabela de spread (top 15). abertura (+bps)=vermelho; fechamento (−bps)=verde.
   const anbimaVar = v => `<span class="${v > 0 ? 'val neg' : v < 0 ? 'val pos' : 'val'}">${fmtBps(v)}</span>`
   const anbimaTable = arr => `<div class="tw"><table><thead><tr><th>Ativo</th><th>Grupo</th><th>Emissor</th><th>Indexador</th><th>Spread atual</th><th class="num">Duration (a)</th><th class="num">Var. (bps)</th></tr></thead><tbody>${
-    arr.map(a => `<tr><td>${esc(a.ticker)}</td><td>${esc(a.grupo || '—')}</td><td>${esc(a.emissor || '—')}</td><td>${esc(a.indexadorFamilia)}</td><td>${esc(a.fmtAtual || '—')}</td><td class="num">${a.durationAnos != null ? a.durationAnos.toFixed(2) : '—'}</td><td class="num">${anbimaVar(a.variacaoBps)}</td></tr>`).join('')
+    arr.map(a => `<tr><td>${esc(a.ticker)}</td><td>${esc(a.grupo || '—')}</td><td>${esc(a.emissor || '—')}</td><td>${esc(a.indexadorFamilia)}</td><td>${esc(a.spreadAtual || a.fmtAtual || '—')}</td><td class="num">${a.durationAnos != null ? a.durationAnos.toFixed(2) : '—'}</td><td class="num">${anbimaVar(a.variacaoBps)}</td></tr>`).join('')
   }</tbody></table></div>`
   const anbimaBlock = s.anbima.semAnterior
     ? empty('Sem dia anterior de ANBIMA para comparar (começa no próximo snapshot).')

@@ -476,7 +476,20 @@ foreach ($rec in $records) {
     }
     'PREFIXADO' {
       if ($null -eq $taxa) { $o.statusCalculoAnbima='sem_taxa'; $o.motivoAusenciaAnbima='Taxa indicativa vazia'; $stats.vazias++ }
-      else { $o.txAnbimaFormatada = (Fmt-Comma $taxa 2) + '%' }
+      else {
+        $o.txAnbimaFormatada = (Fmt-Comma $taxa 2) + '%'   # exibicao no app: taxa pre
+        # CDI+ equivalente (mesma metodologia do %CDI): usa a LTN de vencimento
+        # proximo como proxy do CDI esperado. spread = (1 + Y)/(1 + L) - 1.
+        # So alimenta a analise de spread do Resumo do Dia; nao muda a exibicao.
+        $ref = $null; if ($rec.Venc) { $ref = Nearest-LTN $rec.Venc }
+        if ($null -ne $ref) {
+          $iL = $ref.Taxa / 100.0
+          $iY = $taxa / 100.0
+          $spread = (($iY - $iL) / (1.0 + $iL)) * 100.0
+          $o.spreadCdiEquivalente = Fmt-Comma $spread 4
+          $o.metodologiaConversaoCdi = "spread = (1 + Y)/(1 + L) - 1; Y = pre $(Fmt-Comma $taxa 2)%; L = TaxaLTN_252 venc ref $($ref.Venc.ToString('yyyy-MM-dd')) = $(Fmt-Comma $ref.Taxa 2)%"
+        }
+      }
     }
     'IGP-M' {
       if ($null -eq $taxa) { $o.statusCalculoAnbima='sem_taxa'; $o.motivoAusenciaAnbima='Taxa indicativa vazia (comum em IGP-M)'; $stats.vazias++ }

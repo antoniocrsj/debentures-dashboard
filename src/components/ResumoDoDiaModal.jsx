@@ -193,7 +193,7 @@ function Anbima({ sec }) {
                 <td className="rd-empresa" title={a.grupo}>{a.grupo || '—'}</td>
                 <td className="rd-empresa" title={a.emissor}>{a.emissor || '—'}</td>
                 <td>{a.indexadorFamilia}</td>
-                <td>{a.fmtAtual}</td>
+                <td>{a.spreadAtual || a.fmtAtual}</td>
                 <td className="rd-num">{a.durationAnos != null ? a.durationAnos.toFixed(2) : '—'}</td>
                 <td className={'rd-num ' + (a.variacaoBps > 0 ? 'rd-neg' : a.variacaoBps < 0 ? 'rd-pos' : '')}>{sinalBps(a.variacaoBps)}</td>
               </tr>
