@@ -16,6 +16,8 @@
   --warn:          #d97706;
   --shadow:        0 1px 3px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.06);
   --radius:        10px;
+  --btn-h:         30px;       /* altura padrao de TODO botao (chips, abas, acoes) */
+  --selected:      #33547f;    /* fundo de botao/chip SELECIONADO (= navy-light) */
   --header-h:      52px;
   --filter-h:      48px;
   --tabs-h:        42px;
@@ -124,7 +126,7 @@ a { color: var(--primary); }
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 30px;
+  height: var(--btn-h);
   background: var(--chip-bg);
   border: 1px solid var(--navy-light);
   border-radius: 99px;
@@ -150,7 +152,7 @@ a { color: var(--primary); }
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 30px;
+  height: var(--btn-h);
   background: #fef2f2;
   border: 1.5px solid #fecaca;
   border-radius: 99px;
@@ -250,7 +252,7 @@ a { color: var(--primary); }
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 30px;
+  height: var(--btn-h);
   padding: 0 4px;
   font-size: 12px;
   font-weight: 500;
@@ -548,7 +550,8 @@ a { color: var(--primary); }
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 14px;
+  height: var(--btn-h);
+  padding: 0 14px;
   font-size: 13px;
   font-weight: 600;
   color: var(--primary-dark);
@@ -600,7 +603,9 @@ a { color: var(--primary); }
 
 .btn-add-month {
   width: 100%;
-  padding: 11px;
+  display: inline-flex; align-items: center; justify-content: center;
+  height: var(--btn-h);
+  padding: 0 12px;
   border-radius: 10px;
   border: 1.5px dashed var(--border);
   font-size: 13px;
@@ -628,8 +633,8 @@ a { color: var(--primary); }
 .form-input:focus { outline: 2px solid var(--primary); outline-offset: -1px; }
 .form-error { font-size: 12px; color: var(--danger); }
 .form-actions { display: flex; gap: 8px; }
-.btn-cancel  { flex: 1; padding: 10px; border-radius: 8px; background: var(--bg); font-size: 13px; font-weight: 600; color: var(--text-muted); }
-.btn-confirm { flex: 1; padding: 10px; border-radius: 8px; background: var(--primary); color: #fff; font-size: 13px; font-weight: 600; }
+.btn-cancel  { flex: 1; display: inline-flex; align-items: center; justify-content: center; height: var(--btn-h); border-radius: 8px; background: var(--bg); font-size: 13px; font-weight: 600; color: var(--text-muted); }
+.btn-confirm { flex: 1; display: inline-flex; align-items: center; justify-content: center; height: var(--btn-h); border-radius: 8px; background: var(--primary); color: #fff; font-size: 13px; font-weight: 600; }
 .btn-confirm:hover { background: var(--primary-dark); }
 
 /* ─── Desktop centering ──────────────────────────────────────── */
@@ -649,9 +654,10 @@ a { color: var(--primary); }
 
 /* ─── Botão "ver todos" da tabela de ativos ──────────────────── */
 .show-all-btn {
-  display: block;
+  display: flex; align-items: center; justify-content: center;
   margin: 14px auto 8px;
-  padding: 10px 18px;
+  height: var(--btn-h);
+  padding: 0 18px;
   font-size: 13px;
   font-weight: 600;
   color: var(--primary-dark);
@@ -688,26 +694,27 @@ a { color: var(--primary); }
 .fluxo-field { display: flex; flex-direction: column; gap: 4px; }
 .fluxo-field-label { font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: .03em; }
 
-.segmented { display: flex; width: 100%; background: var(--chip-bg); border: 1px solid var(--navy-light); border-radius: 99px; padding: 2px; }
+/* Pilula segmentada: altura total = --btn-h (moldura de 2px + borda de 1px
+   ja entram na conta via box-sizing), pra bater com os chips ao lado. */
+.segmented { display: flex; width: 100%; height: var(--btn-h); background: var(--chip-bg); border: 1px solid var(--navy-light); border-radius: 99px; padding: 2px; }
 .segmented-btn {
   flex: 1 1 0;
   display: flex; align-items: center; justify-content: center;
-  height: 30px;
   border: 0; background: transparent; cursor: pointer;
   font-size: 13px; font-weight: 500; color: var(--navy-light);
   padding: 0 12px; border-radius: 99px; white-space: nowrap; text-align: center;
 }
-.segmented-btn.active { background: var(--primary-dark); color: #fff; }
+.segmented-btn.active { background: var(--selected); color: #fff; }
 .segmented-btn:disabled { opacity: .5; cursor: default; }
 
 .period-shortcuts { display: flex; gap: 6px; flex-wrap: wrap; }
 .period-chip {
   display: flex; align-items: center; justify-content: center;
-  height: 30px;
+  height: var(--btn-h);
   border: 1px solid var(--navy-light); background: var(--chip-bg); color: var(--navy-light);
   font-size: 12.5px; font-weight: 500; padding: 0 10px; border-radius: 99px; cursor: pointer;
 }
-.period-chip.active { background: var(--primary-dark); color: #fff; border-color: var(--primary-dark); }
+.period-chip.active { background: var(--selected); color: #fff; border-color: var(--selected); }
 .period-chip:disabled { opacity: .5; cursor: default; }
 
 .fluxo-field-grow { flex: 1 1 auto; min-width: 0; }
@@ -783,7 +790,8 @@ a { color: var(--primary); }
 .fluxo-th-sort .th-sort-btn:focus-visible { outline: 2px solid var(--primary-dark); outline-offset: -2px; border-radius: 6px; }
 
 .btn-retry {
-  margin-top: 10px; padding: 8px 16px; font-size: 13px; font-weight: 600;
+  display: inline-flex; align-items: center; justify-content: center;
+  margin-top: 10px; height: var(--btn-h); padding: 0 16px; font-size: 13px; font-weight: 600;
   color: #fff; background: var(--primary-dark); border: 0; border-radius: 10px; cursor: pointer;
 }
 
