@@ -191,7 +191,7 @@ function Anbima({ sec }) {
   if (sec?.semAnterior) return <Empty>Sem dia anterior de ANBIMA para comparar — começa a partir do próximo snapshot.</Empty>
   const tabela = (arr, titulo) => arr?.length ? (
     <div className="rd-top">
-      <h4>{titulo}</h4>
+      <h5 className="rd-anb-sub">{titulo}</h5>
       <div className="rd-tablewrap">
         <table className="rd-table">
           <thead><tr><th>Ativo</th><th>Grupo</th><th>Emissor</th><th>Indexador</th><th>Spread atual</th><th className="rd-num">Duration (a)</th><th className="rd-num">Var. (bps)</th></tr></thead>
@@ -212,8 +212,26 @@ function Anbima({ sec }) {
       </div>
     </div>
   ) : null
-  if (!sec?.aberturas?.length && !sec?.fechamentos?.length) return <Empty>Sem variações de spread neste dia.</Empty>
-  return <>{tabela(sec.aberturas, 'Maiores aberturas de spread')}{tabela(sec.fechamentos, 'Maiores fechamentos de spread')}</>
+  // Um bloco por mercado (Incentivadas 12.431 / Tradicional): placar do mercado
+  // inteiro + top 15 de abertura e de fechamento.
+  const mercado = (g, nome) => {
+    if (!g || !g.totalComparados) return <div className="rd-top"><h4>{nome}</h4><Empty>Sem variações de spread comparáveis neste dia.</Empty></div>
+    const vm = Math.round(g.variacaoMediaBps || 0)
+    return (
+      <div className="rd-top">
+        <h4>{nome}</h4>
+        <p className="rd-note">
+          <b className="rd-neg">{g.totalAberturas}</b> abertura(s) e <b className="rd-pos">{g.totalFechamentos}</b> fechamento(s) de spread — de {g.totalComparados} ativo(s) com taxa ANBIMA · média{' '}
+          <b className={vm > 0 ? 'rd-neg' : vm < 0 ? 'rd-pos' : ''}>{vm > 0 ? '+' : ''}{vm} bps</b>
+        </p>
+        {tabela(g.aberturas, 'Maiores aberturas')}
+        {tabela(g.fechamentos, 'Maiores fechamentos')}
+      </div>
+    )
+  }
+  const pm = sec?.porMercado
+  if (!pm) return <Empty>Sem variações de spread neste dia.</Empty>
+  return <>{mercado(pm['12431'], 'Incentivadas (12.431)')}{mercado(pm.trad, 'Tradicional')}</>
 }
 
 function Perf({ sec }) {

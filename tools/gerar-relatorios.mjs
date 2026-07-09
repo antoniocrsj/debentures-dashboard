@@ -308,6 +308,22 @@ function spreadInfo(r) {
   return { bps: y * 100, base, tipo: 'yield' }
 }
 
+// Yield puro da linha (taxaAnbimaOriginal), usado como base COMUM de comparacao
+// quando um Prefixado ja foi convertido pra CDI+ num dia mas ainda nao no outro.
+function yieldInfo(r) {
+  const y = numOrNull(r.taxaAnbimaOriginal)
+  if (y === null) return null
+  return { bps: y * 100, base: 'yield', tipo: 'yield' }
+}
+
+// Familia do indexador para EXIBIR, a partir do spread realmente usado (info):
+// Pre/%CDI convertidos viram "CDI+"; IPCA vira "IPCA+"; senao a familia nativa.
+function familiaExibicao(info, tipo) {
+  if (info && info.tipo === 'cdi') return 'CDI+'
+  if (info && info.tipo === 'ipca') return 'IPCA+'
+  return indexadorFamilia(tipo)
+}
+
 // Familia do indexador (para exibir), a partir do tipo de taxa da ANBIMA.
 function indexadorFamilia(tipo) {
   const t = (tipo || '').trim()
@@ -320,50 +336,85 @@ function indexadorFamilia(tipo) {
 }
 
 // §5 Variacao ANBIMA — sempre em bps, sobre o spread (taxa/spread, NUNCA preco).
-// Top 15. Enriquece com emissor+grupo (join ticker->Debentures->cadastro).
-// Precisa de snapshot anterior da fonte.
+// Separado por mercado (12431 = incentivada / tradicional). Para cada mercado:
+// top 15 de abertura e de fechamento + a CONTAGEM sobre TODOS os ativos com taxa
+// ANBIMA comparavel (para ler se o mercado, como um todo, abriu ou fechou).
+function grpStatsAnbima(movs) {
+  const ab = movs.filter(m => m.variacaoBps > 0)
+  const fe = movs.filter(m => m.variacaoBps < 0)
+  const somaBps = movs.reduce((s, m) => s + m.variacaoBps, 0)
+  return {
+    aberturas: topMovers(ab, m => m.variacaoBps, 15, 'desc'),
+    fechamentos: topMovers(fe, m => m.variacaoBps, 15, 'asc'),
+    totalAberturas: ab.length,
+    totalFechamentos: fe.length,
+    totalComparados: movs.length,
+    // variacao media (bps) do mercado: sinal diz se abriu (+) ou fechou (-) no todo.
+    variacaoMediaBps: movs.length ? somaBps / movs.length : 0,
+  }
+}
+
 function buildAnbima(src, sourceDates, tickerInfo) {
   const atual = sourceDates.anbima
   const anterior = previousDate(perSourceDates(src).anbima, atual)
-  if (!atual || !anterior) return { aberturas: [], fechamentos: [], atual, anterior, semAnterior: true }
+  const vazio = () => ({ aberturas: [], fechamentos: [], totalAberturas: 0, totalFechamentos: 0, totalComparados: 0, variacaoMediaBps: 0 })
+  const semAnterior = () => ({ porMercado: { '12431': vazio(), trad: vazio() }, totalAberturas: 0, totalFechamentos: 0, totalComparados: 0, atual, anterior, semAnterior: true })
+  if (!atual || !anterior) return semAnterior()
+  const liveDate = distinctDates(src.anbima, 'dataReferenciaAnbima').pop()
   const prev = readSnapshot('anbima', anterior) || (anterior === distinctDates(src.anbima, 'dataReferenciaAnbima')[0] ? src.anbima : null)
-  const curr = readSnapshot('anbima', atual) || src.anbima
-  if (!prev) return { aberturas: [], fechamentos: [], atual, anterior, semAnterior: true }
+  // Para o dia mais recente usa o Anbima_Tx.csv VIVO (tem a conversao CDI+ mais
+  // fresca); para dias passados usa o snapshot daquela data.
+  const curr = (atual === liveDate) ? src.anbima : (readSnapshot('anbima', atual) || src.anbima)
+  if (!prev) return semAnterior()
   const key = r => (r.ticker || '').trim()
   const prevMap = new Map(prev.map(r => [key(r), r]))
   const movs = []
   for (const r of curr) {
     const p = prevMap.get(key(r))
     if (!p) continue
-    const si = spreadInfo(r), sp = spreadInfo(p)
-    if (!si || !sp) continue
-    if (si.base !== sp.base) continue           // benchmark girou (ex.: B35->B33): spread incomparavel
-    const variacaoBps = si.bps - sp.bps
+    const disp = spreadInfo(r)            // representacao RICA do dia (CDI+ se convertido) — p/ exibir
+    const dispPrev = spreadInfo(p)
+    if (!disp || !dispPrev) continue
+    const tipo = (r.tipoTaxaAnbima || '').trim(), tipoPrev = (p.tipoTaxaAnbima || '').trim()
+    // Base de comparacao: mesma base rica; senao, para Prefixado em transicao
+    // (um dia ja convertido pra CDI+ via LTN, outro nao), compara pelo yield que
+    // ambos tem. Benchmark de IPCA que girou (B35->B33) fica incomparavel: pula.
+    let cmpCurr, cmpPrev
+    if (disp.base === dispPrev.base) { cmpCurr = disp.bps; cmpPrev = dispPrev.bps }
+    else if (tipo === 'PREFIXADO' && tipoPrev === 'PREFIXADO') {
+      const yi = yieldInfo(r), yp = yieldInfo(p)
+      if (!yi || !yp) continue
+      cmpCurr = yi.bps; cmpPrev = yp.bps
+    } else continue
+    const variacaoBps = cmpCurr - cmpPrev
     if (Math.abs(variacaoBps) < 0.05) continue  // ruido sub-0,05 bps
     const ti = tickerInfo.get(key(r)) || {}
     const dur = parseNum(r.durationAnbimaAnos)
     const fmtAtual = repairText((r.txAnbimaFormatada || '').trim())
-    // Spread atual exibido: tipo CDI (inclui Pré e %CDI convertidos) mostra "CDI ± X,XX%";
-    // IPCA mostra "B32 + N bps"; yield puro (IGP-M/Pré sem LTN) mostra a taxa.
-    const spreadAtual = si.tipo === 'cdi'
-      ? `CDI ${si.bps >= 0 ? '+' : '−'} ${Math.abs(si.bps / 100).toFixed(2).replace('.', ',')}%`
+    // Spread atual exibido: CDI (Pré/%CDI convertidos) mostra "CDI ± X,XX%"; senao a taxa.
+    const spreadAtual = disp.tipo === 'cdi'
+      ? `CDI ${disp.bps >= 0 ? '+' : '−'} ${Math.abs(disp.bps / 100).toFixed(2).replace('.', ',')}%`
       : fmtAtual
     movs.push({
       ticker: key(r), indexador: repairText((r.indexadorAnbima || '').trim()),
-      indexadorFamilia: indexadorFamilia(r.tipoTaxaAnbima),
+      indexadorFamilia: familiaExibicao(disp, r.tipoTaxaAnbima),
       emissor: ti.empresa || '', grupo: ti.grupo || '',
-      base: si.base, tipo: si.tipo,
-      spreadAnteriorBps: sp.bps, spreadAtualBps: si.bps, variacaoBps,
+      incentivada: !!ti.incentivada,
+      base: disp.base, tipo: disp.tipo,
+      spreadAnteriorBps: cmpPrev, spreadAtualBps: disp.bps, variacaoBps,
       fmtAnterior: repairText((p.txAnbimaFormatada || '').trim()),
       fmtAtual, spreadAtual,
       durationAnos: Number.isNaN(dur) ? null : dur,
       status: (r.statusCalculoAnbima || '').trim(),
     })
   }
+  const inc = movs.filter(m => m.incentivada)
+  const trad = movs.filter(m => !m.incentivada)
   return {
-    // abertura = spread abriu (+bps); fechamento = spread fechou (-bps)
-    aberturas: topMovers(movs, m => m.variacaoBps, 15, 'desc').filter(m => m.variacaoBps > 0),
-    fechamentos: topMovers(movs, m => m.variacaoBps, 15, 'asc').filter(m => m.variacaoBps < 0),
+    porMercado: { '12431': grpStatsAnbima(inc), trad: grpStatsAnbima(trad) },
+    totalAberturas: movs.filter(m => m.variacaoBps > 0).length,
+    totalFechamentos: movs.filter(m => m.variacaoBps < 0).length,
+    totalComparados: movs.length,
     atual, anterior, semAnterior: false,
   }
 }
@@ -522,7 +573,12 @@ function buildTickerInfo(src, emissoresMap) {
     const t = (r['Codigo do Ativo'] || '').trim()
     if (!t) continue
     const grupo = (emissoresMap.get(digits(r['CNPJ'])) || {}).grupo || ''
-    m.set(t, { empresa: repairText((r['Empresa'] || '').trim()), grupo })
+    m.set(t, {
+      empresa: repairText((r['Empresa'] || '').trim()),
+      grupo,
+      // Debenture incentivada (Lei 12.431) -> mercado "12431"; senao "tradicional".
+      incentivada: isYes(r['Deb. Incent. (Lei 12.431)']),
+    })
   }
   return m
 }
@@ -675,11 +731,21 @@ function renderHtml(rep) {
   const anbimaTable = arr => `<div class="tw"><table><thead><tr><th>Ativo</th><th>Grupo</th><th>Emissor</th><th>Indexador</th><th>Spread atual</th><th class="num">Duration (a)</th><th class="num">Var. (bps)</th></tr></thead><tbody>${
     arr.map(a => `<tr><td>${esc(a.ticker)}</td><td>${esc(a.grupo || '—')}</td><td>${esc(a.emissor || '—')}</td><td>${esc(a.indexadorFamilia)}</td><td>${esc(a.spreadAtual || a.fmtAtual || '—')}</td><td class="num">${a.durationAnos != null ? a.durationAnos.toFixed(2) : '—'}</td><td class="num">${anbimaVar(a.variacaoBps)}</td></tr>`).join('')
   }</tbody></table></div>`
+  // Um bloco por mercado (Incentivadas 12.431 / Tradicional), com o placar do
+  // mercado inteiro no topo + top 15 de abertura e de fechamento.
+  const anbimaMercado = (g, nome) => {
+    if (!g || !g.totalComparados) return `<h4>${nome}</h4>${empty('Sem variações de spread comparáveis neste dia.')}`
+    const vm = Math.round(g.variacaoMediaBps || 0)
+    const tom = vm > 0 ? 'neg' : vm < 0 ? 'pos' : 'val'
+    const placar = `<p class="tally">${nome}: <span class="val neg">${g.totalAberturas}</span> abertura(s) e <span class="val pos">${g.totalFechamentos}</span> fechamento(s) de spread — de ${g.totalComparados} ativo(s) com taxa ANBIMA · média <span class="${tom}">${vm > 0 ? '+' : ''}${vm} bps</span></p>`
+    return `<h4>${nome}</h4>${placar}${
+      g.aberturas.length ? `<h5 class="anb-sub">Maiores aberturas</h5>${anbimaTable(g.aberturas)}` : ''}${
+      g.fechamentos.length ? `<h5 class="anb-sub">Maiores fechamentos</h5>${anbimaTable(g.fechamentos)}` : ''}`
+  }
   const anbimaBlock = s.anbima.semAnterior
     ? empty('Sem dia anterior de ANBIMA para comparar (começa no próximo snapshot).')
-    : `${s.anbima.aberturas.length ? `<h4>Maiores aberturas de spread</h4>${anbimaTable(s.anbima.aberturas)}` : ''}
-       ${s.anbima.fechamentos.length ? `<h4>Maiores fechamentos de spread</h4>${anbimaTable(s.anbima.fechamentos)}` : ''}
-       ${!s.anbima.aberturas.length && !s.anbima.fechamentos.length ? empty('Sem variações de spread neste dia.') : ''}`
+    : `${anbimaMercado(s.anbima.porMercado['12431'], 'Incentivadas (12.431)')}
+       ${anbimaMercado(s.anbima.porMercado.trad, 'Tradicional')}`
 
   const perfBlock = `<p class="tally">Retorno nominal da cota no dia (não é %CDI).</p>` + ['12431', 'Trad'].map(seg => {
     const pos = s.perf[`top${seg}Pos`] || [], neg = s.perf[`top${seg}Neg`] || []
@@ -723,6 +789,7 @@ function renderHtml(rep) {
   h2 .n{display:inline-block;min-width:22px;color:var(--primary)}
   h4{font-size:12.5px;margin:14px 0 6px;color:var(--primary);font-weight:600;text-transform:none}
   h4:first-of-type{margin-top:4px}
+  h5.anb-sub{font-size:11.5px;margin:10px 0 4px;color:var(--text-muted);font-weight:600;text-transform:none}
   .cap-dia{font-weight:400;color:var(--text-muted);font-size:11px}
   .tw{overflow-x:auto}
   table{border-collapse:collapse;width:100%;font-size:12.5px;margin:4px 0}

@@ -152,9 +152,24 @@ export function summarize(sections) {
   const topRes = s.gestores?.top12431Resgate?.[0] || s.gestores?.topTradResgate?.[0]
   if (topRes) out.push({ texto: `Maior resgate: ${topRes.gestor} (${sinalMi(topRes.liquido)})`, tom: 'neg' })
 
-  const anbimaUp = n(s.anbima?.aberturas)
-  const anbimaDown = n(s.anbima?.fechamentos)
-  if (anbimaUp || anbimaDown) out.push({ texto: `ANBIMA: ${anbimaUp} abertura(s) e ${anbimaDown} fechamento(s) de spread (bps)` })
+  // ANBIMA: contagem sobre TODOS os ativos com taxa comparavel, separada por
+  // mercado (Incentivadas 12.431 / Tradicional) — le se cada mercado abriu ou
+  // fechou spread no todo.
+  const anbimaMercados = s.anbima?.porMercado
+  if (anbimaMercados) {
+    for (const seg of ['12431', 'trad']) {
+      const g = anbimaMercados[seg]
+      if (g && (g.totalAberturas || g.totalFechamentos)) {
+        const rot = seg === '12431' ? 'Incentivadas' : 'Tradicional'
+        const vm = Math.round(g.variacaoMediaBps || 0)
+        const tom = vm > 0 ? 'neg' : vm < 0 ? 'pos' : ''   // abriu=vermelho, fechou=verde
+        out.push({
+          texto: `ANBIMA ${rot}: ${g.totalAberturas} abertura(s) e ${g.totalFechamentos} fechamento(s) de spread (de ${g.totalComparados} ativos; média ${vm > 0 ? '+' : ''}${vm} bps)`,
+          tom,
+        })
+      }
+    }
+  }
 
   const fNovos = n(s.fundos?.novos), fRem = n(s.fundos?.removidos)
   if (fNovos || fRem) out.push({ texto: `Fundos: +${fNovos} / -${fRem} no universo` })

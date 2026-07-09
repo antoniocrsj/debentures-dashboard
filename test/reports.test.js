@@ -79,7 +79,10 @@ test('summarize: bullets só do que tem conteúdo', () => {
     debentures: { novas: [{}, {}], saidas: [] },
     captacao: { '12431': { captacao: 100, resgate: 40, liquido: 60 }, trad: null },
     gestores: { top12431Captacao: [{ gestor: 'ARX', liquido: 120e6 }], top12431Resgate: [{ gestor: 'Z', liquido: -90e6 }] },
-    anbima: { aberturas: [{}], fechamentos: [] },
+    anbima: { porMercado: {
+      '12431': { totalAberturas: 3, totalFechamentos: 1, totalComparados: 4, variacaoMediaBps: 5 },
+      trad: { totalAberturas: 0, totalFechamentos: 0, totalComparados: 0, variacaoMediaBps: 0 },
+    } },
     fundos: { novos: [{}], removidos: [] },
     alertas: [{}, {}],
   })
@@ -88,6 +91,7 @@ test('summarize: bullets só do que tem conteúdo', () => {
   assert.ok(textos.some(t => t.includes('Captação líquida Incentivados')))
   assert.ok(textos.some(t => t.includes('Maior captação: ARX')))
   assert.ok(textos.some(t => t.includes('2 alerta(s)')))
-  // segmento trad sem dado não vira bullet
+  // ANBIMA por mercado: Incentivadas com contagem; Tradicional sem dado não vira bullet
+  assert.ok(textos.some(t => t.includes('ANBIMA Incentivadas: 3 abertura(s) e 1 fechamento(s)')))
   assert.ok(!textos.some(t => t.includes('Tradicional')))
 })

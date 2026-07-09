@@ -248,8 +248,27 @@
       ]
     },
     "anbima": {
-      "aberturas": [],
-      "fechamentos": [],
+      "porMercado": {
+        "12431": {
+          "aberturas": [],
+          "fechamentos": [],
+          "totalAberturas": 0,
+          "totalFechamentos": 0,
+          "totalComparados": 0,
+          "variacaoMediaBps": 0
+        },
+        "trad": {
+          "aberturas": [],
+          "fechamentos": [],
+          "totalAberturas": 0,
+          "totalFechamentos": 0,
+          "totalComparados": 0,
+          "variacaoMediaBps": 0
+        }
+      },
+      "totalAberturas": 0,
+      "totalFechamentos": 0,
+      "totalComparados": 0,
       "atual": null,
       "anterior": null,
       "semAnterior": true
