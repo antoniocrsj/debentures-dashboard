@@ -9,8 +9,8 @@
     "perf12431": "2026-07-07",
     "perfTrad": "2026-07-07",
     "anbima": "2026-07-07",
-    "blc": "2026-07-06",
-    "fundos": "2026-07-06"
+    "blc": "2026-07-07",
+    "fundos": "2026-07-07"
   },
   "summary": [
     {
@@ -70,6 +70,8 @@
         "liquido": -50939167.479999915,
         "pl": 326348539271.21,
         "numFundos": 1570,
+        "curados": 1632,
+        "fechados": 280,
         "anterior": {
           "dia": "2026-07-06",
           "captacao": 131016585.81000002,
@@ -86,6 +88,8 @@
         "liquido": 112365245.48999906,
         "pl": 1070997056050.7201,
         "numFundos": 790,
+        "curados": 827,
+        "fechados": 29,
         "anterior": {
           "dia": "2026-07-06",
           "captacao": 1706566239.7200003,
@@ -261,6 +265,7 @@
           "variacaoBps": 36,
           "fmtAnterior": "B30 + 1967 bps",
           "fmtAtual": "B30 + 2003 bps",
+          "spreadAtual": "B30 + 2003 bps",
           "durationAnos": 3.17,
           "status": "ok"
         },
@@ -277,6 +282,7 @@
           "variacaoBps": 36,
           "fmtAnterior": "B32 + 1137 bps",
           "fmtAtual": "B32 + 1173 bps",
+          "spreadAtual": "B32 + 1173 bps",
           "durationAnos": 4.77,
           "status": "ok"
         },
@@ -293,6 +299,7 @@
           "variacaoBps": 22,
           "fmtAnterior": "B33 + 963 bps",
           "fmtAtual": "B33 + 985 bps",
+          "spreadAtual": "B33 + 985 bps",
           "durationAnos": 5.85,
           "status": "ok"
         },
@@ -309,6 +316,7 @@
           "variacaoBps": 20.839999999999975,
           "fmtAnterior": "CDI + 2,91%",
           "fmtAtual": "CDI + 3,12%",
+          "spreadAtual": "CDI + 3,12%",
           "durationAnos": 1.51,
           "status": "ok"
         },
@@ -325,6 +333,7 @@
           "variacaoBps": 20,
           "fmtAnterior": "B27 - 79 bps",
           "fmtAtual": "B27 - 59 bps",
+          "spreadAtual": "B27 - 59 bps",
           "durationAnos": 1.38,
           "status": "ok"
         },
@@ -341,6 +350,7 @@
           "variacaoBps": 19,
           "fmtAnterior": "B32 + 1255 bps",
           "fmtAtual": "B32 + 1274 bps",
+          "spreadAtual": "B32 + 1274 bps",
           "durationAnos": 5.19,
           "status": "ok"
         },
@@ -357,6 +367,7 @@
           "variacaoBps": 18,
           "fmtAnterior": "B35 + 627 bps",
           "fmtAtual": "B35 + 645 bps",
+          "spreadAtual": "B35 + 645 bps",
           "durationAnos": 6.14,
           "status": "ok"
         },
@@ -373,6 +384,7 @@
           "variacaoBps": 17,
           "fmtAnterior": "B35 + 23 bps",
           "fmtAtual": "B35 + 40 bps",
+          "spreadAtual": "B35 + 40 bps",
           "durationAnos": 6.32,
           "status": "ok"
         },
@@ -389,6 +401,7 @@
           "variacaoBps": 17,
           "fmtAnterior": "B30 + 29 bps",
           "fmtAtual": "B30 + 46 bps",
+          "spreadAtual": "B30 + 46 bps",
           "durationAnos": 3.52,
           "status": "ok"
         },
@@ -405,6 +418,7 @@
           "variacaoBps": 16.61999999999989,
           "fmtAnterior": "15,14%",
           "fmtAtual": "15,30%",
+          "spreadAtual": "15,30%",
           "durationAnos": 3.13,
           "status": "ok"
         },
@@ -421,6 +435,7 @@
           "variacaoBps": 13.839999999999918,
           "fmtAnterior": "16,93%",
           "fmtAtual": "17,07%",
+          "spreadAtual": "17,07%",
           "durationAnos": 4.3,
           "status": "ok"
         },
@@ -437,6 +452,7 @@
           "variacaoBps": 13.6099999999999,
           "fmtAnterior": "15,24%",
           "fmtAtual": "15,38%",
+          "spreadAtual": "15,38%",
           "durationAnos": 2.57,
           "status": "ok"
         },
@@ -453,6 +469,7 @@
           "variacaoBps": 13,
           "fmtAnterior": "B32 + 644 bps",
           "fmtAtual": "B32 + 657 bps",
+          "spreadAtual": "B32 + 657 bps",
           "durationAnos": 4.57,
           "status": "ok"
         },
@@ -469,6 +486,7 @@
           "variacaoBps": 13,
           "fmtAnterior": "B35 + 903 bps",
           "fmtAtual": "B35 + 916 bps",
+          "spreadAtual": "B35 + 916 bps",
           "durationAnos": 6.31,
           "status": "ok"
         },
@@ -485,43 +503,12 @@
           "variacaoBps": 12,
           "fmtAnterior": "B28 + 14 bps",
           "fmtAtual": "B28 + 26 bps",
+          "spreadAtual": "B28 + 26 bps",
           "durationAnos": 2,
           "status": "ok"
         }
       ],
       "fechamentos": [
-        {
-          "ticker": "TEPA23",
-          "indexador": "Pré-Fixado 18.5067%",
-          "indexadorFamilia": "Pré",
-          "emissor": "BRASIL TECNOLOGIA E PARTICIPACAO S.A.",
-          "grupo": "Brasil Tecnologia e Participacao",
-          "base": "Pré",
-          "tipo": "yield",
-          "spreadAnteriorBps": 1925.42,
-          "spreadAtualBps": 0,
-          "variacaoBps": -1925.42,
-          "fmtAnterior": "19,25%",
-          "fmtAtual": "—",
-          "durationAnos": 0,
-          "status": "sem_taxa"
-        },
-        {
-          "ticker": "ORIG22",
-          "indexador": "Pré-Fixado 15.6300%",
-          "indexadorFamilia": "Pré",
-          "emissor": "ORIGEM ENERGIA S.A.",
-          "grupo": "Origem Energia",
-          "base": "Pré",
-          "tipo": "yield",
-          "spreadAnteriorBps": 1699.97,
-          "spreadAtualBps": 0,
-          "variacaoBps": -1699.97,
-          "fmtAnterior": "17,00%",
-          "fmtAtual": "—",
-          "durationAnos": 0,
-          "status": "sem_taxa"
-        },
         {
           "ticker": "AEGP19",
           "indexador": "DI + 1.9000%",
@@ -535,6 +522,7 @@
           "variacaoBps": -29.03000000000003,
           "fmtAnterior": "CDI + 3,36%",
           "fmtAtual": "CDI + 3,07%",
+          "spreadAtual": "CDI + 3,07%",
           "durationAnos": 1.09,
           "status": "ok"
         },
@@ -551,6 +539,7 @@
           "variacaoBps": -26.75999999999999,
           "fmtAnterior": "13,67%",
           "fmtAtual": "13,40%",
+          "spreadAtual": "13,40%",
           "durationAnos": 2.63,
           "status": "ok"
         },
@@ -567,6 +556,7 @@
           "variacaoBps": -25.440000000000055,
           "fmtAnterior": "CDI + 14,46%",
           "fmtAtual": "CDI + 14,21%",
+          "spreadAtual": "CDI + 14,21%",
           "durationAnos": 0.87,
           "status": "ok"
         },
@@ -583,6 +573,7 @@
           "variacaoBps": -25,
           "fmtAnterior": "B31 + 376 bps",
           "fmtAtual": "B31 + 351 bps",
+          "spreadAtual": "B31 + 351 bps",
           "durationAnos": 3.94,
           "status": "ok"
         },
@@ -599,6 +590,7 @@
           "variacaoBps": -22,
           "fmtAnterior": "B27 + 260 bps",
           "fmtAtual": "B27 + 238 bps",
+          "spreadAtual": "B27 + 238 bps",
           "durationAnos": 0.66,
           "status": "ok"
         },
@@ -615,6 +607,7 @@
           "variacaoBps": -18.650000000000034,
           "fmtAnterior": "CDI + 3,69%",
           "fmtAtual": "CDI + 3,50%",
+          "spreadAtual": "CDI + 3,50%",
           "durationAnos": 3.4,
           "status": "ok"
         },
@@ -631,6 +624,7 @@
           "variacaoBps": -17.20999999999998,
           "fmtAnterior": "CDI + 3,62%",
           "fmtAtual": "CDI + 3,45%",
+          "spreadAtual": "CDI + 3,45%",
           "durationAnos": 3.28,
           "status": "ok"
         },
@@ -647,6 +641,7 @@
           "variacaoBps": -16,
           "fmtAnterior": "B31 + 1105 bps",
           "fmtAtual": "B31 + 1089 bps",
+          "spreadAtual": "B31 + 1089 bps",
           "durationAnos": 4.35,
           "status": "ok"
         },
@@ -663,6 +658,7 @@
           "variacaoBps": -15.720000000000027,
           "fmtAnterior": "17,52%",
           "fmtAtual": "17,36%",
+          "spreadAtual": "17,36%",
           "durationAnos": 3.13,
           "status": "ok"
         },
@@ -679,6 +675,7 @@
           "variacaoBps": -15,
           "fmtAnterior": "B30 + 628 bps",
           "fmtAtual": "B30 + 613 bps",
+          "spreadAtual": "B30 + 613 bps",
           "durationAnos": 3.8,
           "status": "ok"
         },
@@ -695,6 +692,7 @@
           "variacaoBps": -12.78000000000003,
           "fmtAnterior": "CDI + 3,96%",
           "fmtAtual": "CDI + 3,83%",
+          "spreadAtual": "CDI + 3,83%",
           "durationAnos": 4.05,
           "status": "ok"
         },
@@ -711,6 +709,7 @@
           "variacaoBps": -12.580000000000041,
           "fmtAnterior": "CDI + 2,42%",
           "fmtAtual": "CDI + 2,30%",
+          "spreadAtual": "CDI + 2,30%",
           "durationAnos": 0.71,
           "status": "ok"
         },
@@ -727,7 +726,42 @@
           "variacaoBps": -12.389999999999986,
           "fmtAnterior": "CDI + 3,26%",
           "fmtAtual": "CDI + 3,14%",
+          "spreadAtual": "CDI + 3,14%",
           "durationAnos": 1.16,
+          "status": "ok"
+        },
+        {
+          "ticker": "ALGAC2",
+          "indexador": "IPCA + 5.8806%",
+          "indexadorFamilia": "IPCA+",
+          "emissor": "ALGAR TELECOM S.A.",
+          "grupo": "Algar",
+          "base": "B30",
+          "tipo": "ipca",
+          "spreadAnteriorBps": 96,
+          "spreadAtualBps": 84,
+          "variacaoBps": -12,
+          "fmtAnterior": "B30 + 96 bps",
+          "fmtAtual": "B30 + 84 bps",
+          "spreadAtual": "B30 + 84 bps",
+          "durationAnos": 3.83,
+          "status": "ok"
+        },
+        {
+          "ticker": "CSMGB0",
+          "indexador": "DI + 0.6000%",
+          "indexadorFamilia": "CDI+",
+          "emissor": "COMPANHIA DE SANEAMENTO DE MINAS GERAIS COPASA MG",
+          "grupo": "Copasa",
+          "base": "CDI",
+          "tipo": "cdi",
+          "spreadAnteriorBps": 86.76,
+          "spreadAtualBps": 74.76,
+          "variacaoBps": -12,
+          "fmtAnterior": "CDI + 0,87%",
+          "fmtAtual": "CDI + 0,75%",
+          "spreadAtual": "CDI + 0,75%",
+          "durationAnos": 3.59,
           "status": "ok"
         }
       ],

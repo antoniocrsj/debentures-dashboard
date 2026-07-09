@@ -5,7 +5,9 @@
   :root{
     --primary:#1f4e9c; --primary-dark:#14253f; --primary-light:#e9eef7;
     --primary-border:#cdd9ea; --bg:#eef1f5; --card:#fff; --text:#1e293b;
-    --text-muted:#64748b; --border:#e2e8f0; --success:#059669; --danger:#b91c1c;
+    --text-muted:#64748b; --border:#e2e8f0;
+    /* mesma dupla canonica do app: um verde (--pos) e um vermelho (--neg) */
+    --pos:#047857; --neg:#b91c1c; --success:#047857; --danger:#b91c1c;
     --warn:#92400e;
   }
   *{box-sizing:border-box}
@@ -50,8 +52,8 @@
   ul.sumario li:last-child{border-bottom:0}
   ul.sumario li::before{content:"";position:absolute;left:0;top:11px;width:6px;height:6px;
     border-radius:50%;background:var(--primary)}
-  ul.sumario li.pos::before{background:var(--success)} ul.sumario li.pos{color:#065f46}
-  ul.sumario li.neg::before{background:var(--danger)} ul.sumario li.neg{color:#7f1d1d}
+  ul.sumario li.pos::before{background:var(--success)} ul.sumario li.pos{color:var(--pos)}
+  ul.sumario li.neg::before{background:var(--danger)} ul.sumario li.neg{color:var(--neg)}
   ul.sumario li.warn::before{background:var(--warn)} ul.sumario li.warn{color:var(--warn)}
   ul.chips{display:flex;flex-wrap:wrap;gap:6px}
   ul.chips li{background:var(--primary-light);border:1px solid var(--primary-border);
@@ -77,14 +79,16 @@
       <tr><td>Resgate</td><td><span class="val neg">R$ -369,2M</span></td></tr>
       <tr><td>Líquido</td><td><span class="val neg">R$ -253,6M</span></td></tr>
       <tr><td>PL</td><td><span class="val">R$ 332,1Bi</span></td></tr>
-      <tr><td>Nº fundos</td><td><span class="val">1602</span></td></tr>
+      <tr><td>Fundos reportados</td><td><span class="val">1602 <span class="cap-dia">de 1632</span></span></td></tr>
+      <tr><td>Fundos fechados</td><td><span class="val">280</span> <span class="cap-dia">condomínio fechado (captam por emissão de cotas)</span></td></tr>
       <tr class="ant"><td>Líquido (dia anterior 01/07/2026)</td><td><span class="val neg">R$ -94,4M</span></td></tr>
     </tbody></table></div><div class="cap-card"><h4>Crédito Tradicional <span class="cap-dia">02/07/2026</span></h4><table class="kv"><tbody>
       <tr><td>Captação</td><td><span class="val pos">R$ 1,7Bi</span></td></tr>
       <tr><td>Resgate</td><td><span class="val neg">R$ -1,8Bi</span></td></tr>
       <tr><td>Líquido</td><td><span class="val neg">R$ -112,4M</span></td></tr>
       <tr><td>PL</td><td><span class="val">R$ 1.079,3Bi</span></td></tr>
-      <tr><td>Nº fundos</td><td><span class="val">809</span></td></tr>
+      <tr><td>Fundos reportados</td><td><span class="val">809 <span class="cap-dia">de 827</span></span></td></tr>
+      <tr><td>Fundos fechados</td><td><span class="val">29</span> <span class="cap-dia">condomínio fechado (captam por emissão de cotas)</span></td></tr>
       <tr class="ant"><td>Líquido (dia anterior 01/07/2026)</td><td><span class="val neg">R$ -76,4M</span></td></tr>
     </tbody></table></div></div></section>
 <section><h2><span class="n">4.</span> Destaques por gestor (captação líquida)</h2><div class="cap-grid"><div class="cap-card"><h4>Incentivados (12.431)</h4><table><thead><tr><th>Gestor</th><th class="num">Cap. líquida</th></tr></thead><tbody><tr><td>JGP</td><td class="num pos">R$ 15,2M</td></tr><tr><td>Icatu</td><td class="num pos">R$ 4,1M</td></tr><tr><td>Sulamérica</td><td class="num pos">R$ 3,9M</td></tr><tr><td>Ibuina</td><td class="num pos">R$ 3,1M</td></tr><tr><td>Bocaina</td><td class="num pos">R$ 1,0M</td></tr><tr><td>IAM</td><td class="num neg">R$ -59,4M</td></tr><tr><td>Kinea</td><td class="num neg">R$ -25,7M</td></tr><tr><td>BRAM</td><td class="num neg">R$ -25,6M</td></tr><tr><td>Safra Asset</td><td class="num neg">R$ -21,6M</td></tr><tr><td>SAM</td><td class="num neg">R$ -17,7M</td></tr></tbody></table></div><div class="cap-card"><h4>Crédito Tradicional</h4><table><thead><tr><th>Gestor</th><th class="num">Cap. líquida</th></tr></thead><tbody><tr><td>BB Asset</td><td class="num pos">R$ 179,1M</td></tr><tr><td>CEF Asset</td><td class="num pos">R$ 118,6M</td></tr><tr><td>BRAM</td><td class="num pos">R$ 55,9M</td></tr><tr><td>Regia</td><td class="num pos">R$ 42,4M</td></tr><tr><td>BNP</td><td class="num pos">R$ 27,1M</td></tr><tr><td>Icatu</td><td class="num neg">R$ -102,0M</td></tr><tr><td>Quantitas</td><td class="num neg">R$ -100,0M</td></tr><tr><td>XPG</td><td class="num neg">R$ -96,2M</td></tr><tr><td>Kinea</td><td class="num neg">R$ -72,3M</td></tr><tr><td>SAM</td><td class="num neg">R$ -45,2M</td></tr></tbody></table></div></div></section>

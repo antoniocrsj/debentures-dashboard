@@ -9,8 +9,8 @@
     "perf12431": "2026-07-07",
     "perfTrad": "2026-07-07",
     "anbima": "2026-07-08",
-    "blc": "2026-07-06",
-    "fundos": "2026-07-06"
+    "blc": "2026-07-07",
+    "fundos": "2026-07-07"
   },
   "summary": [
     {
@@ -51,6 +51,8 @@
         "liquido": -50939167.479999915,
         "pl": 326348539271.21,
         "numFundos": 1570,
+        "curados": 1632,
+        "fechados": 280,
         "anterior": {
           "dia": "2026-07-06",
           "captacao": 131016585.81000002,
@@ -67,6 +69,8 @@
         "liquido": 112365245.48999906,
         "pl": 1070997056050.7201,
         "numFundos": 790,
+        "curados": 827,
+        "fechados": 29,
         "anterior": {
           "dia": "2026-07-06",
           "captacao": 1706566239.7200003,
@@ -242,6 +246,7 @@
           "variacaoBps": 33.34999999999991,
           "fmtAnterior": "13,40%",
           "fmtAtual": "13,73%",
+          "spreadAtual": "13,73%",
           "durationAnos": 2.63,
           "status": "ok"
         },
@@ -258,6 +263,7 @@
           "variacaoBps": 31.56000000000006,
           "fmtAnterior": "CDI + 5,21%",
           "fmtAtual": "CDI + 5,53%",
+          "spreadAtual": "CDI + 5,53%",
           "durationAnos": 4.03,
           "status": "ok"
         },
@@ -274,6 +280,7 @@
           "variacaoBps": 24.230000000000018,
           "fmtAnterior": "15,42%",
           "fmtAtual": "15,66%",
+          "spreadAtual": "15,66%",
           "durationAnos": 3.69,
           "status": "ok"
         },
@@ -290,6 +297,7 @@
           "variacaoBps": 21,
           "fmtAnterior": "B30 + 70 bps",
           "fmtAtual": "B30 + 91 bps",
+          "spreadAtual": "B30 + 91 bps",
           "durationAnos": 3.09,
           "status": "ok"
         },
@@ -306,6 +314,7 @@
           "variacaoBps": 20,
           "fmtAnterior": "B30 - 22 bps",
           "fmtAtual": "B30 - 2 bps",
+          "spreadAtual": "B30 - 2 bps",
           "durationAnos": 3.69,
           "status": "ok"
         },
@@ -322,6 +331,7 @@
           "variacaoBps": 18.279999999999973,
           "fmtAnterior": "CDI + 5,58%",
           "fmtAtual": "CDI + 5,77%",
+          "spreadAtual": "CDI + 5,77%",
           "durationAnos": 3.29,
           "status": "ok"
         },
@@ -338,6 +348,7 @@
           "variacaoBps": 14.319999999999936,
           "fmtAnterior": "14,01%",
           "fmtAtual": "14,15%",
+          "spreadAtual": "14,15%",
           "durationAnos": 4.5,
           "status": "ok"
         },
@@ -354,6 +365,7 @@
           "variacaoBps": 13.800000000000011,
           "fmtAnterior": "CDI + 3,12%",
           "fmtAtual": "CDI + 3,26%",
+          "spreadAtual": "CDI + 3,26%",
           "durationAnos": 1.51,
           "status": "ok"
         },
@@ -370,6 +382,7 @@
           "variacaoBps": 12.340000000000146,
           "fmtAnterior": "CDI + 17,79%",
           "fmtAtual": "CDI + 17,92%",
+          "spreadAtual": "CDI + 17,92%",
           "durationAnos": 1.56,
           "status": "ok"
         },
@@ -386,6 +399,7 @@
           "variacaoBps": 12,
           "fmtAnterior": "B30 + 572 bps",
           "fmtAtual": "B30 + 584 bps",
+          "spreadAtual": "B30 + 584 bps",
           "durationAnos": 3.51,
           "status": "ok"
         },
@@ -402,6 +416,7 @@
           "variacaoBps": 11,
           "fmtAnterior": "B30 + 84 bps",
           "fmtAtual": "B30 + 95 bps",
+          "spreadAtual": "B30 + 95 bps",
           "durationAnos": 3.82,
           "status": "ok"
         },
@@ -418,6 +433,7 @@
           "variacaoBps": 10,
           "fmtAnterior": "B30 + 505 bps",
           "fmtAtual": "B30 + 515 bps",
+          "spreadAtual": "B30 + 515 bps",
           "durationAnos": 3.39,
           "status": "ok"
         },
@@ -434,6 +450,7 @@
           "variacaoBps": 9.539999999999964,
           "fmtAnterior": "14,11%",
           "fmtAtual": "14,20%",
+          "spreadAtual": "14,20%",
           "durationAnos": 2.21,
           "status": "ok"
         },
@@ -450,6 +467,7 @@
           "variacaoBps": 8.159999999999968,
           "fmtAnterior": "CDI + 2,15%",
           "fmtAtual": "CDI + 2,23%",
+          "spreadAtual": "CDI + 2,23%",
           "durationAnos": 1.56,
           "status": "ok"
         },
@@ -466,6 +484,7 @@
           "variacaoBps": 8,
           "fmtAnterior": "B27 + 238 bps",
           "fmtAtual": "B27 + 246 bps",
+          "spreadAtual": "B27 + 246 bps",
           "durationAnos": 0.65,
           "status": "ok"
         }
@@ -484,6 +503,7 @@
           "variacaoBps": -22.610000000000014,
           "fmtAnterior": "CDI + 2,76%",
           "fmtAtual": "CDI + 2,53%",
+          "spreadAtual": "CDI + 2,53%",
           "durationAnos": 0.12,
           "status": "ok"
         },
@@ -500,6 +520,7 @@
           "variacaoBps": -22,
           "fmtAnterior": "B27 + 134 bps",
           "fmtAtual": "B27 + 112 bps",
+          "spreadAtual": "B27 + 112 bps",
           "durationAnos": 0.93,
           "status": "ok"
         },
@@ -516,6 +537,7 @@
           "variacaoBps": -19,
           "fmtAnterior": "B28 + 744 bps",
           "fmtAtual": "B28 + 725 bps",
+          "spreadAtual": "B28 + 725 bps",
           "durationAnos": 1.83,
           "status": "ok"
         },
@@ -532,6 +554,7 @@
           "variacaoBps": -18.24000000000001,
           "fmtAnterior": "CDI + 1,83%",
           "fmtAtual": "CDI + 1,65%",
+          "spreadAtual": "CDI + 1,65%",
           "durationAnos": 2.38,
           "status": "ok"
         },
@@ -548,6 +571,7 @@
           "variacaoBps": -16,
           "fmtAnterior": "B30 + 656 bps",
           "fmtAtual": "B30 + 640 bps",
+          "spreadAtual": "B30 + 640 bps",
           "durationAnos": 3.19,
           "status": "ok"
         },
@@ -564,6 +588,7 @@
           "variacaoBps": -15,
           "fmtAnterior": "B29 + 718 bps",
           "fmtAtual": "B29 + 703 bps",
+          "spreadAtual": "B29 + 703 bps",
           "durationAnos": 2.39,
           "status": "ok"
         },
@@ -580,6 +605,7 @@
           "variacaoBps": -13.330000000000013,
           "fmtAnterior": "CDI + 2,28%",
           "fmtAtual": "CDI + 2,14%",
+          "spreadAtual": "CDI + 2,14%",
           "durationAnos": 2.94,
           "status": "ok"
         },
@@ -596,6 +622,7 @@
           "variacaoBps": -13.269999999999982,
           "fmtAnterior": "CDI + 2,89%",
           "fmtAtual": "CDI + 2,76%",
+          "spreadAtual": "CDI + 2,76%",
           "durationAnos": 1.12,
           "status": "ok"
         },
@@ -612,6 +639,7 @@
           "variacaoBps": -12.960000000000036,
           "fmtAnterior": "14,29%",
           "fmtAtual": "14,16%",
+          "spreadAtual": "14,16%",
           "durationAnos": 2.38,
           "status": "ok"
         },
@@ -628,6 +656,7 @@
           "variacaoBps": -12,
           "fmtAnterior": "B32 + 1173 bps",
           "fmtAtual": "B32 + 1161 bps",
+          "spreadAtual": "B32 + 1161 bps",
           "durationAnos": 4.77,
           "status": "ok"
         },
@@ -644,6 +673,7 @@
           "variacaoBps": -11.009999999999991,
           "fmtAnterior": "CDI + 3,07%",
           "fmtAtual": "CDI + 2,96%",
+          "spreadAtual": "CDI + 2,96%",
           "durationAnos": 1.08,
           "status": "ok"
         },
@@ -660,6 +690,7 @@
           "variacaoBps": -9.580000000000041,
           "fmtAnterior": "CDI + 4,84%",
           "fmtAtual": "CDI + 4,74%",
+          "spreadAtual": "CDI + 4,74%",
           "durationAnos": 3.09,
           "status": "ok"
         },
@@ -676,6 +707,7 @@
           "variacaoBps": -9.340000000000003,
           "fmtAnterior": "CDI + 0,75%",
           "fmtAtual": "CDI + 0,65%",
+          "spreadAtual": "CDI + 0,65%",
           "durationAnos": 3.59,
           "status": "ok"
         },
@@ -692,6 +724,7 @@
           "variacaoBps": -9,
           "fmtAnterior": "B28 + 26 bps",
           "fmtAtual": "B28 + 17 bps",
+          "spreadAtual": "B28 + 17 bps",
           "durationAnos": 2,
           "status": "ok"
         },
@@ -708,6 +741,7 @@
           "variacaoBps": -9,
           "fmtAnterior": "B35 + 40 bps",
           "fmtAtual": "B35 + 31 bps",
+          "spreadAtual": "B35 + 31 bps",
           "durationAnos": 6.32,
           "status": "ok"
         }
