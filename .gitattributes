@@ -1,0 +1,42 @@
+# ─── Fim de linha (line endings) ────────────────────────────────────────────
+# O repositorio guarda tudo em LF. Isso elimina os avisos
+#   "LF will be replaced by CRLF the next time Git touches it"
+# e os diffs inchados so' de fim de linha quando a pipeline (Node/PowerShell)
+# regera arquivos de dados/relatorio numa maquina Windows.
+#
+# Como funciona: com eol=lf o Git NAO converte para CRLF no checkout, e
+# normaliza CRLF->LF no `git add`. Entao mesmo que um script PowerShell grave
+# CRLF, o `git status` continua limpo (compara a forma normalizada).
+
+# Padrao: Git decide o que e' texto e normaliza para LF no repo.
+* text=auto
+
+# Dados e relatorios gerados pela pipeline — sempre LF.
+*.json  text eol=lf
+*.csv   text eol=lf
+*.html  text eol=lf
+
+# Codigo-fonte e config — LF.
+*.js    text eol=lf
+*.jsx   text eol=lf
+*.mjs   text eol=lf
+*.ts    text eol=lf
+*.tsx   text eol=lf
+*.css   text eol=lf
+*.md    text eol=lf
+*.svg   text eol=lf
+
+# Scripts nativos do Windows — CRLF (como o usuario os edita/roda).
+*.ps1   text eol=crlf
+*.cmd   text eol=crlf
+*.bat   text eol=crlf
+
+# Binarios — nunca converter nem tentar diffar como texto.
+*.png   binary
+*.ico   binary
+*.xlsx  binary
+*.xls   binary
+*.zip   binary
+*.pdf   binary
+*.woff  binary
+*.woff2 binary
