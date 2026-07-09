@@ -65,35 +65,31 @@
         "captacao": 149555391.71999997,
         "resgate": 281194537.96999997,
         "liquido": -131639146.25,
-        "pl": 318445839793.10016,
-        "numFundos": 1606,
-        "curados": 1632,
-        "fechados": 280,
+        "pl": 334759354874.70013,
+        "numFundos": 1607,
         "anterior": {
           "dia": "2026-07-02",
           "captacao": 115565228.13,
           "resgate": 369162788.66999996,
           "liquido": -253597560.53999996,
-          "pl": 315777233666.6099,
-          "numFundos": 1600
+          "pl": 332100672297.08984,
+          "numFundos": 1602
         }
       },
       "trad": {
         "dia": "2026-07-03",
-        "captacao": 1301954592.7299995,
-        "resgate": 1610421319.6,
-        "liquido": -308466726.87000036,
-        "pl": 1080373968100.3301,
-        "numFundos": 814,
-        "curados": 827,
-        "fechados": 29,
+        "captacao": 1301862634.8099997,
+        "resgate": 1610334661.6,
+        "liquido": -308472026.7900002,
+        "pl": 1081779413712.7402,
+        "numFundos": 817,
         "anterior": {
           "dia": "2026-07-02",
-          "captacao": 1681768570.1600006,
-          "resgate": 1794447442.8700001,
-          "liquido": -112678872.70999956,
-          "pl": 1078612150837.5698,
-          "numFundos": 808
+          "captacao": 1682173301.3800006,
+          "resgate": 1794533095.8900003,
+          "liquido": -112359794.50999975,
+          "pl": 1079334771909.6,
+          "numFundos": 809
         }
       }
     },
@@ -185,7 +181,7 @@
           "captacao": 121617469.36,
           "resgate": 77961599.05,
           "liquido": 43655870.31,
-          "pl": 100448207287.04
+          "pl": 100448119886.16
         },
         {
           "gestor": "Regia",
@@ -197,9 +193,9 @@
         {
           "gestor": "BTG Asset",
           "captacao": 29579775.44,
-          "resgate": 5199623.39,
-          "liquido": 24380152.05,
-          "pl": 24768900495.5
+          "resgate": 5099623.39,
+          "liquido": 24480152.05,
+          "pl": 24769000495.5
         },
         {
           "gestor": "Icatu",
@@ -215,14 +211,14 @@
           "captacao": 20622955.25,
           "resgate": 143804349.64,
           "liquido": -123181394.38999999,
-          "pl": 15704962683.19
+          "pl": 15704841633.93
         },
         {
           "gestor": "IAM",
           "captacao": 96417206.75,
-          "resgate": 181453783.26,
-          "liquido": -85036576.50999999,
-          "pl": 217506202622.32
+          "resgate": 181735094.82,
+          "liquido": -85317888.07,
+          "pl": 217505921310.47
         },
         {
           "gestor": "AZ Quest",
@@ -243,7 +239,7 @@
           "captacao": 6143064.81,
           "resgate": 34041029.75,
           "liquido": -27897964.94,
-          "pl": 21228219355.76
+          "pl": 21228219355.77
         }
       ]
     },
@@ -320,14 +316,6 @@
           "pl": 1123665.46
         },
         {
-          "cnpj": "63706652000166",
-          "nome": "VINLAND INC XP FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA FIF RF CRED PRIV RESP LIMITADA",
-          "gestor": "Vinland",
-          "segmento": "12431",
-          "retorno": -14.0474,
-          "pl": 36518957.82
-        },
-        {
           "cnpj": "60491442000100",
           "nome": "ITAÚBA FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA RESP LIMITADA",
           "gestor": "IAM",
@@ -342,6 +330,14 @@
           "segmento": "12431",
           "retorno": -1.1824,
           "pl": 273557762.21
+        },
+        {
+          "cnpj": "54341666000132",
+          "nome": "V7 FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
+          "gestor": "BTG WM",
+          "segmento": "12431",
+          "retorno": -0.6313,
+          "pl": 124944099.09
         }
       ],
       "topTradPos": [
@@ -370,20 +366,20 @@
           "pl": 1163060404.71
         },
         {
+          "cnpj": "27883656000156",
+          "nome": "DHF FUNDO DE INVESTIMENTO FINANCEIRO",
+          "gestor": "Dynamo",
+          "segmento": "trad",
+          "retorno": 0.7427,
+          "pl": 538412611.66
+        },
+        {
           "cnpj": "13935899000186",
           "nome": "FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO VEGA",
           "gestor": "BTG WM",
           "segmento": "trad",
           "retorno": 0.7134,
           "pl": 107721146.25
-        },
-        {
-          "cnpj": "54776180000127",
-          "nome": "AUGME FRG CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO - RESP LIMITADA",
-          "gestor": "Augme",
-          "segmento": "trad",
-          "retorno": 0.7037,
-          "pl": 114103637.45
         }
       ],
       "topTradNeg": [
@@ -420,12 +416,12 @@
           "pl": 16460274.77
         },
         {
-          "cnpj": "61572789000140",
-          "nome": "VERDE AM HIGH YIELD II MASTER FIF MULTIMERCADO CRÉDITO PRIVADO RESP LIMITADA",
-          "gestor": "Verde",
+          "cnpj": "63073919000125",
+          "nome": "BRADESCO DANA FIF - CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO - RESPONSABILIDADE LIMITADA",
+          "gestor": "BRAM",
           "segmento": "trad",
-          "retorno": -0.315,
-          "pl": 143598205.72
+          "retorno": -0.3682,
+          "pl": 21134797.91
         }
       ]
     },

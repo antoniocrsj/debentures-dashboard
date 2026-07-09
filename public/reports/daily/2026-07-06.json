@@ -14,11 +14,11 @@
   },
   "summary": [
     {
-      "texto": "Captação líquida Incentivados: −R$ 351 mi",
+      "texto": "Captação líquida Incentivados: −R$ 770 mi",
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional: −R$ 776 mi",
+      "texto": "Captação líquida Tradicional: −R$ 779 mi",
       "tom": "neg"
     },
     {
@@ -26,7 +26,7 @@
       "tom": "pos"
     },
     {
-      "texto": "Maior resgate: BRAM (−R$ 81 mi)",
+      "texto": "Maior resgate: ITAU Tsy (−R$ 414 mi)",
       "tom": "neg"
     },
     {
@@ -46,38 +46,34 @@
     "captacao": {
       "12431": {
         "dia": "2026-07-06",
-        "captacao": 134358003.97000003,
-        "resgate": 485700164.39999986,
-        "liquido": -351342160.4299998,
-        "pl": 313638730791.29,
-        "numFundos": 1594,
-        "curados": 1632,
-        "fechados": 280,
+        "captacao": 131016585.81000002,
+        "resgate": 901079677.92,
+        "liquido": -770063092.1099999,
+        "pl": 333015680290.81995,
+        "numFundos": 1605,
         "anterior": {
           "dia": "2026-07-03",
           "captacao": 149555391.71999997,
           "resgate": 281194537.96999997,
           "liquido": -131639146.25,
-          "pl": 318445839793.10016,
-          "numFundos": 1606
+          "pl": 334759354874.70013,
+          "numFundos": 1607
         }
       },
       "trad": {
         "dia": "2026-07-06",
-        "captacao": 1705031542.9400003,
-        "resgate": 2481246555.21,
-        "liquido": -776215012.2699997,
-        "pl": 1077286232453.5099,
-        "numFundos": 795,
-        "curados": 827,
-        "fechados": 29,
+        "captacao": 1706566239.7200003,
+        "resgate": 2485136384.82,
+        "liquido": -778570145.0999999,
+        "pl": 1078624543822.57,
+        "numFundos": 807,
         "anterior": {
           "dia": "2026-07-03",
-          "captacao": 1301954592.7299995,
-          "resgate": 1610421319.6,
-          "liquido": -308466726.87000036,
-          "pl": 1080373968100.3301,
-          "numFundos": 814
+          "captacao": 1301862634.8099997,
+          "resgate": 1610334661.6,
+          "liquido": -308472026.7900002,
+          "pl": 1081779413712.7402,
+          "numFundos": 817
         }
       }
     },
@@ -95,7 +91,7 @@
           "captacao": 2650000,
           "resgate": 0,
           "liquido": 2650000,
-          "pl": 2253743139.2
+          "pl": 2253787679.55
         },
         {
           "gestor": "Rafter",
@@ -121,18 +117,25 @@
       ],
       "top12431Resgate": [
         {
+          "gestor": "ITAU Tsy",
+          "captacao": 0,
+          "resgate": 414275697.47,
+          "liquido": -414275697.47,
+          "pl": 27911582731.86
+        },
+        {
           "gestor": "BRAM",
-          "captacao": 37238209.18,
+          "captacao": 37242024.73,
           "resgate": 118629177.4,
-          "liquido": -81390968.22,
-          "pl": 28214166386.02
+          "liquido": -81387152.67000002,
+          "pl": 28214232279.9
         },
         {
           "gestor": "BB Asset",
           "captacao": 9144560.63,
           "resgate": 67946737.8,
           "liquido": -58802177.169999994,
-          "pl": 20020728722.27
+          "pl": 20020728722.2
         },
         {
           "gestor": "IAM",
@@ -147,13 +150,6 @@
           "resgate": 27462140.01,
           "liquido": -25856980.01,
           "pl": 10579907874.92
-        },
-        {
-          "gestor": "Absolute",
-          "captacao": 7012316.08,
-          "resgate": 25108445.65,
-          "liquido": -18096129.57,
-          "pl": 11308634804.75
         }
       ],
       "topTradCaptacao": [
@@ -169,7 +165,7 @@
           "captacao": 678707532.5,
           "resgate": 589582908.47,
           "liquido": 89124624.02999997,
-          "pl": 209900176618.47
+          "pl": 209900176618.48
         },
         {
           "gestor": "Regia",
@@ -199,7 +195,7 @@
           "captacao": 44085391.01,
           "resgate": 515655650.35,
           "liquido": -471570259.34000003,
-          "pl": 15069252674.98
+          "pl": 15229524571.79
         },
         {
           "gestor": "SAM",
@@ -220,7 +216,7 @@
           "captacao": 94371579.88,
           "resgate": 179041597.27,
           "liquido": -84670017.39000002,
-          "pl": 217504639566.6
+          "pl": 217558502428.25
         },
         {
           "gestor": "CEF Asset",
@@ -246,7 +242,6 @@
           "variacaoBps": 64.19999999999982,
           "fmtAnterior": "CDI + 17,27%",
           "fmtAtual": "CDI + 17,91%",
-          "spreadAtual": "CDI + 17,91%",
           "durationAnos": 1.56,
           "status": "ok"
         },
@@ -263,7 +258,6 @@
           "variacaoBps": 61,
           "fmtAnterior": "B33 + 902 bps",
           "fmtAtual": "B33 + 963 bps",
-          "spreadAtual": "B33 + 963 bps",
           "durationAnos": 5.89,
           "status": "ok"
         },
@@ -280,7 +274,6 @@
           "variacaoBps": 57,
           "fmtAnterior": "B30 + 1910 bps",
           "fmtAtual": "B30 + 1967 bps",
-          "spreadAtual": "B30 + 1967 bps",
           "durationAnos": 3.19,
           "status": "ok"
         },
@@ -297,7 +290,6 @@
           "variacaoBps": 53.320000000000164,
           "fmtAnterior": "13,54%",
           "fmtAtual": "14,07%",
-          "spreadAtual": "14,07%",
           "durationAnos": 4.51,
           "status": "ok"
         },
@@ -314,7 +306,6 @@
           "variacaoBps": 48,
           "fmtAnterior": "B35 - 25 bps",
           "fmtAtual": "B35 + 23 bps",
-          "spreadAtual": "B35 + 23 bps",
           "durationAnos": 6.33,
           "status": "ok"
         },
@@ -331,7 +322,6 @@
           "variacaoBps": 43,
           "fmtAnterior": "B32 + 1094 bps",
           "fmtAtual": "B32 + 1137 bps",
-          "spreadAtual": "B32 + 1137 bps",
           "durationAnos": 4.79,
           "status": "ok"
         },
@@ -348,7 +338,6 @@
           "variacaoBps": 34,
           "fmtAnterior": "B35 + 869 bps",
           "fmtAtual": "B35 + 903 bps",
-          "spreadAtual": "B35 + 903 bps",
           "durationAnos": 6.33,
           "status": "ok"
         },
@@ -365,7 +354,6 @@
           "variacaoBps": 31,
           "fmtAnterior": "B31 + 1074 bps",
           "fmtAtual": "B31 + 1105 bps",
-          "spreadAtual": "B31 + 1105 bps",
           "durationAnos": 4.34,
           "status": "ok"
         },
@@ -382,7 +370,6 @@
           "variacaoBps": 31,
           "fmtAnterior": "B32 + 562 bps",
           "fmtAtual": "B32 + 593 bps",
-          "spreadAtual": "B32 + 593 bps",
           "durationAnos": 4.91,
           "status": "ok"
         },
@@ -399,7 +386,6 @@
           "variacaoBps": 28.650000000000034,
           "fmtAnterior": "CDI + 2,63%",
           "fmtAtual": "CDI + 2,91%",
-          "spreadAtual": "CDI + 2,91%",
           "durationAnos": 1.52,
           "status": "ok"
         },
@@ -416,7 +402,6 @@
           "variacaoBps": 28.419999999999845,
           "fmtAnterior": "14,85%",
           "fmtAtual": "15,14%",
-          "spreadAtual": "15,14%",
           "durationAnos": 3.14,
           "status": "ok"
         },
@@ -433,7 +418,6 @@
           "variacaoBps": 27.829999999999984,
           "fmtAnterior": "CDI + 3,81%",
           "fmtAtual": "CDI + 4,08%",
-          "spreadAtual": "CDI + 4,08%",
           "durationAnos": 0.84,
           "status": "ok"
         },
@@ -450,7 +434,6 @@
           "variacaoBps": 25.920000000000016,
           "fmtAnterior": "CDI + 1,51%",
           "fmtAtual": "CDI + 1,77%",
-          "spreadAtual": "CDI + 1,77%",
           "durationAnos": 2.73,
           "status": "ok"
         },
@@ -467,7 +450,6 @@
           "variacaoBps": 23.000000000000114,
           "fmtAnterior": "CDI + 5,84%",
           "fmtAtual": "CDI + 6,07%",
-          "spreadAtual": "CDI + 6,07%",
           "durationAnos": 1.46,
           "status": "ok"
         },
@@ -484,7 +466,6 @@
           "variacaoBps": 22.830000000000155,
           "fmtAnterior": "CDI + 14,23%",
           "fmtAtual": "CDI + 14,46%",
-          "spreadAtual": "CDI + 14,46%",
           "durationAnos": 0.87,
           "status": "ok"
         }
@@ -503,7 +484,6 @@
           "variacaoBps": -39.73000000000002,
           "fmtAnterior": "CDI + 1,53%",
           "fmtAtual": "CDI + 1,14%",
-          "spreadAtual": "CDI + 1,14%",
           "durationAnos": 1.57,
           "status": "ok"
         },
@@ -520,7 +500,6 @@
           "variacaoBps": -36.55999999999999,
           "fmtAnterior": "CDI + 1,33%",
           "fmtAtual": "CDI + 0,96%",
-          "spreadAtual": "CDI + 0,96%",
           "durationAnos": 2.9,
           "status": "ok"
         },
@@ -537,7 +516,6 @@
           "variacaoBps": -31.53000000000003,
           "fmtAnterior": "CDI + 4,27%",
           "fmtAtual": "CDI + 3,96%",
-          "spreadAtual": "CDI + 3,96%",
           "durationAnos": 4.06,
           "status": "ok"
         },
@@ -554,7 +532,6 @@
           "variacaoBps": -25.53000000000003,
           "fmtAnterior": "CDI + 3,54%",
           "fmtAtual": "CDI + 3,28%",
-          "spreadAtual": "CDI + 3,28%",
           "durationAnos": 2.35,
           "status": "ok"
         },
@@ -571,7 +548,6 @@
           "variacaoBps": -24.24000000000001,
           "fmtAnterior": "17,24%",
           "fmtAtual": "17,00%",
-          "spreadAtual": "17,00%",
           "durationAnos": 4.24,
           "status": "ok"
         },
@@ -588,7 +564,6 @@
           "variacaoBps": -22,
           "fmtAnterior": "B29 + 751 bps",
           "fmtAtual": "B29 + 729 bps",
-          "spreadAtual": "B29 + 729 bps",
           "durationAnos": 2.39,
           "status": "ok"
         },
@@ -605,7 +580,6 @@
           "variacaoBps": -14.88000000000011,
           "fmtAnterior": "17,08%",
           "fmtAtual": "16,93%",
-          "spreadAtual": "16,93%",
           "durationAnos": 4.31,
           "status": "ok"
         },
@@ -622,7 +596,6 @@
           "variacaoBps": -14.839999999999975,
           "fmtAnterior": "CDI + 3,49%",
           "fmtAtual": "CDI + 3,34%",
-          "spreadAtual": "CDI + 3,34%",
           "durationAnos": 1.72,
           "status": "ok"
         },
@@ -639,7 +612,6 @@
           "variacaoBps": -13.870000000000005,
           "fmtAnterior": "CDI + 2,70%",
           "fmtAtual": "CDI + 2,56%",
-          "spreadAtual": "CDI + 2,56%",
           "durationAnos": 1.68,
           "status": "ok"
         },
@@ -656,7 +628,6 @@
           "variacaoBps": -13.19999999999996,
           "fmtAnterior": "CDI + 2,35%",
           "fmtAtual": "CDI + 2,22%",
-          "spreadAtual": "CDI + 2,22%",
           "durationAnos": 1.57,
           "status": "ok"
         },
@@ -673,7 +644,6 @@
           "variacaoBps": -13.04,
           "fmtAnterior": "CDI + 0,70%",
           "fmtAtual": "CDI + 0,57%",
-          "spreadAtual": "CDI + 0,57%",
           "durationAnos": 2.21,
           "status": "ok"
         },
@@ -690,7 +660,6 @@
           "variacaoBps": -12,
           "fmtAnterior": "B30 + 397 bps",
           "fmtAtual": "B30 + 385 bps",
-          "spreadAtual": "B30 + 385 bps",
           "durationAnos": 3.37,
           "status": "ok"
         },
@@ -707,7 +676,6 @@
           "variacaoBps": -12,
           "fmtAnterior": "B35 - 21 bps",
           "fmtAtual": "B35 - 33 bps",
-          "spreadAtual": "B35 - 33 bps",
           "durationAnos": 6.27,
           "status": "ok"
         },
@@ -724,7 +692,6 @@
           "variacaoBps": -11.930000000000007,
           "fmtAnterior": "CDI + 0,63%",
           "fmtAtual": "CDI + 0,51%",
-          "spreadAtual": "CDI + 0,51%",
           "durationAnos": 2.87,
           "status": "ok"
         },
@@ -741,7 +708,6 @@
           "variacaoBps": -11.470000000000027,
           "fmtAnterior": "CDI + 5,38%",
           "fmtAtual": "CDI + 5,27%",
-          "spreadAtual": "CDI + 5,27%",
           "durationAnos": 4.07,
           "status": "ok"
         }
@@ -790,12 +756,12 @@
           "pl": 17380611.77
         },
         {
-          "cnpj": "61843171000177",
-          "nome": "G5 FLAMINGO FIF - CLASSE DE INVESTIMENTO RF INCENTIVADO DE INVESTIMENTO EM INFRA - RESP LIMITADA",
-          "gestor": "G5",
+          "cnpj": "60675392000110",
+          "nome": "FORTE FIF - CLASSE DE INVESTIMENTO RF INCENTIVADO DE INVESTIMENTO EM INFRA",
+          "gestor": "BRAM",
           "segmento": "12431",
-          "retorno": 0.5915,
-          "pl": 27399695.07
+          "retorno": 0.7212,
+          "pl": 93815802.62
         }
       ],
       "top12431Neg": [
@@ -806,14 +772,6 @@
           "segmento": "12431",
           "retorno": -42.8533,
           "pl": 206007.91
-        },
-        {
-          "cnpj": "57075698000121",
-          "nome": "VINLAND FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA IPCA RF CRED PRIV LP RESP LIMITADA",
-          "gestor": "Vinland",
-          "segmento": "12431",
-          "retorno": -8.8054,
-          "pl": 162885917.75
         },
         {
           "cnpj": "63319624000196",
@@ -832,23 +790,23 @@
           "pl": 15980787.47
         },
         {
-          "cnpj": "59123735000155",
-          "nome": "PORTO PAINEIRA CDI FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA RF CRÉD PRIV RESP LIMITADA",
-          "gestor": "Porto Asset",
+          "cnpj": "63386988000199",
+          "nome": "LEGACY CAPITAL ARKAN FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA CDI RF RESP LIMITADA",
+          "gestor": "Legacy",
           "segmento": "12431",
-          "retorno": -2.1018,
-          "pl": 19528387.91
+          "retorno": -2.5849,
+          "pl": 552379198.26
+        },
+        {
+          "cnpj": "52248139000152",
+          "nome": "CAPITANIA INFRA RENDA 90 FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA CRÉDITO PRIV",
+          "gestor": "Capitânia",
+          "segmento": "12431",
+          "retorno": -1.2192,
+          "pl": 522699401.86
         }
       ],
       "topTradPos": [
-        {
-          "cnpj": "52241587000124",
-          "nome": "KINEA NEPAL FIF MULT CRED PRIV - RESP LIMITADA",
-          "gestor": "Kinea",
-          "segmento": "trad",
-          "retorno": 25.1544,
-          "pl": 1538032.17
-        },
         {
           "cnpj": "41881271000180",
           "nome": "TRANCOSO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
@@ -880,6 +838,14 @@
           "segmento": "trad",
           "retorno": 0.3246,
           "pl": 20662172.99
+        },
+        {
+          "cnpj": "63900709000163",
+          "nome": "LIMA EVALDT KINEA FIF FI INCENTIVADO EM DEBÊNTURES DE INFRA RF CRED PRIV RESP LIMITADA",
+          "gestor": "Kinea",
+          "segmento": "trad",
+          "retorno": 0.3213,
+          "pl": 26148982.95
         }
       ],
       "topTradNeg": [

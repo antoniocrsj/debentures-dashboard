@@ -1,5 +1,5 @@
 {
-    "timestamp":  "2026-07-08T09:16:30",
+    "timestamp":  "2026-07-09T08:44:19",
     "captacaoModo":  "Auto",
     "etapas":  {
                    "Debentures":  "OK",
@@ -7,7 +7,7 @@
                    "Captacao":  "OK (incremental)",
                    "BLC":  "PULADO",
                    "ANBIMA":  "OK",
-                   "Ofertas":  "OK (4 emissao(oes) registrada(s) na CVM ainda nao no cadastro)"
+                   "Ofertas":  "OK (5 emissao(oes) registrada(s) na CVM ainda nao no cadastro)"
                },
     "impacto":  {
                     "fundos":  {
@@ -26,7 +26,7 @@
                                },
                     "captacao12431":  {
                                           "Semanas":  {
-                                                          "antes":  49,
+                                                          "antes":  50,
                                                           "depois":  50
                                                       },
                                           "Gestores":  {
@@ -34,29 +34,29 @@
                                                            "depois":  113
                                                        },
                                           "UltimaSemana":  {
-                                                               "antes":  "2026-06-29",
+                                                               "antes":  "2026-07-06",
                                                                "depois":  "2026-07-06"
                                                            },
                                           "LiquidoRecente":  {
-                                                                 "antes":  -1431309218.4100003,
-                                                                 "depois":  -351342160.42999983
+                                                                 "antes":  -351342160.42999983,
+                                                                 "depois":  -821002259.58999991
                                                              },
                                           "CaptacaoRecente":  {
-                                                                  "antes":  733084166.48999989,
-                                                                  "depois":  134358003.97000003
+                                                                  "antes":  134358003.97000003,
+                                                                  "depois":  258852393.71
                                                               },
                                           "ResgateRecente":  {
-                                                                 "antes":  2164393384.9,
-                                                                 "depois":  485700164.39999986
+                                                                 "antes":  485700164.39999986,
+                                                                 "depois":  1079854653.3
                                                              },
                                           "PLRecente":  {
-                                                            "antes":  314694244597.64978,
-                                                            "depois":  313638730791.29
+                                                            "antes":  313638730791.29,
+                                                            "depois":  330247443518.71008
                                                         }
                                       },
                     "captacaoTrad":  {
                                          "Semanas":  {
-                                                         "antes":  49,
+                                                         "antes":  50,
                                                          "depois":  50
                                                      },
                                          "Gestores":  {
@@ -64,42 +64,42 @@
                                                           "depois":  131
                                                       },
                                          "UltimaSemana":  {
-                                                              "antes":  "2026-06-29",
+                                                              "antes":  "2026-07-06",
                                                               "depois":  "2026-07-06"
                                                           },
                                          "LiquidoRecente":  {
-                                                                "antes":  -1164338854.8100061,
-                                                                "depois":  -776215012.26999974
+                                                                "antes":  -776215012.26999974,
+                                                                "depois":  -666204899.61000013
                                                             },
                                          "CaptacaoRecente":  {
-                                                                 "antes":  8376429782.1799994,
-                                                                 "depois":  1705031542.9400003
+                                                                 "antes":  1705031542.9400003,
+                                                                 "depois":  3087891830.64
                                                              },
                                          "ResgateRecente":  {
-                                                                "antes":  9540768636.9900055,
-                                                                "depois":  2481246555.21
+                                                                "antes":  2481246555.21,
+                                                                "depois":  3754096730.25
                                                             },
                                          "PLRecente":  {
-                                                           "antes":  1081222732448.3999,
-                                                           "depois":  1077286232453.5099
+                                                           "antes":  1077286232453.5099,
+                                                           "depois":  1074863195269.19
                                                        }
                                      },
                     "debentures":  {
                                        "Ativos":  {
                                                       "antes":  4648,
-                                                      "depois":  4648
+                                                      "depois":  4650
                                                   },
                                        "Emissores":  {
                                                          "antes":  1451,
-                                                         "depois":  1451
+                                                         "depois":  1452
                                                      },
                                        "Incentivadas":  {
                                                             "antes":  1277,
-                                                            "depois":  1277
+                                                            "depois":  1278
                                                         },
                                        "Registradas":  {
                                                            "antes":  4648,
-                                                           "depois":  4648
+                                                           "depois":  4650
                                                        }
                                    },
                     "blc":  {
@@ -122,15 +122,15 @@
                             },
                     "anbima":  {
                                    "DataRef":  {
-                                                   "antes":  "2026-07-06",
-                                                   "depois":  "2026-07-07"
+                                                   "antes":  "2026-07-07",
+                                                   "depois":  "2026-07-08"
                                                },
                                    "Tickers":  {
                                                    "antes":  1279,
                                                    "depois":  1279
                                                },
                                    "ComTaxa":  {
-                                                   "antes":  1220,
+                                                   "antes":  1218,
                                                    "depois":  1218
                                                }
                                }
@@ -138,17 +138,17 @@
     "novasEmissoes":  [
                           {
                               "dataRegistro":  "2026-06-29",
-                              "emissor":  "VERDE TRANSMISSAO DE ENERGIA S.A.",
-                              "emissao":  3,
-                              "valor":  1585000000,
+                              "emissor":  "BURITI TRANSMISSAO DE ENERGIA S.A.",
+                              "emissao":  2,
+                              "valor":  618000000,
                               "incentivada":  false,
                               "lider":  "BANCO NACIONAL DE DESENVOLVIMENTO ECONÔMICO E SOCIAL - BNDES"
                           },
                           {
                               "dataRegistro":  "2026-06-29",
-                              "emissor":  "BURITI TRANSMISSAO DE ENERGIA S.A.",
-                              "emissao":  2,
-                              "valor":  618000000,
+                              "emissor":  "VERDE TRANSMISSAO DE ENERGIA S.A.",
+                              "emissao":  3,
+                              "valor":  1585000000,
                               "incentivada":  false,
                               "lider":  "BANCO NACIONAL DE DESENVOLVIMENTO ECONÔMICO E SOCIAL - BNDES"
                           },
@@ -167,6 +167,14 @@
                               "valor":  239400000,
                               "incentivada":  false,
                               "lider":  "BANCO NACIONAL DE DESENVOLVIMENTO ECONÔMICO E SOCIAL - BNDES"
+                          },
+                          {
+                              "dataRegistro":  "2026-07-08",
+                              "emissor":  "CONCESSIONARIA ACCIONA AGUA - LOTE 2 PARANA SPE S.A.",
+                              "emissao":  1,
+                              "valor":  150000000,
+                              "incentivada":  false,
+                              "lider":  "BANCO CREDIT AGRICOLE BRASIL S/A"
                           }
                       ]
 }
