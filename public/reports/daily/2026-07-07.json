@@ -301,7 +301,7 @@
               "variacaoBps": 36,
               "fmtAnterior": "B30 + 1967 bps",
               "fmtAtual": "B30 + 2003 bps",
-              "spreadAtual": "B30 + 2003 bps",
+              "spreadAtual": "B30+2003",
               "durationAnos": 3.17,
               "status": "ok"
             },
@@ -319,7 +319,7 @@
               "variacaoBps": 36,
               "fmtAnterior": "B32 + 1137 bps",
               "fmtAtual": "B32 + 1173 bps",
-              "spreadAtual": "B32 + 1173 bps",
+              "spreadAtual": "B32+1173",
               "durationAnos": 4.77,
               "status": "ok"
             },
@@ -337,7 +337,7 @@
               "variacaoBps": 22,
               "fmtAnterior": "B33 + 963 bps",
               "fmtAtual": "B33 + 985 bps",
-              "spreadAtual": "B33 + 985 bps",
+              "spreadAtual": "B33+985",
               "durationAnos": 5.85,
               "status": "ok"
             },
@@ -355,7 +355,7 @@
               "variacaoBps": 20,
               "fmtAnterior": "B27 - 79 bps",
               "fmtAtual": "B27 - 59 bps",
-              "spreadAtual": "B27 - 59 bps",
+              "spreadAtual": "B27−59",
               "durationAnos": 1.38,
               "status": "ok"
             },
@@ -373,7 +373,7 @@
               "variacaoBps": 19,
               "fmtAnterior": "B32 + 1255 bps",
               "fmtAtual": "B32 + 1274 bps",
-              "spreadAtual": "B32 + 1274 bps",
+              "spreadAtual": "B32+1274",
               "durationAnos": 5.19,
               "status": "ok"
             },
@@ -391,7 +391,7 @@
               "variacaoBps": 18,
               "fmtAnterior": "B35 + 627 bps",
               "fmtAtual": "B35 + 645 bps",
-              "spreadAtual": "B35 + 645 bps",
+              "spreadAtual": "B35+645",
               "durationAnos": 6.14,
               "status": "ok"
             },
@@ -409,7 +409,7 @@
               "variacaoBps": 17,
               "fmtAnterior": "B35 + 23 bps",
               "fmtAtual": "B35 + 40 bps",
-              "spreadAtual": "B35 + 40 bps",
+              "spreadAtual": "B35+40",
               "durationAnos": 6.32,
               "status": "ok"
             },
@@ -427,7 +427,7 @@
               "variacaoBps": 17,
               "fmtAnterior": "B30 + 29 bps",
               "fmtAtual": "B30 + 46 bps",
-              "spreadAtual": "B30 + 46 bps",
+              "spreadAtual": "B30+46",
               "durationAnos": 3.52,
               "status": "ok"
             },
@@ -499,7 +499,7 @@
               "variacaoBps": 13,
               "fmtAnterior": "B32 + 644 bps",
               "fmtAtual": "B32 + 657 bps",
-              "spreadAtual": "B32 + 657 bps",
+              "spreadAtual": "B32+657",
               "durationAnos": 4.57,
               "status": "ok"
             },
@@ -517,7 +517,7 @@
               "variacaoBps": 13,
               "fmtAnterior": "B35 + 903 bps",
               "fmtAtual": "B35 + 916 bps",
-              "spreadAtual": "B35 + 916 bps",
+              "spreadAtual": "B35+916",
               "durationAnos": 6.31,
               "status": "ok"
             },
@@ -535,7 +535,7 @@
               "variacaoBps": 12,
               "fmtAnterior": "B28 + 14 bps",
               "fmtAtual": "B28 + 26 bps",
-              "spreadAtual": "B28 + 26 bps",
+              "spreadAtual": "B28+26",
               "durationAnos": 2,
               "status": "ok"
             },
@@ -553,7 +553,7 @@
               "variacaoBps": 12,
               "fmtAnterior": "B33 + 628 bps",
               "fmtAtual": "B33 + 640 bps",
-              "spreadAtual": "B33 + 640 bps",
+              "spreadAtual": "B33+640",
               "durationAnos": 6.04,
               "status": "ok"
             }
@@ -591,7 +591,7 @@
               "variacaoBps": -25,
               "fmtAnterior": "B31 + 376 bps",
               "fmtAtual": "B31 + 351 bps",
-              "spreadAtual": "B31 + 351 bps",
+              "spreadAtual": "B31+351",
               "durationAnos": 3.94,
               "status": "ok"
             },
@@ -609,7 +609,7 @@
               "variacaoBps": -22,
               "fmtAnterior": "B27 + 260 bps",
               "fmtAtual": "B27 + 238 bps",
-              "spreadAtual": "B27 + 238 bps",
+              "spreadAtual": "B27+238",
               "durationAnos": 0.66,
               "status": "ok"
             },
@@ -627,7 +627,7 @@
               "variacaoBps": -16,
               "fmtAnterior": "B31 + 1105 bps",
               "fmtAtual": "B31 + 1089 bps",
-              "spreadAtual": "B31 + 1089 bps",
+              "spreadAtual": "B31+1089",
               "durationAnos": 4.35,
               "status": "ok"
             },
@@ -663,7 +663,7 @@
               "variacaoBps": -15,
               "fmtAnterior": "B30 + 628 bps",
               "fmtAtual": "B30 + 613 bps",
-              "spreadAtual": "B30 + 613 bps",
+              "spreadAtual": "B30+613",
               "durationAnos": 3.8,
               "status": "ok"
             },
@@ -681,7 +681,7 @@
               "variacaoBps": -12,
               "fmtAnterior": "B30 + 96 bps",
               "fmtAtual": "B30 + 84 bps",
-              "spreadAtual": "B30 + 84 bps",
+              "spreadAtual": "B30+84",
               "durationAnos": 3.83,
               "status": "ok"
             },
@@ -699,7 +699,7 @@
               "variacaoBps": -12,
               "fmtAnterior": "B37 + 302 bps",
               "fmtAtual": "B37 + 290 bps",
-              "spreadAtual": "B37 + 290 bps",
+              "spreadAtual": "B37+290",
               "durationAnos": 7.55,
               "status": "ok"
             },
@@ -717,7 +717,7 @@
               "variacaoBps": -12,
               "fmtAnterior": "B33 + 182 bps",
               "fmtAtual": "B33 + 170 bps",
-              "spreadAtual": "B33 + 170 bps",
+              "spreadAtual": "B33+170",
               "durationAnos": 5.48,
               "status": "ok"
             },
@@ -735,7 +735,7 @@
               "variacaoBps": -11,
               "fmtAnterior": "B29 + 729 bps",
               "fmtAtual": "B29 + 718 bps",
-              "spreadAtual": "B29 + 718 bps",
+              "spreadAtual": "B29+718",
               "durationAnos": 2.39,
               "status": "ok"
             },
@@ -753,7 +753,7 @@
               "variacaoBps": -9,
               "fmtAnterior": "B32 + 593 bps",
               "fmtAtual": "B32 + 584 bps",
-              "spreadAtual": "B32 + 584 bps",
+              "spreadAtual": "B32+584",
               "durationAnos": 4.92,
               "status": "ok"
             },
@@ -771,7 +771,7 @@
               "variacaoBps": -8,
               "fmtAnterior": "B31 + 396 bps",
               "fmtAtual": "B31 + 388 bps",
-              "spreadAtual": "B31 + 388 bps",
+              "spreadAtual": "B31+388",
               "durationAnos": 3.99,
               "status": "ok"
             },
@@ -789,7 +789,7 @@
               "variacaoBps": -8,
               "fmtAnterior": "B29 + 20 bps",
               "fmtAtual": "B29 + 12 bps",
-              "spreadAtual": "B29 + 12 bps",
+              "spreadAtual": "B29+12",
               "durationAnos": 2.8,
               "status": "ok"
             },
@@ -807,7 +807,7 @@
               "variacaoBps": -8,
               "fmtAnterior": "B30 + 664 bps",
               "fmtAtual": "B30 + 656 bps",
-              "spreadAtual": "B30 + 656 bps",
+              "spreadAtual": "B30+656",
               "durationAnos": 3.19,
               "status": "ok"
             },
@@ -825,7 +825,7 @@
               "variacaoBps": -7,
               "fmtAnterior": "B37 + 304 bps",
               "fmtAtual": "B37 + 297 bps",
-              "spreadAtual": "B37 + 297 bps",
+              "spreadAtual": "B37+297",
               "durationAnos": 7.54,
               "status": "ok"
             }
@@ -1292,7 +1292,7 @@
             {
               "ticker": "HAPV21",
               "indexador": "110.5500% DI",
-              "indexadorFamilia": "CDI+",
+              "indexadorFamilia": "%CDI",
               "emissor": "HAPVIDA PARTICIPACOES E INVESTIMENTOS S.A.",
               "grupo": "Hapvida",
               "incentivada": false,
@@ -1321,7 +1321,7 @@
               "variacaoBps": -8,
               "fmtAnterior": "B30 + 580 bps",
               "fmtAtual": "B30 + 572 bps",
-              "spreadAtual": "B30 + 572 bps",
+              "spreadAtual": "B30+572",
               "durationAnos": 3.51,
               "status": "ok"
             },

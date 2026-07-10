@@ -9,8 +9,8 @@
     "perf12431": "2026-07-08",
     "perfTrad": "2026-07-08",
     "anbima": "2026-07-08",
-    "blc": "2026-07-07",
-    "fundos": "2026-07-07"
+    "blc": "2026-07-08",
+    "fundos": "2026-07-08"
   },
   "summary": [
     {
@@ -309,7 +309,7 @@
               "variacaoBps": 21,
               "fmtAnterior": "B30 + 70 bps",
               "fmtAtual": "B30 + 91 bps",
-              "spreadAtual": "B30 + 91 bps",
+              "spreadAtual": "B30+91",
               "durationAnos": 3.09,
               "status": "ok"
             },
@@ -327,7 +327,7 @@
               "variacaoBps": 20,
               "fmtAnterior": "B30 - 22 bps",
               "fmtAtual": "B30 - 2 bps",
-              "spreadAtual": "B30 - 2 bps",
+              "spreadAtual": "B30−2",
               "durationAnos": 3.69,
               "status": "ok"
             },
@@ -363,7 +363,7 @@
               "variacaoBps": 11,
               "fmtAnterior": "B30 + 84 bps",
               "fmtAtual": "B30 + 95 bps",
-              "spreadAtual": "B30 + 95 bps",
+              "spreadAtual": "B30+95",
               "durationAnos": 3.82,
               "status": "ok"
             },
@@ -399,7 +399,7 @@
               "variacaoBps": 8,
               "fmtAnterior": "B27 + 238 bps",
               "fmtAtual": "B27 + 246 bps",
-              "spreadAtual": "B27 + 246 bps",
+              "spreadAtual": "B27+246",
               "durationAnos": 0.65,
               "status": "ok"
             },
@@ -417,7 +417,7 @@
               "variacaoBps": 8,
               "fmtAnterior": "B29 - 33 bps",
               "fmtAtual": "B29 - 25 bps",
-              "spreadAtual": "B29 - 25 bps",
+              "spreadAtual": "B29−25",
               "durationAnos": 2.69,
               "status": "ok"
             },
@@ -435,7 +435,7 @@
               "variacaoBps": 7,
               "fmtAnterior": "B31 + 147 bps",
               "fmtAtual": "B31 + 154 bps",
-              "spreadAtual": "B31 + 154 bps",
+              "spreadAtual": "B31+154",
               "durationAnos": 4.24,
               "status": "ok"
             },
@@ -453,7 +453,7 @@
               "variacaoBps": 7,
               "fmtAnterior": "B27 - 44 bps",
               "fmtAtual": "B27 - 37 bps",
-              "spreadAtual": "B27 - 37 bps",
+              "spreadAtual": "B27−37",
               "durationAnos": 0.67,
               "status": "ok"
             },
@@ -471,7 +471,7 @@
               "variacaoBps": 7,
               "fmtAnterior": "B31 + 338 bps",
               "fmtAtual": "B31 + 345 bps",
-              "spreadAtual": "B31 + 345 bps",
+              "spreadAtual": "B31+345",
               "durationAnos": 3.94,
               "status": "ok"
             },
@@ -489,7 +489,7 @@
               "variacaoBps": 7,
               "fmtAnterior": "B27 + 63 bps",
               "fmtAtual": "B27 + 70 bps",
-              "spreadAtual": "B27 + 70 bps",
+              "spreadAtual": "B27+70",
               "durationAnos": 1.17,
               "status": "ok"
             },
@@ -507,7 +507,7 @@
               "variacaoBps": 6,
               "fmtAnterior": "B30 - 9 bps",
               "fmtAtual": "B30 - 3 bps",
-              "spreadAtual": "B30 - 3 bps",
+              "spreadAtual": "B30−3",
               "durationAnos": 3.27,
               "status": "ok"
             },
@@ -525,7 +525,7 @@
               "variacaoBps": 6,
               "fmtAnterior": "B28 + 368 bps",
               "fmtAtual": "B28 + 374 bps",
-              "spreadAtual": "B28 + 374 bps",
+              "spreadAtual": "B28+374",
               "durationAnos": 1.4,
               "status": "ok"
             }
@@ -545,7 +545,7 @@
               "variacaoBps": -22,
               "fmtAnterior": "B27 + 134 bps",
               "fmtAtual": "B27 + 112 bps",
-              "spreadAtual": "B27 + 112 bps",
+              "spreadAtual": "B27+112",
               "durationAnos": 0.93,
               "status": "ok"
             },
@@ -563,7 +563,7 @@
               "variacaoBps": -19,
               "fmtAnterior": "B28 + 744 bps",
               "fmtAtual": "B28 + 725 bps",
-              "spreadAtual": "B28 + 725 bps",
+              "spreadAtual": "B28+725",
               "durationAnos": 1.83,
               "status": "ok"
             },
@@ -581,7 +581,7 @@
               "variacaoBps": -16,
               "fmtAnterior": "B30 + 656 bps",
               "fmtAtual": "B30 + 640 bps",
-              "spreadAtual": "B30 + 640 bps",
+              "spreadAtual": "B30+640",
               "durationAnos": 3.19,
               "status": "ok"
             },
@@ -599,7 +599,7 @@
               "variacaoBps": -15,
               "fmtAnterior": "B29 + 718 bps",
               "fmtAtual": "B29 + 703 bps",
-              "spreadAtual": "B29 + 703 bps",
+              "spreadAtual": "B29+703",
               "durationAnos": 2.39,
               "status": "ok"
             },
@@ -635,7 +635,7 @@
               "variacaoBps": -12,
               "fmtAnterior": "B32 + 1173 bps",
               "fmtAtual": "B32 + 1161 bps",
-              "spreadAtual": "B32 + 1161 bps",
+              "spreadAtual": "B32+1161",
               "durationAnos": 4.77,
               "status": "ok"
             },
@@ -653,7 +653,7 @@
               "variacaoBps": -9,
               "fmtAnterior": "B28 + 26 bps",
               "fmtAtual": "B28 + 17 bps",
-              "spreadAtual": "B28 + 17 bps",
+              "spreadAtual": "B28+17",
               "durationAnos": 2,
               "status": "ok"
             },
@@ -671,7 +671,7 @@
               "variacaoBps": -9,
               "fmtAnterior": "B35 + 40 bps",
               "fmtAtual": "B35 + 31 bps",
-              "spreadAtual": "B35 + 31 bps",
+              "spreadAtual": "B35+31",
               "durationAnos": 6.32,
               "status": "ok"
             },
@@ -689,7 +689,7 @@
               "variacaoBps": -8,
               "fmtAnterior": "B29 - 93 bps",
               "fmtAtual": "B29 - 101 bps",
-              "spreadAtual": "B29 - 101 bps",
+              "spreadAtual": "B29−101",
               "durationAnos": 2.98,
               "status": "ok"
             },
@@ -707,7 +707,7 @@
               "variacaoBps": -8,
               "fmtAnterior": "B31 + 351 bps",
               "fmtAtual": "B31 + 343 bps",
-              "spreadAtual": "B31 + 343 bps",
+              "spreadAtual": "B31+343",
               "durationAnos": 3.94,
               "status": "ok"
             },
@@ -725,7 +725,7 @@
               "variacaoBps": -6,
               "fmtAnterior": "B31 + 388 bps",
               "fmtAtual": "B31 + 382 bps",
-              "spreadAtual": "B31 + 382 bps",
+              "spreadAtual": "B31+382",
               "durationAnos": 3.99,
               "status": "ok"
             },
@@ -743,7 +743,7 @@
               "variacaoBps": -6,
               "fmtAnterior": "B31 + 209 bps",
               "fmtAtual": "B31 + 203 bps",
-              "spreadAtual": "B31 + 203 bps",
+              "spreadAtual": "B31+203",
               "durationAnos": 4.08,
               "status": "ok"
             },
@@ -779,7 +779,7 @@
               "variacaoBps": -5,
               "fmtAnterior": "B37 + 7 bps",
               "fmtAtual": "B37 + 2 bps",
-              "spreadAtual": "B37 + 2 bps",
+              "spreadAtual": "B37+2",
               "durationAnos": 8.02,
               "status": "ok"
             },
@@ -895,7 +895,7 @@
               "variacaoBps": 12,
               "fmtAnterior": "B30 + 572 bps",
               "fmtAtual": "B30 + 584 bps",
-              "spreadAtual": "B30 + 584 bps",
+              "spreadAtual": "B30+584",
               "durationAnos": 3.51,
               "status": "ok"
             },
@@ -913,7 +913,7 @@
               "variacaoBps": 10,
               "fmtAnterior": "B30 + 505 bps",
               "fmtAtual": "B30 + 515 bps",
-              "spreadAtual": "B30 + 515 bps",
+              "spreadAtual": "B30+515",
               "durationAnos": 3.39,
               "status": "ok"
             },
@@ -1003,7 +1003,7 @@
               "variacaoBps": 6,
               "fmtAnterior": "B30 + 575 bps",
               "fmtAtual": "B30 + 581 bps",
-              "spreadAtual": "B30 + 581 bps",
+              "spreadAtual": "B30+581",
               "durationAnos": 3.41,
               "status": "ok"
             },
@@ -1264,7 +1264,7 @@
             {
               "ticker": "HAPV21",
               "indexador": "110.5500% DI",
-              "indexadorFamilia": "CDI+",
+              "indexadorFamilia": "%CDI",
               "emissor": "HAPVIDA PARTICIPACOES E INVESTIMENTOS S.A.",
               "grupo": "Hapvida",
               "incentivada": false,

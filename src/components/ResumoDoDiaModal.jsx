@@ -194,7 +194,7 @@ function Anbima({ sec }) {
       <h5 className="rd-anb-sub">{titulo}</h5>
       <div className="rd-tablewrap">
         <table className="rd-table">
-          <thead><tr><th>Ativo</th><th>Grupo</th><th>Emissor</th><th>Indexador</th><th>Spread atual</th><th className="rd-num">Duration (a)</th><th className="rd-num">Var. (bps)</th></tr></thead>
+          <thead><tr><th>Ativo</th><th>Grupo</th><th>Emissor</th><th>Indexador</th><th>Spread Anbima</th><th className="rd-num">Duration (a)</th><th className="rd-num">Var. (bps)</th></tr></thead>
           <tbody>
             {arr.map((a, i) => (
               <tr key={a.ticker || i}>

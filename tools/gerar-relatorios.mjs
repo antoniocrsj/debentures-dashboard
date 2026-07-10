@@ -316,14 +316,6 @@ function yieldInfo(r) {
   return { bps: y * 100, base: 'yield', tipo: 'yield' }
 }
 
-// Familia do indexador para EXIBIR, a partir do spread realmente usado (info):
-// Pre/%CDI convertidos viram "CDI+"; IPCA vira "IPCA+"; senao a familia nativa.
-function familiaExibicao(info, tipo) {
-  if (info && info.tipo === 'cdi') return 'CDI+'
-  if (info && info.tipo === 'ipca') return 'IPCA+'
-  return indexadorFamilia(tipo)
-}
-
 // Familia do indexador (para exibir), a partir do tipo de taxa da ANBIMA.
 function indexadorFamilia(tipo) {
   const t = (tipo || '').trim()
@@ -391,19 +383,24 @@ function buildAnbima(src, sourceDates, tickerInfo) {
     const ti = tickerInfo.get(key(r)) || {}
     const dur = parseNum(r.durationAnbimaAnos)
     const fmtAtual = repairText((r.txAnbimaFormatada || '').trim())
-    // Spread atual exibido: CDI (Pré/%CDI convertidos) mostra "CDI ± X,XX%"; senao a taxa.
-    const spreadAtual = disp.tipo === 'cdi'
+    // "Spread Anbima" = o spread convertido para comparacao: CDI (Pré/%CDI/DI
+    // convertidos) mostra "CDI ± X,XX%"; IPCA mostra "B30+91" (NTN-B ref + bps,
+    // SEM o sufixo "bps" pra economizar espaco); yield puro mostra a taxa.
+    // OBS: o indexador (coluna) mantem SEMPRE a familia original (Pré, %CDI, ...).
+    const spreadAnbima = disp.tipo === 'cdi'
       ? `CDI ${disp.bps >= 0 ? '+' : '−'} ${Math.abs(disp.bps / 100).toFixed(2).replace('.', ',')}%`
-      : fmtAtual
+      : disp.tipo === 'ipca'
+        ? `${disp.base}${disp.bps >= 0 ? '+' : '−'}${Math.abs(Math.round(disp.bps))}`
+        : fmtAtual
     movs.push({
       ticker: key(r), indexador: repairText((r.indexadorAnbima || '').trim()),
-      indexadorFamilia: familiaExibicao(disp, r.tipoTaxaAnbima),
+      indexadorFamilia: indexadorFamilia(r.tipoTaxaAnbima),   // familia ORIGINAL, nunca convertida
       emissor: ti.empresa || '', grupo: ti.grupo || '',
       incentivada: !!ti.incentivada,
       base: disp.base, tipo: disp.tipo,
       spreadAnteriorBps: cmpPrev, spreadAtualBps: disp.bps, variacaoBps,
       fmtAnterior: repairText((p.txAnbimaFormatada || '').trim()),
-      fmtAtual, spreadAtual,
+      fmtAtual, spreadAtual: spreadAnbima,
       durationAnos: Number.isNaN(dur) ? null : dur,
       status: (r.statusCalculoAnbima || '').trim(),
     })
@@ -728,7 +725,7 @@ function renderHtml(rep) {
 
   // §5 ANBIMA: tabela de spread (top 15). abertura (+bps)=vermelho; fechamento (−bps)=verde.
   const anbimaVar = v => `<span class="${v > 0 ? 'val neg' : v < 0 ? 'val pos' : 'val'}">${fmtBps(v)}</span>`
-  const anbimaTable = arr => `<div class="tw"><table><thead><tr><th>Ativo</th><th>Grupo</th><th>Emissor</th><th>Indexador</th><th>Spread atual</th><th class="num">Duration (a)</th><th class="num">Var. (bps)</th></tr></thead><tbody>${
+  const anbimaTable = arr => `<div class="tw"><table><thead><tr><th>Ativo</th><th>Grupo</th><th>Emissor</th><th>Indexador</th><th>Spread Anbima</th><th class="num">Duration (a)</th><th class="num">Var. (bps)</th></tr></thead><tbody>${
     arr.map(a => `<tr><td>${esc(a.ticker)}</td><td>${esc(a.grupo || '—')}</td><td>${esc(a.emissor || '—')}</td><td>${esc(a.indexadorFamilia)}</td><td>${esc(a.spreadAtual || a.fmtAtual || '—')}</td><td class="num">${a.durationAnos != null ? a.durationAnos.toFixed(2) : '—'}</td><td class="num">${anbimaVar(a.variacaoBps)}</td></tr>`).join('')
   }</tbody></table></div>`
   // Um bloco por mercado (Incentivadas 12.431 / Tradicional), com o placar do

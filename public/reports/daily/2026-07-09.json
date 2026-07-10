@@ -9,8 +9,8 @@
     "perf12431": "2026-07-08",
     "perfTrad": "2026-07-08",
     "anbima": "2026-07-09",
-    "blc": "2026-07-07",
-    "fundos": "2026-07-07"
+    "blc": "2026-07-08",
+    "fundos": "2026-07-08"
   },
   "summary": [
     {
@@ -254,7 +254,7 @@
               "variacaoBps": 31,
               "fmtAnterior": "B31 + 1087 bps",
               "fmtAtual": "B31 + 1118 bps",
-              "spreadAtual": "B31 + 1118 bps",
+              "spreadAtual": "B31+1118",
               "durationAnos": 4.33,
               "status": "ok"
             },
@@ -272,7 +272,7 @@
               "variacaoBps": 23,
               "fmtAnterior": "B32 + 1161 bps",
               "fmtAtual": "B32 + 1184 bps",
-              "spreadAtual": "B32 + 1184 bps",
+              "spreadAtual": "B32+1184",
               "durationAnos": 4.76,
               "status": "ok"
             },
@@ -290,7 +290,7 @@
               "variacaoBps": 21,
               "fmtAnterior": "B35 + 919 bps",
               "fmtAtual": "B35 + 940 bps",
-              "spreadAtual": "B35 + 940 bps",
+              "spreadAtual": "B35+940",
               "durationAnos": 6.26,
               "status": "ok"
             },
@@ -308,7 +308,7 @@
               "variacaoBps": 20,
               "fmtAnterior": "B35 - 40 bps",
               "fmtAtual": "B35 - 20 bps",
-              "spreadAtual": "B35 - 20 bps",
+              "spreadAtual": "B35−20",
               "durationAnos": 6.25,
               "status": "ok"
             },
@@ -326,7 +326,7 @@
               "variacaoBps": 19,
               "fmtAnterior": "B28 + 725 bps",
               "fmtAtual": "B28 + 744 bps",
-              "spreadAtual": "B28 + 744 bps",
+              "spreadAtual": "B28+744",
               "durationAnos": 1.83,
               "status": "ok"
             },
@@ -344,14 +344,14 @@
               "variacaoBps": 12,
               "fmtAnterior": "B29 + 703 bps",
               "fmtAtual": "B29 + 715 bps",
-              "spreadAtual": "B29 + 715 bps",
+              "spreadAtual": "B29+715",
               "durationAnos": 2.38,
               "status": "ok"
             },
             {
               "ticker": "BTEL13",
               "indexador": "Pré-Fixado 15.0500%",
-              "indexadorFamilia": "CDI+",
+              "indexadorFamilia": "Pré",
               "emissor": "V.TAL - REDE NEUTRA DE TELECOMUNICACOES S.A.",
               "grupo": "V.tal",
               "incentivada": true,
@@ -380,7 +380,7 @@
               "variacaoBps": 8,
               "fmtAnterior": "B28 + 467 bps",
               "fmtAtual": "B28 + 475 bps",
-              "spreadAtual": "B28 + 475 bps",
+              "spreadAtual": "B28+475",
               "durationAnos": 1.93,
               "status": "ok"
             },
@@ -398,7 +398,7 @@
               "variacaoBps": 8,
               "fmtAnterior": "B27 + 70 bps",
               "fmtAtual": "B27 + 78 bps",
-              "spreadAtual": "B27 + 78 bps",
+              "spreadAtual": "B27+78",
               "durationAnos": 1.16,
               "status": "ok"
             },
@@ -416,7 +416,7 @@
               "variacaoBps": 7,
               "fmtAnterior": "B32 + 582 bps",
               "fmtAtual": "B32 + 589 bps",
-              "spreadAtual": "B32 + 589 bps",
+              "spreadAtual": "B32+589",
               "durationAnos": 4.91,
               "status": "ok"
             },
@@ -434,7 +434,7 @@
               "variacaoBps": 7,
               "fmtAnterior": "B28 - 16 bps",
               "fmtAtual": "B28 - 9 bps",
-              "spreadAtual": "B28 - 9 bps",
+              "spreadAtual": "B28−9",
               "durationAnos": 1.56,
               "status": "ok"
             },
@@ -452,7 +452,7 @@
               "variacaoBps": 6,
               "fmtAnterior": "B35 + 31 bps",
               "fmtAtual": "B35 + 37 bps",
-              "spreadAtual": "B35 + 37 bps",
+              "spreadAtual": "B35+37",
               "durationAnos": 6.32,
               "status": "ok"
             },
@@ -470,7 +470,7 @@
               "variacaoBps": 6,
               "fmtAnterior": "B27 + 73 bps",
               "fmtAtual": "B27 + 79 bps",
-              "spreadAtual": "B27 + 79 bps",
+              "spreadAtual": "B27+79",
               "durationAnos": 1.17,
               "status": "ok"
             },
@@ -488,14 +488,14 @@
               "variacaoBps": 6,
               "fmtAnterior": "B33 - 22 bps",
               "fmtAtual": "B33 - 16 bps",
-              "spreadAtual": "B33 - 16 bps",
+              "spreadAtual": "B33−16",
               "durationAnos": 6.02,
               "status": "ok"
             },
             {
               "ticker": "ELTN17",
               "indexador": "Pré-Fixado 13.2474%",
-              "indexadorFamilia": "CDI+",
+              "indexadorFamilia": "Pré",
               "emissor": "CENTRAIS ELETRICAS DO NORTE DO BRASIL S/A - ELETRONORTE",
               "grupo": "Axia",
               "incentivada": true,
@@ -526,14 +526,14 @@
               "variacaoBps": -37,
               "fmtAnterior": "B32 + 1277 bps",
               "fmtAtual": "B32 + 1240 bps",
-              "spreadAtual": "B32 + 1240 bps",
+              "spreadAtual": "B32+1240",
               "durationAnos": 5.22,
               "status": "ok"
             },
             {
               "ticker": "EGIEA2",
               "indexador": "Pré-Fixado 12.4974%",
-              "indexadorFamilia": "CDI+",
+              "indexadorFamilia": "Pré",
               "emissor": "ENGIE BRASIL ENERGIA SA",
               "grupo": "Engie",
               "incentivada": true,
@@ -562,14 +562,14 @@
               "variacaoBps": -29,
               "fmtAnterior": "B30 + 2004 bps",
               "fmtAtual": "B30 + 1975 bps",
-              "spreadAtual": "B30 + 1975 bps",
+              "spreadAtual": "B30+1975",
               "durationAnos": 3.17,
               "status": "ok"
             },
             {
               "ticker": "ENAT23",
               "indexador": "Pré-Fixado 13.5733%",
-              "indexadorFamilia": "CDI+",
+              "indexadorFamilia": "Pré",
               "emissor": "BRAVA ENERGIA S.A.",
               "grupo": "Brava Energia",
               "incentivada": true,
@@ -587,7 +587,7 @@
             {
               "ticker": "ENAT32",
               "indexador": "Pré-Fixado 13.9662%",
-              "indexadorFamilia": "CDI+",
+              "indexadorFamilia": "Pré",
               "emissor": "BRAVA ENERGIA S.A.",
               "grupo": "Brava Energia",
               "incentivada": true,
@@ -616,7 +616,7 @@
               "variacaoBps": -18,
               "fmtAnterior": "B31 + 654 bps",
               "fmtAtual": "B31 + 636 bps",
-              "spreadAtual": "B31 + 636 bps",
+              "spreadAtual": "B31+636",
               "durationAnos": 4.19,
               "status": "ok"
             },
@@ -634,7 +634,7 @@
               "variacaoBps": -16,
               "fmtAnterior": "B32 + 657 bps",
               "fmtAtual": "B32 + 641 bps",
-              "spreadAtual": "B32 + 641 bps",
+              "spreadAtual": "B32+641",
               "durationAnos": 4.57,
               "status": "ok"
             },
@@ -652,14 +652,14 @@
               "variacaoBps": -14,
               "fmtAnterior": "B35 + 9 bps",
               "fmtAtual": "B35 - 5 bps",
-              "spreadAtual": "B35 - 5 bps",
+              "spreadAtual": "B35−5",
               "durationAnos": 6.48,
               "status": "ok"
             },
             {
               "ticker": "AEGPA8",
               "indexador": "Pré-Fixado 16.3433%",
-              "indexadorFamilia": "CDI+",
+              "indexadorFamilia": "Pré",
               "emissor": "AEGEA SANEAMENTO E PARTICIPACOES S/A",
               "grupo": "Aegea",
               "incentivada": true,
@@ -688,7 +688,7 @@
               "variacaoBps": -11,
               "fmtAnterior": "B27 + 112 bps",
               "fmtAtual": "B27 + 101 bps",
-              "spreadAtual": "B27 + 101 bps",
+              "spreadAtual": "B27+101",
               "durationAnos": 0.93,
               "status": "ok"
             },
@@ -706,7 +706,7 @@
               "variacaoBps": -10,
               "fmtAnterior": "B30 + 95 bps",
               "fmtAtual": "B30 + 85 bps",
-              "spreadAtual": "B30 + 85 bps",
+              "spreadAtual": "B30+85",
               "durationAnos": 3.82,
               "status": "ok"
             },
@@ -724,7 +724,7 @@
               "variacaoBps": -10,
               "fmtAnterior": "B31 + 154 bps",
               "fmtAtual": "B31 + 144 bps",
-              "spreadAtual": "B31 + 144 bps",
+              "spreadAtual": "B31+144",
               "durationAnos": 4.24,
               "status": "ok"
             },
@@ -742,7 +742,7 @@
               "variacaoBps": -10,
               "fmtAnterior": "B30 - 2 bps",
               "fmtAtual": "B30 - 12 bps",
-              "spreadAtual": "B30 - 12 bps",
+              "spreadAtual": "B30−12",
               "durationAnos": 3.7,
               "status": "ok"
             },
@@ -760,7 +760,7 @@
               "variacaoBps": -10,
               "fmtAnterior": "B30 + 51 bps",
               "fmtAtual": "B30 + 41 bps",
-              "spreadAtual": "B30 + 41 bps",
+              "spreadAtual": "B30+41",
               "durationAnos": 3.52,
               "status": "ok"
             },
@@ -778,7 +778,7 @@
               "variacaoBps": -9,
               "fmtAnterior": "B33 + 638 bps",
               "fmtAtual": "B33 + 629 bps",
-              "spreadAtual": "B33 + 629 bps",
+              "spreadAtual": "B33+629",
               "durationAnos": 6.04,
               "status": "ok"
             }
