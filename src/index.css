@@ -603,6 +603,12 @@ a { color: var(--primary); }
 .modal-value { font-weight: 600; text-align: right; word-break: break-word; }
 .modal-value.highlight { color: var(--primary); font-size: 14px; }
 .modal-desc  { font-size: 13px; color: var(--text-muted); line-height: 1.6; padding-top: 4px; }
+/* Agenda / amortização */
+.agenda-sub { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; color: var(--text-muted); margin: 10px 0 4px; }
+.agenda-list { list-style: none; margin: 0; padding: 0; }
+.agenda-list li { display: flex; justify-content: space-between; align-items: baseline; padding: 5px 0; border-top: 1px solid var(--border); font-size: 13px; }
+.agenda-list li span { color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.agenda-list li b { font-weight: 600; font-variant-numeric: tabular-nums; }
 .badge-lei   { display: inline-block; color: var(--success); margin-right: 4px; font-weight: 600; }
 .modal-emis-data { color: var(--text-muted); font-weight: 400; }
 

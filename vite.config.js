@@ -4,6 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 import { spawn } from 'node:child_process'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import crypto from 'node:crypto'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const TOOLS_DIR = path.join(__dirname, 'tools')
@@ -13,6 +14,36 @@ const REPO_ROOT = __dirname
 // The first request to a GAS URL gets the interstitial and sets cookies;
 // subsequent requests reuse those cookies and land straight on the CSV.
 const COOKIE_STORE = {}
+
+// ─── ANBIMA Data API (agenda de eventos, sob demanda no dev) ───────────────
+// Mesma auth do preparar-anbima.ps1: um JWT HS256 assinado com um segredo que a
+// propria ANBIMA embute no frontend (é so' um "prove que veio do site").
+function b64url(buf) {
+  return Buffer.from(buf).toString('base64').replace(/=+$/, '').replace(/\+/g, '-').replace(/\//g, '_')
+}
+function anbimaJwt() {
+  const secret = 'Sx!RNAMs@TXN_d!v9e*B%bPG-+AB%DZv9tq@TuFB'
+  const header = b64url(JSON.stringify({ typ: 'JWT', alg: 'HS256' }))
+  const payload = b64url(JSON.stringify({ tokenRecaptcha: crypto.randomUUID(), verificationHashCache: Date.now() }))
+  const data = `${header}.${payload}`
+  const sig = b64url(crypto.createHmac('sha256', secret).update(data).digest())
+  return `${data}.${sig}`
+}
+async function fetchAnbimaAgenda(ticker) {
+  const url = `https://data-api.prd.anbima.com.br/web-bff/v1/debentures/${encodeURIComponent(ticker)}/agenda?page=0&size=200`
+  const r = await fetch(url, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0',
+      'Origin': 'https://data.anbima.com.br',
+      'Referer': `https://data.anbima.com.br/debentures/${ticker}/agenda`,
+      'g-google-authorization': anbimaJwt(),
+      'Params': '?view=precos',
+    },
+  })
+  if (!r.ok) throw new Error(`ANBIMA HTTP ${r.status}`)
+  const j = await r.json()
+  return j.content || []
+}
 
 function cookiesFor(urlStr) {
   try {
@@ -300,6 +331,31 @@ export default defineConfig({
             console.error('[proxy] error:', e.message)
             res.statusCode = 502
             res.end(`Proxy error: ${e.message}`)
+          }
+        })
+      },
+    },
+    {
+      // DEV-only: proxy da AGENDA de eventos da ANBIMA (data-api web-bff),
+      // reproduzindo a auth JWT/HMAC do preparar-anbima.ps1. Sob demanda: o modal
+      // de detalhe chama /api/anbima-agenda?ticker=XXX ao abrir. Só existe no dev
+      // (o app publicado no Vercel não tem servidor, então o bloco degrada).
+      name: 'anbima-agenda-proxy',
+      configureServer(server) {
+        server.middlewares.use(async (req, res, next) => {
+          if (!req.url.startsWith('/api/anbima-agenda')) return next()
+          const qs = req.url.includes('?') ? req.url.split('?')[1] : ''
+          const ticker = (new URLSearchParams(qs).get('ticker') || '').trim().toUpperCase()
+          res.setHeader('Content-Type', 'application/json; charset=utf-8')
+          res.setHeader('Access-Control-Allow-Origin', '*')
+          if (!ticker) { res.statusCode = 400; return res.end(JSON.stringify({ error: 'Missing ticker' })) }
+          try {
+            const content = await fetchAnbimaAgenda(ticker)
+            res.end(JSON.stringify({ content }))
+          } catch (e) {
+            console.error('[anbima-agenda] error:', e.message)
+            res.statusCode = 502
+            res.end(JSON.stringify({ error: e.message }))
           }
         })
       },

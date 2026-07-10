@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { fmtBRL, fmtDate, isYes } from '../utils/format.js'
 import { anbimaUrl } from '../utils/anbima.js'
+import { useAgenda } from '../hooks/useAgenda.js'
 
 export default function AssetModal({ asset, onClose }) {
   // Close on Escape
@@ -64,6 +65,8 @@ export default function AssetModal({ asset, onClose }) {
             <Row label="Coordenador Líder" value={asset.coordenador} />
           </Section>
 
+          <AgendaSection asset={asset} />
+
           <Section title="Posição">
             <Row label="Vol. emitido" value={asset.volumeEmitido > 0 ? fmtBRL(asset.volumeEmitido) : '—'} />
             <Row label="Alocação BLC" value={asset.alocacao > 0 ? fmtBRL(asset.alocacao) : '—'} highlight />
@@ -76,6 +79,40 @@ export default function AssetModal({ asset, onClose }) {
           )}
         </div>
       </div>
+    </div>
+  )
+}
+
+// Agenda de eventos (ANBIMA) sob demanda — prazo + amortização + cupom.
+// Só aparece no ambiente de dev (o app publicado não tem o proxy).
+function AgendaSection({ asset }) {
+  const { loading, data, unavailable } = useAgenda(asset.codigoAtivo, asset.emissao, asset.vencimento)
+  if (unavailable) return null
+  if (loading) {
+    return (
+      <div className="modal-section">
+        <h3 className="modal-section-title">Agenda / Amortização</h3>
+        <p className="modal-desc">Carregando agenda…</p>
+      </div>
+    )
+  }
+  if (!data || !data.prazoAnos) return null
+  const fmt = s => (s && s.includes('-') ? s.split('-').reverse().join('/') : s)
+  return (
+    <div className="modal-section">
+      <h3 className="modal-section-title">Agenda / Amortização</h3>
+      <Row label="Prazo" value={data.amortLabel} highlight />
+      <Row label="Cupom" value={data.cupom} />
+      {data.amortizacoes.length > 0 && (
+        <>
+          <p className="agenda-sub">Amortizações</p>
+          <ul className="agenda-list">
+            {data.amortizacoes.map((a, i) => (
+              <li key={i}><span>{fmt(a.dataStr)}</span><b>{a.pct != null ? `${a.pct}%` : '—'}</b></li>
+            ))}
+          </ul>
+        </>
+      )}
     </div>
   )
 }
