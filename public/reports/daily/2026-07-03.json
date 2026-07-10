@@ -1,7 +1,7 @@
 {
   "date": "2026-07-03",
   "label": "03/07/2026",
-  "previousDate": "2026-07-02",
+  "previousDate": null,
   "sourceDates": {
     "debentures": "2026-07-03",
     "cap12431": "2026-07-03",
@@ -22,7 +22,7 @@
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional: −R$ 308 mi",
+      "texto": "Captação líquida Tradicional: −R$ 310 mi",
       "tom": "neg"
     },
     {
@@ -65,35 +65,35 @@
         "captacao": 149555391.71999997,
         "resgate": 281194537.96999997,
         "liquido": -131639146.25,
-        "pl": 334759354874.70013,
-        "numFundos": 1607,
+        "pl": 334781812708.0001,
+        "numFundos": 1608,
         "curados": 1632,
         "fechados": 283,
         "anterior": {
           "dia": "2026-07-02",
           "captacao": 115565228.13,
-          "resgate": 369162788.66999996,
-          "liquido": -253597560.53999996,
-          "pl": 332100672297.08984,
+          "resgate": 359744088.66999996,
+          "liquido": -244178860.53999996,
+          "pl": 332100535358.84985,
           "numFundos": 1602
         }
       },
       "trad": {
         "dia": "2026-07-03",
         "captacao": 1301862634.8099997,
-        "resgate": 1610334661.6,
-        "liquido": -308472026.7900002,
-        "pl": 1081779413712.7402,
-        "numFundos": 817,
+        "resgate": 1611523758.71,
+        "liquido": -309661123.90000033,
+        "pl": 1081815860691.7101,
+        "numFundos": 819,
         "curados": 827,
         "fechados": 29,
         "anterior": {
           "dia": "2026-07-02",
           "captacao": 1682173301.3800006,
-          "resgate": 1794533095.8900003,
-          "liquido": -112359794.50999975,
-          "pl": 1079334771909.6,
-          "numFundos": 809
+          "resgate": 1795722193,
+          "liquido": -113548891.61999941,
+          "pl": 1079370632116.4797,
+          "numFundos": 811
         }
       }
     },
@@ -141,7 +141,7 @@
           "captacao": 3645496.82,
           "resgate": 33477620.28,
           "liquido": -29832123.46,
-          "pl": 28308129684.57
+          "pl": 28308612449.68
         },
         {
           "gestor": "Absolute",
@@ -215,7 +215,7 @@
           "captacao": 20622955.25,
           "resgate": 143804349.64,
           "liquido": -123181394.38999999,
-          "pl": 15704841633.93
+          "pl": 15705189933.84
         },
         {
           "gestor": "IAM",
@@ -389,20 +389,20 @@
           "pl": 1163060404.71
         },
         {
+          "cnpj": "43636081000123",
+          "nome": "MAESTRANZA PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "gestor": "XPG",
+          "segmento": "trad",
+          "retorno": 0.7712,
+          "pl": 41595184.23
+        },
+        {
           "cnpj": "27883656000156",
           "nome": "DHF FUNDO DE INVESTIMENTO FINANCEIRO",
           "gestor": "Dynamo",
           "segmento": "trad",
           "retorno": 0.7427,
           "pl": 538412611.66
-        },
-        {
-          "cnpj": "13935899000186",
-          "nome": "FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO VEGA",
-          "gestor": "BTG WM",
-          "segmento": "trad",
-          "retorno": 0.7134,
-          "pl": 107721146.25
         }
       ],
       "topTradNeg": [

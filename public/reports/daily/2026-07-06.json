@@ -18,7 +18,7 @@
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional: −R$ 779 mi",
+      "texto": "Captação líquida Tradicional: −R$ 834 mi",
       "tom": "neg"
     },
     {
@@ -51,11 +51,11 @@
     "captacao": {
       "12431": {
         "dia": "2026-07-06",
-        "captacao": 131016585.81000002,
-        "resgate": 901079677.92,
-        "liquido": -770063092.1099999,
-        "pl": 333015680290.81995,
-        "numFundos": 1605,
+        "captacao": 130948197.71000002,
+        "resgate": 901252452.23,
+        "liquido": -770304254.52,
+        "pl": 333109507000.8899,
+        "numFundos": 1609,
         "curados": 1632,
         "fechados": 283,
         "anterior": {
@@ -63,26 +63,26 @@
           "captacao": 149555391.71999997,
           "resgate": 281194537.96999997,
           "liquido": -131639146.25,
-          "pl": 334759354874.70013,
-          "numFundos": 1607
+          "pl": 334781812708.0001,
+          "numFundos": 1608
         }
       },
       "trad": {
         "dia": "2026-07-06",
-        "captacao": 1706566239.7200003,
-        "resgate": 2485136384.82,
-        "liquido": -778570145.0999999,
-        "pl": 1078624543822.57,
-        "numFundos": 807,
+        "captacao": 1706563279.7200003,
+        "resgate": 2541033514.7700005,
+        "liquido": -834470235.0500002,
+        "pl": 1079218783776.59,
+        "numFundos": 813,
         "curados": 827,
         "fechados": 29,
         "anterior": {
           "dia": "2026-07-03",
           "captacao": 1301862634.8099997,
-          "resgate": 1610334661.6,
-          "liquido": -308472026.7900002,
-          "pl": 1081779413712.7402,
-          "numFundos": 817
+          "resgate": 1611523758.71,
+          "liquido": -309661123.90000033,
+          "pl": 1081815860691.7101,
+          "numFundos": 819
         }
       }
     },
@@ -100,7 +100,7 @@
           "captacao": 2650000,
           "resgate": 0,
           "liquido": 2650000,
-          "pl": 2253787679.55
+          "pl": 2253938182.68
         },
         {
           "gestor": "Rafter",
@@ -148,10 +148,10 @@
         },
         {
           "gestor": "IAM",
-          "captacao": 20083197.26,
-          "resgate": 77673722.17,
-          "liquido": -57590524.91,
-          "pl": 83553425015.71
+          "captacao": 20014809.16,
+          "resgate": 77646496.48,
+          "liquido": -57631687.32000001,
+          "pl": 83553383979.31
         },
         {
           "gestor": "SAM",
@@ -201,10 +201,10 @@
       "topTradResgate": [
         {
           "gestor": "XPG",
-          "captacao": 44085391.01,
-          "resgate": 515655650.35,
-          "liquido": -471570259.34000003,
-          "pl": 15229524571.79
+          "captacao": 44082431.01,
+          "resgate": 515718466.77,
+          "liquido": -471636035.76,
+          "pl": 15240907423.7
         },
         {
           "gestor": "SAM",
@@ -218,14 +218,14 @@
           "captacao": 539700,
           "resgate": 155297779.16,
           "liquido": -154758079.16,
-          "pl": 3819930647.84
+          "pl": 3819930647.81
         },
         {
           "gestor": "IAM",
           "captacao": 94371579.88,
-          "resgate": 179041597.27,
-          "liquido": -84670017.39000002,
-          "pl": 217558502428.25
+          "resgate": 234956013.69,
+          "liquido": -140584433.81,
+          "pl": 217502311588.29
         },
         {
           "gestor": "CEF Asset",
@@ -1386,12 +1386,12 @@
           "pl": 17380611.77
         },
         {
-          "cnpj": "60675392000110",
-          "nome": "FORTE FIF - CLASSE DE INVESTIMENTO RF INCENTIVADO DE INVESTIMENTO EM INFRA",
-          "gestor": "BRAM",
+          "cnpj": "53906748000114",
+          "nome": "PSO 2 FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
+          "gestor": "BTG WM",
           "segmento": "12431",
-          "retorno": 0.7212,
-          "pl": 93815802.62
+          "retorno": 0.5814,
+          "pl": 125232727.99
         }
       ],
       "top12431Neg": [
@@ -1438,6 +1438,14 @@
       ],
       "topTradPos": [
         {
+          "cnpj": "38150833000101",
+          "nome": "G5 TORONTO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "gestor": "G5",
+          "segmento": "trad",
+          "retorno": 2.2011,
+          "pl": 62081444.88
+        },
+        {
           "cnpj": "41881271000180",
           "nome": "TRANCOSO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
           "gestor": "Inter",
@@ -1454,28 +1462,20 @@
           "pl": 25768468.55
         },
         {
+          "cnpj": "52273351000170",
+          "nome": "PORTFOLIO RF II PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "gestor": "XPG",
+          "segmento": "trad",
+          "retorno": 0.3977,
+          "pl": 11098154.82
+        },
+        {
           "cnpj": "50553108000180",
           "nome": "RAFTER ICATU PREVIDENCIÁRIO QUALIFICADO FI FINANCEIRO - CI MULT CRED PRIV - RESP LIMITADA",
           "gestor": "Rafter",
           "segmento": "trad",
           "retorno": 0.333,
           "pl": 25235096.11
-        },
-        {
-          "cnpj": "63901833000143",
-          "nome": "SAIUALA KINEA FIF - FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA RF CRED PRIV - RESP LIMITADA",
-          "gestor": "Kinea",
-          "segmento": "trad",
-          "retorno": 0.3246,
-          "pl": 20662172.99
-        },
-        {
-          "cnpj": "63900709000163",
-          "nome": "LIMA EVALDT KINEA FIF FI INCENTIVADO EM DEBÊNTURES DE INFRA RF CRED PRIV RESP LIMITADA",
-          "gestor": "Kinea",
-          "segmento": "trad",
-          "retorno": 0.3213,
-          "pl": 26148982.95
         }
       ],
       "topTradNeg": [
