@@ -340,6 +340,51 @@ a { color: var(--primary); }
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
 }
+
+/* ─── Expandir tabela (desktop, discreto no hover) ───────────────────────── */
+.table-wrap-x { position: relative; }
+.table-expand-btn {
+  position: absolute; top: 3px; right: 3px; z-index: 4;
+  width: 22px; height: 22px; display: none;
+  align-items: center; justify-content: center;
+  border-radius: 6px; color: var(--text-muted);
+  background: var(--card); border: 1px solid var(--border);
+  opacity: 0; transition: opacity .15s, color .15s, border-color .15s;
+  cursor: pointer;
+}
+/* só aparece no desktop; visível apenas com o cursor sobre a tabela */
+.app.desktop .table-wrap-x .table-expand-btn { display: flex; }
+.app.desktop .table-wrap-x:hover .table-expand-btn { opacity: .5; }
+.app.desktop .table-wrap-x .table-expand-btn:hover { opacity: 1; color: var(--primary); border-color: var(--primary-border); }
+.table-expand-btn:focus-visible { opacity: 1; outline: 2px solid var(--primary); outline-offset: 1px; }
+
+.table-modal-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(15,23,42,.55);
+  display: flex; align-items: center; justify-content: center; padding: 24px;
+}
+.table-modal {
+  background: var(--card); border-radius: 14px; overflow: hidden;
+  width: min(1200px, 96vw); height: min(88vh, 920px);
+  display: flex; flex-direction: column;
+  box-shadow: 0 16px 48px rgba(0,0,0,.3);
+}
+.table-modal-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 11px 16px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+.table-modal-title { font-size: 14px; font-weight: 700; color: var(--text); }
+.table-modal-close {
+  width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 6px; color: var(--text-muted); font-size: 15px; cursor: pointer;
+}
+.table-modal-close:hover { background: var(--bg); color: var(--text); }
+/* corpo: ocupa a janela toda e rola nos dois eixos (a tabela fica maior).
+   NÃO usa .table-wrap de propósito (evita o max-height do .app.desktop). */
+.table-modal-body {
+  flex: 1; overflow: auto; padding: 6px 14px 14px;
+  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+}
 .asset-table {
   width: max-content;
   min-width: 100%;

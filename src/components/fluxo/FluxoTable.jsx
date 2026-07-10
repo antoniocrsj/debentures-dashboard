@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import { fmtFluxo, fmtFluxoSigned, sortRows, fmtWeekFull, fmtInt, parseSemana } from '../../utils/fluxo.js'
 import SortableTh, { cycleSort } from './SortableTh.jsx'
+import TableWrap from '../TableWrap.jsx'
 
 const PAGE = 16
 const DEFAULT_SORT = { col: 'semana', dir: 'desc' }
@@ -34,7 +35,7 @@ export default function FluxoTable({ weekly }) {
   return (
     <div className="fluxo-table-block">
       <h3 className="fluxo-section-title">Semanas</h3>
-      <div className="table-wrap">
+      <TableWrap title="Semanas">
         <table className="asset-table fluxo-table">
           <thead>
             <tr>
@@ -71,7 +72,7 @@ export default function FluxoTable({ weekly }) {
             })}
           </tbody>
         </table>
-      </div>
+      </TableWrap>
       {!showAll && sorted.length > PAGE && (
         <button className="show-all-btn" onClick={() => setShowAll(true)}>
           Mostrando {PAGE} de {fmtInt(sorted.length)} semanas — ver todas

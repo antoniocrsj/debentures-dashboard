@@ -1,4 +1,5 @@
 import { fmtBRL, fmtDateShort, fmtDateDDMMYY, fmtTaxa } from '../utils/format.js'
+import TableWrap from './TableWrap.jsx'
 
 const COLS = [
   { id: 'ativo',      label: 'Ativo',      sticky: true,  sortable: true  },
@@ -46,7 +47,7 @@ export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter
   const totalAloc = desktop ? assets.reduce((s, a) => s + (a.alocacao || 0), 0) : 0
 
   return (
-    <div className="table-wrap">
+    <TableWrap title="Ativos (debêntures)">
       <table className="asset-table">
         <colgroup>
           <col className="c-ativo" />
@@ -128,6 +129,6 @@ export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter
           </tfoot>
         )}
       </table>
-    </div>
+    </TableWrap>
   )
 }

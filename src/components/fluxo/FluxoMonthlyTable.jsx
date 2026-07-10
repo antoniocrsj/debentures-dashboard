@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import { fmtFluxo, fmtFluxoSigned, fmtMonthYY, sortRows } from '../../utils/fluxo.js'
 import SortableTh, { cycleSort } from './SortableTh.jsx'
+import TableWrap from '../TableWrap.jsx'
 
 /**
  * Tabela "Meses": captação/resgate/cap. líquida consolidados por mês (agregação
@@ -32,7 +33,7 @@ export default function FluxoMonthlyTable({ months, hideFechados = false }) {
       {hideFechados && (
         <p className="fluxo-note fluxo-note-warn">A visão mensal não exclui fundos fechados (sem base mensal por fundo).</p>
       )}
-      <div className="table-wrap">
+      <TableWrap title="Meses">
         <table className="asset-table fluxo-table">
           <thead>
             <tr>
@@ -56,7 +57,7 @@ export default function FluxoMonthlyTable({ months, hideFechados = false }) {
             })}
           </tbody>
         </table>
-      </div>
+      </TableWrap>
     </div>
   )
 }

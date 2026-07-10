@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react'
 import { fmtFluxo, fmtFluxoSigned, sortRows, fmtInt } from '../../utils/fluxo.js'
 import { fmtPct } from '../../utils/format.js'
 import SortableTh, { cycleSort } from './SortableTh.jsx'
+import TableWrap from '../TableWrap.jsx'
 
 const LIMIT = 20
 const DEFAULT_SORT = { col: 'liquido', dir: 'desc' }
@@ -48,7 +49,7 @@ export default function GestorFlowRanking({ ranking, onSelect }) {
         <span className="fluxo-ranking-sub">Ordenado por: {LABELS[sort.col]} {dirTxt}</span>
       </div>
 
-      <div className="table-wrap">
+      <TableWrap title="Ranking de gestores">
         <table className="asset-table fluxo-table">
           <thead>
             <tr>
@@ -90,7 +91,7 @@ export default function GestorFlowRanking({ ranking, onSelect }) {
             })}
           </tbody>
         </table>
-      </div>
+      </TableWrap>
       {!showAll && sorted.length > LIMIT
         ? (
           <button className="show-all-btn" onClick={() => setShowAll(true)}>
