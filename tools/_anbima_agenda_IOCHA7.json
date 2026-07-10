@@ -1,0 +1,166 @@
+﻿{
+    "content":  [
+                    {
+                        "codigo_b3":  "IOCHA7",
+                        "data_base":  "2027-01-07",
+                        "data_liquidacao":  "2027-01-07",
+                        "data_evento":  "2027-01-07",
+                        "taxa":  "1.600000000000000",
+                        "valor":  null,
+                        "status":  {
+                                       "status":  "Previsto",
+                                       "grupo_status":  "Planejado"
+                                   },
+                        "evento":  "PAGAMENTO DE JUROS",
+                        "evento_arc":  "Juros",
+                        "flag_status":  "Parcial"
+                    },
+                    {
+                        "codigo_b3":  "IOCHA7",
+                        "data_base":  "2027-07-07",
+                        "data_liquidacao":  "2027-07-07",
+                        "data_evento":  "2027-07-07",
+                        "taxa":  "1.600000000000000",
+                        "valor":  null,
+                        "status":  {
+                                       "status":  "Previsto",
+                                       "grupo_status":  "Planejado"
+                                   },
+                        "evento":  "PAGAMENTO DE JUROS",
+                        "evento_arc":  "Juros",
+                        "flag_status":  "Parcial"
+                    },
+                    {
+                        "codigo_b3":  "IOCHA7",
+                        "data_base":  "2028-01-07",
+                        "data_liquidacao":  "2028-01-07",
+                        "data_evento":  "2028-01-07",
+                        "taxa":  "1.600000000000000",
+                        "valor":  null,
+                        "status":  {
+                                       "status":  "Previsto",
+                                       "grupo_status":  "Planejado"
+                                   },
+                        "evento":  "PAGAMENTO DE JUROS",
+                        "evento_arc":  "Juros",
+                        "flag_status":  "Parcial"
+                    },
+                    {
+                        "codigo_b3":  "IOCHA7",
+                        "data_base":  "2028-07-07",
+                        "data_liquidacao":  "2028-07-07",
+                        "data_evento":  "2028-07-07",
+                        "taxa":  "1.600000000000000",
+                        "valor":  null,
+                        "status":  {
+                                       "status":  "Previsto",
+                                       "grupo_status":  "Planejado"
+                                   },
+                        "evento":  "PAGAMENTO DE JUROS",
+                        "evento_arc":  "Juros",
+                        "flag_status":  "Parcial"
+                    },
+                    {
+                        "codigo_b3":  "IOCHA7",
+                        "data_base":  "2029-01-08",
+                        "data_liquidacao":  "2029-01-08",
+                        "data_evento":  "2029-01-07",
+                        "taxa":  "1.600000000000000",
+                        "valor":  null,
+                        "status":  {
+                                       "status":  "Previsto",
+                                       "grupo_status":  "Planejado"
+                                   },
+                        "evento":  "PAGAMENTO DE JUROS",
+                        "evento_arc":  "Juros",
+                        "flag_status":  "Parcial"
+                    },
+                    {
+                        "codigo_b3":  "IOCHA7",
+                        "data_base":  "2029-07-09",
+                        "data_liquidacao":  "2029-07-09",
+                        "data_evento":  "2029-07-07",
+                        "taxa":  "1.600000000000000",
+                        "valor":  null,
+                        "status":  {
+                                       "status":  "Previsto",
+                                       "grupo_status":  "Planejado"
+                                   },
+                        "evento":  "PAGAMENTO DE JUROS",
+                        "evento_arc":  "Juros",
+                        "flag_status":  "Parcial"
+                    },
+                    {
+                        "codigo_b3":  "IOCHA7",
+                        "data_base":  "2030-01-07",
+                        "data_liquidacao":  "2030-01-07",
+                        "data_evento":  "2030-01-07",
+                        "taxa":  "1.600000000000000",
+                        "valor":  null,
+                        "status":  {
+                                       "status":  "Previsto",
+                                       "grupo_status":  "Planejado"
+                                   },
+                        "evento":  "PAGAMENTO DE JUROS",
+                        "evento_arc":  "Juros",
+                        "flag_status":  "Parcial"
+                    },
+                    {
+                        "codigo_b3":  "IOCHA7",
+                        "data_base":  "2030-07-08",
+                        "data_liquidacao":  "2030-07-08",
+                        "data_evento":  "2030-07-07",
+                        "taxa":  "100.000000000000000",
+                        "valor":  null,
+                        "status":  {
+                                       "status":  "Previsto",
+                                       "grupo_status":  "Planejado"
+                                   },
+                        "evento":  "VENCIMENTO (RESGATE)",
+                        "evento_arc":  "Amortização",
+                        "flag_status":  "Parcial"
+                    },
+                    {
+                        "codigo_b3":  "IOCHA7",
+                        "data_base":  "2030-07-08",
+                        "data_liquidacao":  "2030-07-08",
+                        "data_evento":  "2030-07-07",
+                        "taxa":  "1.600000000000000",
+                        "valor":  null,
+                        "status":  {
+                                       "status":  "Previsto",
+                                       "grupo_status":  "Planejado"
+                                   },
+                        "evento":  "PAGAMENTO DE JUROS",
+                        "evento_arc":  "Juros",
+                        "flag_status":  "Parcial"
+                    }
+                ],
+    "number":  0,
+    "size":  100,
+    "total_elements":  9,
+    "pageable":  {
+                     "sort":  {
+                                  "unsorted":  true,
+                                  "sorted":  false,
+                                  "empty":  true
+                              },
+                     "page_number":  0,
+                     "page_size":  100,
+                     "offset":  0,
+                     "paged":  true,
+                     "unpaged":  false
+                 },
+    "last":  true,
+    "total_pages":  1,
+    "sort":  {
+                 "unsorted":  true,
+                 "sorted":  false,
+                 "empty":  true
+             },
+    "first":  true,
+    "number_of_elements":  9,
+    "custom_field":  null,
+    "alerta_liquidacao":  false,
+    "empty":  false
+}

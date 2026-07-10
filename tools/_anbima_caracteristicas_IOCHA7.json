@@ -1,0 +1,60 @@
+﻿{
+    "codigo_b3":  "IOCHA7",
+    "numero_serie":  "1",
+    "tipo":  "DEB",
+    "isin":  "BRMYPKDBS0G3",
+    "devedor":  null,
+    "lei":  false,
+    "emissao":  {
+                    "volume":  "400000000.000000000000000",
+                    "garantia":  "Quirografária",
+                    "status":  null,
+                    "emissor":  {
+                                    "nome":  "IOCHPE-MAXION S/A",
+                                    "cnpj":  "61156113000175",
+                                    "setor":  "Indústria e Comércio",
+                                    "razao_social":  "IOCHPE-MAXION S.A."
+                                },
+                    "coordenadores":  [
+
+                                      ],
+                    "numero_emissao":  "17",
+                    "data_emissao":  "2026-07-07",
+                    "quantidade_emitida":  "400000",
+                    "quantidade_mercado":  "400000",
+                    "registro_cvm":  null,
+                    "prefixo_codigo_b3":  "IOCH",
+                    "numero_processo":  null,
+                    "coordenador_lider":  {
+                                              "nome":  "ITAU UNIBANCO HOLDING S.A",
+                                              "cnpj":  "60872504000123",
+                                              "setor":  "Comércio Atacadista e Varejista",
+                                              "razao_social":  "ITAU UNIBANCO HOLDING S.A"
+                                          },
+                    "banco_mandatario":  "ITAU UNIBANCO S.A.",
+                    "agente_fiduciario":  {
+                                              "nome":  "PENTAGONO S/A DTVM",
+                                              "cnpj":  "17343682000138",
+                                              "setor":  null,
+                                              "razao_social":  "PENTAGONO S/A DTVM"
+                                          },
+                    "data_registro_b3":  "2026-07-01"
+                },
+    "setor":  "Indústria e Comércio",
+    "data_vencimento":  "2030-07-07",
+    "remuneracao":  "DI + 1.6000%",
+    "pu_indicativo":  null,
+    "pu_historico":  {
+                         "data_referencia":  "2026-07-09",
+                         "pu_par":  null,
+                         "vna":  null,
+                         "juros":  null,
+                         "prazo_remanescente":  1437,
+                         "flag_status":  "PENDENTE",
+                         "data_ultima_atualizacao":  "2026-07-09T00:00:00"
+                     },
+    "nome_operacao":  null,
+    "flag_aprovar_caracteristicas":  "PARCIAL",
+    "flag_liberar_confere":  null,
+    "series_da_mesma_emissao":  null
+}
