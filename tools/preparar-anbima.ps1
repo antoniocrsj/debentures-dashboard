@@ -36,8 +36,10 @@ param(
   [string]$DebFile = '',    # modo manual: caminho do .xls de debentures
   [string]$TpfFile = '',    # modo manual: caminho do .txt de titulos publicos
   [int]$MaxFallbackDays = 8,# quantos dias volta procurando o arquivo mais recente
-  [int]$MaxSegundos = 0     # >0: limite de tempo da paginacao da API (0 = sem limite)
-)
+  [int]$MaxSegundos = 0,    # >0: limite de tempo da paginacao da API (0 = sem limite)
+  [string]$ProbeAgenda = '' # DEV: baixa a agenda+caracteristicas do ticker informado
+)                           #      (ex.: -ProbeAgenda IOCHA7) e grava o JSON cru, so pra
+                            #      inspecionar o formato. Nao roda o fluxo normal.
 
 $ErrorActionPreference = 'Stop'
 $ci = [System.Globalization.CultureInfo]::InvariantCulture
@@ -183,6 +185,28 @@ function Tipo-AnbimaApi($indexador) {
   if ($idx -match 'IGP') { return 'IGP-M' }
   return $idx
 }
+# DEV: -ProbeAgenda TICKER -> baixa agenda + caracteristicas cruas e grava em
+# tools\_anbima_*.json, so pra inspecionar os campos. Reusa a auth acima.
+if ($ProbeAgenda) {
+  $tk = $ProbeAgenda.Trim().ToUpperInvariant()
+  Write-Host "PROBE ANBIMA: baixando agenda + caracteristicas de $tk ..." -ForegroundColor Cyan
+  $dump = {
+    param($label, $path, $query, $file)
+    try {
+      $obj = Invoke-AnbimaDataApi $path $query
+      $out = Join-Path $PSScriptRoot $file
+      ($obj | ConvertTo-Json -Depth 15) | Out-File -FilePath $out -Encoding utf8
+      Write-Host "  OK $label -> tools\$file" -ForegroundColor Green
+    } catch {
+      Write-Host "  $label FALHOU ($path): $($_.Exception.Message)" -ForegroundColor Yellow
+    }
+  }
+  & $dump 'agenda'         "/web-bff/v1/debentures/$tk/agenda" ([ordered]@{ page=0; size=200 }) "_anbima_agenda_$tk.json"
+  & $dump 'caracteristicas' "/web-bff/v1/debentures/$tk"        ([ordered]@{ view='precos' })     "_anbima_caracteristicas_$tk.json"
+  Write-Host "Pronto. Faca commit desses 2 arquivos (ou cole o conteudo) que eu escrevo o parser." -ForegroundColor Cyan
+  exit 0
+}
+
 function Load-AnbimaDataApi {
   $wantedDate = $Data
   $pageSize = 100
