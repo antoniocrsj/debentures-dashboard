@@ -23,6 +23,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 44025131000107,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-16,2025-06-16,235194381.58
 29044189000104,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-02,2025-06-02,293548475.15
 09720734000110,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-09,2025-06-09,541003252.01
+65793919000125,Trad,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-03-19,2026-03-16,15510975.74
 04618345000164,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-26,2025-06-26,129570068.79
 40156669000191,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-04-17,2025-04-17,40669008.99
 44212092000149,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-26,2025-06-26,943390544.3
@@ -103,6 +104,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 06015421000172,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-02,2025-06-02,556296181.94
 25234711000151,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-12-27,2024-12-27,9136753896.22
 18428655000120,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-02,2025-06-02,4669650785.32
+64440839000123,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-01-13,2026-01-07,940232506.61
 03389374000139,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-25,2025-06-25,128459017052
 62625643000188,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-09-09,2025-09-09,20872505.35
 08984821000111,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-09,2025-06-09,48644411.49
@@ -215,10 +217,12 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 44835820000179,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-10,2025-06-10,24898435.5
 15612416000138,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-26,2025-06-26,69740025.95
 42847342000191,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-05-13,2025-05-13,92219524.33
+65927318000168,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-03-26,2026-03-26,181472293.53
 30338838000150,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-04-23,2025-04-23,579639412.89
 13106998000155,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-05-07,2025-05-07,181741071.1
 42747172000173,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-05-13,2025-05-13,75721241.52
 65028465000104,Trad,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-02-09,2026-02-09,38755324.8
+65927708000138,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-03-26,2026-03-26,171046161.24
 20146318000192,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-05-07,2025-05-07,280524147.59
 41672242000109,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-10,2025-06-10,631832494.05
 34270943000156,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-04-22,2025-04-22,100288118.63
@@ -256,8 +260,6 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 39488907000187,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-04-23,2024-04-23,60471708.4
 29106510000120,Trad,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-01-30,2024-01-30,21788579.73
 55893460000188,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-11,2024-07-11,115199056.89
-25307339000166,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-02-06,2025-02-06,951072588.54
-31611340000182,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-01-27,2025-01-27,553040058.61
 44196930000138,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-01-23,2024-01-23,181113540.06
 37842935000125,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-03-31,2025-03-31,30191379.57
 22118303000146,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-09-12,2024-09-12,109564908.35
@@ -416,6 +418,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 10264255000115,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-26,2024-07-26,40763714470.44
 21888723000149,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-12-23,2024-12-23,3218592526.28
 28851713000188,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-12-18,2024-12-18,1916797001.49
+63790160000100,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-11-24,2025-11-24,119305775.74
 54227728000180,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-03-07,2024-03-07,649531179.3
 42717986000165,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-02-21,2025-02-21,7448258378.01
 40476059000175,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-09-26,2024-09-26,42934433.93
@@ -450,6 +453,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 60008150000173,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-03-20,2025-03-20,618926203.23
 41756159000118,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-20,2025-06-20,9084960690.02
 42229399000127,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-13,2025-06-13,11590069082.1
+66161408000153,Trad,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-04-09,2026-04-09,2900154.54
 46332105000149,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-25,2025-06-25,2355498412.66
 55087532000108,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-05-10,2024-05-10,7099438074.78
 26491419000187,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-13,2025-06-13,6994563265.28
@@ -464,6 +468,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 52204076000132,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-11-27,2024-11-27,3074565323.4
 41349248000140,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-05-02,2025-05-02,90629983.05
 36521640000194,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-09-10,2024-09-10,96558162.64
+65338884000134,Trad,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-02-26,2026-02-26,9771613.25
 39487617000119,Trad,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-05-21,2025-05-21,109336471.53
 42449381000130,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-04-24,2025-04-24,25634420.15
 41348664000123,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-02-10,2025-02-10,45420562.39
@@ -497,6 +502,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 12698632000150,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-03-14,2024-03-14,38833035.7
 56545142000199,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-08-12,2024-08-12,19415052.48
 10643489000173,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-03-28,2025-03-28,968870961.65
+58238959000140,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-11-26,2024-11-25,499190803.11
 60937559000174,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-05-21,2025-05-19,5638418.9
 05615511000131,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-17,2025-06-17,365472545.14
 05615522000111,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-17,2025-06-17,465373950.06
@@ -552,6 +558,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 43164438000118,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-05-13,2025-05-13,137310666.17
 58460574000122,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-12-13,2024-12-12,184814903.37
 23376623000169,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-03-21,2025-03-21,71647602.69
+65796563000183,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-03-19,2026-03-16,74977973.32
 24986620000100,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-08-19,2024-08-19,42316685.29
 52272566000176,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-04-17,2024-04-17,54485215.95
 52273351000170,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-06-10,2024-06-10,11023243.5
@@ -643,6 +650,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 19550100000110,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-03-13,2025-03-13,217122339.68
 41722175000190,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-18,2025-06-18,366924573.84
 43619743000157,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-03-13,2025-03-13,1157823803.29
+64985472000123,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-02-06,2026-02-06,81400502.84
 42220424000101,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-03-11,2025-03-11,146331236.58
 57035810000109,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-08-27,2024-08-27,55849106.75
 37267132000194,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-01-08,2025-01-08,13697657.94
@@ -726,6 +734,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 55726312000179,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-06-28,2024-06-28,744094005.63
 14491665000150,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-17,2025-06-17,39253483.41
 59889169000197,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-03-13,2025-03-13,3521221755.36
+64111034000136,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-12-18,2025-12-18,156646209.46
 04240128000183,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-01-20,2025-01-20,176225290.84
 62232489000184,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-08-14,2025-08-14,283552505.39
 06866051000187,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-06-24,2024-06-24,2076924538.65
@@ -756,10 +765,13 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 63105295000180,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-10-08,2025-10-08,32004100.79
 63532720000118,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-11-05,2025-10-30,32025850.88
 61818719000129,Trad,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-07-18,2025-06-16,33320491.16
+25307339000166,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-02-06,2025-02-06,951072588.54
+31611340000182,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-01-27,2025-01-27,553040058.61
 43584990000165,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-04-30,2025-04-30,31515394.85
 14473842000175,Trad,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-11-01,2024-11-01,47219083.37
 58459343000107,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-12-13,2024-12-13,1376549084.93
 54347933000189,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-03-15,2024-03-15,35267985.72
+62870208000119,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-09-24,2025-09-24,20876865.96
 17138011000135,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-20,2025-06-20,648051120.33
 29109266000159,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-05-22,2025-05-22,338908686.74
 37331175000191,Trad,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-05-16,2025-05-16,145711754.14
@@ -839,6 +851,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 63319624000196,12431,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-10-22,2025-10-22,3451171.27
 59587336000145,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-02-21,2025-02-21,89672527.15
 62234191000103,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-08-14,2025-08-14,27462091.88
+62624041000106,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-09-09,2025-09-09,61488450.44
 54334995000156,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-03-14,2024-03-14,4303891692.39
 47628885000131,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-10-18,2024-10-18,1304294437.3
 55956652000196,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-16,2024-07-16,553963618.02
@@ -850,6 +863,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 51112915000120,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-10-18,2024-10-18,208637187.44
 50861003000198,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2023-12-08,2023-12-08,190158323.93
 60606855000192,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-04-29,2025-04-29,3803484.57
+62406671000104,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-08-26,2025-08-26,29838265.78
 55485710000140,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-06-11,2024-06-11,87242667.59
 55083993000102,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-05-10,2024-05-10,79619368.49
 58580968000114,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-12-30,2024-12-30,22637301
@@ -887,6 +901,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 52999105000108,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2023-11-24,2023-11-24,49606750.7
 55250638000172,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-05-23,2024-05-23,45274635.83
 43122017000124,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-24,2024-07-24,73359694.71
+65847230000136,12431,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-03-23,2026-03-23,45005067.92
 62231879000130,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-08-14,2025-08-14,17407189.59
 54644019000108,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-04-08,2024-04-08,28783130.29
 56365479000114,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-08-07,2024-08-07,25073264.49
@@ -951,6 +966,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 54334534000183,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-03-14,2024-03-14,34847273.56
 63939280000118,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-12-04,2025-12-04,58933298.72
 64958783000101,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-02-05,2026-02-04,234771047.72
+66632272000112,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-05-06,2026-05-06,231974624.86
 24658649000162,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-05-08,2025-05-08,414893035.89
 51389786000111,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-05-28,2025-05-28,105471329.65
 08814754000197,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-08-26,2024-08-26,6284964.26
@@ -970,8 +986,10 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 53180560000131,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2023-12-12,2023-12-12,105890965.69
 61140801000147,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-03,2025-06-03,10793496.87
 61141163000189,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-03,2025-06-03,24877187.65
+65680121000177,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-03-13,2026-03-12,20094717.18
 64435884000190,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-01-13,2026-01-07,20941337.58
 62729351000195,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-09-15,2025-09-15,24207875.29
+65835445000137,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-03-23,2026-03-16,8743134.47
 63190103000181,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-10-14,2025-10-13,10416633.51
 62361404000168,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-08-22,2025-08-22,13426204.41
 62726496000132,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-09-15,2025-09-15,13281285.66
@@ -980,9 +998,11 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 59817562000175,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-03-10,2025-03-10,36662547.52
 42619279000136,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-17,2025-06-17,121986310.05
 62361327000146,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-08-22,2025-08-22,14851044.84
+64436536000137,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-01-13,2026-01-07,47061085.77
 59818797000181,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-03-10,2025-03-10,36056697.09
 63190767000140,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-10-14,2025-10-13,18264967.75
 55746538000131,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-01,2024-07-01,35368765.66
+62361545000180,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-08-22,2025-08-22,9690848.03
 39255769000196,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-03,2025-06-03,105103224.21
 57714518000104,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-10-16,2024-10-16,22219493.87
 61140970000187,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-03,2025-06-03,10404452.53
@@ -997,6 +1017,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 59817810000188,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-03-10,2025-03-10,40987358.94
 45081662000171,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-10,2025-06-10,28855549.06
 55053084000113,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-05-08,2024-05-08,42167101.43
+65680395000166,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-03-13,2026-03-12,34922588.43
 63189410000142,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-10-14,2025-10-13,15886532.28
 58340147000100,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-12-04,2024-12-04,967841527.58
 61141201000101,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-03,2025-06-03,18617913.74
@@ -1005,9 +1026,11 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 59814123000109,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-03-10,2025-03-10,72800021.19
 61835843000100,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-07-21,2025-07-18,36674257.04
 54602971000130,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-04-04,2024-04-04,34837359.24
+65835458000106,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-03-23,2026-03-16,15230205.22
 57713013000125,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-10-16,2024-10-16,16063495.11
 58341471000143,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-12-04,2024-12-04,11659774.17
 62360992000115,12431,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-08-22,2025-08-22,1747627718.93
+64436974000103,12431,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-01-13,2026-01-07,1057828023.51
 61141536000111,12431,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-03,2025-06-03,3228696110.11
 61836539000170,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-07-21,2025-07-18,89543461.81
 59817381000149,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-03-10,2025-03-10,15992650.63
@@ -1029,6 +1052,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 31963315000168,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-02-17,2025-02-17,376843031.84
 61837406000118,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-07-21,2025-07-18,14580474.42
 61141069000120,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-03,2025-06-03,24667218.3
+63197072000190,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-10-15,2025-10-13,20253323.94
 62727602000100,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-09-15,2025-09-15,11039670.11
 59818212000123,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-03-10,2025-03-10,49589244.59
 53827154000118,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-02-06,2024-02-06,87113101.14
@@ -1074,6 +1098,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 52459972000142,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2023-10-13,2023-10-13,95831603.25
 53501945000153,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-01-15,2024-01-15,22997091.21
 60965262000112,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-05-22,2025-05-22,175278587.67
+64566437000170,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-01-19,2026-01-19,17936396.04
 57204032000126,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-09-09,2024-09-09,25692230.26
 54384643000105,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-03-19,2024-03-19,18765127.76
 49001440000152,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-05-05,2025-05-05,22350950.53
@@ -1120,6 +1145,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 44315864000178,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-23,2025-06-23,1559513536.17
 62171470000175,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-08-11,2025-08-11,5981685554.98
 54006238000153,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-02-21,2024-02-21,4204923830.03
+65421221000189,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-03-02,2026-03-02,542138881.82
 32388028000134,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-23,2025-06-23,278543264.57
 51959820000146,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-17,2025-06-17,2294453507.6
 57449111000105,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-09-26,2024-09-26,478510878.12
@@ -1142,6 +1168,8 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 62438200000188,12431,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-08-27,2025-08-27,248903367.92
 58280010000108,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-11-29,2024-11-27,351962272.48
 55701008000177,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-06-27,2024-06-27,66601263.13
+55515189000147,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-06-13,2024-06-13,122555540.65
+55588398000110,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-06-19,2024-06-19,12402249.17
 51697128000197,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-09-30,2024-09-30,411208415.97
 54518783000129,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-03-28,2024-03-28,167918352.01
 54517219000191,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-03-28,2024-03-28,2145694421.71
@@ -1170,6 +1198,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 55772629000141,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-02,2024-07-02,34143344.78
 54883919000108,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-04-25,2024-04-25,64618194.71
 36947635000148,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-11-26,2024-11-26,162990858.88
+65888766000108,12431,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-03-25,2026-03-25,12546236.58
 26605199000175,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-11,2025-06-11,88573037.85
 63729525000182,12431,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-11-18,2025-11-17,114252367.74
 64071100000191,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-12-16,2025-12-15,54424827.64
@@ -1193,6 +1222,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 63950469000101,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-12-05,2025-12-05,166372667.99
 54333407000160,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-03-14,2024-03-14,28623459.14
 54713770000100,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-04-12,2024-04-12,25902401.9
+65818203000135,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-03-20,2026-03-20,35309705.43
 55160342000160,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-05-16,2024-05-16,394763566.66
 63032258000190,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-10-03,2025-10-03,82071227.37
 62318156000172,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-08-20,2025-08-20,21203759.89
@@ -1315,7 +1345,9 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 57561942000166,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-10-04,2024-10-03,24643796.66
 54410101000160,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-03-20,2024-03-20,36477111.2
 63743483000134,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-11-19,2025-11-13,19153875.92
+58313484000109,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-12-02,2024-12-02,25986788.78
 59826291000114,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-03-10,2025-03-10,20840946.17
+62317858000131,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-08-20,2025-08-20,20712843
 56984639000103,12431,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-08-23,2024-08-23,24705591.94
 54715962000156,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-04-12,2024-04-12,90115045.78
 64003281000119,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-12-10,2025-12-10,95800371.36
@@ -1336,6 +1368,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 51476823000129,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-25,2024-07-25,24165237.24
 55162785000190,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-05-16,2024-05-16,21300452.66
 54518613000144,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-03-28,2024-03-28,22849571.27
+62232457000189,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-08-14,2025-08-14,30059058.34
 55898568000163,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-11,2024-07-11,57146952.75
 44229743000103,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-03-21,2024-03-21,68369668.4
 61080007000155,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-05-30,2025-05-30,7612031.98
@@ -1351,6 +1384,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 53509435000122,12431,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-01-15,2024-01-15,9306173.14
 59091360000199,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-01-24,2025-01-24,23495575.47
 62789682000110,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-09-18,2025-09-17,44950741.65
+62363801000179,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-08-22,2025-08-22,20877124.01
 32044932000122,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-23,2024-07-23,77100245.47
 37893354000112,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-06-12,2024-06-12,58201400.57
 55505792000148,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-06-12,2024-06-12,19048123.61
@@ -1477,6 +1511,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 31908005000140,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-04-08,2025-04-08,36611619.82
 55761979000102,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-02,2024-07-02,12560858.24
 57018425000145,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-08-26,2024-08-26,21705855.32
+56052337000105,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-23,2024-07-23,40866603.88
 48969700000115,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-24,2024-07-24,44969631.02
 56942408000137,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-08-21,2024-08-21,89015532.38
 42447197000151,12431,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-02-19,2024-02-19,90521339.03
@@ -1499,7 +1534,9 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 55754033000119,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-01,2024-07-01,23046497.45
 55240049000103,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-05-22,2024-05-22,23557572.5
 42195916000194,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-18,2024-07-18,136984646.72
+62474207000155,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-08-29,2025-08-29,20488002.23
 41687130000121,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-03-27,2025-03-27,30843313.65
+62317574000145,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-08-20,2025-08-20,30653355.01
 55861122000164,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-09,2024-07-09,48825879.67
 57744696000188,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-10-18,2024-10-18,11418808.86
 52259535000185,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-02-29,2024-02-29,139267927.67
@@ -1515,6 +1552,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 59061141000167,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-01-23,2025-01-23,30604101.22
 53359596000187,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-01-03,2024-01-03,483065569.34
 49827171000188,12431,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-03,2024-07-03,26615037.65
+66404420000141,12431,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-04-23,2026-04-23,19619242.69
 58440238000118,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-12-12,2024-12-10,60690182.26
 61972391000109,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-07-29,2025-07-28,64014053.52
 55536261000112,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-06-14,2024-06-14,20966858.27
@@ -1540,6 +1578,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 39703214000160,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-27,2025-06-27,246613380.52
 53602540000101,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-01-22,2024-01-22,72965269.8
 64192422000199,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-12-29,2025-12-29,1275853976.67
+62318643000135,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-08-20,2025-08-20,44316916.13
 27928267000108,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-05-07,2025-05-07,98625150.71
 58264015000147,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-11-28,2024-11-27,356378786.16
 62991350000114,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-10-01,2025-10-01,20745578.67
@@ -1603,6 +1642,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 58277022000183,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-11-28,2024-11-28,117015469.22
 58193485000167,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-11-22,2024-11-22,54265333.82
 61854664000102,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-07-22,2025-07-21,544518129.45
+64582548000170,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-01-19,2026-01-16,17652141.25
 61791538000156,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-07-17,2025-07-17,2902559527.9
 52842303000155,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2023-11-17,2023-11-17,221502723.27
 59591104000160,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-02-21,2025-02-21,218449473.33
@@ -1685,6 +1725,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 56174179000158,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-31,2024-07-31,17350730.52
 34799490000150,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-01-27,2025-01-27,51661754.79
 59176878000125,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-01-29,2025-01-28,54171755.54
+62064607000192,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-08-04,2025-08-04,21299337.91
 52968244000166,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2023-11-22,2023-11-22,26437095.6
 55927207000106,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-15,2024-07-15,55124890.8
 63284019000127,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-10-21,2025-10-16,125400223.59
@@ -1697,6 +1738,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 54008556000153,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-02-21,2024-02-21,21372940.96
 53075427000115,12431,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2023-12-01,2023-12-01,45613332.89
 26324289000198,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-26,2025-06-26,2362567976.56
+65079801000130,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-02-11,2026-02-11,393608148.9
 52892279000169,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2023-11-14,2023-11-14,599696813.58
 57629609000141,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-10-09,2024-10-09,217954935.53
 49920429000196,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-26,2024-07-26,125962748.04
@@ -1807,6 +1849,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 61925300000176,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-07-25,2025-07-25,25270046.64
 55177251000138,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-05-17,2024-05-17,37295092.69
 42420671000151,12431,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-06-28,2024-06-28,34590340.19
+59963244000112,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-03-18,2025-03-18,25240400.76
 53018805000129,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2023-11-27,2023-11-27,47895100.45
 60442622000100,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-04-16,2025-04-16,32438433.22
 54070985000150,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-02-26,2024-02-26,46012653.66
@@ -1826,6 +1869,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 63953464000132,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-12-05,2025-12-05,215066102.83
 54760175000126,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-04-16,2024-04-16,31560204.64
 54547258000131,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-04-01,2024-04-01,29101858.96
+61351211000163,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-17,2025-06-17,22408250.18
 57883567000170,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-10-29,2024-10-28,67591901.27
 56175172000150,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-31,2024-07-31,52358013.59
 53623218000169,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-01-23,2024-01-23,25173913.26
@@ -1901,6 +1945,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 30998213000115,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-18,2024-07-18,111239546.73
 54115218000110,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-02-28,2024-02-28,92598687.18
 37893263000187,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-23,2024-07-23,121806011.99
+66572564000107,12431,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-05-04,2026-05-04,19382704.25
 26725116000181,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-05-07,2025-05-07,24301466.05
 58547919000180,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-12-23,2024-12-23,34125879.04
 54893677000125,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-04-25,2024-04-25,48010088.55
@@ -1992,6 +2037,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 26751126000191,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-03-26,2025-03-26,135777117.52
 62140128000108,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-08-08,2025-08-08,19044292.69
 60859716000170,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-05-16,2025-05-13,25263474.59
+64593756000174,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-01-20,2026-01-20,13543534.48
 45019458000120,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-04-08,2025-04-08,69805315.64
 56431500000132,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-08-09,2024-08-09,178239597.72
 41395322000164,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-24,2024-07-24,60360747.52
@@ -2004,6 +2050,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 58054338000106,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-11-11,2024-11-11,93321157.11
 41300683000180,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-24,2025-06-24,100521294.82
 33768955000142,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-24,2025-06-24,147668276.69
+56955481000143,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-08-21,2024-08-21,20256300.38
 55477207000143,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-06-11,2024-06-11,137626570.62
 53390524000100,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-01-05,2024-01-05,29170743.59
 44960766000193,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-20,2025-06-20,16183705.7
@@ -2054,6 +2101,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 55384132000156,12431,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-06-04,2024-06-04,1727730551.82
 55176509000181,12431,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-05-17,2024-05-17,1545782389.73
 58258574000144,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-11-27,2024-11-27,2611470114.65
+65612787000198,12431,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-03-11,2026-03-11,409362554.63
 55382748000198,12431,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-06-04,2024-06-04,89074269.71
 60124635000122,12431,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-03-27,2025-03-27,8458953.26
 59878473000139,12431,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-03-13,2025-03-13,8455704.81
@@ -2072,10 +2120,12 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 62672889000100,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-09-11,2025-09-11,26061366.65
 61108069000128,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-02,2025-06-02,192366360.37
 51381641000174,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-25,2024-07-25,24490832.13
+65861280000178,12431,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-03-24,2026-03-24,31282478.54
 62644763000122,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-09-10,2025-09-04,19953314.99
 52878009000101,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2023-11-13,2023-11-13,336276716.39
 55983101000111,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-18,2024-07-18,38245388.93
 62852342000197,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-09-23,2025-09-18,24312200.54
+64651483000177,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-01-22,2026-01-22,28092335.31
 62572931000111,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-09-04,2025-08-29,83197532.17
 51710645000159,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-03-24,2025-03-24,3028295258.39
 59016228000112,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-01-21,2025-01-21,2551585958.84
@@ -2095,8 +2145,10 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 57745265000136,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-10-18,2024-10-18,13694533.95
 59412583000100,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-02-11,2025-02-11,25049850.57
 61844366000131,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-07-21,2025-07-21,17651120.21
+61884366000165,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-07-23,2025-07-23,27805402.16
 62986829000162,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-10-01,2025-10-01,75275948.66
 62983270000117,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-10-01,2025-10-01,10279080.27
+63093259000144,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-10-08,2025-10-08,33584649.44
 56388249000170,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-08-08,2024-08-08,30880717.6
 54487667000190,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-03-26,2024-03-26,71551972.39
 60920222000154,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-05-20,2025-05-20,30778966.94
@@ -2118,11 +2170,15 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 63159694000124,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-10-13,2025-10-13,15885037.71
 60742779000142,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-05-08,2025-05-08,35398264.64
 59911193000185,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-03-14,2025-03-14,10601821.08
+66148609000110,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-04-08,2026-04-08,12311439.66
 62771190000106,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-09-17,2025-09-17,23849871.72
 56388159000180,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-08-08,2024-08-08,13336688.3
 58108837000139,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-11-14,2024-11-14,11585671.9
+65842530000122,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-03-23,2026-03-23,20554835.02
+65529915000134,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-03-06,2026-03-06,15046043.23
 63405360000193,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-10-28,2025-10-27,22444701.33
 63405863000169,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-10-28,2025-10-28,14596444.7
+65529691000160,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-03-06,2026-03-06,15629465.92
 60532320000114,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-04-24,2025-04-24,15978501.06
 63383901000120,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-10-27,2025-10-27,14011515.37
 59655567000149,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-02-25,2025-02-25,14914460.02
@@ -2169,6 +2225,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 54794799000164,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-04-18,2024-04-18,11783305.78
 57395648000121,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-09-23,2024-09-23,15642495.1
 62120583000141,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-08-07,2025-08-07,17920254.06
+61197890000168,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-06,2025-06-06,10275218.58
 63788524000109,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-11-24,2025-11-24,17966495.91
 56088570000130,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-25,2024-07-25,11526613.91
 58651958000122,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-01-06,2025-01-06,11214250.97
@@ -2178,6 +2235,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 63159716000156,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-10-13,2025-10-13,19667693.15
 59941827000142,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-03-17,2025-03-17,12268060.5
 59511772000130,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-02-17,2025-02-17,12680423.93
+64113409000105,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-12-18,2025-12-18,77191645.22
 57035905000114,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-08-27,2024-08-27,118736968.03
 63092952000100,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-10-08,2025-10-08,0
 62751026000129,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-09-16,2025-09-16,18011108.5
@@ -2194,17 +2252,20 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 62806106000134,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-09-19,2025-09-19,69735040.3
 62074561000192,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-08-05,2025-08-05,14067397.96
 53962449000105,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-02-19,2024-02-19,30819540.7
+63761168000130,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-11-21,2025-11-21,119237171.25
 58361052000173,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-12-05,2024-12-05,124445513.77
 63052049000108,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-10-06,2025-10-06,12473492.05
 60233116000100,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-04-03,2025-04-03,48773130.56
 60742631000108,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-05-08,2025-05-08,19232469.06
 60742819000156,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-05-08,2025-05-08,301611179.65
+65107242000124,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-02-12,2026-02-12,19891720.91
 59412648000118,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-02-11,2025-02-11,183120812.21
 59511583000168,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-02-17,2025-02-17,171768876.85
 58286171000109,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-11-29,2024-11-28,11583306.83
 59511685000183,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-02-17,2025-02-17,82180958.89
 56283509000143,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-08-05,2024-08-05,28215912.4
 64597707000100,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-01-20,2026-01-20,74880082.47
+65073005000190,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-02-11,2026-02-11,16933943.25
 58075902000177,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-11-12,2024-11-12,30121162.06
 63159704000121,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-10-13,2025-10-13,25025123.37
 55937743000184,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-15,2024-07-15,17481147.27
@@ -2234,6 +2295,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 54603605000104,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-04-04,2024-04-04,109121158.07
 42598117000169,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-05-21,2025-05-21,14995669.84
 61245368000104,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-06-10,2025-06-10,125334914.48
+64680282000106,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-01-23,2026-01-23,26531149.05
 37541412000149,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-23,2024-07-23,62632429.34
 62623910000188,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-09-09,2025-09-09,16150327.19
 55150666000118,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-05-16,2024-05-16,41626510.58
@@ -2253,6 +2315,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 54715191000105,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-04-12,2024-04-12,42362977.39
 54029274000132,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-02-22,2024-02-22,57287213.25
 51357586000187,12431,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2023-10-11,2023-10-11,24980255.77
+66298117000101,12431,,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-04-16,2026-04-16,59425963.42
 23884659000153,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-01-15,2024-01-15,38488834.62
 58399524000187,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-12-09,2024-12-04,66512482.64
 55231454000165,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-05-22,2024-05-22,92993374.45
@@ -2335,6 +2398,7 @@ CNPJ_FUNDO_CLASSE,Lista,Forma_Condominio,Tipo_Classe,Situacao,Data_Registro,Data
 14880030000144,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-11-25,2024-11-25,15080984.07
 32485590000186,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-12-09,2024-12-09,44058608.96
 50926941000129,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-24,2024-07-24,23906949.97
+64776777000125,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2026-01-29,2026-01-28,14735273.25
 58691085000181,12431,Aberto,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2025-01-08,2025-01-08,48529841.22
 57285625000164,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-09-13,2024-09-13,346198392.26
 40054529000102,12431,Fechado,Classes de Cotas de Fundos FIF,Em Funcionamento Normal,2024-07-23,2024-07-23,28879450.16
