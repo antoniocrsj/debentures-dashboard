@@ -99,6 +99,7 @@ function loadDebentures() {
     map.set(tk, {
       ticker: tk,
       emissor: (r['Empresa'] || '').trim(),
+      cnpj: String(r['CNPJ'] || '').replace(/\D/g, ''),
       emissao: r['Data de Emissao'] || '',
       vencimento: r['Data de Vencimento'] || '',
       notionalMercado: qtd * vna,
@@ -110,12 +111,32 @@ function loadDebentures() {
   }
   return map
 }
+// Carteira: por ticker, a lista de (gestor, valor alocado). Permite distribuir
+// os eventos por gestor ("qual fundo recebe mais") e somar o total por ticker.
 function loadCarteira() {
-  const map = new Map()
+  const map = new Map()   // ticker -> Array<{ gestor, val }>
   for (const r of readCsv(path.join(PUBLIC, 'BLC_tratado.csv'))) {
     const tk = norm(r['CD_ATIVO'])
     if (!tk) continue
-    map.set(tk, (map.get(tk) || 0) + parseNum(r['VL_ALOCADO']))
+    const val = parseNum(r['VL_ALOCADO'])
+    if (val <= 0) continue
+    const gestor = (r['GESTOR'] || '').trim() || '(sem gestor)'
+    if (!map.has(tk)) map.set(tk, [])
+    map.get(tk).push({ gestor, val })
+  }
+  return map
+}
+function carteiraTotal(rows) {
+  return rows ? rows.reduce((s, x) => s + x.val, 0) : 0
+}
+// Emissor (CNPJ) -> grupo economico. Fonte: public/Emissores.csv (inteligencia
+// do usuario, gerada por preparar-emissores.ps1).
+function loadEmissores() {
+  const map = new Map()
+  for (const r of readCsv(path.join(PUBLIC, 'Emissores.csv'))) {
+    const c = String(r['CNPJ Emissor'] || r['CNPJ'] || '').replace(/\D/g, '')
+    if (!c) continue
+    map.set(c, { grupo: (r['Grupo'] || '').trim(), setor: (r['Setor'] || '').trim() })
   }
   return map
 }
@@ -167,7 +188,24 @@ function main() {
   const premissas = loadPremissas()
   const debs = loadDebentures()
   const carteira = loadCarteira()
+  const emissores = loadEmissores()
   const { map: anbima, refDate: anbRef } = loadAnbima()
+
+  // Agregados (o foco): caixa que entra por gestor (fundo), emissor e grupo.
+  const gestorAgg = new Map()   // gestor -> { nome, juros, amort }   (so carteira)
+  const emissorAgg = new Map()  // emissor -> { nome, carteira{}, mercado{} }
+  const grupoAgg = new Map()    // grupo   -> idem
+  const addGestor = (g, j, a) => {
+    let o = gestorAgg.get(g); if (!o) { o = { nome: g, juros: 0, amort: 0 }; gestorAgg.set(g, o) }
+    o.juros += j; o.amort += a
+  }
+  const addDim = (map, key, aC, aM) => {
+    const k = key || '(sem classificacao)'
+    let o = map.get(k)
+    if (!o) { o = { nome: k, carteira: { juros: 0, amort: 0 }, mercado: { juros: 0, amort: 0 } }; map.set(k, o) }
+    o.carteira.juros += aC.juros; o.carteira.amort += aC.amort
+    o.mercado.juros += aM.juros; o.mercado.amort += aM.amort
+  }
 
   // Ancora: data dos dados (ref ANBIMA) — nunca o relogio, quando disponivel.
   const hoje = parseData(anbRef) || new Date()
@@ -202,7 +240,8 @@ function main() {
   for (const tk of universo) {
     const deb = debs.get(tk)
     const notMercado = deb ? deb.notionalMercado : 0
-    const notCarteira = carteira.get(tk) || 0
+    const cartRows = carteira.get(tk) || []
+    const notCarteira = carteiraTotal(cartRows)
     if (notMercado <= 0 && notCarteira <= 0) continue
 
     if (!cacheFiles.has(tk)) { semCache++; continue }
@@ -243,6 +282,7 @@ function main() {
       meses[mi].mercado.juros += jMerc; meses[mi].mercado.nEventos++
       meses[mi].carteira.juros += jCart; if (notCarteira > 0) meses[mi].carteira.nEventos++
       aMerc.juros += jMerc; aCart.juros += jCart
+      for (const g of cartRows) addGestor(g.gestor, g.val * fracao, 0)
     }
 
     // AMORTIZACAO: fracao = taxa%/100 do evento, sobre o VNA corrigido ate a data.
@@ -257,15 +297,20 @@ function main() {
       meses[mi].mercado.amort += aM; meses[mi].mercado.nEventos++
       meses[mi].carteira.amort += aC; if (notCarteira > 0) meses[mi].carteira.nEventos++
       aMerc.amort += aM; aCart.amort += aC
+      for (const g of cartRows) addGestor(g.gestor, 0, g.val * fracao)
     }
 
     comAgenda++
     const totCart = aCart.juros + aCart.amort
     const totMerc = aMerc.juros + aMerc.amort
     if (totCart > 0 || totMerc > 0) {
+      const grupo = (emissores.get(deb ? deb.cnpj : '') || {}).grupo || ''
+      addDim(emissorAgg, deb ? deb.emissor : '', aCart, aMerc)
+      addDim(grupoAgg, grupo, aCart, aMerc)
       ativos.push({
         ticker: tk,
         emissor: deb ? deb.emissor : '',
+        grupo,
         incentivada: deb ? deb.incentivada : false,
         indexador: anb ? anb.tipo : (deb ? deb.indice : ''),
         prazo: parsed.amortLabel || (parsed.prazoAnos ? `${parsed.prazoAnos}y` : ''),
@@ -275,6 +320,24 @@ function main() {
       })
     }
   }
+
+  // Rankings agregados (arredondados, ordenados desc, top N).
+  const rankDim = (map, keyPersp, n) => [...map.values()]
+    .map(o => ({
+      nome: o.nome,
+      carteira: { juros: Math.round(o.carteira.juros), amort: Math.round(o.carteira.amort), total: Math.round(o.carteira.juros + o.carteira.amort) },
+      mercado: { juros: Math.round(o.mercado.juros), amort: Math.round(o.mercado.amort), total: Math.round(o.mercado.juros + o.mercado.amort) },
+    }))
+    .filter(o => o.carteira.total > 0 || o.mercado.total > 0)
+    .sort((a, b) => b[keyPersp].total - a[keyPersp].total)
+    .slice(0, n)
+  const porGestor = [...gestorAgg.values()]
+    .map(o => ({ nome: o.nome, juros: Math.round(o.juros), amort: Math.round(o.amort), total: Math.round(o.juros + o.amort) }))
+    .filter(o => o.total > 0)
+    .sort((a, b) => b.total - a.total)
+    .slice(0, 60)
+  const porEmissor = rankDim(emissorAgg, 'carteira', 60)
+  const porGrupo = rankDim(grupoAgg, 'carteira', 60)
 
   // Arredonda os meses e fecha totais.
   for (const m of meses) {
@@ -304,6 +367,9 @@ function main() {
       mercado: totalMercado,
     },
     meses,
+    porGestor,
+    porEmissor,
+    porGrupo,
     ativos: ativos.slice(0, 400),
   }
 
