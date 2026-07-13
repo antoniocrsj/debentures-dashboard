@@ -289,9 +289,16 @@ export default function VencimentosDashboard({ data, blc, compact }) {
         </div>
       </div>
 
-      {/* Filtros ativos (mes / entidade) — clicar no x limpa */}
-      {(selMes || selEnt) && (
+      {/* Todos os filtros ativos numa linha so + "limpar tudo". Perspectiva e
+          dimensao sao "modos" (tem seus proprios botoes) e nao entram aqui. */}
+      {(filtrando || selMes || selEnt) && (
         <div className="venc-crumbs">
+          <span className="venc-crumbs-lbl">Filtros:</span>
+          {filtrando && (
+            <button className="venc-chip" onClick={() => setSeg('todos')} title="Limpar tipo">
+              Tipo: <b>{seg === '12431' ? '12.431' : 'Tradicional'}</b> ✕
+            </button>
+          )}
           {selEnt && (
             <button className="venc-chip" onClick={() => setSelEnt(null)} title="Limpar selecao">
               {DIM_NOME[selEnt.dim]}: <b>{selEnt.nome}</b> ✕
@@ -302,6 +309,11 @@ export default function VencimentosDashboard({ data, blc, compact }) {
               Mes: <b>{mesLabelSel}</b> ✕
             </button>
           )}
+          <button className="venc-chip venc-chip-clear"
+            onClick={() => { setSeg('todos'); setSelMes(null); setSelEnt(null) }}
+            title="Limpar todos os filtros">
+            Limpar tudo
+          </button>
         </div>
       )}
 

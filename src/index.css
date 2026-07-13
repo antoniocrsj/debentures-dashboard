@@ -1372,7 +1372,10 @@ a { color: var(--primary); }
 .venc-col { cursor: pointer; border-radius: 6px; }
 .venc-col:hover { background: var(--blue-soft); }
 .venc-col.sel { background: var(--primary-light); outline: 1px solid var(--primary-border); }
-.venc-crumbs { display: flex; gap: 8px; margin: 10px 0 0; flex-wrap: wrap; }
+.venc-crumbs { display: flex; gap: 8px; margin: 10px 0 0; flex-wrap: wrap; align-items: center; }
+.venc-crumbs-lbl { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+.venc-chip-clear { background: var(--neg-soft); border-color: var(--neg-line); color: var(--neg); }
+.venc-chip-clear:hover { background: var(--neg-line); }
 .venc-chip {
   height: var(--btn-h); padding: 0 12px; border-radius: 99px;
   border: 1px solid var(--primary-border); background: var(--primary-light);
