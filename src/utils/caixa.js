@@ -1,13 +1,16 @@
 // Normalizacao/formatacao dos dados de Nivel de Caixa (motor
 // tools/preparar-caixa-potencial.ps1 -> public/data/Caixa_Potencial_*).
-// Reaproveita fmtFluxo (R$ compacto) da Captacao; aqui so' o especifico.
+// Reaproveita fmtFluxo (R$ compacto) da Captacao e parseNum (robusto a pt-BR
+// agrupado e invariante) do format; aqui so' o especifico.
+import { parseNum } from './format.js'
 
 const MESES_ABBR = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez']
 
-/** Numero pt-invariant (ponto decimal) do CSV -> Number, ou null se vazio. */
+/** Numero do CSV -> Number, ou null se vazio. Usa parseNum (aceita "1.234,56"
+ *  agrupado e "1234.56" invariante), preservando null p/ celula vazia. */
 export function num(v) {
   if (v == null || v === '') return null
-  const n = Number(String(v).replace(',', '.'))
+  const n = parseNum(v)
   return isNaN(n) ? null : n
 }
 

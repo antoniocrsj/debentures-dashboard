@@ -3,7 +3,7 @@ import { fmtFluxo } from '../../utils/fluxo.js'
 
 // Barras CSS (sem Recharts) da evolucao do caixa direto do universo curado por
 // mes: meses recentes + referencia madura. Destaca a tendencia (queda/alta).
-export default function CaixaMonthTrend({ comparacao, mesRefMadura }) {
+export default function CaixaMonthTrend({ comparacao, mesRefMadura, filtroAtivo = false }) {
   const rows = Array.isArray(comparacao) ? comparacao : []
   if (rows.length < 2) return null
   const max = Math.max(...rows.map(r => r.CaixaDireto || 0)) || 1
@@ -12,7 +12,10 @@ export default function CaixaMonthTrend({ comparacao, mesRefMadura }) {
     <div className="caixa-trend" aria-label="Evolução do caixa direto por mês">
       <div className="caixa-trend-head">
         <h3 className="fluxo-section-title">Caixa direto do universo curado por mês</h3>
-        <span className="fluxo-ranking-sub">Disponibilidades + títulos públicos + compromissadas (posições abertas + confidenciais)</span>
+        <span className="fluxo-ranking-sub">
+          Disponibilidades + títulos públicos + compromissadas (posições abertas + confidenciais)
+          {filtroAtivo && <em className="caixa-trend-note"> · universo curado completo — não reflete os filtros acima</em>}
+        </span>
       </div>
       <div className="caixa-trend-bars">
         {rows.map(r => {

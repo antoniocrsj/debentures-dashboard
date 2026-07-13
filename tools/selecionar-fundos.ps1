@@ -219,15 +219,22 @@ if (-not [string]::IsNullOrWhiteSpace($XlsxPath)) {
       Step "  lendo cda_fi_$m (PL + BLC_4 debentures, pode levar 1-2 min)..."
       $plM = Read-CdaFiPL (Join-Path $dirM "cda_fi_PL_$m.csv")
       $maps = Get-DebMesMaps (Read-CdaFiBlcCsv (Join-Path $dirM "cda_fi_BLC_4_$m.csv")) $lei12431PorAtivo $ativosSemCadastroLei
-      foreach ($cnpj in $plM.Keys) {
+      # Uniao PL + BLC_4: um fundo pode ter debenture no BLC_4 e ficar fora do PL
+      # daquele mes -> sem isso ele era descartado em silencio. Incluimos com PL=0
+      # e o PL do registro_classe resolve na classificacao (linha ~266).
+      $cnpjsMes = New-Object System.Collections.Generic.HashSet[string]
+      foreach ($k in $plM.Keys)      { [void]$cnpjsMes.Add($k) }
+      foreach ($k in $maps.Deb.Keys) { [void]$cnpjsMes.Add($k) }
+      foreach ($cnpj in $cnpjsMes) {
         [void]$filouCda.Add($cnpj)
         if ($vistos.Contains($cnpj)) { continue }   # ja' fixado (mes-alvo ou mes mais recente)
         [void]$vistos.Add($cnpj)
-        $pl = $plM[$cnpj]
-        if ($pl -le 0) { continue }
         if ($maps.Deb.ContainsKey($cnpj)) {          # tem debenture nesta foto
+          $pl = if ($plM.ContainsKey($cnpj)) { $plM[$cnpj] } else { 0.0 }
+          if ($pl -lt 0) { continue }
           $lei = if ($maps.DebLei.ContainsKey($cnpj)) { $maps.DebLei[$cnpj] } else { 0.0 }
-          $carteira[$cnpj] = @{ Deb = $maps.Deb[$cnpj]; DebLei = $lei; PL = $pl; Pct = ($maps.Deb[$cnpj] / $pl) }
+          $pct = if ($pl -gt 0) { $maps.Deb[$cnpj] / $pl } else { -1.0 }  # -1 = sem PL do CDA; registro resolve
+          $carteira[$cnpj] = @{ Deb = $maps.Deb[$cnpj]; DebLei = $lei; PL = $pl; Pct = $pct }
         }
       }
     } catch {

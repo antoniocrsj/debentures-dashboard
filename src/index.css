@@ -1400,15 +1400,9 @@ a { color: var(--primary); }
 /* ═══════════════════ Nível de Caixa (seção Caixa Potencial) ═══════════════ */
 /* Filtros: toggles de segmento/classe + busca */
 .caixa-filters { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 12px; }
-.caixa-seg-toggle { display: inline-flex; background: var(--chip-bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-.caixa-seg-toggle .seg-btn {
-  height: var(--btn-h); padding: 0 12px; border: 0; background: transparent; color: var(--navy-light);
-  font-size: 12.5px; font-weight: 600; cursor: pointer; white-space: nowrap;
-  border-right: 1px solid var(--border);
-}
-.caixa-seg-toggle .seg-btn:last-child { border-right: 0; }
-.caixa-seg-toggle .seg-btn:hover { background: var(--blue-soft); }
-.caixa-seg-toggle .seg-btn.active { background: var(--selected); color: #fff; }
+/* Toggles de segmento/classe usam o .segmented padrao do app, com largura
+   automatica pra conviverem com a busca na mesma linha. */
+.caixa-filters .segmented { width: auto; flex: 0 0 auto; }
 .caixa-search {
   height: var(--btn-h); flex: 1 1 200px; min-width: 160px; padding: 0 10px;
   border: 1px solid var(--border); border-radius: var(--radius); font-size: 13px; color: var(--text); background: var(--card);
@@ -1435,12 +1429,13 @@ a { color: var(--primary); }
 .caixa-fundo-nome { display: block; font-size: 12.5px; font-weight: 600; color: var(--text); max-width: 340px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .caixa-fundo-tags { display: inline-flex; flex-wrap: wrap; gap: 4px; margin-top: 2px; }
 .caixa-seg { font-size: 9.5px; font-weight: 700; padding: 1px 5px; border-radius: 5px; letter-spacing: .3px; }
-.caixa-seg.seg-CDI { background: #e0e7ff; color: #3730a3; }
-.caixa-seg.seg-12431 { background: #dcfce7; color: #166534; }
+.caixa-seg.seg-CDI { background: var(--blue-soft); color: var(--primary); }
+.caixa-seg.seg-12431 { background: var(--pos-soft); color: var(--pos); }
+.caixa-seg.seg-outro { background: var(--chip-bg); color: var(--text-faint); border: 1px solid var(--border); }
 .caixa-mesbase { font-size: 9.5px; color: var(--text-faint); padding: 1px 4px; border: 1px solid var(--border); border-radius: 5px; }
 .caixa-flag { font-size: 9.5px; font-weight: 700; padding: 1px 5px; border-radius: 5px; }
 .caixa-flag.feeder { background: var(--flag-bg); color: var(--flag-ink); }
-.caixa-flag.cotas { background: #f1f5f9; color: #475569; }
+.caixa-flag.cotas { background: var(--chip-bg); color: var(--text-soft); }
 
 /* Badges de classificação e confiança */
 .caixa-classe { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 6px; white-space: nowrap; }
@@ -1460,9 +1455,10 @@ a { color: var(--primary); }
 .caixa-bar-val { font-size: 11px; font-weight: 700; color: var(--text); white-space: nowrap; }
 .caixa-bar-track { width: 100%; max-width: 60px; flex: 1; display: flex; align-items: flex-end; }
 .caixa-bar-fill { width: 100%; background: linear-gradient(180deg, var(--primary) 0%, var(--navy-light) 100%); border-radius: 6px 6px 0 0; min-height: 4px; transition: height .3s ease; }
-.caixa-bar-fill.madura { background: linear-gradient(180deg, #94a3b8 0%, #64748b 100%); }
+.caixa-bar-fill.madura { background: var(--text-faint); }
 .caixa-bar-mes { font-size: 11px; color: var(--text-soft); font-weight: 600; }
 .caixa-bar-tag { font-size: 9px; color: var(--text-faint); font-weight: 700; }
+.caixa-trend-note { color: var(--text-faint); font-style: normal; }
 
 /* Rodapé metodológico */
 .caixa-meta { margin: 16px 0 8px; background: var(--chip-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 4px 14px; }

@@ -255,9 +255,11 @@ function Process-Mes {
   $plPath = Join-Path $dir "cda_fi_PL_$mes.csv"
   $lines = [System.IO.File]::ReadAllLines($plPath, [System.Text.Encoding]::GetEncoding('latin1'))
   $h = $lines[0].Split(';'); $iC = [array]::IndexOf($h,'CNPJ_FUNDO_CLASSE'); $iD = [array]::IndexOf($h,'DENOM_SOCIAL')
-  for ($i=1; $i -lt $lines.Count; $i++) {
-    $c = $lines[$i].Split(';'); if ($c.Count -le $iD) { continue }
-    $k = NormCNPJ $c[$iC]; if ($k -ne '' -and -not $denom.ContainsKey($k)) { $denom[$k] = $c[$iD].Trim() }
+  if ($iC -ge 0 -and $iD -ge 0) {   # se o cabecalho mudar, pula os nomes em vez de ler a coluna errada
+    for ($i=1; $i -lt $lines.Count; $i++) {
+      $c = $lines[$i].Split(';'); if ($c.Count -le $iD) { continue }
+      $k = NormCNPJ $c[$iC]; if ($k -ne '' -and -not $denom.ContainsKey($k)) { $denom[$k] = $c[$iD].Trim() }
+    }
   }
 
   foreach ($b in 1..8) {
@@ -421,7 +423,9 @@ function Read-PerfDiario([string]$path) {
   $fs=[System.IO.File]::Open($path,[System.IO.FileMode]::Open,[System.IO.FileAccess]::Read,$share)
   $sr=New-Object System.IO.StreamReader($fs,$enc)
   try {
-    $hdr=$sr.ReadLine().Split(','); $iDia=[array]::IndexOf($hdr,'Dia'); $iC=[array]::IndexOf($hdr,'CNPJ_Fundo'); $iPL=[array]::IndexOf($hdr,'PL')
+    $first=$sr.ReadLine(); if ($null -eq $first) { return $res }   # arquivo vazio
+    $hdr=$first.Split(','); $iDia=[array]::IndexOf($hdr,'Dia'); $iC=[array]::IndexOf($hdr,'CNPJ_Fundo'); $iPL=[array]::IndexOf($hdr,'PL')
+    if ($iDia -lt 0 -or $iC -lt 0 -or $iPL -lt 0) { return $res }   # cabecalho inesperado
     $ci=[System.Globalization.CultureInfo]::InvariantCulture; $line=$null
     while ($null -ne ($line=$sr.ReadLine())) {
       if ($line.Length -eq 0) { continue }
@@ -451,8 +455,10 @@ function Read-FluxoPorFundo([string]$path, [hashtable]$acumula, [hashtable]$cort
   $fs=[System.IO.File]::Open($path,[System.IO.FileMode]::Open,[System.IO.FileAccess]::Read,$share)
   $sr=New-Object System.IO.StreamReader($fs,$enc)
   try {
-    $hdr=$sr.ReadLine().Split(','); $iDia=[array]::IndexOf($hdr,'Dia'); $iC=[array]::IndexOf($hdr,'CNPJ_Fundo')
+    $first=$sr.ReadLine(); if ($null -eq $first) { return }   # arquivo vazio
+    $hdr=$first.Split(','); $iDia=[array]::IndexOf($hdr,'Dia'); $iC=[array]::IndexOf($hdr,'CNPJ_Fundo')
     $iR=[array]::IndexOf($hdr,'RetornoCota'); $iPL=[array]::IndexOf($hdr,'PL')
+    if ($iDia -lt 0 -or $iC -lt 0 -or $iR -lt 0 -or $iPL -lt 0) { return }   # cabecalho inesperado
     $ci=[System.Globalization.CultureInfo]::InvariantCulture
     $prevPL=@{}; $line=$null
     while ($null -ne ($line=$sr.ReadLine())) {
@@ -572,13 +578,21 @@ foreach ($cnpj in $fundosSaida) {
   $pct = if ($plc -gt 0) { $caixaTotal / $plc } else { 0 }
   $classe = $mo.Classe[$cnpj]
   $classeTxt = switch ($classe) { 'confirmado' {'fundo caixa confirmado'} 'candidato' {'candidato a fundo caixa'} default {'nao classificado'} }
-  if ($classe -ne 'nao' -and $estab.MesesValidos -lt 2) { $classeTxt += ' (provisorio: 1 mes)' }
+  # Estabilidade (regra do spec: preferir caixa em >= 2 meses validos). So' 1 mes
+  # valido -> provisorio; >= 2 meses validos mas caixa em < 2 -> instavel. Marca
+  # o rotulo e rebaixa a confianca, sem mexer no total nem na contagem (o prefixo
+  # 'fundo caixa confirmado'/'candidato' e' preservado).
+  if ($classe -ne 'nao') {
+    if ($estab.MesesValidos -lt 2) { $classeTxt += ' (provisorio: 1 mes)' }
+    elseif ($estab.MesesCaixa -lt 2) { $classeTxt += " (instavel: caixa em $($estab.MesesCaixa) de $($estab.MesesValidos) meses)" }
+  }
   $cob = ($a.Ativos - $a.Passivos); $cobR = if ($plc -ne 0) { [math]::Round($cob/$plc,4) } else { $null }
   $caixaEstimado = if ($null -ne $plDia) { [math]::Round($pct * $plDia,2) } else { $null }
 
   # Nivel de confianca.
   $conf = 'alto'
   if ($estab.MesesValidos -lt 2) { $conf='medio' }
+  if ($classe -ne 'nao' -and $estab.MesesValidos -ge 2 -and $estab.MesesCaixa -lt 2) { $conf='medio' }  # classificado caixa mas instavel
   if ($a.CotasNaoId -gt 0.10*$plc) { $conf='medio' }
   if ($mb -eq $MesRefMadura -and $mesesRecentesOrd.Count -gt 0) { if ($conf -eq 'alto') { $conf='medio' } }  # so' a madura valida
   if ($ind.Ciclo -or $ind.Truncado) { $conf='medio' }
@@ -624,11 +638,18 @@ foreach ($cnpj in $fundosSaida) {
 Step "Separando parcela aberta x confidencial (caixa) por fundo..."
 $confidCaixa=@{}   # mes -> (cnpj -> caixa confid)
 foreach ($mb in ($mesBase.Values | Where-Object { $_ } | Select-Object -Unique)) {
-  $dir = Get-CdaFiDir $CdaDir $mb -NoDownload:$NoDownload
-  $accC=@{}; $edgC=@{}
-  Read-BlocoStream -path (Join-Path $dir "cda_fi_CONFID_$mb.csv") -acc $accC -edges $edgC -isConfid:$true
-  $mp=@{}; foreach ($k in $accC.Keys) { $mp[$k] = ($accC[$k].Disp+$accC[$k].TitPub+$accC[$k].Compr) }
-  $confidCaixa[$mb]=$mp
+  # best-effort: uma falha aqui (roda depois de todo o calculo pesado, antes de
+  # gravar) nao pode matar o run -> degrada com parcela confidencial = 0 no mes.
+  try {
+    $dir = Get-CdaFiDir $CdaDir $mb -NoDownload:$NoDownload
+    $accC=@{}; $edgC=@{}
+    Read-BlocoStream -path (Join-Path $dir "cda_fi_CONFID_$mb.csv") -acc $accC -edges $edgC -isConfid:$true
+    $mp=@{}; foreach ($k in $accC.Keys) { $mp[$k] = ($accC[$k].Disp+$accC[$k].TitPub+$accC[$k].Compr) }
+    $confidCaixa[$mb]=$mp
+  } catch {
+    Step "  [AVISO] falha ao reler CONFID de ${mb} (parcela confidencial=0 nesse mes): $($_.Exception.Message)"
+    $confidCaixa[$mb]=@{}
+  }
 }
 foreach ($ln in $linhas) {
   if ($ln.MesBase -eq '' -or $null -eq $ln.CaixaDireto) { continue }

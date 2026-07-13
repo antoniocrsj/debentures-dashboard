@@ -21,6 +21,11 @@ const KIND_LABEL = {
   confirmado: 'Fundo caixa', candidato: 'Candidato', insuficiente: 'Sem dados', nao: '—',
 }
 
+// Segmento -> classe CSS segura + rotulo curto. Evita class="seg-(fora das
+// listas)" (espacos viram multiplas classes) e pilulas com texto longo.
+const SEG_BADGE = { CDI: { k: 'CDI', l: 'CDI' }, '12431': { k: '12431', l: '12.431' } }
+function segBadge(seg) { return SEG_BADGE[seg] || { k: 'outro', l: 'outro' } }
+
 export default function CaixaFundoTable({ fundos, title, subtitle }) {
   const [sort, setSort] = useState(DEFAULT_SORT)
   const [showAll, setShowAll] = useState(false)
@@ -65,7 +70,7 @@ export default function CaixaFundoTable({ fundos, title, subtitle }) {
                 <td className="col-sticky col-nome">
                   <span className="caixa-fundo-nome">{f.nome || f.cnpj}</span>
                   <span className="caixa-fundo-tags">
-                    <span className={`caixa-seg seg-${f.segmento}`}>{f.segmento}</span>
+                    {f.segmento && <span className={`caixa-seg seg-${segBadge(f.segmento).k}`}>{segBadge(f.segmento).l}</span>}
                     {f.mesBase && <span className="caixa-mesbase">{fmtMes(f.mesBase)}</span>}
                     {f.feeder && <span className="caixa-flag feeder">feeder</span>}
                     {f.cotasNaoId > 0 && <span className="caixa-flag cotas" title="Cotas confidenciais não identificadas (não viram caixa)">cotas ñ id</span>}

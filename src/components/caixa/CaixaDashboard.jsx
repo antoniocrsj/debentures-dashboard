@@ -38,11 +38,16 @@ export default function CaixaDashboard({ compact = false }) {
     })
   }, [fundos, segmento, classe, gestor, search])
 
-  // Cards: somam o consolidado (respeitando o filtro de segmento/gestor, mas
-  // sempre contando o ativo final 1x — so' linhas noConsolidado).
+  // Recorte por segmento/gestor ativo (sem classe/busca: cards e contagens
+  // agregam o consolidado do recorte, nao a lista filtrada por texto).
+  const segBase = useMemo(() => fundos.filter(f =>
+    (!segmento || f.segmento === segmento) && (!gestor || f.gestor === gestor)),
+    [fundos, segmento, gestor])
+
+  // Cards: somam o consolidado do recorte, sempre contando o ativo final 1x
+  // (so' linhas noConsolidado).
   const cards = useMemo(() => {
-    const base = consolidaveis.filter(f =>
-      (!segmento || f.segmento === segmento) && (!gestor || f.gestor === gestor))
+    const base = segBase.filter(f => f.noConsolidado)
     const sum = k => base.reduce((s, f) => s + (f[k] || 0), 0)
     const consolidado = sum('caixaConsolidado')
     const pl = sum('pl')
@@ -54,18 +59,21 @@ export default function CaixaDashboard({ compact = false }) {
       pl,
       nFundos: base.length,
     }
-  }, [consolidaveis, segmento, gestor])
+  }, [segBase])
 
-  const confirmados = useMemo(() => fundos.filter(f => f.classeKind === 'confirmado').length, [fundos])
-  const candidatos = useMemo(() => fundos.filter(f => f.classeKind === 'candidato').length, [fundos])
+  // Contagem de fundos caixa respeita o segmento/gestor ativo (coerente com o
+  // card "Fundos no consolidado").
+  const confirmados = useMemo(() => segBase.filter(f => f.classeKind === 'confirmado').length, [segBase])
+  const candidatos = useMemo(() => segBase.filter(f => f.classeKind === 'candidato').length, [segBase])
 
   // Ranking de gestores derivado dos fundos (respeita o segmento; coerente com
-  // os cards). Cai para o CSV pre-agregado se, por algum motivo, nao houver
-  // fundos consolidaveis carregados.
+  // os cards). So' cai para o CSV pre-agregado se os dados nao carregaram —
+  // nunca por causa de um filtro que esvaziou o recorte (senao mostraria o
+  // universo inteiro num segmento vazio).
   const gestoresRanking = useMemo(() => {
+    if (!consolidaveis.length) return gestores
     const base = segmento ? consolidaveis.filter(f => f.segmento === segmento) : consolidaveis
-    const agg = aggregateGestores(base)
-    return agg.length ? agg : gestores
+    return aggregateGestores(base)
   }, [consolidaveis, segmento, gestores])
 
   const mesBase = meta?.mesesRecentes?.[0] || fundos.find(f => f.mesBase)?.mesBase || ''
@@ -97,23 +105,24 @@ export default function CaixaDashboard({ compact = false }) {
         <>
           {/* Filtros */}
           <div className="caixa-filters">
-            <div className="caixa-seg-toggle" role="group" aria-label="Segmento">
+            <div className="segmented" role="tablist" aria-label="Segmento">
               {SEGMENTOS.map(s => (
-                <button key={s.id} type="button"
-                  className={`seg-btn${segmento === s.id ? ' active' : ''}`}
+                <button key={s.id} type="button" role="tab" aria-selected={segmento === s.id}
+                  className={`segmented-btn${segmento === s.id ? ' active' : ''}`}
                   onClick={() => setSegmento(s.id)}>{s.label}</button>
               ))}
             </div>
-            <div className="caixa-seg-toggle" role="group" aria-label="Classificação">
+            <div className="segmented" role="tablist" aria-label="Classificação">
               {CLASSES.map(c => (
-                <button key={c.id} type="button"
-                  className={`seg-btn${classe === c.id ? ' active' : ''}`}
+                <button key={c.id} type="button" role="tab" aria-selected={classe === c.id}
+                  className={`segmented-btn${classe === c.id ? ' active' : ''}`}
                   onClick={() => setClasse(c.id)}>{c.label}</button>
               ))}
             </div>
             <input
               className="caixa-search"
               type="search"
+              aria-label="Buscar fundo, gestor ou CNPJ"
               placeholder="Buscar fundo, gestor ou CNPJ…"
               value={search}
               onChange={e => setSearch(e.target.value)}
@@ -140,7 +149,7 @@ export default function CaixaDashboard({ compact = false }) {
             <Card label="Fundos no consolidado" value={fmtInt(cards.nFundos)} />
           </div>
 
-          <CaixaMonthTrend comparacao={meta?.comparacaoMeses} mesRefMadura={meta?.mesRefMadura} />
+          <CaixaMonthTrend comparacao={meta?.comparacaoMeses} mesRefMadura={meta?.mesRefMadura} filtroAtivo={!!hasFilter} />
 
           {/* Ranking de gestores (só quando nenhum gestor está selecionado) */}
           {!gestor && <CaixaGestorTable gestores={gestoresRanking} activeGestor={gestor} onSelect={setGestor} />}
