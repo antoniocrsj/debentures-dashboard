@@ -43,7 +43,10 @@ const HORIZONTE_MESES = 12
 // em tools/premissas-agenda.json. Assim o CDI vem do mercado, sem chute, mas
 // da pra fixar qualquer premissa a mao quando quiser.
 function loadPremissas() {
-  const prem = { cdi: 0.15, ipca: 0.045, igpm: 0.045, cdiFonte: 'default' }
+  // inflacaoVna: usada SO para corrigir o VNA (principal) das indexadas a
+  // inflacao (IPCA+/IGP-M) entre hoje e a data de cada evento — o cupom em si
+  // paga so a taxa real. 5% a.a. e uma simplificacao pedida (nao e o cupom).
+  const prem = { cdi: 0.15, inflacaoVna: 0.05, cdiFonte: 'default' }
   const mkt = path.join(PUBLIC, 'data', 'Premissas_Mercado.json')
   if (fs.existsSync(mkt)) {
     try {
@@ -133,25 +136,31 @@ function loadAnbima() {
   return { map, refDate }
 }
 
-// Cupom anual estimado (fracao, ex.: 0.163 = 16,3% a.a.).
-function cupomAnual(anb, deb, premissas) {
-  const { cdi, ipca, igpm } = premissas
+// Perfil do ativo para a estimativa de juros:
+//   cupom    = taxa anual (fracao) que o CUPOM paga em caixa.
+//   indexado = principal (VNA) corrigido por inflacao (IPCA+/IGP-M)? Se sim, o
+//              notional cresce a inflacaoVna entre hoje e cada evento (o cupom
+//              paga so a taxa REAL sobre esse VNA corrigido; a inflacao vai pro
+//              principal e sai na amortizacao).
+function perfilTicker(anb, deb, cdi) {
   const tipo = anb ? anb.tipo : ''
   const spreadOuPre = anb ? anb.taxa / 100 : 0   // taxaAnbimaOriginal esta em %
-  if (tipo === 'DI_SPREAD') return cdi + spreadOuPre
-  if (tipo === 'DI_PERCENTUAL') return (anb.taxa / 100) * cdi   // taxa = % do CDI (ex.: 103 -> 1.03*cdi)
-  if (tipo === 'PREFIXADO') return spreadOuPre
-  if (tipo === 'IPCA_SPREAD') return ipca + spreadOuPre
-  if (tipo === 'IGP-M') return igpm + spreadOuPre
+  if (tipo === 'DI_SPREAD') return { cupom: cdi + spreadOuPre, indexado: false }
+  if (tipo === 'DI_PERCENTUAL') return { cupom: (anb.taxa / 100) * cdi, indexado: false }
+  if (tipo === 'PREFIXADO') return { cupom: spreadOuPre, indexado: false }
+  if (tipo === 'IPCA_SPREAD') return { cupom: spreadOuPre, indexado: true }   // cupom = taxa real
+  if (tipo === 'IGP-M') return { cupom: spreadOuPre, indexado: true }         // idem
   // Sem ANBIMA: cai pro cadastro (indice + percentual).
   const idx = norm(deb ? deb.indice : '')
   const p = deb ? deb.percentual / 100 : 0
-  if (idx.includes('DI') || idx.includes('CDI')) return deb.percentual > 30 ? p * cdi : cdi + p
-  if (idx.includes('IPCA')) return ipca + p
-  if (idx.includes('IGP')) return igpm + p
-  if (idx.includes('PRE') || idx.includes('PR')) return p
-  return cdi   // ultimo recurso
+  if (idx.includes('DI') || idx.includes('CDI')) return { cupom: deb.percentual > 30 ? p * cdi : cdi + p, indexado: false }
+  if (idx.includes('IPCA')) return { cupom: p, indexado: true }
+  if (idx.includes('IGP')) return { cupom: p, indexado: true }
+  if (idx.includes('PRE') || idx.includes('PR')) return { cupom: p, indexado: false }
+  return { cupom: cdi, indexado: false }   // ultimo recurso
 }
+
+const MS_ANO = 365.25 * 864e5
 
 // ─── Agregacao ───────────────────────────────────────────────────────────
 function main() {
@@ -207,20 +216,26 @@ function main() {
     const parsed = parseAgenda(content, deb ? deb.emissao : '', deb ? deb.vencimento : '')
     const jurosEventos = parsed.eventos.filter(e => !e.amort)
     const anb = anbima.get(tk)
-    const cupom = cupomAnual(anb, deb, premissas)
+    const { cupom, indexado } = perfilTicker(anb, deb, premissas.cdi)
+
+    // Fator de correcao do VNA (principal) ate a data do evento: so p/ indexadas
+    // a inflacao (IPCA+/IGP-M), a inflacaoVna a.a. entre hoje e o evento. Para
+    // pos/pre o principal nao e corrigido -> fator 1.
+    const fwd = d => (indexado ? Math.pow(1 + premissas.inflacaoVna, Math.max(0, (d - hoje) / MS_ANO)) : 1)
 
     // Acumuladores por ativo (janela 12m).
     const aCart = { juros: 0, amort: 0 }
     const aMerc = { juros: 0, amort: 0 }
 
     // JUROS: gap = dias desde o pagamento de juros anterior (ou emissao p/ o 1o).
+    // Base = notional x VNA corrigido ate o evento; taxa = cupom (real, p/ IPCA+).
     const dEmis = parseData(deb ? deb.emissao : '')
     let prevJuros = dEmis
     for (const e of jurosEventos) {
       const gapDias = prevJuros ? Math.max(0, (e.data - prevJuros) / 864e5) : 182
       prevJuros = e.data
       if (e.data <= hoje || e.data >= fim) continue
-      const fracao = cupom * (gapDias / 365.25)
+      const fracao = cupom * (gapDias / 365.25) * fwd(e.data)
       const jMerc = notMercado * fracao
       const jCart = notCarteira * fracao
       const mi = idxMes.get(mesKey(e.data))
@@ -230,10 +245,10 @@ function main() {
       aMerc.juros += jMerc; aCart.juros += jCart
     }
 
-    // AMORTIZACAO: fracao = taxa%/100 do evento, sobre o notional atual.
+    // AMORTIZACAO: fracao = taxa%/100 do evento, sobre o VNA corrigido ate a data.
     for (const e of parsed.amortizacoes) {
       if (e.data <= hoje || e.data >= fim) continue
-      const fracao = (e.pct == null ? 0 : e.pct) / 100
+      const fracao = ((e.pct == null ? 0 : e.pct) / 100) * fwd(e.data)
       if (fracao <= 0) continue
       const aM = notMercado * fracao
       const aC = notCarteira * fracao

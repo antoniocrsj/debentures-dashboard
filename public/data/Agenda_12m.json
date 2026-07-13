@@ -1,11 +1,10 @@
 {
-  "updatedAt": "2026-07-13T15:33:37.777Z",
+  "updatedAt": "2026-07-13T15:40:48.957Z",
   "refDate": "2026-07-10",
   "horizonteMeses": 12,
   "premissas": {
     "cdi": 0.15,
-    "ipca": 0.045,
-    "igpm": 0.045,
+    "inflacaoVna": 0.05,
     "cdiFonte": "default"
   },
   "cobertura": {
