@@ -1,7 +1,7 @@
 {
   "date": "2026-07-06",
   "label": "06/07/2026",
-  "previousDate": "2026-07-03",
+  "previousDate": null,
   "sourceDates": {
     "debentures": "2026-07-03",
     "cap12431": "2026-07-06",
@@ -14,11 +14,11 @@
   },
   "summary": [
     {
-      "texto": "Captação líquida Incentivados: −R$ 770 mi",
+      "texto": "Captação líquida Incentivados: −R$ 356 mi",
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional: −R$ 834 mi",
+      "texto": "Captação líquida Tradicional: −R$ 835 mi",
       "tom": "neg"
     },
     {
@@ -26,7 +26,7 @@
       "tom": "pos"
     },
     {
-      "texto": "Maior resgate: ITAU Tsy (−R$ 414 mi)",
+      "texto": "Maior resgate: BRAM (−R$ 81 mi)",
       "tom": "neg"
     },
     {
@@ -52,37 +52,37 @@
       "12431": {
         "dia": "2026-07-06",
         "captacao": 130948197.71000002,
-        "resgate": 901252452.23,
-        "liquido": -770304254.52,
-        "pl": 333109507000.8899,
+        "resgate": 486976776.97999984,
+        "liquido": -356028579.2699998,
+        "pl": 333109586618.7999,
         "numFundos": 1609,
         "curados": 1632,
         "fechados": 283,
         "anterior": {
           "dia": "2026-07-03",
           "captacao": 149555391.71999997,
-          "resgate": 281194537.96999997,
-          "liquido": -131639146.25,
-          "pl": 334781812708.0001,
+          "resgate": 275714037.96999997,
+          "liquido": -126158646.25,
+          "pl": 334367464791.4301,
           "numFundos": 1608
         }
       },
       "trad": {
         "dia": "2026-07-06",
-        "captacao": 1706563279.7200003,
-        "resgate": 2541033514.7700005,
-        "liquido": -834470235.0500002,
-        "pl": 1079218783776.59,
-        "numFundos": 813,
+        "captacao": 1706605514.1500003,
+        "resgate": 2541647913.12,
+        "liquido": -835042398.9699996,
+        "pl": 1079813610776.6099,
+        "numFundos": 816,
         "curados": 827,
         "fechados": 29,
         "anterior": {
           "dia": "2026-07-03",
-          "captacao": 1301862634.8099997,
-          "resgate": 1611523758.71,
-          "liquido": -309661123.90000033,
-          "pl": 1081815860691.7101,
-          "numFundos": 819
+          "captacao": 1301904869.2399995,
+          "resgate": 1612238157.06,
+          "liquido": -310333287.8200004,
+          "pl": 1081844337363.4401,
+          "numFundos": 820
         }
       }
     },
@@ -100,7 +100,7 @@
           "captacao": 2650000,
           "resgate": 0,
           "liquido": 2650000,
-          "pl": 2253938182.68
+          "pl": 2254120781.2
         },
         {
           "gestor": "Rafter",
@@ -125,13 +125,6 @@
         }
       ],
       "top12431Resgate": [
-        {
-          "gestor": "ITAU Tsy",
-          "captacao": 0,
-          "resgate": 414275697.47,
-          "liquido": -414275697.47,
-          "pl": 27911582731.86
-        },
         {
           "gestor": "BRAM",
           "captacao": 37242024.73,
@@ -159,6 +152,13 @@
           "resgate": 27462140.01,
           "liquido": -25856980.01,
           "pl": 10579907874.92
+        },
+        {
+          "gestor": "Absolute",
+          "captacao": 3062664.97,
+          "resgate": 22324626.67,
+          "liquido": -19261961.700000003,
+          "pl": 11300647680.38
         }
       ],
       "topTradCaptacao": [
@@ -204,7 +204,7 @@
           "captacao": 44082431.01,
           "resgate": 515718466.77,
           "liquido": -471636035.76,
-          "pl": 15240907423.7
+          "pl": 15241211884.83
         },
         {
           "gestor": "SAM",
@@ -1446,6 +1446,14 @@
           "pl": 62081444.88
         },
         {
+          "cnpj": "27883656000156",
+          "nome": "DHF FUNDO DE INVESTIMENTO FINANCEIRO",
+          "gestor": "Dynamo",
+          "segmento": "trad",
+          "retorno": 0.5615,
+          "pl": 541435992.37
+        },
+        {
           "cnpj": "41881271000180",
           "nome": "TRANCOSO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
           "gestor": "Inter",
@@ -1468,14 +1476,6 @@
           "segmento": "trad",
           "retorno": 0.3977,
           "pl": 11098154.82
-        },
-        {
-          "cnpj": "50553108000180",
-          "nome": "RAFTER ICATU PREVIDENCIÁRIO QUALIFICADO FI FINANCEIRO - CI MULT CRED PRIV - RESP LIMITADA",
-          "gestor": "Rafter",
-          "segmento": "trad",
-          "retorno": 0.333,
-          "pl": 25235096.11
         }
       ],
       "topTradNeg": [
@@ -1523,13 +1523,62 @@
     },
     "inclusoes": {
       "novosDebentures": [],
-      "novosBlc": [],
+      "novosBlc": [
+        "CGASA5",
+        "CPGS16",
+        "MNAU14",
+        "SBSPI8",
+        "SBSPJ8",
+        "URBI13",
+        "SBSPK8",
+        "SBSPM8",
+        "HFTE14",
+        "ENMTF8",
+        "EGIEA6",
+        "OMGE17",
+        "BRKPA5",
+        "SBSPL8",
+        "NTSDA1",
+        "AMTG11",
+        "EGTI11",
+        "OMGE27",
+        "AGUP11",
+        "SBIOA4",
+        "FSII14",
+        "FIQE14",
+        "RHIN49",
+        "RHIN59",
+        "SAELC8",
+        "VERTO6",
+        "VERTL6",
+        "NTSDA2",
+        "VPPCA1",
+        "VERTM6",
+        "EKTRA8",
+        "ADPD11",
+        "AXSE11",
+        "ADPA11",
+        "CEEBE3",
+        "CSMGD2",
+        "VERTC4",
+        "ENSEB5",
+        "ROTY13",
+        "CTNSB5",
+        "SSRU11",
+        "MRSAA4",
+        "GCBSC9",
+        "CSRNA4",
+        "VPPC26",
+        "ENMTG8",
+        "OMGE37",
+        "CEPEA8"
+      ],
       "temSnapshotBlc": true
     },
     "alertas": [
       {
         "tipo": "blc-sem-cadastro",
-        "texto": "70 ativo(s) no BLC sem correspondencia em Debentures.csv"
+        "texto": "74 ativo(s) no BLC sem correspondencia em Debentures.csv"
       }
     ],
     "emissoesCVM": null,

@@ -18,11 +18,11 @@
       "tom": "pos"
     },
     {
-      "texto": "Captação líquida Incentivados: −R$ 222 mi",
+      "texto": "Captação líquida Incentivados: −R$ 225 mi",
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional: −R$ 233 mi",
+      "texto": "Captação líquida Tradicional: −R$ 226 mi",
       "tom": "neg"
     },
     {
@@ -70,38 +70,38 @@
     "captacao": {
       "12431": {
         "dia": "2026-07-08",
-        "captacao": 122680202.25,
-        "resgate": 344984536.45000005,
-        "liquido": -222304334.20000005,
-        "pl": 285613049581.43,
-        "numFundos": 1583,
+        "captacao": 123010751.72999999,
+        "resgate": 348468528.44000006,
+        "liquido": -225457776.71000007,
+        "pl": 315941331129.77997,
+        "numFundos": 1603,
         "curados": 1632,
         "fechados": 283,
         "anterior": {
           "dia": "2026-07-07",
-          "captacao": 130730325.20000002,
-          "resgate": 182740304.14999995,
-          "liquido": -52009978.94999993,
-          "pl": 330186017316.13007,
-          "numFundos": 1598
+          "captacao": 131289525.20000002,
+          "resgate": 183078026.25999996,
+          "liquido": -51788501.05999994,
+          "pl": 330935038919.2002,
+          "numFundos": 1600
         }
       },
       "trad": {
         "dia": "2026-07-08",
-        "captacao": 1312023179.3600006,
-        "resgate": 1544793145.5000002,
-        "liquido": -232769966.13999963,
-        "pl": 1070045941519.21,
-        "numFundos": 799,
+        "captacao": 1331201869.3000007,
+        "resgate": 1556773328.9600003,
+        "liquido": -225571459.6599996,
+        "pl": 1081058748287.2902,
+        "numFundos": 810,
         "curados": 827,
         "fechados": 29,
         "anterior": {
           "dia": "2026-07-07",
-          "captacao": 1384151664.0599992,
-          "resgate": 1353057209.1700003,
-          "liquido": 31094454.889998913,
-          "pl": 1073919214669.6603,
-          "numFundos": 801
+          "captacao": 1387927417.3399992,
+          "resgate": 1354278277.4700003,
+          "liquido": 33649139.86999893,
+          "pl": 1078321619498.4204,
+          "numFundos": 810
         }
       }
     },
@@ -112,7 +112,7 @@
           "captacao": 57049216.28,
           "resgate": 5693464.59,
           "liquido": 51355751.69,
-          "pl": 28285948298.24
+          "pl": 28284879653.17
         },
         {
           "gestor": "JGP",
@@ -146,10 +146,10 @@
       "top12431Resgate": [
         {
           "gestor": "XPG",
-          "captacao": 1323743.33,
-          "resgate": 90841254.14,
-          "liquido": -89517510.81,
-          "pl": 5199204281.56
+          "captacao": 1324743.33,
+          "resgate": 91576913.64,
+          "liquido": -90252170.31,
+          "pl": 5430018909.49
         },
         {
           "gestor": "BB Asset",
@@ -170,14 +170,14 @@
           "captacao": 53468.8,
           "resgate": 21545959.34,
           "liquido": -21492490.54,
-          "pl": 15569079493.48
+          "pl": 15569088918.51
         },
         {
           "gestor": "IAM",
-          "captacao": 19176361.56,
+          "captacao": 19170537.63,
           "resgate": 37899331.12,
-          "liquido": -18722969.56,
-          "pl": 55024727785.67
+          "liquido": -18728793.49,
+          "pl": 83586517624.43
         }
       ],
       "topTradCaptacao": [
@@ -191,23 +191,23 @@
         {
           "gestor": "UBS",
           "captacao": 67153107.08,
-          "resgate": 17744868.43,
-          "liquido": 49408238.65,
-          "pl": 8656517370.89
+          "resgate": 17744868.42,
+          "liquido": 49408238.66,
+          "pl": 8703736454.27
+        },
+        {
+          "gestor": "BRAM",
+          "captacao": 131922870.78,
+          "resgate": 100990701.29,
+          "liquido": 30932169.489999995,
+          "pl": 100675381394.88
         },
         {
           "gestor": "Kinea",
           "captacao": 72192746.92,
           "resgate": 42437852.77,
           "liquido": 29754894.15,
-          "pl": 57865316281.97
-        },
-        {
-          "gestor": "BRAM",
-          "captacao": 130731641.78,
-          "resgate": 100990701.29,
-          "liquido": 29740940.489999995,
-          "pl": 100675979525.7
+          "pl": 57863041766.14
         },
         {
           "gestor": "Regia",
@@ -220,10 +220,10 @@
       "topTradResgate": [
         {
           "gestor": "IAM",
-          "captacao": 97417161.36,
-          "resgate": 202258805.63,
-          "liquido": -104841644.27,
-          "pl": 208561965667.03
+          "captacao": 97483161.36,
+          "resgate": 208920792.99,
+          "liquido": -111437631.63000001,
+          "pl": 217606829398.57
         },
         {
           "gestor": "JGP",
@@ -234,10 +234,10 @@
         },
         {
           "gestor": "XPG",
-          "captacao": 4325491.23,
-          "resgate": 76973054.8,
-          "liquido": -72647563.57,
-          "pl": 14992221351.42
+          "captacao": 4345151.23,
+          "resgate": 76791673.98,
+          "liquido": -72446522.75,
+          "pl": 14992925193.28
         },
         {
           "gestor": "Icatu",
@@ -993,7 +993,7 @@
               "ticker": "JSMLB5",
               "indexador": "IPCA + 7.9677%",
               "indexadorFamilia": "IPCA+",
-              "emissor": "JSL S.A",
+              "emissor": "SIMPAR S.A.",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "B30",
@@ -1373,20 +1373,20 @@
     "perf": {
       "top12431Pos": [
         {
-          "cnpj": "63319624000196",
-          "nome": "A1 CRÉDITO FIF INVESTIMENTO EM DEBÊNTURES DE INFRA CDI ATIVO RF CRED PRIV RESP LIMITADA",
-          "gestor": "Asset 1",
+          "cnpj": "61141536000111",
+          "nome": "BB MASTER RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
+          "gestor": "BB Asset",
           "segmento": "12431",
-          "retorno": 4.7052,
-          "pl": 3451171.27
+          "retorno": 34.264,
+          "pl": 3228696110.11
         },
         {
-          "cnpj": "63572496000198",
-          "nome": "VINLAND DEBÊNTURE INCENTIVADO 3 FIF INC EM INV EM DEB DE INFRA RF ATIVO CRED PRIV LP RESP LIMITADA",
-          "gestor": "Vinland",
+          "cnpj": "60491442000100",
+          "nome": "ITAÚBA FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA RESP LIMITADA",
+          "gestor": "IAM",
           "segmento": "12431",
-          "retorno": 3.5077,
-          "pl": 14568709.03
+          "retorno": 3.8954,
+          "pl": 7861556227.81
         },
         {
           "cnpj": "60775750000167",
@@ -1397,12 +1397,12 @@
           "pl": 36996616.72
         },
         {
-          "cnpj": "50862124000154",
-          "nome": "VINLAND FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA ATIVO FIF RF CRÉD PRIV LP  RESP LIMITADA",
-          "gestor": "Vinland",
+          "cnpj": "52342478000101",
+          "nome": "G5 CDM FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
+          "gestor": "G5",
           "segmento": "12431",
-          "retorno": 0.4681,
-          "pl": 1891591328.48
+          "retorno": 0.6045,
+          "pl": 9545005.42
         },
         {
           "cnpj": "53906748000114",
@@ -1423,22 +1423,6 @@
           "pl": 117576249.83
         },
         {
-          "cnpj": "59123735000155",
-          "nome": "PORTO PAINEIRA CDI FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA RF CRÉD PRIV RESP LIMITADA",
-          "gestor": "Porto Asset",
-          "segmento": "12431",
-          "retorno": -4.0045,
-          "pl": 2468853.59
-        },
-        {
-          "cnpj": "61543507000186",
-          "nome": "VINLAND 2 FI INCENTIVADO EM DEB DE INFRA ATIVO FIF RF CRED PRIV LP RESPONSABILIDADE LIMITADA",
-          "gestor": "Vinland",
-          "segmento": "12431",
-          "retorno": -1.9738,
-          "pl": 3417805.62
-        },
-        {
           "cnpj": "54952575000133",
           "nome": "BTG PACTUAL CRÉDITO CORPORATIVO INCENTIVADAS PRÉ FUNDO INCENTIVADO DE INVESTIMENTO EM INFRA RF",
           "gestor": "BTG Asset",
@@ -1452,18 +1436,26 @@
           "gestor": "IAM",
           "segmento": "12431",
           "retorno": -0.1282,
-          "pl": 353112441.04
+          "pl": 353112441.05
+        },
+        {
+          "cnpj": "54005088000163",
+          "nome": "FX FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
+          "gestor": "BTG WM",
+          "segmento": "12431",
+          "retorno": -0.1277,
+          "pl": 82134842.32
+        },
+        {
+          "cnpj": "54954879000130",
+          "nome": "ITAÚ DEBÊNTURES INCENTIVADAS PRÉ TARGET 2030 II FIF INCENTIVADO EM INFRA RF CRED PRIV RESP LIMITADA",
+          "gestor": "IAM",
+          "segmento": "12431",
+          "retorno": -0.127,
+          "pl": 126333749.5
         }
       ],
       "topTradPos": [
-        {
-          "cnpj": "32990051000102",
-          "nome": "KINEA OPORTUNIDADE FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA CRÉDITO PRIVADO RESP LIMITADA",
-          "gestor": "Kinea",
-          "segmento": "trad",
-          "retorno": 99.8953,
-          "pl": 711529984.18
-        },
         {
           "cnpj": "51977823000102",
           "nome": "CATTUS FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
@@ -1495,6 +1487,14 @@
           "segmento": "trad",
           "retorno": 0.3918,
           "pl": 176638172.06
+        },
+        {
+          "cnpj": "26803172000197",
+          "nome": "NW1 FUNDO DE INVESTIMENTO MULTIMERCADO CREDITO PRIVADO IE - RESPONSABILIDADE LIMITADA",
+          "gestor": "Polo",
+          "segmento": "trad",
+          "retorno": 0.383,
+          "pl": 54393400.01
         }
       ],
       "topTradNeg": [
@@ -1515,12 +1515,12 @@
           "pl": 1118742226.03
         },
         {
-          "cnpj": "43636081000123",
-          "nome": "MAESTRANZA PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
-          "gestor": "XPG",
+          "cnpj": "34172479000165",
+          "nome": "MINERVA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "gestor": "BTG WM",
           "segmento": "trad",
-          "retorno": -0.7653,
-          "pl": 41276874.96
+          "retorno": -0.6346,
+          "pl": 201265500.69
         },
         {
           "cnpj": "50677561000106",
@@ -1544,13 +1544,62 @@
       "novosDebentures": [
         "ACCQ11"
       ],
-      "novosBlc": [],
+      "novosBlc": [
+        "CGASA5",
+        "CPGS16",
+        "MNAU14",
+        "SBSPI8",
+        "SBSPJ8",
+        "URBI13",
+        "SBSPK8",
+        "SBSPM8",
+        "HFTE14",
+        "ENMTF8",
+        "EGIEA6",
+        "OMGE17",
+        "BRKPA5",
+        "SBSPL8",
+        "NTSDA1",
+        "AMTG11",
+        "EGTI11",
+        "OMGE27",
+        "AGUP11",
+        "SBIOA4",
+        "FSII14",
+        "FIQE14",
+        "RHIN49",
+        "RHIN59",
+        "SAELC8",
+        "VERTO6",
+        "VERTL6",
+        "NTSDA2",
+        "VPPCA1",
+        "VERTM6",
+        "EKTRA8",
+        "ADPD11",
+        "AXSE11",
+        "ADPA11",
+        "CEEBE3",
+        "CSMGD2",
+        "VERTC4",
+        "ENSEB5",
+        "ROTY13",
+        "CTNSB5",
+        "SSRU11",
+        "MRSAA4",
+        "GCBSC9",
+        "CSRNA4",
+        "VPPC26",
+        "ENMTG8",
+        "OMGE37",
+        "CEPEA8"
+      ],
       "temSnapshotBlc": true
     },
     "alertas": [
       {
         "tipo": "blc-sem-cadastro",
-        "texto": "70 ativo(s) no BLC sem correspondencia em Debentures.csv"
+        "texto": "74 ativo(s) no BLC sem correspondencia em Debentures.csv"
       }
     ],
     "emissoesCVM": null,
