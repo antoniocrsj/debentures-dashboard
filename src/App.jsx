@@ -340,7 +340,7 @@ export default function App() {
             <Suspense fallback={
               <div className="state-box"><div className="spinner" aria-label="Carregando" /><p>Carregando…</p></div>
             }>
-              <VencimentosDashboard data={agenda12m} compact={!desktop} />
+              <VencimentosDashboard data={agenda12m} blc={raw?.blc} compact={!desktop} />
             </Suspense>
           </ErrorBoundary>
         )}

@@ -262,9 +262,11 @@ function main() {
     // pos/pre o principal nao e corrigido -> fator 1.
     const fwd = d => (indexado ? Math.pow(1 + premissas.inflacaoVna, Math.max(0, (d - hoje) / MS_ANO)) : 1)
 
-    // Acumuladores por ativo (janela 12m).
+    // Acumuladores por ativo (janela 12m) + eventos individuais (drill-down:
+    // clicar num mes/grupo e ver exatamente o que paga em cada data).
     const aCart = { juros: 0, amort: 0 }
     const aMerc = { juros: 0, amort: 0 }
+    const evs = []   // { d:'yyyy-mm-dd', t:'J'|'A', pct?, mc, ct }
 
     // JUROS: gap = dias desde o pagamento de juros anterior (ou emissao p/ o 1o).
     // Base = notional x VNA corrigido ate o evento; taxa = cupom (real, p/ IPCA+).
@@ -282,6 +284,7 @@ function main() {
       meses[mi].mercado.juros += jMerc; meses[mi].mercado.nEventos++
       meses[mi].carteira.juros += jCart; if (notCarteira > 0) meses[mi].carteira.nEventos++
       aMerc.juros += jMerc; aCart.juros += jCart
+      evs.push({ d: e.dataStr, t: 'J', mc: Math.round(jMerc), ct: Math.round(jCart) })
       for (const g of cartRows) addGestor(g.gestor, g.val * fracao, 0)
     }
 
@@ -297,6 +300,7 @@ function main() {
       meses[mi].mercado.amort += aM; meses[mi].mercado.nEventos++
       meses[mi].carteira.amort += aC; if (notCarteira > 0) meses[mi].carteira.nEventos++
       aMerc.amort += aM; aCart.amort += aC
+      evs.push({ d: e.dataStr, t: 'A', pct: e.pct == null ? null : Math.round(e.pct * 100) / 100, mc: Math.round(aM), ct: Math.round(aC) })
       for (const g of cartRows) addGestor(g.gestor, 0, g.val * fracao)
     }
 
@@ -317,6 +321,7 @@ function main() {
         cupomEstimado: Math.round(cupom * 10000) / 100,   // % a.a.
         carteira: { juros: Math.round(aCart.juros), amort: Math.round(aCart.amort) },
         mercado: { juros: Math.round(aMerc.juros), amort: Math.round(aMerc.amort) },
+        eventos: evs.sort((x, y) => (x.d < y.d ? -1 : 1)),
       })
     }
   }
@@ -370,11 +375,13 @@ function main() {
     porGestor,
     porEmissor,
     porGrupo,
-    ativos: ativos.slice(0, 400),
+    // TODOS os ativos com evento na janela, cada um com seus eventos individuais
+    // (drill-down no app). Compacto (sem indent) pra segurar o tamanho do arquivo.
+    ativos,
   }
 
   fs.mkdirSync(DATA, { recursive: true })
-  fs.writeFileSync(OUT, JSON.stringify(report, null, 2))
+  fs.writeFileSync(OUT, JSON.stringify(report))
   console.log('=== Agenda 12m ===')
   console.log(`ref: ${report.refDate} | horizonte: ${HORIZONTE_MESES}m`)
   console.log(`universo ${universo.size} | com agenda ${comAgenda} | sem agenda ${semAgenda} | sem cache ${semCache}`)
