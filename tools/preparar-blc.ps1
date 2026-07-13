@@ -126,3 +126,56 @@ Write-Host ""
 Write-Host "  Arquivo gerado:" -ForegroundColor White
 Write-Host "  $OutPath" -ForegroundColor Yellow
 Write-Host ""
+
+# ---- 6. MATURIDADE do CDA: esse mes ja' esta cheio o suficiente pra confiar? --
+# O CDA vai "enchendo" ao longo dos meses (fundos entregam/retificam). Este check
+# mede a COBERTURA da lista curada (via cda_fi_PL = quem reportou) e compara com o
+# mes anterior (referencia madura). So' roda quando veio do download da CVM.
+if ($MesAno -and $cdaExtractDir) {
+  Write-Host "=== MATURIDADE DO CDA ($MesAno) ===" -ForegroundColor Green
+  try {
+    $plM = Read-CdaFiPL (Join-Path $cdaExtractDir "cda_fi_PL_$MesAno.csv")
+    $nossos = @($fundoGestor.Keys)
+    $totNossos = $nossos.Count
+    $repM = @($nossos | Where-Object { $plM.ContainsKey($_) }).Count
+    $cobM = if ($totNossos) { $repM / $totNossos } else { 0 }
+
+    # Deb. alocada e num. de fundos COM debenture, restrito aos nossos fundos.
+    $debNossos = 0.0
+    $comDeb = New-Object System.Collections.Generic.HashSet[string]
+    foreach ($r in $rawRows) {
+      if ($fundoGestor.ContainsKey($r.Cnpj)) { $debNossos += $r.Val; [void]$comDeb.Add($r.Cnpj) }
+    }
+
+    Write-Host ("  Fundos da lista que reportaram : {0} de {1} ({2:P0})" -f $repM, $totNossos, $cobM)
+    Write-Host ("  Fundos no PL do mes (mercado)  : {0}" -f $plM.Count)
+    Write-Host ("  Nossos fundos com debenture    : {0}" -f $comDeb.Count)
+    Write-Host ("  Deb. alocada (nossos fundos)   : R$ {0:N1} bi" -f ($debNossos / 1e9))
+    Write-Host ("  Linhas BLC_4 lidas             : {0}" -f $rawRows.Count)
+
+    # Referencia: mes anterior (mais maduro). Best-effort (1 download extra, cacheado).
+    $prevMes = ([datetime]::ParseExact($MesAno, 'yyyyMM', [System.Globalization.CultureInfo]::InvariantCulture)).AddMonths(-1).ToString('yyyyMM')
+    $veredicto = ''; $cor = 'Yellow'
+    try {
+      $prevDir = Get-CdaFiDir $CdaDir $prevMes -NoDownload:$NoDownload
+      $plP = Read-CdaFiPL (Join-Path $prevDir "cda_fi_PL_$prevMes.csv")
+      $repP = @($nossos | Where-Object { $plP.ContainsKey($_) }).Count
+      $razao = if ($repP) { $repM / $repP } else { 1 }
+      Write-Host ("  Mes anterior ({0})            : {1} nossos | {2} no mercado" -f $prevMes, $repP, $plP.Count)
+      Write-Host ("  Razao {0}/{1} (nossos fundos) : {2:P0}" -f $MesAno, $prevMes, $razao)
+      if ($cobM -ge 0.90 -and $razao -ge 0.98) { $veredicto = 'CONFIAVEL'; $cor = 'Green' }
+      elseif ($razao -ge 0.90) { $veredicto = 'QUASE LA -- da pra usar, mas ainda enchendo'; $cor = 'Yellow' }
+      else { $veredicto = 'AINDA ENCHENDO -- espere alguns dias e rode de novo'; $cor = 'Red' }
+    } catch {
+      Write-Host ("  (sem comparar com {0}: {1})" -f $prevMes, $_.Exception.Message) -ForegroundColor DarkYellow
+      if ($cobM -ge 0.95) { $veredicto = 'CONFIAVEL (cobertura alta)'; $cor = 'Green' }
+      elseif ($cobM -ge 0.85) { $veredicto = 'QUASE LA'; $cor = 'Yellow' }
+      else { $veredicto = 'AINDA ENCHENDO'; $cor = 'Red' }
+    }
+    Write-Host ("  VEREDICTO: {0}" -f $veredicto) -ForegroundColor $cor
+    Write-Host ""
+  } catch {
+    Write-Host ("  (nao consegui avaliar maturidade: {0})" -f $_.Exception.Message) -ForegroundColor DarkYellow
+    Write-Host ""
+  }
+}
