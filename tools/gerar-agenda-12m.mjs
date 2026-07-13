@@ -37,13 +37,29 @@ const OUT = path.join(DATA, 'Agenda_12m.json')
 
 const HORIZONTE_MESES = 12
 
-// Premissas para ESTIMAR o cupom (juros). Editaveis em tools/premissas-agenda.json
-// { "cdi": 0.15, "ipca": 0.045, "igpm": 0.045 }. Defaults conservadores.
+// Premissas para ESTIMAR o cupom (juros). Prioridade (cada um sobrescreve o
+// anterior): default -> CDI de mercado (LTN mais curta, public/data/
+// Premissas_Mercado.json, gerado por preparar-anbima.ps1) -> override manual
+// em tools/premissas-agenda.json. Assim o CDI vem do mercado, sem chute, mas
+// da pra fixar qualquer premissa a mao quando quiser.
 function loadPremissas() {
-  const def = { cdi: 0.15, ipca: 0.045, igpm: 0.045 }
-  const f = path.join(__dirname, 'premissas-agenda.json')
-  if (!fs.existsSync(f)) return def
-  try { return { ...def, ...JSON.parse(fs.readFileSync(f, 'utf8')) } } catch { return def }
+  const prem = { cdi: 0.15, ipca: 0.045, igpm: 0.045, cdiFonte: 'default' }
+  const mkt = path.join(PUBLIC, 'data', 'Premissas_Mercado.json')
+  if (fs.existsSync(mkt)) {
+    try {
+      const m = JSON.parse(fs.readFileSync(mkt, 'utf8'))
+      if (m && typeof m.cdi === 'number') { prem.cdi = m.cdi; prem.cdiFonte = m.fonte || 'LTN' }
+    } catch { /* segue com o default */ }
+  }
+  const ov = path.join(__dirname, 'premissas-agenda.json')
+  if (fs.existsSync(ov)) {
+    try {
+      const o = JSON.parse(fs.readFileSync(ov, 'utf8'))
+      Object.assign(prem, o)
+      if (typeof o.cdi === 'number') prem.cdiFonte = 'manual (premissas-agenda.json)'
+    } catch { /* segue */ }
+  }
+  return prem
 }
 
 function readCsv(file) {

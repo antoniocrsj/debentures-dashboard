@@ -605,6 +605,36 @@ if ($out.Count -gt 0) {
   Log "0 registros — PRESERVANDO o public/Anbima_Tx.csv anterior (nao sobrescreve)." 'Yellow'
 }
 
+# ---- 7b. Premissa de mercado: CDI ~ LTN mais curta -------------------------
+# A LTN mais curta (prefixado zero-cupom) e o melhor palpite de mercado para o
+# CDI/Selic de curto prazo. Persistimos em public/data/Premissas_Mercado.json
+# para o gerador de Vencimentos 12m estimar os juros pos-fixados (CDI+/%CDI)
+# sem chutar um numero. So grava se houver curva de LTN. Best-effort.
+try {
+  if ($ltn.Count -gt 0) {
+    $refD = if ($dataRefDeb) { $dataRefDeb } else { (Get-Date) }
+    $curta = $null
+    foreach ($x in $ltn) { if ($x.Venc -gt $refD -and ($null -eq $curta -or $x.Venc -lt $curta.Venc)) { $curta = $x } }
+    if ($null -eq $curta) { foreach ($x in $ltn) { if ($null -eq $curta -or $x.Venc -lt $curta.Venc) { $curta = $x } } }
+    if ($curta) {
+      $dataDir = Join-Path $Root 'public\data'
+      New-Item -ItemType Directory -Force -Path $dataDir | Out-Null
+      $prem = [ordered]@{
+        cdi      = [Math]::Round($curta.Taxa / 100.0, 6)
+        cdiPct   = Fmt-Comma $curta.Taxa 2
+        fonte    = 'LTN ' + $curta.Venc.ToString('yyyy-MM-dd')
+        ltnVenc  = $curta.Venc.ToString('yyyy-MM-dd')
+        dataRef  = if ($dataRefStr -ne '') { $dataRefStr } else { '' }
+        geradoEm = (Get-Date).ToString('yyyy-MM-ddTHH:mm:ss')
+      }
+      [System.IO.File]::WriteAllText((Join-Path $dataDir 'Premissas_Mercado.json'), ($prem | ConvertTo-Json), $utf8)
+      Log ("Premissa CDI (LTN mais curta " + $curta.Venc.ToString('yyyy-MM-dd') + "): " + (Fmt-Comma $curta.Taxa 2) + '%')
+    }
+  } else {
+    Log "Sem curva de LTN nesta rodada — Premissas_Mercado.json (CDI) nao atualizado." 'Yellow'
+  }
+} catch { Log ("Nao consegui gravar Premissas_Mercado.json: " + $_.Exception.Message) 'Yellow' }
+
 # Conferencia (nao calculados)
 $cb = New-Object System.Text.StringBuilder
 [void]$cb.AppendLine('"ticker","tipo","status","motivo","taxaOriginal"')

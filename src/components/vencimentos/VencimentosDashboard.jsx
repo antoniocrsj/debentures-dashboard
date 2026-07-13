@@ -58,7 +58,8 @@ export default function VencimentosDashboard({ data, compact }) {
   if (semAgendas) return <Empty compact={compact} />
 
   const prem = data.premissas || {}
-  const premLabel = `CDI ${pctFmt((prem.cdi || 0) * 100)} · IPCA ${pctFmt((prem.ipca || 0) * 100)}`
+  const cdiFonte = prem.cdiFonte && prem.cdiFonte !== 'default' ? ` (${prem.cdiFonte})` : ''
+  const premLabel = `CDI ${pctFmt((prem.cdi || 0) * 100)}${cdiFonte} · IPCA ${pctFmt((prem.ipca || 0) * 100)}`
 
   const tabela = (
     <table className="venc-table">
