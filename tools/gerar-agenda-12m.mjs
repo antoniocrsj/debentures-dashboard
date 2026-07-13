@@ -268,15 +268,23 @@ function main() {
     const aMerc = { juros: 0, amort: 0 }
     const evs = []   // { d:'yyyy-mm-dd', t:'J'|'A', pct?, mc, ct }
 
-    // JUROS: gap = dias desde o pagamento de juros anterior (ou emissao p/ o 1o).
+    // JUROS: cada cupom acrua por UM periodo tipico (mediana do espacamento
+    // entre pagamentos de juros — semestral/anual). Nao usamos o gap literal
+    // desde o evento anterior porque a agenda da ANBIMA, em papeis ja rodados,
+    // as vezes so traz os eventos FUTUROS: o 1o cupom da janela ficaria com um
+    // gap medido desde a emissao (anos), estourando a estimativa. Semestral
+    // por padrao quando ha um so pagamento.
     // Base = notional x VNA corrigido ate o evento; taxa = cupom (real, p/ IPCA+).
-    const dEmis = parseData(deb ? deb.emissao : '')
-    let prevJuros = dEmis
+    const jGaps = []
+    for (let i = 1; i < jurosEventos.length; i++) {
+      const g = (jurosEventos[i].data - jurosEventos[i - 1].data) / 864e5
+      if (g > 0) jGaps.push(g)
+    }
+    jGaps.sort((a, b) => a - b)
+    const periodoTip = Math.min(366, jGaps.length ? jGaps[Math.floor(jGaps.length / 2)] : 182)
     for (const e of jurosEventos) {
-      const gapDias = prevJuros ? Math.max(0, (e.data - prevJuros) / 864e5) : 182
-      prevJuros = e.data
       if (e.data <= hoje || e.data >= fim) continue
-      const fracao = cupom * (gapDias / 365.25) * fwd(e.data)
+      const fracao = cupom * (periodoTip / 365.25) * fwd(e.data)
       const jMerc = notMercado * fracao
       const jCart = notCarteira * fracao
       const mi = idxMes.get(mesKey(e.data))
