@@ -48,10 +48,13 @@ export default function VencimentosDashboard({ data, blc, compact }) {
   const [dim, setDim] = useState('gestor')            // gestor | emissor | grupo | ativo
   const [selMes, setSelMes] = useState(null)          // 'yyyy-MM' | null
   const [selEnt, setSelEnt] = useState(null)          // { dim, nome } | null
-  const [soInc, setSoInc] = useState(false)
+  const [seg, setSeg] = useState('todos')             // 'todos' | '12431' | 'trad'
 
   const meses = data?.meses || []
   const effDim = dim === 'gestor' && persp === 'mercado' ? 'emissor' : dim
+  // Filtro por tipo de debenture (Lei 12.431). Age no grafico, cards e rankings.
+  const matchSeg = a => seg === 'todos' || (seg === '12431' ? !!a.incentivada : !a.incentivada)
+  const filtrando = seg !== 'todos'
 
   // Mercado nao tem corte por gestor: trocar de perspectiva com um fundo
   // selecionado derrubaria a conta -> limpa a selecao nesse caso.
@@ -104,11 +107,13 @@ export default function VencimentosDashboard({ data, blc, compact }) {
     return persp === 'carteira' ? ev.ct : ev.mc
   }
 
-  // Meses exibidos (cards + grafico): geral, ou recomputados p/ a entidade.
+  // Meses exibidos (cards + grafico): precomputado quando nada esta filtrado;
+  // recomputado dos eventos quando ha entidade selecionada ou filtro 12.431.
   const mesesView = useMemo(() => {
-    if (!selEnt) return meses.map(m => ({ mes: m.mes, label: m.label, ...m[persp] }))
+    if (!selEnt && !filtrando) return meses.map(m => ({ mes: m.mes, label: m.label, ...m[persp] }))
     const buckets = new Map(meses.map(m => [m.mes, { mes: m.mes, label: m.label, juros: 0, amort: 0, total: 0 }]))
     for (const ev of eventos) {
+      if (!matchSeg(ev.a)) continue
       if (!matchEnt(ev.a, selEnt)) continue
       const b = buckets.get(ev.d.slice(0, 7))
       if (!b) continue
@@ -117,7 +122,7 @@ export default function VencimentosDashboard({ data, blc, compact }) {
       b.total += v
     }
     return [...buckets.values()]
-  }, [meses, persp, selEnt, eventos, gestoresPorTicker])
+  }, [meses, persp, selEnt, seg, eventos, gestoresPorTicker])
 
   const maxTotal = Math.max(1, ...mesesView.map(m => m.total))
   const totJuros = mesesView.reduce((s, m) => s + m.juros, 0)
@@ -127,10 +132,11 @@ export default function VencimentosDashboard({ data, blc, compact }) {
   // Rankings (sem entidade selecionada), respeitando o filtro de mes.
   const rankRows = useMemo(() => {
     if (selEnt) return []
-    // Sem filtro de mes, o ranking por gestor precomputado e exato e completo.
-    if (effDim === 'gestor' && !selMes && data?.porGestor?.length) return data.porGestor
+    // Sem filtro de mes/segmento, o ranking por gestor precomputado e completo.
+    if (effDim === 'gestor' && !selMes && !filtrando && data?.porGestor?.length) return data.porGestor
     const m = new Map()
     for (const ev of eventos) {
+      if (!matchSeg(ev.a)) continue
       if (selMes && ev.d.slice(0, 7) !== selMes) continue
       if (effDim === 'gestor') {
         if (!ev.ct) continue
@@ -146,7 +152,6 @@ export default function VencimentosDashboard({ data, blc, compact }) {
       }
       const v = persp === 'carteira' ? ev.ct : ev.mc
       if (!v) continue
-      if (effDim === 'ativo' && soInc && !ev.a.incentivada) continue
       const k = effDim === 'emissor' ? (ev.a.emissor || '(sem emissor)')
         : effDim === 'grupo' ? (ev.a.grupo || SEM_GRUPO)
         : ev.a.ticker
@@ -158,18 +163,19 @@ export default function VencimentosDashboard({ data, blc, compact }) {
       .map(x => ({ ...x, total: x.juros + x.amort }))
       .filter(x => x.total > 0.5)
       .sort((a, b) => b.total - a.total)
-  }, [selEnt, effDim, selMes, persp, soInc, eventos, gestoresPorTicker, data])
+  }, [selEnt, effDim, selMes, persp, seg, eventos, gestoresPorTicker, data])
 
   // Cronograma da entidade selecionada (evento a evento, em ordem de data).
   const crono = useMemo(() => {
     if (!selEnt) return []
     return eventos
       .filter(ev => matchEnt(ev.a, selEnt))
+      .filter(ev => matchSeg(ev.a))
       .filter(ev => !selMes || ev.d.slice(0, 7) === selMes)
       .map(ev => ({ ...ev, v: evVal(ev, selEnt) }))
       .filter(ev => ev.v > 0.5)
       .sort((x, y) => (x.d < y.d ? -1 : 1))
-  }, [selEnt, selMes, persp, eventos, gestoresPorTicker])
+  }, [selEnt, selMes, persp, seg, eventos, gestoresPorTicker])
 
   const semAgendas = !data || !meses.length || (data.cobertura && data.cobertura.comAgenda === 0)
   if (semAgendas) return <Empty />
@@ -264,13 +270,22 @@ export default function VencimentosDashboard({ data, blc, compact }) {
             {' '}Clique num mes ou numa linha para investigar.
           </p>
         </div>
-        <div className="venc-toggle" role="tablist" aria-label="Perspectiva">
-          <button role="tab" aria-selected={persp === 'carteira'}
-            className={`venc-btn${persp === 'carteira' ? ' active' : ''}`}
-            onClick={() => setPersp('carteira')}>Carteira</button>
-          <button role="tab" aria-selected={persp === 'mercado'}
-            className={`venc-btn${persp === 'mercado' ? ' active' : ''}`}
-            onClick={() => setPersp('mercado')}>Mercado</button>
+        <div className="venc-toggles">
+          <div className="venc-toggle" role="tablist" aria-label="Perspectiva">
+            <button role="tab" aria-selected={persp === 'carteira'}
+              className={`venc-btn${persp === 'carteira' ? ' active' : ''}`}
+              onClick={() => setPersp('carteira')}>Carteira</button>
+            <button role="tab" aria-selected={persp === 'mercado'}
+              className={`venc-btn${persp === 'mercado' ? ' active' : ''}`}
+              onClick={() => setPersp('mercado')}>Mercado</button>
+          </div>
+          <div className="venc-toggle" role="tablist" aria-label="Tipo de debenture">
+            {[['todos', 'Tudo'], ['12431', '12.431'], ['trad', 'Tradicional']].map(([id, lbl]) => (
+              <button key={id} role="tab" aria-selected={seg === id}
+                className={`venc-btn${seg === id ? ' active' : ''}`}
+                onClick={() => setSeg(id)}>{lbl}</button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -293,7 +308,8 @@ export default function VencimentosDashboard({ data, blc, compact }) {
       <div className="venc-cards">
         <div className="venc-card">
           <span className="venc-card-lbl">
-            {selEnt ? `${DIM_NOME[selEnt.dim]} · 12m` : persp === 'carteira' ? 'Entra nos fundos (12m)' : 'Mercado (12m)'}
+            {(selEnt ? `${DIM_NOME[selEnt.dim]} · 12m` : persp === 'carteira' ? 'Entra nos fundos (12m)' : 'Mercado (12m)')}
+            {seg === '12431' ? ' · 12.431' : seg === 'trad' ? ' · Tradicional' : ''}
           </span>
           <span className="venc-card-val">{fmtBRL(totalPeriodo)}</span>
         </div>
@@ -337,12 +353,6 @@ export default function VencimentosDashboard({ data, blc, compact }) {
               className={`venc-dim-btn${effDim === d.id ? ' active' : ''}`}
               onClick={() => setDim(d.id)}>{d.label}</button>
           ))}
-          {effDim === 'ativo' && (
-            <label className="venc-only-inc">
-              <input type="checkbox" checked={soInc} onChange={e => setSoInc(e.target.checked)} />
-              So incentivadas (12.431)
-            </label>
-          )}
         </div>
       )}
       {selEnt && (

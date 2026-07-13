@@ -1316,8 +1316,10 @@ a { color: var(--primary); }
 .venc-titles h2 { margin: 0; font-size: 18px; color: var(--text); }
 .venc-sub { margin: 4px 0 0; font-size: 12px; color: var(--text-soft); max-width: 620px; line-height: 1.4; }
 .venc-sub strong { color: var(--warn); }
+/* Toggles do topo (perspectiva + tipo de debenture) — quebram no compacto */
+.venc-toggles { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start; }
 /* Toggle Carteira | Mercado — botoes padrao (30px), ativo em navy-light */
-.venc-toggle { display: inline-flex; gap: 6px; }
+.venc-toggle { display: inline-flex; gap: 6px; flex-wrap: wrap; }
 .venc-btn {
   height: var(--btn-h); padding: 0 14px; border-radius: 8px;
   border: 1px solid var(--navy-light); background: var(--chip-bg);
