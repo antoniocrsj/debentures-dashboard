@@ -16,6 +16,16 @@ function CaptacaoIcon() {
     </svg>
   )
 }
+function CaixaIcon() {
+  return (
+    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="14" y="18" width="20" height="14" rx="2" />
+      <path d="M14 22 H34" />
+      <circle cx="28" cy="27" r="1.6" />
+      <path d="M17 18 V16 A2 2 0 0 1 19 14 H24" />
+    </svg>
+  )
+}
 function VencimentosIcon() {
   return (
     <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -86,6 +96,16 @@ export default function Header({
             onClick={() => onSection('captacao')}
           >
             <CaptacaoIcon />
+          </button>
+          <button
+            type="button"
+            className={`section-btn${section === 'caixa' ? ' active' : ''}`}
+            aria-pressed={section === 'caixa'}
+            aria-label="Nível de Caixa"
+            title="Nível de Caixa"
+            onClick={() => onSection('caixa')}
+          >
+            <CaixaIcon />
           </button>
           <button
             type="button"

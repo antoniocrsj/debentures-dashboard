@@ -1,0 +1,99 @@
+{
+    "updatedAt":  "2026-07-13T14:07:36",
+    "definicao":  "Caixa Potencial Direto = Disponibilidades + Titulos Publicos + Operacoes Compromissadas (por TP_APLIC, todos os blocos). Nao inclui titulos bancarios/CDB/LCI/LCA/LF/DPGE, credito privado/debentures, valores a receber nem cotas comuns.",
+    "mesesRecentes":  [
+                          "202605",
+                          "202604",
+                          "202603"
+                      ],
+    "mesRefMadura":  "202602",
+    "mesesProcessados":  [
+                             "202602",
+                             "202603",
+                             "202604",
+                             "202605"
+                         ],
+    "limiares":  {
+                     "candidato":  0.75,
+                     "maxProfundidadeLookThrough":  8,
+                     "confirmado":  0.9,
+                     "tolReconciliacao":  0.05
+                 },
+    "regras":  [
+                   "CONFID somado aos blocos abertos sem dupla contagem (disjuntos por fundo+categoria; doc. oficial CVM fi-doc-cda). VL no CONFID esta na coluna 8.",
+                   "Look-through via BLC_2 (CNPJ_FUNDO_CLASSE_COTA). Cotas no CONFID nao identificam o investido -\u003e cotas nao identificadas, sem estimativa de caixa indireto.",
+                   "Caixa indireto confirmado soma so quando o fundo investido e fundo caixa confirmado (\u003e=90%). Recursao memoizada com deteccao de ciclo e limite de profundidade.",
+                   "Mes-base por fundo = mes recente mais novo VALIDO (PL\u003e0, carteira reconcilia com PL, competencia bate). Recuo individual para o mes anterior quando invalido.",
+                   "Caixa Estimado Atual = %Caixa da carteira valida x PL diario mais recente (Informe Diario). Fluxo liquido posterior mostrado a parte (pressao de compra), nunca somado ao caixa.",
+                   "Consolidado conta o ativo final 1x: universo curado sem feeders; caixa indireto so via fundo-caixa FORA do universo (evita dupla contagem com a linha do proprio fundo-caixa)."
+               ],
+    "totais":  {
+                   "comCotasNaoIdentificadas":  899,
+                   "candidatos":  37,
+                   "caixaConsolidadoDataBase":  361751334911.63,
+                   "caixaEstimadoAtualConsolidado":  360426810505.74,
+                   "fundosNaTabela":  2671,
+                   "fundosCaixaConfirmados":  126,
+                   "dadosInsuficientes":  7,
+                   "excluidosDoConsolidado":  153
+               },
+    "comparacaoMeses":  [
+                            {
+                                "Mes":  "202602",
+                                "Disp":  125850506.06000017,
+                                "TitPub":  183390430940.59003,
+                                "Compr":  196182829437.13016,
+                                "CaixaDireto":  379699110883.78015,
+                                "FundosCaixaConfirmados":  5,
+                                "Candidatos":  30
+                            },
+                            {
+                                "Mes":  "202603",
+                                "Disp":  1095124653.2700005,
+                                "TitPub":  167175728970.66986,
+                                "Compr":  191763923521.89032,
+                                "CaixaDireto":  360034777145.8302,
+                                "FundosCaixaConfirmados":  16,
+                                "Candidatos":  26
+                            },
+                            {
+                                "Mes":  "202604",
+                                "Disp":  402926473.74000007,
+                                "TitPub":  167104529543.7598,
+                                "Compr":  181863457019.30988,
+                                "CaixaDireto":  349370913036.80969,
+                                "FundosCaixaConfirmados":  11,
+                                "Candidatos":  26
+                            },
+                            {
+                                "Mes":  "202605",
+                                "Disp":  172481980.99999994,
+                                "TitPub":  167880033653.90991,
+                                "Compr":  180500555904.1499,
+                                "CaixaDireto":  348553071539.05981,
+                                "FundosCaixaConfirmados":  9,
+                                "Candidatos":  22
+                            }
+                        ],
+    "discrepancia_839_835":  {
+                                 "fundosSemSerieDiaria":  [
+                                                              "10643489000173",
+                                                              "20889217000101",
+                                                              "65793919000125",
+                                                              "58238959000140"
+                                                          ],
+                                 "descricao":  "Fundos_CDI.csv tem 839 fundos; Fluxo_Atualizacao.json (trad) processou 835 no Informe Diario. Gap = 4 fundos sem serie diaria."
+                             },
+    "limitacoes":  [
+                       "CDA e foto mensal com defasagem de 4-5 meses; o mes recente pode ainda estar enchendo (posicoes recentes sob sigilo entram consolidadas no CONFID).",
+                       "Cotas confidenciais nao sao atribuidas a fundo investido -\u003e possivel subestimacao do caixa indireto de fundos que usam fundos-caixa e reportaram sob sigilo.",
+                       "Reconciliacao carteira x PL trata passivos por lista de TP_APLIC; opcoes lancadas e derivativos sao aproximados -\u003e cobertura e um indicador de qualidade, nao um balanco exato.",
+                       "Comprador direto = teve debenture no BLC_4 na janela processada; um fundo novo ainda invisivel no CDA pode nao estar marcado.",
+                       "Fluxo liquido posterior derivado de dPL e retorno da cota (Perf_Diario); dividendos/coticoes atipicas podem gerar ruido diario."
+                   ],
+    "fontes":  {
+                   "cda":  "C:\\Projeto Credito\\CVM _cda (cda_fi_AAAAMM.zip)",
+                   "cadastro":  "Fundos_12431.csv/Fundos_CDI.csv + Cadastro_Gestores",
+                   "plDiario":  "public/data/Perf_Diario_{Trad,12431}.csv"
+               }
+}

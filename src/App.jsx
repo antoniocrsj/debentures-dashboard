@@ -25,6 +25,7 @@ const ResumoDoDiaModal = lazyWithRetry(() => import('./components/ResumoDoDiaMod
 // lazyWithRetry: re-tenta o import se o chunk falhar (evita tela em branco).
 const FluxoDashboard = lazyWithRetry(() => import('./components/fluxo/FluxoDashboard.jsx'))
 const VencimentosDashboard = lazyWithRetry(() => import('./components/vencimentos/VencimentosDashboard.jsx'))
+const CaixaDashboard = lazyWithRetry(() => import('./components/caixa/CaixaDashboard.jsx'))
 
 // Painel de controle da atualização: só existe no bundle de DEV. Em produção
 // import.meta.env.DEV é substituído por `false` em tempo de build e o Rollup
@@ -77,10 +78,11 @@ export default function App() {
   const [lastDebTab, setLastDebTab] = useState('ativos')   // lembra a sub-aba ao voltar p/ Debêntures
   const section = tab === 'captacao' ? 'captacao'
     : tab === 'vencimentos' ? 'vencimentos'
+    : tab === 'caixa' ? 'caixa'
     : tab === 'atualizacao' ? 'atualizacao'
     : 'debentures'
   const selectSection = useCallback(
-    s => setTab(s === 'captacao' || s === 'vencimentos' || s === 'atualizacao' ? s : lastDebTab),
+    s => setTab(s === 'captacao' || s === 'vencimentos' || s === 'caixa' || s === 'atualizacao' ? s : lastDebTab),
     [lastDebTab]
   )
   const { data: agenda12m } = useAgenda12m()
@@ -255,6 +257,7 @@ export default function App() {
         ? [
             { id: 'debentures',  label: 'Debêntures' },
             { id: 'captacao',    label: 'Captação' },
+            { id: 'caixa',       label: 'Nível de Caixa' },
             { id: 'vencimentos', label: 'Vencimentos' },
           ]
         : [
@@ -316,7 +319,7 @@ export default function App() {
 
         {/* Desktop: abas standalone só na Captação (nas demais vão ao lado da busca).
             Compacto: sub-abas só na seção Debêntures (Captação não tem sub-abas). */}
-        {(desktop ? (tab === 'captacao' || tab === 'vencimentos') : section === 'debentures') && tabsNav}
+        {(desktop ? (tab === 'captacao' || tab === 'vencimentos' || tab === 'caixa') : section === 'debentures') && tabsNav}
       </div>
 
       {/* Scrollable content */}
@@ -330,6 +333,18 @@ export default function App() {
               <div className="state-box"><div className="spinner" aria-label="Carregando" /><p>Carregando…</p></div>
             }>
               <FluxoDashboard compact={!desktop} />
+            </Suspense>
+          </ErrorBoundary>
+        )}
+
+        {/* Nível de Caixa: Caixa Potencial dos fundos (disp.+títulos púb.+compromissadas),
+            fundos-caixa (look-through) e estimativa atual. Independente do BLC/debêntures. */}
+        {tab === 'caixa' && (
+          <ErrorBoundary label="o Nível de Caixa">
+            <Suspense fallback={
+              <div className="state-box"><div className="spinner" aria-label="Carregando" /><p>Carregando…</p></div>
+            }>
+              <CaixaDashboard compact={!desktop} />
             </Suspense>
           </ErrorBoundary>
         )}

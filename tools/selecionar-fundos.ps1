@@ -44,6 +44,12 @@
                                             mesmo esquema de colunas de
                                             Fundos_12431.csv/Fundos_CDI.csv -
                                             pronta pra comparar/substituir.
+    tools\Sugestao_Candidatos_Novos_12431.csv - nome infra e SEM carteira no CDA
+                                            (novos de verdade, a confirmar quando
+                                            o CDA alcanca-los).
+    tools\Sugestao_Feeders_12431.csv     - nome infra mas com carteira no CDA sem
+                                            debenture (investem em cotas de outros
+                                            fundos) - excluidos dos candidatos.
 
   Uso: powershell -File selecionar-fundos.ps1
        powershell -File selecionar-fundos.ps1 -MesAno 202603   # mes especifico
@@ -60,6 +66,7 @@ param(
   [double]$LimiarLei12431Pct = 0.05,
   [double]$LimiarLei12431FortePct = 0.20,
   [double]$MinPl = 5000000,
+  [int]$JanelaFeederMeses = 4,
   [string]$DebenturesPath = '',
   [string]$OutDir = '',
   [switch]$NoDownload
@@ -134,48 +141,101 @@ function Test-FundoCreditoElegivel($info) {
   return $false
 }
 
+# Agrega um mes de BLC_4 (debentures) em mapas por fundo: soma total e a parcela
+# Lei 12.431. Ativos fora do cadastro de debentures vao pro HashSet $semLei.
+# Grava texto sem deixar um arquivo travado (aberto no Excel) abortar o run: se
+# nao conseguir escrever, avisa e segue para os proximos arquivos.
+function Save-Text([string]$path, [string]$text, $enc) {
+  try {
+    [System.IO.File]::WriteAllText($path, $text, $enc)
+    return $true
+  } catch {
+    Write-Host "    NAO consegui gravar $([System.IO.Path]::GetFileName($path)) (aberto em outro programa?). Feche e rode de novo." -ForegroundColor Red
+    return $false
+  }
+}
+
+function Get-DebMesMaps($blcRows, [hashtable]$leiMap, $semLei) {
+  $debM = @{}; $debLeiM = @{}
+  foreach ($r in $blcRows) {
+    if ($r.Val -le 0) { continue }
+    if ($debM.ContainsKey($r.Cnpj)) { $debM[$r.Cnpj] += $r.Val } else { $debM[$r.Cnpj] = $r.Val }
+    $a = Normalize-Ativo $r.Ativo
+    if ($a -eq '') { continue }
+    if ($leiMap.ContainsKey($a)) {
+      if ($leiMap[$a]) {
+        if ($debLeiM.ContainsKey($r.Cnpj)) { $debLeiM[$r.Cnpj] += $r.Val } else { $debLeiM[$r.Cnpj] = $r.Val }
+      }
+    } else { [void]$semLei.Add($a) }
+  }
+  return @{ Deb = $debM; DebLei = $debLeiM }
+}
+
 Write-Host ""
 Write-Host "=== Selecionar Fundos (sugestao Fundos_12431 / Fundos_CDI) ===" -ForegroundColor Green
 
-# ---- 1. Ler o CDA (debentures por fundo + PL na mesma data) ---------------
-$plPorFundo = $null
-if (-not [string]::IsNullOrWhiteSpace($XlsxPath)) {
-  Step "Lendo $XlsxPath (pode levar 1-2 min)..."
-  $rawRows = Read-CdaFiBlcDebentures $XlsxPath
-} else {
-  if (-not $MesAno) { $MesAno = Get-CdaTargetMonth }
-  Step "Mes-alvo do CDA: $MesAno (defasagem: ate dia 15 -> mes atual -5; depois -> -4)"
-  Step "Baixando/lendo cda_fi_$MesAno.zip da CVM..."
-  $cdaExtractDir = Get-CdaFiDir $CdaDir $MesAno -NoDownload:$NoDownload
-  Step "Lendo cda_fi_BLC_4_$MesAno.csv (debentures, pode levar 1-2 min)..."
-  $rawRows = Read-CdaFiBlcCsv (Join-Path $cdaExtractDir "cda_fi_BLC_4_$MesAno.csv")
-  Step "Lendo cda_fi_PL_$MesAno.csv (PL por fundo, mesma data de referencia)..."
-  $plPorFundo = Read-CdaFiPL (Join-Path $cdaExtractDir "cda_fi_PL_$MesAno.csv")
-  Step "  $($plPorFundo.Count) fundos com PL no CDA"
-}
-Step "  $($rawRows.Count) linhas de debentures lidas"
-
+# ---- 1. Lei 12.431 por ativo (para a parcela Lei por fundo) -----------------
 Step "Lendo cadastro de debentures para identificar Lei 12.431..."
 $lei12431PorAtivo = Read-DebenturesLei12431Map $DebenturesPath
 Step "  $($lei12431PorAtivo.Count) ativos no cadastro de debentures"
 
-# Soma o valor em debentures por fundo e a parcela em debentures Lei 12.431.
-$debPorFundo = @{}
-$debLei12431PorFundo = @{}
+# ---- 1b. Carteira do CDA: mes-alvo AUTORITATIVO + resgate de novos ----------
+# O mes-alvo (defasagem 4-5 meses) e' o mais CONFIAVEL: ja' saiu do prazo de
+# sigilo de 90 dias, entao a carteira esta' completa. Ele manda para os fundos
+# existentes. A janela (meses seguintes, mais recentes) serve so' para RESGATAR
+# fundos NOVOS que ainda nao aparecem no mes-alvo (nasceram depois) - para esses
+# usamos a foto mais recente disponivel (o melhor que ha').
+# Assim evitamos os dois erros: "maior %" inflava com pico transitorio; "mes mais
+# recente" para todo mundo subestimava (posicoes recentes sob sigilo).
+#   - fundo no mes-alvo  -> foto do mes-alvo (completa) decide se qualifica;
+#   - fundo NOVO (fora do mes-alvo) -> foto mais recente em que declarou;
+#   - $carteira = quem tem debenture na sua foto; $filouCda = quem declarou
+#     carteira em algum mes (anti-feeder). Um fundo com pico e 0% no mes-alvo
+#     NAO e' resgatado (ja' foi visto no alvo com 0 debenture).
+$carteira = @{}                                    # cnpj -> @{ Deb; DebLei; PL; Pct }
+$filouCda = New-Object System.Collections.Generic.HashSet[string]
+$vistos = New-Object System.Collections.Generic.HashSet[string]
 $ativosSemCadastroLei = New-Object System.Collections.Generic.HashSet[string]
-foreach ($r in $rawRows) {
-  if ($debPorFundo.ContainsKey($r.Cnpj)) { $debPorFundo[$r.Cnpj] += $r.Val } else { $debPorFundo[$r.Cnpj] = $r.Val }
 
-  $ativo = Normalize-Ativo $r.Ativo
-  if ($ativo -ne '' -and $lei12431PorAtivo.ContainsKey($ativo)) {
-    if ($lei12431PorAtivo[$ativo]) {
-      if ($debLei12431PorFundo.ContainsKey($r.Cnpj)) { $debLei12431PorFundo[$r.Cnpj] += $r.Val } else { $debLei12431PorFundo[$r.Cnpj] = $r.Val }
-    }
-  } elseif ($ativo -ne '') {
-    [void]$ativosSemCadastroLei.Add($ativo)
+if (-not [string]::IsNullOrWhiteSpace($XlsxPath)) {
+  Step "Lendo $XlsxPath (pode levar 1-2 min)..."
+  $maps = Get-DebMesMaps (Read-CdaFiBlcDebentures $XlsxPath) $lei12431PorAtivo $ativosSemCadastroLei
+  foreach ($cnpj in $maps.Deb.Keys) {
+    $lei = if ($maps.DebLei.ContainsKey($cnpj)) { $maps.DebLei[$cnpj] } else { 0.0 }
+    $carteira[$cnpj] = @{ Deb = $maps.Deb[$cnpj]; DebLei = $lei; PL = 0.0; Pct = -1.0 }  # PL do registro
   }
+  Step "  $($carteira.Count) fundos com debenture no arquivo (anti-feeder off no fluxo -XlsxPath)"
+} else {
+  if (-not $MesAno) { $MesAno = Get-CdaTargetMonth }
+  $anchor = [datetime]::ParseExact($MesAno + '01', 'yyyyMMdd', $null)
+  $mesesJanela = @(0..([Math]::Max(1, $JanelaFeederMeses) - 1) | ForEach-Object { $anchor.AddMonths($_).ToString('yyyyMM') })
+  # mes-alvo primeiro (autoritativo); depois os seguintes do mais recente ao mais
+  # antigo (resgate de novos, com a foto mais recente disponivel).
+  $ordem = @($MesAno) + @($mesesJanela | Where-Object { $_ -ne $MesAno } | Sort-Object -Descending)
+  Step "Mes-alvo $MesAno (autoritativo) + resgate: $($ordem -join ', ')"
+  foreach ($m in $ordem) {
+    try {
+      $dirM = Get-CdaFiDir $CdaDir $m -NoDownload:$NoDownload
+      Step "  lendo cda_fi_$m (PL + BLC_4 debentures, pode levar 1-2 min)..."
+      $plM = Read-CdaFiPL (Join-Path $dirM "cda_fi_PL_$m.csv")
+      $maps = Get-DebMesMaps (Read-CdaFiBlcCsv (Join-Path $dirM "cda_fi_BLC_4_$m.csv")) $lei12431PorAtivo $ativosSemCadastroLei
+      foreach ($cnpj in $plM.Keys) {
+        [void]$filouCda.Add($cnpj)
+        if ($vistos.Contains($cnpj)) { continue }   # ja' fixado (mes-alvo ou mes mais recente)
+        [void]$vistos.Add($cnpj)
+        $pl = $plM[$cnpj]
+        if ($pl -le 0) { continue }
+        if ($maps.Deb.ContainsKey($cnpj)) {          # tem debenture nesta foto
+          $lei = if ($maps.DebLei.ContainsKey($cnpj)) { $maps.DebLei[$cnpj] } else { 0.0 }
+          $carteira[$cnpj] = @{ Deb = $maps.Deb[$cnpj]; DebLei = $lei; PL = $pl; Pct = ($maps.Deb[$cnpj] / $pl) }
+        }
+      }
+    } catch {
+      Write-Host "    mes $m indisponivel, ignorado ($($_.Exception.Message))" -ForegroundColor DarkGray
+    }
+  }
+  Step "  alvo+resgate: $($filouCda.Count) declararam carteira | $($carteira.Count) com debenture"
 }
-Step "  $($debPorFundo.Count) fundos distintos com posicao em debentures"
 if ($ativosSemCadastroLei.Count -gt 0) {
   Write-Host "    AVISO: $($ativosSemCadastroLei.Count) ativo(s) do CDA nao apareceram no cadastro de debentures." -ForegroundColor Yellow
 }
@@ -197,20 +257,20 @@ Step "Classificando fundos (> $($LimiarPct*100)% debentures, PL > R$ 5 mi, tipo 
 $candidatos = New-Object System.Collections.Generic.List[object]
 $semRegistro = 0; $semPL = 0; $abaixoDeb = 0; $plBaixo = 0; $tipoNaoElegivel = 0
 $nome12431SemCarteira = 0; $carteira12431SemNome = 0; $carteiraForteSemNome = 0
-foreach ($cnpj in $debPorFundo.Keys) {
+foreach ($cnpj in $carteira.Keys) {
   if (-not $classeInfo.ContainsKey($cnpj)) { $semRegistro++; continue }
   $info = $classeInfo[$cnpj]
-  # PL do CDA (mesma data de referencia da posicao em debentures) e' mais preciso;
-  # cai pro PL do registro_classe.csv (pode ser de outra data) se nao achar no CDA.
-  $pl = if ($plPorFundo -and $plPorFundo.ContainsKey($cnpj)) { $plPorFundo[$cnpj] } else { $info.PL }
+  $snap = $carteira[$cnpj]
+  # PL do CDA (mesma data da posicao, melhor mes da janela) e' mais preciso; cai
+  # pro PL do registro_classe.csv (fluxo -XlsxPath, sem PL do CDA) se nao houver.
+  $pl = if ($snap.PL -gt 0) { $snap.PL } else { $info.PL }
   if ($pl -le 0) { $semPL++; continue }
-  $pct = $debPorFundo[$cnpj] / $pl
+  $pct = $snap.Deb / $pl
   if ($pct -le $LimiarPct) { $abaixoDeb++; continue }
   if ($pl -le $MinPl) { $plBaixo++; continue }
   if (-not (Test-FundoCreditoElegivel $info)) { $tipoNaoElegivel++; continue }
 
-  $debLei = if ($debLei12431PorFundo.ContainsKey($cnpj)) { $debLei12431PorFundo[$cnpj] } else { 0.0 }
-  $pctLei = $debLei / $pl
+  $pctLei = $snap.DebLei / $pl
   $nome12431 = [regex]::IsMatch((Normalize-Text $info.Denom), $NOME_12431_REGEX)
   $carteira12431Minima = ($pctLei -ge $LimiarLei12431Pct)
   $carteira12431Forte = ($pctLei -gt $LimiarLei12431FortePct)
@@ -284,7 +344,7 @@ foreach ($c in ($novos | Sort-Object Segmento, Denom)) {
   $plFmt = ([Math]::Round($c.PL, 2)).ToString($ci)
   [void]$sbN.AppendLine(('"{0}","{1}",{2},{3}%,{4}%,{5},"{6}","{7}","{8}","{9}"' -f $c.Cnpj, ([string]$c.Denom).Replace('"', '""'), $c.Segmento, $pct, $pctLei, $plFmt, ([string]$c.TipoClasse).Replace('"', '""'), ([string]$c.Classificacao).Replace('"', '""'), $c.CnpjGestor, ([string]$c.Apelido).Replace('"', '""')))
 }
-[System.IO.File]::WriteAllText($outNovos, $sbN.ToString(), $utf8)
+[void](Save-Text $outNovos $sbN.ToString() $utf8)
 
 $outRemover = Join-Path $OutDir 'Sugestao_Remover.csv'
 $sbR = New-Object System.Text.StringBuilder
@@ -293,14 +353,15 @@ foreach ($cnpj in ($removerCnpjs | Sort-Object)) {
   $motivo = ''
   if (-not $classeInfo.ContainsKey($cnpj)) {
     $motivo = 'nao encontrado como classe ativa no cadastro CVM (cancelado/liquidado?)'
-  } elseif (-not $debPorFundo.ContainsKey($cnpj)) {
-    $motivo = 'sem posicao em debentures no CDA atual'
+  } elseif (-not $carteira.ContainsKey($cnpj)) {
+    $motivo = 'sem posicao em debentures no CDA (janela atual)'
   } else {
     $info = $classeInfo[$cnpj]
-    $pl = if ($plPorFundo -and $plPorFundo.ContainsKey($cnpj)) { $plPorFundo[$cnpj] } else { $info.PL }
+    $snap = $carteira[$cnpj]
+    $pl = if ($snap.PL -gt 0) { $snap.PL } else { $info.PL }
     if ($pl -le 0) {
       $motivo = 'PL invalido/zerado'
-    } elseif (($debPorFundo[$cnpj] / $pl) -le $LimiarPct) {
+    } elseif (($snap.Deb / $pl) -le $LimiarPct) {
       $motivo = "debentures <= $($LimiarPct*100)% do PL"
     } elseif ($pl -le $MinPl) {
       $motivo = 'PL <= R$ 5 milhoes'
@@ -312,7 +373,7 @@ foreach ($cnpj in ($removerCnpjs | Sort-Object)) {
   }
   [void]$sbR.AppendLine(('"{0}","{1}"' -f $cnpj, $motivo))
 }
-[System.IO.File]::WriteAllText($outRemover, $sbR.ToString(), $utf8)
+[void](Save-Text $outRemover $sbR.ToString() $utf8)
 
 # Lista final completa (todos os candidatos qualificados, nao so' a diferenca) -
 # mesmo esquema de colunas de Fundos_12431.csv/Fundos_CDI.csv (CNPJ_FUNDO_CLASSE,
@@ -323,7 +384,7 @@ function Write-ListaFinal($items, $outFile) {
   foreach ($c in ($items | Sort-Object Denom)) {
     [void]$sb.AppendLine(('"{0}","{1}","{2}"' -f $c.Cnpj, $c.Denom.Replace('"', '""'), $c.CnpjGestor))
   }
-  [System.IO.File]::WriteAllText($outFile, $sb.ToString(), $utf8)
+  [void](Save-Text $outFile $sb.ToString() $utf8)
 }
 $outFinal12431 = Join-Path $OutDir 'Sugestao_Lista_Final_12431.csv'
 $outFinalCdi   = Join-Path $OutDir 'Sugestao_Lista_Final_CDI.csv'
@@ -336,14 +397,24 @@ Write-ListaFinal (@($candidatos | Where-Object { $_.Segmento -eq 'CDI' }))   $ou
 # fica invisivel ate' o CDA alcanca-lo (defasagem de 4-5 meses) - e' o buraco
 # que faz a gente "perder" captacao de fundos de infra recem-lancados.
 # Para cobrir isso, varremos o UNIVERSO de classes ativas por NOME (infra/
-# incentivado): ativos, PL > MinPl, tipo elegivel, AINDA sem posicao no CDA e
+# incentivado): ativos, PL > MinPl, tipo elegivel, AINDA sem carteira no CDA e
 # AINDA fora das abas atuais. E' uma lista de REVISAO MANUAL: o nome sugere
-# 12.431, mas sem a carteira nao da' pra confirmar o %debentures - por isso nao
-# entra em nenhuma sugestao automatica, so' aponta o que voce deve olhar.
-Step "Procurando candidatos novos de 12.431 (nome infra, ainda fora do CDA)..."
+# 12.431, mas sem a carteira nao da' pra confirmar o %debentures.
+#
+# FILTRO ANTI-FEEDER: no regime CVM 175 explodiram as classes "em cotas" (CIC/
+# feeders) que investem em OUTROS fundos de infra, nao em debentures. Pelo nome
+# elas batem o regex, mas nao sao detentoras diretas. Um feeder DECLARA carteira
+# (aparece no CDA/PL), so' que em cotas - por isso nunca entra em $carteira (que
+# vem do BLC_4, so' debentures). Quem tem debenture na janela ($carteira) ja' foi
+# classificado acima e (se passou) entra na Lista_Final. Aqui sobra o resto:
+#   - declarou carteira ($filouCda) mas nao esta' em $carteira => carteira SEM
+#     debenture => FEEDER -> Sugestao_Feeders_12431.csv (nunca aplicado).
+#   - nao declarou carteira nenhuma => novo de verdade -> candidato (revisar).
+Step "Procurando candidatos novos de 12.431 (nome infra, sem carteira no CDA)..."
 $candidatosNovos = New-Object System.Collections.Generic.List[object]
+$feedersExcluidos = New-Object System.Collections.Generic.List[object]
 foreach ($cnpj in $classeInfo.Keys) {
-  if ($debPorFundo.ContainsKey($cnpj)) { continue }   # ja visto no CDA (tratado acima)
+  if ($carteira.ContainsKey($cnpj)) { continue }      # tem debenture na janela -> classificado acima
   if ($atuais.Contains($cnpj)) { continue }           # ja esta numa aba curada
   $info = $classeInfo[$cnpj]
   if ($info.PL -le $MinPl) { continue }
@@ -351,13 +422,22 @@ foreach ($cnpj in $classeInfo.Keys) {
   if (-not [regex]::IsMatch((Normalize-Text $info.Denom), $NOME_12431_REGEX)) { continue }
   $cnpjGestor = if ($fundoGestorCvm.ContainsKey($info.IdFundo)) { $fundoGestorCvm[$info.IdFundo] } else { '' }
   $apelido = if ($cnpjGestor -ne '' -and $gestorApelidoMap.ContainsKey($cnpjGestor)) { $gestorApelidoMap[$cnpjGestor] } else { '' }
+  # Declarou carteira em algum mes da janela mas nao tem debenture (senao estaria
+  # em $carteira, ja' pulado acima) => feeder.
+  if ($filouCda.Count -gt 0 -and $filouCda.Contains($cnpj)) {
+    $feedersExcluidos.Add([pscustomobject]@{
+      Cnpj = $cnpj; Denom = $info.Denom; PL = $info.PL; TipoClasse = $info.TipoClasse
+      CnpjGestor = $cnpjGestor; Apelido = $apelido
+    })
+    continue
+  }
   $candidatosNovos.Add([pscustomobject]@{
     Cnpj = $cnpj; Denom = $info.Denom; PL = $info.PL; Forma = $info.Forma
     TipoClasse = $info.TipoClasse; DataRegistro = $info.DataRegistro; DataInicio = $info.DataInicio
     CnpjGestor = $cnpjGestor; Apelido = $apelido
   })
 }
-Step "  $($candidatosNovos.Count) candidato(s) novo(s) de 12.431 para revisar"
+Step "  $($candidatosNovos.Count) candidato(s) novo(s) de 12.431 para revisar (feeders excluidos: $($feedersExcluidos.Count))"
 $outCandNovos = Join-Path $OutDir 'Sugestao_Candidatos_Novos_12431.csv'
 $sbC = New-Object System.Text.StringBuilder
 [void]$sbC.AppendLine('CNPJ_FUNDO_CLASSE,DENOM_SOCIAL,Data_Registro,Data_Inicio,Forma_Condominio,PL,Tipo_Classe,CNPJ Gestor,Apelido Gestor')
@@ -365,7 +445,18 @@ foreach ($c in ($candidatosNovos | Sort-Object DataRegistro -Descending)) {
   $plFmt = ([Math]::Round($c.PL, 2)).ToString($ci)
   [void]$sbC.AppendLine(('"{0}","{1}","{2}","{3}","{4}",{5},"{6}","{7}","{8}"' -f $c.Cnpj, ([string]$c.Denom).Replace('"', '""'), $c.DataRegistro, $c.DataInicio, $c.Forma, $plFmt, ([string]$c.TipoClasse).Replace('"', '""'), $c.CnpjGestor, ([string]$c.Apelido).Replace('"', '""')))
 }
-[System.IO.File]::WriteAllText($outCandNovos, $sbC.ToString(), $utf8)
+[void](Save-Text $outCandNovos $sbC.ToString() $utf8)
+
+# Feeders excluidos dos candidatos (nome infra, mas carteira sem debenture) -
+# gravados a' parte para transparencia/revisao (nada e' descartado em silencio).
+$outFeeders = Join-Path $OutDir 'Sugestao_Feeders_12431.csv'
+$sbF = New-Object System.Text.StringBuilder
+[void]$sbF.AppendLine('CNPJ_FUNDO_CLASSE,DENOM_SOCIAL,PL,Tipo_Classe,CNPJ Gestor,Apelido Gestor,Motivo')
+foreach ($c in ($feedersExcluidos | Sort-Object { -$_.PL })) {
+  $plFmt = ([Math]::Round($c.PL, 2)).ToString($ci)
+  [void]$sbF.AppendLine(('"{0}","{1}",{2},"{3}","{4}","{5}","carteira atual no CDA sem debenture (feeder de cotas ou posicao zerada)"' -f $c.Cnpj, ([string]$c.Denom).Replace('"', '""'), $plFmt, ([string]$c.TipoClasse).Replace('"', '""'), $c.CnpjGestor, ([string]$c.Apelido).Replace('"', '""')))
+}
+[void](Save-Text $outFeeders $sbF.ToString() $utf8)
 
 # ---- 7. Relatorio -----------------------------------------------------------
 Write-Host ""
@@ -377,7 +468,8 @@ Write-Host "  Regra base                         : > $($LimiarPct*100)% do PL em
 Write-Host "  Regra 12431                        : >= $($LimiarLei12431Pct*100)% Lei 12.431 + nome infra/incentivado; ou > $($LimiarLei12431FortePct*100)% Lei 12.431 mesmo sem nome"
 Write-Host "  Fundos qualificados no CDA atual   : $($candidatos.Count) (12431: $n12431 | CDI nao-isento: $nCdi)"
 Write-Host "  Novos (nao estao nas abas hoje)    : $($novos.Count)"
-Write-Host "  Candidatos novos 12.431 (fora CDA) : $($candidatosNovos.Count) - fundos com nome infra ainda sem carteira/aba (revisar)"
+Write-Host "  Candidatos novos 12.431 (fora CDA) : $($candidatosNovos.Count) - nome infra, SEM carteira no CDA (novos de verdade, revisar)"
+Write-Host "  Feeders excluidos dos candidatos   : $($feedersExcluidos.Count) - nome infra, mas carteira sem debenture (investem em cotas)"
 Write-Host "  Para remover (nao qualificam mais) : $($removerCnpjs.Count)"
 Write-Host "  Alertas 12431 para revisar         : nome sem carteira=$nome12431SemCarteira | carteira 5%-20% sem nome=$carteira12431SemNome | >20% sem nome incluidos=$carteiraForteSemNome"
 Write-Host ""
@@ -386,5 +478,6 @@ Write-Host "    $outNovos"       -ForegroundColor Yellow
 Write-Host "    $outRemover"     -ForegroundColor Yellow
 Write-Host "    $outFinal12431  ($n12431 fundos - lista completa, nao so' a diferenca)" -ForegroundColor Yellow
 Write-Host "    $outFinalCdi  ($nCdi fundos - lista completa, nao so' a diferenca)" -ForegroundColor Yellow
-Write-Host "    $outCandNovos  ($($candidatosNovos.Count) candidatos novos 12.431 - nome infra, ainda fora do CDA)" -ForegroundColor Yellow
+Write-Host "    $outCandNovos  ($($candidatosNovos.Count) candidatos novos 12.431 - nome infra, sem carteira no CDA)" -ForegroundColor Yellow
+Write-Host "    $outFeeders  ($($feedersExcluidos.Count) feeders excluidos - nome infra, carteira sem debenture)" -ForegroundColor Yellow
 Write-Host ""

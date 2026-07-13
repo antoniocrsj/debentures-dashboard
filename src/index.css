@@ -1396,3 +1396,80 @@ a { color: var(--primary); }
 
 /* Colunas so-desktop: some no compacto (app sem .desktop) */
 .app:not(.desktop) .venc .hide-compact { display: none; }
+
+/* ═══════════════════ Nível de Caixa (seção Caixa Potencial) ═══════════════ */
+/* Filtros: toggles de segmento/classe + busca */
+.caixa-filters { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 12px; }
+.caixa-seg-toggle { display: inline-flex; background: var(--chip-bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.caixa-seg-toggle .seg-btn {
+  height: var(--btn-h); padding: 0 12px; border: 0; background: transparent; color: var(--navy-light);
+  font-size: 12.5px; font-weight: 600; cursor: pointer; white-space: nowrap;
+  border-right: 1px solid var(--border);
+}
+.caixa-seg-toggle .seg-btn:last-child { border-right: 0; }
+.caixa-seg-toggle .seg-btn:hover { background: var(--blue-soft); }
+.caixa-seg-toggle .seg-btn.active { background: var(--selected); color: #fff; }
+.caixa-search {
+  height: var(--btn-h); flex: 1 1 200px; min-width: 160px; padding: 0 10px;
+  border: 1px solid var(--border); border-radius: var(--radius); font-size: 13px; color: var(--text); background: var(--card);
+}
+.caixa-chip-active {
+  height: var(--btn-h); padding: 0 10px; border: 1px solid var(--primary-border);
+  background: var(--primary-light); color: var(--primary); border-radius: var(--radius);
+  font-size: 12px; font-weight: 600; cursor: pointer;
+}
+.caixa .btn-clear {
+  height: var(--btn-h); padding: 0 12px; border: 1px solid var(--neg-line); background: var(--neg-soft);
+  color: var(--neg); border-radius: var(--radius); font-size: 12.5px; font-weight: 600; cursor: pointer;
+}
+
+/* Tabelas: reforços numéricos e linha ativa */
+.caixa .col-num.strong { font-weight: 700; }
+.caixa .col-num.pos { color: var(--pos); }
+.caixa .col-num.neg { color: var(--neg); }
+.caixa tr.row-active > td { background: var(--primary-light); }
+.caixa .th-plain { padding: 6px 8px; font-size: 11px; color: var(--text-muted); text-align: center; font-weight: 600; }
+.caixa .col-gestor-cell { font-size: 12px; color: var(--text-soft); white-space: nowrap; }
+
+/* Nome do fundo + tags (segmento / mês-base / feeder / cotas ñ id) */
+.caixa-fundo-nome { display: block; font-size: 12.5px; font-weight: 600; color: var(--text); max-width: 340px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.caixa-fundo-tags { display: inline-flex; flex-wrap: wrap; gap: 4px; margin-top: 2px; }
+.caixa-seg { font-size: 9.5px; font-weight: 700; padding: 1px 5px; border-radius: 5px; letter-spacing: .3px; }
+.caixa-seg.seg-CDI { background: #e0e7ff; color: #3730a3; }
+.caixa-seg.seg-12431 { background: #dcfce7; color: #166534; }
+.caixa-mesbase { font-size: 9.5px; color: var(--text-faint); padding: 1px 4px; border: 1px solid var(--border); border-radius: 5px; }
+.caixa-flag { font-size: 9.5px; font-weight: 700; padding: 1px 5px; border-radius: 5px; }
+.caixa-flag.feeder { background: var(--flag-bg); color: var(--flag-ink); }
+.caixa-flag.cotas { background: #f1f5f9; color: #475569; }
+
+/* Badges de classificação e confiança */
+.caixa-classe { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 6px; white-space: nowrap; }
+.caixa-classe.kind-confirmado { background: var(--pos-soft); color: var(--pos); border: 1px solid var(--pos-line); }
+.caixa-classe.kind-candidato { background: var(--flag-bg); color: var(--flag-ink); border: 1px solid var(--flag-line); }
+.caixa-classe.kind-nao, .caixa-classe.kind-insuficiente { background: var(--chip-bg); color: var(--text-faint); border: 1px solid var(--border); }
+.caixa-conf { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 6px; }
+.caixa-conf.conf-alto { background: var(--pos-soft); color: var(--pos); }
+.caixa-conf.conf-medio { background: var(--flag-bg); color: var(--flag-ink); }
+.caixa-conf.conf-baixo { background: var(--neg-soft); color: var(--neg); }
+
+/* Barras de tendência mensal (sem Recharts) */
+.caixa-trend { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 14px; box-shadow: var(--shadow); }
+.caixa-trend-head { margin-bottom: 10px; }
+.caixa-trend-bars { display: flex; align-items: flex-end; gap: 14px; height: 150px; }
+.caixa-bar-col { flex: 1 1 0; display: flex; flex-direction: column; align-items: center; gap: 4px; height: 100%; justify-content: flex-end; }
+.caixa-bar-val { font-size: 11px; font-weight: 700; color: var(--text); white-space: nowrap; }
+.caixa-bar-track { width: 100%; max-width: 60px; flex: 1; display: flex; align-items: flex-end; }
+.caixa-bar-fill { width: 100%; background: linear-gradient(180deg, var(--primary) 0%, var(--navy-light) 100%); border-radius: 6px 6px 0 0; min-height: 4px; transition: height .3s ease; }
+.caixa-bar-fill.madura { background: linear-gradient(180deg, #94a3b8 0%, #64748b 100%); }
+.caixa-bar-mes { font-size: 11px; color: var(--text-soft); font-weight: 600; }
+.caixa-bar-tag { font-size: 9px; color: var(--text-faint); font-weight: 700; }
+
+/* Rodapé metodológico */
+.caixa-meta { margin: 16px 0 8px; background: var(--chip-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 4px 14px; }
+.caixa-meta > summary { cursor: pointer; font-size: 12.5px; font-weight: 600; color: var(--text-soft); padding: 8px 0; }
+.caixa-meta-body { font-size: 12px; color: var(--text-soft); line-height: 1.5; padding-bottom: 8px; }
+.caixa-meta-body ul { margin: 4px 0 10px; padding-left: 18px; }
+.caixa-meta-body li { margin-bottom: 4px; }
+
+/* Desktop: cards do caixa em 6 colunas (há espaço) */
+.app.desktop .caixa .fluxo-cards { grid-template-columns: repeat(6, 1fr); }
