@@ -1312,31 +1312,19 @@ a { color: var(--primary); }
 /* ─── Vencimentos 12m ─────────────────────────────────────────── */
 .venc { padding: 12px; }
 .venc.compact { padding: 10px 8px 40px; }
-.venc-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-.venc-titles h2 { margin: 0; font-size: 18px; color: var(--text); }
-.venc-sub { margin: 4px 0 0; font-size: 12px; color: var(--text-soft); max-width: 620px; line-height: 1.4; }
-.venc-sub strong { color: var(--warn); }
-/* Toggles do topo (perspectiva + tipo de debenture) — quebram no compacto */
-.venc-toggles { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-start; }
-/* Toggle Carteira | Mercado — botoes padrao (30px), ativo em navy-light */
-.venc-toggle { display: inline-flex; gap: 6px; flex-wrap: wrap; }
-.venc-btn {
-  height: var(--btn-h); padding: 0 14px; border-radius: 8px;
-  border: 1px solid var(--navy-light); background: var(--chip-bg);
-  color: var(--navy-light); font-size: 13px; font-weight: 600; cursor: pointer;
-}
-.venc-btn:hover { background: var(--blue-soft); }
-.venc-btn.active { background: var(--selected); border-color: var(--selected); color: #fff; }
+.venc-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+.venc-titles { min-width: 0; }
+.venc-sub { max-width: 640px; margin-top: 4px; }
+.venc-sub strong { color: var(--text); font-weight: 600; }
+/* Toggles do topo (perspectiva + tipo) usam o .segmented padrao do app, mas
+   com largura automatica pra ficarem lado a lado (o default e width:100%). */
+.venc-toggles { display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-start; }
+.venc-toggles .segmented { width: auto; flex: 0 0 auto; }
 
-.venc-cards { display: flex; gap: 10px; margin: 14px 0; flex-wrap: wrap; }
-.venc-card {
-  flex: 1 1 120px; background: var(--card); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 10px 12px; display: flex; flex-direction: column; gap: 2px;
-}
-.venc-card-lbl { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: .3px; }
-.venc-card-val { font-size: 18px; font-weight: 700; color: var(--text); }
-.venc-juros-ink { color: var(--primary); }
-.venc-amort-ink { color: var(--warn); }
+/* Cards no padrao da Captacao (.fluxo-card), porem 3 colunas */
+.venc-cards { grid-template-columns: repeat(3, 1fr); margin: 14px 0; }
+.venc-juros-ink { color: var(--text-soft); }
+.venc-amort-ink { color: var(--primary); }
 
 /* Grafico de barras empilhadas (juros + amortizacao) por mes — sem libs */
 .venc-chart {
@@ -1348,24 +1336,26 @@ a { color: var(--primary); }
 .venc-bar-val { font-size: 9.5px; color: var(--text-soft); height: 14px; white-space: nowrap; }
 .venc-bar-wrap { flex: 1; width: 60%; max-width: 30px; display: flex; flex-direction: column-reverse; border-radius: 3px 3px 0 0; overflow: hidden; }
 .venc-seg { width: 100%; }
-.venc-seg-juros { background: var(--primary); }
-.venc-seg-amort { background: var(--warn); }
+.venc-seg-juros { background: var(--text-faint); }  /* cinza */
+.venc-seg-amort { background: var(--primary); }  /* azul */
 .venc-bar-lbl { font-size: 10px; color: var(--text-muted); margin-top: 4px; white-space: nowrap; }
+/* Compacto: barras estreitas -> esconde o valor no topo (fica no tooltip) */
+.venc.compact .venc-bar-val { display: none; }
+.venc.compact .venc-chart { padding-top: 8px; }
 
 .venc-legend { display: flex; align-items: center; gap: 16px; margin: 8px 2px 14px; font-size: 12px; color: var(--text-soft); flex-wrap: wrap; }
 .venc-legend span { display: inline-flex; align-items: center; gap: 6px; }
 .venc-dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
-.venc-only-inc { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
 
-/* Seletor de dimensao (Por fundo / emissor / grupo / ativo) */
-.venc-dims { display: flex; align-items: center; gap: 6px; margin: 4px 0 10px; flex-wrap: wrap; }
-.venc-dim-btn {
-  height: var(--btn-h); padding: 0 12px; border-radius: 8px;
+/* Seletor de dimensao (Por fundo / emissor / grupo / ativo) — segmented padrao */
+.venc-dims { display: flex; align-items: center; gap: 10px; margin: 4px 0 10px; flex-wrap: wrap; }
+.venc-dims-seg { width: auto; flex: 0 0 auto; }
+.venc-back {
+  height: var(--btn-h); padding: 0 14px; border-radius: 99px;
   border: 1px solid var(--navy-light); background: var(--chip-bg);
-  color: var(--navy-light); font-size: 12.5px; font-weight: 600; cursor: pointer;
+  color: var(--navy-light); font-size: 12.5px; font-weight: 500; cursor: pointer;
 }
-.venc-dim-btn:hover { background: var(--blue-soft); }
-.venc-dim-btn.active { background: var(--selected); border-color: var(--selected); color: #fff; }
+.venc-back:hover { background: var(--blue-soft); }
 .venc-nome { max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* Drill-down: barras clicaveis, filtros ativos (chips) e linhas navegaveis */
@@ -1394,7 +1384,7 @@ a { color: var(--primary); }
 .venc-tk { font-weight: 700; color: var(--text); }
 .venc-emissor { color: var(--text-soft); max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .venc-tot { font-weight: 700; }
-.venc-est { font-size: 9px; color: var(--warn); margin-left: 4px; vertical-align: super; }
+.venc-est { font-size: 9px; color: var(--text-faint); margin-left: 4px; vertical-align: super; }
 .venc-inc {
   margin-left: 6px; font-size: 9.5px; font-weight: 700; padding: 1px 5px; border-radius: 6px;
   background: var(--pos-soft); color: var(--pos); border: 1px solid var(--pos-line);

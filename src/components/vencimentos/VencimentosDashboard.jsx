@@ -242,7 +242,7 @@ export default function VencimentosDashboard({ data, blc, compact }) {
             <td>
               {ev.t === 'J'
                 ? <>Juros<span className="venc-est">est.</span></>
-                : `Amortizacao${ev.pct != null ? ` (${ev.pct.toLocaleString('pt-BR')}%)` : ''}`}
+                : `Amortização${ev.pct != null ? ` (${ev.pct.toLocaleString('pt-BR')}%)` : ''}`}
             </td>
             <td className="num venc-tot">{fmtBRL(ev.v)}</td>
           </tr>
@@ -263,26 +263,26 @@ export default function VencimentosDashboard({ data, blc, compact }) {
     <div className={`venc${compact ? ' compact' : ''}`}>
       <div className="venc-head">
         <div className="venc-titles">
-          <h2>Vencimentos 12 meses</h2>
-          <p className="venc-sub">
-            Caixa (juros + amortizacao) que entra{data.refDate ? ` a partir de ${data.refDate}` : ''}.
-            {' '}Juros <strong>estimados pelo cupom</strong> ({premLabel}); amortizacao com valor preciso da agenda.
-            {' '}Clique num mes ou numa linha para investigar.
+          <h2 className="fluxo-title">Vencimentos 12 meses</h2>
+          <p className="fluxo-subtitle venc-sub">
+            Caixa (juros + amortização) que entra{data.refDate ? ` a partir de ${data.refDate}` : ''}.
+            {' '}Juros <strong>estimados pelo cupom</strong> ({premLabel}); amortização com valor preciso da agenda.
+            {' '}Clique num mês ou numa linha para investigar.
           </p>
         </div>
         <div className="venc-toggles">
-          <div className="venc-toggle" role="tablist" aria-label="Perspectiva">
+          <div className="segmented" role="tablist" aria-label="Perspectiva">
             <button role="tab" aria-selected={persp === 'carteira'}
-              className={`venc-btn${persp === 'carteira' ? ' active' : ''}`}
+              className={`segmented-btn${persp === 'carteira' ? ' active' : ''}`}
               onClick={() => setPersp('carteira')}>Carteira</button>
             <button role="tab" aria-selected={persp === 'mercado'}
-              className={`venc-btn${persp === 'mercado' ? ' active' : ''}`}
+              className={`segmented-btn${persp === 'mercado' ? ' active' : ''}`}
               onClick={() => setPersp('mercado')}>Mercado</button>
           </div>
-          <div className="venc-toggle" role="tablist" aria-label="Tipo de debenture">
+          <div className="segmented" role="tablist" aria-label="Tipo de debênture">
             {[['todos', 'Tudo'], ['12431', '12.431'], ['trad', 'Tradicional']].map(([id, lbl]) => (
               <button key={id} role="tab" aria-selected={seg === id}
-                className={`venc-btn${seg === id ? ' active' : ''}`}
+                className={`segmented-btn${seg === id ? ' active' : ''}`}
                 onClick={() => setSeg(id)}>{lbl}</button>
             ))}
           </div>
@@ -300,13 +300,13 @@ export default function VencimentosDashboard({ data, blc, compact }) {
             </button>
           )}
           {selEnt && (
-            <button className="venc-chip" onClick={() => setSelEnt(null)} title="Limpar selecao">
+            <button className="venc-chip" onClick={() => setSelEnt(null)} title="Limpar seleção">
               {DIM_NOME[selEnt.dim]}: <b>{selEnt.nome}</b> ✕
             </button>
           )}
           {selMes && (
-            <button className="venc-chip" onClick={() => setSelMes(null)} title="Limpar mes">
-              Mes: <b>{mesLabelSel}</b> ✕
+            <button className="venc-chip" onClick={() => setSelMes(null)} title="Limpar mês">
+              Mês: <b>{mesLabelSel}</b> ✕
             </button>
           )}
           <button className="venc-chip venc-chip-clear"
@@ -317,25 +317,25 @@ export default function VencimentosDashboard({ data, blc, compact }) {
         </div>
       )}
 
-      <div className="venc-cards">
-        <div className="venc-card">
-          <span className="venc-card-lbl">
+      <div className="fluxo-cards venc-cards">
+        <div className="fluxo-card">
+          <span className="fluxo-card-label">
             {(selEnt ? `${DIM_NOME[selEnt.dim]} · 12m` : persp === 'carteira' ? 'Entra nos fundos (12m)' : 'Mercado (12m)')}
             {seg === '12431' ? ' · 12.431' : seg === 'trad' ? ' · Tradicional' : ''}
           </span>
-          <span className="venc-card-val">{fmtBRL(totalPeriodo)}</span>
+          <span className="fluxo-card-value">{fmtBRL(totalPeriodo)}</span>
         </div>
-        <div className="venc-card">
-          <span className="venc-card-lbl">Juros (est.)</span>
-          <span className="venc-card-val venc-juros-ink">{fmtBRL(totJuros)}</span>
+        <div className="fluxo-card">
+          <span className="fluxo-card-label">Juros (est.)</span>
+          <span className="fluxo-card-value venc-juros-ink">{fmtBRL(totJuros)}</span>
         </div>
-        <div className="venc-card">
-          <span className="venc-card-lbl">Amortizacao</span>
-          <span className="venc-card-val venc-amort-ink">{fmtBRL(totAmort)}</span>
+        <div className="fluxo-card">
+          <span className="fluxo-card-label">Amortização</span>
+          <span className="fluxo-card-value venc-amort-ink">{fmtBRL(totAmort)}</span>
         </div>
       </div>
 
-      <div className="venc-chart" role="img" aria-label="Vencimentos por mes (clique para filtrar)">
+      <div className="venc-chart" role="img" aria-label="Vencimentos por mês (clique para filtrar)">
         {mesesView.map(m => (
           <div
             key={m.mes}
@@ -354,22 +354,24 @@ export default function VencimentosDashboard({ data, blc, compact }) {
       </div>
       <div className="venc-legend">
         <span><i className="venc-dot venc-seg-juros" /> Juros (estimado)</span>
-        <span><i className="venc-dot venc-seg-amort" /> Amortizacao</span>
+        <span><i className="venc-dot venc-seg-amort" /> Amortização</span>
       </div>
 
-      {/* Seletor de dimensao (some no drill: o cronograma ja e a visao granular) */}
+      {/* Seletor de dimensão (some no drill: o cronograma já é a visão granular) */}
       {!selEnt && (
-        <div className="venc-dims" role="tablist" aria-label="Qualificar o fluxo">
-          {DIMS.filter(d => !(d.carteiraOnly && persp === 'mercado')).map(d => (
-            <button key={d.id} role="tab" aria-selected={effDim === d.id}
-              className={`venc-dim-btn${effDim === d.id ? ' active' : ''}`}
-              onClick={() => setDim(d.id)}>{d.label}</button>
-          ))}
+        <div className="venc-dims">
+          <div className="segmented venc-dims-seg" role="tablist" aria-label="Qualificar o fluxo">
+            {DIMS.filter(d => !(d.carteiraOnly && persp === 'mercado')).map(d => (
+              <button key={d.id} role="tab" aria-selected={effDim === d.id}
+                className={`segmented-btn${effDim === d.id ? ' active' : ''}`}
+                onClick={() => setDim(d.id)}>{d.label}</button>
+            ))}
+          </div>
         </div>
       )}
       {selEnt && (
         <div className="venc-dims">
-          <button className="venc-dim-btn" onClick={() => setSelEnt(null)}>← Voltar aos rankings</button>
+          <button className="venc-back" onClick={() => setSelEnt(null)}>← Voltar aos rankings</button>
           <span className="venc-crono-lbl">Cronograma de <b>{selEnt.nome}</b> — {crono.length} evento(s)</span>
         </div>
       )}
