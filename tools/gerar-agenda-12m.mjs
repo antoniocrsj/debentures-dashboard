@@ -105,6 +105,9 @@ function loadDebentures() {
       notionalMercado: qtd * vna,
       indice: (r['indice'] || '').trim(),
       percentual: parseNum(r['Percentual Multiplicador/Rentabilidade']),
+      // "+X%" da remuneracao (spread real do IPCA+/IGP-M, spread do DI+, taxa
+      // do pre). Fonte primaria do cupom quando o papel nao esta na ANBIMA.
+      jurosTaxa: parseNum(r['Juros Criterio Novo - Taxa']),
       incentivada: isYes(r['Deb. Incent. (Lei 12.431)']),
       situacao: (r['Situacao'] || '').trim(),
     })
@@ -171,13 +174,19 @@ function perfilTicker(anb, deb, cdi) {
   if (tipo === 'PREFIXADO') return { cupom: spreadOuPre, indexado: false }
   if (tipo === 'IPCA_SPREAD') return { cupom: spreadOuPre, indexado: true }   // cupom = taxa real
   if (tipo === 'IGP-M') return { cupom: spreadOuPre, indexado: true }         // idem
-  // Sem ANBIMA: cai pro cadastro (indice + percentual).
+  // Sem ANBIMA: cai pro cadastro. A taxa real ("+X%") vem de "Juros Criterio
+  // Novo - Taxa" (deb.jurosTaxa); o "Percentual Multiplicador" (deb.percentual)
+  // so distingue %CDI (ex.: 105) de DI+spread (100). Floor de 6% real p/ IPCA+/
+  // IGP-M sem taxa cadastrada (~10% dos indexados) e a media de infra 12.431.
   const idx = norm(deb ? deb.indice : '')
-  const p = deb ? deb.percentual / 100 : 0
-  if (idx.includes('DI') || idx.includes('CDI')) return { cupom: deb.percentual > 30 ? p * cdi : cdi + p, indexado: false }
-  if (idx.includes('IPCA')) return { cupom: p, indexado: true }
-  if (idx.includes('IGP')) return { cupom: p, indexado: true }
-  if (idx.includes('PRE') || idx.includes('PR')) return { cupom: p, indexado: false }
+  const taxa = deb ? deb.jurosTaxa / 100 : 0
+  const pctMult = deb ? deb.percentual : 0
+  if (idx.includes('IPCA') || idx.includes('IGP')) return { cupom: taxa > 0.0005 ? taxa : 0.06, indexado: true }
+  if (idx.includes('DI') || idx.includes('CDI')) {
+    if (pctMult >= 101 && taxa <= 0.0005) return { cupom: (pctMult / 100) * cdi, indexado: false }  // %CDI
+    return { cupom: cdi + taxa, indexado: false }                                                    // DI + spread
+  }
+  if (idx.includes('PRE') || idx.includes('PR')) return { cupom: taxa > 0.0005 ? taxa : (pctMult / 100), indexado: false }
   return { cupom: cdi, indexado: false }   // ultimo recurso
 }
 
