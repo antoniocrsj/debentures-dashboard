@@ -155,13 +155,14 @@ if ($MesAno -and $cdaExtractDir) {
 
     # Referencia: mes anterior (mais maduro). Best-effort (1 download extra, cacheado).
     $prevMes = ([datetime]::ParseExact($MesAno, 'yyyyMM', [System.Globalization.CultureInfo]::InvariantCulture)).AddMonths(-1).ToString('yyyyMM')
-    $veredicto = ''; $cor = 'Yellow'
+    $veredicto = ''; $cor = 'Yellow'; $repP = $null; $razao = $null; $plPmerc = $null
     try {
       $prevDir = Get-CdaFiDir $CdaDir $prevMes -NoDownload:$NoDownload
       $plP = Read-CdaFiPL (Join-Path $prevDir "cda_fi_PL_$prevMes.csv")
       $repP = @($nossos | Where-Object { $plP.ContainsKey($_) }).Count
+      $plPmerc = $plP.Count
       $razao = if ($repP) { $repM / $repP } else { 1 }
-      Write-Host ("  Mes anterior ({0})            : {1} nossos | {2} no mercado" -f $prevMes, $repP, $plP.Count)
+      Write-Host ("  Mes anterior ({0})            : {1} nossos | {2} no mercado" -f $prevMes, $repP, $plPmerc)
       Write-Host ("  Razao {0}/{1} (nossos fundos) : {2:P0}" -f $MesAno, $prevMes, $razao)
       if ($cobM -ge 0.90 -and $razao -ge 0.98) { $veredicto = 'CONFIAVEL'; $cor = 'Green' }
       elseif ($razao -ge 0.90) { $veredicto = 'QUASE LA -- da pra usar, mas ainda enchendo'; $cor = 'Yellow' }
@@ -174,6 +175,21 @@ if ($MesAno -and $cdaExtractDir) {
     }
     Write-Host ("  VEREDICTO: {0}" -f $veredicto) -ForegroundColor $cor
     Write-Host ""
+
+    # Grava o veredicto pro app mostrar um selo (public/BLC_maturidade.json).
+    $status = switch ($cor) { 'Green' { 'verde' } 'Red' { 'vermelho' } default { 'amarelo' } }
+    $mat = [ordered]@{
+      mesAno = $MesAno; status = $status
+      cobertura = [math]::Round($cobM, 4); reportaram = $repM; totalLista = $totNossos
+      fundosPLmercado = $plM.Count; fundosComDeb = $comDeb.Count
+      debAlocadaBi = [math]::Round($debNossos / 1e9, 2); linhasBLC4 = $rawRows.Count
+      mesAnterior = $prevMes; reportaramAnterior = $repP; fundosPLmercadoAnterior = $plPmerc
+      razao = if ($null -ne $razao) { [math]::Round($razao, 4) } else { $null }
+      updatedAt = (Get-Date).ToString('s')
+    }
+    $matPath = Join-Path (Split-Path $OutPath -Parent) 'BLC_maturidade.json'
+    [System.IO.File]::WriteAllText($matPath, ($mat | ConvertTo-Json), (New-Object System.Text.UTF8Encoding($false)))
+    Write-Host "  Selo gravado: $matPath" -ForegroundColor DarkGray
   } catch {
     Write-Host ("  (nao consegui avaliar maturidade: {0})" -f $_.Exception.Message) -ForegroundColor DarkYellow
     Write-Host ""

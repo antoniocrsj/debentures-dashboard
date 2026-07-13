@@ -210,6 +210,20 @@ a { color: var(--primary); }
   margin: 4px 12px 0;
 }
 
+/* Selo de confiabilidade da carteira (CDA/BLC) */
+.blc-selo {
+  display: inline-flex; align-items: center; gap: 7px;
+  margin: 8px 12px; padding: 5px 11px; border-radius: 99px;
+  font-size: 12px; font-weight: 600; border: 1px solid transparent;
+}
+.blc-selo-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.blc-selo-verde    { color: var(--pos); background: var(--pos-soft); border-color: var(--pos-line); }
+.blc-selo-verde    .blc-selo-dot { background: var(--pos); }
+.blc-selo-amarelo  { color: var(--flag-ink); background: var(--flag-bg); border-color: var(--flag-line); }
+.blc-selo-amarelo  .blc-selo-dot { background: var(--warn); }
+.blc-selo-vermelho { color: var(--neg); background: var(--neg-soft); border-color: var(--neg-line); }
+.blc-selo-vermelho .blc-selo-dot { background: var(--neg); }
+
 /* ─── Searchable dropdown ────────────────────────────────────── */
 .chip-label {
   display: block;

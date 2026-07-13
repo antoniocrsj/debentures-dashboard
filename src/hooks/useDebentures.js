@@ -23,6 +23,7 @@ const STATIC_PL_GESTORES_URL = '/PL_Gestores.csv'
 // Metadados de quando cada fonte foi gerada (nao o cache do navegador) — usados em App.jsx (dataFreshness).
 const STATIC_DEBENTURES_META_URL = '/Debentures_meta.json'
 const STATIC_BLC_META_URL = '/BLC_meta.json'
+const STATIC_BLC_MATURIDADE_URL = '/BLC_maturidade.json'
 
 async function fetchCSV(rawUrl) {
   const url = `/api/proxy?url=${encodeURIComponent(rawUrl)}`
@@ -107,9 +108,11 @@ export function useDebentures(blcUrl) {
       // Metadados de geracao das fontes estaticas — tambem opcionais.
       fetchStaticJSON(STATIC_DEBENTURES_META_URL).catch(() => null),
       fetchStaticJSON(STATIC_BLC_META_URL).catch(() => null),
+      // Maturidade do CDA (selo de confiabilidade) — opcional.
+      fetchStaticJSON(STATIC_BLC_MATURIDADE_URL).catch(() => null),
     ])
-      .then(([emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta]) => {
-        const raw = { emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta }
+      .then(([emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade]) => {
+        const raw = { emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade }
         writeCache(raw)
         if (alive) setState({ loading: false, refreshing: false, error: null, raw, cachedAt: Date.now() })
       })

@@ -10,6 +10,7 @@ import { lazyWithRetry } from './utils/lazyWithRetry.js'
 import Header from './components/Header.jsx'
 import Filters from './components/Filters.jsx'
 import AssetTable from './components/AssetTable.jsx'
+import BlcMaturitySelo from './components/BlcMaturitySelo.jsx'
 import AssetModal from './components/AssetModal.jsx'
 import ManagerRanking from './components/ManagerRanking.jsx'
 import GroupRanking from './components/GroupRanking.jsx'
@@ -358,6 +359,7 @@ export default function App() {
 
         {section === 'debentures' && tab !== 'debentures' && !loading && !error && raw && (
           <>
+            <BlcMaturitySelo maturidade={raw.blcMaturidade} />
             {tab === 'ativos' && (
               <>
                 <AssetTable
