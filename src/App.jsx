@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback, useEffect, Suspense } from 'react'
 import { useDebentures, BLC_DEFAULT_URL } from './hooks/useDebentures.js'
 import { useDailyReports } from './hooks/useDailyReports.js'
+import { useAgenda12m } from './hooks/useAgenda12m.js'
 import {
   buildIndexes, buildBlcIndex, buildAnbimaIndex, buildPlByGestor,
   enrichDebenture, computeManagers, computeGroups, recomputeAlocByGestor
@@ -23,6 +24,7 @@ const ResumoDoDiaModal = lazyWithRetry(() => import('./components/ResumoDoDiaMod
 // Aba Captação carregada sob demanda (Recharts só entra ao abrir a aba).
 // lazyWithRetry: re-tenta o import se o chunk falhar (evita tela em branco).
 const FluxoDashboard = lazyWithRetry(() => import('./components/fluxo/FluxoDashboard.jsx'))
+const VencimentosDashboard = lazyWithRetry(() => import('./components/vencimentos/VencimentosDashboard.jsx'))
 
 // Painel de controle da atualização: só existe no bundle de DEV. Em produção
 // import.meta.env.DEV é substituído por `false` em tempo de build e o Rollup
@@ -73,11 +75,15 @@ export default function App() {
   // Seção atual (compacto): 'debentures' (abas Ativos/Gestores/Grupos), 'captacao'
   // ou 'atualizacao' (painel de controle, dev-only).
   const [lastDebTab, setLastDebTab] = useState('ativos')   // lembra a sub-aba ao voltar p/ Debêntures
-  const section = tab === 'captacao' ? 'captacao' : tab === 'atualizacao' ? 'atualizacao' : 'debentures'
+  const section = tab === 'captacao' ? 'captacao'
+    : tab === 'vencimentos' ? 'vencimentos'
+    : tab === 'atualizacao' ? 'atualizacao'
+    : 'debentures'
   const selectSection = useCallback(
-    s => setTab(s === 'captacao' || s === 'atualizacao' ? s : lastDebTab),
+    s => setTab(s === 'captacao' || s === 'vencimentos' || s === 'atualizacao' ? s : lastDebTab),
     [lastDebTab]
   )
+  const { data: agenda12m } = useAgenda12m()
 
   useEffect(() => {
     try { localStorage.setItem('view-desktop', desktop ? '1' : '0') } catch {}
@@ -247,8 +253,9 @@ export default function App() {
     <nav className={`tabs${desktop ? ' tabs-inline' : ''}`} role="tablist">
       {(desktop
         ? [
-            { id: 'debentures', label: 'Debêntures' },
-            { id: 'captacao',   label: 'Captação' },
+            { id: 'debentures',  label: 'Debêntures' },
+            { id: 'captacao',    label: 'Captação' },
+            { id: 'vencimentos', label: 'Vencimentos' },
           ]
         : [
             // Captação saiu daqui (virou ícone no header — GER-2); restam as sub-abas de Debêntures.
@@ -309,7 +316,7 @@ export default function App() {
 
         {/* Desktop: abas standalone só na Captação (nas demais vão ao lado da busca).
             Compacto: sub-abas só na seção Debêntures (Captação não tem sub-abas). */}
-        {(desktop ? tab === 'captacao' : section === 'debentures') && tabsNav}
+        {(desktop ? (tab === 'captacao' || tab === 'vencimentos') : section === 'debentures') && tabsNav}
       </div>
 
       {/* Scrollable content */}
@@ -323,6 +330,17 @@ export default function App() {
               <div className="state-box"><div className="spinner" aria-label="Carregando" /><p>Carregando…</p></div>
             }>
               <FluxoDashboard compact={!desktop} />
+            </Suspense>
+          </ErrorBoundary>
+        )}
+
+        {/* Vencimentos 12m: juros + amortizacao previstos, por carteira/mercado. */}
+        {tab === 'vencimentos' && (
+          <ErrorBoundary label="os Vencimentos">
+            <Suspense fallback={
+              <div className="state-box"><div className="spinner" aria-label="Carregando" /><p>Carregando…</p></div>
+            }>
+              <VencimentosDashboard data={agenda12m} compact={!desktop} />
             </Suspense>
           </ErrorBoundary>
         )}

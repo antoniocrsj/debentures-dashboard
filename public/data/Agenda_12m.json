@@ -1,0 +1,216 @@
+{
+  "updatedAt": "2026-07-13T15:24:19.423Z",
+  "refDate": "2026-07-10",
+  "horizonteMeses": 12,
+  "premissas": {
+    "cdi": 0.15,
+    "ipca": 0.045,
+    "igpm": 0.045
+  },
+  "cobertura": {
+    "universo": 4730,
+    "comAgenda": 0,
+    "semAgenda": 0,
+    "semCache": 3671,
+    "tickersCarteira": 2153
+  },
+  "totais": {
+    "carteira": 0,
+    "mercado": 0
+  },
+  "meses": [
+    {
+      "mes": "2026-07",
+      "label": "jul/26",
+      "carteira": {
+        "juros": 0,
+        "amort": 0,
+        "total": 0,
+        "nEventos": 0
+      },
+      "mercado": {
+        "juros": 0,
+        "amort": 0,
+        "total": 0,
+        "nEventos": 0
+      }
+    },
+    {
+      "mes": "2026-08",
+      "label": "ago/26",
+      "carteira": {
+        "juros": 0,
+        "amort": 0,
+        "total": 0,
+        "nEventos": 0
+      },
+      "mercado": {
+        "juros": 0,
+        "amort": 0,
+        "total": 0,
+        "nEventos": 0
+      }
+    },
+    {
+      "mes": "2026-09",
+      "label": "set/26",
+      "carteira": {
+        "juros": 0,
+        "amort": 0,
+        "total": 0,
+        "nEventos": 0
+      },
+      "mercado": {
+        "juros": 0,
+        "amort": 0,
+        "total": 0,
+        "nEventos": 0
+      }
+    },
+    {
+      "mes": "2026-10",
+      "label": "out/26",
+      "carteira": {
+        "juros": 0,
+        "amort": 0,
+        "total": 0,
+        "nEventos": 0
+      },
+      "mercado": {
+        "juros": 0,
+        "amort": 0,
+        "total": 0,
+        "nEventos": 0
+      }
+    },
+    {
+      "mes": "2026-11",
+      "label": "nov/26",
+      "carteira": {
+        "juros": 0,
+        "amort": 0,
+        "total": 0,
+        "nEventos": 0
+      },
+      "mercado": {
+        "juros": 0,
+        "amort": 0,
+        "total": 0,
+        "nEventos": 0
+      }
+    },
+    {
+      "mes": "2026-12",
+      "label": "dez/26",
+      "carteira": {
+        "juros": 0,
+        "amort": 0,
+        "total": 0,
+        "nEventos": 0
+      },
+      "mercado": {
+        "juros": 0,
+        "amort": 0,
+        "total": 0,
+        "nEventos": 0
+      }
+    },
+    {
+      "mes": "2027-01",
+      "label": "jan/27",
+      "carteira": {
+        "juros": 0,
+        "amort": 0,
+        "total": 0,
+        "nEventos": 0
+      },
+      "mercado": {
+        "juros": 0,
+        "amort": 0,
+        "total": 0,
+        "nEventos": 0
+      }
+    },
+    {
+      "mes": "2027-02",
+      "label": "fev/27",
+      "carteira": {
+        "juros": 0,
+        "amort": 0,
+        "total": 0,
+        "nEventos": 0
+      },
+      "mercado": {
+        "juros": 0,
+        "amort": 0,
+        "total": 0,
+        "nEventos": 0
+      }
+    },
+    {
+      "mes": "2027-03",
+      "label": "mar/27",
+      "carteira": {
+        "juros": 0,
+        "amort": 0,
+        "total": 0,
+        "nEventos": 0
+      },
+      "mercado": {
+        "juros": 0,
+        "amort": 0,
+        "total": 0,
+        "nEventos": 0
+      }
+    },
+    {
+      "mes": "2027-04",
+      "label": "abr/27",
+      "carteira": {
+        "juros": 0,
+        "amort": 0,
+        "total": 0,
+        "nEventos": 0
+      },
+      "mercado": {
+        "juros": 0,
+        "amort": 0,
+        "total": 0,
+        "nEventos": 0
+      }
+    },
+    {
+      "mes": "2027-05",
+      "label": "mai/27",
+      "carteira": {
+        "juros": 0,
+        "amort": 0,
+        "total": 0,
+        "nEventos": 0
+      },
+      "mercado": {
+        "juros": 0,
+        "amort": 0,
+        "total": 0,
+        "nEventos": 0
+      }
+    },
+    {
+      "mes": "2027-06",
+      "label": "jun/27",
+      "carteira": {
+        "juros": 0,
+        "amort": 0,
+        "total": 0,
+        "nEventos": 0
+      },
+      "mercado": {
+        "juros": 0,
+        "amort": 0,
+        "total": 0,
+        "nEventos": 0
+      }
+    }
+  ],
+  "ativos": []
+}

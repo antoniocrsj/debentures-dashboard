@@ -30,6 +30,7 @@ param(
   [switch]$SkipAnbima,
   [switch]$SkipOfertas,
   [switch]$SkipRelatorios,
+  [switch]$SkipAgenda,
   [switch]$NoPublishPrompt,
   [ValidateSet('Auto', 'Incremental', 'Completa')]
   [string]$CaptacaoModo = 'Auto',
@@ -70,6 +71,7 @@ if (-not $SkipBlc)        { $script:StepsAtivos.Add('BLC') }
 if (-not $SkipAnbima)     { $script:StepsAtivos.Add('ANBIMA') }
 if (-not $SkipOfertas)    { $script:StepsAtivos.Add('Ofertas') }
 if (-not $SkipRelatorios) { $script:StepsAtivos.Add('Relatorios') }
+if (-not $SkipAgenda)     { $script:StepsAtivos.Add('Agenda') }
 $script:StepsAtivos.Add('Resumo')
 $script:StepTotal = $script:StepsAtivos.Count
 $script:StepIndex = 0
@@ -650,6 +652,25 @@ if ($SkipRelatorios) {
   } catch {
     $summary.Relatorios = "FALHOU sem travar: $($_.Exception.Message)"
     Warn "$($summary.Relatorios) (Node instalado? 'node -v')"
+  }
+}
+
+# 5d. Vencimentos 12m (juros + amortizacao) - gerador Node RAPIDO, best-effort.
+# So agrega o cache de agendas (dados-anbima\agenda-cache) ja baixado -> nao faz
+# rede aqui. A carga lenta e o preparar-agenda.ps1, rodado a parte/periodicamente.
+if ($SkipAgenda) {
+  $summary.Agenda = 'PULADO por parametro -SkipAgenda'
+  Warn $summary.Agenda
+} else {
+  Progress 'Vencimentos 12m (agenda)'
+  try {
+    & node (Join-Path $PSScriptRoot 'gerar-agenda-12m.mjs')
+    if ($LASTEXITCODE -ne 0) { throw "node saiu com codigo $LASTEXITCODE" }
+    $summary.Agenda = 'OK'
+    Ok "Agenda 12m gerada em public\data\Agenda_12m.json."
+  } catch {
+    $summary.Agenda = "FALHOU sem travar: $($_.Exception.Message)"
+    Warn "$($summary.Agenda) (rode preparar-agenda.ps1 para popular o cache)"
   }
 }
 

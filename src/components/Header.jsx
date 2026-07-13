@@ -16,6 +16,15 @@ function CaptacaoIcon() {
     </svg>
   )
 }
+function VencimentosIcon() {
+  return (
+    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="14" y="15" width="20" height="19" rx="2" />
+      <path d="M14 20 H34 M20 13 V17 M28 13 V17" />
+      <path d="M20 26 H22 M26 26 H28 M20 30 H22 M26 30 H28" />
+    </svg>
+  )
+}
 function ControlPanelIcon() {
   return (
     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -77,6 +86,16 @@ export default function Header({
             onClick={() => onSection('captacao')}
           >
             <CaptacaoIcon />
+          </button>
+          <button
+            type="button"
+            className={`section-btn${section === 'vencimentos' ? ' active' : ''}`}
+            aria-pressed={section === 'vencimentos'}
+            aria-label="Vencimentos 12 meses"
+            title="Vencimentos 12 meses"
+            onClick={() => onSection('vencimentos')}
+          >
+            <VencimentosIcon />
           </button>
         </nav>
       )}
