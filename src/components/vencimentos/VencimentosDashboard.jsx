@@ -380,8 +380,10 @@ export default function VencimentosDashboard({ data, blc, compact }) {
 
       {data.cobertura && (
         <p className="venc-foot">
-          Cobertura: {data.cobertura.comAgenda} ativos com agenda de {data.cobertura.universo} no universo
-          {data.cobertura.semCache ? ` · ${data.cobertura.semCache} sem agenda em cache (rode preparar-agenda.ps1)` : ''}.
+          <strong>Piso conservador:</strong> só entram debêntures com agenda de eventos na ANBIMA
+          ({data.cobertura.comAgenda} de {data.cobertura.universo}). Papéis da carteira sem agenda
+          contribuem com R$ 0, então os juros são subestimados — o valor real é maior.
+          {data.cobertura.semCache ? ` (${data.cobertura.semCache} sem agenda em cache; rode preparar-agenda.ps1.)` : ''}
         </p>
       )}
     </div>
