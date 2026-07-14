@@ -79,6 +79,7 @@
 param(
   [string[]]$MesesRecentes = @(),      # M-1,M-2,M-3 (auto se vazio)
   [string]$MesRefMadura = '',          # referencia madura (auto se vazio)
+  [string]$HistoricoDesde = '',        # inicio do historico de %PL (yyyyMM). Vazio = so' os meses ja' processados (sem download extra). Ex.: 202501 = backfill desde jan/2025
   [string]$CdaDir = ("C:\Projeto Cr" + [char]233 + "dito\CVM _cda"),
   [string]$CadastroUrl = 'https://script.google.com/macros/s/AKfycbxhTXC7FXkp9fEz0bw6Nnh_JDm4UVhRkqZF5zOW-Cb842RhFBikauGaWeChG0vQerPrBA/exec',
   [double]$LimiarConfirmado = 0.90,
@@ -734,6 +735,79 @@ foreach ($m in ($mesesOrdem | Sort-Object)) {
     if ($mo.Classe.ContainsKey($cnpj)) { if ($mo.Classe[$cnpj] -eq 'confirmado') { $nConf++ } elseif ($mo.Classe[$cnpj] -eq 'candidato') { $nCand++ } }
   }
   $compMeses.Add([pscustomobject]@{ Mes=$m; Disp=$totDisp; TitPub=$totTit; Compr=$totComp; CaixaDireto=($totDisp+$totTit+$totComp); FundosCaixaConfirmados=$nConf; Candidatos=$nCand })
+}
+
+# ─── Historico mensal de %PL (caixa direto / PL) por gestor x segmento ──────
+# Passada LEVE (sem look-through): por mes, le PL + 8 blocos + CONFID, soma caixa
+# direto (disp+titpub+compr, incl. confid) e PL por fundo do universo curado,
+# agrega por (gestor, segmento) e CACHEIA por mes (reprocessa so' o que falta).
+# Default (HistoricoDesde vazio) = so' os meses ja' processados, sem download
+# extra; -HistoricoDesde 202501 faz o backfill (baixa os meses que faltarem).
+# Alimenta o grafico de linha do app (Caixa_Potencial_Historico.json).
+try {
+  $mesFimHist = (@($modelos.Keys | Sort-Object -Descending))[0]
+  $iniHist = if ($HistoricoDesde -ne '') { $HistoricoDesde } else { (@($modelos.Keys | Sort-Object))[0] }
+  $ciInv = [System.Globalization.CultureInfo]::InvariantCulture
+  $mesesHist = @()
+  if ($iniHist -and $mesFimHist) {
+    $cur = [datetime]::ParseExact($iniHist,'yyyyMM',$ciInv)
+    $fim = [datetime]::ParseExact($mesFimHist,'yyyyMM',$ciInv)
+    while ($cur -le $fim) { $mesesHist += $cur.ToString('yyyyMM'); $cur = $cur.AddMonths(1) }
+  }
+  $histCacheDir = Join-Path $CdaDir 'historico-caixa-cache'
+  New-Item -ItemType Directory -Force -Path $histCacheDir | Out-Null
+  Step "Historico de %PL: $($mesesHist.Count) mes(es) ($iniHist..$mesFimHist); cache em $histCacheDir"
+
+  $histSeries = New-Object System.Collections.Generic.List[object]
+  foreach ($hm in $mesesHist) {
+    $cachePath = Join-Path $histCacheDir "$hm.json"
+    $rows = $null
+    if (Test-Path $cachePath) {
+      try { $rows = @(Get-Content $cachePath -Raw -Encoding UTF8 | ConvertFrom-Json) } catch { $rows = $null }
+    }
+    if ($null -eq $rows) {
+      $accH = $null; $plH = $null
+      if ($modelos.ContainsKey($hm)) {
+        $accH = $modelos[$hm].Acc; $plH = $modelos[$hm].PL           # reusa os meses recentes ja' lidos
+      } else {
+        $dirH = $null
+        try { $dirH = Get-CdaFiDir $CdaDir $hm -NoDownload:$NoDownload } catch { $dirH = $null }
+        if (-not $dirH) { Warn "  [$hm] CDA indisponivel -- pulado no historico."; continue }
+        $plH = Read-CdaFiPL (Join-Path $dirH "cda_fi_PL_$hm.csv")
+        $accH = @{}; $edgesH = @{}
+        foreach ($b in 1..8) { Read-BlocoStream -path (Join-Path $dirH "cda_fi_BLC_${b}_$hm.csv") -acc $accH -edges $edgesH -isConfid:$false }
+        Read-BlocoStream -path (Join-Path $dirH "cda_fi_CONFID_$hm.csv") -acc $accH -edges $edgesH -isConfid:$true
+        Step "  [$hm] historico: lido do CDA."
+      }
+      $buck = @{}
+      foreach ($cnpj in $accH.Keys) {
+        if (-not $segmento.ContainsKey($cnpj)) { continue }          # so' universo curado (12431 + CDI)
+        $plv = if ($plH.ContainsKey($cnpj)) { [double]$plH[$cnpj] } else { 0.0 }
+        if ($plv -le 0) { continue }
+        $seg = $segmento[$cnpj]
+        $g = if ($fundo2apelido.ContainsKey($cnpj) -and $fundo2apelido[$cnpj] -ne '') { $fundo2apelido[$cnpj] } else { '(sem gestor)' }
+        $a = $accH[$cnpj]
+        $cx = $a.Disp + $a.TitPub + $a.Compr
+        $key = "$g|$seg"
+        if (-not $buck.ContainsKey($key)) { $buck[$key] = @{ gestor=$g; segmento=$seg; caixa=0.0; pl=0.0 } }
+        $buck[$key].caixa += $cx; $buck[$key].pl += $plv
+      }
+      $rows = @($buck.Values | ForEach-Object { [pscustomobject]@{ gestor=$_.gestor; segmento=$_.segmento; caixa=[math]::Round($_.caixa,2); pl=[math]::Round($_.pl,2) } })
+      $json = if ($rows.Count -gt 0) { $rows | ConvertTo-Json -Depth 5 -Compress } else { '[]' }
+      [System.IO.File]::WriteAllText($cachePath, $json, $utf8)
+    }
+    foreach ($r in $rows) {
+      $histSeries.Add([pscustomobject]@{ mes=$hm; gestor=$r.gestor; segmento=$r.segmento; caixa=$r.caixa; pl=$r.pl })
+    }
+  }
+
+  $histObj = [ordered]@{ updatedAt=(Get-Date).ToString('s'); meses=@($mesesHist); series=$histSeries }
+  $outHist = Join-Path $dataDir 'Caixa_Potencial_Historico.json'
+  [System.IO.File]::WriteAllText($outHist, ($histObj | ConvertTo-Json -Depth 5 -Compress), $utf8)
+  Step "Gravado: $outHist ($($histSeries.Count) linhas, $($mesesHist.Count) meses)"
+}
+catch {
+  Warn "Historico de %PL falhou (nao-fatal): $($_.Exception.Message)"
 }
 
 # ─── Meta.json ─────────────────────────────────────────────────────────────
