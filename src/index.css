@@ -92,19 +92,20 @@ a { color: var(--primary); }
   box-shadow: 0 -4px 16px rgba(10, 20, 40, .18);
 }
 .bottom-nav-btn {
-  flex: 1; background: none; border: 0; cursor: pointer; position: relative;
+  flex: 1; background: none; cursor: pointer;
   display: flex; flex-direction: column; align-items: center; gap: 0;
-  padding: 2px; color: rgba(255, 255, 255, .6); transition: color .12s;
+  padding: 5px 6px; color: rgba(255, 255, 255, .55);
+  border: 1.5px solid transparent; border-radius: 14px;
+  transition: color .12s, border-color .12s;
 }
-.bottom-nav-btn svg { width: 51px; height: 51px; }   /* 2,3x o original (22px) */
-/* margin negativa fecha o vazio interno do viewBox do icone -> rotulo colado. */
-.bottom-nav-lbl { font-size: 12px; font-weight: 500; letter-spacing: .01em; margin-top: -9px; }
-.bottom-nav-btn.active { color: #fff; }
-.bottom-nav-btn.active::before {
-  content: ""; position: absolute; top: -6px; width: 26px; height: 3px;
-  border-radius: 0 0 3px 3px; background: #6ea8e6;
-}
-.bottom-nav-btn:focus-visible { outline: 2px solid #6ea8e6; outline-offset: -2px; border-radius: 6px; }
+/* O margin negativo no svg corta o vazio interno do viewBox -> rótulo colado. */
+.bottom-nav-ico { display: flex; align-items: center; justify-content: center; }
+.bottom-nav-ico svg { width: 51px; height: 51px; margin: -12px 0; }   /* 2,3x o original (22px) */
+.bottom-nav-lbl { font-size: 12px; font-weight: 400; letter-spacing: .01em; margin-top: 3px; }
+/* Aba ativa: só um contorno fino azul-marinho claro (sem fundo) ao redor de ícone+texto. */
+.bottom-nav-btn.active { color: #fff; border-color: #5b7fb0; }
+.bottom-nav-btn.active .bottom-nav-lbl { font-weight: 600; }
+.bottom-nav-btn:focus-visible { outline: 2px solid #6ea8e6; outline-offset: -2px; }
 /* Conteúdo não fica atrás da barra fixa (só no compacto). */
 .app:not(.desktop) { padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
 .header-logo { font-size: 18px; flex-shrink: 0; }
