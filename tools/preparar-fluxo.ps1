@@ -244,6 +244,78 @@ foreach ($r in (Read-FundosRows (Join-Path $PSScriptRoot 'Fundos_CDI.csv')   'tr
 
 $mesesOk = @(); $mesesFalha = @(); $invalidas = 0; $minDate = $null; $maxDate = $null
 
+# Datas (pregoes) distintas de um mes do Informe Diario -- so' a coluna DT_COMPTC.
+# Usado pra achar o corte D-3 dos agregados da aba Captacao sem calendario de
+# feriados (as datas que EXISTEM ja' sao os pregoes; feriado/fim de semana nao
+# aparecem). Leitura leve, so' pros meses mais recentes.
+function Get-DiasDoMes([string]$mes) {
+  $dias = New-Object System.Collections.Generic.HashSet[string]
+  $zip = Ensure-Month $mes
+  if (-not $zip) { return $dias }
+  try {
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    $z = [System.IO.Compression.ZipFile]::OpenRead($zip)
+    $entry = $z.Entries | Where-Object { $_.FullName -like '*.csv' } | Select-Object -First 1
+    if ($entry) {
+      $sr = New-Object System.IO.StreamReader($entry.Open(), [System.Text.Encoding]::GetEncoding('latin1'))
+      $hdr = $sr.ReadLine().Split(';'); $iDt = -1
+      for ($i = 0; $i -lt $hdr.Count; $i++) { if ($hdr[$i].Trim() -eq 'DT_COMPTC') { $iDt = $i; break } }
+      $ci = [System.Globalization.CultureInfo]::InvariantCulture
+      if ($iDt -ge 0) {
+        while ($null -ne ($ln = $sr.ReadLine())) {
+          $c = $ln.Split(';'); if ($c.Count -le $iDt) { continue }
+          [datetime]$d = [datetime]::MinValue
+          if ([datetime]::TryParse($c[$iDt].Trim(), $ci, [System.Globalization.DateTimeStyles]::None, [ref]$d)) { [void]$dias.Add($d.ToString('yyyy-MM-dd')) }
+        }
+      }
+      $sr.Close()
+    }
+    $z.Dispose()
+  } catch {}
+  return $dias
+}
+
+# Corte D-3 dos agregados da aba Captacao (semanal/mensal/fundos): os 2 pregoes
+# mais recentes podem ter cobertura parcial de fundos e subestimam a ponta.
+# ANCORA = data de referencia da ANBIMA (= D-1, a fonte mais atual/confiavel),
+# NAO o maximo da propria captacao (que costuma vir 1 pregao atras -> daria D-4).
+# Assim a data de referencia da aba fica IDENTICA a do Resumo do Dia: ambas sao
+# D-3 = ANBIMA - 2 pregoes. Calendario de pregoes = uniao das datas do Informe
+# (que ja' sao pregoes) + a data ANBIMA -- sem calendario de feriados da B3.
+# O Fluxo_Diario NAO e' cortado (o Resumo aplica o seu proprio D-3).
+$corteD3 = $null
+try {
+  # Data de referencia da ANBIMA (todas as linhas compartilham; pega a maior).
+  $anbimaRef = $null
+  $anbimaCsv = Join-Path $PublicDir 'Anbima_Tx.csv'
+  if (Test-Path $anbimaCsv) {
+    foreach ($row in (Import-Csv -LiteralPath $anbimaCsv)) {
+      $v = ('' + $row.dataReferenciaAnbima).Trim()
+      if ($v -and ($null -eq $anbimaRef -or $v -gt $anbimaRef)) { $anbimaRef = $v }
+    }
+  }
+
+  $diasTopo = New-Object System.Collections.Generic.HashSet[string]
+  foreach ($m in (@($Meses | Sort-Object -Unique) | Select-Object -Last 2)) {
+    foreach ($d in (Get-DiasDoMes $m)) { [void]$diasTopo.Add($d) }
+  }
+  if ($anbimaRef) { [void]$diasTopo.Add($anbimaRef) }   # garante a ancora no calendario
+  $ordenados = @($diasTopo | Sort-Object -Descending)
+
+  if ($anbimaRef) {
+    $iAnb = [array]::IndexOf($ordenados, $anbimaRef)
+    if ($iAnb -ge 0 -and $ordenados.Count -gt ($iAnb + 2)) { $corteD3 = $ordenados[$iAnb + 2] }
+    if ($corteD3) { Step "Corte D-3 da aba ancorado na ANBIMA ($anbimaRef): agregados <= $corteD3 (= ANBIMA - 2 pregoes; identico ao Resumo do Dia)" }
+    else { Step "Poucos pregoes antes da ANBIMA ($anbimaRef) -- sem corte D-3 nesta rodada." }
+  }
+  else {
+    # Sem ANBIMA disponivel: fallback ao comportamento antigo (3o pregao mais recente da captacao).
+    if ($ordenados.Count -ge 3) { $corteD3 = $ordenados[2] }
+    if ($corteD3) { Step "Corte D-3 da aba (sem ANBIMA; usa max da captacao): agregados <= $corteD3" }
+    else { Step "Poucos pregoes na janela recente -- sem corte D-3 nesta rodada." }
+  }
+} catch { $corteD3 = $null }
+
 # 2-3. Processa cada mes
 foreach ($mes in $Meses) {
   Step "Mes $mes ..."
@@ -275,8 +347,12 @@ foreach ($mes in $Meses) {
       $dtRaw = $c[$iDt].Trim()
       [datetime]$dt = [datetime]::MinValue
       if (-not [datetime]::TryParse($dtRaw, $ci, [System.Globalization.DateTimeStyles]::None, [ref]$dt)) { $invalidas++; continue }
+      # Dia "fresco" (mais recente que o corte D-3): fica FORA dos agregados da
+      # aba (semanal/mensal/fundos + weekMax/DataBase), mas segue no $aggDia -- o
+      # Resumo do Dia le o diario cru e aplica o proprio D-3.
+      $fresh = ($null -ne $corteD3 -and $dt.ToString('yyyy-MM-dd') -gt $corteD3)
       $wkKey = (WeekStart $dt).ToString('yyyy-MM-dd')
-      if (-not $weekMax[$tipo].ContainsKey($wkKey) -or $dt -gt $weekMax[$tipo][$wkKey]) { $weekMax[$tipo][$wkKey] = $dt }
+      if (-not $fresh -and (-not $weekMax[$tipo].ContainsKey($wkKey) -or $dt -gt $weekMax[$tipo][$wkKey])) { $weekMax[$tipo][$wkKey] = $dt }
 
       $cap = 0.0; $res = 0.0; $pl = 0.0
       [double]::TryParse($c[$iCap], [System.Globalization.NumberStyles]::Any, $ci, [ref]$cap) | Out-Null
@@ -293,6 +369,9 @@ foreach ($mes in $Meses) {
         }
       }
 
+      # Agregados da ABA Captacao (semanal / por fundo / mensal): so' dias que
+      # ja' assentaram (<= corte D-3). Dias frescos entram so' no $aggDia abaixo.
+      if (-not $fresh) {
       $key = "$wkKey|$gestor"
       $b = $agg[$tipo][$key]
       if (-not $b) { $b = @{ cap = 0.0; resg = 0.0; plSum = 0.0; dates = @{}; cnpjs = @{} }; $agg[$tipo][$key] = $b }
@@ -312,6 +391,7 @@ foreach ($mes in $Meses) {
       $mb = $aggMonth[$tipo][$mk]
       if (-not $mb) { $mb = @{ cap = 0.0; resg = 0.0 }; $aggMonth[$tipo][$mk] = $mb }
       $mb.cap += $cap; $mb.resg += [Math]::Abs($res)
+      }
 
       # Captacao DIARIA por gestor (chave dia|gestor) - alimenta o Resumo do Dia.
       $dk = $dt.ToString('yyyy-MM-dd') + '|' + $gestor
