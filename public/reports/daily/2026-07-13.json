@@ -1,0 +1,1926 @@
+{
+  "date": "2026-07-13",
+  "label": "13/07/2026",
+  "previousDate": "2026-07-10",
+  "sourceDates": {
+    "debentures": "2026-07-08",
+    "cap12431": "2026-07-10",
+    "capTrad": "2026-07-10",
+    "perf12431": "2026-07-10",
+    "perfTrad": "2026-07-10",
+    "anbima": "2026-07-13",
+    "blc": "2026-07-10",
+    "fundos": "2026-07-10"
+  },
+  "summary": [
+    {
+      "texto": "Captação líquida Incentivados: −R$ 212 mi",
+      "tom": "neg"
+    },
+    {
+      "texto": "Captação líquida Tradicional: +R$ 294 mi",
+      "tom": "pos"
+    },
+    {
+      "texto": "Maior captação: BTG Asset (+R$ 3 mi)",
+      "tom": "pos"
+    },
+    {
+      "texto": "Maior resgate: SAM (−R$ 29 mi)",
+      "tom": "neg"
+    },
+    {
+      "texto": "ANBIMA Incentivadas: 327 abertura(s) e 171 fechamento(s) de spread (de 498 ativos; média 0 bps)",
+      "tom": ""
+    },
+    {
+      "texto": "ANBIMA Tradicional: 331 abertura(s) e 216 fechamento(s) de spread (de 547 ativos; média 0 bps)",
+      "tom": ""
+    },
+    {
+      "texto": "Fundos: +64 / -0 no universo"
+    },
+    {
+      "texto": "1 alerta(s) de qualidade",
+      "tom": "warn"
+    }
+  ],
+  "sections": {
+    "debentures": {
+      "novas": [],
+      "saidas": [],
+      "temSnapshotAnterior": false
+    },
+    "captacao": {
+      "12431": {
+        "dia": "2026-07-10",
+        "captacao": 105213670.69,
+        "resgate": 317670522.54999995,
+        "liquido": -212456851.85999995,
+        "pl": 285635358759.04004,
+        "numFundos": 1632,
+        "curados": 1684,
+        "fechados": 286,
+        "anterior": {
+          "dia": "2026-07-09",
+          "captacao": 70678768.88999999,
+          "resgate": 508126649.78000003,
+          "liquido": -437447880.89000005,
+          "pl": 337006238976.78,
+          "numFundos": 1649
+        }
+      },
+      "trad": {
+        "dia": "2026-07-10",
+        "captacao": 2018100475.3800004,
+        "resgate": 1724143459.06,
+        "liquido": 293957016.3200004,
+        "pl": 1082530133546.9397,
+        "numFundos": 811,
+        "curados": 839,
+        "fechados": 30,
+        "anterior": {
+          "dia": "2026-07-09",
+          "captacao": 889955390.4400002,
+          "resgate": 1058429439.4999999,
+          "liquido": -168474049.0599997,
+          "pl": 1083860415591.0398,
+          "numFundos": 821
+        }
+      }
+    },
+    "gestores": {
+      "top12431Captacao": [
+        {
+          "gestor": "BTG Asset",
+          "captacao": 7636860.92,
+          "resgate": 5001287.2,
+          "liquido": 2635573.7199999997,
+          "pl": 7273279174.62
+        },
+        {
+          "gestor": "Portofino",
+          "captacao": 1000000,
+          "resgate": 0,
+          "liquido": 1000000,
+          "pl": 359050745.6
+        },
+        {
+          "gestor": "G5",
+          "captacao": 1000000,
+          "resgate": 148500,
+          "liquido": 851500,
+          "pl": 2310356932.61
+        },
+        {
+          "gestor": "Bocaina",
+          "captacao": 310000,
+          "resgate": 21000,
+          "liquido": 289000,
+          "pl": 1069133386.48
+        },
+        {
+          "gestor": "Daycoval",
+          "captacao": 52886.32,
+          "resgate": 103.97,
+          "liquido": 52782.35,
+          "pl": 207902685.04
+        }
+      ],
+      "top12431Resgate": [
+        {
+          "gestor": "SAM",
+          "captacao": 1531793.99,
+          "resgate": 30816360,
+          "liquido": -29284566.01,
+          "pl": 10516588328
+        },
+        {
+          "gestor": "IAM",
+          "captacao": 41513293.23,
+          "resgate": 67424704.47,
+          "liquido": -25911411.240000002,
+          "pl": 55545138996.38
+        },
+        {
+          "gestor": "BRAM",
+          "captacao": 19466870.29,
+          "resgate": 42450643.97,
+          "liquido": -22983773.68,
+          "pl": 28902223583.17
+        },
+        {
+          "gestor": "XPG",
+          "captacao": 909347.32,
+          "resgate": 18217195.47,
+          "liquido": -17307848.15,
+          "pl": 5184661281.29
+        },
+        {
+          "gestor": "ARX",
+          "captacao": 3418000,
+          "resgate": 20553000,
+          "liquido": -17135000,
+          "pl": 5444222892.03
+        }
+      ],
+      "topTradCaptacao": [
+        {
+          "gestor": "UBS",
+          "captacao": 765754531.42,
+          "resgate": 45413266.87,
+          "liquido": 720341264.55,
+          "pl": 9465945756.94
+        },
+        {
+          "gestor": "SAM",
+          "captacao": 40894358.54,
+          "resgate": 9076050,
+          "liquido": 31818308.54,
+          "pl": 45588935721.89
+        },
+        {
+          "gestor": "Kinea",
+          "captacao": 58525378.15,
+          "resgate": 34980495.11,
+          "liquido": 23544883.04,
+          "pl": 57967318299.09
+        },
+        {
+          "gestor": "Regia",
+          "captacao": 31728516.65,
+          "resgate": 10770653.63,
+          "liquido": 20957863.019999996,
+          "pl": 17103969233.33
+        },
+        {
+          "gestor": "Icatu",
+          "captacao": 35413322.33,
+          "resgate": 15070035.06,
+          "liquido": 20343287.269999996,
+          "pl": 22383668488.67
+        }
+      ],
+      "topTradResgate": [
+        {
+          "gestor": "IAM",
+          "captacao": 104602522.49,
+          "resgate": 434811446.38,
+          "liquido": -330208923.89,
+          "pl": 217334797619.5
+        },
+        {
+          "gestor": "BB Asset",
+          "captacao": 486264996.25,
+          "resgate": 538240993.44,
+          "liquido": -51975997.19000006,
+          "pl": 211363437265.84
+        },
+        {
+          "gestor": "AZ Quest",
+          "captacao": 2059182.86,
+          "resgate": 40621164.96,
+          "liquido": -38561982.1,
+          "pl": 19875990735.38
+        },
+        {
+          "gestor": "BRAM",
+          "captacao": 126388956.13,
+          "resgate": 160587829.56,
+          "liquido": -34198873.43000001,
+          "pl": 100779385413.54
+        },
+        {
+          "gestor": "Vinci",
+          "captacao": 12821979.95,
+          "resgate": 32854929.77,
+          "liquido": -20032949.82,
+          "pl": 5644325075
+        }
+      ]
+    },
+    "anbima": {
+      "porMercado": {
+        "12431": {
+          "aberturas": [
+            {
+              "ticker": "SUMI37",
+              "indexador": "IPCA + 8.0993%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "GIGA MAIS FIBRA TELECOMUNICACOES S.A.",
+              "grupo": "Giga+",
+              "incentivada": true,
+              "base": "B32",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 593,
+              "spreadAtualBps": 612,
+              "variacaoBps": 19,
+              "fmtAnterior": "B32 + 593 bps",
+              "fmtAtual": "B32 + 612 bps",
+              "spreadAtual": "B32+612",
+              "durationAnos": 4.89,
+              "status": "ok"
+            },
+            {
+              "ticker": "CMIN11",
+              "indexador": "IPCA + 4.8790%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "CSN MINERACAO S.A.",
+              "grupo": "CSN",
+              "incentivada": true,
+              "base": "B31",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 644,
+              "spreadAtualBps": 658,
+              "variacaoBps": 14,
+              "fmtAnterior": "B31 + 644 bps",
+              "fmtAtual": "B31 + 658 bps",
+              "spreadAtual": "B31+658",
+              "durationAnos": 4.18,
+              "status": "ok"
+            },
+            {
+              "ticker": "MVLV26",
+              "indexador": "IPCA + 7.2413%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "MOVIDA PARTICIPACOES S/A",
+              "grupo": "Simpar",
+              "incentivada": true,
+              "base": "B28",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 515,
+              "spreadAtualBps": 529,
+              "variacaoBps": 14,
+              "fmtAnterior": "B28 + 515 bps",
+              "fmtAtual": "B28 + 529 bps",
+              "spreadAtual": "B28+529",
+              "durationAnos": 1.81,
+              "status": "ok"
+            },
+            {
+              "ticker": "CMIN12",
+              "indexador": "IPCA + 6.8798%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "CSN MINERACAO S.A.",
+              "grupo": "CSN",
+              "incentivada": true,
+              "base": "B32",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 648,
+              "spreadAtualBps": 661,
+              "variacaoBps": 13,
+              "fmtAnterior": "B32 + 648 bps",
+              "fmtAtual": "B32 + 661 bps",
+              "spreadAtual": "B32+661",
+              "durationAnos": 4.56,
+              "status": "ok"
+            },
+            {
+              "ticker": "RECV24",
+              "indexador": "IPCA + 7.2833%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "PETRORECONCAVO S.A.",
+              "grupo": "PetroReconcavo",
+              "incentivada": true,
+              "base": "B35",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 37,
+              "spreadAtualBps": 50,
+              "variacaoBps": 13,
+              "fmtAnterior": "B35 + 37 bps",
+              "fmtAtual": "B35 + 50 bps",
+              "spreadAtual": "B35+50",
+              "durationAnos": 6.3,
+              "status": "ok"
+            },
+            {
+              "ticker": "BTEL13",
+              "indexador": "Pré-Fixado 15.0500%",
+              "indexadorFamilia": "Pré",
+              "emissor": "V.TAL - REDE NEUTRA DE TELECOMUNICACOES S.A.",
+              "grupo": "V.tal",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 105.33999999999999,
+              "spreadAtualBps": 117.78999999999999,
+              "variacaoBps": 12.450000000000003,
+              "fmtAnterior": "15,56%",
+              "fmtAtual": "15,85%",
+              "spreadAtual": "CDI + 1,18%",
+              "durationAnos": 3.68,
+              "status": "ok"
+            },
+            {
+              "ticker": "EGIE29",
+              "indexador": "IPCA + 3.9000%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "ENGIE BRASIL ENERGIA SA",
+              "grupo": "Engie",
+              "incentivada": true,
+              "base": "B28",
+              "tipo": "ipca",
+              "spreadAnteriorBps": -52,
+              "spreadAtualBps": -41,
+              "variacaoBps": 11,
+              "fmtAnterior": "B28 - 52 bps",
+              "fmtAtual": "B28 - 41 bps",
+              "spreadAtual": "B28−41",
+              "durationAnos": 1.84,
+              "status": "ok"
+            },
+            {
+              "ticker": "RISP12",
+              "indexador": "IPCA + 6.9000%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "AGUAS DO RIO 1 SPE S.A",
+              "grupo": "Aegea",
+              "incentivada": true,
+              "base": "B31",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 349,
+              "spreadAtualBps": 360,
+              "variacaoBps": 11,
+              "fmtAnterior": "B31 + 349 bps",
+              "fmtAtual": "B31 + 360 bps",
+              "spreadAtual": "B31+360",
+              "durationAnos": 3.93,
+              "status": "ok"
+            },
+            {
+              "ticker": "TEPA11",
+              "indexador": "IPCA + 9.6888%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "BRASIL TECNOLOGIA E PARTICIPACAO S.A.",
+              "grupo": "Brasil Tecnologia e Participacao",
+              "incentivada": true,
+              "base": "B28",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 774,
+              "spreadAtualBps": 784,
+              "variacaoBps": 10,
+              "fmtAnterior": "B28 + 774 bps",
+              "fmtAtual": "B28 + 784 bps",
+              "spreadAtual": "B28+784",
+              "durationAnos": 1.81,
+              "status": "ok"
+            },
+            {
+              "ticker": "TEPA13",
+              "indexador": "IPCA + 11.5593%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "BRASIL TECNOLOGIA E PARTICIPACAO S.A.",
+              "grupo": "Brasil Tecnologia e Participacao",
+              "incentivada": true,
+              "base": "B30",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 672,
+              "spreadAtualBps": 682,
+              "variacaoBps": 10,
+              "fmtAnterior": "B30 + 672 bps",
+              "fmtAtual": "B30 + 682 bps",
+              "spreadAtual": "B30+682",
+              "durationAnos": 3.17,
+              "status": "ok"
+            },
+            {
+              "ticker": "CCROB6",
+              "indexador": "IPCA + 6.4370%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "MOTIVA INFRAESTRUTURA DE MOBILIDADE S.A.",
+              "grupo": "Motiva",
+              "incentivada": true,
+              "base": "B33",
+              "tipo": "ipca",
+              "spreadAnteriorBps": -35,
+              "spreadAtualBps": -26,
+              "variacaoBps": 9,
+              "fmtAnterior": "B33 - 35 bps",
+              "fmtAtual": "B33 - 26 bps",
+              "spreadAtual": "B33−26",
+              "durationAnos": 5.34,
+              "status": "ok"
+            },
+            {
+              "ticker": "CONX12",
+              "indexador": "IPCA + 7.6840%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "ALARES INTERNET PARTICIPACOES S/A",
+              "grupo": "Alares",
+              "incentivada": true,
+              "base": "B28",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 369,
+              "spreadAtualBps": 378,
+              "variacaoBps": 9,
+              "fmtAnterior": "B28 + 369 bps",
+              "fmtAtual": "B28 + 378 bps",
+              "spreadAtual": "B28+378",
+              "durationAnos": 1.38,
+              "status": "ok"
+            },
+            {
+              "ticker": "RIS412",
+              "indexador": "IPCA + 6.9000%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "AGUAS DO RIO 4 SPE S.A",
+              "grupo": "Aegea",
+              "incentivada": true,
+              "base": "B31",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 351,
+              "spreadAtualBps": 360,
+              "variacaoBps": 9,
+              "fmtAnterior": "B31 + 351 bps",
+              "fmtAtual": "B31 + 360 bps",
+              "spreadAtual": "B31+360",
+              "durationAnos": 3.93,
+              "status": "ok"
+            },
+            {
+              "ticker": "SMTO24",
+              "indexador": "IPCA + 6.1076%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "SAO MARTINHO S/A",
+              "grupo": "São Martinho",
+              "incentivada": true,
+              "base": "B35",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 32,
+              "spreadAtualBps": 41,
+              "variacaoBps": 9,
+              "fmtAnterior": "B35 + 32 bps",
+              "fmtAtual": "B35 + 41 bps",
+              "spreadAtual": "B35+41",
+              "durationAnos": 6.88,
+              "status": "ok"
+            },
+            {
+              "ticker": "SUMI17",
+              "indexador": "IPCA + 7.7490%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "GIGA MAIS FIBRA TELECOMUNICACOES S.A.",
+              "grupo": "Giga+",
+              "incentivada": true,
+              "base": "B30",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 507,
+              "spreadAtualBps": 516,
+              "variacaoBps": 9,
+              "fmtAnterior": "B30 + 507 bps",
+              "fmtAtual": "B30 + 516 bps",
+              "spreadAtual": "B30+516",
+              "durationAnos": 3.61,
+              "status": "ok"
+            }
+          ],
+          "fechamentos": [
+            {
+              "ticker": "ENAT23",
+              "indexador": "Pré-Fixado 13.5733%",
+              "indexadorFamilia": "Pré",
+              "emissor": "BRAVA ENERGIA S.A.",
+              "grupo": "Brava Energia",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 75.46000000000001,
+              "spreadAtualBps": 42.41,
+              "variacaoBps": -33.05000000000001,
+              "fmtAnterior": "15,10%",
+              "fmtAtual": "14,88%",
+              "spreadAtual": "CDI + 0,42%",
+              "durationAnos": 3.12,
+              "status": "ok"
+            },
+            {
+              "ticker": "CEEBD1",
+              "indexador": "Pré-Fixado 11.6692%",
+              "indexadorFamilia": "Pré",
+              "emissor": "CIA. DE ELETRIC. DO EST. DA BAHIA-COELBA",
+              "grupo": "Neoenergia",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": -22.1,
+              "spreadAtualBps": -53.779999999999994,
+              "variacaoBps": -31.679999999999993,
+              "fmtAnterior": "14,11%",
+              "fmtAtual": "13,89%",
+              "spreadAtual": "CDI − 0,54%",
+              "durationAnos": 4.5,
+              "status": "ok"
+            },
+            {
+              "ticker": "ENAT32",
+              "indexador": "Pré-Fixado 13.9662%",
+              "indexadorFamilia": "Pré",
+              "emissor": "BRAVA ENERGIA S.A.",
+              "grupo": "Brava Energia",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 83.58,
+              "spreadAtualBps": 54.54,
+              "variacaoBps": -29.04,
+              "fmtAnterior": "15,13%",
+              "fmtAtual": "14,98%",
+              "spreadAtual": "CDI + 0,55%",
+              "durationAnos": 2.56,
+              "status": "ok"
+            },
+            {
+              "ticker": "AEGPA8",
+              "indexador": "Pré-Fixado 16.3433%",
+              "indexadorFamilia": "Pré",
+              "emissor": "AEGEA SANEAMENTO E PARTICIPACOES S/A",
+              "grupo": "Aegea",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 250.99999999999997,
+              "spreadAtualBps": 227.67,
+              "variacaoBps": -23.329999999999984,
+              "fmtAnterior": "17,23%",
+              "fmtAtual": "17,11%",
+              "spreadAtual": "CDI + 2,28%",
+              "durationAnos": 3.12,
+              "status": "ok"
+            },
+            {
+              "ticker": "EKTRA5",
+              "indexador": "Pré-Fixado 13.5966%",
+              "indexadorFamilia": "Pré",
+              "emissor": "ELEKTRO REDES S.A.",
+              "grupo": "Neoenergia",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": -42.95,
+              "spreadAtualBps": -66.25,
+              "variacaoBps": -23.299999999999997,
+              "fmtAnterior": "13,87%",
+              "fmtAtual": "13,74%",
+              "spreadAtual": "CDI − 0,66%",
+              "durationAnos": 4.09,
+              "status": "ok"
+            },
+            {
+              "ticker": "PEJA12",
+              "indexador": "Pré-Fixado 11.1155%",
+              "indexadorFamilia": "Pré",
+              "emissor": "PRIO FORTE S.A.",
+              "grupo": "Prio Forte",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 6.09,
+              "spreadAtualBps": -12.85,
+              "variacaoBps": -18.939999999999998,
+              "fmtAnterior": "14,12%",
+              "fmtAtual": "14,09%",
+              "spreadAtual": "CDI − 0,13%",
+              "durationAnos": 2.2,
+              "status": "ok"
+            },
+            {
+              "ticker": "EGIEC1",
+              "indexador": "Pré-Fixado 10.9000%",
+              "indexadorFamilia": "Pré",
+              "emissor": "ENGIE BRASIL ENERGIA SA",
+              "grupo": "Engie",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": -35.97,
+              "spreadAtualBps": -54.190000000000005,
+              "variacaoBps": -18.220000000000006,
+              "fmtAnterior": "13,60%",
+              "fmtAtual": "13,58%",
+              "spreadAtual": "CDI − 0,54%",
+              "durationAnos": 2.33,
+              "status": "ok"
+            },
+            {
+              "ticker": "CEPEA6",
+              "indexador": "Pré-Fixado 13.5966%",
+              "indexadorFamilia": "Pré",
+              "emissor": "COMPANHIA ENERGETICA DE PERNAMBUCO-CELPE",
+              "grupo": "Neoenergia",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": -26.82,
+              "spreadAtualBps": -41.760000000000005,
+              "variacaoBps": -14.940000000000005,
+              "fmtAnterior": "14,05%",
+              "fmtAtual": "14,02%",
+              "spreadAtual": "CDI − 0,42%",
+              "durationAnos": 4.08,
+              "status": "ok"
+            },
+            {
+              "ticker": "ENERB6",
+              "indexador": "Pré-Fixado 13.7000%",
+              "indexadorFamilia": "Pré",
+              "emissor": "ENERGISA MATO GROSSO DO SUL - DISTRIBUIDORA DE ENERGIA S.A.",
+              "grupo": "Energisa",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": -17.16,
+              "spreadAtualBps": -31.75,
+              "variacaoBps": -14.59,
+              "fmtAnterior": "14,16%",
+              "fmtAtual": "14,14%",
+              "spreadAtual": "CDI − 0,32%",
+              "durationAnos": 4.13,
+              "status": "ok"
+            },
+            {
+              "ticker": "ORIG21",
+              "indexador": "Pré-Fixado 14.1500%",
+              "indexadorFamilia": "Pré",
+              "emissor": "ORIGEM ENERGIA S.A.",
+              "grupo": "Origem Energia",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 242.78,
+              "spreadAtualBps": 229.06,
+              "variacaoBps": -13.719999999999999,
+              "fmtAnterior": "17,13%",
+              "fmtAtual": "17,12%",
+              "spreadAtual": "CDI + 2,29%",
+              "durationAnos": 4.29,
+              "status": "ok"
+            },
+            {
+              "ticker": "EGIEA2",
+              "indexador": "Pré-Fixado 12.4974%",
+              "indexadorFamilia": "Pré",
+              "emissor": "ENGIE BRASIL ENERGIA SA",
+              "grupo": "Engie",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": -58.24,
+              "spreadAtualBps": -71.86,
+              "variacaoBps": -13.619999999999997,
+              "fmtAnterior": "13,51%",
+              "fmtAtual": "13,54%",
+              "spreadAtual": "CDI − 0,72%",
+              "durationAnos": 2.62,
+              "status": "ok"
+            },
+            {
+              "ticker": "EGIEA5",
+              "indexador": "Pré-Fixado 12.8775%",
+              "indexadorFamilia": "Pré",
+              "emissor": "ENGIE BRASIL ENERGIA SA",
+              "grupo": "Engie",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": -35.07,
+              "spreadAtualBps": -47.94,
+              "variacaoBps": -12.869999999999997,
+              "fmtAnterior": "13,96%",
+              "fmtAtual": "13,95%",
+              "spreadAtual": "CDI − 0,48%",
+              "durationAnos": 4.78,
+              "status": "ok"
+            },
+            {
+              "ticker": "ENMTC4",
+              "indexador": "Pré-Fixado 13.7000%",
+              "indexadorFamilia": "Pré",
+              "emissor": "ENERGISA MATO GROSSO - DISTRIBUIDORA DE ENERGIA S.A.",
+              "grupo": "Energisa",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": -20.73,
+              "spreadAtualBps": -32.66,
+              "variacaoBps": -11.929999999999996,
+              "fmtAnterior": "14,12%",
+              "fmtAtual": "14,13%",
+              "spreadAtual": "CDI − 0,33%",
+              "durationAnos": 4.13,
+              "status": "ok"
+            },
+            {
+              "ticker": "CEROA3",
+              "indexador": "Pré-Fixado 13.7000%",
+              "indexadorFamilia": "Pré",
+              "emissor": "ENERGISA RONDONIA - DISTRIBUIDORA DE ENERGIA S/A",
+              "grupo": "Energisa",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": -26.419999999999998,
+              "spreadAtualBps": -37.78,
+              "variacaoBps": -11.360000000000003,
+              "fmtAnterior": "14,06%",
+              "fmtAtual": "14,07%",
+              "spreadAtual": "CDI − 0,38%",
+              "durationAnos": 4.13,
+              "status": "ok"
+            },
+            {
+              "ticker": "ELTN17",
+              "indexador": "Pré-Fixado 13.2474%",
+              "indexadorFamilia": "Pré",
+              "emissor": "CENTRAIS ELETRICAS DO NORTE DO BRASIL S/A - ELETRONORTE",
+              "grupo": "Axia",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": -52.71,
+              "spreadAtualBps": -64,
+              "variacaoBps": -11.29,
+              "fmtAnterior": "13,76%",
+              "fmtAtual": "13,77%",
+              "spreadAtual": "CDI − 0,64%",
+              "durationAnos": 4.07,
+              "status": "ok"
+            }
+          ],
+          "totalAberturas": 327,
+          "totalFechamentos": 171,
+          "totalComparados": 498,
+          "variacaoMediaBps": 0.4216064257028112
+        },
+        "trad": {
+          "aberturas": [
+            {
+              "ticker": "LMTPA1",
+              "indexador": "DI + 1.5000%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "LM TRANSPORTES INTERESTADUAIS SERVICOS E COMERCIO S.A.",
+              "grupo": "LM Transportes Interestaduais Servicos e Comercio",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 140.83,
+              "spreadAtualBps": 156.56,
+              "variacaoBps": 15.72999999999999,
+              "fmtAnterior": "CDI + 1,41%",
+              "fmtAtual": "CDI + 1,57%",
+              "spreadAtual": "CDI + 1,57%",
+              "durationAnos": 1.31,
+              "status": "ok"
+            },
+            {
+              "ticker": "CVCB14",
+              "indexador": "DI + 4.5000%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "CVC BRASIL OPERADORA E AGENCIA DE VIAGENS S.A.",
+              "grupo": "CVC",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 441.65999999999997,
+              "spreadAtualBps": 455.58,
+              "variacaoBps": 13.920000000000016,
+              "fmtAnterior": "CDI + 4,42%",
+              "fmtAtual": "CDI + 4,56%",
+              "spreadAtual": "CDI + 4,56%",
+              "durationAnos": 0.95,
+              "status": "ok"
+            },
+            {
+              "ticker": "ELPLA6",
+              "indexador": "DI + 1.6400%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "ELETROPAULO METROPOL. ELETR. DE S.P. S/A",
+              "grupo": "Enel Brasil",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 304.12,
+              "spreadAtualBps": 317.44,
+              "variacaoBps": 13.319999999999993,
+              "fmtAnterior": "CDI + 3,04%",
+              "fmtAtual": "CDI + 3,17%",
+              "spreadAtual": "CDI + 3,17%",
+              "durationAnos": 1.5,
+              "status": "ok"
+            },
+            {
+              "ticker": "VAMO22",
+              "indexador": "DI + 2.0000%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "VAMOS LOCACAO DE CAMINHOES MAQUINAS E EQUIPAMENTOS S.A.",
+              "grupo": "Simpar",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 268.63,
+              "spreadAtualBps": 279.71,
+              "variacaoBps": 11.079999999999984,
+              "fmtAnterior": "CDI + 2,69%",
+              "fmtAtual": "CDI + 2,80%",
+              "spreadAtual": "CDI + 2,80%",
+              "durationAnos": 0.11,
+              "status": "ok"
+            },
+            {
+              "ticker": "MOVI37",
+              "indexador": "IPCA + 7.6366%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "MOVIDA PARTICIPACOES S/A",
+              "grupo": "Simpar",
+              "incentivada": false,
+              "base": "B30",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 514,
+              "spreadAtualBps": 525,
+              "variacaoBps": 11,
+              "fmtAnterior": "B30 + 514 bps",
+              "fmtAtual": "B30 + 525 bps",
+              "spreadAtual": "B30+525",
+              "durationAnos": 3.43,
+              "status": "ok"
+            },
+            {
+              "ticker": "AZZA12",
+              "indexador": "DI + 1.2500%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "AZZAS 2154 S.A.",
+              "grupo": "Azzas",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 204.99999999999997,
+              "spreadAtualBps": 215.45000000000002,
+              "variacaoBps": 10.450000000000045,
+              "fmtAnterior": "CDI + 2,05%",
+              "fmtAtual": "CDI + 2,15%",
+              "spreadAtual": "CDI + 2,15%",
+              "durationAnos": 2.7,
+              "status": "ok"
+            },
+            {
+              "ticker": "CLIS11",
+              "indexador": "DI + 3.2000%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "CLI SUL S/A",
+              "grupo": "CLI",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 142.46,
+              "spreadAtualBps": 152.23,
+              "variacaoBps": 9.769999999999982,
+              "fmtAnterior": "CDI + 1,42%",
+              "fmtAtual": "CDI + 1,52%",
+              "spreadAtual": "CDI + 1,52%",
+              "durationAnos": 2.38,
+              "status": "ok"
+            },
+            {
+              "ticker": "DASAA6",
+              "indexador": "DI + 1.6000%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "DIAGNOSTICOS DA AMERICA S/A",
+              "grupo": "Dasa",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 143.38,
+              "spreadAtualBps": 152.36,
+              "variacaoBps": 8.980000000000018,
+              "fmtAnterior": "CDI + 1,43%",
+              "fmtAtual": "CDI + 1,52%",
+              "spreadAtual": "CDI + 1,52%",
+              "durationAnos": 0.73,
+              "status": "ok"
+            },
+            {
+              "ticker": "VAMO13",
+              "indexador": "DI + 2.3000%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "VAMOS LOCACAO DE CAMINHOES MAQUINAS E EQUIPAMENTOS S.A.",
+              "grupo": "Simpar",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 259.3,
+              "spreadAtualBps": 268.24,
+              "variacaoBps": 8.939999999999998,
+              "fmtAnterior": "CDI + 2,59%",
+              "fmtAtual": "CDI + 2,68%",
+              "spreadAtual": "CDI + 2,68%",
+              "durationAnos": 1.66,
+              "status": "ok"
+            },
+            {
+              "ticker": "VAMO17",
+              "indexador": "DI + 2.1700%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "VAMOS LOCACAO DE CAMINHOES MAQUINAS E EQUIPAMENTOS S.A.",
+              "grupo": "Simpar",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 355.59,
+              "spreadAtualBps": 364.09,
+              "variacaoBps": 8.5,
+              "fmtAnterior": "CDI + 3,56%",
+              "fmtAtual": "CDI + 3,64%",
+              "spreadAtual": "CDI + 3,64%",
+              "durationAnos": 1.7,
+              "status": "ok"
+            },
+            {
+              "ticker": "VAMO33",
+              "indexador": "IPCA + 6.3605%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "VAMOS LOCACAO DE CAMINHOES MAQUINAS E EQUIPAMENTOS S.A.",
+              "grupo": "Simpar",
+              "incentivada": false,
+              "base": "B30",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 523,
+              "spreadAtualBps": 531,
+              "variacaoBps": 8,
+              "fmtAnterior": "B30 + 523 bps",
+              "fmtAtual": "B30 + 531 bps",
+              "spreadAtual": "B30+531",
+              "durationAnos": 3.38,
+              "status": "ok"
+            },
+            {
+              "ticker": "VAMO34",
+              "indexador": "IPCA + 7.6897%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "VAMOS LOCACAO DE CAMINHOES MAQUINAS E EQUIPAMENTOS S.A.",
+              "grupo": "Simpar",
+              "incentivada": false,
+              "base": "B30",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 587,
+              "spreadAtualBps": 595,
+              "variacaoBps": 8,
+              "fmtAnterior": "B30 + 587 bps",
+              "fmtAtual": "B30 + 595 bps",
+              "spreadAtual": "B30+595",
+              "durationAnos": 3.5,
+              "status": "ok"
+            },
+            {
+              "ticker": "AGAU13",
+              "indexador": "DI + 4.5000%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "VOKE S.A.",
+              "grupo": "Voke",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 441.9,
+              "spreadAtualBps": 448.84000000000003,
+              "variacaoBps": 6.940000000000055,
+              "fmtAnterior": "CDI + 4,42%",
+              "fmtAtual": "CDI + 4,49%",
+              "spreadAtual": "CDI + 4,49%",
+              "durationAnos": 0.62,
+              "status": "ok"
+            },
+            {
+              "ticker": "RECV13",
+              "indexador": "DI + 1.1000%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "PETRORECONCAVO S.A.",
+              "grupo": "PetroReconcavo",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 75.09,
+              "spreadAtualBps": 81.5,
+              "variacaoBps": 6.409999999999997,
+              "fmtAnterior": "CDI + 0,75%",
+              "fmtAtual": "CDI + 0,82%",
+              "spreadAtual": "CDI + 0,81%",
+              "durationAnos": 3.63,
+              "status": "ok"
+            },
+            {
+              "ticker": "TUPY35",
+              "indexador": "DI + 1.1800%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "TUPY S/A",
+              "grupo": "Tupy",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 368.09,
+              "spreadAtualBps": 374.38,
+              "variacaoBps": 6.2900000000000205,
+              "fmtAnterior": "CDI + 3,68%",
+              "fmtAtual": "CDI + 3,74%",
+              "spreadAtual": "CDI + 3,74%",
+              "durationAnos": 4.05,
+              "status": "ok"
+            }
+          ],
+          "fechamentos": [
+            {
+              "ticker": "CSNAA2",
+              "indexador": "DI + 2.5000%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "COMPANHIA SIDERURGICA NACIONAL",
+              "grupo": "CSN",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 1443.8,
+              "spreadAtualBps": 1404.44,
+              "variacaoBps": -39.3599999999999,
+              "fmtAnterior": "CDI + 14,44%",
+              "fmtAtual": "CDI + 14,04%",
+              "spreadAtual": "CDI + 14,04%",
+              "durationAnos": 0.85,
+              "status": "ok"
+            },
+            {
+              "ticker": "ARML26",
+              "indexador": "DI + 1.5500%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "ARMAC LOCACAO LOGISTICA E SERVICOS S.A.",
+              "grupo": "Armac",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 323.27,
+              "spreadAtualBps": 307.02,
+              "variacaoBps": -16.25,
+              "fmtAnterior": "CDI + 3,23%",
+              "fmtAtual": "CDI + 3,07%",
+              "spreadAtual": "CDI + 3,07%",
+              "durationAnos": 3.17,
+              "status": "ok"
+            },
+            {
+              "ticker": "AEGPB7",
+              "indexador": "DI + 2.9500%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "AEGEA SANEAMENTO E PARTICIPACOES S/A",
+              "grupo": "Aegea",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 258.07000000000005,
+              "spreadAtualBps": 243.52999999999997,
+              "variacaoBps": -14.540000000000077,
+              "fmtAnterior": "CDI + 2,58%",
+              "fmtAtual": "CDI + 2,44%",
+              "spreadAtual": "CDI + 2,44%",
+              "durationAnos": 1.44,
+              "status": "ok"
+            },
+            {
+              "ticker": "AEGP17",
+              "indexador": "DI + 2.1500%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "AEGEA SANEAMENTO E PARTICIPACOES S/A",
+              "grupo": "Aegea",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 195.79999999999998,
+              "spreadAtualBps": 184.51999999999998,
+              "variacaoBps": -11.280000000000001,
+              "fmtAnterior": "CDI + 1,96%",
+              "fmtAtual": "CDI + 1,85%",
+              "spreadAtual": "CDI + 1,85%",
+              "durationAnos": 0.7,
+              "status": "ok"
+            },
+            {
+              "ticker": "AEGP19",
+              "indexador": "DI + 1.9000%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "AEGEA SANEAMENTO E PARTICIPACOES S/A",
+              "grupo": "Aegea",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 282.05,
+              "spreadAtualBps": 272.1,
+              "variacaoBps": -9.949999999999989,
+              "fmtAnterior": "CDI + 2,82%",
+              "fmtAtual": "CDI + 2,72%",
+              "spreadAtual": "CDI + 2,72%",
+              "durationAnos": 1.07,
+              "status": "ok"
+            },
+            {
+              "ticker": "CPLD38",
+              "indexador": "DI + 2.2500%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "COPEL  DISTRIBUICAO S/A",
+              "grupo": "Copel",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 149.63,
+              "spreadAtualBps": 140.42,
+              "variacaoBps": -9.210000000000008,
+              "fmtAnterior": "CDI + 1,50%",
+              "fmtAtual": "CDI + 1,40%",
+              "spreadAtual": "CDI + 1,40%",
+              "durationAnos": 1.71,
+              "status": "ok"
+            },
+            {
+              "ticker": "AEGE17",
+              "indexador": "DI + 3.4000%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "EQUIPAV SANEAMENTO S.A.",
+              "grupo": "Equipav",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 528.04,
+              "spreadAtualBps": 518.87,
+              "variacaoBps": -9.169999999999959,
+              "fmtAnterior": "CDI + 5,28%",
+              "fmtAtual": "CDI + 5,19%",
+              "spreadAtual": "CDI + 5,19%",
+              "durationAnos": 4.05,
+              "status": "ok"
+            },
+            {
+              "ticker": "DASAB4",
+              "indexador": "DI + 2.4000%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "DIAGNOSTICOS DA AMERICA S/A",
+              "grupo": "Dasa",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 154.12,
+              "spreadAtualBps": 145.19,
+              "variacaoBps": -8.930000000000007,
+              "fmtAnterior": "CDI + 1,54%",
+              "fmtAtual": "CDI + 1,45%",
+              "spreadAtual": "CDI + 1,45%",
+              "durationAnos": 0.71,
+              "status": "ok"
+            },
+            {
+              "ticker": "LVTC22",
+              "indexador": "DI + 2.7000%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "LIVETECH DA BAHIA INDUSTRIA E COMERCIO S/A",
+              "grupo": "Livetech",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 579.1,
+              "spreadAtualBps": 570.22,
+              "variacaoBps": -8.879999999999995,
+              "fmtAnterior": "CDI + 5,79%",
+              "fmtAtual": "CDI + 5,70%",
+              "spreadAtual": "CDI + 5,70%",
+              "durationAnos": 1.44,
+              "status": "ok"
+            },
+            {
+              "ticker": "VAMO14",
+              "indexador": "DI + 2.4000%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "VAMOS LOCACAO DE CAMINHOES MAQUINAS E EQUIPAMENTOS S.A.",
+              "grupo": "Simpar",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 375.18,
+              "spreadAtualBps": 366.97,
+              "variacaoBps": -8.20999999999998,
+              "fmtAnterior": "CDI + 3,75%",
+              "fmtAtual": "CDI + 3,67%",
+              "spreadAtual": "CDI + 3,67%",
+              "durationAnos": 1.1,
+              "status": "ok"
+            },
+            {
+              "ticker": "CSAN33",
+              "indexador": "IPCA + 5.7531%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "COSAN S.A.",
+              "grupo": "Cosan",
+              "incentivada": false,
+              "base": "B30",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 211,
+              "spreadAtualBps": 204,
+              "variacaoBps": -7,
+              "fmtAnterior": "B30 + 211 bps",
+              "fmtAtual": "B30 + 204 bps",
+              "spreadAtual": "B30+204",
+              "durationAnos": 3.52,
+              "status": "ok"
+            },
+            {
+              "ticker": "ERDVB3",
+              "indexador": "DI + 2.3500%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "ECORODOVIAS CONCESSOES E SERVICOS S/A",
+              "grupo": "EcoRodovias",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 136.57999999999998,
+              "spreadAtualBps": 129.84,
+              "variacaoBps": -6.739999999999981,
+              "fmtAnterior": "CDI + 1,37%",
+              "fmtAtual": "CDI + 1,30%",
+              "spreadAtual": "CDI + 1,30%",
+              "durationAnos": 2.53,
+              "status": "ok"
+            },
+            {
+              "ticker": "ALPA22",
+              "indexador": "DI + 1.5000%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "ALPARGATAS S.A.",
+              "grupo": "Alpargatas",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 81.05,
+              "spreadAtualBps": 74.7,
+              "variacaoBps": -6.349999999999994,
+              "fmtAnterior": "CDI + 0,81%",
+              "fmtAtual": "CDI + 0,75%",
+              "spreadAtual": "CDI + 0,75%",
+              "durationAnos": 2.41,
+              "status": "ok"
+            },
+            {
+              "ticker": "RNDNA2",
+              "indexador": "DI + 0.8500%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "RANDONCORP S.A.",
+              "grupo": "Randoncorp",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 238.23,
+              "spreadAtualBps": 232.04,
+              "variacaoBps": -6.189999999999998,
+              "fmtAnterior": "CDI + 2,38%",
+              "fmtAtual": "CDI + 2,32%",
+              "spreadAtual": "CDI + 2,32%",
+              "durationAnos": 2.94,
+              "status": "ok"
+            },
+            {
+              "ticker": "GSHC17",
+              "indexador": "DI + 2.5000%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "GSH CORP PARTICIPACOES S.A.",
+              "grupo": "GSH Corp",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 221.70999999999998,
+              "spreadAtualBps": 215.58,
+              "variacaoBps": -6.129999999999967,
+              "fmtAnterior": "CDI + 2,22%",
+              "fmtAtual": "CDI + 2,16%",
+              "spreadAtual": "CDI + 2,16%",
+              "durationAnos": 1.92,
+              "status": "ok"
+            }
+          ],
+          "totalAberturas": 331,
+          "totalFechamentos": 216,
+          "totalComparados": 547,
+          "variacaoMediaBps": 0.07968921389396914
+        }
+      },
+      "totalAberturas": 658,
+      "totalFechamentos": 387,
+      "totalComparados": 1045,
+      "atual": "2026-07-13",
+      "anterior": "2026-07-10",
+      "semAnterior": false
+    },
+    "fundos": {
+      "novos": [
+        {
+          "cnpj": "62624041000106",
+          "nome": "AB INFRA FIF FI INCENTIVADO EM DEBÊNTURES DE INFRA RF CRED PRIV RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "62406671000104",
+          "nome": "ACACIA FIF INCENTIVADO EM INVESTIMENTO EM DEBÊNTURES DE INFRA RENDA FIXA CRED PRIV RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65847230000136",
+          "nome": "AMOR 12 FUNDO DE INV FINANCEIRO INV EM INFRAESTRUTURA CI EM INFRA RENDA FIXA RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "66632272000112",
+          "nome": "AZ QUEST AZRF MASTER 01/2033 FIF INCENTIVADO EM INFRA RF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65680121000177",
+          "nome": "BB ALEF INFRA RENDA FIXA FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RESP LIM",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65835445000137",
+          "nome": "BB ALNITAK INFRA RENDA FIXA FUNDO INCENTIVADO DE INVEST FINAN EM INFRAESTRUTURA RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64436536000137",
+          "nome": "BB BSR INFRA RENDA FIXA FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "62361545000180",
+          "nome": "BB CARLI INFRA RENDA FIXA FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RESP LIM",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65680395000166",
+          "nome": "BB JHA INFRA RENDA FIXA FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65835458000106",
+          "nome": "BB LZ INFRA RENDA FIXA FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64436974000103",
+          "nome": "BB MASTER III RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "63197072000190",
+          "nome": "BB RX2 INFRA RENDA FIXA FUNDO INCENTIVADO DE INVEST FINAN EM INFRAESTRUTURA RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64566437000170",
+          "nome": "BLACKSWAN PLUS FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EMINFRAESTRUTURA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65421221000189",
+          "nome": "BRAM DEBÊNTURES INCENTIVADAS CDI 2602 FIF - CI EM INFRAESTRUTURA RF LP - RESPONSABILIDADE LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "55515189000147",
+          "nome": "BTG PACTUAL DÍVIDA INFRA CDI MASTER II FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RF",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "55588398000110",
+          "nome": "BTG PACTUAL HEDGE FIF FI INCENTIVADO EM DEBÊNTURES DE INFRA RF CRÉD PRIV ATIVO RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65888766000108",
+          "nome": "CAPITÂNIA INFRA 30 CDI FI FINANCEIRO RENDA FIXA INVESTIMENTO EM INFRAESTRUTURA - RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65818203000135",
+          "nome": "CH FIF - CLASSE DE INVESTIMENTO RENDA FIXA INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA - RESP LTDA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "58313484000109",
+          "nome": "EDEN CDI FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA RENDA FIXA CRED PRIV RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "62317858000131",
+          "nome": "EL FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA RF CRÉD PRIV RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "62232457000189",
+          "nome": "EVEREST FIF FI INCENTIVADO EM DEBÊNTURES DE INFRAESTRUTURA RENDA FIXA CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "62363801000179",
+          "nome": "FAN FIF FI INCENTIVADO EM DEBÊNTURES DE INFRA RENDA FIXA CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "56052337000105",
+          "nome": "G5 VPRF FIF - CLASSE DE INVESTIMENTO RF INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "62474207000155",
+          "nome": "GOMIN FIF FI INCENTIVADO EM DEBÊNTURES DE INFRAESTRUTURA RENDA FIXA CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "62317574000145",
+          "nome": "GREEN 4 2026 FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA RF CRÉD PRIV RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "66404420000141",
+          "nome": "HEM 2 FUNDO DE INV FINANCEIRO INV EM INFRAESTRUTURA CLASSE DE INV EM INFRA RENDA FIXA RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "62318643000135",
+          "nome": "ICON 3 FIF FI INCENTIVADO EM DEBÊNTURES DE INFRAESTRUTURA RENDA FIXA CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64582548000170",
+          "nome": "ITAÚ DEBÊNTURES INCENTIVADAS PÓS FIXADO II DISTRIBUIDORES FIIF EM INFRA RF CRED PRIV RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "62064607000192",
+          "nome": "JW JAPÃO FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA RF CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65079801000130",
+          "nome": "KINEA INFRA IX FIF FUNDO INCENTIVADO DE INVESTIMENTO EM DEB DE INFRA RF CRED PRIV RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "59963244000112",
+          "nome": "MCFAMILY FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEBÊNTURES DE INFRA RF CRED PRIV RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "61351211000163",
+          "nome": "MMROS FIF FI INCENTIVADO EM DEBÊNTURES DE INFRAESTRUTURA RENDA FIXA CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "66572564000107",
+          "nome": "PARADISE FUNDO DE INV FINANCEIRO INV EM INFRAESTRUTURA CLASSE DE INV EM INFRA RF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64593756000174",
+          "nome": "RB VITÓRIA 2 FUNDO INCENTIVADO DE INVEST FINANCEIRO RENDA FIXA INVESTIMENTO EM INFRA - RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "56955481000143",
+          "nome": "RGR FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA RF CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65612787000198",
+          "nome": "SAFRA INFRA CDI MASTER VI FIF INV EM INFRAESTRUTURA CLASSE DE INV EM INFRA RF LP RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65861280000178",
+          "nome": "SALB FUNDO DE INV FINANCEIRO INV EM INFRAESTRUTURA CLASSE DE INV EM INFRA RENDA FIXA RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64651483000177",
+          "nome": "SANTA LÚCIA FIF- CLASSE DE INVESTIMENTO RENDA FIXA INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "61884366000165",
+          "nome": "SANTANDER PB 289 INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "63093259000144",
+          "nome": "SANTANDER PB 331 INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "66148609000110",
+          "nome": "SANTANDER PB CASARA INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65842530000122",
+          "nome": "SANTANDER PB CHAVES INVESTIMENTO EM INFRA RF - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65529915000134",
+          "nome": "SANTANDER PB CORVETTE INVESTIMENTO EM INFRA RF - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65529691000160",
+          "nome": "SANTANDER PB DALPA INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "61197890000168",
+          "nome": "SANTANDER PB KGC INVESTIMENTO EM INFRA RF - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64113409000105",
+          "nome": "SANTANDER PB MONTE BARBADO INVESTIMENTO EM INFRA RF - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "63761168000130",
+          "nome": "SANTANDER PB PORTO MADERO III INVESTIMENTO EM INFRA RF - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65107242000124",
+          "nome": "SANTANDER PB QUESILE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65073005000190",
+          "nome": "SANTANDER PB SACO SEM FUNDO INVESTIMENTO EM INFRA RF - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64680282000106",
+          "nome": "SAPIENS FIF - CLASSE DE INVESTIMENTO RF INCENTIVADO DE INVESTIMENTO EM INFRA - RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "66298117000101",
+          "nome": "SHIRA IV FUNDO DE INV FINANCEIRO INV EM INFRAESTRUTURA CLASSE DE INV EM INFRA RF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64776777000125",
+          "nome": "TM FIF - CLASSE DE INVESTIMENTO RF INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65793919000125",
+          "nome": "AGIBANK CRÉDITO PRIVADO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "64440839000123",
+          "nome": "BB TOP RENDA FIXA DEBÊNTURES INCENTIVADAS CDI V FIF EM INFRAESTRUTURA  RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "65927318000168",
+          "nome": "CAPITÂNIA CARTEIRA CRI II FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "65927708000138",
+          "nome": "CAPITÂNIA MULTI RECEBÍVEIS II FIF RENDA FIXA CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "63790160000100",
+          "nome": "ITAÚ RIZA LOTUS PREV MASTER FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA CRED PRIV RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "66161408000153",
+          "nome": "KINEA ATACAMA FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA LONGO PRAZO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "65338884000134",
+          "nome": "LARINFRA KINEA FIF FI INCENTIVADO EM DEBÊNTURES DE INFRAESTRUTURA RF CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "58238959000140",
+          "nome": "MAUÁ IV - FUNDO DE INVESTIMENTO FINANCEIRO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "65796563000183",
+          "nome": "POLO II FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "64985472000123",
+          "nome": "SANTANDER PB ALOCAÇÃO CORPORATIVOS RENDA FIXA CRÉDITO PRIVADO - FIF",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "64111034000136",
+          "nome": "TIVIO HYD60 FIF - CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO - RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "62870208000119",
+          "nome": "UNIMED COOP FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        }
+      ],
+      "removidos": [],
+      "semAnterior": false
+    },
+    "perf": {
+      "top12431Pos": [
+        {
+          "cnpj": "59123735000155",
+          "nome": "PORTO PAINEIRA CDI FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA RF CRÉD PRIV RESP LIMITADA",
+          "gestor": "Porto Asset",
+          "segmento": "12431",
+          "retorno": 2.2385,
+          "pl": 23118579.78
+        },
+        {
+          "cnpj": "55089131000189",
+          "nome": "ASTERI CLASSE DE INVESTIMENTO INCENTIVADO EM INFRAESTRUTURA RENDA FIXA - RESP LIMITADA",
+          "gestor": "BTG WM",
+          "segmento": "12431",
+          "retorno": 1.7065,
+          "pl": 63982367.69
+        },
+        {
+          "cnpj": "50435660000173",
+          "nome": "LOBO-GUARÁ FIF INVESTIMENTO EM INFRAESTRUTURA CLASSE DE INVEST EM INFRA RENDA FIXA RESP LIMITADA",
+          "gestor": "Safra Asset",
+          "segmento": "12431",
+          "retorno": 1.0558,
+          "pl": 13647591.38
+        },
+        {
+          "cnpj": "44271594000140",
+          "nome": "MAMIRA FIF INV EM INFRAESTRUTURA CLASSE DE INVESTIMENTO EM INFRA RENDA FIXA RESP LIMITADA",
+          "gestor": "Safra Asset",
+          "segmento": "12431",
+          "retorno": 0.7682,
+          "pl": 24948972.57
+        },
+        {
+          "cnpj": "50862124000154",
+          "nome": "VINLAND FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA ATIVO FIF RF CRÉD PRIV LP  RESP LIMITADA",
+          "gestor": "Vinland",
+          "segmento": "12431",
+          "retorno": 0.6594,
+          "pl": 1890227511.15
+        }
+      ],
+      "top12431Neg": [
+        {
+          "cnpj": "54426679000104",
+          "nome": "SPARTA RENDA FI FINANCEIRO INCENTIVADO EM INFRAESTRUTURA RENDA FIXA RESPONSABILIDADE LIMITADA",
+          "gestor": "Sparta",
+          "segmento": "12431",
+          "retorno": -22.4609,
+          "pl": 1126500.86
+        },
+        {
+          "cnpj": "57075698000121",
+          "nome": "VINLAND FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA IPCA RF CRED PRIV LP RESP LIMITADA",
+          "gestor": "Vinland",
+          "segmento": "12431",
+          "retorno": -8.7854,
+          "pl": 161823793.83
+        },
+        {
+          "cnpj": "61543507000186",
+          "nome": "VINLAND 2 FI INCENTIVADO EM DEB DE INFRA ATIVO FIF RF CRED PRIV LP RESPONSABILIDADE LIMITADA",
+          "gestor": "Vinland",
+          "segmento": "12431",
+          "retorno": -1.8194,
+          "pl": 3428012.45
+        },
+        {
+          "cnpj": "61643338000156",
+          "nome": "SPARTA INFRA INFLAÇÃO LONGA MASTER II FI EM INFRAESTRUTURA RENDA FIXA - RESP LIMITADA",
+          "gestor": "Sparta",
+          "segmento": "12431",
+          "retorno": -1.0192,
+          "pl": 234459538.11
+        },
+        {
+          "cnpj": "58443398000110",
+          "nome": "SPARTA INFRA INFLAÇÃO LONGA MASTER I FI EM INFRAESTRUTURA RENDA FIXA - RESPONSABILIDADE LIMITADA",
+          "gestor": "Sparta",
+          "segmento": "12431",
+          "retorno": -0.9538,
+          "pl": 28088130.69
+        }
+      ],
+      "topTradPos": [
+        {
+          "cnpj": "51977823000102",
+          "nome": "CATTUS FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
+          "gestor": "Starboard",
+          "segmento": "trad",
+          "retorno": 1.7909,
+          "pl": 37542302.77
+        },
+        {
+          "cnpj": "57555092000193",
+          "nome": "BTG PACTUAL BRASLIGHT EOS FUNDO DE INVESTIMENTO FINANCEIRO",
+          "gestor": "BTG Asset",
+          "segmento": "trad",
+          "retorno": 1.457,
+          "pl": 70336099.54
+        },
+        {
+          "cnpj": "53726108000122",
+          "nome": "CL VI FUNDO DE INVESTIMENTO MULTIMERCADO",
+          "gestor": "Springs",
+          "segmento": "trad",
+          "retorno": 0.8538,
+          "pl": 16906135.22
+        },
+        {
+          "cnpj": "44574326000106",
+          "nome": "RIZA EVI MASTER PREVIDENCIA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "gestor": "Riza",
+          "segmento": "trad",
+          "retorno": 0.721,
+          "pl": 360773124.59
+        },
+        {
+          "cnpj": "43584015000157",
+          "nome": "CHROMO MAKAPUU FUNDO DE INVESTIMENTO MULTIMERCADO",
+          "gestor": "Chromo",
+          "segmento": "trad",
+          "retorno": 0.6861,
+          "pl": 65122303.27
+        }
+      ],
+      "topTradNeg": [
+        {
+          "cnpj": "64089192000137",
+          "nome": "TOP DEBÊNTURES 2025 FI INCENTIVADO EM DEBÊNTURES DE INFRA FIF RENDA FIXA CRED PRIV RESP LIMITADA",
+          "gestor": "IAM",
+          "segmento": "trad",
+          "retorno": -7.7714,
+          "pl": 95604948.99
+        },
+        {
+          "cnpj": "30568485000185",
+          "nome": "AUGME INSTITUCIONAL CLASSE DE  INVESTIMENTO RENDA FIXA CRÉDITO PRIVADO - RESP LIMITADA",
+          "gestor": "Augme",
+          "segmento": "trad",
+          "retorno": -2.5505,
+          "pl": 18416233.86
+        },
+        {
+          "cnpj": "66161408000153",
+          "nome": "KINEA ATACAMA FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA LONGO PRAZO RESP LIMITADA",
+          "gestor": "Kinea",
+          "segmento": "trad",
+          "retorno": -1.1966,
+          "pl": 3370982.34
+        },
+        {
+          "cnpj": "11435262000103",
+          "nome": "PIRAHY FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "gestor": "BTG WM",
+          "segmento": "trad",
+          "retorno": -0.3936,
+          "pl": 16523407.48
+        },
+        {
+          "cnpj": "63405106000195",
+          "nome": "ASA NORTE FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA CRÉDITO PRIVADO - RESPONSABILIDADE LIMITADA",
+          "gestor": "AZ Quest",
+          "segmento": "trad",
+          "retorno": -0.3711,
+          "pl": 161466993.11
+        }
+      ]
+    },
+    "inclusoes": {
+      "novosDebentures": [],
+      "novosBlc": [],
+      "temSnapshotBlc": true
+    },
+    "alertas": [
+      {
+        "tipo": "blc-sem-cadastro",
+        "texto": "74 ativo(s) no BLC sem correspondencia em Debentures.csv"
+      }
+    ],
+    "emissoesCVM": {
+      "asOf": "2026-07-14",
+      "itens": [
+        {
+          "dataRegistro": "2026-07-13",
+          "dataRequerimento": "2026-07-13",
+          "emissor": "SOCICAM ADMINISTRACAO, PROJETOS E REPRESENTACOES S.A.",
+          "cnpj": "43217280000105",
+          "emissao": 2,
+          "valor": 100000000,
+          "incentivada": false,
+          "lider": "XP INVESTIMENTOS CCTVM S.A.",
+          "grupo": "Socicam"
+        },
+        {
+          "dataRegistro": "2026-07-10",
+          "dataRequerimento": "2026-07-06",
+          "emissor": "ARENA SERRA DOURADA S.A.",
+          "cnpj": "60311421000165",
+          "emissao": 1,
+          "valor": 120000000,
+          "incentivada": false,
+          "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+          "grupo": ""
+        },
+        {
+          "dataRegistro": "2026-07-13",
+          "dataRequerimento": "2026-07-06",
+          "emissor": "APPLE PARTICIPACOES S.A.",
+          "cnpj": "60517062000105",
+          "emissao": 1,
+          "valor": 230000000,
+          "incentivada": false,
+          "lider": "BANCO BRADESCO BBI S.A.",
+          "grupo": ""
+        },
+        {
+          "dataRegistro": "2026-07-13",
+          "dataRequerimento": "2026-07-06",
+          "emissor": "BAESA-ENERGETICA BARRA GRANDE S/A",
+          "cnpj": "04781143000139",
+          "emissao": 2,
+          "valor": 316000000,
+          "incentivada": false,
+          "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+          "grupo": ""
+        }
+      ]
+    },
+    "emissoresFaltantes": {
+      "itens": [
+        {
+          "cnpj": "60311421000165",
+          "emissor": "ARENA SERRA DOURADA S.A."
+        },
+        {
+          "cnpj": "60517062000105",
+          "emissor": "APPLE PARTICIPACOES S.A."
+        },
+        {
+          "cnpj": "04781143000139",
+          "emissor": "BAESA-ENERGETICA BARRA GRANDE S/A"
+        }
+      ],
+      "asOf": "2026-07-14"
+    }
+  }
+}

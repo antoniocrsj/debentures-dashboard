@@ -1,40 +1,30 @@
 {
-    "timestamp":  "2026-07-13T11:36:36",
-    "modo":  "completa",
+    "timestamp":  "2026-07-14T08:19:49",
+    "modo":  "incremental",
     "mesesProcessados":  [
                              "202607",
-                             "202606",
-                             "202605",
-                             "202604",
-                             "202603",
-                             "202602",
-                             "202601",
-                             "202512",
-                             "202511",
-                             "202510",
-                             "202509",
-                             "202508"
+                             "202606"
                          ],
     "mesesFalha":  [
 
                    ],
     "periodoCoberto":  {
-                           "inicio":  "2025-08-01",
+                           "inicio":  "2026-06-01",
                            "fim":  "2026-07-10"
                        },
     "linhasInvalidas":  0,
     "12431":  {
                   "gestoras":  1684,
                   "naoEncontrados":  0,
-                  "linhasSemanais":  5580,
-                  "linhasMensais":  1343,
+                  "linhasSemanais":  678,
+                  "linhasMensais":  226,
                   "gestorasRentabilidade":  113
               },
     "trad":  {
                  "gestoras":  835,
                  "naoEncontrados":  0,
-                 "linhasSemanais":  6544,
-                 "linhasMensais":  1571,
+                 "linhasSemanais":  786,
+                 "linhasMensais":  262,
                  "gestorasRentabilidade":  131
              },
     "gestoresPl":  171

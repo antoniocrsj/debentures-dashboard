@@ -22,7 +22,7 @@
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional: −R$ 198 mi",
+      "texto": "Captação líquida Tradicional: −R$ 199 mi",
       "tom": "neg"
     },
     {
@@ -76,35 +76,35 @@
         "captacao": 133464796.72999999,
         "resgate": 349488228.44000006,
         "liquido": -216023431.71000007,
-        "pl": 319770171500.08,
-        "numFundos": 1653,
+        "pl": 337946177902.05,
+        "numFundos": 1656,
         "curados": 1684,
-        "fechados": 287,
+        "fechados": 286,
         "anterior": {
           "dia": "2026-07-07",
-          "captacao": 142350526.2,
+          "captacao": 142706853.48999998,
           "resgate": 183229713.59999996,
-          "liquido": -40879187.399999976,
-          "pl": 334752829676.1301,
-          "numFundos": 1650
+          "liquido": -40522860.109999985,
+          "pl": 335717299597.5601,
+          "numFundos": 1652
         }
       },
       "trad": {
         "dia": "2026-07-08",
-        "captacao": 1358980830.7400002,
-        "resgate": 1557344396.2300003,
-        "liquido": -198363565.49,
-        "pl": 1082827643694.5802,
-        "numFundos": 820,
+        "captacao": 1359120417.5900004,
+        "resgate": 1558071399.4900005,
+        "liquido": -198950981.9000001,
+        "pl": 1084283401052.8202,
+        "numFundos": 827,
         "curados": 839,
         "fechados": 30,
         "anterior": {
           "dia": "2026-07-07",
-          "captacao": 1415394331.9499996,
-          "resgate": 1354406326.0200002,
-          "liquido": 60988005.92999935,
-          "pl": 1080062370847.2805,
-          "numFundos": 820
+          "captacao": 1415339828.8699996,
+          "resgate": 1354795376.9900002,
+          "liquido": 60544451.8799994,
+          "pl": 1080122023779.1405,
+          "numFundos": 822
         }
       }
     },
@@ -152,7 +152,7 @@
           "captacao": 1324743.33,
           "resgate": 91576913.64,
           "liquido": -90252170.31,
-          "pl": 5430018909.49
+          "pl": 7230993012.99
         },
         {
           "gestor": "BB Asset",
@@ -226,7 +226,7 @@
           "captacao": 97483161.36,
           "resgate": 208920792.99,
           "liquido": -111437631.63000001,
-          "pl": 217606829398.57
+          "pl": 217606833789.59
         },
         {
           "gestor": "JGP",
@@ -240,14 +240,14 @@
           "captacao": 4345151.23,
           "resgate": 76791673.98,
           "liquido": -72446522.75,
-          "pl": 14992925193.28
+          "pl": 15153074918.27
         },
         {
           "gestor": "Icatu",
           "captacao": 11035636.73,
           "resgate": 55404536.8,
           "liquido": -44368900.06999999,
-          "pl": 22316224158.56
+          "pl": 22316224138.13
         },
         {
           "gestor": "AZ Quest",
@@ -996,7 +996,7 @@
               "ticker": "JSMLB5",
               "indexador": "IPCA + 7.9677%",
               "indexadorFamilia": "IPCA+",
-              "emissor": "SIMPAR S.A.",
+              "emissor": "JSL S.A",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "B30",
@@ -1813,12 +1813,12 @@
           "pl": 176638172.06
         },
         {
-          "cnpj": "26803172000197",
-          "nome": "NW1 FUNDO DE INVESTIMENTO MULTIMERCADO CREDITO PRIVADO IE - RESPONSABILIDADE LIMITADA",
-          "gestor": "Polo",
+          "cnpj": "59357502000117",
+          "nome": "JW1 JGP CRÉDITO FUNDO DE INVEST FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO - RESPONSABILIDADE LIMITADA",
+          "gestor": "JGP",
           "segmento": "trad",
-          "retorno": 0.383,
-          "pl": 54393400.01
+          "retorno": 0.3081,
+          "pl": 47158379.78
         }
       ],
       "topTradNeg": [
