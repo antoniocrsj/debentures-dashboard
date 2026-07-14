@@ -38,7 +38,7 @@ export default function CaixaGestorTable({ gestores, activeGestor, onSelect }) {
               <SortableTh col="gestor" label="Gestor" sort={sort} onSort={onSort} align="left" sticky />
               <SortableTh col="consolidado" label="Caixa consolidado" sort={sort} onSort={onSort} />
               <SortableTh col="pct" label="% do PL" sort={sort} onSort={onSort} />
-              <SortableTh col="estimado" label="Estimado atual" sort={sort} onSort={onSort} />
+              <SortableTh col="estimado" label="Caixa estimado" sort={sort} onSort={onSort} />
               <SortableTh col="pl" label="PL carteira" sort={sort} onSort={onSort} />
               <SortableTh col="fluxo" label="Fluxo posterior" sort={sort} onSort={onSort} />
               <SortableTh col="nfundos" label="Fundos" sort={sort} onSort={onSort} />

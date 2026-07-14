@@ -34,7 +34,7 @@ const LABELS = {
   LiquidoRecente: 'Cap. líquida (semana recente)', CaptacaoRecente: 'Captação (semana recente)',
   ResgateRecente: 'Resgate (semana recente)', PLRecente: 'PL (semana recente)',
   Ativos: 'Ativos', Emissores: 'Emissores', Incentivadas: 'Deb. incentivadas', Registradas: 'Registradas',
-  MesAno: 'Mês registrado', TotalAlocado: 'Total alocado',
+  MesAno: 'Mês registrado', TotalAlocado: 'Alocação',
   DataRef: 'Data de referência', Tickers: 'Tickers na base', ComTaxa: 'Com Tx ANBIMA',
 }
 

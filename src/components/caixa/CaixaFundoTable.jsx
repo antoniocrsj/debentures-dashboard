@@ -59,7 +59,7 @@ export default function CaixaFundoTable({ fundos, title, subtitle }) {
               <SortableTh col="direto" label="Caixa direto" sort={sort} onSort={onSort} />
               <SortableTh col="indireto" label="Indireto" sort={sort} onSort={onSort} />
               <SortableTh col="total" label="Caixa total" sort={sort} onSort={onSort} />
-              <SortableTh col="estimado" label="Estimado atual" sort={sort} onSort={onSort} />
+              <SortableTh col="estimado" label="Caixa estimado" sort={sort} onSort={onSort} />
               <th className="th-plain">Classificação</th>
               <th className="th-plain">Confiança</th>
             </tr>

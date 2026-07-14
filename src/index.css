@@ -412,7 +412,7 @@ a { color: var(--primary); }
 .asset-table col.c-taxa     { width: 70px; }
 .asset-table col.c-anbima   { width: 92px; }
 .asset-table col.c-duration { width: 64px; }
-.asset-table col.c-vol      { width: 78px; }
+.asset-table col.c-vol      { width: 92px; }
 .asset-table col.c-aloc     { width: 78px; }
 
 /* Cabeçalho não-ordenável (coluna Tx Anbima) */
@@ -1447,10 +1447,10 @@ a { color: var(--primary); }
    sumir (emissor/grupo truncam com reticencias sob table-layout:fixed). */
 .venc-deb-table { table-layout: fixed; }
 .venc-deb-table th, .venc-deb-table td { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.venc-deb-table th:nth-child(1), .venc-deb-table td:nth-child(1) { width: 25%; }   /* Ativo (ticker + badge 12.431) */
-.venc-deb-table th:nth-child(2), .venc-deb-table td:nth-child(2) { width: 13%; }   /* Grupo (some no compacto) */
-.venc-deb-table th:nth-child(4), .venc-deb-table td:nth-child(4) { width: 19%; }   /* Venc. */
-.venc-deb-table th:last-child,   .venc-deb-table td:last-child   { width: 21%; }   /* Outstanding */
+.venc-deb-table th:nth-child(1), .venc-deb-table td:nth-child(1) { width: 24%; }   /* Ativo (ticker + badge 12.431) */
+.venc-deb-table th:nth-child(2), .venc-deb-table td:nth-child(2) { width: 12%; }   /* Grupo (some no compacto) */
+.venc-deb-table th:nth-child(4), .venc-deb-table td:nth-child(4) { width: 19%; }   /* A vencer */
+.venc-deb-table th:last-child,   .venc-deb-table td:last-child   { width: 23%; }   /* Vol. mercado */
 
 /* Cronograma: mesmo tratamento (a coluna R$ nunca some; emissor trunca). */
 .venc-crono-table { table-layout: fixed; }

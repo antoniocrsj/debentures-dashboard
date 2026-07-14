@@ -28,7 +28,7 @@ function FluxoTooltip({ active, payload, label }) {
       <div className="fluxo-tooltip-title">Semana de {fmtWeekFull(label)}</div>
       <div className="fluxo-tooltip-row"><span className="dot" style={{ background: COL_CAP }} />Captação: {fmtFluxoSigned(row.captacao)}</div>
       <div className="fluxo-tooltip-row"><span className="dot" style={{ background: COL_RES }} />Resgate: {fmtFluxoSigned(-row.resgate)}</div>
-      <div className="fluxo-tooltip-row"><span className="dot" style={{ background: COL_LIQ }} />Cap. Líquida: {fmtFluxoSigned(row.liquido)}</div>
+      <div className="fluxo-tooltip-row"><span className="dot" style={{ background: COL_LIQ }} />Cap. líquida: {fmtFluxoSigned(row.liquido)}</div>
       <div className="fluxo-tooltip-row fluxo-tooltip-pl">PL total: {fmtFluxo(row.plTotal)}</div>
     </div>
   )
@@ -58,7 +58,7 @@ export default function FluxoChart({ weekly }) {
           <Legend wrapperStyle={{ fontSize: 11 }} />
           <Bar dataKey="captacao" name="Captação" fill={COL_CAP} fillOpacity={0.72} radius={[2, 2, 0, 0]} maxBarSize={26} />
           <Bar dataKey="resgateNeg" name="Resgate" fill={COL_RES} fillOpacity={0.72} radius={[0, 0, 2, 2]} maxBarSize={26} />
-          <Line dataKey="liquido" name="Cap. Líquida" stroke={COL_LIQ} strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
+          <Line dataKey="liquido" name="Cap. líquida" stroke={COL_LIQ} strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
         </ComposedChart>
       </ResponsiveContainer>
     </div>

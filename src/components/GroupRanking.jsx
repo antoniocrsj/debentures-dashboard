@@ -21,7 +21,7 @@ export default function GroupRanking({ groups, activeGrupo, onFilter, gestorPl, 
           <span className="rank-col">#</span>
           <span className="name-col">Grupo Econômico</span>
           <span className="val-col">Alocação</span>
-          {showPct && <span className="val-col">%PL</span>}
+          {showPct && <span className="val-col">% do PL</span>}
         </div>
         {groups.map((g, i) => {
           const selected = activeGrupo === g.grupo

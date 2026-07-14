@@ -8,7 +8,7 @@ const COLS = [
   { id: 'taxa',       label: 'Taxa',       sticky: false, sortable: true  },
   { id: 'txanbima',   label: 'Tx Anbima',  sticky: false, sortable: false },
   { id: 'duration',   label: 'Duration',   sticky: false, sortable: false },
-  { id: 'vol',        label: 'Vol. emit.', sticky: false, sortable: true  },
+  { id: 'vol',        label: 'Vol. mercado', sticky: false, sortable: true  },
   { id: 'alocacao',   label: 'Alocação',   sticky: false, sortable: true  },
 ]
 

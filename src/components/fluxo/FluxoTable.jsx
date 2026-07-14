@@ -40,7 +40,7 @@ export default function FluxoTable({ weekly }) {
           <thead>
             <tr>
               <SortableTh col="semana"   label="Semana"      sort={sort} onSort={onSort} align="left" sticky />
-              <SortableTh col="liquido"  label="Cap. Líquida" sort={sort} onSort={onSort} />
+              <SortableTh col="liquido"  label="Cap. líquida" sort={sort} onSort={onSort} />
               <SortableTh col="captacao" label="Captação"    sort={sort} onSort={onSort} />
               <SortableTh col="resgate"  label="Resgate"     sort={sort} onSort={onSort} />
             </tr>

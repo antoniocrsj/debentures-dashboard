@@ -6,9 +6,9 @@ export default function FluxoSummaryCards({ cards }) {
 
   return (
     <div className="fluxo-cards" aria-label="Indicadores do período">
-      {/* Cap. Líquida: sinal textual + ícone, não depende só de cor */}
+      {/* Cap. líquida: sinal textual + ícone, não depende só de cor */}
       <div className={`fluxo-card fluxo-card-liquido${liqPos ? ' pos' : liqNeg ? ' neg' : ''}`}>
-        <span className="fluxo-card-label">Cap. Líquida</span>
+        <span className="fluxo-card-label">Cap. líquida</span>
         <span className="fluxo-card-value">
           <span className="liq-arrow" aria-hidden="true">{liqPos ? '▲' : liqNeg ? '▼' : ''}</span>
           {fmtFluxoSigned(cards.liquido)}

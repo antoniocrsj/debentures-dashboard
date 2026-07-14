@@ -17,12 +17,13 @@ function pctFmt(x) {
   if (x == null || isNaN(x)) return '—'
   return `${x.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%`
 }
-// Rotulo compacto pra CABER dentro da barra: sem "R$", com sufixo B/M/k.
+// Rotulo compacto pra CABER dentro da barra: sem "R$" e sem espaco, mas no mesmo
+// vocabulario do app (bi/mi/mil).
 function fmtBar(v) {
   const n = Math.abs(v || 0)
-  if (n >= 1e9) return `${(v / 1e9).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}B`
-  if (n >= 1e6) return `${(v / 1e6).toLocaleString('pt-BR', { maximumFractionDigits: 0 })}M`
-  if (n >= 1e3) return `${(v / 1e3).toLocaleString('pt-BR', { maximumFractionDigits: 0 })}k`
+  if (n >= 1e9) return `${(v / 1e9).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}bi`
+  if (n >= 1e6) return `${(v / 1e6).toLocaleString('pt-BR', { maximumFractionDigits: 0 })}mi`
+  if (n >= 1e3) return `${(v / 1e3).toLocaleString('pt-BR', { maximumFractionDigits: 0 })}mil`
   return (v || 0).toLocaleString('pt-BR', { maximumFractionDigits: 0 })
 }
 function fmtDia(d) {
@@ -412,12 +413,12 @@ export default function VencimentosDashboard({ data, blc, assets, plByGestor, co
     <table className="venc-table">
       <thead>
         <tr>
-          <SortTh label={effDim === 'gestor' ? 'Fundo (gestor)' : DIM_NOME[effDim]} col="nome" sort={rankSort} setSort={setRankSort} />
+          <SortTh label={effDim === 'gestor' ? 'Gestor' : DIM_NOME[effDim]} col="nome" sort={rankSort} setSort={setRankSort} />
           {effDim === 'ativo' && <SortTh label="Emissor" col="emissor" sort={rankSort} setSort={setRankSort} className="hide-compact" />}
           {effDim === 'ativo' && <SortTh label="Grupo" col="grupo" sort={rankSort} setSort={setRankSort} className="hide-compact" />}
           <SortTh label={<>Juros<span className="venc-est">est.</span></>} col="juros" sort={rankSort} setSort={setRankSort} numeric />
           <SortTh label="Amort." col="amort" sort={rankSort} setSort={setRankSort} numeric />
-          <SortTh label={<>Venc.<span className="venc-est">est.</span> {mesLabelSel || '12m'}</>} col="total" sort={rankSort} setSort={setRankSort} numeric />
+          <SortTh label={<>A vencer<span className="venc-est">est.</span> {mesLabelSel || '12m'}</>} col="total" sort={rankSort} setSort={setRankSort} numeric />
         </tr>
       </thead>
       <tbody>
@@ -485,8 +486,8 @@ export default function VencimentosDashboard({ data, blc, assets, plByGestor, co
           <SortTh label="Ativo" col="ticker" sort={debSort} setSort={setDebSort} />
           <SortTh label="Grupo" col="grupo" sort={debSort} setSort={setDebSort} className="hide-compact" />
           <SortTh label="Emissor" col="emissor" sort={debSort} setSort={setDebSort} />
-          <SortTh label={<>Venc.<span className="venc-est">est.</span></>} col="venc" sort={debSort} setSort={setDebSort} numeric title="Juros (estimado) + amortização no período" />
-          <SortTh label="Outstanding" col="outstanding" sort={debSort} setSort={setDebSort} numeric title="Volume outstanding (Qtd em Mercado × VNA)" />
+          <SortTh label={<>A vencer<span className="venc-est">est.</span></>} col="venc" sort={debSort} setSort={setDebSort} numeric title="Juros (estimado) + amortização no período" />
+          <SortTh label="Vol. mercado" col="outstanding" sort={debSort} setSort={setDebSort} numeric title="Volume em mercado (Qtd em Mercado × VNA)" />
         </tr>
       </thead>
       <tbody>
@@ -507,7 +508,7 @@ export default function VencimentosDashboard({ data, blc, assets, plByGestor, co
           <tr><td colSpan={5} className="venc-norows">Nenhuma debênture {mesLabelSel ? `em ${mesLabelSel}` : 'nesta janela'}.</td></tr>
         )}
         {debList.length > DEB_CAP && (
-          <tr><td colSpan={5} className="venc-norows">+ {debList.length - DEB_CAP} debênture(s) menor(es) — mostrando as {DEB_CAP} maiores por outstanding.</td></tr>
+          <tr><td colSpan={5} className="venc-norows">+ {debList.length - DEB_CAP} debênture(s) menor(es) — mostrando as {DEB_CAP} maiores por Vol. mercado.</td></tr>
         )}
       </tbody>
       {debList.length > 0 && (
@@ -528,7 +529,7 @@ export default function VencimentosDashboard({ data, blc, assets, plByGestor, co
   const leftTitle = selEnt
     ? `Cronograma — ${selEnt.nome}${mesLabelSel ? ` · ${mesLabelSel}` : ''}`
     : `Vencimentos ${mesLabelSel || '12 meses'} — ${DIMS.find(d => d.id === effDim)?.label || ''}${gestorSel ? ` · ${gestorSel}` : ''}`
-  const debTitle = `Debêntures na janela — Vol. outstanding${gestorSel ? ` · ${gestorSel}` : ''}${mesLabelSel ? ` · ${mesLabelSel}` : ''}`
+  const debTitle = `Debêntures na janela — Vol. mercado${gestorSel ? ` · ${gestorSel}` : ''}${mesLabelSel ? ` · ${mesLabelSel}` : ''}`
 
   return (
     <div className={`venc${compact ? ' compact' : ''}`}>

@@ -23,7 +23,7 @@ const KEYS = {
   rent12m:  g => g.pctCdi12m,
 }
 const LABELS = {
-  gestor: 'Gestor', pl: 'PL', liquido: 'Cap. Líquida', captacao: 'Captação', resgate: 'Resgate',
+  gestor: 'Gestor', pl: 'PL', liquido: 'Cap. líquida', captacao: 'Captação', resgate: 'Resgate',
   rent1s: '%CDI 1s', rent1m: '%CDI 1m', rent3m: '%CDI 3m', rent6m: '%CDI 6m', rent12m: '%CDI 12m',
 }
 
@@ -54,7 +54,7 @@ export default function GestorFlowRanking({ ranking, onSelect }) {
           <thead>
             <tr>
               <SortableTh col="gestor"   label="Gestor"      sort={sort} onSort={onSort} align="left" sticky />
-              <SortableTh col="liquido"  label="Cap. Líquida" sort={sort} onSort={onSort} />
+              <SortableTh col="liquido"  label="Cap. líquida" sort={sort} onSort={onSort} />
               <SortableTh col="captacao" label="Captação"    sort={sort} onSort={onSort} />
               <SortableTh col="resgate"  label="Resgate"     sort={sort} onSort={onSort} />
               <SortableTh col="pl"       label="PL"          sort={sort} onSort={onSort} />

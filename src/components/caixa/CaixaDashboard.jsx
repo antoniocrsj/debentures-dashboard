@@ -136,7 +136,7 @@ export default function CaixaDashboard({ compact = false }) {
             <Card label="Caixa consolidado" sub="(data-base)" value={fmtFluxo(cards.consolidado)}
               help="Soma do caixa dos fundos compradores diretos, contando o ativo final uma vez (sem feeders, sem dupla contagem via cotas)." />
             <Card label="% do PL" value={fmtPctPL(cards.pctPL)} />
-            <Card label="Caixa estimado atual" value={fmtFluxo(cards.estimado)}
+            <Card label="Caixa estimado" value={fmtFluxo(cards.estimado)}
               help="% de caixa da última carteira válida × PL diário mais recente do Informe Diário." />
             <div className={`fluxo-card${cards.fluxoPosterior > 0 ? ' fluxo-card-liquido pos' : cards.fluxoPosterior < 0 ? ' fluxo-card-liquido neg' : ''}`}>
               <span className="fluxo-card-label">Pressão de compra posterior

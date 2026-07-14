@@ -68,8 +68,8 @@ export default function AssetModal({ asset, onClose }) {
           <AgendaSection asset={asset} />
 
           <Section title="Posição">
-            <Row label="Vol. emitido" value={asset.volumeEmitido > 0 ? fmtBRL(asset.volumeEmitido) : '—'} />
-            <Row label="Alocação BLC" value={asset.alocacao > 0 ? fmtBRL(asset.alocacao) : '—'} highlight />
+            <Row label="Vol. mercado" value={asset.volumeEmitido > 0 ? fmtBRL(asset.volumeEmitido) : '—'} />
+            <Row label="Alocação" value={asset.alocacao > 0 ? fmtBRL(asset.alocacao) : '—'} highlight />
           </Section>
 
           {asset.descricao && (

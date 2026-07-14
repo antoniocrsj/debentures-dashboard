@@ -21,14 +21,16 @@ export function normCNPJ(cnpj) {
 }
 
 const R$ = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 })
+const NBSP = '\u00a0'
 
-/** Compact BRL — shows Bi/M/K suffix for large values */
+/** Compact BRL — sufixo bi/mi/mil (formato unico do app, alinhado ao fmtFluxo) */
 export function fmtBRL(n) {
   if (n == null || isNaN(n)) return '—'
   const abs = Math.abs(n)
-  if (abs >= 1e9) return `R$ ${(n / 1e9).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}Bi`
-  if (abs >= 1e6) return `R$ ${(n / 1e6).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}M`
-  if (abs >= 1e3) return `R$ ${(n / 1e3).toLocaleString('pt-BR', { maximumFractionDigits: 0 })}K`
+  const f = (v, d = 1) => v.toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d })
+  if (abs >= 1e9) return `R$${NBSP}${f(n / 1e9)}${NBSP}bi`
+  if (abs >= 1e6) return `R$${NBSP}${f(n / 1e6)}${NBSP}mi`
+  if (abs >= 1e3) return `R$${NBSP}${f(n / 1e3, 0)}${NBSP}mil`
   return R$.format(n)
 }
 

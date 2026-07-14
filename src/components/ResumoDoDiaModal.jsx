@@ -44,7 +44,7 @@ function Debentures({ sec, cvm, faltantes }) {
       {temNovas ? (
         <>
           <table className="rd-table">
-            <thead><tr><th>Ativo</th><th>Emis.</th><th>Venc.</th><th>Taxa</th><th className="rd-num">Vol. emit.</th></tr></thead>
+            <thead><tr><th>Ativo</th><th>Emis.</th><th>Venc.</th><th>Taxa</th><th className="rd-num">Vol. mercado</th></tr></thead>
             <tbody>
               {sec.novas.map((d, i) => (
                 <tr key={d.ticker || i}>
@@ -132,7 +132,7 @@ function Captacao({ sec }) {
         <h4>{nome} <span className="rd-cap-dia">· {fmtDia(c.dia)}</span></h4>
         <div className="rd-kv"><span>Captação</span><b>{money(c.captacao)}</b></div>
         <div className="rd-kv"><span>Resgate</span><b>{money(c.resgate)}</b></div>
-        <div className="rd-kv"><span>Líquido</span><b className={pos ? 'rd-pos' : 'rd-neg'}>{money(c.liquido)}</b></div>
+        <div className="rd-kv"><span>Cap. líquida</span><b className={pos ? 'rd-pos' : 'rd-neg'}>{money(c.liquido)}</b></div>
         <div className="rd-kv"><span>PL</span><b>{money(c.pl)}</b></div>
         <div className="rd-kv" title="Fundos da sua lista curada que reportaram no Informe Diário deste dia (a lista é constante)">
           <span>Fundos reportados</span>
