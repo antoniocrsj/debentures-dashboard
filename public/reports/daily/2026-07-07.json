@@ -4,13 +4,20 @@
   "previousDate": null,
   "sourceDates": {
     "debentures": "2026-07-07",
-    "cap12431": "2026-07-07",
-    "capTrad": "2026-07-07",
-    "perf12431": "2026-07-07",
-    "perfTrad": "2026-07-07",
+    "cap12431": "2026-07-03",
+    "capTrad": "2026-07-03",
+    "perf12431": "2026-07-03",
+    "perfTrad": "2026-07-03",
     "anbima": "2026-07-07",
     "blc": "2026-07-07",
-    "fundos": "2026-07-07"
+    "fundos": "2026-07-03"
+  },
+  "novoPorFonte": {
+    "debentures": true,
+    "cap": true,
+    "anbima": true,
+    "fundos": true,
+    "blc": false
   },
   "summary": [
     {
@@ -18,19 +25,19 @@
       "tom": "pos"
     },
     {
-      "texto": "Captação líquida Incentivados: −R$ 41 mi",
+      "texto": "Captação líquida Incentivados: −R$ 115 mi",
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional: +R$ 61 mi",
+      "texto": "Captação líquida Tradicional: −R$ 286 mi",
+      "tom": "neg"
+    },
+    {
+      "texto": "Maior captação: Perfin (+R$ 12 mi)",
       "tom": "pos"
     },
     {
-      "texto": "Maior captação: BTG WM (+R$ 42 mi)",
-      "tom": "pos"
-    },
-    {
-      "texto": "Maior resgate: BRAM (−R$ 26 mi)",
+      "texto": "Maior resgate: BRAM (−R$ 19 mi)",
       "tom": "neg"
     },
     {
@@ -100,189 +107,189 @@
     },
     "captacao": {
       "12431": {
-        "dia": "2026-07-07",
-        "captacao": 142706853.48999998,
-        "resgate": 183229713.59999996,
-        "liquido": -40522860.109999985,
-        "pl": 335717299597.5601,
-        "numFundos": 1652,
+        "dia": "2026-07-03",
+        "captacao": 160830778.71999997,
+        "resgate": 275714037.96999997,
+        "liquido": -114883259.25,
+        "pl": 338157088973.5002,
+        "numFundos": 1658,
         "curados": 1684,
         "fechados": 286,
         "anterior": {
-          "dia": "2026-07-06",
-          "captacao": 141664445.71,
-          "resgate": 478331550.07999986,
-          "liquido": -336667104.3699999,
-          "pl": 336912575945.77,
-          "numFundos": 1659
+          "dia": "2026-07-02",
+          "captacao": 125875532.12999997,
+          "resgate": 774035834.1400001,
+          "liquido": -648160302.0100001,
+          "pl": 335476377500.46985,
+          "numFundos": 1653
         }
       },
       "trad": {
-        "dia": "2026-07-07",
-        "captacao": 1415339828.8699996,
-        "resgate": 1354795376.9900002,
-        "liquido": 60544451.8799994,
-        "pl": 1080122023779.1405,
-        "numFundos": 822,
+        "dia": "2026-07-03",
+        "captacao": 1327653050.9199998,
+        "resgate": 1613786249.8000002,
+        "liquido": -286133198.88000035,
+        "pl": 1083535254316.4503,
+        "numFundos": 830,
         "curados": 839,
         "fechados": 30,
         "anterior": {
-          "dia": "2026-07-06",
-          "captacao": 1727370733.11,
-          "resgate": 2544486391.07,
-          "liquido": -817115657.9600003,
-          "pl": 1081666911522.44,
-          "numFundos": 827
+          "dia": "2026-07-02",
+          "captacao": 1693556325.7600007,
+          "resgate": 1800276420.1799998,
+          "liquido": -106720094.41999912,
+          "pl": 1081035474580.9297,
+          "numFundos": 821
         }
       }
     },
     "gestores": {
       "top12431Captacao": [
         {
-          "gestor": "BTG WM",
-          "captacao": 42684636.68,
-          "resgate": 900359.87,
-          "liquido": 41784276.81,
-          "pl": 15593081367.69
+          "gestor": "Perfin",
+          "captacao": 11900000,
+          "resgate": 0,
+          "liquido": 11900000,
+          "pl": 643030861.08
         },
         {
           "gestor": "JGP",
-          "captacao": 20547446.87,
-          "resgate": 458121.55,
-          "liquido": 20089325.32,
-          "pl": 3749730233.61
+          "captacao": 18988564.46,
+          "resgate": 7474567.7,
+          "liquido": 11513996.760000002,
+          "pl": 3724624097.76
         },
         {
-          "gestor": "Plural",
-          "captacao": 6384169.59,
+          "gestor": "Kinea",
+          "captacao": 1969000,
+          "resgate": 192033.85,
+          "liquido": 1776966.15,
+          "pl": 14440469063.65
+        },
+        {
+          "gestor": "BBM Asset",
+          "captacao": 1750000,
           "resgate": 0,
-          "liquido": 6384169.59,
-          "pl": 1677819673.9
+          "liquido": 1750000,
+          "pl": 163690256.49
         },
         {
-          "gestor": "Sparta",
-          "captacao": 5406592.86,
-          "resgate": 423050.51,
-          "liquido": 4983542.350000001,
-          "pl": 9788042389.48
-        },
-        {
-          "gestor": "ARX",
-          "captacao": 4837047.72,
-          "resgate": 450000,
-          "liquido": 4387047.72,
-          "pl": 5744968996.82
+          "gestor": "SAM",
+          "captacao": 839801.35,
+          "resgate": 0,
+          "liquido": 839801.35,
+          "pl": 10608604863.68
         }
       ],
       "top12431Resgate": [
         {
           "gestor": "BRAM",
-          "captacao": 12831778.29,
-          "resgate": 38886801.6,
-          "liquido": -26055023.310000002,
-          "pl": 28844983266.1
+          "captacao": 14839883.82,
+          "resgate": 33477620.28,
+          "liquido": -18637736.46,
+          "pl": 28922120887.33
         },
         {
-          "gestor": "IAM",
-          "captacao": 18199327.93,
-          "resgate": 43291504.97,
-          "liquido": -25092177.04,
-          "pl": 84002395983.99
+          "gestor": "Absolute",
+          "captacao": 6266119.08,
+          "resgate": 22912927.54,
+          "liquido": -16646808.459999999,
+          "pl": 11330013210.11
         },
         {
-          "gestor": "SAM",
-          "captacao": 348868.07,
-          "resgate": 22356680,
-          "liquido": -22007811.93,
-          "pl": 10568993508.97
+          "gestor": "BTG Asset",
+          "captacao": 2466417.94,
+          "resgate": 17030953.75,
+          "liquido": -14564535.81,
+          "pl": 7243895144.73
+        },
+        {
+          "gestor": "Sparta",
+          "captacao": 1227468.12,
+          "resgate": 14517407.52,
+          "liquido": -13289939.399999999,
+          "pl": 9774020929.14
         },
         {
           "gestor": "Safra Asset",
-          "captacao": 3103180.66,
-          "resgate": 18291820.95,
-          "liquido": -15188640.29,
-          "pl": 9988754299.57
-        },
-        {
-          "gestor": "Proteus",
-          "captacao": 0,
-          "resgate": 10685000,
-          "liquido": -10685000,
-          "pl": 274396315.72
+          "captacao": 816027.85,
+          "resgate": 13000134.99,
+          "liquido": -12184107.14,
+          "pl": 10000795485.1
         }
       ],
       "topTradCaptacao": [
         {
           "gestor": "BB Asset",
-          "captacao": 543394792.01,
-          "resgate": 403781678.9,
-          "liquido": 139613113.11,
-          "pl": 211052732378.01
+          "captacao": 520774577.35,
+          "resgate": 439438874.49,
+          "liquido": 81335702.86000001,
+          "pl": 210565168841.06
         },
         {
-          "gestor": "SAM",
-          "captacao": 101566191.32,
-          "resgate": 9784115,
-          "liquido": 91782076.32,
-          "pl": 45483248678.48
-        },
-        {
-          "gestor": "CEF Asset",
-          "captacao": 119501397.59,
-          "resgate": 65942766.46,
-          "liquido": 53558631.13,
-          "pl": 68624692009.91
-        },
-        {
-          "gestor": "BTG Asset",
-          "captacao": 48116090.08,
-          "resgate": 6689228.84,
-          "liquido": 41426861.239999995,
-          "pl": 23557796524.44
+          "gestor": "BRAM",
+          "captacao": 121617469.36,
+          "resgate": 77961599.05,
+          "liquido": 43655870.31,
+          "pl": 100448207287.04
         },
         {
           "gestor": "Regia",
-          "captacao": 42600692.83,
-          "resgate": 5183763.37,
-          "liquido": 37416929.46,
-          "pl": 16986702623.17
+          "captacao": 40029214.47,
+          "resgate": 15384712.07,
+          "liquido": 24644502.4,
+          "pl": 16883407360.04
+        },
+        {
+          "gestor": "BTG Asset",
+          "captacao": 29579775.44,
+          "resgate": 6134623.39,
+          "liquido": 23445152.05,
+          "pl": 24788807433.61
+        },
+        {
+          "gestor": "Icatu",
+          "captacao": 19732962.71,
+          "resgate": 6364917.31,
+          "liquido": 13368045.400000002,
+          "pl": 22349081752.17
         }
       ],
       "topTradResgate": [
         {
-          "gestor": "Safra Asset",
-          "captacao": 37109928.17,
-          "resgate": 112814887.48,
-          "liquido": -75704959.31,
-          "pl": 52527574008.92
-        },
-        {
-          "gestor": "Plural",
-          "captacao": 363935.9,
-          "resgate": 65670903.16,
-          "liquido": -65306967.26,
-          "pl": 1978673659.34
-        },
-        {
-          "gestor": "AZ Quest",
-          "captacao": 1917522.84,
-          "resgate": 66081894.14,
-          "liquido": -64164371.3,
-          "pl": 19940438383.94
+          "gestor": "XPG",
+          "captacao": 20622955.25,
+          "resgate": 143804349.64,
+          "liquido": -123181394.38999999,
+          "pl": 15705281960.01
         },
         {
           "gestor": "IAM",
-          "captacao": 106399410.29,
-          "resgate": 154706844.8,
-          "liquido": -48307434.510000005,
-          "pl": 217589859304.07
+          "captacao": 96417206.75,
+          "resgate": 181735094.82,
+          "liquido": -85317888.07,
+          "pl": 217505924765.5
         },
         {
-          "gestor": "Icatu",
-          "captacao": 20418287.46,
-          "resgate": 55165956.58,
-          "liquido": -34747669.12,
-          "pl": 19911108231.91
+          "gestor": "AZ Quest",
+          "captacao": 10550361.64,
+          "resgate": 94744188.09,
+          "liquido": -84193826.45,
+          "pl": 20047861935.71
+        },
+        {
+          "gestor": "Augme",
+          "captacao": 0,
+          "resgate": 47000000,
+          "liquido": -47000000,
+          "pl": 1655936029.85
+        },
+        {
+          "gestor": "ARX",
+          "captacao": 6143064.81,
+          "resgate": 34041029.75,
+          "liquido": -27897964.94,
+          "pl": 21228219355.77
         }
       ]
     },
@@ -1725,170 +1732,170 @@
     "perf": {
       "top12431Pos": [
         {
-          "cnpj": "54341666000132",
-          "nome": "V7 FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
-          "gestor": "BTG WM",
-          "segmento": "12431",
-          "retorno": 0.8809,
-          "pl": 124908969.59
-        },
-        {
-          "cnpj": "63159694000124",
-          "nome": "SANTANDER PB CAIS INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
-          "gestor": "San WM",
-          "segmento": "12431",
-          "retorno": 0.5403,
-          "pl": 15898353.28
-        },
-        {
-          "cnpj": "60450321000110",
-          "nome": "ITAÚ CONSULT DEBÊNTURES INCENTIVADAS IPCA 2035 FIF INCENTIVADO EM INFRA RF CRÉD PRIV RESP LIMITADA",
-          "gestor": "IAM",
-          "segmento": "12431",
-          "retorno": 0.4509,
-          "pl": 69440718.38
-        },
-        {
-          "cnpj": "61803239000194",
-          "nome": "DOMUS VI DEBENTURES INCENTIVADAS FUNDO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
-          "gestor": "BTG WM",
-          "segmento": "12431",
-          "retorno": 0.4413,
-          "pl": 60568691.18
-        },
-        {
-          "cnpj": "54384609000130",
-          "nome": "CS EVOLUTION LORENA FUNDO DE INVESTIMENTO EM INFRAESTRUTURA - RENDA FIXA CRED PRIV RESP LIMITADA",
-          "gestor": "UBS",
-          "segmento": "12431",
-          "retorno": 0.4369,
-          "pl": 15919464.37
-        }
-      ],
-      "top12431Neg": [
-        {
           "cnpj": "61141536000111",
           "nome": "BB MASTER RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
           "gestor": "BB Asset",
           "segmento": "12431",
-          "retorno": -25.4397,
-          "pl": 572353492.98
+          "retorno": 34.271,
+          "pl": 3224699047.86
+        },
+        {
+          "cnpj": "63319624000196",
+          "nome": "A1 CRÉDITO FIF INVESTIMENTO EM DEBÊNTURES DE INFRA CDI ATIVO RF CRED PRIV RESP LIMITADA",
+          "gestor": "Asset 1",
+          "segmento": "12431",
+          "retorno": 5.0656,
+          "pl": 4333558.34
+        },
+        {
+          "cnpj": "63572496000198",
+          "nome": "VINLAND DEBÊNTURE INCENTIVADO 3 FIF INC EM INV EM DEB DE INFRA RF ATIVO CRED PRIV LP RESP LIMITADA",
+          "gestor": "Vinland",
+          "segmento": "12431",
+          "retorno": 3.6384,
+          "pl": 4677808.6
+        },
+        {
+          "cnpj": "60775750000167",
+          "nome": "G5 ALLOCATION II FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "gestor": "G5",
+          "segmento": "12431",
+          "retorno": 2.9609,
+          "pl": 36174313.94
+        },
+        {
+          "cnpj": "62360992000115",
+          "nome": "BB MASTER II RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
+          "gestor": "BB Asset",
+          "segmento": "12431",
+          "retorno": 2.7902,
+          "pl": 1748278226.04
+        }
+      ],
+      "top12431Neg": [
+        {
+          "cnpj": "49115219000125",
+          "nome": "ANGRA KINEA FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA  RF CRED PRIV RESP LIMITADA",
+          "gestor": "Kinea",
+          "segmento": "12431",
+          "retorno": -52.4385,
+          "pl": 19828012.24
+        },
+        {
+          "cnpj": "54426679000104",
+          "nome": "SPARTA RENDA FI FINANCEIRO INCENTIVADO EM INFRAESTRUTURA RENDA FIXA RESPONSABILIDADE LIMITADA",
+          "gestor": "Sparta",
+          "segmento": "12431",
+          "retorno": -22.3986,
+          "pl": 1123665.46
+        },
+        {
+          "cnpj": "64436974000103",
+          "nome": "BB MASTER III RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
+          "gestor": "BB Asset",
+          "segmento": "12431",
+          "retorno": -5.4618,
+          "pl": 1058344749.32
         },
         {
           "cnpj": "60491442000100",
           "nome": "ITAÚBA FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA RESP LIMITADA",
           "gestor": "IAM",
           "segmento": "12431",
-          "retorno": -3.6503,
-          "pl": 3342590158
+          "retorno": -2.4265,
+          "pl": 3812248263.84
         },
         {
-          "cnpj": "54023112000197",
-          "nome": "ICATU VANGUARDA INCENTIVADO EM INFRAESTRUTURA FIF RF CP LP - RESP LIMITADA",
-          "gestor": "Icatu",
+          "cnpj": "57134507000155",
+          "nome": "ARX INFRA RENDA CDI FI INCENTIVADO DE INFRAESTRUTURA RENDA FIXA CRÉDITO PRIVADO RESP LIMITADA",
+          "gestor": "ARX",
           "segmento": "12431",
-          "retorno": -0.8711,
-          "pl": 49521189.94
-        },
-        {
-          "cnpj": "55344166000117",
-          "nome": "RIO BRAVO ESG IS MASTER III  FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
-          "gestor": "Rio Bravo",
-          "segmento": "12431",
-          "retorno": -0.5379,
-          "pl": 73788226.3
-        },
-        {
-          "cnpj": "60261139000110",
-          "nome": "RIO BRAVO INFRA CDI INCENTIVADO FIF - CI RF INCENTIVADO DE INVESTIMENTO EM INFRA - RESP LIMITADA",
-          "gestor": "Rio Bravo",
-          "segmento": "12431",
-          "retorno": -0.4228,
-          "pl": 33412430.85
+          "retorno": -1.1824,
+          "pl": 273557762.21
         }
       ],
       "topTradPos": [
         {
-          "cnpj": "12059831000118",
-          "nome": "DHF-M FUNDO DE INVESTIMENTO FINANCEIRO",
-          "gestor": "Dynamo",
+          "cnpj": "57154741000144",
+          "nome": "QUANTITAS FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA FIJI CRÉDITO PRIVADO LONGO PRAZO RESP LIMITADA",
+          "gestor": "Quantitas",
           "segmento": "trad",
-          "retorno": 1.905,
-          "pl": 192264364.96
+          "retorno": 16.9639,
+          "pl": 25410282.99
         },
         {
-          "cnpj": "44917472000189",
-          "nome": "LIBERTAS HIGH YIELD FIF - CLASSE DE INVESTIMENTO RENDA FIXA CRÉDITO PRIVADO - RESP LIMITADA",
-          "gestor": "Vinci",
+          "cnpj": "45295157000120",
+          "nome": "VALORA ARKA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "gestor": "Valora",
           "segmento": "trad",
-          "retorno": 0.7623,
-          "pl": 62008753.28
+          "retorno": 0.8606,
+          "pl": 175625628.93
+        },
+        {
+          "cnpj": "51168708000197",
+          "nome": "FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO LT",
+          "gestor": "BTG Asset",
+          "segmento": "trad",
+          "retorno": 0.8411,
+          "pl": 1163060404.71
+        },
+        {
+          "cnpj": "43636081000123",
+          "nome": "MAESTRANZA PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "gestor": "XPG",
+          "segmento": "trad",
+          "retorno": 0.7712,
+          "pl": 41595184.23
         },
         {
           "cnpj": "27883656000156",
           "nome": "DHF FUNDO DE INVESTIMENTO FINANCEIRO",
           "gestor": "Dynamo",
           "segmento": "trad",
-          "retorno": 0.394,
-          "pl": 543569512.7
-        },
-        {
-          "cnpj": "64089192000137",
-          "nome": "TOP DEBÊNTURES 2025 FI INCENTIVADO EM DEBÊNTURES DE INFRA FIF RENDA FIXA CRED PRIV RESP LIMITADA",
-          "gestor": "IAM",
-          "segmento": "trad",
-          "retorno": 0.3459,
-          "pl": 11422548.35
-        },
-        {
-          "cnpj": "55315251000157",
-          "nome": "ZSYS KREUTZER FUNDO DE INVESTIMENTO MULTIMERCADO",
-          "gestor": "ZSYS",
-          "segmento": "trad",
-          "retorno": 0.2942,
-          "pl": 11539842.99
+          "retorno": 0.7427,
+          "pl": 538412611.66
         }
       ],
       "topTradNeg": [
         {
-          "cnpj": "26664935000166",
-          "nome": "DEVANT AUDAX FUNDO DE INVESTIMENTO FINANCEIRO RESPONSABILIDADE LIMITADA",
-          "gestor": "Devant",
+          "cnpj": "37099037000129",
+          "nome": "VINCI CREDITO MULTIESTRATEGIA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "gestor": "Vinci",
           "segmento": "trad",
-          "retorno": -3.2032,
-          "pl": 6493677.42
+          "retorno": -1.8544,
+          "pl": 288452384.27
         },
         {
-          "cnpj": "57030535000122",
-          "nome": "G5 FEJUCA III FUNDO DE INVESTIMENTO MULTIMERCADO",
-          "gestor": "G5",
+          "cnpj": "66161408000153",
+          "nome": "KINEA ATACAMA FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA LONGO PRAZO RESP LIMITADA",
+          "gestor": "Kinea",
           "segmento": "trad",
-          "retorno": -1.5667,
-          "pl": 88188571.72
+          "retorno": -1.1917,
+          "pl": 1676602.63
         },
         {
           "cnpj": "51977823000102",
           "nome": "CATTUS FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
           "gestor": "Starboard",
           "segmento": "trad",
-          "retorno": -0.901,
-          "pl": 36503028.02
+          "retorno": -1.0534,
+          "pl": 38342637.82
         },
         {
-          "cnpj": "34172479000165",
-          "nome": "MINERVA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "cnpj": "57555092000193",
+          "nome": "BTG PACTUAL BRASLIGHT EOS FUNDO DE INVESTIMENTO FINANCEIRO",
+          "gestor": "BTG Asset",
+          "segmento": "trad",
+          "retorno": -0.8825,
+          "pl": 70307249.78
+        },
+        {
+          "cnpj": "11435262000103",
+          "nome": "PIRAHY FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
           "gestor": "BTG WM",
           "segmento": "trad",
-          "retorno": -0.817,
-          "pl": 202802502.43
-        },
-        {
-          "cnpj": "52273351000170",
-          "nome": "PORTFOLIO RF II PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
-          "gestor": "XPG",
-          "segmento": "trad",
-          "retorno": -0.8008,
-          "pl": 11009283.01
+          "retorno": -0.4879,
+          "pl": 16460274.77
         }
       ]
     },
