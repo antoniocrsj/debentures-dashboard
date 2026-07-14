@@ -1320,6 +1320,14 @@ a { color: var(--primary); }
    com largura automatica pra ficarem lado a lado (o default e width:100%). */
 .venc-toggles { display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-start; }
 .venc-toggles .segmented { width: auto; flex: 0 0 auto; }
+/* Dropdown de gestor, ao lado dos toggles (mesma altura dos botoes). */
+.venc-select {
+  height: var(--btn-h); border-radius: 8px; border: 1px solid var(--primary-border);
+  background: var(--chip-bg); color: var(--text); font-size: 12.5px; font-weight: 500;
+  padding: 0 8px; max-width: 190px; cursor: pointer;
+}
+.venc-select:hover { background: var(--blue-soft); }
+.venc-select:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
 
 /* Cards no padrao da Captacao (.fluxo-card), porem 3 colunas */
 .venc-cards { grid-template-columns: repeat(3, 1fr); margin: 14px 0; }
@@ -1428,6 +1436,12 @@ a { color: var(--primary); }
 }
 .venc-table td { padding: 9px 6px 9px 8px; border-bottom: 1px solid var(--blue-line); text-align: left; vertical-align: middle; }
 .venc-table .num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+/* Cabecalho ordenavel (clicavel). */
+.venc-th-sort { cursor: pointer; user-select: none; }
+.venc-th-sort:hover { color: var(--primary); }
+.venc-th-sort.active { color: var(--primary-dark); }
+.venc-th-sort:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; border-radius: 4px; }
+.venc-sort-arrow { font-size: 9px; color: var(--primary); }
 .venc-table tfoot td { border-top: 2px solid var(--border); border-bottom: 0; background: var(--chip-bg); }
 /* Tabela de debentures: larguras fixas para a coluna Vol. outstanding NUNCA
    sumir (emissor/grupo truncam com reticencias sob table-layout:fixed). */
