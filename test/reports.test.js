@@ -3,7 +3,7 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import {
   parseDia, fmtDia, diffKeyed, topMovers,
-  pickReportDates, previousDate, sourceDateFor, summarize, repairText,
+  pickReportDates, previousDate, sourceDateFor, summarize, repairText, stepBackTradingDays,
 } from '../src/utils/reports.js'
 
 test('repairText: conserta mojibake UTF-8-lido-como-latin1, não toca texto limpo', () => {
@@ -63,6 +63,38 @@ test('pickReportDates: 5 datas mais recentes da união das fontes', () => {
     ['2026-07-03', '2026-07-02', '2026-07-01', '2026-06-30']
   )
   assert.deepEqual(pickReportDates(perSource, 2), ['2026-07-03', '2026-07-02'])
+})
+
+test('stepBackTradingDays: recua N pregões pela série (pula fim de semana/feriado)', () => {
+  // 10 e 11 (sáb/dom) e um feriado em 08 não existem na série -> pulados sozinhos.
+  const serie = ['2026-07-03', '2026-07-06', '2026-07-07', '2026-07-09', '2026-07-10']  // sem 08 (feriado)
+  assert.equal(stepBackTradingDays(serie, '2026-07-10', 1), '2026-07-09')
+  assert.equal(stepBackTradingDays(serie, '2026-07-10', 2), '2026-07-07')  // pula o feriado 08
+  assert.equal(stepBackTradingDays(serie, '2026-07-09', 3), '2026-07-03')
+  assert.equal(stepBackTradingDays(serie, '2026-07-06', 5), '2026-07-03')  // além do início -> mais antigo
+  // data fora da série: usa a mais recente <= ref
+  assert.equal(stepBackTradingDays(serie, '2026-07-08', 1), '2026-07-06')
+  assert.equal(stepBackTradingDays(serie, '2026-06-01', 1), null)          // antes de tudo
+  assert.equal(stepBackTradingDays([], '2026-07-10', 1), null)
+})
+
+test('summarize com `novo`: só emite bloco de fonte que avançou', () => {
+  const sections = {
+    captacao: { '12431': { captacao: 100, resgate: 10, liquido: 90 }, trad: { captacao: 0, resgate: 0, liquido: 0 } },
+    anbima: { porMercado: { '12431': { totalAberturas: 5, totalFechamentos: 2, totalComparados: 7, variacaoMediaBps: 1 }, trad: null } },
+    fundos: { novos: [1, 2], removidos: [] },
+  }
+  // captação NÃO nova, ANBIMA nova -> só a linha da ANBIMA aparece
+  const so = summarize(sections, { cap: false, anbima: true, fundos: false, debentures: false })
+  assert.ok(so.some(b => b.texto.includes('ANBIMA')))
+  assert.ok(!so.some(b => b.texto.includes('Captação')))
+  assert.ok(!so.some(b => b.texto.includes('Fundos')))
+  // tudo novo -> captação e fundos voltam
+  const todo = summarize(sections, { cap: true, anbima: true, fundos: true, debentures: true })
+  assert.ok(todo.some(b => b.texto.includes('Captação')))
+  assert.ok(todo.some(b => b.texto.includes('Fundos')))
+  // sem `novo` (compat): tudo entra
+  assert.ok(summarize(sections).some(b => b.texto.includes('Captação')))
 })
 
 test('previousDate e sourceDateFor: data anterior/atual da fonte', () => {

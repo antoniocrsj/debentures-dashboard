@@ -17,7 +17,7 @@ import { parseCSV } from '../src/utils/csv.js'
 import { fmtBRL, parseNum, isYes } from '../src/utils/format.js'
 import {
   parseDia, fmtDia, diffKeyed, topMovers,
-  pickReportDates, previousDate, sourceDateFor, summarize, repairText,
+  pickReportDates, previousDate, sourceDateFor, summarize, repairText, stepBackTradingDays,
 } from '../src/utils/reports.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -580,20 +580,44 @@ function buildTickerInfo(src, emissoresMap) {
   return m
 }
 
-function buildReport(src, D, allDates, emissoesCVM = null, emissoresMap = new Map()) {
-  const sd = perSourceDates(src)
-  // Fluxo (captacao/perf) resolvido para o ultimo dia COMPLETO <= D (pula dias
-  // parciais do Informe Diario); as demais fontes usam a data mais recente <= D.
-  const flow = resolverFluxos(src, D)
-  const sourceDates = {
+// Resolve a data de cada fonte para um relatorio ancorado no dia D (data ANBIMA
+// = pregao do relatorio, D-1 do run). Captacao/Perf/Fundos usam D-3 (2 pregoes
+// antes de D, data-driven via a serie da ANBIMA) e o ultimo dia COMPLETO <= isso
+// (pula parcial do Informe Diario). ANBIMA/BLC/Debentures = mais recente <= D.
+function resolveDatas(src, sd, anbimaAsc, D) {
+  const capAlvo = stepBackTradingDays(anbimaAsc, D, 2) || D   // D-3
+  const flow = resolverFluxos(src, capAlvo)
+  return {
+    capAlvo, flow,
     debentures: sourceDateFor(sd.debentures, D),
-    cap12431: flow.cap12431.atual,
-    capTrad: flow.capTrad.atual,
-    perf12431: flow.perf12431.atual,
-    perfTrad: flow.perfTrad.atual,
+    cap12431: flow.cap12431.atual, capTrad: flow.capTrad.atual,
+    perf12431: flow.perf12431.atual, perfTrad: flow.perfTrad.atual,
     anbima: sourceDateFor(sd.anbima, D),
     blc: sourceDateFor(sd.blc, D),
-    fundos: sourceDateFor(sd.fundos, D),
+    fundos: sourceDateFor(sd.fundos, capAlvo),
+  }
+}
+
+function buildReport(src, D, allDates, anbimaAsc, prevD = null, emissoesCVM = null, emissoresMap = new Map()) {
+  const sd = perSourceDates(src)
+  const cur = resolveDatas(src, sd, anbimaAsc, D)
+  const prev = prevD ? resolveDatas(src, sd, anbimaAsc, prevD) : null
+  const flow = cur.flow
+  const sourceDates = {
+    debentures: cur.debentures,
+    cap12431: cur.cap12431, capTrad: cur.capTrad,
+    perf12431: cur.perf12431, perfTrad: cur.perfTrad,
+    anbima: cur.anbima, blc: cur.blc, fundos: cur.fundos,
+  }
+  // novo = a fonte AVANCOU vs o relatorio anterior (nao repete dado ja mostrado).
+  // BLC e cadastro de debentures sao NAO-DIARIOS -> nunca "novidade do dia".
+  const adv = (a, b) => !!a && (!b || a > b)
+  const novo = {
+    debentures: adv(cur.debentures, prev?.debentures),
+    cap: adv(cur.cap12431, prev?.cap12431) || adv(cur.capTrad, prev?.capTrad),
+    anbima: adv(cur.anbima, prev?.anbima),
+    fundos: adv(cur.fundos, prev?.fundos),
+    blc: false,
   }
   const debentures = buildDebentures(src, D, emissoresMap)
   const captacao = buildCaptacao(src, flow)
@@ -623,7 +647,8 @@ function buildReport(src, D, allDates, emissoesCVM = null, emissoresMap = new Ma
     label: fmtDia(D),
     previousDate: previousDateOverall,
     sourceDates,
-    summary: summarize(summaryInput),
+    novoPorFonte: novo,   // quais fontes trazem dado novo neste relatorio (UI marca o resto como "sem novidade")
+    summary: summarize(summaryInput, novo),
     sections: { ...sections, alertas, emissoesCVM: emissoesCVMenriquecido, emissoresFaltantes: buildEmissoresFaltantes(emissoresMap, emissoesCVM) },
   }
 }
@@ -914,7 +939,11 @@ function main() {
   const sdCapped = anchor
     ? Object.fromEntries(Object.entries(sd).map(([k, v]) => [k, v.filter(d => d <= anchor)]))
     : sd
-  const datas = pickReportDates(sdCapped, N_REPORTS)
+  // Datas de relatorio = serie da ANBIMA (o pregao diario, D-1). As demais
+  // fontes sao lidas com defasagem propria (captacao D-3, etc.) dentro de cada
+  // relatorio, e so contam como "novidade" quando avancam -> nada se repete.
+  const anbimaAsc = (sdCapped.anbima || []).slice().sort()
+  const datas = anbimaAsc.slice(-N_REPORTS).reverse()
   if (!datas.length) {
     console.log('  Sem datas de dados disponiveis; nada a gerar.')
     return
@@ -924,8 +953,10 @@ function main() {
   const emissoresMap = loadEmissores()    // cadastro do usuario (grupo/setor por CNPJ)
   const index = []
   let latestRep = null
-  for (const D of datas) {
-    const rep = buildReport(src, D, datas, D === datas[0] ? emissoesCVM : null, emissoresMap)
+  for (let i = 0; i < datas.length; i++) {
+    const D = datas[i]
+    const prevD = datas[i + 1] || null   // proximo mais antigo (datas e' desc)
+    const rep = buildReport(src, D, datas, anbimaAsc, prevD, D === datas[0] ? emissoesCVM : null, emissoresMap)
     if (!latestRep) latestRep = rep   // datas[0] = mais recente
     fs.writeFileSync(path.join(REPORTS, `${D}.json`), JSON.stringify(rep, null, 2) + '\n', utf8)
     fs.writeFileSync(path.join(REPORTS, `${D}.html`), renderHtml(rep), utf8)
