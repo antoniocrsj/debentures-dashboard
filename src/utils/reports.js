@@ -100,6 +100,25 @@ export function pickReportDates(perSourceDates, n = 5) {
 }
 
 /**
+ * Recua `k` PREGÕES a partir de `dataRef` usando a própria série de datas que
+ * existe (datasAsc, 'AAAA-MM-DD' ascendente). Como feriado/fim de semana não
+ * aparecem na série (não há dado neles), eles são pulados automaticamente — sem
+ * precisar de calendário de feriados da B3. Se recuar além do início, devolve a
+ * data mais antiga disponível. Retorna 'AAAA-MM-DD' | null.
+ */
+export function stepBackTradingDays(datasAsc, dataRef, k) {
+  const keys = (datasAsc || []).map(d => parseDia(d)).filter(Boolean).map(p => p.key)
+  if (!keys.length || !dataRef) return null
+  keys.sort()
+  let i = keys.lastIndexOf(dataRef)
+  if (i < 0) {                       // dataRef não está na série: pega a mais recente <= dataRef
+    for (let j = keys.length - 1; j >= 0; j--) { if (keys[j] <= dataRef) { i = j; break } }
+    if (i < 0) return null
+  }
+  return keys[Math.max(0, i - k)]
+}
+
+/**
  * Data anterior disponível de uma fonte, estritamente antes de `atual`, dentro
  * da lista de datas dela. Retorna 'AAAA-MM-DD' | null.
  */
@@ -129,33 +148,42 @@ export function sourceDateFor(datesDaFonte, dataRelatorio) {
  * Monta o sumário executivo a partir das seções já calculadas: bullets curtos,
  * só do que tem conteúdo. Cada entrada = { texto, tom? }.
  */
-export function summarize(sections) {
+export function summarize(sections, novo = null) {
   const s = sections || {}
   const out = []
   const n = x => (Array.isArray(x) ? x.length : (x || 0))
+  // `novo` = quais fontes AVANÇARAM vs o relatório anterior. Cada bloco só entra
+  // no sumário se a fonte dele tem dado novo — evita repetir número de um dia que
+  // já foi reportado (ex.: captação parada em 10/07 não reaparece no relat. de
+  // 13/07). Sem `novo` (null): comportamento antigo, tudo entra.
+  const nv = k => (novo == null ? true : !!novo[k])
 
-  const novas = n(s.debentures?.novas)
-  if (novas) out.push({ texto: `${novas} nova(s) debênture(s) cadastrada(s)`, tom: 'pos' })
-  const saidas = n(s.debentures?.saidas)
-  if (saidas) out.push({ texto: `${saidas} debênture(s) saíram da base`, tom: 'neg' })
-
-  for (const seg of ['12431', 'trad']) {
-    const c = s.captacao?.[seg]
-    if (c && (c.captacao || c.resgate)) {
-      const rotulo = seg === '12431' ? 'Incentivados' : 'Tradicional'
-      out.push({ texto: `Captação líquida ${rotulo}: ${sinalMi(c.liquido)}`, tom: c.liquido >= 0 ? 'pos' : 'neg' })
-    }
+  if (nv('debentures')) {
+    const novas = n(s.debentures?.novas)
+    if (novas) out.push({ texto: `${novas} nova(s) debênture(s) cadastrada(s)`, tom: 'pos' })
+    const saidas = n(s.debentures?.saidas)
+    if (saidas) out.push({ texto: `${saidas} debênture(s) saíram da base`, tom: 'neg' })
   }
 
-  const topCap = s.gestores?.top12431Captacao?.[0] || s.gestores?.topTradCaptacao?.[0]
-  if (topCap) out.push({ texto: `Maior captação: ${topCap.gestor} (${sinalMi(topCap.liquido)})`, tom: 'pos' })
-  const topRes = s.gestores?.top12431Resgate?.[0] || s.gestores?.topTradResgate?.[0]
-  if (topRes) out.push({ texto: `Maior resgate: ${topRes.gestor} (${sinalMi(topRes.liquido)})`, tom: 'neg' })
+  if (nv('cap')) {
+    for (const seg of ['12431', 'trad']) {
+      const c = s.captacao?.[seg]
+      if (c && (c.captacao || c.resgate)) {
+        const rotulo = seg === '12431' ? 'Incentivados' : 'Tradicional'
+        out.push({ texto: `Captação líquida ${rotulo}: ${sinalMi(c.liquido)}`, tom: c.liquido >= 0 ? 'pos' : 'neg' })
+      }
+    }
+
+    const topCap = s.gestores?.top12431Captacao?.[0] || s.gestores?.topTradCaptacao?.[0]
+    if (topCap) out.push({ texto: `Maior captação: ${topCap.gestor} (${sinalMi(topCap.liquido)})`, tom: 'pos' })
+    const topRes = s.gestores?.top12431Resgate?.[0] || s.gestores?.topTradResgate?.[0]
+    if (topRes) out.push({ texto: `Maior resgate: ${topRes.gestor} (${sinalMi(topRes.liquido)})`, tom: 'neg' })
+  }
 
   // ANBIMA: contagem sobre TODOS os ativos com taxa comparavel, separada por
   // mercado (Incentivadas 12.431 / Tradicional) — le se cada mercado abriu ou
   // fechou spread no todo.
-  const anbimaMercados = s.anbima?.porMercado
+  const anbimaMercados = nv('anbima') ? s.anbima?.porMercado : null
   if (anbimaMercados) {
     for (const seg of ['12431', 'trad']) {
       const g = anbimaMercados[seg]
@@ -171,8 +199,10 @@ export function summarize(sections) {
     }
   }
 
-  const fNovos = n(s.fundos?.novos), fRem = n(s.fundos?.removidos)
-  if (fNovos || fRem) out.push({ texto: `Fundos: +${fNovos} / -${fRem} no universo` })
+  if (nv('fundos')) {
+    const fNovos = n(s.fundos?.novos), fRem = n(s.fundos?.removidos)
+    if (fNovos || fRem) out.push({ texto: `Fundos: +${fNovos} / -${fRem} no universo` })
+  }
 
   const alertas = n(s.alertas)
   if (alertas) out.push({ texto: `${alertas} alerta(s) de qualidade`, tom: 'warn' })
