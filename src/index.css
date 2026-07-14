@@ -82,6 +82,31 @@ a { color: var(--primary); }
 .header-left { display: flex; align-items: center; gap: 8px; min-width: 0; }
 /* Controles no canto direito (Resumo do Dia, dev, Compacto) agrupados juntos. */
 .header-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+/* ─── Barra de navegação inferior fixa (só no compacto) ──────────────── */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 480px; z-index: 40;
+  display: flex; background: var(--primary-dark);
+  padding: 2px 4px calc(3px + env(safe-area-inset-bottom, 0px));
+  box-shadow: 0 -4px 16px rgba(10, 20, 40, .18);
+}
+.bottom-nav-btn {
+  flex: 1; background: none; border: 0; cursor: pointer; position: relative;
+  display: flex; flex-direction: column; align-items: center; gap: 0;
+  padding: 2px; color: rgba(255, 255, 255, .6); transition: color .12s;
+}
+.bottom-nav-btn svg { width: 51px; height: 51px; }   /* 2,3x o original (22px) */
+/* margin negativa fecha o vazio interno do viewBox do icone -> rotulo colado. */
+.bottom-nav-lbl { font-size: 12px; font-weight: 500; letter-spacing: .01em; margin-top: -9px; }
+.bottom-nav-btn.active { color: #fff; }
+.bottom-nav-btn.active::before {
+  content: ""; position: absolute; top: -6px; width: 26px; height: 3px;
+  border-radius: 0 0 3px 3px; background: #6ea8e6;
+}
+.bottom-nav-btn:focus-visible { outline: 2px solid #6ea8e6; outline-offset: -2px; border-radius: 6px; }
+/* Conteúdo não fica atrás da barra fixa (só no compacto). */
+.app:not(.desktop) { padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
 .header-logo { font-size: 18px; flex-shrink: 0; }
 .header-title { font-size: 15px; font-weight: 600; letter-spacing: -.3px; white-space: nowrap; }
 .header-badge {

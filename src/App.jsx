@@ -9,6 +9,7 @@ import {
 import { isYes, dateKey, fmtDateOnly, parseBRDateTime, parseISODate, fmtMesAno } from './utils/format.js'
 import { lazyWithRetry } from './utils/lazyWithRetry.js'
 import Header from './components/Header.jsx'
+import BottomNav from './components/BottomNav.jsx'
 import Filters from './components/Filters.jsx'
 import AssetTable from './components/AssetTable.jsx'
 import BlcMaturitySelo from './components/BlcMaturitySelo.jsx'
@@ -466,6 +467,9 @@ export default function App() {
           </>
         )}
       </main>
+
+      {/* Navegação por abas no rodapé — só no compacto (substitui os ícones do topo). */}
+      {!desktop && <BottomNav section={section} onSection={selectSection} />}
 
       {selectedAsset && (
         <AssetModal asset={selectedAsset} onClose={() => setSelected(null)} />

@@ -1,40 +1,4 @@
-// Ícones das seções (line icons, ver ROADMAP GER-2).
-function DebenturesIcon() {
-  return (
-    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M19 13 H27 L33 19 V34 A1 1 0 0 1 32 35 H19 A1 1 0 0 1 18 34 V14 A1 1 0 0 1 19 13 Z" />
-      <path d="M27 13 V19 H33" />
-      <path d="M21 25 H30 M21 28.5 H30 M21 32 H27" />
-    </svg>
-  )
-}
-function CaptacaoIcon() {
-  return (
-    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M16 20 H31" /><path d="M28 17 L31 20 L28 23" />
-      <path d="M32 28 H17" /><path d="M20 25 L17 28 L20 31" />
-    </svg>
-  )
-}
-function CaixaIcon() {
-  return (
-    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="14" y="18" width="20" height="14" rx="2" />
-      <path d="M14 22 H34" />
-      <circle cx="28" cy="27" r="1.6" />
-      <path d="M17 18 V16 A2 2 0 0 1 19 14 H24" />
-    </svg>
-  )
-}
-function VencimentosIcon() {
-  return (
-    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="14" y="15" width="20" height="19" rx="2" />
-      <path d="M14 20 H34 M20 13 V17 M28 13 V17" />
-      <path d="M20 26 H22 M26 26 H28 M20 30 H22 M26 30 H28" />
-    </svg>
-  )
-}
+// Ícones (line icons). Os ícones de seção agora vivem no BottomNav (rodapé).
 function ControlPanelIcon() {
   return (
     <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -73,52 +37,9 @@ export default function Header({
         {!loading && !refreshing && error && <span className="header-badge error">erro</span>}
       </div>
 
-      {/* Compacto: navegação entre seções por ícones, ao lado do título (GER-2).
-          No desktop a troca de seção fica nas abas de texto, junto da busca. */}
-      {!desktop && (
-        <nav className="section-nav" aria-label="Seções">
-          <button
-            type="button"
-            className={`section-btn${section === 'debentures' ? ' active' : ''}`}
-            aria-pressed={section === 'debentures'}
-            aria-label="Debêntures"
-            title="Debêntures"
-            onClick={() => onSection('debentures')}
-          >
-            <DebenturesIcon />
-          </button>
-          <button
-            type="button"
-            className={`section-btn${section === 'captacao' ? ' active' : ''}`}
-            aria-pressed={section === 'captacao'}
-            aria-label="Captação"
-            title="Captação"
-            onClick={() => onSection('captacao')}
-          >
-            <CaptacaoIcon />
-          </button>
-          <button
-            type="button"
-            className={`section-btn${section === 'caixa' ? ' active' : ''}`}
-            aria-pressed={section === 'caixa'}
-            aria-label="Nível de Caixa"
-            title="Nível de Caixa"
-            onClick={() => onSection('caixa')}
-          >
-            <CaixaIcon />
-          </button>
-          <button
-            type="button"
-            className={`section-btn${section === 'vencimentos' ? ' active' : ''}`}
-            aria-pressed={section === 'vencimentos'}
-            aria-label="Vencimentos 12 meses"
-            title="Vencimentos 12 meses"
-            onClick={() => onSection('vencimentos')}
-          >
-            <VencimentosIcon />
-          </button>
-        </nav>
-      )}
+      {/* Compacto: a navegação entre seções foi para a barra inferior fixa
+          (BottomNav, no rodapé). No desktop a troca de seção fica nas abas de
+          texto, junto da busca. */}
 
       {/* Controles no canto direito, agrupados (perto do botão Compacto):
           Resumo do Dia, painel dev e o toggle de visão. */}
