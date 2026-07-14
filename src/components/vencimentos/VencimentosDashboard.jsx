@@ -3,12 +3,14 @@ import { fmtBRL, parseNum } from '../../utils/format.js'
 import TableWrap from '../TableWrap.jsx'
 
 // Planejamento de VENCIMENTOS 12m com foco AGREGADO + INVESTIGACAO:
-//   - quanto de caixa (juros + amortizacao) entra por mes;
+//   - quanto de caixa (juros + amortizacao) entra por mes, em R$ e em %PL;
 //   - qualificar o fluxo por fundo (gestor), emissor, grupo ou ativo;
 //   - drill-down: clicar num MES filtra os rankings; clicar numa LINHA abre o
 //     cronograma daquela entidade (evento a evento: data, ativo, tipo, R$).
 // O dado granular vive em data.ativos[].eventos (gerar-agenda-12m.mjs); o corte
 // por gestor cruza com o BLC (raw.blc) que o app ja carrega para as Debentures.
+// O volume outstanding por ativo vem do proprio dataset de debentures (assets:
+// Quantidade em Mercado x VNA atual = a coluna "Vol. emit." da aba Debentures).
 // Amortizacao = R$ preciso (agenda ANBIMA); juros = R$ ESTIMADO pelo cupom.
 
 function pctFmt(x) {
@@ -34,6 +36,50 @@ function Empty() {
   )
 }
 
+// Gráfico de barras empilhadas (juros cinza + amortização azul) por mês, sem
+// libs. Linha-base cinza (eixo horizontal) separando barras e rótulos; cada
+// coluna é clicável para filtrar o mês. O valor do topo só aparece no
+// hover/seleção (evita poluir com 12+ números).
+function MonthBars({ rows, max, selMes, onPick, fmtVal, ariaLabel }) {
+  const safeMax = Math.max(1e-9, max)
+  return (
+    <div className="venc-chart" role="group" aria-label={ariaLabel}>
+      <div className="venc-plot">
+        {rows.map(m => {
+          // O wrap tem a altura da PROPRIA barra (total/max) e canto arredondado no
+          // topo -> todas as barras arredondam igual. Os segmentos sao fatia do
+          // total dentro do wrap (juros embaixo, amort em cima).
+          const barPct = (m.total / safeMax) * 100
+          const jPct = m.total > 0 ? (m.juros / m.total) * 100 : 0
+          const aPct = m.total > 0 ? (m.amort / m.total) * 100 : 0
+          return (
+            <button
+              key={m.mes}
+              type="button"
+              className={`venc-col${selMes === m.mes ? ' sel' : ''}`}
+              title={`${m.label}: ${fmtVal(m.total)} — clique para ${selMes === m.mes ? 'limpar o filtro' : 'filtrar'}`}
+              onClick={() => onPick(m.mes)}
+              aria-pressed={selMes === m.mes}
+            >
+              <span className="venc-bar-val">{m.total > 0.00001 ? fmtVal(m.total) : ''}</span>
+              <span className="venc-bar-wrap" style={{ height: `${barPct}%` }}>
+                <span className="venc-seg venc-seg-juros" style={{ height: `${jPct}%` }} />
+                <span className="venc-seg venc-seg-amort" style={{ height: `${aPct}%` }} />
+              </span>
+            </button>
+          )
+        })}
+      </div>
+      <div className="venc-baseline" aria-hidden="true" />
+      <div className="venc-axis">
+        {rows.map(m => (
+          <span key={m.mes} className={`venc-lbl${selMes === m.mes ? ' sel' : ''}`}>{m.label}</span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 // Dimensoes de qualificacao do fluxo. "Por fundo" (gestor) so existe na carteira.
 const DIMS = [
   { id: 'gestor', label: 'Por fundo', carteiraOnly: true },
@@ -43,7 +89,7 @@ const DIMS = [
 ]
 const DIM_NOME = { gestor: 'Fundo', emissor: 'Emissor', grupo: 'Grupo', ativo: 'Ativo' }
 
-export default function VencimentosDashboard({ data, blc, compact }) {
+export default function VencimentosDashboard({ data, blc, assets, plByGestor, compact }) {
   const [persp, setPerspRaw] = useState('carteira')  // 'carteira' | 'mercado'
   const [dim, setDim] = useState('gestor')            // gestor | emissor | grupo | ativo
   const [selMes, setSelMes] = useState(null)          // 'yyyy-MM' | null
@@ -55,6 +101,7 @@ export default function VencimentosDashboard({ data, blc, compact }) {
   // Filtro por tipo de debenture (Lei 12.431). Age no grafico, cards e rankings.
   const matchSeg = a => seg === 'todos' || (seg === '12431' ? !!a.incentivada : !a.incentivada)
   const filtrando = seg !== 'todos'
+  const pickMes = m => setSelMes(s => (s === m ? null : m))
 
   // Mercado nao tem corte por gestor: trocar de perspectiva com um fundo
   // selecionado derrubaria a conta -> limpa a selecao nesse caso.
@@ -78,6 +125,24 @@ export default function VencimentosDashboard({ data, blc, compact }) {
     return m
   }, [blc])
 
+  // Volume outstanding por ticker (Qtd em Mercado x VNA atual, ja calculado em
+  // enrichDebenture como volumeEmitido). Alimenta a tabela de debentures.
+  const outstandingPorTicker = useMemo(() => {
+    const m = new Map()
+    for (const a of assets || []) {
+      const tk = String(a.codigoAtivo || '').trim().toUpperCase()
+      if (tk) m.set(tk, a.volumeEmitido || 0)
+    }
+    return m
+  }, [assets])
+
+  // PL total da carteira (soma dos gestores) — denominador do %PL agregado.
+  const totalPL = useMemo(() => {
+    let s = 0
+    for (const k in (plByGestor || {})) s += plByGestor[k] || 0
+    return s
+  }, [plByGestor])
+
   // Eventos individuais achatados (cada um com referencia ao ativo).
   const eventos = useMemo(() => {
     const out = []
@@ -95,20 +160,23 @@ export default function VencimentosDashboard({ data, blc, compact }) {
     if (ent.dim === 'grupo') return (a.grupo || SEM_GRUPO) === ent.nome
     return a.ticker === ent.nome
   }
-  // Valor do evento na visao atual; p/ um gestor especifico, a fatia proporcional
+  // Valor do evento na CARTEIRA; p/ um gestor especifico, a fatia proporcional
   // ao que ele carrega do ticker (mesma proporcionalidade do gerador).
-  const evVal = (ev, ent) => {
-    if (ent?.dim === 'gestor') {
+  const ctSliceVal = ev => {
+    if (selEnt?.dim === 'gestor') {
       const o = gestoresPorTicker.get(ev.a.ticker)
       if (!o || !o.total || !ev.ct) return 0
-      const r = o.rows.find(x => x.g === ent.nome)
+      const r = o.rows.find(x => x.g === selEnt.nome)
       return r ? ev.ct * (r.v / o.total) : 0
     }
-    return persp === 'carteira' ? ev.ct : ev.mc
+    return ev.ct
   }
+  // Valor do evento na visao atual (R$): carteira usa ct, mercado usa mc; um
+  // gestor selecionado sempre e' a fatia da carteira dele.
+  const evVal = ev => (selEnt?.dim === 'gestor' ? ctSliceVal(ev) : (persp === 'carteira' ? ev.ct : ev.mc))
 
-  // Meses exibidos (cards + grafico): precomputado quando nada esta filtrado;
-  // recomputado dos eventos quando ha entidade selecionada ou filtro 12.431.
+  // Meses do grafico R$ (perspectiva atual): precomputado quando nada esta
+  // filtrado; recomputado dos eventos quando ha entidade selecionada ou filtro.
   const mesesView = useMemo(() => {
     if (!selEnt && !filtrando) return meses.map(m => ({ mes: m.mes, label: m.label, ...m[persp] }))
     const buckets = new Map(meses.map(m => [m.mes, { mes: m.mes, label: m.label, juros: 0, amort: 0, total: 0 }]))
@@ -117,17 +185,49 @@ export default function VencimentosDashboard({ data, blc, compact }) {
       if (!matchEnt(ev.a, selEnt)) continue
       const b = buckets.get(ev.d.slice(0, 7))
       if (!b) continue
-      const v = evVal(ev, selEnt)
+      const v = evVal(ev)
       if (ev.t === 'J') b.juros += v; else b.amort += v
       b.total += v
     }
     return [...buckets.values()]
   }, [meses, persp, selEnt, seg, eventos, gestoresPorTicker])
 
+  // Meses da CARTEIRA (sempre ct, base do grafico %PL). Igual ao mesesView na
+  // perspectiva carteira, mas independente do toggle (o %PL e' um conceito de
+  // carteira: caixa que entra ÷ PL nosso).
+  const mesesCarteira = useMemo(() => {
+    if (!selEnt && !filtrando) return meses.map(m => ({ mes: m.mes, label: m.label, ...m.carteira }))
+    const buckets = new Map(meses.map(m => [m.mes, { mes: m.mes, label: m.label, juros: 0, amort: 0, total: 0 }]))
+    for (const ev of eventos) {
+      if (!matchSeg(ev.a)) continue
+      if (!matchEnt(ev.a, selEnt)) continue
+      const b = buckets.get(ev.d.slice(0, 7))
+      if (!b) continue
+      const v = ctSliceVal(ev)
+      if (ev.t === 'J') b.juros += v; else b.amort += v
+      b.total += v
+    }
+    return [...buckets.values()]
+  }, [meses, selEnt, seg, eventos, gestoresPorTicker])
+
   const maxTotal = Math.max(1, ...mesesView.map(m => m.total))
   const totJuros = mesesView.reduce((s, m) => s + m.juros, 0)
   const totAmort = mesesView.reduce((s, m) => s + m.amort, 0)
   const totalPeriodo = totJuros + totAmort
+
+  // %PL: caixa do mes (carteira) ÷ PL do denominador (gestor selecionado, ou a
+  // carteira toda). "Na otica da IAM" = PL da IAM. Escala do grafico em pontos %.
+  const plDenom = selEnt?.dim === 'gestor' ? (plByGestor?.[selEnt.nome] || 0) : totalPL
+  const plSuffix = selEnt?.dim === 'gestor' ? selEnt.nome : 'carteira'
+  const mesesPL = useMemo(() => mesesCarteira.map(m => ({
+    mes: m.mes,
+    label: m.label,
+    juros: plDenom > 0 ? (m.juros / plDenom) * 100 : 0,
+    amort: plDenom > 0 ? (m.amort / plDenom) * 100 : 0,
+    total: plDenom > 0 ? (m.total / plDenom) * 100 : 0,
+  })), [mesesCarteira, plDenom])
+  const maxPct = Math.max(0.001, ...mesesPL.map(m => m.total))
+  const totalPctPeriodo = mesesPL.reduce((s, m) => s + m.total, 0)
 
   // Rankings (sem entidade selecionada), respeitando o filtro de mes.
   const rankRows = useMemo(() => {
@@ -165,6 +265,30 @@ export default function VencimentosDashboard({ data, blc, compact }) {
       .sort((a, b) => b.total - a.total)
   }, [selEnt, effDim, selMes, persp, seg, eventos, gestoresPorTicker, data])
 
+  // Lista de debentures na janela atual (respeita segmento, entidade e mes) com
+  // seu volume outstanding. Otica do gestor: so' os ativos que ele carrega.
+  const debList = useMemo(() => {
+    const out = []
+    for (const a of data?.ativos || []) {
+      if (!matchSeg(a)) continue
+      if (!matchEnt(a, selEnt)) continue
+      if (selMes && !(a.eventos || []).some(e => e.d.slice(0, 7) === selMes)) continue
+      out.push({
+        ticker: a.ticker,
+        grupo: a.grupo || '—',
+        emissor: a.emissor || '—',
+        incentivada: !!a.incentivada,
+        outstanding: outstandingPorTicker.get(String(a.ticker).toUpperCase()) || 0,
+      })
+    }
+    return out.sort((x, y) => y.outstanding - x.outstanding)
+  }, [data, selEnt, seg, selMes, outstandingPorTicker, gestoresPorTicker])
+  const debTotal = debList.reduce((s, d) => s + d.outstanding, 0)
+  // Cap de linhas renderizadas (as maiores por outstanding); o total/contagem no
+  // rodape refletem a lista inteira. Evita DOM gigante (a janela tem ~2 mil ativos).
+  const DEB_CAP = 120
+  const debShown = debList.slice(0, DEB_CAP)
+
   // Cronograma da entidade selecionada (evento a evento, em ordem de data).
   const crono = useMemo(() => {
     if (!selEnt) return []
@@ -172,7 +296,7 @@ export default function VencimentosDashboard({ data, blc, compact }) {
       .filter(ev => matchEnt(ev.a, selEnt))
       .filter(ev => matchSeg(ev.a))
       .filter(ev => !selMes || ev.d.slice(0, 7) === selMes)
-      .map(ev => ({ ...ev, v: evVal(ev, selEnt) }))
+      .map(ev => ({ ...ev, v: evVal(ev) }))
       .filter(ev => ev.v > 0.5)
       .sort((x, y) => (x.d < y.d ? -1 : 1))
   }, [selEnt, selMes, persp, seg, eventos, gestoresPorTicker])
@@ -202,11 +326,11 @@ export default function VencimentosDashboard({ data, blc, compact }) {
           <tr key={r.nome} className="venc-row-click" title="Ver cronograma"
               onClick={() => setSelEnt({ dim: effDim, nome: r.nome })}>
             <td className="venc-nome">
-              {effDim === 'ativo' ? <span className="venc-tk">{r.nome}</span> : r.nome}
+              {effDim === 'ativo' ? <span className="venc-tk">{r.nome}</span> : <span className="venc-ell">{r.nome}</span>}
               {effDim === 'ativo' && r.a?.incentivada && <span className="venc-inc" title="Incentivada (Lei 12.431)">12.431</span>}
             </td>
-            {effDim === 'ativo' && <td className="hide-compact venc-nome">{r.a?.emissor || '—'}</td>}
-            {effDim === 'ativo' && <td className="hide-compact venc-nome">{r.a?.grupo || '—'}</td>}
+            {effDim === 'ativo' && <td className="hide-compact"><span className="venc-ell">{r.a?.emissor || '—'}</span></td>}
+            {effDim === 'ativo' && <td className="hide-compact"><span className="venc-ell">{r.a?.grupo || '—'}</span></td>}
             <td className="num">{r.juros > 0.5 ? fmtBRL(r.juros) : '—'}</td>
             <td className="num">{r.amort > 0.5 ? fmtBRL(r.amort) : '—'}</td>
             <td className="num venc-tot">{fmtBRL(r.total)}</td>
@@ -220,7 +344,7 @@ export default function VencimentosDashboard({ data, blc, compact }) {
   )
 
   const cronoTable = (
-    <table className="venc-table">
+    <table className="venc-table venc-crono-table">
       <thead>
         <tr>
           <th>Data</th>
@@ -233,12 +357,12 @@ export default function VencimentosDashboard({ data, blc, compact }) {
       <tbody>
         {crono.map((ev, i) => (
           <tr key={`${ev.a.ticker}-${ev.d}-${ev.t}-${i}`}>
-            <td>{fmtDia(ev.d)}</td>
+            <td className="num">{fmtDia(ev.d)}</td>
             <td>
               <span className="venc-tk">{ev.a.ticker}</span>
               {ev.a.incentivada && <span className="venc-inc" title="Incentivada (Lei 12.431)">12.431</span>}
             </td>
-            <td className="hide-compact venc-nome">{ev.a.emissor || '—'}</td>
+            <td className="hide-compact">{ev.a.emissor || '—'}</td>
             <td>
               {ev.t === 'J'
                 ? <>Juros<span className="venc-est">est.</span></>
@@ -254,10 +378,55 @@ export default function VencimentosDashboard({ data, blc, compact }) {
     </table>
   )
 
-  const tabela = selEnt ? cronoTable : rankTable
-  const tabelaTitle = selEnt
+  // Tabela de debentures na janela: Ativo, Grupo, Emissor, Vol. outstanding.
+  const debTable = (
+    <table className="venc-table venc-deb-table">
+      <thead>
+        <tr>
+          <th>Ativo</th>
+          <th className="hide-compact">Grupo</th>
+          <th>Emissor</th>
+          <th className="num" title="Volume outstanding (Qtd em Mercado × VNA)">Outstanding</th>
+        </tr>
+      </thead>
+      <tbody>
+        {debShown.map(d => (
+          <tr key={d.ticker} className="venc-row-click" title="Ver cronograma do ativo"
+              onClick={() => setSelEnt({ dim: 'ativo', nome: d.ticker })}>
+            <td className="venc-nome">
+              <span className="venc-tk">{d.ticker}</span>
+              {d.incentivada && <span className="venc-inc" title="Incentivada (Lei 12.431)">12.431</span>}
+            </td>
+            <td className="hide-compact">{d.grupo}</td>
+            <td>{d.emissor}</td>
+            <td className="num venc-tot">{d.outstanding > 0 ? fmtBRL(d.outstanding) : '—'}</td>
+          </tr>
+        ))}
+        {!debList.length && (
+          <tr><td colSpan={4} className="venc-norows">Nenhuma debênture {mesLabelSel ? `em ${mesLabelSel}` : 'nesta janela'}.</td></tr>
+        )}
+        {debList.length > DEB_CAP && (
+          <tr><td colSpan={4} className="venc-norows">+ {debList.length - DEB_CAP} debênture(s) menor(es) — mostrando as {DEB_CAP} maiores por outstanding.</td></tr>
+        )}
+      </tbody>
+      {debList.length > 0 && (
+        <tfoot>
+          <tr className="venc-foot-row">
+            <td><b>Total · {debList.length}</b></td>
+            <td className="hide-compact" />
+            <td />
+            <td className="num venc-tot">{fmtBRL(debTotal)}</td>
+          </tr>
+        </tfoot>
+      )}
+    </table>
+  )
+
+  const leftTable = selEnt ? cronoTable : rankTable
+  const leftTitle = selEnt
     ? `Cronograma — ${selEnt.nome}${mesLabelSel ? ` · ${mesLabelSel}` : ''}`
     : `Vencimentos ${mesLabelSel || '12 meses'} — ${DIMS.find(d => d.id === effDim)?.label || ''}`
+  const debTitle = `Debêntures na janela — Vol. outstanding${mesLabelSel ? ` · ${mesLabelSel}` : ''}`
 
   return (
     <div className={`venc${compact ? ' compact' : ''}`}>
@@ -335,26 +504,32 @@ export default function VencimentosDashboard({ data, blc, compact }) {
         </div>
       </div>
 
-      <div className="venc-chart" role="img" aria-label="Vencimentos por mês (clique para filtrar)">
-        {mesesView.map(m => (
-          <div
-            key={m.mes}
-            className={`venc-col${selMes === m.mes ? ' sel' : ''}`}
-            title={`${m.label}: ${fmtBRL(m.total)} — clique para ${selMes === m.mes ? 'limpar o filtro' : 'filtrar'}`}
-            onClick={() => setSelMes(s => (s === m.mes ? null : m.mes))}
-          >
-            <div className="venc-bar-val">{m.total > 0.5 ? fmtBRL(m.total) : ''}</div>
-            <div className="venc-bar-wrap">
-              <div className="venc-seg venc-seg-juros" style={{ height: `${(m.juros / maxTotal) * 100}%` }} />
-              <div className="venc-seg venc-seg-amort" style={{ height: `${(m.amort / maxTotal) * 100}%` }} />
-            </div>
-            <div className="venc-bar-lbl">{m.label}</div>
-          </div>
-        ))}
+      {/* Dois graficos lado a lado: R$ (perspectiva atual) e %PL (visao relativa,
+          na otica do gestor selecionado). Mesma leitura mensal, escalas distintas. */}
+      <div className="venc-charts">
+        <section className="venc-chart-panel">
+          <header className="venc-chart-head">
+            <h3 className="venc-chart-title">{persp === 'carteira' ? 'Entra na carteira' : 'Mercado'} · R$</h3>
+            <span className="venc-chart-scale">{fmtBRL(totalPeriodo)} em 12m</span>
+          </header>
+          <MonthBars rows={mesesView} max={maxTotal} selMes={selMes} onPick={pickMes}
+            fmtVal={fmtBRL} ariaLabel="Vencimentos por mês em reais (clique para filtrar)" />
+        </section>
+        <section className="venc-chart-panel">
+          <header className="venc-chart-head">
+            <h3 className="venc-chart-title">% do PL · {plSuffix}</h3>
+            <span className="venc-chart-scale">{plDenom > 0 ? `${pctFmt(totalPctPeriodo)} em 12m` : 'PL indisponível'}</span>
+          </header>
+          {plDenom > 0
+            ? <MonthBars rows={mesesPL} max={maxPct} selMes={selMes} onPick={pickMes}
+                fmtVal={pctFmt} ariaLabel="Vencimentos por mês em % do PL (clique para filtrar)" />
+            : <div className="venc-nopl">Sem PL de <b>{plSuffix}</b> para calcular %PL.</div>}
+        </section>
       </div>
       <div className="venc-legend">
         <span><i className="venc-dot venc-seg-juros" /> Juros (estimado)</span>
         <span><i className="venc-dot venc-seg-amort" /> Amortização</span>
+        <span className="venc-legend-note">Barras da direita: caixa do mês ÷ PL de {plSuffix}.</span>
       </div>
 
       {/* Seletor de dimensão (some no drill: o cronograma já é a visão granular) */}
@@ -376,7 +551,19 @@ export default function VencimentosDashboard({ data, blc, compact }) {
         </div>
       )}
 
-      {compact ? tabela : <TableWrap title={tabelaTitle}>{tabela}</TableWrap>}
+      {/* Duas tabelas lado a lado: fluxo (ranking/cronograma) + debentures da janela. */}
+      <div className="venc-tables">
+        <div className="venc-table-block">
+          {compact
+            ? <><h3 className="venc-table-h">{leftTitle}</h3><div className="venc-scroll">{leftTable}</div></>
+            : <TableWrap title={leftTitle}>{leftTable}</TableWrap>}
+        </div>
+        <div className="venc-table-block">
+          {compact
+            ? <><h3 className="venc-table-h">{debTitle}</h3><div className="venc-scroll">{debTable}</div></>
+            : <TableWrap title={debTitle}>{debTable}</TableWrap>}
+        </div>
+      </div>
 
       {data.cobertura && (
         <p className="venc-foot">

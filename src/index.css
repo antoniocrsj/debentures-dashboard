@@ -1326,25 +1326,57 @@ a { color: var(--primary); }
 .venc-juros-ink { color: var(--text-soft); }
 .venc-amort-ink { color: var(--primary); }
 
-/* Grafico de barras empilhadas (juros + amortizacao) por mes — sem libs */
+/* Dois graficos lado a lado (R$ e %PL). No compacto empilham. */
+.venc-charts { display: flex; gap: 12px; align-items: stretch; }
+.venc.compact .venc-charts { flex-direction: column; gap: 14px; }
+.venc-chart-panel { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; }
+.venc-chart-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+.venc-chart-title { font-size: 12.5px; font-weight: 600; color: var(--text); }
+.venc-chart-scale { font-size: 11px; color: var(--text-muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+/* Grafico de barras empilhadas (juros cinza + amortizacao azul) por mes — sem
+   libs. Estrutura: plot (barras) -> baseline (eixo cinza) -> axis (rotulos). */
 .venc-chart {
-  display: flex; align-items: flex-end; gap: 4px; height: 190px;
+  display: flex; flex-direction: column; height: 200px;
   background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
-  padding: 22px 8px 6px; overflow-x: auto;
+  padding: 10px 8px 6px;
 }
-.venc-col { flex: 1 1 0; min-width: 34px; display: flex; flex-direction: column; align-items: center; height: 100%; }
-.venc-bar-val { font-size: 9.5px; color: var(--text-soft); height: 14px; white-space: nowrap; }
-.venc-bar-wrap { flex: 1; width: 60%; max-width: 30px; display: flex; flex-direction: column-reverse; border-radius: 3px 3px 0 0; overflow: hidden; }
+.venc-plot { flex: 1; display: flex; align-items: flex-end; gap: 3px; min-height: 0; }
+.venc-col {
+  position: relative;
+  flex: 1 1 0; min-width: 0; padding: 0; background: none; border: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+  height: 100%; cursor: pointer; border-radius: 6px 6px 0 0; transition: background .1s;
+}
+/* Valor no topo do grafico (absoluto: nao afeta a altura da barra); so' no hover/selecao. */
+.venc-bar-val {
+  position: absolute; top: 0; left: 0; right: 0; text-align: center;
+  font-size: 10px; color: var(--text-soft); line-height: 12px; white-space: nowrap;
+  font-variant-numeric: tabular-nums; visibility: hidden;
+}
+.venc-col:hover .venc-bar-val, .venc-col.sel .venc-bar-val { visibility: visible; }
+/* Wrap = altura da propria barra (style inline) -> canto arredondado no topo real de cada barra. */
+.venc-bar-wrap { width: 82%; max-width: 40px; display: flex; flex-direction: column-reverse; border-radius: 6px 6px 0 0; overflow: hidden; }
 .venc-seg { width: 100%; }
 .venc-seg-juros { background: var(--text-faint); }  /* cinza */
 .venc-seg-amort { background: var(--primary); }  /* azul */
-.venc-bar-lbl { font-size: 10px; color: var(--text-muted); margin-top: 4px; white-space: nowrap; }
-/* Compacto: barras estreitas -> esconde o valor no topo (fica no tooltip) */
-.venc.compact .venc-bar-val { display: none; }
-.venc.compact .venc-chart { padding-top: 8px; }
+.venc-col:hover { background: var(--blue-soft); }
+.venc-col.sel { background: var(--primary-light); outline: 1px solid var(--primary-border); }
+/* Linha-base (eixo horizontal) cinza, cruzando o grafico inteiro. */
+.venc-baseline { height: 0; border-top: 1.5px solid var(--blue-line); margin-top: -0.5px; }
+.venc-axis { display: flex; gap: 3px; padding-top: 5px; }
+.venc-lbl { flex: 1 1 0; min-width: 0; text-align: center; font-size: 10px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.venc-lbl.sel { color: var(--primary); font-weight: 600; }
+/* Painel %PL sem PL disponivel: nota no lugar das barras. */
+.venc-nopl {
+  height: 200px; display: flex; align-items: center; justify-content: center; text-align: center;
+  padding: 12px; background: var(--card); border: 1px dashed var(--border); border-radius: var(--radius);
+  color: var(--text-muted); font-size: 12.5px;
+}
 
 .venc-legend { display: flex; align-items: center; gap: 16px; margin: 8px 2px 14px; font-size: 12px; color: var(--text-soft); flex-wrap: wrap; }
 .venc-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.venc-legend-note { color: var(--text-faint); font-size: 11.5px; }
 .venc-dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
 
 /* Seletor de dimensao (Por fundo / emissor / grupo / ativo) — segmented padrao */
@@ -1357,11 +1389,13 @@ a { color: var(--primary); }
 }
 .venc-back:hover { background: var(--blue-soft); }
 .venc-nome { max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Trunca textos longos (emissor/grupo/nome) de forma confiavel: span inline-block
+   com max-width (o <td> sozinho ignora max-width sem table-layout:fixed). Mesmo
+   padrao do .fundo-nome da asset-table. Mantem a coluna numerica sempre visivel. */
+.venc-ell { display: inline-block; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: middle; }
+.app.desktop .venc-ell { max-width: 190px; }
 
-/* Drill-down: barras clicaveis, filtros ativos (chips) e linhas navegaveis */
-.venc-col { cursor: pointer; border-radius: 6px; }
-.venc-col:hover { background: var(--blue-soft); }
-.venc-col.sel { background: var(--primary-light); outline: 1px solid var(--primary-border); }
+/* Drill-down: filtros ativos (chips) e linhas navegaveis */
 .venc-crumbs { display: flex; gap: 8px; margin: 10px 0 0; flex-wrap: wrap; align-items: center; }
 .venc-crumbs-lbl { font-size: 12px; color: var(--text-muted); font-weight: 600; }
 .venc-chip-clear { background: var(--neg-soft); border-color: var(--neg-line); color: var(--neg); }
@@ -1374,15 +1408,46 @@ a { color: var(--primary); }
 .venc-chip b { color: var(--text); }
 .venc-chip:hover { background: var(--blue-press); }
 .venc-row-click { cursor: pointer; }
-.venc-row-click:hover td { background: var(--blue-soft); }
+.venc-row-click:hover td { background: var(--primary-light); }
 .venc-crono-lbl { font-size: 12.5px; color: var(--text-soft); }
 
-.venc-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-.venc-table th, .venc-table td { padding: 7px 8px; border-bottom: 1px solid var(--border); text-align: left; }
-.venc-table th { font-size: 11px; text-transform: uppercase; letter-spacing: .3px; color: var(--text-muted); font-weight: 600; }
+/* Duas tabelas lado a lado (fluxo + debentures da janela). Empilham no compacto. */
+.venc-tables { display: flex; gap: 12px; align-items: flex-start; }
+.venc.compact .venc-tables { flex-direction: column; gap: 8px; }
+.venc-table-block { flex: 1 1 0; min-width: 0; }
+.venc-table-h { font-size: 13px; font-weight: 600; color: var(--text); margin: 10px 2px 6px; }
+
+/* Tabela padronizada com a .asset-table (fonte/altura/cores). */
+.venc-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.venc-table th {
+  padding: 8px 6px 8px 8px; border-bottom: 2px solid var(--border); text-align: left;
+  font-size: 10.5px; text-transform: uppercase; letter-spacing: .4px;
+  color: var(--text-muted); font-weight: 600; white-space: nowrap;
+}
+.venc-table td { padding: 9px 6px 9px 8px; border-bottom: 1px solid var(--blue-line); text-align: left; vertical-align: middle; }
 .venc-table .num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.venc-table tfoot td { border-top: 2px solid var(--border); border-bottom: 0; background: var(--chip-bg); }
+/* Tabela de debentures: larguras fixas para a coluna Vol. outstanding NUNCA
+   sumir (emissor/grupo truncam com reticencias sob table-layout:fixed). */
+.venc-deb-table { table-layout: fixed; }
+.venc-deb-table th, .venc-deb-table td { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.venc-deb-table th:nth-child(1), .venc-deb-table td:nth-child(1) { width: 28%; }   /* Ativo */
+.venc-deb-table th:nth-child(2), .venc-deb-table td:nth-child(2) { width: 20%; }   /* Grupo (some no compacto) */
+.venc-deb-table th:last-child,   .venc-deb-table td:last-child   { width: 20%; }   /* Vol. outstanding */
+
+/* Cronograma: mesmo tratamento (a coluna R$ nunca some; emissor trunca). */
+.venc-crono-table { table-layout: fixed; }
+.venc-crono-table th, .venc-crono-table td { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.venc-crono-table th:nth-child(1), .venc-crono-table td:nth-child(1) { width: 15%; }   /* Data */
+.venc-crono-table th:nth-child(2), .venc-crono-table td:nth-child(2) { width: 22%; }   /* Ativo */
+.venc-crono-table th:nth-child(4), .venc-crono-table td:nth-child(4) { width: 22%; }   /* Evento */
+.venc-crono-table th:last-child,   .venc-crono-table td:last-child   { width: 18%; }   /* R$ */
+
+/* Mobile (compacto): a tabela rola num contêiner (titulo fica fixo acima) em vez
+   de esticar a pagina — a lista de debentures tem centenas de linhas. */
+.venc.compact .venc-scroll { max-height: 56vh; overflow: auto; border: 1px solid var(--border); border-radius: var(--radius); background: var(--card); }
+.venc.compact .venc-table-h { margin: 12px 2px 6px; }
 .venc-tk { font-weight: 700; color: var(--text); }
-.venc-emissor { color: var(--text-soft); max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .venc-tot { font-weight: 700; }
 .venc-est { font-size: 9px; color: var(--text-faint); margin-left: 4px; vertical-align: super; }
 .venc-inc {
@@ -1393,6 +1458,12 @@ a { color: var(--primary); }
 .venc-foot { margin: 12px 2px 0; }
 .venc-empty { padding: 40px 20px; text-align: center; color: var(--text-soft); }
 .venc-empty code { background: var(--chip-bg); padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+
+/* Desktop: densidade da tabela igual a' asset-table (fonte 11px, linhas baixas). */
+.app.desktop .venc-table { font-size: 11px; }
+.app.desktop .venc-table th { font-size: 10px; padding: 7px 6px 7px 8px; }
+.app.desktop .venc-table td { padding: 5px 6px 5px 8px; }
+.app.desktop .venc-nome { max-width: 200px; }
 
 /* Colunas so-desktop: some no compacto (app sem .desktop) */
 .app:not(.desktop) .venc .hide-compact { display: none; }
