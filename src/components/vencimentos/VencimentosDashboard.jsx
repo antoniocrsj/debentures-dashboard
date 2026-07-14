@@ -78,6 +78,7 @@ const DEB_ACC = {
   ticker: d => d.ticker,
   grupo: d => d.grupo,
   emissor: d => d.emissor,
+  venc: d => d.venc || 0,
   outstanding: d => d.outstanding || 0,
 }
 const CRONO_ACC = {
@@ -257,9 +258,18 @@ export default function VencimentosDashboard({ data, blc, assets, plByGestor, co
     }
     return ev.ct
   }
-  // Valor na visao atual (R$): carteira usa ct, mercado usa mc; com gestor ativo
-  // e' sempre a fatia da carteira dele.
-  const evVal = ev => (gestorAtivo ? ctSliceVal(ev) : (persp === 'carteira' ? ev.ct : ev.mc))
+  // Valor de um evento cru (e, ticker) na visao atual: com gestor ativo, a fatia
+  // da carteira dele; senao carteira usa ct e mercado usa mc.
+  const eventoValor = (e, ticker) => {
+    if (gestorAtivo) {
+      const o = gestoresPorTicker.get(ticker)
+      if (!o || !o.total || !e.ct) return 0
+      const r = o.rows.find(x => x.g === gestorAtivo)
+      return r ? e.ct * (r.v / o.total) : 0
+    }
+    return persp === 'carteira' ? e.ct : e.mc
+  }
+  const evVal = ev => eventoValor(ev, ev.a.ticker)
 
   // Meses do grafico R$ (perspectiva atual). Precomputado so' quando nada filtra.
   const mesesView = useMemo(() => {
@@ -350,17 +360,26 @@ export default function VencimentosDashboard({ data, blc, assets, plByGestor, co
     for (const a of data?.ativos || []) {
       if (!matchSeg(a) || !matchGestor(a) || !matchEnt(a, selEnt)) continue
       if (selMes && !(a.eventos || []).some(e => e.d.slice(0, 7) === selMes)) continue
+      // "Venc." = juros + amort do ativo no periodo (mesma logica da tabela da
+      // esquerda: respeita mes/gestor/perspectiva).
+      let venc = 0
+      for (const e of a.eventos || []) {
+        if (selMes && e.d.slice(0, 7) !== selMes) continue
+        venc += eventoValor(e, a.ticker)
+      }
       out.push({
         ticker: a.ticker,
         grupo: a.grupo || '—',
         emissor: a.emissor || '—',
         incentivada: !!a.incentivada,
+        venc,
         outstanding: outstandingPorTicker.get(String(a.ticker).toUpperCase()) || 0,
       })
     }
     return out.sort((x, y) => y.outstanding - x.outstanding)
-  }, [data, selEnt, seg, selMes, gestorSel, outstandingPorTicker, gestoresPorTicker])
+  }, [data, selEnt, seg, selMes, persp, gestorSel, outstandingPorTicker, gestoresPorTicker])
   const debTotal = debList.reduce((s, d) => s + d.outstanding, 0)
+  const debVencTotal = debList.reduce((s, d) => s + d.venc, 0)
   // Cap de linhas: as 120 MAIORES por outstanding (o total/contagem no rodape
   // refletem a lista inteira). Evita DOM gigante (a janela tem ~2 mil ativos).
   const DEB_CAP = 120
@@ -398,7 +417,7 @@ export default function VencimentosDashboard({ data, blc, assets, plByGestor, co
           {effDim === 'ativo' && <SortTh label="Grupo" col="grupo" sort={rankSort} setSort={setRankSort} className="hide-compact" />}
           <SortTh label={<>Juros<span className="venc-est">est.</span></>} col="juros" sort={rankSort} setSort={setRankSort} numeric />
           <SortTh label="Amort." col="amort" sort={rankSort} setSort={setRankSort} numeric />
-          <SortTh label={`Total ${mesLabelSel || '12m'}`} col="total" sort={rankSort} setSort={setRankSort} numeric />
+          <SortTh label={<>Venc.<span className="venc-est">est.</span> {mesLabelSel || '12m'}</>} col="total" sort={rankSort} setSort={setRankSort} numeric />
         </tr>
       </thead>
       <tbody>
@@ -466,6 +485,7 @@ export default function VencimentosDashboard({ data, blc, assets, plByGestor, co
           <SortTh label="Ativo" col="ticker" sort={debSort} setSort={setDebSort} />
           <SortTh label="Grupo" col="grupo" sort={debSort} setSort={setDebSort} className="hide-compact" />
           <SortTh label="Emissor" col="emissor" sort={debSort} setSort={setDebSort} />
+          <SortTh label={<>Venc.<span className="venc-est">est.</span></>} col="venc" sort={debSort} setSort={setDebSort} numeric title="Juros (estimado) + amortização no período" />
           <SortTh label="Outstanding" col="outstanding" sort={debSort} setSort={setDebSort} numeric title="Volume outstanding (Qtd em Mercado × VNA)" />
         </tr>
       </thead>
@@ -479,14 +499,15 @@ export default function VencimentosDashboard({ data, blc, assets, plByGestor, co
             </td>
             <td className="hide-compact">{d.grupo}</td>
             <td>{d.emissor}</td>
-            <td className="num venc-tot">{d.outstanding > 0 ? fmtBRL(d.outstanding) : '—'}</td>
+            <td className="num venc-tot">{d.venc > 0.5 ? fmtBRL(d.venc) : '—'}</td>
+            <td className="num">{d.outstanding > 0 ? fmtBRL(d.outstanding) : '—'}</td>
           </tr>
         ))}
         {!debList.length && (
-          <tr><td colSpan={4} className="venc-norows">Nenhuma debênture {mesLabelSel ? `em ${mesLabelSel}` : 'nesta janela'}.</td></tr>
+          <tr><td colSpan={5} className="venc-norows">Nenhuma debênture {mesLabelSel ? `em ${mesLabelSel}` : 'nesta janela'}.</td></tr>
         )}
         {debList.length > DEB_CAP && (
-          <tr><td colSpan={4} className="venc-norows">+ {debList.length - DEB_CAP} debênture(s) menor(es) — mostrando as {DEB_CAP} maiores por outstanding.</td></tr>
+          <tr><td colSpan={5} className="venc-norows">+ {debList.length - DEB_CAP} debênture(s) menor(es) — mostrando as {DEB_CAP} maiores por outstanding.</td></tr>
         )}
       </tbody>
       {debList.length > 0 && (
@@ -495,6 +516,7 @@ export default function VencimentosDashboard({ data, blc, assets, plByGestor, co
             <td><b>Total · {debList.length}</b></td>
             <td className="hide-compact" />
             <td />
+            <td className="num venc-tot">{fmtBRL(debVencTotal)}</td>
             <td className="num venc-tot">{fmtBRL(debTotal)}</td>
           </tr>
         </tfoot>

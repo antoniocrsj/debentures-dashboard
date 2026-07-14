@@ -1447,9 +1447,10 @@ a { color: var(--primary); }
    sumir (emissor/grupo truncam com reticencias sob table-layout:fixed). */
 .venc-deb-table { table-layout: fixed; }
 .venc-deb-table th, .venc-deb-table td { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.venc-deb-table th:nth-child(1), .venc-deb-table td:nth-child(1) { width: 28%; }   /* Ativo */
-.venc-deb-table th:nth-child(2), .venc-deb-table td:nth-child(2) { width: 20%; }   /* Grupo (some no compacto) */
-.venc-deb-table th:last-child,   .venc-deb-table td:last-child   { width: 20%; }   /* Vol. outstanding */
+.venc-deb-table th:nth-child(1), .venc-deb-table td:nth-child(1) { width: 25%; }   /* Ativo (ticker + badge 12.431) */
+.venc-deb-table th:nth-child(2), .venc-deb-table td:nth-child(2) { width: 13%; }   /* Grupo (some no compacto) */
+.venc-deb-table th:nth-child(4), .venc-deb-table td:nth-child(4) { width: 19%; }   /* Venc. */
+.venc-deb-table th:last-child,   .venc-deb-table td:last-child   { width: 21%; }   /* Outstanding */
 
 /* Cronograma: mesmo tratamento (a coluna R$ nunca some; emissor trunca). */
 .venc-crono-table { table-layout: fixed; }
