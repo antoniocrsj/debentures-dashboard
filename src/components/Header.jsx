@@ -120,6 +120,9 @@ export default function Header({
         </nav>
       )}
 
+      {/* Controles no canto direito, agrupados (perto do botão Compacto):
+          Resumo do Dia, painel dev e o toggle de visão. */}
+      <div className="header-right">
       {/* Resumo do Dia: visível em desktop e compacto (não é uma "seção" de
           navegação, é um atalho pontual) — só aparece quando há relatórios
           diários gerados (useDailyReports retornou o índice). */}
@@ -166,6 +169,7 @@ export default function Header({
         )}
         <span>{desktop ? 'Compacto' : 'Desktop'}</span>
       </button>
+      </div>
     </header>
   )
 }
