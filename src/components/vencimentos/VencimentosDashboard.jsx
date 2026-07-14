@@ -17,6 +17,14 @@ function pctFmt(x) {
   if (x == null || isNaN(x)) return '—'
   return `${x.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%`
 }
+// Rotulo compacto pra CABER dentro da barra: sem "R$", com sufixo B/M/k.
+function fmtBar(v) {
+  const n = Math.abs(v || 0)
+  if (n >= 1e9) return `${(v / 1e9).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}B`
+  if (n >= 1e6) return `${(v / 1e6).toLocaleString('pt-BR', { maximumFractionDigits: 0 })}M`
+  if (n >= 1e3) return `${(v / 1e3).toLocaleString('pt-BR', { maximumFractionDigits: 0 })}k`
+  return (v || 0).toLocaleString('pt-BR', { maximumFractionDigits: 0 })
+}
 function fmtDia(d) {
   // 'yyyy-mm-dd' -> 'dd/mm/yy'
   const s = String(d || '')
@@ -40,31 +48,40 @@ function Empty() {
 // libs. Linha-base cinza (eixo horizontal) separando barras e rótulos; cada
 // coluna é clicável para filtrar o mês. O valor do topo só aparece no
 // hover/seleção (evita poluir com 12+ números).
-function MonthBars({ rows, max, selMes, onPick, fmtVal, ariaLabel }) {
+function MonthBars({ rows, max, selMes, onPick, fmtVal, fmtLabel, ariaLabel }) {
   const safeMax = Math.max(1e-9, max)
+  // Rotulo dentro do segmento so' se ele for alto o suficiente pra caber (~14px);
+  // abaixo disso o texto ficaria espremido/cortado -> mostra so' o total no topo.
+  const MIN_SEG = 0.10
   return (
     <div className="venc-chart" role="group" aria-label={ariaLabel}>
       <div className="venc-plot">
         {rows.map(m => {
-          // O wrap tem a altura da PROPRIA barra (total/max) e canto arredondado no
-          // topo -> todas as barras arredondam igual. Os segmentos sao fatia do
-          // total dentro do wrap (juros embaixo, amort em cima).
-          const barPct = (m.total / safeMax) * 100
+          // Barras escaladas a 88% do plot pra sobrar topo pro rotulo do total. O
+          // wrap tem a altura da propria barra (canto arredondado no topo real);
+          // os segmentos sao fatia do total (juros embaixo, amort em cima).
+          const barPct = (m.total / safeMax) * 88
           const jPct = m.total > 0 ? (m.juros / m.total) * 100 : 0
           const aPct = m.total > 0 ? (m.amort / m.total) * 100 : 0
+          const showJ = m.juros / safeMax >= MIN_SEG
+          const showA = m.amort / safeMax >= MIN_SEG
           return (
             <button
               key={m.mes}
               type="button"
               className={`venc-col${selMes === m.mes ? ' sel' : ''}`}
-              title={`${m.label}: ${fmtVal(m.total)} — clique para ${selMes === m.mes ? 'limpar o filtro' : 'filtrar'}`}
+              title={`${m.label}: juros ${fmtVal(m.juros)} + amort. ${fmtVal(m.amort)} = ${fmtVal(m.total)} — clique para ${selMes === m.mes ? 'limpar o filtro' : 'filtrar'}`}
               onClick={() => onPick(m.mes)}
               aria-pressed={selMes === m.mes}
             >
-              <span className="venc-bar-val">{m.total > 0.00001 ? fmtVal(m.total) : ''}</span>
+              <span className="venc-bar-total">{m.total > 0.00001 ? fmtLabel(m.total) : ''}</span>
               <span className="venc-bar-wrap" style={{ height: `${barPct}%` }}>
-                <span className="venc-seg venc-seg-juros" style={{ height: `${jPct}%` }} />
-                <span className="venc-seg venc-seg-amort" style={{ height: `${aPct}%` }} />
+                <span className="venc-seg venc-seg-juros" style={{ height: `${jPct}%` }}>
+                  {showJ && <span className="venc-seg-lbl">{fmtLabel(m.juros)}</span>}
+                </span>
+                <span className="venc-seg venc-seg-amort" style={{ height: `${aPct}%` }}>
+                  {showA && <span className="venc-seg-lbl venc-seg-lbl-blue">{fmtLabel(m.amort)}</span>}
+                </span>
               </span>
             </button>
           )
@@ -513,7 +530,7 @@ export default function VencimentosDashboard({ data, blc, assets, plByGestor, co
             <span className="venc-chart-scale">{fmtBRL(totalPeriodo)} em 12m</span>
           </header>
           <MonthBars rows={mesesView} max={maxTotal} selMes={selMes} onPick={pickMes}
-            fmtVal={fmtBRL} ariaLabel="Vencimentos por mês em reais (clique para filtrar)" />
+            fmtVal={fmtBRL} fmtLabel={fmtBar} ariaLabel="Vencimentos por mês em reais (clique para filtrar)" />
         </section>
         <section className="venc-chart-panel">
           <header className="venc-chart-head">
@@ -522,7 +539,7 @@ export default function VencimentosDashboard({ data, blc, assets, plByGestor, co
           </header>
           {plDenom > 0
             ? <MonthBars rows={mesesPL} max={maxPct} selMes={selMes} onPick={pickMes}
-                fmtVal={pctFmt} ariaLabel="Vencimentos por mês em % do PL (clique para filtrar)" />
+                fmtVal={pctFmt} fmtLabel={pctFmt} ariaLabel="Vencimentos por mês em % do PL (clique para filtrar)" />
             : <div className="venc-nopl">Sem PL de <b>{plSuffix}</b> para calcular %PL.</div>}
         </section>
       </div>

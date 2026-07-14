@@ -1348,16 +1348,18 @@ a { color: var(--primary); }
   display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
   height: 100%; cursor: pointer; border-radius: 6px 6px 0 0; transition: background .1s;
 }
-/* Valor no topo do grafico (absoluto: nao afeta a altura da barra); so' no hover/selecao. */
-.venc-bar-val {
-  position: absolute; top: 0; left: 0; right: 0; text-align: center;
-  font-size: 10px; color: var(--text-soft); line-height: 12px; white-space: nowrap;
-  font-variant-numeric: tabular-nums; visibility: hidden;
+/* Total acima de cada barra (sempre visivel). */
+.venc-bar-total {
+  font-size: 9px; font-weight: 600; color: var(--text); line-height: 11px; height: 11px;
+  margin-bottom: 2px; white-space: nowrap; font-variant-numeric: tabular-nums;
 }
-.venc-col:hover .venc-bar-val, .venc-col.sel .venc-bar-val { visibility: visible; }
 /* Wrap = altura da propria barra (style inline) -> canto arredondado no topo real de cada barra. */
-.venc-bar-wrap { width: 82%; max-width: 40px; display: flex; flex-direction: column-reverse; border-radius: 6px 6px 0 0; overflow: hidden; }
-.venc-seg { width: 100%; }
+.venc-bar-wrap { width: 82%; max-width: 40px; display: flex; flex-direction: column-reverse; border-radius: 3px 3px 0 0; overflow: hidden; }
+/* Segmento centraliza seu rotulo; recorta o que nao couber. */
+.venc-seg { width: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+/* Rotulo dentro do segmento: juros na barra cinza (texto escuro), amort na azul (branco). */
+.venc-seg-lbl { font-size: 8.5px; font-weight: 700; line-height: 1; white-space: nowrap; color: var(--primary-dark); font-variant-numeric: tabular-nums; padding: 0 1px; }
+.venc-seg-lbl-blue { color: #fff; }
 .venc-seg-juros { background: var(--text-faint); }  /* cinza */
 .venc-seg-amort { background: var(--primary); }  /* azul */
 .venc-col:hover { background: var(--blue-soft); }
