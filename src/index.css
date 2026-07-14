@@ -1540,6 +1540,22 @@ a { color: var(--primary); }
 /* Barras de tendência mensal (sem Recharts) */
 .caixa-trend { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 14px; box-shadow: var(--shadow); }
 .caixa-trend-head { margin-bottom: 10px; }
+/* Dropdown de gestor nos filtros do Nivel de Caixa. */
+.caixa-select {
+  height: var(--btn-h); border-radius: 8px; border: 1px solid var(--primary-border);
+  background: var(--chip-bg); color: var(--text); font-size: 12.5px; padding: 0 8px;
+  max-width: 200px; cursor: pointer;
+}
+.caixa-select:hover { background: var(--blue-soft); }
+.caixa-select:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+/* Grafico de linha do % do PL em caixa (SVG). */
+.caixa-line { width: 100%; height: auto; display: block; }
+.caixa-line-grid { stroke: var(--blue-line); stroke-width: 1; }
+.caixa-line-ylabel, .caixa-line-xlabel { fill: var(--text-muted); font-size: 10px; font-variant-numeric: tabular-nums; }
+.caixa-line-path { stroke: var(--primary); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.caixa-line-dot { fill: var(--primary); }
+.caixa-line-empty { padding: 28px 12px; text-align: center; color: var(--text-muted); font-size: 13px; }
+.caixa-line-empty code { background: var(--chip-bg); padding: 1px 5px; border-radius: 4px; font-size: 12px; }
 .caixa-trend-bars { display: flex; align-items: flex-end; gap: 14px; height: 150px; }
 .caixa-bar-col { flex: 1 1 0; display: flex; flex-direction: column; align-items: center; gap: 4px; height: 100%; justify-content: flex-end; }
 .caixa-bar-val { font-size: 11px; font-weight: 700; color: var(--text); white-space: nowrap; }

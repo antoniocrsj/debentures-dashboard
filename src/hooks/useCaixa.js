@@ -3,13 +3,14 @@ import { parseCSV } from '../utils/csv.js'
 import { normalizeCaixaFundos, normalizeCaixaGestores } from '../utils/caixa.js'
 
 // Fontes geradas por tools/preparar-caixa-potencial.ps1.
-export const CAIXA_FUNDOS_URL   = '/data/Caixa_Potencial_Fundos.csv'
-export const CAIXA_GESTORES_URL = '/data/Caixa_Potencial_Gestores.csv'
-export const CAIXA_META_URL     = '/data/Caixa_Potencial_Meta.json'
+export const CAIXA_FUNDOS_URL    = '/data/Caixa_Potencial_Fundos.csv'
+export const CAIXA_GESTORES_URL  = '/data/Caixa_Potencial_Gestores.csv'
+export const CAIXA_META_URL      = '/data/Caixa_Potencial_Meta.json'
+export const CAIXA_HISTORICO_URL = '/data/Caixa_Potencial_Historico.json'
 
 export function useCaixa() {
   const [state, setState] = useState({
-    loading: true, error: null, fundos: [], gestores: [], meta: null,
+    loading: true, error: null, fundos: [], gestores: [], meta: null, historico: null,
   })
   const reqId = useRef(0)
 
@@ -31,14 +32,20 @@ export function useCaixa() {
       .then(async res => (res.ok ? await res.json() : null))
       .catch(err => { console.error(`[useCaixa] meta indisponivel:`, err); return null })
 
-    Promise.all([loadFundos, loadGestores, loadMeta])
-      .then(([fundos, gestores, meta]) => {
-        if (id === reqId.current) setState({ loading: false, error: null, fundos, gestores, meta })
+    // Historico mensal de %PL (opcional): so' existe depois de rodar o PS com a
+    // passada de historico. Sem ele, o grafico de linha mostra estado vazio.
+    const loadHistorico = fetch(CAIXA_HISTORICO_URL)
+      .then(async res => (res.ok ? await res.json() : null))
+      .catch(() => null)
+
+    Promise.all([loadFundos, loadGestores, loadMeta, loadHistorico])
+      .then(([fundos, gestores, meta, historico]) => {
+        if (id === reqId.current) setState({ loading: false, error: null, fundos, gestores, meta, historico })
       })
       .catch(err => {
         console.error(`[useCaixa] falha ao carregar:`, err)
         if (id === reqId.current) {
-          setState({ loading: false, error: err.message || 'Erro ao carregar os dados.', fundos: [], gestores: [], meta: null })
+          setState({ loading: false, error: err.message || 'Erro ao carregar os dados.', fundos: [], gestores: [], meta: null, historico: null })
         }
       })
   }, [])

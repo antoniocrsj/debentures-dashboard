@@ -2,12 +2,12 @@ import { useState, useMemo, useCallback } from 'react'
 import { useCaixa } from '../../hooks/useCaixa.js'
 import { fmtPctPL, fmtMes, aggregateGestores } from '../../utils/caixa.js'
 import { fmtFluxo, fmtFluxoSigned, fmtInt } from '../../utils/fluxo.js'
-import CaixaMonthTrend from './CaixaMonthTrend.jsx'
+import CaixaPctPLLine from './CaixaPctPLLine.jsx'
 import CaixaGestorTable from './CaixaGestorTable.jsx'
 import CaixaFundoTable from './CaixaFundoTable.jsx'
 
+// Mercados vistos SEPARADAMENTE (sem "Todos"): a aba sempre mostra um mercado.
 const SEGMENTOS = [
-  { id: '', label: 'Todos' },
   { id: 'CDI', label: 'Tradicional (CDI)' },
   { id: '12431', label: 'Incentivados (12.431)' },
 ]
@@ -18,11 +18,17 @@ const CLASSES = [
 ]
 
 export default function CaixaDashboard({ compact = false }) {
-  const { loading, error, fundos, gestores, meta, reload } = useCaixa()
-  const [segmento, setSegmento] = useState('')
+  const { loading, error, fundos, gestores, meta, historico, reload } = useCaixa()
+  const [segmento, setSegmento] = useState('CDI')   // padrao: Tradicional (mercados separados)
   const [classe, setClasse] = useState('')
   const [gestor, setGestor] = useState('')
   const [search, setSearch] = useState('')
+
+  // Gestores do mercado atual (para o dropdown de filtro).
+  const gestorOpts = useMemo(() => {
+    const base = segmento ? fundos.filter(f => f.segmento === segmento) : fundos
+    return [...new Set(base.map(f => f.gestor).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR'))
+  }, [fundos, segmento])
 
   // Fundos no consolidado (base para os cards e para as tabelas de caixa).
   const consolidaveis = useMemo(() => fundos.filter(f => f.noConsolidado), [fundos])
@@ -77,8 +83,9 @@ export default function CaixaDashboard({ compact = false }) {
   }, [consolidaveis, segmento, gestores])
 
   const mesBase = meta?.mesesRecentes?.[0] || fundos.find(f => f.mesBase)?.mesBase || ''
-  const clearFilters = useCallback(() => { setSegmento(''); setClasse(''); setGestor(''); setSearch('') }, [])
-  const hasFilter = segmento || classe || gestor || search
+  // "Limpar" zera os sub-filtros mas mantem o mercado escolhido (nunca ha' "Todos").
+  const clearFilters = useCallback(() => { setClasse(''); setGestor(''); setSearch('') }, [])
+  const hasFilter = classe || gestor || search
 
   return (
     <section className="fluxo caixa" aria-label="Nível de caixa dos fundos">
@@ -119,6 +126,11 @@ export default function CaixaDashboard({ compact = false }) {
                   onClick={() => setClasse(c.id)}>{c.label}</button>
               ))}
             </div>
+            <select className="caixa-select" aria-label="Filtrar por gestor"
+              value={gestor} onChange={e => setGestor(e.target.value)}>
+              <option value="">Todos os gestores</option>
+              {gestorOpts.map(g => <option key={g} value={g}>{g}</option>)}
+            </select>
             <input
               className="caixa-search"
               type="search"
@@ -127,7 +139,6 @@ export default function CaixaDashboard({ compact = false }) {
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
-            {gestor && <button type="button" className="caixa-chip-active" onClick={() => setGestor('')}>Gestor: {gestor} ✕</button>}
             {hasFilter && <button type="button" className="btn-clear" onClick={clearFilters}>Limpar</button>}
           </div>
 
@@ -149,7 +160,7 @@ export default function CaixaDashboard({ compact = false }) {
             <Card label="Fundos no consolidado" value={fmtInt(cards.nFundos)} />
           </div>
 
-          <CaixaMonthTrend comparacao={meta?.comparacaoMeses} mesRefMadura={meta?.mesRefMadura} filtroAtivo={!!hasFilter} />
+          <CaixaPctPLLine historico={historico} segmento={segmento} gestor={gestor} />
 
           {/* Ranking de gestores (só quando nenhum gestor está selecionado) */}
           {!gestor && <CaixaGestorTable gestores={gestoresRanking} activeGestor={gestor} onSelect={setGestor} />}
