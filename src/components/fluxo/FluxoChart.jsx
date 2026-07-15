@@ -4,10 +4,10 @@ import {
 } from 'recharts'
 import { toChartSeries, fmtDayMonthYY, fmtWeekFull, fmtFluxo, fmtFluxoSigned } from '../../utils/fluxo.js'
 
-// Paleta azul + cinza (vários tons), legível sobre o card claro
-const COL_CAP = '#2f6fb0'  // captação — azul
-const COL_RES = '#8593a8'  // resgate — cinza-azulado
-const COL_LIQ = '#1e293b'  // cap. líquida — azul-marinho escuro, alto contraste
+// Paleta quente (identidade Luc), legível sobre o card claro
+const COL_CAP = '#8c5e3a'  // captação — terracota
+const COL_RES = '#9a8c7a'  // resgate — taupe/cinza quente
+const COL_LIQ = '#2a2420'  // cap. líquida — carvão quente, alto contraste
 const COL_ZERO = '#94a3b8' // linha do zero — cinza discreto mas visível
 
 // Eixo Y compacto, sem "R$"
@@ -43,7 +43,7 @@ export default function FluxoChart({ weekly }) {
     <div className="fluxo-chart" role="img" aria-label="Gráfico semanal de captação (acima de zero), resgate (abaixo de zero) e captação líquida">
       <ResponsiveContainer width="100%" height="100%">
         <ComposedChart data={data} margin={{ top: 8, right: 8, bottom: 4, left: 4 }} barGap={2}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e5e9f0" vertical={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke="#e8dfd2" vertical={false} />
           <XAxis
             dataKey="weekKey"
             tickFormatter={fmtDayMonthYY}

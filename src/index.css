@@ -1,40 +1,44 @@
 /* ─── Variables ──────────────────────────────────────────────── */
 :root {
-  --primary:        #1f4e9c;   /* azul (acento: abas, links, botões) */
-  --primary-dark:   #14253f;   /* azul-marinho profundo (header) */
-  --primary-light:  #e9eef7;   /* azul-acinzentado claro (hover / selecionado) */
-  --primary-border: #cdd9ea;   /* borda azul-acinzentada clara */
-  --navy-light:    #33547f;    /* azul-marinho claro (borda/texto dos botões/chips no estado normal) */
-  --chip-bg:       #f6f8fa;    /* preenchimento quase branco dos botões/chips no estado normal */
-  --bg:            #eef1f5;     /* cinza claro de fundo */
+  /* Identidade "Luc": paleta quente/terrosa (do icone do mascote). Antes era
+     azul/navy frio. Estrutura de papeis mantida; so' as cores mudaram. Acento
+     interativo = terracota (realce: links/aba ativa/linha do grafico); solidos
+     ativos (toggles) = carvao. Verde/vermelho (semantica) e ambar preservados. */
+  --primary:        #8c5e3a;   /* terracota (acento/realce: abas ativas, links, linha do grafico) */
+  --primary-dark:   #26211d;   /* carvao quente (header) */
+  --primary-light:  #f1e7db;   /* bege claro (hover / selecionado leve) */
+  --primary-border: #e4d5c3;   /* borda bege clara */
+  --navy-light:    #6f5442;    /* castanho medio (borda/texto dos botoes/chips no estado normal) */
+  --chip-bg:       #f8f4ee;    /* quase-branco quente (botoes/chips no estado normal) */
+  --bg:            #f2ede5;     /* bege claro de fundo */
   --card:          #ffffff;
-  --text:          #1e293b;   /* cinza bem escuro (nunca preto puro) */
-  --text-muted:    #64748b;
-  --border:        #e2e8f0;
-  --pos:           #047857;    /* verde canonico: ganho / valor positivo */
-  --neg:           #b91c1c;    /* vermelho canonico: perda / valor negativo */
+  --text:          #2a2420;   /* carvao quente (nunca preto puro) */
+  --text-muted:    #6b6154;
+  --border:        #e8dfd2;
+  --pos:           #047857;    /* verde canonico: ganho / valor positivo (mantido) */
+  --neg:           #b91c1c;    /* vermelho canonico: perda / valor negativo (mantido) */
   --success:       var(--pos); /* alias semantico (um verde so' no app) */
   --danger:        var(--neg); /* alias semantico (um vermelho so' no app) */
-  --warn:          #d97706;
+  --warn:          #d97706;    /* ambar (mantido — ja' e' quente) */
   --pos-soft:      #ecfdf5;    /* fundo verde claro (card positivo) */
   --pos-line:      #a7f3d0;    /* borda verde clara */
   --neg-soft:      #fef2f2;    /* fundo vermelho claro (card negativo, limpar) */
   --neg-line:      #fecaca;    /* borda vermelha clara */
-  /* Paleta "atencao / fechado" (ambar) */
+  /* Paleta "atencao / fechado" (ambar) — harmoniza com a identidade quente */
   --flag-bg:       #fef3c7;    /* fundo da tag/aviso */
   --flag-ink:      #92400e;    /* texto da tag/aviso */
   --flag-line:     #fde68a;    /* borda da tag/aviso */
-  /* Rampa azul-acinzentada (hover / borda / scroll) — colapsa ~6 tons soltos */
-  --blue-soft:     #dde8f7;    /* fundo em hover / fundo desktop */
-  --blue-press:    #d9e4f5;    /* fundo em active/press */
-  --blue-line:     #d3dbe6;    /* divisor / borda */
-  --blue-mute:     #c3ccda;    /* thumb de scrollbar */
-  --text-faint:    #94a3b8;    /* texto discreto (notas, placeholders) */
-  --text-soft:     #475569;    /* texto secundario mais forte */
-  --shadow:        0 1px 3px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.06);
+  /* Rampa bege quente (hover / borda / scroll) — era a rampa azul-acinzentada */
+  --blue-soft:     #ece0d0;    /* fundo em hover / fundo desktop */
+  --blue-press:    #e6d8c5;    /* fundo em active/press */
+  --blue-line:     #ddd0bd;    /* divisor / borda */
+  --blue-mute:     #ccbca6;    /* thumb de scrollbar */
+  --text-faint:    #7a6f5e;    /* texto discreto (notas, placeholders) — AA */
+  --text-soft:     #574e44;    /* texto secundario mais forte */
+  --shadow:        0 1px 3px rgba(38,33,29,.12), 0 1px 2px rgba(38,33,29,.07);
   --radius:        10px;
   --btn-h:         30px;       /* altura padrao de TODO botao (chips, abas, acoes) */
-  --selected:      #33547f;    /* fundo de botao/chip SELECIONADO (= navy-light) */
+  --selected:      #4a3f36;    /* fundo de botao/chip SELECIONADO (carvao-marrom, texto branco) */
   --header-h:      52px;
   --filter-h:      48px;
   --tabs-h:        42px;
@@ -87,9 +91,15 @@ a { color: var(--primary); }
 .bottom-nav {
   position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
   width: 100%; max-width: 480px; z-index: 40;
-  display: flex; background: var(--primary-dark);
+  display: flex;
+  /* Barra "frosted": carvão translúcido + desfoque do conteúdo por trás.
+     O rgba sozinho ja' e' um fallback digno onde backdrop-filter nao existe. */
+  background: rgba(38, 33, 29, .80);
+  -webkit-backdrop-filter: blur(20px) saturate(1.3);
+  backdrop-filter: blur(20px) saturate(1.3);
+  border-top: 1px solid rgba(255, 255, 255, .07);
   padding: 2px 4px calc(3px + env(safe-area-inset-bottom, 0px));
-  box-shadow: 0 -4px 16px rgba(10, 20, 40, .18);
+  box-shadow: 0 -4px 20px rgba(38, 33, 29, .22);
 }
 .bottom-nav-btn {
   flex: 1; background: none; cursor: pointer;
@@ -103,9 +113,9 @@ a { color: var(--primary); }
 .bottom-nav-ico svg { width: 51px; height: 51px; margin: -12px 0; }   /* 2,3x o original (22px) */
 .bottom-nav-lbl { font-size: 12px; font-weight: 400; letter-spacing: .01em; margin-top: 3px; }
 /* Aba ativa: só um contorno fino azul-marinho claro (sem fundo) ao redor de ícone+texto. */
-.bottom-nav-btn.active { color: #fff; border-color: #5b7fb0; }
+.bottom-nav-btn.active { color: #fff; border-color: #cda585; }
 .bottom-nav-btn.active .bottom-nav-lbl { font-weight: 600; }
-.bottom-nav-btn:focus-visible { outline: 2px solid #6ea8e6; outline-offset: -2px; }
+.bottom-nav-btn:focus-visible { outline: 2px solid #d9b48c; outline-offset: -2px; }
 /* Conteúdo não fica atrás da barra fixa (só no compacto). */
 .app:not(.desktop) { padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
 .header-logo { font-size: 18px; flex-shrink: 0; }
@@ -345,7 +355,7 @@ a { color: var(--primary); }
 }
 .state-box.error { color: var(--danger); }
 .state-box small { font-size: 12px; line-height: 1.6; color: var(--text-muted); }
-.state-box code { font-size: 11px; background: #f1f5f9; padding: 2px 5px; border-radius: 4px; }
+.state-box code { font-size: 11px; background: #f2ede5; padding: 2px 5px; border-radius: 4px; }
 .error-msg { font-size: 13px; word-break: break-all; max-width: 340px; }
 .state-icon { font-size: 28px; }
 
@@ -638,7 +648,7 @@ a { color: var(--primary); }
   align-items: baseline;
   gap: 8px;
   padding: 5px 0;
-  border-bottom: 1px solid #f8fafc;
+  border-bottom: 1px solid #f4eee5;
   font-size: 13px;
 }
 .modal-label { color: var(--text-muted); flex-shrink: 0; }
@@ -787,7 +797,7 @@ a { color: var(--primary); }
 .fluxo { padding: 12px 12px 24px; }
 .fluxo-header { margin-bottom: 10px; }
 .fluxo-title { font-size: 18px; font-weight: 600; color: var(--text); margin: 0; }
-.fluxo-subtitle { font-size: 13px; color: #64748b; margin: 2px 0 0; }
+.fluxo-subtitle { font-size: 13px; color: #6b6154; margin: 2px 0 0; }
 .fluxo-ref { font-size: 12px; color: var(--text-soft); margin: 3px 0 0; font-weight: 600; }
 
 .fluxo-mock-banner {
@@ -802,7 +812,7 @@ a { color: var(--primary); }
 .fluxo-filters { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
 .fluxo-filters-row { display: flex; flex-wrap: wrap; gap: 12px; }
 .fluxo-field { display: flex; flex-direction: column; gap: 4px; }
-.fluxo-field-label { font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: .03em; }
+.fluxo-field-label { font-size: 11px; font-weight: 600; color: #6b6154; text-transform: uppercase; letter-spacing: .03em; }
 
 /* Pilula segmentada: altura total = --btn-h (moldura de 2px + borda de 1px
    ja entram na conta via box-sizing), pra bater com os chips ao lado. */
@@ -836,9 +846,9 @@ a { color: var(--primary); }
 .fluxo-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 14px; }
 .fluxo-card {
   display: flex; flex-direction: column; gap: 2px; align-items: center; text-align: center;
-  background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 8px 10px;
+  background: #fff; border: 1px solid #e8dfd2; border-radius: 12px; padding: 8px 10px;
 }
-.fluxo-card-label { font-size: 10.5px; color: #64748b; }
+.fluxo-card-label { font-size: 10.5px; color: #6b6154; }
 .fluxo-card-sub { color: var(--text-faint); }
 .fluxo-card-help { color: var(--text-faint); cursor: help; }
 .fluxo-card-value { font-size: 15px; font-weight: 600; color: var(--text); white-space: nowrap; }
@@ -849,12 +859,12 @@ a { color: var(--primary); }
 .liq-arrow { font-size: 13px; margin-right: 3px; }
 
 /* Gráfico (altura fixa: o ResponsiveContainer usa height:100%) */
-.fluxo-chart { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 6px 4px; margin-bottom: 16px; height: 300px; }
-.fluxo-tooltip { background: #fff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 10px; font-size: 12px; box-shadow: 0 4px 14px rgba(0,0,0,.12); }
+.fluxo-chart { background: #fff; border: 1px solid #e8dfd2; border-radius: 12px; padding: 10px 6px 4px; margin-bottom: 16px; height: 300px; }
+.fluxo-tooltip { background: #fff; border: 1px solid #ddd0bd; border-radius: 8px; padding: 8px 10px; font-size: 12px; box-shadow: 0 4px 14px rgba(0,0,0,.12); }
 .fluxo-tooltip-title { font-weight: 600; color: var(--text); margin-bottom: 4px; }
-.fluxo-tooltip-row { display: flex; align-items: center; gap: 6px; color: #334155; }
+.fluxo-tooltip-row { display: flex; align-items: center; gap: 6px; color: #574e44; }
 .fluxo-tooltip-row .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
-.fluxo-tooltip-pl { margin-top: 3px; padding-top: 3px; border-top: 1px solid #e2e8f0; color: var(--text-soft); }
+.fluxo-tooltip-pl { margin-top: 3px; padding-top: 3px; border-top: 1px solid #e8dfd2; color: var(--text-soft); }
 
 /* Seções / tabela / ranking */
 .fluxo-section-title { font-size: 15px; font-weight: 600; color: var(--text); margin: 0 0 8px; }
@@ -1309,11 +1319,11 @@ a { color: var(--primary); }
 .cp-note { font-size: 12px; color: var(--text-muted); margin: 10px 0 0; }
 .cp-error { color: var(--neg); font-size: 13px; font-weight: 600; }
 .cp-log {
-  background: #0f172a; color: #e2e8f0; border-radius: 8px; padding: 10px 12px;
+  background: #0f172a; color: #e8dfd2; border-radius: 8px; padding: 10px 12px;
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
   font-size: 12px; line-height: 1.5; max-height: 360px; overflow-y: auto; white-space: pre-wrap;
 }
-.cp-log-stdout { color: #e2e8f0; }
+.cp-log-stdout { color: #e8dfd2; }
 .cp-log-stderr { color: #fca5a5; }
 .cp-log-meta { color: #7dd3fc; }
 .cp-log-done { color: #86efac; font-weight: 700; margin-top: 6px; }

@@ -295,8 +295,8 @@ export default defineConfig({
         start_url: '/',
         display: 'standalone',
         orientation: 'portrait',
-        background_color: '#eef1f5',
-        theme_color: '#14253f',
+        background_color: '#f2ede5',
+        theme_color: '#26211d',
         icons: [
           { src: '/icon-192-v2.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
           { src: '/icon-512-v2.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
