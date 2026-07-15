@@ -315,6 +315,7 @@ export default function App() {
             tabsSlot={desktop ? tabsNav : null}
             updatedLabel={dataFreshness?.label}
             updatedTooltip={dataFreshness?.tooltip}
+            compact={!desktop}
           />
         )}
 

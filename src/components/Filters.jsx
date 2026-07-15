@@ -3,7 +3,7 @@ import SearchSelect from './SearchSelect.jsx'
 
 const EMPTY = { grupo: '', setor: '', gestor: '', lei12431: '', ativo: '', search: '' }
 
-export default function Filters({ filters, options, disabled, onChange, tabsSlot, updatedLabel, updatedTooltip }) {
+export default function Filters({ filters, options, disabled, onChange, tabsSlot, updatedLabel, updatedTooltip, compact = false }) {
   const set = useCallback((key, val) => onChange(f => ({ ...f, [key]: val })), [onChange])
 
   return (
@@ -20,18 +20,22 @@ export default function Filters({ filters, options, disabled, onChange, tabsSlot
         )}
       </div>
 
-      <div className={`filter-searchrow${tabsSlot ? ' has-tabs' : ''}`}>
-        <div className="search-wrap">
-          <span className="search-icon">🔍</span>
-          <input
-            type="search"
-            className="search-input"
-            placeholder="Buscar ativo, emissor, grupo…"
-            value={filters.search}
-            disabled={disabled}
-            onChange={e => set('search', e.target.value)}
-          />
-        </div>
+      {/* No compacto a busca sai (as buscas por ativo/grupo/gestor já vivem nos
+          chips acima); no desktop a barra de busca continua. */}
+      <div className={`filter-searchrow${tabsSlot ? ' has-tabs' : ''}${compact ? ' no-search' : ''}`}>
+        {!compact && (
+          <div className="search-wrap">
+            <span className="search-icon">🔍</span>
+            <input
+              type="search"
+              className="search-input"
+              placeholder="Buscar ativo, emissor, grupo…"
+              value={filters.search}
+              disabled={disabled}
+              onChange={e => set('search', e.target.value)}
+            />
+          </div>
+        )}
         {tabsSlot}
         {updatedLabel && <p className="data-updated" title={updatedTooltip}>Atualizado em {updatedLabel}</p>}
       </div>

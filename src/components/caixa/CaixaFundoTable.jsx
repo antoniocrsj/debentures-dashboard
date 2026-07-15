@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { sortBy, fmtPctPL, fmtMes, CONF_LABEL } from '../../utils/caixa.js'
+import { sortBy, fmtPctPL, fmtMes, CONF_LABEL, apelidoFundo } from '../../utils/caixa.js'
 import { fmtFluxo, fmtInt } from '../../utils/fluxo.js'
 import SortableTh, { cycleSort } from '../fluxo/SortableTh.jsx'
 import TableWrap from '../TableWrap.jsx'
@@ -68,7 +68,7 @@ export default function CaixaFundoTable({ fundos, title, subtitle }) {
             {shown.map(f => (
               <tr key={f.cnpj} title={f.justificativa || undefined}>
                 <td className="col-sticky col-nome">
-                  <span className="caixa-fundo-nome">{f.nome || f.cnpj}</span>
+                  <span className="caixa-fundo-nome" title={f.nome || f.cnpj}>{apelidoFundo(f.nome) || f.cnpj}</span>
                   <span className="caixa-fundo-tags">
                     {f.segmento && <span className={`caixa-seg seg-${segBadge(f.segmento).k}`}>{segBadge(f.segmento).l}</span>}
                     {f.mesBase && <span className="caixa-mesbase">{fmtMes(f.mesBase)}</span>}

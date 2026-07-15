@@ -975,12 +975,34 @@ a { color: var(--primary); }
 .app:not(.desktop) .fluxo-header { margin-bottom: 6px; }   /* sobrou só "Base atualizada até…" */
 .app:not(.desktop) .fluxo { padding-top: 10px; }
 
-/* 4. Gestor ao lado de Período (Tipo continua em cima, largura total).
-   Período usa flex-basis 0 p/ caber ao lado do Gestor; os chips quebram dentro dele. */
+/* 4. Filtros em 3 fileiras limpas: Tipo (largura total) · Gestor + Fundos
+   fechados · Período (largura total, chips numa linha só). Assim o Gestor
+   deixa de aparecer truncado e os atalhos de período não quebram. */
 .app:not(.desktop) .fluxo-filters-row { align-items: flex-start; }
 .app:not(.desktop) .fluxo-field-tipo { flex: 1 1 100%; }
 .app:not(.desktop) .fluxo-filters-row > .fluxo-field:not(.fluxo-field-tipo):not(.fluxo-field-grow) { flex: 0 0 auto; }
-.app:not(.desktop) .fluxo-field-grow { flex: 1 1 0; min-width: 0; }
+.app:not(.desktop) .fluxo-field-grow { flex: 1 1 100%; min-width: 0; }
+.app:not(.desktop) .fluxo-field-grow .period-shortcuts { flex-wrap: nowrap; }
+
+/* ─── Compacto: cabeçalho de tabela TRAVADO (mesma técnica do desktop) ───
+   O .table-wrap vira uma caixa rolável e o thead fica sticky no topo dela.
+   Vale para TODAS as tabelas que passam pelo TableWrap (Ativos, Gestores,
+   Grupos, Captação e Nível de Caixa). Vencimentos usa .venc-scroll próprio. */
+.app:not(.desktop) .table-wrap { max-height: 72vh; overflow: auto; }
+.app:not(.desktop) .table-wrap thead th,
+.app:not(.desktop) .venc-scroll thead th {
+  position: sticky; top: 0; z-index: 3; background: var(--card);
+}
+.app:not(.desktop) .table-wrap thead th.col-sticky { z-index: 4; }
+
+/* ─── Compacto: cards de indicadores em 3 por fileira ──────────────────
+   Captação e Nível de Caixa (6 cards → 2 fileiras de 3); Vencimentos (3 → 1
+   fileira). Fonte/padding menores pra caber 3 na largura do celular. */
+.app:not(.desktop) .fluxo-cards { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.app:not(.desktop) .fluxo-card { padding: 7px 6px; border-radius: 10px; gap: 1px; }
+.app:not(.desktop) .fluxo-card-label { font-size: 9.5px; line-height: 1.2; }
+.app:not(.desktop) .fluxo-card-value { font-size: 13.5px; }
+.app:not(.desktop) .liq-arrow { font-size: 11px; margin-right: 2px; }
 
 /* ─── Visão desktop: alarga o app e espalha melhor o conteúdo ── */
 .app.desktop { max-width: 1120px; }
@@ -1453,6 +1475,11 @@ a { color: var(--primary); }
 .venc-tables { display: flex; gap: 12px; align-items: flex-start; }
 .venc.compact .venc-tables { flex-direction: column; gap: 8px; }
 .venc-table-block { flex: 1 1 0; min-width: 0; }
+/* Compacto: empilhadas, cada bloco trava na largura da tela (senao o min-content
+   da tabela larga estica o bloco e a pagina inteira "samba"). A tabela rola
+   dentro do .venc-scroll (overflow:auto). */
+.venc.compact .venc-table-block { width: 100%; max-width: 100%; }
+.venc.compact .venc-scroll { max-width: 100%; }
 .venc-table-h { font-size: 13px; font-weight: 600; color: var(--text); margin: 10px 2px 6px; }
 
 /* Tabela padronizada com a .asset-table (fonte/altura/cores). */

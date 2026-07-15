@@ -34,6 +34,43 @@ export function fmtPctPL(f) {
   return (f * 100).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%'
 }
 
+// Apelido curto do fundo: os nomes oficiais sao enormes ("... FUNDO DE
+// INVESTIMENTO FINANCEIRO RENDA FIXA REFERENCIADO DI ... RESPONSABILIDADE
+// LIMITADA"). Aqui uma limpeza DETERMINISTICA tira o juridiques estrutural
+// (forma juridica, tipo de classe, indexador generico) e preserva marca +
+// estrategia. Nao e' um mapa curado — cabe na coluna; o nome completo continua
+// no tooltip (title). Ex.: "ITAU VERSO A", "BB TITULOS PUBLICOS", "KINEA ABSOLUTO".
+const APELIDO_RE = [
+  /RESPONSABILIDADE LIMITADA/g,
+  /\bRESP\.?\s*(LIMITADA|LTDA|LIM)\b/g,
+  /\bFUNDOS? DE INVESTIMENTO( FINANCEIRO)?( EM (COTAS|QUOTAS))?( DE FUNDOS DE INVESTIMENTO( FINANCEIRO)?)?/g,
+  /\b(EM|DE) (COTAS|QUOTAS)( DE FUNDOS DE INVESTIMENTO( FINANCEIRO)?)?/g,
+  /\bDE FUNDOS DE INVESTIMENTO( FINANCEIRO)?/g,
+  /\bCLASSE DE INVEST(IMENTO)?( EM COTAS)?\b/g,
+  /\bFIFE?\b/g, /\bFIC\b/g, /\bCIC\b/g, /\bDA CIC\b/g, /\bCI\b/g, /\bFI\b/g,
+  /RENDA\s+FIXA/g, /\bREFERENCIAD[OA]\b/g, /\bSIMPLES\b/g, /\bDI\b/g,
+  /\bLONGO PRAZO\b/g, /\bMULTIMERCADO\b/g, /\bFINANCEIRO\b/g,
+  /\bCLASSE\b/g, /\bCOTAS\b/g, /\bQUOTAS\b/g,
+]
+const APELIDO_TRAIL = /\s+(DE|DA|DO|EM|E|-|–)$/
+const APELIDO_LEAD = /^(DE|DA|DO|EM|E|-|–)\s+/
+export function apelidoFundo(nome, max = 32) {
+  if (!nome) return ''
+  let s = ' ' + String(nome).toUpperCase().replace(/["']/g, '') + ' '
+  for (const re of APELIDO_RE) s = s.replace(re, ' ')
+  s = s.replace(/\s*[-–]\s*/g, ' ')
+       .replace(/ (DE|EM|DA|DO) (DE|EM|DA|DO) /g, ' ')
+       .replace(/\s{2,}/g, ' ').trim()
+  let prev
+  do { prev = s; s = s.replace(APELIDO_TRAIL, '').replace(APELIDO_LEAD, '').trim() } while (s !== prev)
+  if (s.length < 2) s = String(nome).toUpperCase().replace(/["']/g, '').trim()
+  if (s.length > max) {
+    const cut = s.slice(0, max), sp = cut.lastIndexOf(' ')
+    s = (sp > max * 0.55 ? cut.slice(0, sp) : cut).trim() + '…'
+  }
+  return s
+}
+
 // Rotulos e classes de nivel de confianca / classificacao de fundo caixa.
 export const CONF_LABEL = { alto: 'Alto', medio: 'Médio', baixo: 'Baixo' }
 
