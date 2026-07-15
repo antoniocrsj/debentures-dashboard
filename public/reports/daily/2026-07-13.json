@@ -3,7 +3,7 @@
   "label": "13/07/2026",
   "previousDate": "2026-07-10",
   "sourceDates": {
-    "debentures": "2026-07-08",
+    "debentures": "2026-07-13",
     "cap12431": "2026-07-09",
     "capTrad": "2026-07-09",
     "perf12431": "2026-07-09",
@@ -13,7 +13,7 @@
     "fundos": "2026-07-08"
   },
   "novoPorFonte": {
-    "debentures": false,
+    "debentures": true,
     "cap": true,
     "anbima": true,
     "fundos": false,
@@ -21,11 +21,15 @@
   },
   "summary": [
     {
+      "texto": "3 nova(s) debênture(s) cadastrada(s)",
+      "tom": "pos"
+    },
+    {
       "texto": "Captação líquida Incentivados: −R$ 437 mi",
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional: −R$ 168 mi",
+      "texto": "Captação líquida Tradicional: −R$ 166 mi",
       "tom": "neg"
     },
     {
@@ -51,7 +55,50 @@
   ],
   "sections": {
     "debentures": {
-      "novas": [],
+      "novas": [
+        {
+          "ticker": "APLE11",
+          "empresa": "APPLE PARTICIPACOES S.A.",
+          "grupo": "",
+          "cnpj": "60517062000105",
+          "dataRegistro": "13/07/2026",
+          "dataEmissao": "07/07/2026",
+          "vencimento": "07/07/2030",
+          "indexador": "DI",
+          "taxa": "2,4",
+          "volumeEmitido": 230000000,
+          "incentivada": false,
+          "coordenador": "BANCO BRADESCO BBI S/A"
+        },
+        {
+          "ticker": "BESA12",
+          "empresa": "BAESA-ENERGETICA BARRA GRANDE S/A",
+          "grupo": "",
+          "cnpj": "04781143000139",
+          "dataRegistro": "13/07/2026",
+          "dataEmissao": "06/07/2026",
+          "vencimento": "15/07/2033",
+          "indexador": "DI",
+          "taxa": "1,26",
+          "volumeEmitido": 316000000,
+          "incentivada": false,
+          "coordenador": "ITAU UNIBANCO HOLDING S.A"
+        },
+        {
+          "ticker": "VERTB6",
+          "empresa": "VERT COMPANHIA  SECURITIZADORA",
+          "grupo": "Vert Companhia Securitizadora",
+          "cnpj": "25005683000109",
+          "dataRegistro": "13/07/2026",
+          "dataEmissao": "29/09/2025",
+          "vencimento": "20/06/2029",
+          "indexador": "PRÉ",
+          "taxa": "0",
+          "volumeEmitido": 67039121,
+          "incentivada": false,
+          "coordenador": "ITAU UNIBANCO HOLDING S.A"
+        }
+      ],
       "saidas": [],
       "temSnapshotAnterior": false
     },
@@ -59,37 +106,37 @@
       "12431": {
         "dia": "2026-07-09",
         "captacao": 70678768.88999999,
-        "resgate": 508126649.78000003,
-        "liquido": -437447880.89000005,
-        "pl": 337006238976.78,
-        "numFundos": 1649,
+        "resgate": 507930868.44,
+        "liquido": -437252099.55,
+        "pl": 337137085411.29,
+        "numFundos": 1654,
         "curados": 1684,
         "fechados": 286,
         "anterior": {
           "dia": "2026-07-08",
           "captacao": 133464796.72999999,
-          "resgate": 349488228.44000006,
-          "liquido": -216023431.71000007,
-          "pl": 337946177902.05,
+          "resgate": 349962228.44000006,
+          "liquido": -216497431.71000007,
+          "pl": 337945925617.22,
           "numFundos": 1656
         }
       },
       "trad": {
         "dia": "2026-07-09",
-        "captacao": 889955390.4400002,
-        "resgate": 1058429439.4999999,
-        "liquido": -168474049.0599997,
-        "pl": 1083860415591.0398,
-        "numFundos": 821,
+        "captacao": 887680556.6900002,
+        "resgate": 1053864502.9999999,
+        "liquido": -166183946.3099997,
+        "pl": 1084943671649.1399,
+        "numFundos": 827,
         "curados": 839,
         "fechados": 30,
         "anterior": {
           "dia": "2026-07-08",
-          "captacao": 1359120417.5900004,
-          "resgate": 1558071399.4900005,
-          "liquido": -198950981.9000001,
-          "pl": 1084283401052.8202,
-          "numFundos": 827
+          "captacao": 1359541352.7300003,
+          "resgate": 1557067950.1700006,
+          "liquido": -197526597.4400003,
+          "pl": 1084426575687.4003,
+          "numFundos": 828
         }
       }
     },
@@ -107,7 +154,7 @@
           "captacao": 3000000,
           "resgate": 0,
           "liquido": 3000000,
-          "pl": 2287816622.89
+          "pl": 2308446884.99
         },
         {
           "gestor": "Bocaina",
@@ -128,7 +175,7 @@
           "captacao": 138757.97,
           "resgate": 24644.76,
           "liquido": 114113.21,
-          "pl": 2609934958.08
+          "pl": 2660061215.02
         }
       ],
       "top12431Resgate": [
@@ -211,14 +258,14 @@
           "captacao": 44124347.38,
           "resgate": 201090782.9,
           "liquido": -156966435.52,
-          "pl": 217537898564.91
+          "pl": 217591486051.36
         },
         {
           "gestor": "AZ Quest",
-          "captacao": 1080947.55,
-          "resgate": 28003603.62,
-          "liquido": -26922656.07,
-          "pl": 19763229934.55
+          "captacao": 1084875.55,
+          "resgate": 28296637.28,
+          "liquido": -27211761.73,
+          "pl": 19899237866.62
         },
         {
           "gestor": "Chromo",
@@ -236,10 +283,10 @@
         },
         {
           "gestor": "XPG",
-          "captacao": 2106659.82,
+          "captacao": 2071159.82,
           "resgate": 20407047.37,
-          "liquido": -18300387.55,
-          "pl": 15087957658.87
+          "liquido": -18335887.55,
+          "pl": 15091134814.28
         }
       ]
     },
@@ -1732,6 +1779,14 @@
           "pl": 19554236.15
         },
         {
+          "cnpj": "63138979000189",
+          "nome": "SANTANDER PB PJ INVESTIMENTO EM INFRA RENDA FIXA - FIF RESP LIMITADA",
+          "gestor": "San WM",
+          "segmento": "12431",
+          "retorno": -2.9976,
+          "pl": 195819.98
+        },
+        {
           "cnpj": "59123735000155",
           "nome": "PORTO PAINEIRA CDI FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA RF CRÉD PRIV RESP LIMITADA",
           "gestor": "Porto Asset",
@@ -1754,14 +1809,6 @@
           "segmento": "12431",
           "retorno": -0.1185,
           "pl": 156537504.2
-        },
-        {
-          "cnpj": "58311520000103",
-          "nome": "VINCI FIF CLASSE DE INVESTIMENTO RF CRED PRIV INVESTIMENTO EM INFRA - RESPONSABILIDADE LIMITADA",
-          "gestor": "Vinci",
-          "segmento": "12431",
-          "retorno": -0.056,
-          "pl": 401048942.42
         }
       ],
       "topTradPos": [
@@ -1808,6 +1855,14 @@
       ],
       "topTradNeg": [
         {
+          "cnpj": "30568485000185",
+          "nome": "AUGME INSTITUCIONAL CLASSE DE  INVESTIMENTO RENDA FIXA CRÉDITO PRIVADO - RESP LIMITADA",
+          "gestor": "Augme",
+          "segmento": "trad",
+          "retorno": -2.5293,
+          "pl": 18403235.84
+        },
+        {
           "cnpj": "51075995000190",
           "nome": "AUGME VINTAGE I CLASSE DE INVESTIMENTO  RENDA FIXA CRÉDITO PRIVADO - RESP LIMITADA",
           "gestor": "Augme",
@@ -1838,19 +1893,15 @@
           "segmento": "trad",
           "retorno": -0.1663,
           "pl": 47079962.93
-        },
-        {
-          "cnpj": "41881271000180",
-          "nome": "TRANCOSO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
-          "gestor": "Inter",
-          "segmento": "trad",
-          "retorno": -0.1404,
-          "pl": 46217496.63
         }
       ]
     },
     "inclusoes": {
-      "novosDebentures": [],
+      "novosDebentures": [
+        "APLE11",
+        "BESA12",
+        "VERTB6"
+      ],
       "novosBlc": [],
       "temSnapshotBlc": true
     },
@@ -1860,71 +1911,7 @@
         "texto": "74 ativo(s) no BLC sem correspondencia em Debentures.csv"
       }
     ],
-    "emissoesCVM": {
-      "asOf": "2026-07-14",
-      "itens": [
-        {
-          "dataRegistro": "2026-07-13",
-          "dataRequerimento": "2026-07-13",
-          "emissor": "SOCICAM ADMINISTRACAO, PROJETOS E REPRESENTACOES S.A.",
-          "cnpj": "43217280000105",
-          "emissao": 2,
-          "valor": 100000000,
-          "incentivada": false,
-          "lider": "XP INVESTIMENTOS CCTVM S.A.",
-          "grupo": "Socicam"
-        },
-        {
-          "dataRegistro": "2026-07-10",
-          "dataRequerimento": "2026-07-06",
-          "emissor": "ARENA SERRA DOURADA S.A.",
-          "cnpj": "60311421000165",
-          "emissao": 1,
-          "valor": 120000000,
-          "incentivada": false,
-          "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-          "grupo": ""
-        },
-        {
-          "dataRegistro": "2026-07-13",
-          "dataRequerimento": "2026-07-06",
-          "emissor": "APPLE PARTICIPACOES S.A.",
-          "cnpj": "60517062000105",
-          "emissao": 1,
-          "valor": 230000000,
-          "incentivada": false,
-          "lider": "BANCO BRADESCO BBI S.A.",
-          "grupo": ""
-        },
-        {
-          "dataRegistro": "2026-07-13",
-          "dataRequerimento": "2026-07-06",
-          "emissor": "BAESA-ENERGETICA BARRA GRANDE S/A",
-          "cnpj": "04781143000139",
-          "emissao": 2,
-          "valor": 316000000,
-          "incentivada": false,
-          "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-          "grupo": ""
-        }
-      ]
-    },
-    "emissoresFaltantes": {
-      "itens": [
-        {
-          "cnpj": "60311421000165",
-          "emissor": "ARENA SERRA DOURADA S.A."
-        },
-        {
-          "cnpj": "60517062000105",
-          "emissor": "APPLE PARTICIPACOES S.A."
-        },
-        {
-          "cnpj": "04781143000139",
-          "emissor": "BAESA-ENERGETICA BARRA GRANDE S/A"
-        }
-      ],
-      "asOf": "2026-07-14"
-    }
+    "emissoesCVM": null,
+    "emissoresFaltantes": null
   }
 }

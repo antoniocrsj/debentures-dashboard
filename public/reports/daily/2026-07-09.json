@@ -21,7 +21,7 @@
   },
   "summary": [
     {
-      "texto": "Captação líquida Incentivados: −R$ 41 mi",
+      "texto": "Captação líquida Incentivados: −R$ 34 mi",
       "tom": "neg"
     },
     {
@@ -62,9 +62,9 @@
       "12431": {
         "dia": "2026-07-07",
         "captacao": 142706853.48999998,
-        "resgate": 183229713.59999996,
-        "liquido": -40522860.109999985,
-        "pl": 335717299597.5601,
+        "resgate": 176740413.59999996,
+        "liquido": -34033560.109999985,
+        "pl": 335717362829.2501,
         "numFundos": 1652,
         "curados": 1684,
         "fechados": 286,
@@ -73,26 +73,26 @@
           "captacao": 141664445.71,
           "resgate": 478331550.07999986,
           "liquido": -336667104.3699999,
-          "pl": 336912575945.77,
-          "numFundos": 1659
+          "pl": 337158236406.3199,
+          "numFundos": 1660
         }
       },
       "trad": {
         "dia": "2026-07-07",
-        "captacao": 1415339828.8699996,
-        "resgate": 1354795376.9900002,
-        "liquido": 60544451.8799994,
-        "pl": 1080122023779.1405,
-        "numFundos": 822,
+        "captacao": 1415760769.0099995,
+        "resgate": 1354791927.6700003,
+        "liquido": 60968841.3399992,
+        "pl": 1080307130972.2004,
+        "numFundos": 825,
         "curados": 839,
         "fechados": 30,
         "anterior": {
           "dia": "2026-07-06",
-          "captacao": 1727370733.11,
-          "resgate": 2544486391.07,
-          "liquido": -817115657.9600003,
-          "pl": 1081666911522.44,
-          "numFundos": 827
+          "captacao": 1727770831.72,
+          "resgate": 2573377121.59,
+          "liquido": -845606289.8700001,
+          "pl": 1083368025624.3099,
+          "numFundos": 831
         }
       }
     },
@@ -228,14 +228,14 @@
           "captacao": 1917522.84,
           "resgate": 66081894.14,
           "liquido": -64164371.3,
-          "pl": 19940438383.94
+          "pl": 19940417529.92
         },
         {
           "gestor": "IAM",
           "captacao": 106399410.29,
           "resgate": 154706844.8,
           "liquido": -48307434.510000005,
-          "pl": 217589859304.07
+          "pl": 217589559198.32
         },
         {
           "gestor": "Icatu",
@@ -1727,14 +1727,6 @@
       ],
       "top12431Neg": [
         {
-          "cnpj": "61141536000111",
-          "nome": "BB MASTER RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
-          "gestor": "BB Asset",
-          "segmento": "12431",
-          "retorno": -25.4397,
-          "pl": 572353492.98
-        },
-        {
           "cnpj": "60491442000100",
           "nome": "ITAÚBA FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA RESP LIMITADA",
           "gestor": "IAM",
@@ -1765,6 +1757,14 @@
           "segmento": "12431",
           "retorno": -0.4228,
           "pl": 33412430.85
+        },
+        {
+          "cnpj": "52342478000101",
+          "nome": "G5 CDM FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
+          "gestor": "G5",
+          "segmento": "12431",
+          "retorno": -0.3883,
+          "pl": 9487655.29
         }
       ],
       "topTradPos": [

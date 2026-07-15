@@ -1,7 +1,7 @@
 {
   "date": "2026-07-08",
   "label": "08/07/2026",
-  "previousDate": "2026-07-07",
+  "previousDate": null,
   "sourceDates": {
     "debentures": "2026-07-08",
     "cap12431": "2026-07-06",
@@ -29,7 +29,7 @@
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional: −R$ 817 mi",
+      "texto": "Captação líquida Tradicional: −R$ 846 mi",
       "tom": "neg"
     },
     {
@@ -83,35 +83,35 @@
         "captacao": 141664445.71,
         "resgate": 478331550.07999986,
         "liquido": -336667104.3699999,
-        "pl": 336912575945.77,
-        "numFundos": 1659,
+        "pl": 337158236406.3199,
+        "numFundos": 1660,
         "curados": 1684,
         "fechados": 286,
         "anterior": {
           "dia": "2026-07-03",
           "captacao": 160830778.71999997,
-          "resgate": 275714037.96999997,
-          "liquido": -114883259.25,
-          "pl": 338157088973.5002,
+          "resgate": 275764037.96999997,
+          "liquido": -114933259.25,
+          "pl": 338157017210.3802,
           "numFundos": 1658
         }
       },
       "trad": {
         "dia": "2026-07-06",
-        "captacao": 1727370733.11,
-        "resgate": 2544486391.07,
-        "liquido": -817115657.9600003,
-        "pl": 1081666911522.44,
-        "numFundos": 827,
+        "captacao": 1727770831.72,
+        "resgate": 2573377121.59,
+        "liquido": -845606289.8700001,
+        "pl": 1083368025624.3099,
+        "numFundos": 831,
         "curados": 839,
         "fechados": 30,
         "anterior": {
           "dia": "2026-07-03",
-          "captacao": 1327653050.9199998,
-          "resgate": 1613786249.8000002,
-          "liquido": -286133198.88000035,
-          "pl": 1083535254316.4503,
-          "numFundos": 830
+          "captacao": 1328073986.0599997,
+          "resgate": 1612782800.48,
+          "liquido": -284708814.4200003,
+          "pl": 1083565968600.9203,
+          "numFundos": 831
         }
       }
     },
@@ -129,7 +129,7 @@
           "captacao": 2650000,
           "resgate": 0,
           "liquido": 2650000,
-          "pl": 2294952464.46
+          "pl": 2294911743.23
         },
         {
           "gestor": "Rafter",
@@ -233,7 +233,7 @@
           "captacao": 44082431.01,
           "resgate": 515718466.77,
           "liquido": -471636035.76,
-          "pl": 15240978965.69
+          "pl": 15271080300.24
         },
         {
           "gestor": "SAM",
@@ -254,14 +254,14 @@
           "captacao": 94371579.88,
           "resgate": 234956013.69,
           "liquido": -140584433.81,
-          "pl": 217502314607.15
+          "pl": 217501915302.12
         },
         {
-          "gestor": "CEF Asset",
-          "captacao": 35527870.13,
-          "resgate": 90151312.95,
-          "liquido": -54623442.82,
-          "pl": 68533332819.43
+          "gestor": "AZ Quest",
+          "captacao": 8605448.55,
+          "resgate": 78196858.75,
+          "liquido": -69591410.2,
+          "pl": 19988746815.21
         }
       ]
     },
@@ -1728,31 +1728,23 @@
           "pl": 36540434.88
         },
         {
-          "cnpj": "54200289000111",
-          "nome": "SK8 FIF - CLASSE DE INVESTIMENTO RENDA FIXA INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA",
-          "gestor": "G5",
-          "segmento": "12431",
-          "retorno": 0.8088,
-          "pl": 17380611.77
-        },
-        {
           "cnpj": "53906748000114",
           "nome": "PSO 2 FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
           "gestor": "BTG WM",
           "segmento": "12431",
           "retorno": 0.5814,
           "pl": 125232727.99
+        },
+        {
+          "cnpj": "61692294000154",
+          "nome": "4UM ICM I INFRAESTRUTURA FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "gestor": "4UM",
+          "segmento": "12431",
+          "retorno": 0.5714,
+          "pl": 74835672.37
         }
       ],
       "top12431Neg": [
-        {
-          "cnpj": "63138979000189",
-          "nome": "SANTANDER PB PJ INVESTIMENTO EM INFRA RENDA FIXA - FIF RESP LIMITADA",
-          "gestor": "San WM",
-          "segmento": "12431",
-          "retorno": -42.8533,
-          "pl": 206007.91
-        },
         {
           "cnpj": "63319624000196",
           "nome": "A1 CRÉDITO FIF INVESTIMENTO EM DEBÊNTURES DE INFRA CDI ATIVO RF CRED PRIV RESP LIMITADA",
@@ -1784,6 +1776,14 @@
           "segmento": "12431",
           "retorno": -1.2192,
           "pl": 522699401.86
+        },
+        {
+          "cnpj": "54341666000132",
+          "nome": "V7 FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
+          "gestor": "BTG WM",
+          "segmento": "12431",
+          "retorno": -0.9011,
+          "pl": 123818290.06
         }
       ],
       "topTradPos": [

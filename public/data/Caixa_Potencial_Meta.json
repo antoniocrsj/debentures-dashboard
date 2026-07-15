@@ -1,5 +1,5 @@
 {
-    "updatedAt":  "2026-07-13T19:01:22",
+    "updatedAt":  "2026-07-14T20:38:00",
     "definicao":  "Caixa Potencial Direto = Disponibilidades + Titulos Publicos + Operacoes Compromissadas (por TP_APLIC, todos os blocos). Nao inclui titulos bancarios/CDB/LCI/LCA/LF/DPGE, credito privado/debentures, valores a receber nem cotas comuns.",
     "mesesRecentes":  [
                           "202605",
@@ -31,7 +31,7 @@
                    "comCotasNaoIdentificadas":  899,
                    "candidatos":  37,
                    "caixaConsolidadoDataBase":  361751334911.63,
-                   "caixaEstimadoAtualConsolidado":  360426810505.74,
+                   "caixaEstimadoAtualConsolidado":  360085105838.72,
                    "fundosNaTabela":  2671,
                    "fundosCaixaConfirmados":  126,
                    "dadosInsuficientes":  7,
@@ -80,6 +80,8 @@
                                                               "10643489000173",
                                                               "20889217000101",
                                                               "65793919000125",
+                                                              "58258574000144",
+                                                              "55572497000104",
                                                               "58238959000140"
                                                           ],
                                  "descricao":  "Fundos_CDI.csv tem 839 fundos; Fluxo_Atualizacao.json (trad) processou 835 no Informe Diario. Gap = 4 fundos sem serie diaria."

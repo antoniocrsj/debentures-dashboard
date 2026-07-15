@@ -1,17 +1,7 @@
 {
-    "asOf":  "2026-07-14",
-    "geradoEm":  "2026-07-14T08:21:02",
+    "asOf":  "2026-07-15",
+    "geradoEm":  "2026-07-15T08:48:52",
     "itens":  [
-                  {
-                      "dataRegistro":  "2026-07-10",
-                      "dataRequerimento":  "2026-07-06",
-                      "emissor":  "ARENA SERRA DOURADA S.A.",
-                      "cnpj":  "60311421000165",
-                      "emissao":  1,
-                      "valor":  120000000,
-                      "incentivada":  false,
-                      "lider":  "ITAU BBA ASSESSORIA FINANCEIRA S.A"
-                  },
                   {
                       "dataRegistro":  "2026-07-13",
                       "dataRequerimento":  "2026-07-13",
@@ -23,22 +13,22 @@
                       "lider":  "XP INVESTIMENTOS CCTVM S.A."
                   },
                   {
-                      "dataRegistro":  "2026-07-13",
-                      "dataRequerimento":  "2026-07-06",
-                      "emissor":  "APPLE PARTICIPACOES S.A.",
-                      "cnpj":  "60517062000105",
-                      "emissao":  1,
-                      "valor":  230000000,
+                      "dataRegistro":  "2026-07-14",
+                      "dataRequerimento":  "2026-07-03",
+                      "emissor":  "ISA ENERGIA BRASIL S.A.",
+                      "cnpj":  "02998611000104",
+                      "emissao":  23,
+                      "valor":  1500000000,
                       "incentivada":  false,
-                      "lider":  "BANCO BRADESCO BBI S.A."
+                      "lider":  "ITAU BBA ASSESSORIA FINANCEIRA S.A"
                   },
                   {
-                      "dataRegistro":  "2026-07-13",
+                      "dataRegistro":  "2026-07-14",
                       "dataRequerimento":  "2026-07-06",
-                      "emissor":  "BAESA-ENERGETICA BARRA GRANDE S/A",
-                      "cnpj":  "04781143000139",
-                      "emissao":  2,
-                      "valor":  316000000,
+                      "emissor":  "ENGIE BRASIL ENERGIA S.A.",
+                      "cnpj":  "02474103000119",
+                      "emissao":  17,
+                      "valor":  700000000,
                       "incentivada":  false,
                       "lider":  "ITAU BBA ASSESSORIA FINANCEIRA S.A"
                   }

@@ -1,5 +1,5 @@
 {
-    "timestamp":  "2026-07-14T10:16:42",
+    "timestamp":  "2026-07-15T08:47:32",
     "modo":  "incremental",
     "mesesProcessados":  [
                              "202607",
@@ -10,7 +10,7 @@
                    ],
     "periodoCoberto":  {
                            "inicio":  "2026-06-01",
-                           "fim":  "2026-07-10"
+                           "fim":  "2026-07-14"
                        },
     "linhasInvalidas":  0,
     "12431":  {

@@ -3,7 +3,7 @@
   "label": "10/07/2026",
   "previousDate": "2026-07-09",
   "sourceDates": {
-    "debentures": "2026-07-08",
+    "debentures": "2026-07-10",
     "cap12431": "2026-07-08",
     "capTrad": "2026-07-08",
     "perf12431": "2026-07-08",
@@ -13,7 +13,7 @@
     "fundos": "2026-07-08"
   },
   "novoPorFonte": {
-    "debentures": false,
+    "debentures": true,
     "cap": true,
     "anbima": true,
     "fundos": true,
@@ -21,11 +21,15 @@
   },
   "summary": [
     {
+      "texto": "1 nova(s) debênture(s) cadastrada(s)",
+      "tom": "pos"
+    },
+    {
       "texto": "Captação líquida Incentivados: −R$ 216 mi",
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional: −R$ 199 mi",
+      "texto": "Captação líquida Tradicional: −R$ 198 mi",
       "tom": "neg"
     },
     {
@@ -54,7 +58,22 @@
   ],
   "sections": {
     "debentures": {
-      "novas": [],
+      "novas": [
+        {
+          "ticker": "ARSD11",
+          "empresa": "ARENA SERRA DOURADA SA.",
+          "grupo": "",
+          "cnpj": "60311421000165",
+          "dataRegistro": "10/07/2026",
+          "dataEmissao": "13/07/2026",
+          "vencimento": "13/07/2027",
+          "indexador": "DI",
+          "taxa": "1,3",
+          "volumeEmitido": 120000000,
+          "incentivada": false,
+          "coordenador": "ITAU UNIBANCO HOLDING S.A"
+        }
+      ],
       "saidas": [],
       "temSnapshotAnterior": false
     },
@@ -62,37 +81,37 @@
       "12431": {
         "dia": "2026-07-08",
         "captacao": 133464796.72999999,
-        "resgate": 349488228.44000006,
-        "liquido": -216023431.71000007,
-        "pl": 337946177902.05,
+        "resgate": 349962228.44000006,
+        "liquido": -216497431.71000007,
+        "pl": 337945925617.22,
         "numFundos": 1656,
         "curados": 1684,
         "fechados": 286,
         "anterior": {
           "dia": "2026-07-07",
           "captacao": 142706853.48999998,
-          "resgate": 183229713.59999996,
-          "liquido": -40522860.109999985,
-          "pl": 335717299597.5601,
+          "resgate": 176740413.59999996,
+          "liquido": -34033560.109999985,
+          "pl": 335717362829.2501,
           "numFundos": 1652
         }
       },
       "trad": {
         "dia": "2026-07-08",
-        "captacao": 1359120417.5900004,
-        "resgate": 1558071399.4900005,
-        "liquido": -198950981.9000001,
-        "pl": 1084283401052.8202,
-        "numFundos": 827,
+        "captacao": 1359541352.7300003,
+        "resgate": 1557067950.1700006,
+        "liquido": -197526597.4400003,
+        "pl": 1084426575687.4003,
+        "numFundos": 828,
         "curados": 839,
         "fechados": 30,
         "anterior": {
           "dia": "2026-07-07",
-          "captacao": 1415339828.8699996,
-          "resgate": 1354795376.9900002,
-          "liquido": 60544451.8799994,
-          "pl": 1080122023779.1405,
-          "numFundos": 822
+          "captacao": 1415760769.0099995,
+          "resgate": 1354791927.6700003,
+          "liquido": 60968841.3399992,
+          "pl": 1080307130972.2004,
+          "numFundos": 825
         }
       }
     },
@@ -140,7 +159,7 @@
           "captacao": 1324743.33,
           "resgate": 91576913.64,
           "liquido": -90252170.31,
-          "pl": 7230993012.99
+          "pl": 7231116987.58
         },
         {
           "gestor": "BB Asset",
@@ -214,7 +233,7 @@
           "captacao": 97483161.36,
           "resgate": 208920792.99,
           "liquido": -111437631.63000001,
-          "pl": 217606833789.59
+          "pl": 217606532561.62
         },
         {
           "gestor": "JGP",
@@ -228,7 +247,7 @@
           "captacao": 4345151.23,
           "resgate": 76791673.98,
           "liquido": -72446522.75,
-          "pl": 15153074918.27
+          "pl": 15153091085.02
         },
         {
           "gestor": "Icatu",
@@ -242,7 +261,7 @@
           "captacao": 7049209.26,
           "resgate": 49206140.02,
           "liquido": -42156930.760000005,
-          "pl": 19907143176.09
+          "pl": 19907122312.97
         }
       ]
     },
@@ -1685,14 +1704,6 @@
     "perf": {
       "top12431Pos": [
         {
-          "cnpj": "61141536000111",
-          "nome": "BB MASTER RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
-          "gestor": "BB Asset",
-          "segmento": "12431",
-          "retorno": 34.264,
-          "pl": 3228696110.11
-        },
-        {
           "cnpj": "60491442000100",
           "nome": "ITAÚBA FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA RESP LIMITADA",
           "gestor": "IAM",
@@ -1723,6 +1734,14 @@
           "segmento": "12431",
           "retorno": 0.4377,
           "pl": 156793709.54
+        },
+        {
+          "cnpj": "62438200000188",
+          "nome": "BTG PACTUAL CRÉDITO CORPORATIVO PLUS INCENTIVADO CDI FI DE INVESTIMENTO FINANCEIRO EM INFRA RF",
+          "gestor": "BTG Asset",
+          "segmento": "12431",
+          "retorno": 0.3199,
+          "pl": 248903367.92
         }
       ],
       "top12431Neg": [
@@ -1733,6 +1752,14 @@
           "segmento": "12431",
           "retorno": -6.1894,
           "pl": 117576249.83
+        },
+        {
+          "cnpj": "63138979000189",
+          "nome": "SANTANDER PB PJ INVESTIMENTO EM INFRA RENDA FIXA - FIF RESP LIMITADA",
+          "gestor": "San WM",
+          "segmento": "12431",
+          "retorno": -0.2723,
+          "pl": 201871.25
         },
         {
           "cnpj": "54952575000133",
@@ -1757,14 +1784,6 @@
           "segmento": "12431",
           "retorno": -0.1277,
           "pl": 82134842.32
-        },
-        {
-          "cnpj": "54954879000130",
-          "nome": "ITAÚ DEBÊNTURES INCENTIVADAS PRÉ TARGET 2030 II FIF INCENTIVADO EM INFRA RF CRED PRIV RESP LIMITADA",
-          "gestor": "IAM",
-          "segmento": "12431",
-          "retorno": -0.127,
-          "pl": 126333749.5
         }
       ],
       "topTradPos": [
@@ -1853,7 +1872,9 @@
       ]
     },
     "inclusoes": {
-      "novosDebentures": [],
+      "novosDebentures": [
+        "ARSD11"
+      ],
       "novosBlc": [
         "CGASA5",
         "CPGS16",
