@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback } from 'react'
 import { useCaixa } from '../../hooks/useCaixa.js'
-import { fmtPctPL, fmtMes, aggregateGestores } from '../../utils/caixa.js'
+import { fmtPctPL, fmtMes, aggregateGestores, ehFundoCredito } from '../../utils/caixa.js'
 import { fmtFluxo, fmtFluxoSigned, fmtInt } from '../../utils/fluxo.js'
 import CaixaPctPLLine from './CaixaPctPLLine.jsx'
 import CaixaGestorTable from './CaixaGestorTable.jsx'
@@ -11,16 +11,9 @@ const SEGMENTOS = [
   { id: 'CDI', label: 'Tradicional (CDI)' },
   { id: '12431', label: 'Incentivados (12.431)' },
 ]
-const CLASSES = [
-  { id: '', label: 'Todas' },
-  { id: 'confirmado', label: 'Fundos caixa' },
-  { id: 'candidato', label: 'Candidatos' },
-]
-
 export default function CaixaDashboard({ compact = false }) {
   const { loading, error, fundos, gestores, meta, historico, reload } = useCaixa()
   const [segmento, setSegmento] = useState('CDI')   // padrao: Tradicional (mercados separados)
-  const [classe, setClasse] = useState('')
   const [gestor, setGestor] = useState('')
   const [search, setSearch] = useState('')
 
@@ -37,12 +30,11 @@ export default function CaixaDashboard({ compact = false }) {
     const q = search.trim().toLowerCase()
     return fundos.filter(f => {
       if (segmento && f.segmento !== segmento) return false
-      if (classe && f.classeKind !== classe) return false
       if (gestor && f.gestor !== gestor) return false
       if (q && ![f.nome, f.gestor, f.cnpj].some(v => v?.toLowerCase().includes(q))) return false
       return true
     })
-  }, [fundos, segmento, classe, gestor, search])
+  }, [fundos, segmento, gestor, search])
 
   // Recorte por segmento/gestor ativo (sem classe/busca: cards e contagens
   // agregam o consolidado do recorte, nao a lista filtrada por texto).
@@ -67,10 +59,11 @@ export default function CaixaDashboard({ compact = false }) {
     }
   }, [segBase])
 
-  // Contagem de fundos caixa respeita o segmento/gestor ativo (coerente com o
-  // card "Fundos no consolidado").
-  const confirmados = useMemo(() => segBase.filter(f => f.classeKind === 'confirmado').length, [segBase])
-  const candidatos = useMemo(() => segBase.filter(f => f.classeKind === 'candidato').length, [segBase])
+  // Fundos CAIXA da analise (money market/soberano): fora do universo de credito
+  // e >=90% em caixa. Numero GLOBAL (servem de liquidez pros dois mercados) — nao
+  // depende do segmento/gestor. Fundo de credito nunca entra aqui.
+  const fundosCaixa = useMemo(() => fundos.filter(f => !ehFundoCredito(f.segmento) && f.classeKind === 'confirmado').length, [fundos])
+  const fundosCaixaCand = useMemo(() => fundos.filter(f => !ehFundoCredito(f.segmento) && f.classeKind === 'candidato').length, [fundos])
 
   // Ranking de gestores derivado dos fundos (respeita o segmento; coerente com
   // os cards). So' cai para o CSV pre-agregado se os dados nao carregaram —
@@ -84,8 +77,8 @@ export default function CaixaDashboard({ compact = false }) {
 
   const mesBase = meta?.mesesRecentes?.[0] || fundos.find(f => f.mesBase)?.mesBase || ''
   // "Limpar" zera os sub-filtros mas mantem o mercado escolhido (nunca ha' "Todos").
-  const clearFilters = useCallback(() => { setClasse(''); setGestor(''); setSearch('') }, [])
-  const hasFilter = classe || gestor || search
+  const clearFilters = useCallback(() => { setGestor(''); setSearch('') }, [])
+  const hasFilter = gestor || search
 
   return (
     <section className="fluxo caixa" aria-label="Nível de caixa dos fundos">
@@ -119,13 +112,6 @@ export default function CaixaDashboard({ compact = false }) {
                   onClick={() => setSegmento(s.id)}>{s.label}</button>
               ))}
             </div>
-            <div className="segmented" role="tablist" aria-label="Classificação">
-              {CLASSES.map(c => (
-                <button key={c.id} type="button" role="tab" aria-selected={classe === c.id}
-                  className={`segmented-btn${classe === c.id ? ' active' : ''}`}
-                  onClick={() => setClasse(c.id)}>{c.label}</button>
-              ))}
-            </div>
             <select className="caixa-select" aria-label="Filtrar por gestor"
               value={gestor} onChange={e => setGestor(e.target.value)}>
               <option value="">Todos os gestores</option>
@@ -155,8 +141,8 @@ export default function CaixaDashboard({ compact = false }) {
               </span>
               <span className="fluxo-card-value">{fmtFluxoSigned(cards.fluxoPosterior)}</span>
             </div>
-            <Card label="Fundos caixa" sub="confirmados" value={fmtInt(confirmados)}
-              help={`${confirmados} confirmados (≥90% do PL em caixa, estáveis) + ${candidatos} candidatos (75–90%).`} />
+            <Card label="Fundos caixa" sub="na análise" value={fmtInt(fundosCaixa)}
+              help={`${fundosCaixa} fundos caixa (≥90% do PL em caixa/públicos/compromissada) + ${fundosCaixaCand} candidatos (75–90%). São os fundos de liquidez (money market/soberano) onde os fundos de crédito aplicam — fora das suas listas. Fundo de crédito nunca é fundo caixa. Número global (servem aos dois mercados).`} />
             <Card label="Fundos no consolidado" value={fmtInt(cards.nFundos)} />
           </div>
 

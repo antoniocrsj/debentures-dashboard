@@ -17,10 +17,6 @@ const KEYS = {
   estimado: f => f.caixaEstimado,
 }
 
-const KIND_LABEL = {
-  confirmado: 'Fundo caixa', candidato: 'Candidato', insuficiente: 'Sem dados', nao: '—',
-}
-
 // Segmento -> classe CSS segura + rotulo curto. Evita class="seg-(fora das
 // listas)" (espacos viram multiplas classes) e pilulas com texto longo.
 const SEG_BADGE = { CDI: { k: 'CDI', l: 'CDI' }, '12431': { k: '12431', l: '12.431' } }
@@ -60,7 +56,6 @@ export default function CaixaFundoTable({ fundos, title, subtitle }) {
               <SortableTh col="indireto" label="Indireto" sort={sort} onSort={onSort} />
               <SortableTh col="total" label="Caixa total" sort={sort} onSort={onSort} />
               <SortableTh col="estimado" label="Caixa estimado" sort={sort} onSort={onSort} />
-              <th className="th-plain">Classificação</th>
               <th className="th-plain">Confiança</th>
             </tr>
           </thead>
@@ -82,7 +77,6 @@ export default function CaixaFundoTable({ fundos, title, subtitle }) {
                 <td className="col-num">{f.caixaIndiretoConf > 0 ? fmtFluxo(f.caixaIndiretoConf) : '—'}</td>
                 <td className="col-num">{fmtFluxo(f.caixaTotal)}</td>
                 <td className="col-num">{f.caixaEstimado != null ? fmtFluxo(f.caixaEstimado) : '—'}</td>
-                <td><span className={`caixa-classe kind-${f.classeKind}`}>{KIND_LABEL[f.classeKind]}</span></td>
                 <td><span className={`caixa-conf conf-${f.confianca}`}>{CONF_LABEL[f.confianca] || '—'}</span></td>
               </tr>
             ))}

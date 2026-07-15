@@ -578,14 +578,22 @@ foreach ($cnpj in $fundosSaida) {
   $caixaTotal = $caixaDireto + $ind.Confirmado
   $pct = if ($plc -gt 0) { $caixaTotal / $plc } else { 0 }
   $classe = $mo.Classe[$cnpj]
-  $classeTxt = switch ($classe) { 'confirmado' {'fundo caixa confirmado'} 'candidato' {'candidato a fundo caixa'} default {'nao classificado'} }
-  # Estabilidade (regra do spec: preferir caixa em >= 2 meses validos). So' 1 mes
-  # valido -> provisorio; >= 2 meses validos mas caixa em < 2 -> instavel. Marca
-  # o rotulo e rebaixa a confianca, sem mexer no total nem na contagem (o prefixo
-  # 'fundo caixa confirmado'/'candidato' e' preservado).
-  if ($classe -ne 'nao') {
-    if ($estab.MesesValidos -lt 2) { $classeTxt += ' (provisorio: 1 mes)' }
-    elseif ($estab.MesesCaixa -lt 2) { $classeTxt += " (instavel: caixa em $($estab.MesesCaixa) de $($estab.MesesValidos) meses)" }
+  # Fundo de credito e fundo caixa sao coisas DIFERENTES. Um fundo do universo
+  # curado (12.431/CDI) NUNCA e' fundo caixa, mesmo com caixa% alto -- varios sao
+  # master/infra com muita compromissada (caixa% ate' >100%). So' os fundos de
+  # liquidez FORA das listas (money market/soberano) sao classificados como caixa.
+  $ehCurado = $universoCurado.Contains($cnpj)
+  if ($ehCurado) {
+    $classeTxt = 'nao classificado'
+  } else {
+    $classeTxt = switch ($classe) { 'confirmado' {'fundo caixa confirmado'} 'candidato' {'candidato a fundo caixa'} default {'nao classificado'} }
+    # Estabilidade: so' 1 mes valido -> provisorio; >= 2 meses validos mas caixa
+    # em < 2 -> instavel. Marca o rotulo (prefixo 'fundo caixa confirmado'/'candidato'
+    # preservado pra contagem).
+    if ($classe -ne 'nao') {
+      if ($estab.MesesValidos -lt 2) { $classeTxt += ' (provisorio: 1 mes)' }
+      elseif ($estab.MesesCaixa -lt 2) { $classeTxt += " (instavel: caixa em $($estab.MesesCaixa) de $($estab.MesesValidos) meses)" }
+    }
   }
   $cob = ($a.Ativos - $a.Passivos); $cobR = if ($plc -ne 0) { [math]::Round($cob/$plc,4) } else { $null }
   $caixaEstimado = if ($null -ne $plDia) { [math]::Round($pct * $plDia,2) } else { $null }
@@ -593,7 +601,7 @@ foreach ($cnpj in $fundosSaida) {
   # Nivel de confianca.
   $conf = 'alto'
   if ($estab.MesesValidos -lt 2) { $conf='medio' }
-  if ($classe -ne 'nao' -and $estab.MesesValidos -ge 2 -and $estab.MesesCaixa -lt 2) { $conf='medio' }  # classificado caixa mas instavel
+  if (-not $ehCurado -and $classe -ne 'nao' -and $estab.MesesValidos -ge 2 -and $estab.MesesCaixa -lt 2) { $conf='medio' }  # fundo caixa (fora das listas) classificado mas instavel
   if ($a.CotasNaoId -gt 0.10*$plc) { $conf='medio' }
   if ($mb -eq $MesRefMadura -and $mesesRecentesOrd.Count -gt 0) { if ($conf -eq 'alto') { $conf='medio' } }  # so' a madura valida
   if ($ind.Ciclo -or $ind.Truncado) { $conf='medio' }

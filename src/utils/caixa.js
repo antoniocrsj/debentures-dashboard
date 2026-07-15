@@ -71,6 +71,16 @@ export function apelidoFundo(nome, max = 32) {
   return s
 }
 
+// Universo de CREDITO curado = as listas 12.431 (incentivados) e CDI (tradicional).
+// Fundo de credito e fundo caixa sao coisas DIFERENTES: o de credito aplica em
+// fundo caixa pra gestao de liquidez. Um fundo de credito NUNCA e' fundo caixa,
+// mesmo com caixa% alto (varios sao master/infra com muita compromissada -> caixa%
+// ate' >100%). Os fundos caixa de verdade (money market/soberano) aparecem como
+// segmento '(fora das listas)'.
+export function ehFundoCredito(segmento) {
+  return segmento === 'CDI' || segmento === '12431'
+}
+
 // Rotulos e classes de nivel de confianca / classificacao de fundo caixa.
 export const CONF_LABEL = { alto: 'Alto', medio: 'Médio', baixo: 'Baixo' }
 
@@ -103,7 +113,12 @@ export function normalizeCaixaFundos(rows) {
     caixaTotal: num(r.CaixaPotencialTotal),
     pctPL: num(r.PctPL),
     classe: r.ClasseFundoCaixa || '',
-    classeKind: classeCaixaKind(r.ClasseFundoCaixa),
+    // Fundo de credito nunca e' fundo caixa: neutraliza confirmado/candidato pra
+    // quem esta' nas listas curadas (preserva 'insuficiente'/'nao'). Corrige ja'
+    // no app, antes mesmo do pipeline reprocessar.
+    classeKind: ehFundoCredito(r.Segmento) && ['confirmado', 'candidato'].includes(classeCaixaKind(r.ClasseFundoCaixa))
+      ? 'nao'
+      : classeCaixaKind(r.ClasseFundoCaixa),
     plDiario: num(r.PLDiario),
     dataPLDiario: r.DataPLDiario || '',
     caixaEstimado: num(r.CaixaEstimadoAtual),
