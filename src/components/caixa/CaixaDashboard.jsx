@@ -5,6 +5,7 @@ import { fmtFluxo, fmtFluxoSigned, fmtInt } from '../../utils/fluxo.js'
 import CaixaPctPLLine from './CaixaPctPLLine.jsx'
 import CaixaGestorTable from './CaixaGestorTable.jsx'
 import CaixaFundoTable from './CaixaFundoTable.jsx'
+import CaixaFundosCaixaTable from './CaixaFundosCaixaTable.jsx'
 
 // Mercados vistos SEPARADAMENTE (sem "Todos"): a aba sempre mostra um mercado.
 const SEGMENTOS = [
@@ -62,8 +63,10 @@ export default function CaixaDashboard({ compact = false }) {
   // Fundos CAIXA da analise (money market/soberano): fora do universo de credito
   // e >=90% em caixa. Numero GLOBAL (servem de liquidez pros dois mercados) — nao
   // depende do segmento/gestor. Fundo de credito nunca entra aqui.
-  const fundosCaixa = useMemo(() => fundos.filter(f => !ehFundoCredito(f.segmento) && f.classeKind === 'confirmado').length, [fundos])
-  const fundosCaixaCand = useMemo(() => fundos.filter(f => !ehFundoCredito(f.segmento) && f.classeKind === 'candidato').length, [fundos])
+  const fundosCaixaAll = useMemo(() => fundos.filter(f =>
+    !ehFundoCredito(f.segmento) && (f.classeKind === 'confirmado' || f.classeKind === 'candidato')), [fundos])
+  const fundosCaixa = useMemo(() => fundosCaixaAll.filter(f => f.classeKind === 'confirmado').length, [fundosCaixaAll])
+  const fundosCaixaCand = fundosCaixaAll.length - fundosCaixa
 
   // Ranking de gestores derivado dos fundos (respeita o segmento; coerente com
   // os cards). So' cai para o CSV pre-agregado se os dados nao carregaram —
@@ -159,6 +162,10 @@ export default function CaixaDashboard({ compact = false }) {
               ? 'Caixa direto (disp.+títulos púb.+compromissadas) e indireto via fundos-caixa'
               : 'Ordenados por caixa potencial total — clique num gestor acima para filtrar'}
           />
+
+          {/* Fundos caixa (liquidez): os money market/soberano onde o crédito
+              aplica. Lista global — independe do mercado/gestor selecionado. */}
+          <CaixaFundosCaixaTable fundos={fundosCaixaAll} />
 
           {/* Rodapé: limitações e regra */}
           {meta && (
