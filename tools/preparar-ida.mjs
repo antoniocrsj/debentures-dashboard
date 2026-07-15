@@ -45,10 +45,16 @@ const BENCH = [
   { codigo: 'IMAB', nome: 'IMA-B' },   // NTN-B     -> livre de risco do IPCA+
 ]
 // Pares credito x govt pro spread agregado.
+//   ExcRet252 (regime, excesso de retorno anualizado) sai pra TODOS.
+//   SpreadNivelBps (nivel implicito) so' pro CDI: la o livre de risco (IMA-S/LFT)
+//   tem duration ~zero, entao o excesso e' credito PURO e a integracao fecha. No
+//   IPCA a dinamica da curva de juro real (curva/convexidade/roll) NAO cancela e
+//   se acumula na integracao longa -> nivel nao confiavel; so' regime. (O nivel
+//   IPCA por ativo virah do arquivo diario de secundario, track a' parte.)
 const PARES = [
-  { par: 'CDI',       credito: 'IDADI',                 govt: 'IMAS', ancora: 'cdi'  },
-  { par: 'IPCA',      credito: 'IDAIPCA',               govt: 'IMAB', ancora: 'ipca' },
-  { par: 'IPCAINFRA', credito: 'IDAIPCAINFRAESTRUTURA', govt: 'IMAB', ancora: 'ipca' },
+  { par: 'CDI',       credito: 'IDADI',                 govt: 'IMAS', ancora: 'cdi',       nivel: true  },
+  { par: 'IPCA',      credito: 'IDAIPCA',               govt: 'IMAB', ancora: 'ipca',      nivel: false },
+  { par: 'IPCAINFRA', credito: 'IDAIPCAINFRAESTRUTURA', govt: 'IMAB', ancora: 'ipcaInfra', nivel: false },
 ]
 const WIN = 252  // janela do excesso de retorno anualizado (dias uteis ~ 1 ano)
 
@@ -153,14 +159,32 @@ function parseNumPt(s) {
   if (t.includes(',')) t = t.replace(/\./g, '').replace(',', '.')
   const n = Number(t); return Number.isFinite(n) ? n : null
 }
-function ancoras() {
-  // Retorna { cdi, ipca } em DECIMAL (ex.: 0.021 = 2,1% = 210 bps). null se sem base.
-  const path = join(PUBLIC, 'Anbima_Tx.csv')
-  if (!existsSync(path)) return { cdi: null, ipca: null, base: 'sem Anbima_Tx.csv' }
+// Mapa ticker -> incentivada (Lei 12.431) do Debentures.csv, pra separar a
+// ancora do Infra (so' incentivadas) da ancora do IPCA amplo (todas).
+function incentivadaMap() {
+  const path = join(PUBLIC, 'Debentures.csv')
+  const map = new Map()
+  if (!existsSync(path)) return map
   const lines = readFileSync(path, 'utf8').split(/\r?\n/).filter(Boolean)
   const H = splitCsvLine(lines[0]).map(h => h.replace(/^"|"$/g, ''))
-  const iIdx = H.indexOf('indexadorAnbima'), iTx = H.indexOf('txAnbimaFormatada'), iNtnb = H.indexOf('spreadNtnbBps')
-  const cdi = [], ipca = []
+  const iCod = H.indexOf('Codigo do Ativo'), iInc = H.indexOf('Deb. Incent. (Lei 12.431)')
+  if (iCod < 0 || iInc < 0) return map
+  for (let i = 1; i < lines.length; i++) {
+    const f = splitCsvLine(lines[i]).map(x => x.replace(/^"|"$/g, ''))
+    const tk = (f[iCod] || '').trim().toUpperCase()
+    if (tk) map.set(tk, (f[iInc] || '').trim().toUpperCase() === 'S')
+  }
+  return map
+}
+function ancoras() {
+  // Retorna { cdi, ipca, ipcaInfra } em DECIMAL (0.021 = 2,1% = 210 bps).
+  const path = join(PUBLIC, 'Anbima_Tx.csv')
+  if (!existsSync(path)) return { cdi: null, ipca: null, ipcaInfra: null }
+  const inc = incentivadaMap()
+  const lines = readFileSync(path, 'utf8').split(/\r?\n/).filter(Boolean)
+  const H = splitCsvLine(lines[0]).map(h => h.replace(/^"|"$/g, ''))
+  const iTk = H.indexOf('ticker'), iIdx = H.indexOf('indexadorAnbima'), iTx = H.indexOf('txAnbimaFormatada'), iNtnb = H.indexOf('spreadNtnbBps')
+  const cdi = [], ipca = [], ipcaInfra = []
   for (let i = 1; i < lines.length; i++) {
     const f = splitCsvLine(lines[i]).map(x => x.replace(/^"|"$/g, ''))
     const idx = (f[iIdx] || '').toUpperCase(), tx = f[iTx] || ''
@@ -168,14 +192,16 @@ function ancoras() {
       const m = tx.match(/CDI\s*([+-])\s*([\d.,]+)\s*%/i)
       if (m) { const v = parseNumPt(m[2]); if (v != null) cdi.push((m[1] === '-' ? -v : v) / 100) }
     } else if (idx.startsWith('IPCA')) {                 // NTN-B+ : spreadNtnbBps
-      const b = parseNumPt(f[iNtnb]); if (b != null) ipca.push(b / 10000)
+      const b = parseNumPt(f[iNtnb])
+      if (b != null) { ipca.push(b / 10000); if (inc.get((f[iTk] || '').trim().toUpperCase())) ipcaInfra.push(b / 10000) }
     }
   }
-  return { cdi: mediana(cdi), ipca: mediana(ipca), nCdi: cdi.length, nIpca: ipca.length }
+  return { cdi: mediana(cdi), ipca: mediana(ipca), ipcaInfra: mediana(ipcaInfra),
+           nCdi: cdi.length, nIpca: ipca.length, nInfra: ipcaInfra.length }
 }
 
 // ─── Spread agregado por par (regime + nivel implicito ancorado) ─────────────
-function calcSpread(credito, govt, anchor) {
+function calcSpread(credito, govt, anchor, computeLevel) {
   // alinha por datas comuns (ordem crescente)
   const gmap = new Map(govt.map(r => [r.data, r]))
   const rows = credito.filter(r => gmap.has(r.data)).map(r => ({ c: r, g: gmap.get(r.data) }))
@@ -188,7 +214,7 @@ function calcSpread(credito, govt, anchor) {
   }
   // nivel implicito (bps): integra dSpread de tras pra frente ancorando no hoje.
   const nivel = new Array(n).fill(null)
-  if (anchor != null && Number.isFinite(anchor) && n > 1) {
+  if (computeLevel && anchor != null && Number.isFinite(anchor) && n > 1) {
     nivel[n - 1] = anchor
     for (let i = n - 1; i >= 1; i--) {
       const excD = ((rows[i].c.vd ?? 0) - (rows[i].g.vd ?? 0)) / 100   // excesso do dia (decimal)
@@ -227,18 +253,19 @@ async function main() {
 
   // 2) Ancoras (spread real de hoje) + spread agregado por par
   const anc = ancoras()
-  console.log(`  ancoras hoje: CDI+ ${anc.cdi != null ? (anc.cdi * 10000).toFixed(0) + 'bps' : '-'} (${anc.nCdi || 0}) | NTN-B+ ${anc.ipca != null ? (anc.ipca * 10000).toFixed(0) + 'bps' : '-'} (${anc.nIpca || 0})`)
+  const bps = x => x != null ? Math.round(x * 10000) : null
+  console.log(`  ancoras hoje (bps): CDI+ ${bps(anc.cdi)} (${anc.nCdi || 0}) | NTN-B+ amplo ${bps(anc.ipca)} (${anc.nIpca || 0}) | NTN-B+ incentiv. ${bps(anc.ipcaInfra)} (${anc.nInfra || 0})`)
   const spCsv = ['Par,Data,ExcRet252,SpreadNivelBps']
   const metaPar = []
   for (const p of PARES) {
     const cr = series[p.credito], gv = series[p.govt]
     if (!cr || !gv) { console.error(`  [spread ${p.par}] serie ausente`); continue }
-    const anchor = p.ancora === 'cdi' ? anc.cdi : anc.ipca
-    const out = calcSpread(cr, gv, anchor)
+    const anchor = p.ancora === 'cdi' ? anc.cdi : p.ancora === 'ipcaInfra' ? anc.ipcaInfra : anc.ipca
+    const out = calcSpread(cr, gv, anchor, p.nivel)
     for (const r of out) spCsv.push([p.par, r.data, r.exc, r.nivelBps].join(','))
     const ult = out.at(-1)
-    console.log(`  [spread ${p.par}] ${out.length} dias  ${out[0]?.data} -> ${ult?.data}  exc12m=${ult?.exc}%  nivel=${ult?.nivelBps}bps`)
-    metaPar.push({ par: p.par, credito: p.credito, govt: p.govt, dias: out.length, ancoraBps: anchor != null ? Math.round(anchor * 10000) : null })
+    console.log(`  [spread ${p.par}] ${out.length} dias  ${out[0]?.data} -> ${ult?.data}  exc12m=${ult?.exc}%  nivel=${p.nivel ? ult?.nivelBps + 'bps' : '(so regime)'}`)
+    metaPar.push({ par: p.par, credito: p.credito, govt: p.govt, nivel: !!p.nivel, dias: out.length, ancoraBps: bps(anchor) })
   }
   writeFileSync(join(PUBLIC_DATA, 'Ida_Spread_Historico.csv'), spCsv.join('\n') + '\n')
 
@@ -248,8 +275,8 @@ async function main() {
     fonte: 'ANBIMA - Indice de Debentures (IDA) + familia IMA, arquivos historicos S3 (indices-historico)',
     indices: metaIdx,
     spread: {
-      metodo: 'Excesso de retorno IDA vs IMA (regime) + nivel implicito por duration ancorado no spread real de hoje (mediana Anbima_Tx). Proxy AGREGADA, nao por ativo; residuo de descasamento de duration.',
-      ancorasBps: { cdi: anc.cdi != null ? Math.round(anc.cdi * 10000) : null, ipca: anc.ipca != null ? Math.round(anc.ipca * 10000) : null },
+      metodo: 'ExcRet252 = excesso de retorno anualizado credito vs govt (REGIME, todos os pares). SpreadNivelBps = nivel implicito por decomposicao retorno+duration ancorado no spread real de hoje (mediana Anbima_Tx) — SO no CDI (IMA-S/LFT tem duration ~0 -> excesso e credito puro). No IPCA a curva de juro real nao cancela e se acumula na integracao -> so regime. Nivel IPCA por ativo virah do secundario diario. Ancoras: CDI+ e NTN-B+ amplo (todas IPCA) e NTN-B+ incentivadas (12.431).',
+      ancorasBps: { cdi: bps(anc.cdi), ipca: bps(anc.ipca), ipcaInfra: bps(anc.ipcaInfra) },
       pares: metaPar,
     },
   }, null, 2) + '\n')
