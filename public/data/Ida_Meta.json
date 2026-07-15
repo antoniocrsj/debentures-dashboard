@@ -1,0 +1,41 @@
+{
+  "updatedAt": "2026-07-15T16:58:05.981Z",
+  "fonte": "ANBIMA - Indice de Debentures (IDA), arquivos historicos S3 (indices-historico)",
+  "indices": [
+    {
+      "codigo": "IDAGERAL",
+      "nome": "IDA-Geral",
+      "dias": 4400,
+      "dataInicio": "2009-01-05",
+      "dataFim": "2026-07-14"
+    },
+    {
+      "codigo": "IDADI",
+      "nome": "IDA-DI",
+      "dias": 4400,
+      "dataInicio": "2009-01-05",
+      "dataFim": "2026-07-14"
+    },
+    {
+      "codigo": "IDAIPCA",
+      "nome": "IDA-IPCA",
+      "dias": 4400,
+      "dataInicio": "2009-01-05",
+      "dataFim": "2026-07-14"
+    },
+    {
+      "codigo": "IDAIPCAINFRAESTRUTURA",
+      "nome": "IDA-IPCA Infraestrutura",
+      "dias": 2891,
+      "dataInicio": "2015-01-05",
+      "dataFim": "2026-07-14"
+    },
+    {
+      "codigo": "IDAIPCAEXINFRAESTRUTURA",
+      "nome": "IDA-IPCA ex-Infraestrutura",
+      "dias": 2891,
+      "dataInicio": "2015-01-05",
+      "dataFim": "2026-07-14"
+    }
+  ]
+}

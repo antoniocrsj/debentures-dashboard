@@ -31,6 +31,7 @@ param(
   [switch]$SkipOfertas,
   [switch]$SkipRelatorios,
   [switch]$SkipAgenda,
+  [switch]$SkipIda,
   [switch]$NoPublishPrompt,
   [ValidateSet('Auto', 'Incremental', 'Completa')]
   [string]$CaptacaoModo = 'Auto',
@@ -72,6 +73,7 @@ if (-not $SkipAnbima)     { $script:StepsAtivos.Add('ANBIMA') }
 if (-not $SkipOfertas)    { $script:StepsAtivos.Add('Ofertas') }
 if (-not $SkipRelatorios) { $script:StepsAtivos.Add('Relatorios') }
 if (-not $SkipAgenda)     { $script:StepsAtivos.Add('Agenda') }
+if (-not $SkipIda)        { $script:StepsAtivos.Add('IDA') }
 $script:StepsAtivos.Add('Resumo')
 $script:StepTotal = $script:StepsAtivos.Count
 $script:StepIndex = 0
@@ -677,6 +679,25 @@ if ($SkipAgenda) {
   } catch {
     $summary.Agenda = "FALHOU sem travar: $($_.Exception.Message)"
     Warn "$($summary.Agenda) (rode preparar-agenda.ps1 para popular o cache)"
+  }
+}
+
+# 5e. IDA (indices de debentures ANBIMA) - coletor Node, best-effort. Baixa os
+# arquivos historicos estaticos do S3 da ANBIMA (publicos) e grava
+# public\data\Ida_Historico.csv + Ida_Meta.json (regua de regime de mercado).
+if ($SkipIda) {
+  $summary.IDA = 'PULADO por parametro -SkipIda'
+  Warn $summary.IDA
+} else {
+  Progress 'IDA (indices de debentures)'
+  try {
+    & node (Join-Path $PSScriptRoot 'preparar-ida.mjs')
+    if ($LASTEXITCODE -ne 0) { throw "node saiu com codigo $LASTEXITCODE" }
+    $summary.IDA = 'OK'
+    Ok "IDA atualizado em public\data\Ida_Historico.csv."
+  } catch {
+    $summary.IDA = "FALHOU sem travar: $($_.Exception.Message)"
+    Warn $summary.IDA
   }
 }
 
