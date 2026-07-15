@@ -23,7 +23,7 @@ export default function Header({
   return (
     <header className="app-header">
       <div className="header-left">
-        <img className="header-logo" src="/icon-192-v2.png" alt="" aria-hidden="true" width="28" height="28" />
+        <img className="header-logo" src="/luc-mark.png" alt="" aria-hidden="true" width="32" height="32" />
         <span className="header-title">{section === 'atualizacao' ? 'Painel de Atualização - Luc' : 'Luc'}</span>
         {loading    && <span className="header-badge loading">carregando…</span>}
         {refreshing && <span className="header-badge refreshing">atualizando…</span>}
