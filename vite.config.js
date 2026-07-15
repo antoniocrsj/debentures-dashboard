@@ -289,9 +289,9 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['icon-192.png', 'icon-512.png', 'icon-maskable-512.png'],
       manifest: {
-        name: 'BI - Crédito Privado',
-        short_name: 'BI Crédito',
-        description: 'BI de crédito privado — debêntures e captação de fundos',
+        name: 'Luc',
+        short_name: 'Luc',
+        description: 'Luc — crédito privado: debêntures e captação de fundos',
         start_url: '/',
         display: 'standalone',
         orientation: 'portrait',

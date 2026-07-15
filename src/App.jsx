@@ -99,7 +99,7 @@ export default function App() {
 
   // Título da aba do navegador: no painel (dev) mostra "Painel de Atualização".
   useEffect(() => {
-    document.title = section === 'atualizacao' ? 'Painel de Atualização - BI' : 'BI - Crédito Privado'
+    document.title = section === 'atualizacao' ? 'Painel de Atualização - Luc' : 'Luc'
   }, [section])
 
   // Sempre que mudar filtro/busca, volta a limitar (evita renderizar tudo)

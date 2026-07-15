@@ -31,7 +31,7 @@ export default function Header({
           <path d="M3 17l5.5-5.5 3.5 3.5L21 7" />
           <path d="M15 7h6v6" />
         </svg>
-        <span className="header-title">{section === 'atualizacao' ? 'Painel de Atualização - BI' : 'BI - Crédito Privado'}</span>
+        <span className="header-title">{section === 'atualizacao' ? 'Painel de Atualização - Luc' : 'Luc'}</span>
         {loading    && <span className="header-badge loading">carregando…</span>}
         {refreshing && <span className="header-badge refreshing">atualizando…</span>}
         {!loading && !refreshing && error && <span className="header-badge error">erro</span>}
