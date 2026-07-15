@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-07-15T16:58:05.981Z",
-  "fonte": "ANBIMA - Indice de Debentures (IDA), arquivos historicos S3 (indices-historico)",
+  "updatedAt": "2026-07-15T17:18:04.870Z",
+  "fonte": "ANBIMA - Indice de Debentures (IDA) + familia IMA, arquivos historicos S3 (indices-historico)",
   "indices": [
     {
       "codigo": "IDAGERAL",
@@ -37,5 +37,35 @@
       "dataInicio": "2015-01-05",
       "dataFim": "2026-07-14"
     }
-  ]
+  ],
+  "spread": {
+    "metodo": "Excesso de retorno IDA vs IMA (regime) + nivel implicito por duration ancorado no spread real de hoje (mediana Anbima_Tx). Proxy AGREGADA, nao por ativo; residuo de descasamento de duration.",
+    "ancorasBps": {
+      "cdi": 97,
+      "ipca": -2
+    },
+    "pares": [
+      {
+        "par": "CDI",
+        "credito": "IDADI",
+        "govt": "IMAS",
+        "dias": 4400,
+        "ancoraBps": 97
+      },
+      {
+        "par": "IPCA",
+        "credito": "IDAIPCA",
+        "govt": "IMAB",
+        "dias": 4400,
+        "ancoraBps": -2
+      },
+      {
+        "par": "IPCAINFRA",
+        "credito": "IDAIPCAINFRAESTRUTURA",
+        "govt": "IMAB",
+        "dias": 2891,
+        "ancoraBps": -2
+      }
+    ]
+  }
 }

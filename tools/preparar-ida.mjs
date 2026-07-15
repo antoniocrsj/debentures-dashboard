@@ -1,32 +1,37 @@
-// Coletor do historico dos indices IDA (Indice de Debentures ANBIMA).
+// Coletor do historico dos indices IDA (Indice de Debentures ANBIMA) + calculo
+// do SPREAD de credito AGREGADO do mercado.
 //
 // Fonte: arquivos ESTATICOS no S3 da ANBIMA (publicos, sem auth/token):
 //   https://s3-data-prd-use1-precos.s3.us-east-1.amazonaws.com/arquivos/indices-historico/{CODIGO}-HISTORICO.xls
-// Cada arquivo e' um xlsx (uma aba "Historico") com a serie DIARIA desde o inicio
-// do indice: Numero Indice (nivel), variacoes (dia/mes/ano/12m/24m) e Duration.
+// Cada arquivo e' um xlsx (aba "Historico") com a serie DIARIA desde o inicio do
+// indice: Numero Indice (nivel), variacoes (dia/mes/ano/12m/24m) e Duration.
 //
-// Indices coletados (regua de regime de mercado):
-//   IDAGERAL  - mercado agregado de debentures
-//   IDADI     - debentures indexadas ao CDI  (regua do Tradicional/CDI)
-//   IDAIPCA   - debentures IPCA+
-//   IDAIPCAINFRAESTRUTURA    - incentivadas 12.431 (regua do Incentivados)
-//   IDAIPCAEXINFRAESTRUTURA  - IPCA ex-infra
+// Saidas:
+//   public/data/Ida_Historico.csv         (indices IDA: nivel/retornos/duration)
+//   public/data/Ida_Spread_Historico.csv  (spread de credito agregado por data)
+//   public/data/Ida_Meta.json             (updatedAt, fonte, indices, ancoras, metodo)
 //
-// Saida:
-//   public/data/Ida_Historico.csv   (Codigo,Data,NumeroIndice,VarDiaria,VarMes,VarAno,Var12m,Var24m,Duration)
-//   public/data/Ida_Meta.json       (updatedAt, fonte, indices[] com periodo/linhas)
+// SPREAD AGREGADO (o IDA e' retorno total, nao tem taxa/spread embutido):
+//   - Excesso de retorno do indice de credito sobre o govt livre de risco
+//     (IDA-DI vs IMA-S; IDA-IPCA vs IMA-B) -> sinal de REGIME (abre/fecha spread).
+//   - Nivel IMPLICITO por decomposicao de retorno + duration, ancorado no spread
+//     REAL de hoje (mediana do Anbima_Tx.csv): excesso = carrego - D*dSpread ->
+//     dSpread = (carrego - excesso)/D, integrado de tras pra frente a partir do hoje.
+//     Proxy AGREGADA (nao por ativo); ha' residuo de descasamento de duration IDA/IMA.
 //
 // Sem dependencias externas: le o xlsx (zip + XML) so' com modulos nativos.
 
-import { writeFileSync, mkdirSync } from 'node:fs'
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs'
 import { inflateRawSync } from 'node:zlib'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const PUBLIC_DATA = join(__dirname, '..', 'public', 'data')
+const PUBLIC = join(__dirname, '..', 'public')
+const PUBLIC_DATA = join(PUBLIC, 'data')
 const S3_BASE = 'https://s3-data-prd-use1-precos.s3.us-east-1.amazonaws.com/arquivos/indices-historico'
 
+// Indices IDA (gravados em Ida_Historico.csv).
 const INDICES = [
   { codigo: 'IDAGERAL',                nome: 'IDA-Geral' },
   { codigo: 'IDADI',                   nome: 'IDA-DI' },
@@ -34,17 +39,28 @@ const INDICES = [
   { codigo: 'IDAIPCAINFRAESTRUTURA',   nome: 'IDA-IPCA Infraestrutura' },
   { codigo: 'IDAIPCAEXINFRAESTRUTURA', nome: 'IDA-IPCA ex-Infraestrutura' },
 ]
+// Benchmarks govt livres de risco (baixados so' pro calculo do spread).
+const BENCH = [
+  { codigo: 'IMAS', nome: 'IMA-S' },   // LFT/Selic -> livre de risco do CDI+
+  { codigo: 'IMAB', nome: 'IMA-B' },   // NTN-B     -> livre de risco do IPCA+
+]
+// Pares credito x govt pro spread agregado.
+const PARES = [
+  { par: 'CDI',       credito: 'IDADI',                 govt: 'IMAS', ancora: 'cdi'  },
+  { par: 'IPCA',      credito: 'IDAIPCA',               govt: 'IMAB', ancora: 'ipca' },
+  { par: 'IPCAINFRA', credito: 'IDAIPCAINFRAESTRUTURA', govt: 'IMAB', ancora: 'ipca' },
+]
+const WIN = 252  // janela do excesso de retorno anualizado (dias uteis ~ 1 ano)
 
 // ─── ZIP: le uma entrada pelo diretorio central (robusto a data-descriptor) ──
 function zipEntries(buf) {
-  // acha o End Of Central Directory (assinatura PK\x05\x06), varrendo do fim
   let eocd = -1
   for (let i = buf.length - 22; i >= 0 && i > buf.length - 22 - 65536; i--) {
     if (buf.readUInt32LE(i) === 0x06054b50) { eocd = i; break }
   }
   if (eocd < 0) throw new Error('EOCD nao encontrado (zip invalido)')
   const count = buf.readUInt16LE(eocd + 10)
-  let p = buf.readUInt32LE(eocd + 16)   // offset do diretorio central
+  let p = buf.readUInt32LE(eocd + 16)
   const entries = new Map()
   for (let n = 0; n < count; n++) {
     if (buf.readUInt32LE(p) !== 0x02014b50) break
@@ -63,99 +79,180 @@ function zipEntries(buf) {
 function zipRead(buf, entries, name) {
   const e = entries.get(name)
   if (!e) throw new Error(`entrada ${name} ausente no zip`)
-  // pula o local header (30 + nameLen + extraLen) e le compSize bytes
   const nameLen = buf.readUInt16LE(e.localOff + 26)
   const extraLen = buf.readUInt16LE(e.localOff + 28)
   const start = e.localOff + 30 + nameLen + extraLen
   const data = buf.subarray(start, start + e.compSize)
   return e.method === 0 ? Buffer.from(data) : inflateRawSync(data)
 }
-
-// ─── XLSX: sharedStrings + celulas da aba (por letra de coluna) ──────────────
-function parseSharedStrings(xml) {
-  const out = []
-  const re = /<si>(.*?)<\/si>/gs
-  let m
-  while ((m = re.exec(xml))) {
-    // concatena todos os <t> dentro do <si> (rich text) e decodifica entidades
-    const txt = [...m[1].matchAll(/<t[^>]*>(.*?)<\/t>/gs)].map(x => x[1]).join('')
-    out.push(decodeXml(txt))
-  }
-  return out
-}
+// ─── XLSX -> registros {data, ni, vd, vm, va, v12, v24, dur} ─────────────────
 function decodeXml(s) {
   return s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"')
           .replace(/&apos;/g, "'").replace(/&amp;/g, '&')
 }
-function colLetters(ref) { return ref.replace(/[0-9]+$/, '') }  // "B12" -> "B"
-
-// serial Excel -> 'YYYY-MM-DD' (epoca 1899-12-30; 25569 dias ate' 1970-01-01)
-function serialToISO(n) {
-  const ms = Math.round((n - 25569) * 86400000)
-  return new Date(ms).toISOString().slice(0, 10)
+function parseSharedStrings(xml) {
+  const out = []
+  for (const m of xml.matchAll(/<si>(.*?)<\/si>/gs)) {
+    out.push(decodeXml([...m[1].matchAll(/<t[^>]*>(.*?)<\/t>/gs)].map(x => x[1]).join('')))
+  }
+  return out
 }
-
+function serialToISO(n) { return new Date(Math.round((n - 25569) * 86400000)).toISOString().slice(0, 10) }
 function parseSheet(xml, shared) {
   const rows = []
   for (const rm of xml.matchAll(/<row[^>]*>(.*?)<\/row>/gs)) {
     const cells = {}
     for (const cm of rm[1].matchAll(/<c r="([A-Z]+)\d+"(?:[^>]*?\st="([a-z]+)")?[^>]*>(?:<v>(.*?)<\/v>)?<\/c>/gs)) {
-      const col = cm[1], type = cm[2], v = cm[3]
-      if (v == null) { cells[col] = null; continue }
-      cells[col] = type === 's' ? (shared[parseInt(v, 10)] ?? '') : v
+      cells[cm[1]] = cm[3] == null ? null : (cm[2] === 's' ? (shared[parseInt(cm[3], 10)] ?? '') : cm[3])
     }
     rows.push(cells)
   }
   return rows
 }
-
-async function fetchBuf(url) {
-  const r = await fetch(url)
-  if (!r.ok) throw new Error(`HTTP ${r.status} ${url}`)
-  return Buffer.from(await r.arrayBuffer())
+function nz(v) { const n = Number(v); return Number.isFinite(n) ? n : null }
+async function fetchIndex(codigo) {
+  const r = await fetch(`${S3_BASE}/${codigo}-HISTORICO.xls`)
+  if (!r.ok) throw new Error(`HTTP ${r.status}`)
+  const buf = Buffer.from(await r.arrayBuffer())
+  const entries = zipEntries(buf)
+  const shared = parseSharedStrings(zipRead(buf, entries, 'xl/sharedStrings.xml').toString('utf8'))
+  const sheet = entries.has('xl/worksheets/sheet1.xml')
+    ? 'xl/worksheets/sheet1.xml'
+    : [...entries.keys()].find(n => /^xl\/worksheets\/sheet\d+\.xml$/.test(n))
+  const rows = parseSheet(zipRead(buf, entries, sheet).toString('utf8'), shared)
+  const out = []
+  for (let i = 1; i < rows.length; i++) {
+    const c = rows[i]; if (c.B == null) continue
+    out.push({ data: serialToISO(Number(c.B)), ni: nz(c.C), vd: nz(c.D), vm: nz(c.E), va: nz(c.F), v12: nz(c.G), v24: nz(c.H), dur: nz(c.I) })
+  }
+  return out
 }
 
-function num(v) { const n = Number(v); return Number.isFinite(n) ? n : '' }
+// ─── Ancoras: spread REAL de hoje (mediana do Anbima_Tx.csv por ativo) ───────
+function splitCsvLine(line) {
+  const out = []; let cur = '', q = false
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i]
+    if (q) { if (ch === '"') { if (line[i + 1] === '"') { cur += '"'; i++ } else q = false } else cur += ch }
+    else if (ch === '"') q = true
+    else if (ch === ',') { out.push(cur); cur = '' }
+    else cur += ch
+  }
+  out.push(cur); return out
+}
+function mediana(arr) {
+  const a = arr.filter(x => Number.isFinite(x)).sort((x, y) => x - y)
+  if (!a.length) return null
+  const m = a.length >> 1
+  return a.length % 2 ? a[m] : (a[m - 1] + a[m]) / 2
+}
+function parseNumPt(s) {
+  if (s == null) return null
+  let t = String(s).trim().replace(/%/g, '').trim()
+  if (t === '' || t === '-' || t === '--') return null
+  if (t.includes(',')) t = t.replace(/\./g, '').replace(',', '.')
+  const n = Number(t); return Number.isFinite(n) ? n : null
+}
+function ancoras() {
+  // Retorna { cdi, ipca } em DECIMAL (ex.: 0.021 = 2,1% = 210 bps). null se sem base.
+  const path = join(PUBLIC, 'Anbima_Tx.csv')
+  if (!existsSync(path)) return { cdi: null, ipca: null, base: 'sem Anbima_Tx.csv' }
+  const lines = readFileSync(path, 'utf8').split(/\r?\n/).filter(Boolean)
+  const H = splitCsvLine(lines[0]).map(h => h.replace(/^"|"$/g, ''))
+  const iIdx = H.indexOf('indexadorAnbima'), iTx = H.indexOf('txAnbimaFormatada'), iNtnb = H.indexOf('spreadNtnbBps')
+  const cdi = [], ipca = []
+  for (let i = 1; i < lines.length; i++) {
+    const f = splitCsvLine(lines[i]).map(x => x.replace(/^"|"$/g, ''))
+    const idx = (f[iIdx] || '').toUpperCase(), tx = f[iTx] || ''
+    if (idx.startsWith('DI')) {                          // CDI+ : "CDI + 0,70%"
+      const m = tx.match(/CDI\s*([+-])\s*([\d.,]+)\s*%/i)
+      if (m) { const v = parseNumPt(m[2]); if (v != null) cdi.push((m[1] === '-' ? -v : v) / 100) }
+    } else if (idx.startsWith('IPCA')) {                 // NTN-B+ : spreadNtnbBps
+      const b = parseNumPt(f[iNtnb]); if (b != null) ipca.push(b / 10000)
+    }
+  }
+  return { cdi: mediana(cdi), ipca: mediana(ipca), nCdi: cdi.length, nIpca: ipca.length }
+}
+
+// ─── Spread agregado por par (regime + nivel implicito ancorado) ─────────────
+function calcSpread(credito, govt, anchor) {
+  // alinha por datas comuns (ordem crescente)
+  const gmap = new Map(govt.map(r => [r.data, r]))
+  const rows = credito.filter(r => gmap.has(r.data)).map(r => ({ c: r, g: gmap.get(r.data) }))
+  const n = rows.length
+  const exc = new Array(n).fill(null)   // excesso de retorno anualizado (regime), em %
+  for (let i = WIN; i < n; i++) {
+    const rc = rows[i].c.ni / rows[i - WIN].c.ni
+    const rg = rows[i].g.ni / rows[i - WIN].g.ni
+    exc[i] = (rc / rg - 1) * 100
+  }
+  // nivel implicito (bps): integra dSpread de tras pra frente ancorando no hoje.
+  const nivel = new Array(n).fill(null)
+  if (anchor != null && Number.isFinite(anchor) && n > 1) {
+    nivel[n - 1] = anchor
+    for (let i = n - 1; i >= 1; i--) {
+      const excD = ((rows[i].c.vd ?? 0) - (rows[i].g.vd ?? 0)) / 100   // excesso do dia (decimal)
+      const D = Math.max(0.1, (rows[i].c.dur ?? 252) / 252)            // duration em anos (piso p/ estabilidade)
+      // exc = S_{t-1}/252 - D*(S_t - S_{t-1})  ->  S_{t-1} = (exc + D*S_t)/(D + 1/252)
+      nivel[i - 1] = (excD + D * nivel[i]) / (D + 1 / 252)
+    }
+  }
+  return rows.map((r, i) => ({
+    data: r.c.data,
+    exc: exc[i] == null ? '' : exc[i].toFixed(3),
+    nivelBps: nivel[i] == null ? '' : Math.round(nivel[i] * 10000),
+  }))
+}
 
 async function main() {
   mkdirSync(PUBLIC_DATA, { recursive: true })
-  const linhas = ['Codigo,Data,NumeroIndice,VarDiaria,VarMes,VarAno,Var12m,Var24m,Duration']
-  const meta = []
+  const series = {}   // codigo -> registros[]
+  const metaIdx = []
 
-  for (const ix of INDICES) {
-    const url = `${S3_BASE}/${ix.codigo}-HISTORICO.xls`
-    let buf
-    try { buf = await fetchBuf(url) }
-    catch (e) { console.error(`  [${ix.codigo}] FALHOU: ${e.message}`); continue }
-
-    const entries = zipEntries(buf)
-    const shared = parseSharedStrings(zipRead(buf, entries, 'xl/sharedStrings.xml').toString('utf8'))
-    // aba unica "Historico" -> sheet1; se nao, pega a primeira worksheet
-    const sheetName = entries.has('xl/worksheets/sheet1.xml')
-      ? 'xl/worksheets/sheet1.xml'
-      : [...entries.keys()].find(n => /^xl\/worksheets\/sheet\d+\.xml$/.test(n))
-    const rows = parseSheet(zipRead(buf, entries, sheetName).toString('utf8'), shared)
-
-    let count = 0, dataIni = null, dataFim = null
-    for (let i = 1; i < rows.length; i++) {   // linha 0 = cabecalho
-      const c = rows[i]
-      if (c.B == null) continue
-      const data = serialToISO(Number(c.B))
-      linhas.push([ix.codigo, data, num(c.C), num(c.D), num(c.E), num(c.F), num(c.G), num(c.H), num(c.I)].join(','))
-      count++; if (!dataIni) dataIni = data; dataFim = data
-    }
-    console.log(`  [${ix.codigo}] ${count} dias  ${dataIni} -> ${dataFim}`)
-    meta.push({ codigo: ix.codigo, nome: ix.nome, dias: count, dataInicio: dataIni, dataFim })
+  // 1) Indices IDA (+ Ida_Historico.csv)
+  const csv = ['Codigo,Data,NumeroIndice,VarDiaria,VarMes,VarAno,Var12m,Var24m,Duration']
+  for (const ix of [...INDICES, ...BENCH]) {
+    try {
+      const rows = await fetchIndex(ix.codigo)
+      series[ix.codigo] = rows
+      const isIda = INDICES.some(x => x.codigo === ix.codigo)
+      if (isIda) {
+        for (const r of rows) csv.push([ix.codigo, r.data, r.ni ?? '', r.vd ?? '', r.vm ?? '', r.va ?? '', r.v12 ?? '', r.v24 ?? '', r.dur ?? ''].join(','))
+        metaIdx.push({ codigo: ix.codigo, nome: ix.nome, dias: rows.length, dataInicio: rows[0]?.data, dataFim: rows.at(-1)?.data })
+      }
+      console.log(`  [${ix.codigo}] ${rows.length} dias  ${rows[0]?.data} -> ${rows.at(-1)?.data}`)
+    } catch (e) { console.error(`  [${ix.codigo}] FALHOU: ${e.message}`) }
   }
+  writeFileSync(join(PUBLIC_DATA, 'Ida_Historico.csv'), csv.join('\n') + '\n')
 
-  writeFileSync(join(PUBLIC_DATA, 'Ida_Historico.csv'), linhas.join('\n') + '\n')
-  const stamp = process.env.IDA_UPDATED_AT || new Date().toISOString()
+  // 2) Ancoras (spread real de hoje) + spread agregado por par
+  const anc = ancoras()
+  console.log(`  ancoras hoje: CDI+ ${anc.cdi != null ? (anc.cdi * 10000).toFixed(0) + 'bps' : '-'} (${anc.nCdi || 0}) | NTN-B+ ${anc.ipca != null ? (anc.ipca * 10000).toFixed(0) + 'bps' : '-'} (${anc.nIpca || 0})`)
+  const spCsv = ['Par,Data,ExcRet252,SpreadNivelBps']
+  const metaPar = []
+  for (const p of PARES) {
+    const cr = series[p.credito], gv = series[p.govt]
+    if (!cr || !gv) { console.error(`  [spread ${p.par}] serie ausente`); continue }
+    const anchor = p.ancora === 'cdi' ? anc.cdi : anc.ipca
+    const out = calcSpread(cr, gv, anchor)
+    for (const r of out) spCsv.push([p.par, r.data, r.exc, r.nivelBps].join(','))
+    const ult = out.at(-1)
+    console.log(`  [spread ${p.par}] ${out.length} dias  ${out[0]?.data} -> ${ult?.data}  exc12m=${ult?.exc}%  nivel=${ult?.nivelBps}bps`)
+    metaPar.push({ par: p.par, credito: p.credito, govt: p.govt, dias: out.length, ancoraBps: anchor != null ? Math.round(anchor * 10000) : null })
+  }
+  writeFileSync(join(PUBLIC_DATA, 'Ida_Spread_Historico.csv'), spCsv.join('\n') + '\n')
+
+  // 3) Meta
   writeFileSync(join(PUBLIC_DATA, 'Ida_Meta.json'), JSON.stringify({
-    updatedAt: stamp,
-    fonte: 'ANBIMA - Indice de Debentures (IDA), arquivos historicos S3 (indices-historico)',
-    indices: meta,
+    updatedAt: process.env.IDA_UPDATED_AT || new Date().toISOString(),
+    fonte: 'ANBIMA - Indice de Debentures (IDA) + familia IMA, arquivos historicos S3 (indices-historico)',
+    indices: metaIdx,
+    spread: {
+      metodo: 'Excesso de retorno IDA vs IMA (regime) + nivel implicito por duration ancorado no spread real de hoje (mediana Anbima_Tx). Proxy AGREGADA, nao por ativo; residuo de descasamento de duration.',
+      ancorasBps: { cdi: anc.cdi != null ? Math.round(anc.cdi * 10000) : null, ipca: anc.ipca != null ? Math.round(anc.ipca * 10000) : null },
+      pares: metaPar,
+    },
   }, null, 2) + '\n')
-  console.log(`Gravado: Ida_Historico.csv (${linhas.length - 1} linhas) + Ida_Meta.json`)
+  console.log(`Gravado: Ida_Historico.csv (${csv.length - 1}) + Ida_Spread_Historico.csv (${spCsv.length - 1}) + Ida_Meta.json`)
 }
-
 main().catch(e => { console.error(e); process.exit(1) })
