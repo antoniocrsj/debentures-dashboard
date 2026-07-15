@@ -1324,6 +1324,14 @@ a { color: var(--primary); }
 
 /* ─── Resumo do Dia (modal do relógio) ──────────────────────────────────── */
 .modal-wide { max-width: 680px; }
+/* Resumo do Dia: no desktop abre largo (como o HTML gerado, ~860px) e alto, pra
+   as tabelas de 6-7 colunas (ANBIMA/CVM) caberem organizadas, sem cortar. No
+   mobile continua bottom-sheet de largura cheia. (Depois do .modal-wide base
+   pra vencer no cascade.) */
+@media (min-width: 520px) {
+  .modal-wide { max-width: min(960px, 94vw); max-height: 92dvh; }
+  .modal-wide .modal-body { padding-left: 24px; padding-right: 24px; }
+}
 .rd-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 20px; border-bottom: 1px solid var(--primary-border); flex-wrap: wrap; }
 .rd-dates { display: flex; gap: 6px; flex-wrap: wrap; }
 .rd-date-chip { padding: 4px 10px; border-radius: 99px; border: 1px solid var(--navy-light); background: var(--chip-bg); color: var(--navy-light); font-size: 12px; cursor: pointer; }
@@ -1338,7 +1346,7 @@ a { color: var(--primary); }
 .rd-bullets { margin: 0; padding-left: 20px; font-size: 13px; line-height: 1.6; }
 .rd-pos { color: var(--pos); } .rd-neg { color: var(--neg); } .rd-warn { color: var(--flag-ink); }
 .rd-tablewrap { overflow-x: auto; }
-.rd-table { border-collapse: collapse; width: 100%; font-size: 12px; }
+.rd-table { border-collapse: collapse; width: 100%; font-size: 12.5px; }
 .rd-table th, .rd-table td { border-bottom: 1px solid var(--primary-border); padding: 5px 8px; text-align: left; white-space: nowrap; }
 .rd-table th { color: var(--text-muted); font-weight: 600; }
 .rd-table .rd-num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
@@ -1346,6 +1354,8 @@ a { color: var(--primary); }
 .rd-strong { font-weight: 700; }
 .rd-sub { display: block; font-size: 10.5px; font-weight: 400; color: var(--text-muted); margin-top: 1px; }
 .rd-empresa { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; vertical-align: bottom; }
+/* No modal largo (desktop) sobra espaco: emissor/grupo truncam menos. */
+@media (min-width: 520px) { .modal-wide .rd-empresa { max-width: 300px; } }
 .rd-cvm { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--primary-border); }
 .rd-cvm h4 { font-size: 12.5px; margin: 0 0 6px; color: var(--text); }
 .rd-cap { display: flex; gap: 18px; flex-wrap: wrap; }
