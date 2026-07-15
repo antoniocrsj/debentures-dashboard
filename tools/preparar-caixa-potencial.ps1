@@ -771,7 +771,14 @@ try {
     $cachePath = Join-Path $histCacheDir "$hm.json"
     $rows = $null
     if (Test-Path $cachePath) {
-      try { $rows = @(Get-Content $cachePath -Raw -Encoding UTF8 | ConvertFrom-Json) } catch { $rows = $null }
+      # Atencao (PS 5.1): ConvertFrom-Json emite o array como UM objeto no pipe,
+      # entao `@(... | ConvertFrom-Json)` viraria 1 elemento (o array inteiro) e
+      # colapsaria o mes cacheado numa unica linha. Atribui a uma variavel antes
+      # de desenrolar com @() -- ai sim vem as N linhas do cache.
+      try {
+        $parsedCache = Get-Content $cachePath -Raw -Encoding UTF8 | ConvertFrom-Json
+        $rows = @($parsedCache | Where-Object { $null -ne $_ })
+      } catch { $rows = $null }
     }
     if ($null -eq $rows) {
       $accH = $null; $plH = $null
