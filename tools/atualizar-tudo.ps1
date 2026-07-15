@@ -512,7 +512,29 @@ if ($SkipFundos) {
   }
 }
 
-# 3. Captacao
+# 3. ANBIMA (ANTES da Captacao DE PROPOSITO): a aba Captacao e o Resumo do Dia
+# ancoram o corte D-3 na DATA DE REFERENCIA da ANBIMA (preparar-fluxo.ps1 le
+# public/Anbima_Tx.csv). Se a ANBIMA rodasse depois, a Captacao leria a data do
+# dia anterior e ficaria 1 pregao ATRAS do Resumo (que roda no fim) -- foi o que
+# aconteceu quando a ANBIMA avancou de 07-13 para 07-14 e a aba ficou em 07-09.
+# Rodando aqui, aba e Resumo usam a MESMA data fresca. E' best-effort (nunca
+# trava) e tem limite de tempo pra nao segurar o resto.
+if ($SkipAnbima) {
+  $summary.ANBIMA = 'PULADO por parametro -SkipAnbima'
+  Warn $summary.ANBIMA
+} else {
+  Progress 'ANBIMA'
+  try {
+    & (Join-Path $PSScriptRoot 'preparar-anbima.ps1') -MaxSegundos $AnbimaMaxSegundos
+    $summary.ANBIMA = 'OK'
+    Ok "ANBIMA atualizada."
+  } catch {
+    $summary.ANBIMA = "FALHOU sem travar: $($_.Exception.Message)"
+    Warn $summary.ANBIMA
+  }
+}
+
+# 4. Captacao (depois da ANBIMA: ancora o corte D-3 na data de referencia dela)
 if ($SkipCaptacao) {
   $summary.Captacao = 'PULADO'
   Warn "Captacao pulada (mantendo bases atuais)."
@@ -540,7 +562,7 @@ if ($SkipCaptacao) {
   }
 }
 
-# 4. BLC / Alocacao. Se -BlcMesAno vier, usa esse mes e SOBRESCREVE sempre.
+# 5. BLC / Alocacao. Se -BlcMesAno vier, usa esse mes e SOBRESCREVE sempre.
 # Senao, mes-alvo automatico (regra de defasagem) e pula se ja registrado.
 if ($SkipBlc) {
   $summary.BLC = 'PULADO'
@@ -575,22 +597,6 @@ if ($SkipBlc) {
       Fail $summary.BLC
       throw "Interrompido: BLC falhou."
     }
-  }
-}
-
-# 5. ANBIMA opcional (com limite de tempo pra nao segurar o resto)
-if ($SkipAnbima) {
-  $summary.ANBIMA = 'PULADO por parametro -SkipAnbima'
-  Warn $summary.ANBIMA
-} else {
-  Progress 'ANBIMA'
-  try {
-    & (Join-Path $PSScriptRoot 'preparar-anbima.ps1') -MaxSegundos $AnbimaMaxSegundos
-    $summary.ANBIMA = 'OK'
-    Ok "ANBIMA atualizada."
-  } catch {
-    $summary.ANBIMA = "FALHOU sem travar: $($_.Exception.Message)"
-    Warn $summary.ANBIMA
   }
 }
 
