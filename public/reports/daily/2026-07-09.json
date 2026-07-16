@@ -64,8 +64,8 @@
         "captacao": 142706853.48999998,
         "resgate": 176740413.59999996,
         "liquido": -34033560.109999985,
-        "pl": 335867710690.9201,
-        "numFundos": 1653,
+        "pl": 274868360034.46002,
+        "numFundos": 1648,
         "curados": 1684,
         "fechados": 286,
         "anterior": {
@@ -73,8 +73,8 @@
           "captacao": 141664445.71,
           "resgate": 478331550.07999986,
           "liquido": -336667104.3699999,
-          "pl": 337158415298.1799,
-          "numFundos": 1660
+          "pl": 274396559875.90002,
+          "numFundos": 1654
         }
       },
       "trad": {
@@ -82,8 +82,8 @@
         "captacao": 1423442397.1499991,
         "resgate": 1357700925.2500002,
         "liquido": 65741471.8999989,
-        "pl": 1093119455791.1705,
-        "numFundos": 830,
+        "pl": 1082743867168.8605,
+        "numFundos": 829,
         "curados": 839,
         "fechados": 30,
         "anterior": {
@@ -91,8 +91,8 @@
           "captacao": 1727628807.27,
           "resgate": 2573312686.59,
           "liquido": -845683879.3200002,
-          "pl": 1093737464153.5999,
-          "numFundos": 832
+          "pl": 1083368595308.2299,
+          "numFundos": 831
         }
       }
     },
@@ -147,7 +147,7 @@
           "captacao": 18199327.93,
           "resgate": 43291504.97,
           "liquido": -25092177.04,
-          "pl": 84002395983.99
+          "pl": 55501764457.85
         },
         {
           "gestor": "SAM",
@@ -242,7 +242,7 @@
           "captacao": 14781198.72,
           "resgate": 45703437.76,
           "liquido": -30922239.04,
-          "pl": 25565841027.93
+          "pl": 15190252405.62
         }
       ]
     },
@@ -1727,14 +1727,6 @@
       ],
       "top12431Neg": [
         {
-          "cnpj": "60491442000100",
-          "nome": "ITAÚBA FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA RESP LIMITADA",
-          "gestor": "IAM",
-          "segmento": "12431",
-          "retorno": -3.6503,
-          "pl": 3342590158
-        },
-        {
           "cnpj": "54023112000197",
           "nome": "ICATU VANGUARDA INCENTIVADO EM INFRAESTRUTURA FIF RF CP LP - RESP LIMITADA",
           "gestor": "Icatu",
@@ -1765,6 +1757,14 @@
           "segmento": "12431",
           "retorno": -0.3883,
           "pl": 9487655.29
+        },
+        {
+          "cnpj": "44960766000193",
+          "nome": "RIO BRAVO CRÉDITO INCENT INFLAÇÃO FIF - CI INCENTIVADA DE INV EM INFRA RF CRED PRIV - RESP LIMITADA",
+          "gestor": "Rio Bravo",
+          "segmento": "12431",
+          "retorno": -0.3408,
+          "pl": 16163628.55
         }
       ],
       "topTradPos": [

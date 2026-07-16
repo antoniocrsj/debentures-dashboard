@@ -1,5 +1,5 @@
 {
-    "timestamp":  "2026-07-16T09:49:46",
+    "timestamp":  "2026-07-16T10:31:53",
     "captacaoModo":  "Auto",
     "etapas":  {
                    "Debentures":  "PULADO",
@@ -39,7 +39,7 @@
                                                            },
                                           "LiquidoRecente":  {
                                                                  "antes":  -1592984568.1599994,
-                                                                 "depois":  -1592984568.1599994
+                                                                 "depois":  -421281115.9199999
                                                              },
                                           "CaptacaoRecente":  {
                                                                   "antes":  187974484.93,
@@ -47,11 +47,11 @@
                                                               },
                                           "ResgateRecente":  {
                                                                  "antes":  1780959053.0899994,
-                                                                 "depois":  1780959053.0899994
+                                                                 "depois":  609255600.8499999
                                                              },
                                           "PLRecente":  {
                                                             "antes":  290497025980.82,
-                                                            "depois":  290497025980.82
+                                                            "depois":  257408626819.88998
                                                         }
                                       },
                     "captacaoTrad":  {

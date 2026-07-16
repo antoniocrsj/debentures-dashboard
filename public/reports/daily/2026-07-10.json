@@ -25,7 +25,7 @@
       "tom": "pos"
     },
     {
-      "texto": "Captação líquida Incentivados: −R$ 213 mi",
+      "texto": "Captação líquida Incentivados: −R$ 131 mi",
       "tom": "neg"
     },
     {
@@ -37,7 +37,7 @@
       "tom": "pos"
     },
     {
-      "texto": "Maior resgate: XPG (−R$ 90 mi)",
+      "texto": "Maior resgate: BB Asset (−R$ 31 mi)",
       "tom": "neg"
     },
     {
@@ -81,10 +81,10 @@
       "12431": {
         "dia": "2026-07-08",
         "captacao": 133484496.72999999,
-        "resgate": 346222029.6,
-        "liquido": -212737532.87000003,
-        "pl": 338291579640.19995,
-        "numFundos": 1657,
+        "resgate": 264983470.26000005,
+        "liquido": -131498973.53000006,
+        "pl": 275520103082.85,
+        "numFundos": 1651,
         "curados": 1684,
         "fechados": 286,
         "anterior": {
@@ -92,8 +92,8 @@
           "captacao": 142706853.48999998,
           "resgate": 176740413.59999996,
           "liquido": -34033560.109999985,
-          "pl": 335867710690.9201,
-          "numFundos": 1653
+          "pl": 274868360034.46002,
+          "numFundos": 1648
         }
       },
       "trad": {
@@ -110,8 +110,8 @@
           "captacao": 1423442397.1499991,
           "resgate": 1357700925.2500002,
           "liquido": 65741471.8999989,
-          "pl": 1093119455791.1705,
-          "numFundos": 830
+          "pl": 1082743867168.8605,
+          "numFundos": 829
         }
       }
     },
@@ -155,13 +155,6 @@
       ],
       "top12431Resgate": [
         {
-          "gestor": "XPG",
-          "captacao": 1324743.33,
-          "resgate": 91576913.64,
-          "liquido": -90252170.31,
-          "pl": 7231423543.39
-        },
-        {
           "gestor": "BB Asset",
           "captacao": 3886463.65,
           "resgate": 34773164.23,
@@ -187,7 +180,14 @@
           "captacao": 19170537.63,
           "resgate": 37899331.12,
           "liquido": -18728793.49,
-          "pl": 83977794858.63
+          "pl": 55444680060.06
+        },
+        {
+          "gestor": "Safra Asset",
+          "captacao": 714743.87,
+          "resgate": 16107829.96,
+          "liquido": -15393086.090000002,
+          "pl": 9984386069.01
         }
       ],
       "topTradCaptacao": [
@@ -1704,14 +1704,6 @@
     "perf": {
       "top12431Pos": [
         {
-          "cnpj": "60491442000100",
-          "nome": "ITAÚBA FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA RESP LIMITADA",
-          "gestor": "IAM",
-          "segmento": "12431",
-          "retorno": 3.8954,
-          "pl": 7861556227.81
-        },
-        {
           "cnpj": "60775750000167",
           "nome": "G5 ALLOCATION II FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
           "gestor": "G5",
@@ -1742,6 +1734,14 @@
           "segmento": "12431",
           "retorno": 0.4377,
           "pl": 156793709.54
+        },
+        {
+          "cnpj": "62438200000188",
+          "nome": "BTG PACTUAL CRÉDITO CORPORATIVO PLUS INCENTIVADO CDI FI DE INVESTIMENTO FINANCEIRO EM INFRA RF",
+          "gestor": "BTG Asset",
+          "segmento": "12431",
+          "retorno": 0.3199,
+          "pl": 248903367.92
         }
       ],
       "top12431Neg": [

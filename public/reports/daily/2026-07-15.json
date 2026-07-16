@@ -21,7 +21,7 @@
   },
   "summary": [
     {
-      "texto": "Captação líquida Incentivados: −R$ 1.6 bi",
+      "texto": "Captação líquida Incentivados: −R$ 421 mi",
       "tom": "neg"
     },
     {
@@ -33,7 +33,7 @@
       "tom": "pos"
     },
     {
-      "texto": "Maior resgate: ITAU Tsy (−R$ 1.2 bi)",
+      "texto": "Maior resgate: Safra Asset (−R$ 164 mi)",
       "tom": "neg"
     },
     {
@@ -59,10 +59,10 @@
       "12431": {
         "dia": "2026-07-13",
         "captacao": 187974484.93,
-        "resgate": 1780959053.0899994,
-        "liquido": -1592984568.1599994,
-        "pl": 290497025980.82,
-        "numFundos": 1651,
+        "resgate": 609255600.8499999,
+        "liquido": -421281115.9199999,
+        "pl": 257408626819.88998,
+        "numFundos": 1646,
         "curados": 1684,
         "fechados": 286,
         "anterior": {
@@ -70,8 +70,8 @@
           "captacao": 105225244.32999998,
           "resgate": 321852686.51,
           "liquido": -216627442.18,
-          "pl": 290453197156.68994,
-          "numFundos": 1655
+          "pl": 256206447061.85,
+          "numFundos": 1650
         }
       },
       "trad": {
@@ -133,13 +133,6 @@
       ],
       "top12431Resgate": [
         {
-          "gestor": "ITAU Tsy",
-          "captacao": 0,
-          "resgate": 1171703452.24,
-          "liquido": -1171703452.24,
-          "pl": 10432613621.22
-        },
-        {
           "gestor": "Safra Asset",
           "captacao": 1866000,
           "resgate": 166112596.88,
@@ -166,6 +159,13 @@
           "resgate": 24979732.55,
           "liquido": -22220753.78,
           "pl": 21403689040.64
+        },
+        {
+          "gestor": "UBS",
+          "captacao": 0,
+          "resgate": 19658146.3,
+          "liquido": -19658146.3,
+          "pl": 7356204081.1
         }
       ],
       "topTradCaptacao": [

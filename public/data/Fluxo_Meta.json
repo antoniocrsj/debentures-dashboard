@@ -1,9 +1,9 @@
 {
-    "updatedAt":  "2026-07-16T09:46:26",
+    "updatedAt":  "2026-07-16T10:28:25",
     "rule":  "Contagem estatica da lista atual de fundos; nao varia por periodo.",
     "12431":  {
-                  "fundos":  1684,
-                  "gestores":  113,
+                  "fundos":  1678,
+                  "gestores":  112,
                   "semGestor":  0,
                   "porGestor":  {
                                     "4UM":  1,
@@ -46,12 +46,12 @@
                                     "Galt":  2,
                                     "GV Atacama":  1,
                                     "Heritage":  1,
-                                    "IAM":  324,
+                                    "IAM":  323,
                                     "Ibuina":  2,
                                     "Icatu":  15,
                                     "Inter":  5,
                                     "Iridium":  2,
-                                    "ITAU Tsy":  2,
+                                    "ITAU Tsy":  1,
                                     "Jera":  1,
                                     "JGP":  9,
                                     "Jive":  1,
@@ -91,7 +91,6 @@
                                     "Rubik":  1,
                                     "Safra Asset":  90,
                                     "SAM":  9,
-                                    "San Tsy":  2,
                                     "San WM":  151,
                                     "Scalare":  3,
                                     "Seven Pounds":  1,
@@ -117,12 +116,12 @@
                                     "Vinci":  5,
                                     "Vinland":  9,
                                     "WHG":  2,
-                                    "XPG":  45,
+                                    "XPG":  43,
                                     "YVY":  1
                                 }
               },
     "trad":  {
-                 "fundos":  839,
+                 "fundos":  838,
                  "gestores":  131,
                  "semGestor":  4,
                  "porGestor":  {
@@ -254,7 +253,7 @@
                                    "Warren":  1,
                                    "Wise":  3,
                                    "WIT":  1,
-                                   "XPG":  37,
+                                   "XPG":  36,
                                    "XVI":  1,
                                    "ZSYS":  2
                                }
