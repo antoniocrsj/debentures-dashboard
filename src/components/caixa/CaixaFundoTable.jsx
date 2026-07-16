@@ -22,7 +22,7 @@ const KEYS = {
 const SEG_BADGE = { CDI: { k: 'CDI', l: 'CDI' }, '12431': { k: '12431', l: '12.431' } }
 function segBadge(seg) { return SEG_BADGE[seg] || { k: 'outro', l: 'outro' } }
 
-export default function CaixaFundoTable({ fundos, title, subtitle }) {
+export default function CaixaFundoTable({ fundos, title, subtitle, className = '' }) {
   const [sort, setSort] = useState(DEFAULT_SORT)
   const [showAll, setShowAll] = useState(false)
   const sorted = useMemo(() => sortBy(fundos, KEYS[sort.col] || KEYS.total, sort.dir), [fundos, sort])
@@ -32,7 +32,7 @@ export default function CaixaFundoTable({ fundos, title, subtitle }) {
 
   if (!fundos || !fundos.length) {
     return (
-      <div className="empty-state">
+      <div className={`empty-state ${className}`}>
         <span>Nenhum fundo para os filtros</span>
         <small>Ajuste o segmento, a classificação ou a busca.</small>
       </div>
@@ -40,7 +40,7 @@ export default function CaixaFundoTable({ fundos, title, subtitle }) {
   }
 
   return (
-    <div className="fluxo-ranking-block">
+    <div className={`fluxo-ranking-block ${className}`}>
       <div className="fluxo-ranking-head">
         <h3 className="fluxo-section-title">{title}</h3>
         {subtitle && <span className="fluxo-ranking-sub">{subtitle}</span>}

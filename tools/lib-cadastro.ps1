@@ -580,8 +580,13 @@ function Read-CdaFiPL([string]$path) {
   $hdr = $lines[0].Split(';')
   $idx = @{}
   for ($i = 0; $i -lt $hdr.Count; $i++) { $idx[$hdr[$i].Trim()] = $i }
-  $iCnpj = $idx['CNPJ_FUNDO_CLASSE']; $iPL = $idx['VL_PATRIM_LIQ']
-  if ($null -eq $iCnpj -or $null -eq $iPL) { throw "cda_fi_PL: colunas esperadas nao encontradas (CNPJ_FUNDO_CLASSE/VL_PATRIM_LIQ)." }
+  # Pre-Resolucao CVM 175 (CDA ate' ~2024) a coluna chamava CNPJ_FUNDO (nivel
+  # FUNDO); depois virou CNPJ_FUNDO_CLASSE (nivel CLASSE). Aceita as duas para
+  # conseguir ler meses antigos; a nova tem precedencia.
+  $iCnpj = $idx['CNPJ_FUNDO_CLASSE']
+  if ($null -eq $iCnpj) { $iCnpj = $idx['CNPJ_FUNDO'] }
+  $iPL = $idx['VL_PATRIM_LIQ']
+  if ($null -eq $iCnpj -or $null -eq $iPL) { throw "cda_fi_PL: colunas esperadas nao encontradas (CNPJ_FUNDO_CLASSE|CNPJ_FUNDO / VL_PATRIM_LIQ)." }
   $ci = [System.Globalization.CultureInfo]::InvariantCulture
   $map = @{}
   for ($i = 1; $i -lt $lines.Count; $i++) {

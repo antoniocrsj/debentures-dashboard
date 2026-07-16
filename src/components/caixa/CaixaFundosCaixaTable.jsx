@@ -17,7 +17,7 @@ const KEYS = {
 }
 const KIND = { confirmado: 'Fundo caixa', candidato: 'Candidato' }
 
-export default function CaixaFundosCaixaTable({ fundos }) {
+export default function CaixaFundosCaixaTable({ fundos, className = '' }) {
   const [sort, setSort] = useState(DEFAULT_SORT)
   const [showAll, setShowAll] = useState(false)
   const sorted = useMemo(() => sortBy(fundos, KEYS[sort.col] || KEYS.caixa, sort.dir), [fundos, sort])
@@ -28,7 +28,7 @@ export default function CaixaFundosCaixaTable({ fundos }) {
   if (!fundos.length) return null
 
   return (
-    <div className="fluxo-ranking-block">
+    <div className={`fluxo-ranking-block ${className}`}>
       <div className="fluxo-ranking-head">
         <h3 className="fluxo-section-title">Fundos caixa (liquidez)</h3>
         <span className="fluxo-ranking-sub">{fmtInt(fundos.length)} fundos · {fmtFluxo(totalCaixa)} em caixa</span>

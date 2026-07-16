@@ -199,11 +199,19 @@ function Read-BlocoStream {
     $hdr = $hdrLine.Split(';')
     $ix = @{}
     for ($i=0; $i -lt $hdr.Count; $i++) { $ix[$hdr[$i].Trim()] = $i }
-    $iCnpj = $ix['CNPJ_FUNDO_CLASSE']; $iApl = $ix['TP_APLIC']
+    # Schema PRE-Resolucao CVM 175 (CDA ate' ~2024): CNPJ_FUNDO / CNPJ_FUNDO_COTA
+    # (nivel FUNDO). Pos-175: CNPJ_FUNDO_CLASSE / CNPJ_FUNDO_CLASSE_COTA (nivel
+    # CLASSE). Aceita os dois -> da' pra ler o historico antigo. TP_APLIC e
+    # VL_MERC_POS_FINAL nao mudaram, e as categorias de caixa tem o mesmo nome.
+    $iCnpj = $ix['CNPJ_FUNDO_CLASSE']
+    if ($null -eq $iCnpj) { $iCnpj = $ix['CNPJ_FUNDO'] }
+    $iApl = $ix['TP_APLIC']
     $iVal = $ix['VL_MERC_POS_FINAL']; $iDt = $ix['DT_COMPTC']
-    $iCota = if ($ix.ContainsKey('CNPJ_FUNDO_CLASSE_COTA')) { $ix['CNPJ_FUNDO_CLASSE_COTA'] } else { -1 }
+    $iCota = -1
+    if ($ix.ContainsKey('CNPJ_FUNDO_CLASSE_COTA')) { $iCota = $ix['CNPJ_FUNDO_CLASSE_COTA'] }
+    elseif ($ix.ContainsKey('CNPJ_FUNDO_COTA'))    { $iCota = $ix['CNPJ_FUNDO_COTA'] }
     if ($null -eq $iCnpj -or $null -eq $iApl -or $null -eq $iVal) {
-      throw "$([System.IO.Path]::GetFileName($path)): colunas CNPJ_FUNDO_CLASSE/TP_APLIC/VL_MERC_POS_FINAL nao encontradas."
+      throw "$([System.IO.Path]::GetFileName($path)): colunas CNPJ_FUNDO_CLASSE|CNPJ_FUNDO / TP_APLIC / VL_MERC_POS_FINAL nao encontradas."
     }
     $ci = [System.Globalization.CultureInfo]::InvariantCulture
     $line = $null

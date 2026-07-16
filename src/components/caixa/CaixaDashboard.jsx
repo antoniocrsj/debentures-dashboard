@@ -149,23 +149,27 @@ export default function CaixaDashboard({ compact = false }) {
             <Card label="Fundos no consolidado" value={fmtInt(cards.nFundos)} />
           </div>
 
-          <CaixaPctPLLine historico={historico} segmento={segmento} gestor={gestor} />
+          {/* Mesma disposição da Captação: no desktop o gráfico fica à esquerda e
+              o ranking de gestores à direita, na mesma altura; no compacto empilham. */}
+          <div className="caixa-main-row">
+            <CaixaPctPLLine historico={historico} segmento={segmento} gestor={gestor} />
+            {!gestor && <CaixaGestorTable gestores={gestoresRanking} activeGestor={gestor} onSelect={setGestor} />}
+          </div>
 
-          {/* Ranking de gestores (só quando nenhum gestor está selecionado) */}
-          {!gestor && <CaixaGestorTable gestores={gestoresRanking} activeGestor={gestor} onSelect={setGestor} />}
-
-          {/* Tabela de fundos */}
-          <CaixaFundoTable
-            fundos={filtered}
-            title={gestor ? `Fundos de ${gestor}` : 'Fundos por caixa potencial'}
-            subtitle={gestor
-              ? 'Caixa direto (disp.+títulos púb.+compromissadas) e indireto via fundos-caixa'
-              : 'Ordenados por caixa potencial total — clique num gestor acima para filtrar'}
-          />
-
-          {/* Fundos caixa (liquidez): os money market/soberano onde o crédito
-              aplica. Lista global — independe do mercado/gestor selecionado. */}
-          <CaixaFundosCaixaTable fundos={fundosCaixaAll} />
+          {/* Tabelas em 2 colunas no desktop (a de fundos e' a larga) */}
+          <div className="caixa-tables-row">
+            <CaixaFundoTable
+              className="caixa-col-wide"
+              fundos={filtered}
+              title={gestor ? `Fundos de ${gestor}` : 'Fundos por caixa potencial'}
+              subtitle={gestor
+                ? 'Caixa direto (disp.+títulos púb.+compromissadas) e indireto via fundos-caixa'
+                : 'Ordenados por caixa potencial total — clique num gestor acima para filtrar'}
+            />
+            {/* Fundos caixa (liquidez): os money market/soberano onde o crédito
+                aplica. Lista global — independe do mercado/gestor selecionado. */}
+            <CaixaFundosCaixaTable className="caixa-col-narrow" fundos={fundosCaixaAll} />
+          </div>
 
           {/* Rodapé: limitações e regra */}
           {meta && (

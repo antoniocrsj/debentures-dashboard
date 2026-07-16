@@ -1644,9 +1644,15 @@ a { color: var(--primary); }
 .caixa-select:hover { background: var(--blue-soft); }
 .caixa-select:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
 /* Grafico de linha do % do PL em caixa (SVG). */
-.caixa-line { width: 100%; height: auto; display: block; }
+/* O SVG e' desenhado 1:1 (largura/altura medidas no JS), entao NAO deve ser
+   esticado por CSS -- senao a fonte dos eixos volta a encolher no compacto.
+   A ALTURA do card vem do CSS (igual .fluxo-chart da Captacao) e o SVG preenche. */
+.caixa-trend { display: flex; flex-direction: column; }
+.caixa-line-wrap { width: 100%; flex: 1; min-height: 0; }
+.caixa-line { display: block; max-width: 100%; }
 .caixa-line-grid { stroke: var(--blue-line); stroke-width: 1; }
-.caixa-line-ylabel, .caixa-line-xlabel { fill: var(--text-muted); font-size: 10px; font-variant-numeric: tabular-nums; }
+/* Fonte dos eixos = a do app (herda do body); 13px reais em qualquer tela. */
+.caixa-line-ylabel, .caixa-line-xlabel { fill: var(--text-muted); font-family: inherit; font-size: 13px; font-variant-numeric: tabular-nums; }
 .caixa-line-path { stroke: var(--primary); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
 .caixa-line-dot { fill: var(--primary); }
 .caixa-line-empty { padding: 28px 12px; text-align: center; color: var(--text-muted); font-size: 13px; }
@@ -1670,3 +1676,31 @@ a { color: var(--primary); }
 
 /* Desktop: cards do caixa em 6 colunas (há espaço) */
 .app.desktop .caixa .fluxo-cards { grid-template-columns: repeat(6, 1fr); }
+
+/* ── Nivel de Caixa: mesmo layout/medidas da Captacao ───────────────────────
+   Compacto: tudo empilhado, grafico 300px (igual .fluxo-chart).
+   Desktop : grafico(1.2) + ranking(1) lado a lado a 350px; tabelas em 2 colunas
+   (a de fundos, mais larga, ao lado da de fundos-caixa, que so' tem 5 colunas).
+   A fonte 11px das tabelas ja' vem de `.app.desktop .fluxo .fluxo-table`. */
+.app:not(.desktop) .caixa-trend { height: 300px; margin-bottom: 14px; }
+
+@media (min-width: 700px) {
+  .app.desktop .caixa-trend { height: 350px; margin-bottom: 0; }
+
+  .app.desktop .caixa-main-row {
+    display: flex; gap: 16px; align-items: flex-start; margin-bottom: 14px;
+  }
+  .app.desktop .caixa-main-row > .caixa-trend { flex: 1.2 1 0; min-width: 0; }
+  .app.desktop .caixa-main-row > .fluxo-ranking-block { flex: 1 1 0; min-width: 0; margin-bottom: 0; }
+  /* Ranking ao lado do grafico: sem titulo e exatamente a mesma altura */
+  .app.desktop .caixa-main-row .fluxo-ranking-head { display: none; }
+  .app.desktop .caixa-main-row .table-wrap { max-height: none; height: 350px; }
+
+  .app.desktop .caixa-tables-row {
+    display: flex; gap: 16px; align-items: flex-start; margin-bottom: 14px;
+  }
+  .app.desktop .caixa-tables-row > .fluxo-ranking-block { min-width: 0; margin-bottom: 0; }
+  .app.desktop .caixa-tables-row > .caixa-col-wide { flex: 1.6 1 0; }   /* tabela de fundos (8 colunas) */
+  .app.desktop .caixa-tables-row > .caixa-col-narrow { flex: 1 1 0; }   /* fundos caixa (5 colunas) */
+  .app.desktop .caixa-tables-row .table-wrap { max-height: 420px; }
+}
