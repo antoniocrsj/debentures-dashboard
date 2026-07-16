@@ -1,6 +1,6 @@
 {
     "mesAno":  "202603",
-    "updatedAt":  "2026-07-13T09:17:44",
+    "updatedAt":  "2026-07-16T08:47:28",
     "source":  "CVM CDA",
     "rule":  "dia \u003c= 15: mes atual -5; dia \u003e 15: mes atual -4"
 }

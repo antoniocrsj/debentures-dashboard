@@ -1,7 +1,7 @@
 {
   "date": "2026-07-09",
   "label": "09/07/2026",
-  "previousDate": "2026-07-08",
+  "previousDate": null,
   "sourceDates": {
     "debentures": "2026-07-08",
     "cap12431": "2026-07-07",
@@ -13,7 +13,7 @@
     "fundos": "2026-07-07"
   },
   "novoPorFonte": {
-    "debentures": false,
+    "debentures": true,
     "cap": true,
     "anbima": true,
     "fundos": true,
@@ -25,7 +25,7 @@
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional: +R$ 61 mi",
+      "texto": "Captação líquida Tradicional: +R$ 66 mi",
       "tom": "pos"
     },
     {
@@ -64,8 +64,8 @@
         "captacao": 142706853.48999998,
         "resgate": 176740413.59999996,
         "liquido": -34033560.109999985,
-        "pl": 335717362829.2501,
-        "numFundos": 1652,
+        "pl": 335867710690.9201,
+        "numFundos": 1653,
         "curados": 1684,
         "fechados": 286,
         "anterior": {
@@ -73,26 +73,26 @@
           "captacao": 141664445.71,
           "resgate": 478331550.07999986,
           "liquido": -336667104.3699999,
-          "pl": 337158236406.3199,
+          "pl": 337158415298.1799,
           "numFundos": 1660
         }
       },
       "trad": {
         "dia": "2026-07-07",
-        "captacao": 1415760769.0099995,
-        "resgate": 1354791927.6700003,
-        "liquido": 60968841.3399992,
-        "pl": 1080307130972.2004,
-        "numFundos": 825,
+        "captacao": 1423442397.1499991,
+        "resgate": 1357700925.2500002,
+        "liquido": 65741471.8999989,
+        "pl": 1093119455791.1705,
+        "numFundos": 830,
         "curados": 839,
         "fechados": 30,
         "anterior": {
           "dia": "2026-07-06",
-          "captacao": 1727770831.72,
-          "resgate": 2573377121.59,
-          "liquido": -845606289.8700001,
-          "pl": 1083368025624.3099,
-          "numFundos": 831
+          "captacao": 1727628807.27,
+          "resgate": 2573312686.59,
+          "liquido": -845683879.3200002,
+          "pl": 1093737464153.5999,
+          "numFundos": 832
         }
       }
     },
@@ -238,11 +238,11 @@
           "pl": 217589559198.32
         },
         {
-          "gestor": "Icatu",
-          "captacao": 20418287.46,
-          "resgate": 55165956.58,
-          "liquido": -34747669.12,
-          "pl": 19911108231.91
+          "gestor": "XPG",
+          "captacao": 14781198.72,
+          "resgate": 45703437.76,
+          "liquido": -30922239.04,
+          "pl": 25565841027.93
         }
       ]
     },

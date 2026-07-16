@@ -1,17 +1,17 @@
 {
-    "updatedAt":  "2026-07-14T20:38:00",
+    "updatedAt":  "2026-07-16T08:17:08",
     "definicao":  "Caixa Potencial Direto = Disponibilidades + Titulos Publicos + Operacoes Compromissadas (por TP_APLIC, todos os blocos). Nao inclui titulos bancarios/CDB/LCI/LCA/LF/DPGE, credito privado/debentures, valores a receber nem cotas comuns.",
     "mesesRecentes":  [
+                          "202606",
                           "202605",
-                          "202604",
-                          "202603"
+                          "202604"
                       ],
-    "mesRefMadura":  "202602",
+    "mesRefMadura":  "202603",
     "mesesProcessados":  [
-                             "202602",
                              "202603",
                              "202604",
-                             "202605"
+                             "202605",
+                             "202606"
                          ],
     "limiares":  {
                      "candidato":  0.75,
@@ -28,25 +28,16 @@
                    "Consolidado conta o ativo final 1x: universo curado sem feeders; caixa indireto so via fundo-caixa FORA do universo (evita dupla contagem com a linha do proprio fundo-caixa)."
                ],
     "totais":  {
-                   "comCotasNaoIdentificadas":  899,
-                   "candidatos":  37,
-                   "caixaConsolidadoDataBase":  361751334911.63,
-                   "caixaEstimadoAtualConsolidado":  360085105838.72,
-                   "fundosNaTabela":  2671,
-                   "fundosCaixaConfirmados":  126,
+                   "comCotasNaoIdentificadas":  881,
+                   "candidatos":  8,
+                   "caixaConsolidadoDataBase":  361114339430.26,
+                   "caixaEstimadoAtualConsolidado":  358629101730.66,
+                   "fundosNaTabela":  2631,
+                   "fundosCaixaConfirmados":  90,
                    "dadosInsuficientes":  7,
-                   "excluidosDoConsolidado":  153
+                   "excluidosDoConsolidado":  114
                },
     "comparacaoMeses":  [
-                            {
-                                "Mes":  "202602",
-                                "Disp":  125850506.06000017,
-                                "TitPub":  183390430940.59003,
-                                "Compr":  196182829437.13016,
-                                "CaixaDireto":  379699110883.78015,
-                                "FundosCaixaConfirmados":  5,
-                                "Candidatos":  30
-                            },
                             {
                                 "Mes":  "202603",
                                 "Disp":  1095124653.2700005,
@@ -73,6 +64,15 @@
                                 "CaixaDireto":  348553071539.05981,
                                 "FundosCaixaConfirmados":  9,
                                 "Candidatos":  22
+                            },
+                            {
+                                "Mes":  "202606",
+                                "Disp":  204053995.76999986,
+                                "TitPub":  166727856656.43982,
+                                "Compr":  182822141214.32947,
+                                "CaixaDireto":  349754051866.53931,
+                                "FundosCaixaConfirmados":  13,
+                                "Candidatos":  23
                             }
                         ],
     "discrepancia_839_835":  {

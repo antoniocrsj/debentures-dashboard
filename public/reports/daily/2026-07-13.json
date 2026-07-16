@@ -108,35 +108,35 @@
         "captacao": 70678768.88999999,
         "resgate": 507930868.44,
         "liquido": -437252099.55,
-        "pl": 337137085411.29,
+        "pl": 337137424733.6,
         "numFundos": 1654,
         "curados": 1684,
         "fechados": 286,
         "anterior": {
           "dia": "2026-07-08",
-          "captacao": 133464796.72999999,
-          "resgate": 349962228.44000006,
-          "liquido": -216497431.71000007,
-          "pl": 337945925617.22,
-          "numFundos": 1656
+          "captacao": 133484496.72999999,
+          "resgate": 346222029.6,
+          "liquido": -212737532.87000003,
+          "pl": 338291579640.19995,
+          "numFundos": 1657
         }
       },
       "trad": {
         "dia": "2026-07-09",
-        "captacao": 887680556.6900002,
-        "resgate": 1053864502.9999999,
-        "liquido": -166183946.3099997,
-        "pl": 1084943671649.1399,
-        "numFundos": 827,
+        "captacao": 887538532.2400001,
+        "resgate": 1053870067.9999999,
+        "liquido": -166331535.75999975,
+        "pl": 1085000198392.9198,
+        "numFundos": 829,
         "curados": 839,
         "fechados": 30,
         "anterior": {
           "dia": "2026-07-08",
-          "captacao": 1359541352.7300003,
-          "resgate": 1557067950.1700006,
-          "liquido": -197526597.4400003,
-          "pl": 1084426575687.4003,
-          "numFundos": 828
+          "captacao": 1359399328.2800002,
+          "resgate": 1557073515.1700006,
+          "liquido": -197674186.89000034,
+          "pl": 1084494177131.8705,
+          "numFundos": 831
         }
       }
     },
@@ -286,7 +286,7 @@
           "captacao": 2071159.82,
           "resgate": 20407047.37,
           "liquido": -18335887.55,
-          "pl": 15091134814.28
+          "pl": 15121510068.19
         }
       ]
     },
@@ -1775,7 +1775,7 @@
           "nome": "KINEA INCENTIVADO RF CP LP FI FINANCEIRO FUNDO INCENT EM INV EM DEBÊN DE INFRAESTRUTURA - RESP LTDA",
           "gestor": "Kinea",
           "segmento": "12431",
-          "retorno": -16.4643,
+          "retorno": -16.5349,
           "pl": 19554236.15
         },
         {

@@ -25,7 +25,7 @@
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional: +R$ 158 mi",
+      "texto": "Captação líquida Tradicional: +R$ 157 mi",
       "tom": "pos"
     },
     {
@@ -62,10 +62,10 @@
       "12431": {
         "dia": "2026-07-10",
         "captacao": 105225244.32999998,
-        "resgate": 321853696,
-        "liquido": -216628451.67000002,
-        "pl": 290324324977.3299,
-        "numFundos": 1654,
+        "resgate": 321852686.51,
+        "liquido": -216627442.18,
+        "pl": 290453197156.68994,
+        "numFundos": 1655,
         "curados": 1684,
         "fechados": 286,
         "anterior": {
@@ -73,26 +73,26 @@
           "captacao": 70678768.88999999,
           "resgate": 507930868.44,
           "liquido": -437252099.55,
-          "pl": 337137085411.29,
+          "pl": 337137424733.6,
           "numFundos": 1654
         }
       },
       "trad": {
         "dia": "2026-07-10",
-        "captacao": 2024744616.5000002,
-        "resgate": 1866802653.6200004,
-        "liquido": 157941962.87999988,
-        "pl": 1083118705367.7998,
-        "numFundos": 820,
+        "captacao": 2025244677.0500004,
+        "resgate": 1867822706.5200002,
+        "liquido": 157421970.5300002,
+        "pl": 1083837243205.8197,
+        "numFundos": 823,
         "curados": 839,
         "fechados": 30,
         "anterior": {
           "dia": "2026-07-09",
-          "captacao": 887680556.6900002,
-          "resgate": 1053864502.9999999,
-          "liquido": -166183946.3099997,
-          "pl": 1084943671649.1399,
-          "numFundos": 827
+          "captacao": 887538532.2400001,
+          "resgate": 1053870067.9999999,
+          "liquido": -166331535.75999975,
+          "pl": 1085000198392.9198,
+          "numFundos": 829
         }
       }
     },
@@ -103,7 +103,7 @@
           "captacao": 7636860.92,
           "resgate": 5001287.2,
           "liquido": 2635573.7199999997,
-          "pl": 7273279174.62
+          "pl": 7273275959.75
         },
         {
           "gestor": "Portofino",
@@ -124,7 +124,7 @@
           "captacao": 156231.22,
           "resgate": 77752.24,
           "liquido": 78478.98,
-          "pl": 1806413579.53
+          "pl": 1934428741.22
         },
         {
           "gestor": "BBM Asset",
@@ -161,7 +161,7 @@
           "captacao": 909347.32,
           "resgate": 19891368.66,
           "liquido": -18982021.34,
-          "pl": 7214518549.72
+          "pl": 7215242725.89
         },
         {
           "gestor": "ARX",
@@ -1863,47 +1863,7 @@
         "texto": "74 ativo(s) no BLC sem correspondencia em Debentures.csv"
       }
     ],
-    "emissoesCVM": {
-      "asOf": "2026-07-15",
-      "itens": [
-        {
-          "dataRegistro": "2026-07-13",
-          "dataRequerimento": "2026-07-13",
-          "emissor": "SOCICAM ADMINISTRACAO, PROJETOS E REPRESENTACOES S.A.",
-          "cnpj": "43217280000105",
-          "emissao": 2,
-          "valor": 100000000,
-          "incentivada": false,
-          "lider": "XP INVESTIMENTOS CCTVM S.A.",
-          "grupo": "Socicam"
-        },
-        {
-          "dataRegistro": "2026-07-14",
-          "dataRequerimento": "2026-07-06",
-          "emissor": "ENGIE BRASIL ENERGIA S.A.",
-          "cnpj": "02474103000119",
-          "emissao": 17,
-          "valor": 700000000,
-          "incentivada": false,
-          "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-          "grupo": "Engie"
-        },
-        {
-          "dataRegistro": "2026-07-14",
-          "dataRequerimento": "2026-07-03",
-          "emissor": "ISA ENERGIA BRASIL S.A.",
-          "cnpj": "02998611000104",
-          "emissao": 23,
-          "valor": 1500000000,
-          "incentivada": false,
-          "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-          "grupo": "ISA Energia"
-        }
-      ]
-    },
-    "emissoresFaltantes": {
-      "itens": [],
-      "asOf": "2026-07-15"
-    }
+    "emissoesCVM": null,
+    "emissoresFaltantes": null
   }
 }

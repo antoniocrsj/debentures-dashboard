@@ -1,49 +1,49 @@
 {
-  "updatedAt": "2026-07-15T17:33:38.666Z",
+  "updatedAt": "2026-07-16T11:50:23.660Z",
   "fonte": "ANBIMA - Indice de Debentures (IDA) + familia IMA, arquivos historicos S3 (indices-historico)",
   "indices": [
     {
       "codigo": "IDAGERAL",
       "nome": "IDA-Geral",
-      "dias": 4400,
+      "dias": 4401,
       "dataInicio": "2009-01-05",
-      "dataFim": "2026-07-14"
+      "dataFim": "2026-07-15"
     },
     {
       "codigo": "IDADI",
       "nome": "IDA-DI",
-      "dias": 4400,
+      "dias": 4401,
       "dataInicio": "2009-01-05",
-      "dataFim": "2026-07-14"
+      "dataFim": "2026-07-15"
     },
     {
       "codigo": "IDAIPCA",
       "nome": "IDA-IPCA",
-      "dias": 4400,
+      "dias": 4401,
       "dataInicio": "2009-01-05",
-      "dataFim": "2026-07-14"
+      "dataFim": "2026-07-15"
     },
     {
       "codigo": "IDAIPCAINFRAESTRUTURA",
       "nome": "IDA-IPCA Infraestrutura",
-      "dias": 2891,
+      "dias": 2892,
       "dataInicio": "2015-01-05",
-      "dataFim": "2026-07-14"
+      "dataFim": "2026-07-15"
     },
     {
       "codigo": "IDAIPCAEXINFRAESTRUTURA",
       "nome": "IDA-IPCA ex-Infraestrutura",
-      "dias": 2891,
+      "dias": 2892,
       "dataInicio": "2015-01-05",
-      "dataFim": "2026-07-14"
+      "dataFim": "2026-07-15"
     }
   ],
   "spread": {
     "metodo": "ExcRet252 = excesso de retorno anualizado credito vs govt (REGIME, todos os pares). SpreadNivelBps = nivel implicito por decomposicao retorno+duration ancorado no spread real de hoje (mediana Anbima_Tx) — SO no CDI (IMA-S/LFT tem duration ~0 -> excesso e credito puro). No IPCA a curva de juro real nao cancela e se acumula na integracao -> so regime. Nivel IPCA por ativo virah do secundario diario. Ancoras: CDI+ e NTN-B+ amplo (todas IPCA) e NTN-B+ incentivadas (12.431).",
     "ancorasBps": {
-      "cdi": 97,
+      "cdi": 96,
       "ipca": -2,
-      "ipcaInfra": -4
+      "ipcaInfra": -3
     },
     "pares": [
       {
@@ -51,15 +51,15 @@
         "credito": "IDADI",
         "govt": "IMAS",
         "nivel": true,
-        "dias": 4400,
-        "ancoraBps": 97
+        "dias": 4401,
+        "ancoraBps": 96
       },
       {
         "par": "IPCA",
         "credito": "IDAIPCA",
         "govt": "IMAB",
         "nivel": false,
-        "dias": 4400,
+        "dias": 4401,
         "ancoraBps": -2
       },
       {
@@ -67,8 +67,8 @@
         "credito": "IDAIPCAINFRAESTRUTURA",
         "govt": "IMAB",
         "nivel": false,
-        "dias": 2891,
-        "ancoraBps": -4
+        "dias": 2892,
+        "ancoraBps": -3
       }
     ]
   }

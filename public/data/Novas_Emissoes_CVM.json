@@ -1,6 +1,6 @@
 {
-    "asOf":  "2026-07-15",
-    "geradoEm":  "2026-07-15T09:12:56",
+    "asOf":  "2026-07-16",
+    "geradoEm":  "2026-07-16T08:49:24",
     "itens":  [
                   {
                       "dataRegistro":  "2026-07-13",
@@ -14,21 +14,41 @@
                   },
                   {
                       "dataRegistro":  "2026-07-14",
-                      "dataRequerimento":  "2026-07-03",
-                      "emissor":  "ISA ENERGIA BRASIL S.A.",
-                      "cnpj":  "02998611000104",
-                      "emissao":  23,
-                      "valor":  1500000000,
-                      "incentivada":  false,
-                      "lider":  "ITAU BBA ASSESSORIA FINANCEIRA S.A"
-                  },
-                  {
-                      "dataRegistro":  "2026-07-14",
                       "dataRequerimento":  "2026-07-06",
                       "emissor":  "ENGIE BRASIL ENERGIA S.A.",
                       "cnpj":  "02474103000119",
                       "emissao":  17,
                       "valor":  700000000,
+                      "incentivada":  false,
+                      "lider":  "ITAU BBA ASSESSORIA FINANCEIRA S.A"
+                  },
+                  {
+                      "dataRegistro":  "2026-07-15",
+                      "dataRequerimento":  "2026-06-24",
+                      "emissor":  "LOCALIZA  FLEET S.A.",
+                      "cnpj":  "02286479000108",
+                      "emissao":  21,
+                      "valor":  1418264000,
+                      "incentivada":  false,
+                      "lider":  "BTG PACTUAL INVESTMENT BANKING LTDA."
+                  },
+                  {
+                      "dataRegistro":  "2026-07-15",
+                      "dataRequerimento":  "2026-06-24",
+                      "emissor":  "LOCALIZA RENT A CAR SA",
+                      "cnpj":  "16670085000155",
+                      "emissao":  48,
+                      "valor":  5643014000,
+                      "incentivada":  false,
+                      "lider":  "BTG PACTUAL INVESTMENT BANKING LTDA."
+                  },
+                  {
+                      "dataRegistro":  "2026-07-15",
+                      "dataRequerimento":  "2026-06-26",
+                      "emissor":  "AXIA ENERGIA S.A.",
+                      "cnpj":  "00001180000126",
+                      "emissao":  10,
+                      "valor":  2000000000,
                       "incentivada":  false,
                       "lider":  "ITAU BBA ASSESSORIA FINANCEIRA S.A"
                   }
