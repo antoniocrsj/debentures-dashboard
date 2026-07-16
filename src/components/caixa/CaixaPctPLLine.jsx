@@ -20,7 +20,9 @@ function niceStep(raw) {
   return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 5 ? 5 : 10) * pow
 }
 
-const PAD = { l: 52, r: 16, t: 14, b: 34 }
+// r=26: o rotulo do ULTIMO mes e' centrado em x = W - PAD.r; com r=16 metade de
+// "jun/26" (~20px) vazava do viewBox e o mes aparecia cortado.
+const PAD = { l: 52, r: 26, t: 14, b: 34 }
 
 export default function CaixaPctPLLine({ historico, segmento, gestor }) {
   // Mede largura E altura do container: a altura do card vem do CSS (como o
@@ -105,16 +107,26 @@ export default function CaixaPctPLLine({ historico, segmento, gestor }) {
   const y = v => PAD.t + ih - ((v - lo) / (hi - lo)) * ih
   const linePts = pts.map((p, i) => `${x(i).toFixed(1)},${y(p.pct).toFixed(1)}`).join(' ')
   const yTicks = Array.from({ length: nTicks + 1 }, (_, k) => lo + k * yStep)
-  // Rotulos do eixo X: passo pela largura REAL do rotulo ("mai/26" ~44px + folga)
-  // e distribuidos A PARTIR DO ULTIMO ponto -- o mes mais recente e' o que mais
-  // importa e nunca pode faltar. Antes o ultimo era forcado FORA do passo
-  // (`i % step === 0 || i === last`), o que encavalava os dois ultimos rotulos
-  // sempre que (n-1) nao era multiplo do passo.
-  const LBL_W = 56
-  const maxLabels = Math.max(2, Math.floor(iw / LBL_W))
-  const xStep = Math.max(1, Math.ceil((pts.length - 1) / Math.max(1, maxLabels - 1)))
-  const showX = new Set()
-  for (let i = pts.length - 1; i >= 0; i -= xStep) showX.add(i)
+  // Rotulos do eixo X: so' FINS DE TRIMESTRE (mar/jun/set/dez) + o mes mais
+  // recente. Com 42 meses sao 14 trimestres, que nao cabem -- entao a regua
+  // rareia (de 2 em 2, 4 em 4...) conforme a largura, mas sempre caindo em fim
+  // de trimestre, nunca em mes quebrado. O rareamento conta A PARTIR DO ULTIMO
+  // trimestre p/ a ponta recente ficar sempre ancorada.
+  const LBL_W = 46
+  const last = pts.length - 1
+  const tri = pts.map((p, i) => ({ i, m: +String(p.mes).slice(4, 6) }))
+                 .filter(o => o.m % 3 === 0).map(o => o.i)
+  let idx
+  if (!tri.length) {
+    idx = [last]                                   // serie curta demais p/ ter trimestre
+  } else {
+    const cabe = Math.max(2, Math.floor(iw / LBL_W))
+    const salto = Math.max(1, Math.ceil(tri.length / cabe))
+    idx = tri.filter((_, k) => (tri.length - 1 - k) % salto === 0)
+    // o ultimo mes entra sempre; se o trimestre anterior ficaria colado, ele cede a vez
+    if (!idx.includes(last)) idx = idx.filter(i => x(last) - x(i) > LBL_W).concat(last)
+  }
+  const showX = new Set(idx)
 
   return (
     <div className="caixa-trend">
@@ -131,8 +143,11 @@ export default function CaixaPctPLLine({ historico, segmento, gestor }) {
             </g>
           ))}
           <polyline className="caixa-line-path" points={linePts} fill="none" />
+          {/* Pontos INVISIVEIS (fill:transparent no CSS): somem da vista, mas
+              continuam sendo o alvo do tooltip de cada mes. r=5 p/ dar area de
+              hover confortavel sem aparecer. */}
           {pts.map((p, i) => (
-            <circle key={p.mes} cx={x(i)} cy={y(p.pct)} r="3" className="caixa-line-dot">
+            <circle key={p.mes} cx={x(i)} cy={y(p.pct)} r="5" className="caixa-line-dot">
               <title>{`${fmtMes(p.mes)}: ${pct1(p.pct)}`}</title>
             </circle>
           ))}

@@ -43,7 +43,11 @@ export default function FluxoChart({ weekly }) {
     <div className="fluxo-chart" role="img" aria-label="Gráfico semanal de captação (acima de zero), resgate (abaixo de zero) e captação líquida">
       <ResponsiveContainer width="100%" height="100%">
         <ComposedChart data={data} margin={{ top: 8, right: 8, bottom: 4, left: 4 }} barGap={2}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e8dfd2" vertical={false} />
+          {/* Mesmo padrao do grafico do Caixa: grade tracejada horizontal fina e
+              SEM moldura (axisLine/tickLine) -- a linha de eixo + os tick marks do
+              Recharts eram o que deixava este grafico mais "sujo" que o outro.
+              #e0d3c0 = var(--grid); o Recharts nao aceita var() em stroke. */}
+          <CartesianGrid strokeDasharray="3 3" stroke="#e0d3c0" vertical={false} />
           <XAxis
             dataKey="weekKey"
             tickFormatter={fmtDayMonthYY}
@@ -51,8 +55,10 @@ export default function FluxoChart({ weekly }) {
             minTickGap={44}
             tick={{ fontSize: 11 }}
             tickMargin={6}
+            axisLine={false}
+            tickLine={false}
           />
-          <YAxis tickFormatter={axisFmt} tick={{ fontSize: 11 }} width={44} />
+          <YAxis tickFormatter={axisFmt} tick={{ fontSize: 11 }} width={44} axisLine={false} tickLine={false} />
           <ReferenceLine y={0} stroke={COL_ZERO} strokeWidth={1.25} />
           <Tooltip content={<FluxoTooltip />} />
           <Legend wrapperStyle={{ fontSize: 11 }} />

@@ -46,6 +46,9 @@
      os mesmos matizes (taupe ~36deg / terracota ~26deg), so' mais claros. */
   --bar-juros:     #bdb3a2;    /* taupe claro    (base da barra) */
   --bar-amort:     #c8935f;    /* terracota clara (topo da barra) */
+  /* Grade dos graficos (Caixa e Captacao usam o MESMO token p/ nao divergirem:
+     tracejada 3-3, horizontal, sem linha de eixo nem tick marks). */
+  --grid:          #e0d3c0;
   /* Rampa bege quente (hover / borda / scroll) — era a rampa azul-acinzentada */
   --blue-soft:     #ece0d0;    /* fundo em hover / fundo desktop */
   --blue-press:    #e6d8c5;    /* fundo em active/press */
@@ -1668,11 +1671,14 @@ a { color: var(--primary); }
 .caixa-trend { display: flex; flex-direction: column; }
 .caixa-line-wrap { width: 100%; flex: 1; min-height: 0; }
 .caixa-line { display: block; max-width: 100%; }
-.caixa-line-grid { stroke: var(--blue-line); stroke-width: 1; }
-/* Fonte dos eixos = a do app (herda do body); 13px reais em qualquer tela. */
-.caixa-line-ylabel, .caixa-line-xlabel { fill: var(--text-muted); font-family: inherit; font-size: 13px; font-variant-numeric: tabular-nums; }
+/* Grade tracejada fina, igual a da Captacao (mesmo padrao nos dois graficos). */
+.caixa-line-grid { stroke: var(--grid); stroke-width: 1; stroke-dasharray: 3 3; }
+/* Fonte dos eixos = a do app (herda do body); 11px reais, igual a tabela ao lado. */
+.caixa-line-ylabel, .caixa-line-xlabel { fill: var(--text-muted); font-family: inherit; font-size: 11px; font-variant-numeric: tabular-nums; }
 .caixa-line-path { stroke: var(--primary); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
-.caixa-line-dot { fill: var(--primary); }
+/* Invisivel de proposito: e' so' o alvo do tooltip de cada mes (fill transparent
+   ainda captura o mouse; fill:none NAO capturaria). */
+.caixa-line-dot { fill: transparent; }
 .caixa-line-empty { padding: 28px 12px; text-align: center; color: var(--text-muted); font-size: 13px; }
 .caixa-line-empty code { background: var(--chip-bg); padding: 1px 5px; border-radius: 4px; font-size: 12px; }
 .caixa-trend-bars { display: flex; align-items: flex-end; gap: 14px; height: 150px; }
