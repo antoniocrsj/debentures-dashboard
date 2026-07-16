@@ -201,6 +201,28 @@ if ($bridge12431.map.Count -eq 0 -and $bridgeCdi.map.Count -eq 0) {
   throw "Nenhum fundo resolvido. Verifique tools\Fundos_12431.csv / tools\Fundos_CDI.csv (coluna CNPJ Gestor) e Cadastro_Gestores."
 }
 
+# Exclusao de fundos de TESOURARIA (gestao de liquidez propria do gestor): os
+# fluxos deles NAO sao captacao de cliente e distorcem a analise. Lista curada em
+# tools\Fundos_Tesouraria.csv (colunas CNPJ,Apelido,Nome). Removidos do universo
+# AQUI (antes da meta e dos agregados) -> saem do semanal/mensal/fundos/diario e
+# da rentabilidade. So' afeta a Captacao (caixa/vencimentos usam outra base).
+$excluirTes = New-Object System.Collections.Generic.HashSet[string]
+$tesPath = Join-Path $PSScriptRoot 'Fundos_Tesouraria.csv'
+if (Test-Path $tesPath) {
+  foreach ($row in (Import-Csv -LiteralPath $tesPath)) {
+    $c = NormCNPJ ([string]$row.CNPJ)
+    if ($c) { [void]$excluirTes.Add($c) }
+  }
+}
+if ($excluirTes.Count -gt 0) {
+  $nRem = 0
+  foreach ($m in @($fg12431.map, $fgCdi.map, $bridge12431.map, $bridgeCdi.map)) {
+    if ($null -eq $m) { continue }
+    foreach ($c in @($excluirTes)) { if ($m.ContainsKey($c)) { [void]$m.Remove($c); $nRem++ } }
+  }
+  Step "Tesouraria: $($excluirTes.Count) CNPJ(s) na lista de exclusao; removidos $nRem registro(s) do universo de captacao."
+}
+
 function Get-FundosMeta($fundoGestorMap, $fundoApelidoMap) {
   $porGestor = @{}
   foreach ($cnpj in $fundoApelidoMap.Keys) {
