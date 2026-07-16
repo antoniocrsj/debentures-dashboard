@@ -105,9 +105,16 @@ export default function CaixaPctPLLine({ historico, segmento, gestor }) {
   const y = v => PAD.t + ih - ((v - lo) / (hi - lo)) * ih
   const linePts = pts.map((p, i) => `${x(i).toFixed(1)},${y(p.pct).toFixed(1)}`).join(' ')
   const yTicks = Array.from({ length: nTicks + 1 }, (_, k) => lo + k * yStep)
-  // Rotulos do eixo X conforme a largura real (~1 a cada 76px) -> nao empilha no compacto.
-  const maxLabels = Math.max(3, Math.floor(iw / 76))
-  const step = Math.max(1, Math.ceil(pts.length / maxLabels))
+  // Rotulos do eixo X: passo pela largura REAL do rotulo ("mai/26" ~44px + folga)
+  // e distribuidos A PARTIR DO ULTIMO ponto -- o mes mais recente e' o que mais
+  // importa e nunca pode faltar. Antes o ultimo era forcado FORA do passo
+  // (`i % step === 0 || i === last`), o que encavalava os dois ultimos rotulos
+  // sempre que (n-1) nao era multiplo do passo.
+  const LBL_W = 56
+  const maxLabels = Math.max(2, Math.floor(iw / LBL_W))
+  const xStep = Math.max(1, Math.ceil((pts.length - 1) / Math.max(1, maxLabels - 1)))
+  const showX = new Set()
+  for (let i = pts.length - 1; i >= 0; i -= xStep) showX.add(i)
 
   return (
     <div className="caixa-trend">
@@ -129,7 +136,7 @@ export default function CaixaPctPLLine({ historico, segmento, gestor }) {
               <title>{`${fmtMes(p.mes)}: ${pct1(p.pct)}`}</title>
             </circle>
           ))}
-          {pts.map((p, i) => (i % step === 0 || i === pts.length - 1) ? (
+          {pts.map((p, i) => showX.has(i) ? (
             <text key={'x' + p.mes} x={x(i)} y={H - 12} className="caixa-line-xlabel" textAnchor="middle">{fmtMes(p.mes)}</text>
           ) : null)}
         </svg>
