@@ -27,7 +27,7 @@ const LABELS = {
   rent1s: '%CDI 1s', rent1m: '%CDI 1m', rent3m: '%CDI 3m', rent6m: '%CDI 6m', rent12m: '%CDI 12m',
 }
 
-export default function GestorFlowRanking({ ranking, onSelect }) {
+export default function GestorFlowRanking({ ranking, activeGestor, onSelect }) {
   const [sort, setSort] = useState(DEFAULT_SORT)
   const [showAll, setShowAll] = useState(false)
 
@@ -50,7 +50,7 @@ export default function GestorFlowRanking({ ranking, onSelect }) {
       </div>
 
       <TableWrap title="Ranking de gestores">
-        <table className="asset-table fluxo-table">
+        <table className="asset-table fluxo-table table-clickable">
           <thead>
             <tr>
               <SortableTh col="gestor"   label="Gestor"      sort={sort} onSort={onSort} align="left" sticky />
@@ -68,13 +68,15 @@ export default function GestorFlowRanking({ ranking, onSelect }) {
           <tbody>
             {shown.map(g => {
               const pos = g.liquido > 0, neg = g.liquido < 0
+              const active = g.gestor === activeGestor
               return (
                 <tr
                   key={g.gestor}
+                  className={active ? 'row-active' : ''}
                   onClick={() => onSelect?.(g.gestor)}
                   tabIndex={0}
                   onKeyDown={e => e.key === 'Enter' && onSelect?.(g.gestor)}
-                  title={`Filtrar Captação por ${g.gestor}`}
+                  title={active ? `Limpar o filtro de ${g.gestor}` : `Filtrar Captação por ${g.gestor}`}
                 >
                   <td className="col-sticky col-gestor"><span className="ativo-code">{g.gestor}</span></td>
                   <td className={`col-num liq-cell${pos ? ' pos' : neg ? ' neg' : ''}`}>{fmtFluxoSigned(g.liquido)}</td>

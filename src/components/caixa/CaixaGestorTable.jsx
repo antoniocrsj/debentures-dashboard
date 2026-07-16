@@ -32,7 +32,7 @@ export default function CaixaGestorTable({ gestores, activeGestor, onSelect }) {
         <span className="fluxo-ranking-sub">Conta o ativo final uma vez (sem feeders, sem dupla contagem via cotas)</span>
       </div>
       <TableWrap title="Ranking de gestores por caixa">
-        <table className="asset-table fluxo-table">
+        <table className="asset-table fluxo-table table-clickable">
           <thead>
             <tr>
               <SortableTh col="gestor" label="Gestor" sort={sort} onSort={onSort} align="left" sticky />

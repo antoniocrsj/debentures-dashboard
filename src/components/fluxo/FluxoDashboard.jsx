@@ -71,9 +71,17 @@ export default function FluxoDashboard({ compact = false }) {
     () => aggregateByMonth(filterMensal(monthly, gestor), effStart, null, monthly),
     [monthly, gestor, effStart]
   )
+  // Ranking com TODAS as gestoras SEMPRE (filtra so' por periodo, nao por
+  // gestor): selecionar uma gestora nao pode esvaziar nem desmontar a tabela --
+  // se ela sai do DOM, o grafico (flex) se estica pra direita e o layout pula
+  // embaixo do cursor justo quando se quer ir trocando de gestora e comparar.
+  const filteredTodasGestoras = useMemo(
+    () => filterFluxo(baseRows, { gestor: '', start: effStart, end: effEnd }),
+    [baseRows, effStart, effEnd]
+  )
   const ranking = useMemo(
-    () => (gestor ? [] : mergeRentabilidade(aggregateByGestor(filtered), rentabilidade)),
-    [filtered, gestor, rentabilidade]
+    () => mergeRentabilidade(aggregateByGestor(filteredTodasGestoras), rentabilidade),
+    [filteredTodasGestoras, rentabilidade]
   )
   // Fundos do gestor selecionado: mesmo gestor/período da seção. Passa pela
   // MESMA via de cálculo do ranking (filtra + agrega), então soma o total do gestor.
@@ -181,7 +189,13 @@ export default function FluxoDashboard({ compact = false }) {
               <FluxoChart weekly={weekly} />
             </Suspense>
 
-            {!gestor && <GestorFlowRanking ranking={ranking} onSelect={setGestor} />}
+            {/* SEMPRE montado: selecionar so' filtra o grafico/cards e destaca a
+                linha -- as outras gestoras continuam ali. Clicar na ativa desmarca. */}
+            <GestorFlowRanking
+              ranking={ranking}
+              activeGestor={gestor}
+              onSelect={g => setGestor(cur => (cur === g ? '' : g))}
+            />
           </div>
 
           {/* Desktop: Semanas + Meses lado a lado (há espaço). Mobile: empilhadas. */}

@@ -109,13 +109,15 @@ export default function FluxoFilters({
         </div>
       </div>
 
+      {/* O "Limpar" fica SEMPRE montado (so' desabilita): aparecendo/sumindo com
+          o filtro, esta linha nascia do nada e empurrava todo o conteudo ~30px
+          ao selecionar uma gestora -- o grafico pulava embaixo do cursor justo
+          quando se quer trocar de gestora e comparar. */}
       <div className="fluxo-period-info">
         {periodLabel && <span className="period-effective">{periodLabel}</span>}
-        {hasFilter && (
-          <button className="chip-clear" onClick={onClear} aria-label="Limpar filtros">
-            ✕ Limpar
-          </button>
-        )}
+        <button className="chip-clear" onClick={onClear} disabled={!hasFilter} aria-label="Limpar filtros">
+          ✕ Limpar
+        </button>
       </div>
     </div>
   )
