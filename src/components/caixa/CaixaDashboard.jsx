@@ -137,20 +137,24 @@ export default function CaixaDashboard({ compact = false }) {
 
           {/* Cards */}
           <div className="fluxo-cards" aria-label="Indicadores de caixa">
-            <Card label="Caixa consolidado" sub="(data-base)" value={fmtFluxo(cards.consolidado)}
-              help="Soma do caixa dos fundos compradores diretos, contando o ativo final uma vez (sem feeders, sem dupla contagem via cotas)." />
+            {/* Rotulos CURTOS (1 linha): o grid iguala a altura dos 6 cards pelo
+                maior, entao um rotulo que quebra em 2 linhas engorda TODOS. O
+                detalhe ("data-base", "posterior", "na analise"...) vive no ⓘ. */}
+            <Card label="Caixa consolidado" value={fmtFluxo(cards.consolidado)}
+              help="Na data-base da carteira. Soma do caixa dos fundos compradores diretos, contando o ativo final uma vez (sem feeders, sem dupla contagem via cotas)." />
             <Card label="% do PL" value={fmtPctPL(cards.pctPL)} />
             <Card label="Caixa estimado" value={fmtFluxo(cards.estimado)}
               help="% de caixa da última carteira válida × PL diário mais recente do Informe Diário." />
             <div className={`fluxo-card${cards.fluxoPosterior > 0 ? ' fluxo-card-liquido pos' : cards.fluxoPosterior < 0 ? ' fluxo-card-liquido neg' : ''}`}>
-              <span className="fluxo-card-label">Pressão de compra posterior
-                <span className="fluxo-card-help" title="Fluxo líquido de captação após a data-base. Mostrado à parte — o dinheiro pode já ter sido investido; NÃO somado ao caixa." aria-hidden="true"> ⓘ</span>
+              <span className="fluxo-card-label">Pressão de compra
+                <span className="fluxo-card-help" title="Fluxo líquido de captação APÓS a data-base. Mostrado à parte — o dinheiro pode já ter sido investido; NÃO somado ao caixa." aria-hidden="true"> ⓘ</span>
               </span>
               <span className="fluxo-card-value">{fmtFluxoSigned(cards.fluxoPosterior)}</span>
             </div>
-            <Card label="Fundos caixa" sub="na análise" value={fmtInt(fundosCaixa)}
-              help={`${fundosCaixa} fundos caixa (≥90% do PL em caixa/públicos/compromissada) + ${fundosCaixaCand} candidatos (75–90%). São os fundos de liquidez (money market/soberano) onde os fundos de crédito aplicam — fora das suas listas. Fundo de crédito nunca é fundo caixa. Número global (servem aos dois mercados).`} />
-            <Card label="Fundos no consolidado" value={fmtInt(cards.nFundos)} />
+            <Card label="Fundos caixa" value={fmtInt(fundosCaixa)}
+              help={`Na análise: ${fundosCaixa} fundos caixa (≥90% do PL em caixa/públicos/compromissada) + ${fundosCaixaCand} candidatos (75–90%). São os fundos de liquidez (money market/soberano) onde os fundos de crédito aplicam — fora das suas listas. Fundo de crédito nunca é fundo caixa. Número global (servem aos dois mercados).`} />
+            <Card label="Fundos" value={fmtInt(cards.nFundos)}
+              help="Fundos de crédito incluídos no consolidado (compradores diretos, sem feeders)." />
           </div>
 
           {/* Mesma disposição da Captação: no desktop o gráfico fica à esquerda e
