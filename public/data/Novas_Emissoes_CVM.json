@@ -1,6 +1,6 @@
 {
     "asOf":  "2026-07-16",
-    "geradoEm":  "2026-07-16T08:49:24",
+    "geradoEm":  "2026-07-16T17:26:03",
     "itens":  [
                   {
                       "dataRegistro":  "2026-07-13",
@@ -21,16 +21,6 @@
                       "valor":  700000000,
                       "incentivada":  false,
                       "lider":  "ITAU BBA ASSESSORIA FINANCEIRA S.A"
-                  },
-                  {
-                      "dataRegistro":  "2026-07-15",
-                      "dataRequerimento":  "2026-06-24",
-                      "emissor":  "LOCALIZA  FLEET S.A.",
-                      "cnpj":  "02286479000108",
-                      "emissao":  21,
-                      "valor":  1418264000,
-                      "incentivada":  false,
-                      "lider":  "BTG PACTUAL INVESTMENT BANKING LTDA."
                   },
                   {
                       "dataRegistro":  "2026-07-15",

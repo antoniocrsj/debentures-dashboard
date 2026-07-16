@@ -83,8 +83,8 @@
         "captacao": 133484496.72999999,
         "resgate": 264983470.26000005,
         "liquido": -131498973.53000006,
-        "pl": 275520103082.85,
-        "numFundos": 1651,
+        "pl": 259155318445.62003,
+        "numFundos": 1650,
         "curados": 1684,
         "fechados": 286,
         "anterior": {
@@ -92,8 +92,8 @@
           "captacao": 142706853.48999998,
           "resgate": 176740413.59999996,
           "liquido": -34033560.109999985,
-          "pl": 274868360034.46002,
-          "numFundos": 1648
+          "pl": 258515796827.2,
+          "numFundos": 1647
         }
       },
       "trad": {
@@ -931,7 +931,7 @@
               "ticker": "JSMLB5",
               "indexador": "IPCA + 7.9677%",
               "indexadorFamilia": "IPCA+",
-              "emissor": "JSL S.A",
+              "emissor": "SIMPAR S.A.",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "B30",

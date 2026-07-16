@@ -3,7 +3,7 @@
   "label": "15/07/2026",
   "previousDate": "2026-07-14",
   "sourceDates": {
-    "debentures": "2026-07-13",
+    "debentures": "2026-07-15",
     "cap12431": "2026-07-13",
     "capTrad": "2026-07-13",
     "perf12431": "2026-07-13",
@@ -13,13 +13,17 @@
     "fundos": "2026-07-10"
   },
   "novoPorFonte": {
-    "debentures": false,
+    "debentures": true,
     "cap": true,
     "anbima": true,
     "fundos": false,
     "blc": false
   },
   "summary": [
+    {
+      "texto": "1 nova(s) debênture(s) cadastrada(s)",
+      "tom": "pos"
+    },
     {
       "texto": "Captação líquida Incentivados: −R$ 421 mi",
       "tom": "neg"
@@ -51,7 +55,22 @@
   ],
   "sections": {
     "debentures": {
-      "novas": [],
+      "novas": [
+        {
+          "ticker": "RBRAL2",
+          "empresa": "OPEA SECURITIZADORA S/A",
+          "grupo": "Opea Securitizadora",
+          "cnpj": "02773542000122",
+          "dataRegistro": "15/07/2026",
+          "dataEmissao": "08/07/2026",
+          "vencimento": "10/07/2031",
+          "indexador": "DI",
+          "taxa": "2,65",
+          "volumeEmitido": 50000000,
+          "incentivada": false,
+          "coordenador": "ITAU UNIBANCO HOLDING S.A"
+        }
+      ],
       "saidas": [],
       "temSnapshotAnterior": false
     },
@@ -873,7 +892,7 @@
               "ticker": "JSMLB5",
               "indexador": "IPCA + 7.9677%",
               "indexadorFamilia": "IPCA+",
-              "emissor": "JSL S.A",
+              "emissor": "SIMPAR S.A.",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "B30",
@@ -1529,7 +1548,9 @@
       ]
     },
     "inclusoes": {
-      "novosDebentures": [],
+      "novosDebentures": [
+        "RBRAL2"
+      ],
       "novosBlc": [],
       "temSnapshotBlc": true
     },
@@ -1574,17 +1595,6 @@
           "incentivada": false,
           "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
           "grupo": "Axia"
-        },
-        {
-          "dataRegistro": "2026-07-15",
-          "dataRequerimento": "2026-06-24",
-          "emissor": "LOCALIZA  FLEET S.A.",
-          "cnpj": "02286479000108",
-          "emissao": 21,
-          "valor": 1418264000,
-          "incentivada": false,
-          "lider": "BTG PACTUAL INVESTMENT BANKING LTDA.",
-          "grupo": "Localiza"
         },
         {
           "dataRegistro": "2026-07-15",

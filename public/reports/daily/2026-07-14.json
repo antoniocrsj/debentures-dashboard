@@ -3,7 +3,7 @@
   "label": "14/07/2026",
   "previousDate": "2026-07-13",
   "sourceDates": {
-    "debentures": "2026-07-13",
+    "debentures": "2026-07-14",
     "cap12431": "2026-07-10",
     "capTrad": "2026-07-10",
     "perf12431": "2026-07-10",
@@ -13,13 +13,17 @@
     "fundos": "2026-07-10"
   },
   "novoPorFonte": {
-    "debentures": false,
+    "debentures": true,
     "cap": true,
     "anbima": true,
     "fundos": true,
     "blc": false
   },
   "summary": [
+    {
+      "texto": "1 nova(s) debênture(s) cadastrada(s)",
+      "tom": "pos"
+    },
     {
       "texto": "Captação líquida Incentivados: −R$ 217 mi",
       "tom": "neg"
@@ -54,7 +58,22 @@
   ],
   "sections": {
     "debentures": {
-      "novas": [],
+      "novas": [
+        {
+          "ticker": "ISAEB3",
+          "empresa": "ISA ENERGIA BRASIL S.A.",
+          "grupo": "ISA Energia",
+          "cnpj": "02998611000104",
+          "dataRegistro": "14/07/2026",
+          "dataEmissao": "15/07/2026",
+          "vencimento": "15/07/2030",
+          "indexador": "DI",
+          "taxa": "0,42",
+          "volumeEmitido": 1500000000,
+          "incentivada": false,
+          "coordenador": "ITAU UNIBANCO HOLDING S.A"
+        }
+      ],
       "saidas": [],
       "temSnapshotAnterior": false
     },
@@ -73,8 +92,8 @@
           "captacao": 70678768.88999999,
           "resgate": 507930868.44,
           "liquido": -437252099.55,
-          "pl": 274314242508.69998,
-          "numFundos": 1648
+          "pl": 257952145299.58,
+          "numFundos": 1647
         }
       },
       "trad": {
@@ -1038,7 +1057,7 @@
               "ticker": "JSMLA5",
               "indexador": "DI + 3.5000%",
               "indexadorFamilia": "CDI+",
-              "emissor": "JSL S.A",
+              "emissor": "SIMPAR S.A.",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "CDI",
@@ -1853,7 +1872,9 @@
       ]
     },
     "inclusoes": {
-      "novosDebentures": [],
+      "novosDebentures": [
+        "ISAEB3"
+      ],
       "novosBlc": [],
       "temSnapshotBlc": true
     },

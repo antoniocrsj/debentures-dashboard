@@ -1,9 +1,9 @@
 {
-    "updatedAt":  "2026-07-16T10:28:25",
+    "updatedAt":  "2026-07-16T17:22:30",
     "rule":  "Contagem estatica da lista atual de fundos; nao varia por periodo.",
     "12431":  {
-                  "fundos":  1678,
-                  "gestores":  112,
+                  "fundos":  1677,
+                  "gestores":  111,
                   "semGestor":  0,
                   "porGestor":  {
                                     "4UM":  1,
@@ -51,7 +51,6 @@
                                     "Icatu":  15,
                                     "Inter":  5,
                                     "Iridium":  2,
-                                    "ITAU Tsy":  1,
                                     "Jera":  1,
                                     "JGP":  9,
                                     "Jive":  1,
