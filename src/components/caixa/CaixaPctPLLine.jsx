@@ -12,6 +12,14 @@ import { fmtMes } from '../../utils/caixa.js'
 // aparecia pela metade (10px -> 5px, ilegivel). Assim 13px e' 13px em qualquer tela.
 function pct1(x) { return `${(x * 100).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%` }
 
+// Passo "redondo" (1/2/5 x 10^n) p/ os rotulos do eixo cairem em valores limpos.
+function niceStep(raw) {
+  if (!(raw > 0)) return 0.01
+  const pow = Math.pow(10, Math.floor(Math.log10(raw)))
+  const n = raw / pow
+  return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 5 ? 5 : 10) * pow
+}
+
 const PAD = { l: 52, r: 16, t: 14, b: 34 }
 
 export default function CaixaPctPLLine({ historico, segmento, gestor }) {
@@ -77,12 +85,26 @@ export default function CaixaPctPLLine({ historico, segmento, gestor }) {
 
   // Geometria (em px reais: W vem medido do container)
   const iw = W - PAD.l - PAD.r, ih = H - PAD.t - PAD.b
-  const maxV = Math.max(...pts.map(p => p.pct))
-  const top = maxV > 0 ? maxV * 1.12 : 0.01     // headroom; base em 0
+
+  // Escala Y ADAPTATIVA (nao comeca em 0): a serie varia poucos pontos (ex.: 26%
+  // a 31%), entao um eixo 0-35% jogava tudo numa faixa de ~15% da altura e a
+  // linha virava reta. Aqui a janela acompanha os dados, com folga proporcional
+  // e limites arredondados p/ rotulos limpos. Janela MINIMA de 4pp evita
+  // transformar ruido em montanha quando a serie e' quase plana. Base fora do
+  // zero e' leitura padrao p/ serie temporal de razao -- e' um grafico de LINHA
+  // (sem area preenchida), que nao sugere magnitude a partir do zero.
+  const vals = pts.map(p => p.pct)
+  const dMin = Math.min(...vals), dMax = Math.max(...vals)
+  const span = Math.max(dMax - dMin, 0.04)
+  const pad = span * 0.25
+  const yStep = niceStep((span + 2 * pad) / 4)
+  const lo = Math.max(0, Math.floor((dMin - pad) / yStep) * yStep)
+  const hi = Math.ceil((dMax + pad) / yStep) * yStep
+  const nTicks = Math.max(1, Math.round((hi - lo) / yStep))
   const x = i => PAD.l + (pts.length === 1 ? iw / 2 : (i / (pts.length - 1)) * iw)
-  const y = v => PAD.t + ih - (v / top) * ih
+  const y = v => PAD.t + ih - ((v - lo) / (hi - lo)) * ih
   const linePts = pts.map((p, i) => `${x(i).toFixed(1)},${y(p.pct).toFixed(1)}`).join(' ')
-  const yTicks = Array.from({ length: 5 }, (_, k) => (top * k) / 4)
+  const yTicks = Array.from({ length: nTicks + 1 }, (_, k) => lo + k * yStep)
   // Rotulos do eixo X conforme a largura real (~1 a cada 76px) -> nao empilha no compacto.
   const maxLabels = Math.max(3, Math.floor(iw / 76))
   const step = Math.max(1, Math.ceil(pts.length / maxLabels))
