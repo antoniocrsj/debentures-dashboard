@@ -42,7 +42,20 @@ export default function FluxoChart({ weekly }) {
   return (
     <div className="fluxo-chart" role="img" aria-label="Gráfico semanal de captação (acima de zero), resgate (abaixo de zero) e captação líquida">
       <ResponsiveContainer width="100%" height="100%">
-        <ComposedChart data={data} margin={{ top: 8, right: 8, bottom: 4, left: 4 }} barGap={2}>
+        {/* stackOffset="sign" + stackId comum nas duas barras: captacao e resgate
+            ocupam a MESMA coluna da semana (uma p/ cima, outra p/ baixo a partir
+            do zero) em vez de duas colunas lado a lado. Como os sinais sao
+            opostos elas nunca se sobrepoem, e cada uma passa a usar a largura
+            inteira da categoria -- em 12 meses (~52 semanas) a barra sai de
+            ~3,4px p/ ~9px. barCategoryGap menor arranca a folga que sobrou.
+            Sem isso o Recharts divide cada semana ao meio e nada deixa a barra
+            mais grossa: maxBarSize e' TETO, nao piso. */}
+        <ComposedChart
+          data={data}
+          margin={{ top: 8, right: 8, bottom: 4, left: 4 }}
+          stackOffset="sign"
+          barCategoryGap="8%"
+        >
           {/* Mesmo padrao do grafico do Caixa: grade tracejada horizontal fina e
               SEM moldura (axisLine/tickLine) -- a linha de eixo + os tick marks do
               Recharts eram o que deixava este grafico mais "sujo" que o outro.
@@ -62,8 +75,8 @@ export default function FluxoChart({ weekly }) {
           <ReferenceLine y={0} stroke={COL_ZERO} strokeWidth={1.25} />
           <Tooltip content={<FluxoTooltip />} />
           <Legend wrapperStyle={{ fontSize: 11 }} />
-          <Bar dataKey="captacao" name="Captação" fill={COL_CAP} fillOpacity={0.72} radius={[2, 2, 0, 0]} maxBarSize={26} />
-          <Bar dataKey="resgateNeg" name="Resgate" fill={COL_RES} fillOpacity={0.72} radius={[0, 0, 2, 2]} maxBarSize={26} />
+          <Bar dataKey="captacao" name="Captação" fill={COL_CAP} stackId="fluxo" fillOpacity={0.72} radius={[2, 2, 0, 0]} maxBarSize={26} />
+          <Bar dataKey="resgateNeg" name="Resgate" fill={COL_RES} stackId="fluxo" fillOpacity={0.72} radius={[0, 0, 2, 2]} maxBarSize={26} />
           <Line dataKey="liquido" name="Cap. líquida" stroke={COL_LIQ} strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
         </ComposedChart>
       </ResponsiveContainer>
