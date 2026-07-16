@@ -1606,7 +1606,13 @@ a { color: var(--primary); }
 .caixa .col-num.strong { font-weight: 700; }
 .caixa .col-num.pos { color: var(--pos); }
 .caixa .col-num.neg { color: var(--neg); }
+/* Gestora selecionada: a linha CONTINUA na tabela (nada some) -- so' sinaliza.
+   Barra terracota + nome destacado p/ o alvo ficar obvio ao trocar rapido. */
 .caixa tr.row-active > td { background: var(--primary-light); }
+.caixa tr.row-active > td:first-child { box-shadow: inset 3px 0 0 var(--primary); }
+.caixa tr.row-active .ativo-code { color: var(--primary); font-weight: 700; }
+.caixa .fluxo-table tbody tr { cursor: pointer; }
+.caixa .btn-clear:disabled { opacity: .4; cursor: default; }
 .caixa .th-plain { padding: 6px 8px; font-size: 11px; color: var(--text-muted); text-align: center; font-weight: 600; }
 .caixa .col-gestor-cell { font-size: 12px; color: var(--text-soft); white-space: nowrap; }
 

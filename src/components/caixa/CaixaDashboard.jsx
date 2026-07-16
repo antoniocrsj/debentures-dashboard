@@ -128,7 +128,11 @@ export default function CaixaDashboard({ compact = false }) {
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
-            {hasFilter && <button type="button" className="btn-clear" onClick={clearFilters}>Limpar</button>}
+            {/* SEMPRE montado (so' desabilita): se ele aparecesse/sumisse com o
+                filtro, a barra quebraria de linha e empurraria todo o conteudo
+                ~38px ao selecionar uma gestora -- o layout pulava embaixo do
+                cursor justo quando se troca de gestora ponto a ponto. */}
+            <button type="button" className="btn-clear" onClick={clearFilters} disabled={!hasFilter}>Limpar</button>
           </div>
 
           {/* Cards */}
@@ -153,7 +157,16 @@ export default function CaixaDashboard({ compact = false }) {
               o ranking de gestores à direita, na mesma altura; no compacto empilham. */}
           <div className="caixa-main-row">
             <CaixaPctPLLine historico={historico} segmento={segmento} gestor={gestor} />
-            {!gestor && <CaixaGestorTable gestores={gestoresRanking} activeGestor={gestor} onSelect={setGestor} />}
+            {/* A tabela fica SEMPRE montada: selecionar uma gestora nao pode
+                remove-la do DOM, senao o grafico (flex) se estica e o layout
+                pula embaixo do cursor. Selecionar so' filtra o grafico/os cards
+                e destaca a linha -- as outras gestoras continuam ali, pra dar
+                pra ir trocando ponto a ponto. Clicar na ativa desmarca. */}
+            <CaixaGestorTable
+              gestores={gestoresRanking}
+              activeGestor={gestor}
+              onSelect={g => setGestor(cur => (cur === g ? '' : g))}
+            />
           </div>
 
           {/* Tabelas em 2 colunas no desktop (a de fundos e' a larga) */}
