@@ -40,6 +40,12 @@
   --flag-bg:       #fef3c7;    /* fundo da tag/aviso */
   --flag-ink:      #92400e;    /* texto da tag/aviso */
   --flag-line:     #fde68a;    /* borda da tag/aviso */
+  /* Preenchimento de BARRA (area do grafico). Proposital NAO reusar --primary /
+     --text-faint aqui: cor de acento e de texto sao escuras por obrigacao (
+     precisam de contraste p/ ler) e pesam quando viram area grande. Estes sao
+     os mesmos matizes (taupe ~36deg / terracota ~26deg), so' mais claros. */
+  --bar-juros:     #bdb3a2;    /* taupe claro    (base da barra) */
+  --bar-amort:     #c8935f;    /* terracota clara (topo da barra) */
   /* Rampa bege quente (hover / borda / scroll) — era a rampa azul-acinzentada */
   --blue-soft:     #ece0d0;    /* fundo em hover / fundo desktop */
   --blue-press:    #e6d8c5;    /* fundo em active/press */
@@ -1459,9 +1465,10 @@ a { color: var(--primary); }
 .venc-seg { width: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
 /* Rotulo dentro do segmento: juros na barra cinza (texto escuro), amort na azul (branco). */
 .venc-seg-lbl { font-size: 8.5px; font-weight: 700; line-height: 1; white-space: nowrap; color: var(--primary-dark); font-variant-numeric: tabular-nums; padding: 0 1px; }
-.venc-seg-lbl-blue { color: #fff; }
-.venc-seg-juros { background: var(--text-faint); }  /* cinza */
-.venc-seg-amort { background: var(--primary); }  /* azul */
+/* Os dois rotulos sao ESCUROS: com o topo mais claro (--bar-amort), o branco
+   antigo perdia contraste. .venc-seg-lbl ja' define a cor -- nao ha' modificador. */
+.venc-seg-juros { background: var(--bar-juros); }   /* taupe claro */
+.venc-seg-amort { background: var(--bar-amort); }   /* terracota clara */
 .venc-col:hover { background: var(--blue-soft); }
 .venc-col.sel { background: var(--primary-light); outline: 1px solid var(--primary-border); }
 /* Linha-base (eixo horizontal) cinza, cruzando o grafico inteiro. */

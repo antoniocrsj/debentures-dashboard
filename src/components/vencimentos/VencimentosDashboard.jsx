@@ -132,7 +132,7 @@ function MonthBars({ rows, max, selMes, onPick, fmtVal, fmtLabel, ariaLabel }) {
                   {showJ && <span className="venc-seg-lbl">{fmtLabel(m.juros)}</span>}
                 </span>
                 <span className="venc-seg venc-seg-amort" style={{ height: `${aPct}%` }}>
-                  {showA && <span className="venc-seg-lbl venc-seg-lbl-blue">{fmtLabel(m.amort)}</span>}
+                  {showA && <span className="venc-seg-lbl">{fmtLabel(m.amort)}</span>}
                 </span>
               </span>
             </button>
