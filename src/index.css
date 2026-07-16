@@ -472,7 +472,7 @@ a { color: var(--primary); }
   font-size: 12.5px;
   table-layout: fixed;
 }
-.asset-table col.c-ativo    { width: 96px; }
+.asset-table col.c-ativo    { width: 122px; }
 .asset-table col.c-emis     { width: 58px; }
 .asset-table col.c-venc     { width: 58px; }
 .asset-table col.c-taxa     { width: 70px; }
@@ -539,7 +539,8 @@ a { color: var(--primary); }
 .ativo-cell { display: flex; align-items: center; justify-content: space-between; gap: 4px; }
 .ativo-cell > div { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
 .ativo-code { font-weight: 600; font-size: 12.5px; color: var(--text); }
-.ativo-grupo { font-size: 10px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 68px; }
+.ativo-grupo { font-size: 10px; color: var(--text-muted); line-height: 1.15; max-width: 100px; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.ativo-emissor { color: var(--text-muted); opacity: 0.85; }
 .semana-cobertura { display: block; font-size: 10px; color: var(--text-muted); font-weight: 400; white-space: nowrap; margin-top: 1px; }
 .semana-cobertura.parcial { color: var(--flag-ink); font-weight: 600; }
 
@@ -1174,9 +1175,9 @@ a { color: var(--primary); }
   /* Linhas padronizadas em TODAS as tabelas: 23px, fonte 11px, padding vertical 3px */
   .app.desktop .asset-table td { height: 23px; padding: 3px 6px 3px 8px; font-size: 11px; line-height: 15px; }
   .app.desktop .asset-table .info-btn { width: 14px; height: 14px; font-size: 11px; }
-  .app.desktop .asset-table col.c-ativo { width: 200px; }
+  .app.desktop .asset-table col.c-ativo { width: 232px; }
   .app.desktop .ativo-cell > div { flex-direction: row; align-items: baseline; gap: 6px; }
-  .app.desktop .ativo-grupo { max-width: 110px; font-size: 10px; }
+  .app.desktop .ativo-grupo { max-width: 168px; font-size: 10px; white-space: nowrap; text-overflow: ellipsis; display: block; -webkit-line-clamp: none; }
   .app.desktop .ativo-code { font-size: 11px; }
   .app.desktop .asset-table thead th {
     position: sticky;

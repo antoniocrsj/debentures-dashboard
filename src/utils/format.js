@@ -137,6 +137,45 @@ export function isYes(str) {
   return /^(s|sim|yes|1|true|x)$/i.test((str || '').trim())
 }
 
+// Nome REDUZIDO do emissor: a partir da razao social ("IPIRANGA PRODUTOS DE
+// PETROLEO S.A.", "COMPANHIA ULTRAGAZ S A", "ULTRACARGO LOGISTICA S/A") extrai
+// so' a marca (Ipiranga, Ultragaz, Ultracargo) pra diferenciar emissores dentro
+// do mesmo grupo economico na coluna Ativo. Deterministico: pula tokens juridicos
+// e descritores genericos de atividade a esquerda, coleta os tokens de marca ate'
+// o primeiro descritor/juridico/conector. Nao e' mapa curado — a razao social
+// completa continua no tooltip/detalhe.
+const EMISSOR_STOP = new Set([
+  'S', 'SA', 'S/A', 'S.A', 'S.A.', 'LTDA', 'CIA', 'COMPANHIA', 'EIRELI', 'ME',
+  'DE', 'DA', 'DO', 'DAS', 'DOS', 'E',
+  'PRODUTOS', 'PETROLEO', 'LOGISTICA', 'LOGISTICAS', 'SOLUCOES', 'SERVICOS',
+  'SERVICO', 'PARTICIPACOES', 'PARTICIPACAO', 'PART', 'HOLDING', 'HOLDINGS',
+  'ENERGIA', 'ENERGIAS', 'ENERGETICA', 'ELETRICA', 'ELETRICAS', 'ELETRICIDADE',
+  'DISTRIBUIDORA', 'DISTRIBUICAO', 'COMERCIO', 'COMERCIAL', 'INDUSTRIA',
+  'INDUSTRIAL', 'INDUSTRIAS', 'AGROINDUSTRIAL', 'AGROINDUSTRIA', 'SANEAMENTO',
+  'TRANSMISSORA', 'TRANSMISSAO', 'GERACAO', 'GERADORA', 'INFRAESTRUTURA',
+  'CONCESSIONARIA', 'CONCESSAO', 'CONCESSOES', 'EMPREENDIMENTOS',
+  'EMPREENDIMENTO', 'BRASIL', 'GAS', 'MALHA', 'TELECOM', 'TELECOMUNICACOES',
+  'SIDERURGICA', 'MINERACAO', 'CELULOSE', 'PAPEL', 'ALIMENTOS',
+])
+function tcEmissor(tok) {
+  if (tok.length <= 2 || !/[AEIOU]/.test(tok)) return tok // acronimo/numero: mantem
+  return tok.charAt(0) + tok.slice(1).toLowerCase()
+}
+export function shortEmissor(nome, grupo = '') {
+  if (!nome) return ''
+  const toks = String(nome).toUpperCase().replace(/["']/g, '').replace(/[.,]/g, ' ')
+    .split(/\s+/).filter(Boolean)
+  let i = 0
+  while (i < toks.length && EMISSOR_STOP.has(toks[i])) i++ // pula juridiques/descritor a esquerda
+  const marca = []
+  while (i < toks.length && !EMISSOR_STOP.has(toks[i])) { marca.push(toks[i]); i++ }
+  let s = (marca.length ? marca : toks.filter(t => !EMISSOR_STOP.has(t)))
+    .map(tcEmissor).join(' ').trim()
+  const norm = v => v.toLowerCase().replace(/\s+/g, '')
+  if (!s || norm(s) === norm(grupo)) return '' // vazio ou igual ao grupo: nao repete
+  return s
+}
+
 /** Sort key for date fields in DD/MM/YYYY format */
 export function dateKey(str) {
   if (!str) return ''

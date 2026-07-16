@@ -1,4 +1,4 @@
-import { fmtBRL, fmtDateShort, fmtDateDDMMYY, fmtTaxa } from '../utils/format.js'
+import { fmtBRL, fmtDateShort, fmtDateDDMMYY, fmtTaxa, shortEmissor } from '../utils/format.js'
 import TableWrap from './TableWrap.jsx'
 
 const COLS = [
@@ -92,7 +92,14 @@ export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter
                   <div className="ativo-cell">
                     <div>
                       <span className="ativo-code">{a.codigoAtivo || '-'}</span>
-                      {a.grupo && <span className="ativo-grupo">{a.grupo}</span>}
+                      {a.grupo && (() => {
+                        const emi = shortEmissor(a.emissorNome, a.grupo)
+                        return (
+                          <span className="ativo-grupo" title={a.emissorNome !== '—' ? a.emissorNome : undefined}>
+                            {a.grupo}{emi && <span className="ativo-emissor"> ({emi})</span>}
+                          </span>
+                        )
+                      })()}
                     </div>
                     <button
                       className="info-btn"
