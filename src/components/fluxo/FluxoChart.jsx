@@ -34,10 +34,26 @@ function FluxoTooltip({ active, payload, label }) {
   )
 }
 
+// Largura da barra por tamanho da janela (n de semanas na serie). Valores
+// escolhidos a olho pelo usuario, medidos no grafico: 3m=14px, 6m=10px,
+// 12m/tudo=6px; janelas curtas (1s, 1 mes) ficam nos 26px de sempre.
+// E' barSize (largura EXATA) e nao maxBarSize (teto) de proposito: o teto
+// deixava o Recharts esticar a barra ate' encher a categoria -- em 3 meses ela
+// batia nos 26px. Por n de semanas, e nao pelo chip de periodo, p/ valer
+// tambem no "todo o historico" e em faixa de data custom, sem prop nova.
+// Os limites sao folgados (16/30) p/ absorver mes de 4 ou 5 semanas.
+function barSizeFor(n) {
+  if (n <= 5) return 26   // 1s, 1 mes
+  if (n <= 16) return 14  // 3 meses  (~14 semanas)
+  if (n <= 30) return 10  // 6 meses  (~26 semanas)
+  return 6                // 12 meses / tudo (~51 semanas)
+}
+
 export default function FluxoChart({ weekly }) {
   if (!weekly || !weekly.length) return null
 
   const data = toChartSeries(weekly)
+  const barSize = barSizeFor(data.length)
 
   return (
     <div className="fluxo-chart" role="img" aria-label="Gráfico semanal de captação (acima de zero), resgate (abaixo de zero) e captação líquida">
@@ -45,11 +61,10 @@ export default function FluxoChart({ weekly }) {
         {/* stackOffset="sign" + stackId comum nas duas barras: captacao e resgate
             ocupam a MESMA coluna da semana (uma p/ cima, outra p/ baixo a partir
             do zero) em vez de duas colunas lado a lado. Como os sinais sao
-            opostos elas nunca se sobrepoem, e cada uma passa a usar a largura
-            inteira da categoria -- em 12 meses (~52 semanas) a barra sai de
-            ~3,4px p/ ~9px. barCategoryGap menor arranca a folga que sobrou.
-            Sem isso o Recharts divide cada semana ao meio e nada deixa a barra
-            mais grossa: maxBarSize e' TETO, nao piso. */}
+            opostos elas nunca se sobrepoem, e a semana vira uma coluna so' --
+            sem isso o Recharts partia cada semana ao meio e, com dado semanal,
+            12 meses (~51 semanas) davam 3px de barra. A largura em si quem
+            manda e' o barSize (ver barSizeFor). */}
         <ComposedChart
           data={data}
           margin={{ top: 8, right: 8, bottom: 4, left: 4 }}
@@ -75,8 +90,8 @@ export default function FluxoChart({ weekly }) {
           <ReferenceLine y={0} stroke={COL_ZERO} strokeWidth={1.25} />
           <Tooltip content={<FluxoTooltip />} />
           <Legend wrapperStyle={{ fontSize: 11 }} />
-          <Bar dataKey="captacao" name="Captação" fill={COL_CAP} stackId="fluxo" fillOpacity={0.72} radius={[2, 2, 0, 0]} maxBarSize={26} />
-          <Bar dataKey="resgateNeg" name="Resgate" fill={COL_RES} stackId="fluxo" fillOpacity={0.72} radius={[0, 0, 2, 2]} maxBarSize={26} />
+          <Bar dataKey="captacao" name="Captação" fill={COL_CAP} stackId="fluxo" fillOpacity={0.72} radius={[2, 2, 0, 0]} barSize={barSize} />
+          <Bar dataKey="resgateNeg" name="Resgate" fill={COL_RES} stackId="fluxo" fillOpacity={0.72} radius={[0, 0, 2, 2]} barSize={barSize} />
           <Line dataKey="liquido" name="Cap. líquida" stroke={COL_LIQ} strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
         </ComposedChart>
       </ResponsiveContainer>
