@@ -201,8 +201,8 @@ if ($bridge12431.map.Count -eq 0 -and $bridgeCdi.map.Count -eq 0) {
   throw "Nenhum fundo resolvido. Verifique tools\Fundos_12431.csv / tools\Fundos_CDI.csv (coluna CNPJ Gestor) e Cadastro_Gestores."
 }
 
-# Exclusao de fundos de TESOURARIA (gestao de liquidez propria do gestor): os
-# fluxos deles NAO sao captacao de cliente e distorcem a analise. Lista curada em
+# Exclusao de fundos de TESOURARIA (posicao propria dos BANCOS, nao dos gestores):
+# os fluxos deles NAO sao captacao de cliente e distorcem a analise. Lista curada em
 # tools\Fundos_Tesouraria.csv (colunas CNPJ,Apelido,Nome). Removidos do universo
 # AQUI (antes da meta e dos agregados) -> saem do semanal/mensal/fundos/diario e
 # da rentabilidade. So' afeta a Captacao (caixa/vencimentos usam outra base).

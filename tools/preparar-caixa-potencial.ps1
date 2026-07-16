@@ -395,6 +395,19 @@ if ($modelos.Count -eq 0) { throw "Nenhum mes de CDA disponivel." }
 Step "Resolvendo fundo -> gestor (Fundos_12431/Fundos_CDI + Cadastro_Gestores)..."
 $fg12431 = Read-FundosGestorCsv (Join-Path $PSScriptRoot 'Fundos_12431.csv')
 $fgCdi   = Read-FundosGestorCsv (Join-Path $PSScriptRoot 'Fundos_CDI.csv')
+# Fundos de TESOURARIA (posicao propria dos BANCOS, nao dos gestores): tirados do
+# universo curado, mesma lista da captacao (tools\Fundos_Tesouraria.csv). Assim
+# somem da analise de caixa igual saem da captacao. NAO afeta a aba Debentures
+# (alocacao/BLC vem de outro script; as posicoes reais desses fundos continuam).
+$tesPath = Join-Path $PSScriptRoot 'Fundos_Tesouraria.csv'
+if (Test-Path $tesPath) {
+  $nTes = 0
+  foreach ($row in (Import-Csv -LiteralPath $tesPath)) {
+    $c = NormCNPJ ([string]$row.CNPJ)
+    if ($c) { foreach ($m in @($fg12431.map, $fgCdi.map)) { if ($m.ContainsKey($c)) { [void]$m.Remove($c); $nTes++ } } }
+  }
+  if ($nTes -gt 0) { Step "  tesouraria: removidos $nTes fundo(s) do universo curado (Fundos_Tesouraria.csv)" }
+}
 $gestorApelido = Get-GestorApelidoMap $CadastroUrl
 $fundoGestor = @{}
 foreach ($k in $fg12431.map.Keys) { $fundoGestor[$k] = $fg12431.map[$k] }
