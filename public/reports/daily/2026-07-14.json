@@ -83,34 +83,34 @@
         "captacao": 105225244.32999998,
         "resgate": 321852686.51,
         "liquido": -216627442.18,
-        "pl": 256206447061.85,
+        "pl": 256207825630.62,
         "numFundos": 1650,
         "curados": 1684,
         "fechados": 286,
         "anterior": {
           "dia": "2026-07-09",
           "captacao": 70678768.88999999,
-          "resgate": 507930868.44,
-          "liquido": -437252099.55,
-          "pl": 257952145299.58,
+          "resgate": 503279005.55,
+          "liquido": -432600236.66,
+          "pl": 257952889210.94998,
           "numFundos": 1647
         }
       },
       "trad": {
         "dia": "2026-07-10",
-        "captacao": 2025244677.0500004,
-        "resgate": 1867822706.5200002,
-        "liquido": 157421970.5300002,
-        "pl": 1083837243205.8197,
-        "numFundos": 823,
+        "captacao": 2024960097.0700004,
+        "resgate": 1867855466.1200001,
+        "liquido": 157104630.9500003,
+        "pl": 1084589016799.45,
+        "numFundos": 825,
         "curados": 839,
         "fechados": 30,
         "anterior": {
           "dia": "2026-07-09",
-          "captacao": 887538532.2400001,
-          "resgate": 1053870067.9999999,
-          "liquido": -166331535.75999975,
-          "pl": 1085000198392.9198,
+          "captacao": 887203042.3400002,
+          "resgate": 1053882427.5999998,
+          "liquido": -166679385.25999963,
+          "pl": 1085000416589.4498,
           "numFundos": 829
         }
       }
@@ -180,14 +180,14 @@
           "captacao": 909347.32,
           "resgate": 19891368.66,
           "liquido": -18982021.34,
-          "pl": 5130840009.41
+          "pl": 5132015594.76
         },
         {
           "gestor": "ARX",
           "captacao": 3545843.35,
           "resgate": 21771425.07,
           "liquido": -18225581.72,
-          "pl": 5715908234.77
+          "pl": 5715930980.95
         }
       ],
       "topTradCaptacao": [
@@ -1057,7 +1057,7 @@
               "ticker": "JSMLA5",
               "indexador": "DI + 3.5000%",
               "indexadorFamilia": "CDI+",
-              "emissor": "SIMPAR S.A.",
+              "emissor": "JSL S.A",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "CDI",
@@ -1754,6 +1754,14 @@
           "pl": 1126500.86
         },
         {
+          "cnpj": "62360992000115",
+          "nome": "BB MASTER II RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
+          "gestor": "BB Asset",
+          "segmento": "12431",
+          "retorno": -2.2966,
+          "pl": 344536392.7
+        },
+        {
           "cnpj": "61643338000156",
           "nome": "SPARTA INFRA INFLAÇÃO LONGA MASTER II FI EM INFRAESTRUTURA RENDA FIXA - RESP LIMITADA",
           "gestor": "Sparta",
@@ -1776,14 +1784,6 @@
           "segmento": "12431",
           "retorno": -0.6195,
           "pl": 10505209.16
-        },
-        {
-          "cnpj": "63942021000146",
-          "nome": "OCCAM BB INFRA LINEAR FI FINANCEIRO RENDA FIXA INVESTIMENTO EM INFRAESTRUTURA - RESP LIMITADA",
-          "gestor": "Occam",
-          "segmento": "12431",
-          "retorno": -0.6043,
-          "pl": 117160353.75
         }
       ],
       "topTradPos": [
@@ -1812,20 +1812,20 @@
           "pl": 70336099.54
         },
         {
+          "cnpj": "43636081000123",
+          "nome": "MAESTRANZA PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "gestor": "XPG",
+          "segmento": "trad",
+          "retorno": 1.2879,
+          "pl": 42300574.57
+        },
+        {
           "cnpj": "50677561000106",
           "nome": "STUTTGART FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
           "gestor": "Rubik",
           "segmento": "trad",
           "retorno": 0.871,
           "pl": 7955165.8
-        },
-        {
-          "cnpj": "53726108000122",
-          "nome": "CL VI FUNDO DE INVESTIMENTO MULTIMERCADO",
-          "gestor": "Springs",
-          "segmento": "trad",
-          "retorno": 0.8538,
-          "pl": 16906135.22
         }
       ],
       "topTradNeg": [

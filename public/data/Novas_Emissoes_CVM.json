@@ -1,6 +1,6 @@
 {
-    "asOf":  "2026-07-16",
-    "geradoEm":  "2026-07-16T17:26:03",
+    "asOf":  "2026-07-17",
+    "geradoEm":  "2026-07-17T08:51:28",
     "itens":  [
                   {
                       "dataRegistro":  "2026-07-13",
@@ -13,16 +13,6 @@
                       "lider":  "XP INVESTIMENTOS CCTVM S.A."
                   },
                   {
-                      "dataRegistro":  "2026-07-14",
-                      "dataRequerimento":  "2026-07-06",
-                      "emissor":  "ENGIE BRASIL ENERGIA S.A.",
-                      "cnpj":  "02474103000119",
-                      "emissao":  17,
-                      "valor":  700000000,
-                      "incentivada":  false,
-                      "lider":  "ITAU BBA ASSESSORIA FINANCEIRA S.A"
-                  },
-                  {
                       "dataRegistro":  "2026-07-15",
                       "dataRequerimento":  "2026-06-24",
                       "emissor":  "LOCALIZA RENT A CAR SA",
@@ -33,14 +23,24 @@
                       "lider":  "BTG PACTUAL INVESTMENT BANKING LTDA."
                   },
                   {
-                      "dataRegistro":  "2026-07-15",
-                      "dataRequerimento":  "2026-06-26",
-                      "emissor":  "AXIA ENERGIA S.A.",
-                      "cnpj":  "00001180000126",
-                      "emissao":  10,
-                      "valor":  2000000000,
+                      "dataRegistro":  "2026-07-16",
+                      "dataRequerimento":  "2026-07-09",
+                      "emissor":  "ENERGISA MATO GROSSO DO SUL - DIST DE ENERGIA S.A.",
+                      "cnpj":  "15413826000150",
+                      "emissao":  28,
+                      "valor":  350000000,
                       "incentivada":  false,
-                      "lider":  "ITAU BBA ASSESSORIA FINANCEIRA S.A"
+                      "lider":  "BTG PACTUAL INVESTMENT BANKING LTDA."
+                  },
+                  {
+                      "dataRegistro":  "2026-07-16",
+                      "dataRequerimento":  "2026-07-09",
+                      "emissor":  "ENERGISA MATO GROSSO-DISTRIBUIDORA DE ENERGIA S/A",
+                      "cnpj":  "03467321000199",
+                      "emissao":  29,
+                      "valor":  350000000,
+                      "incentivada":  false,
+                      "lider":  "BTG PACTUAL INVESTMENT BANKING LTDA."
                   }
               ]
 }

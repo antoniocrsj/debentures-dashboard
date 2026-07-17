@@ -1,7 +1,7 @@
 {
   "date": "2026-07-10",
   "label": "10/07/2026",
-  "previousDate": "2026-07-09",
+  "previousDate": null,
   "sourceDates": {
     "debentures": "2026-07-10",
     "cap12431": "2026-07-08",
@@ -25,7 +25,7 @@
       "tom": "pos"
     },
     {
-      "texto": "Captação líquida Incentivados: −R$ 131 mi",
+      "texto": "Captação líquida Incentivados: −R$ 141 mi",
       "tom": "neg"
     },
     {
@@ -37,7 +37,7 @@
       "tom": "pos"
     },
     {
-      "texto": "Maior resgate: BB Asset (−R$ 31 mi)",
+      "texto": "Maior resgate: BTG WM (−R$ 31 mi)",
       "tom": "neg"
     },
     {
@@ -81,9 +81,9 @@
       "12431": {
         "dia": "2026-07-08",
         "captacao": 133484496.72999999,
-        "resgate": 264983470.26000005,
-        "liquido": -131498973.53000006,
-        "pl": 259155318445.62003,
+        "resgate": 274727260.98,
+        "liquido": -141242764.25000003,
+        "pl": 259155300585.14,
         "numFundos": 1650,
         "curados": 1684,
         "fechados": 286,
@@ -92,25 +92,25 @@
           "captacao": 142706853.48999998,
           "resgate": 176740413.59999996,
           "liquido": -34033560.109999985,
-          "pl": 258515796827.2,
+          "pl": 258515800358.16,
           "numFundos": 1647
         }
       },
       "trad": {
         "dia": "2026-07-08",
-        "captacao": 1359399328.2800002,
-        "resgate": 1557073515.1700006,
-        "liquido": -197674186.89000034,
-        "pl": 1084494177131.8705,
+        "captacao": 1359117335.6000004,
+        "resgate": 1557171450.1700006,
+        "liquido": -198054114.57000017,
+        "pl": 1084494189507.0503,
         "numFundos": 831,
         "curados": 839,
         "fechados": 30,
         "anterior": {
           "dia": "2026-07-07",
-          "captacao": 1423442397.1499991,
-          "resgate": 1357700925.2500002,
-          "liquido": 65741471.8999989,
-          "pl": 1082743867168.8605,
+          "captacao": 1423405586.6199992,
+          "resgate": 1358336377.8400002,
+          "liquido": 65069208.77999902,
+          "pl": 1082743781353.7705,
           "numFundos": 829
         }
       }
@@ -155,6 +155,13 @@
       ],
       "top12431Resgate": [
         {
+          "gestor": "BTG WM",
+          "captacao": 53468.8,
+          "resgate": 31289750.06,
+          "liquido": -31236281.259999998,
+          "pl": 15569088918.51
+        },
+        {
           "gestor": "BB Asset",
           "captacao": 3886463.65,
           "resgate": 34773164.23,
@@ -167,13 +174,6 @@
           "resgate": 30418030,
           "liquido": -22836913.03,
           "pl": 10555456571.62
-        },
-        {
-          "gestor": "BTG WM",
-          "captacao": 53468.8,
-          "resgate": 21545959.34,
-          "liquido": -21492490.54,
-          "pl": 15569088918.51
         },
         {
           "gestor": "IAM",
@@ -931,7 +931,7 @@
               "ticker": "JSMLB5",
               "indexador": "IPCA + 7.9677%",
               "indexadorFamilia": "IPCA+",
-              "emissor": "SIMPAR S.A.",
+              "emissor": "JSL S.A",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "B30",
@@ -1720,14 +1720,6 @@
           "pl": 9545005.42
         },
         {
-          "cnpj": "50891130000130",
-          "nome": "LEGACY CAPITAL COMPOUND FIF INVESTIMENTO EM DEB DE INFRA CDI ATIVO RF CRED PRIV LP RESP LIMITADA",
-          "gestor": "Legacy",
-          "segmento": "12431",
-          "retorno": 0.4937,
-          "pl": 541016790.36
-        },
-        {
           "cnpj": "53906748000114",
           "nome": "PSO 2 FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
           "gestor": "BTG WM",
@@ -1742,6 +1734,14 @@
           "segmento": "12431",
           "retorno": 0.3199,
           "pl": 248903367.92
+        },
+        {
+          "cnpj": "56154549000195",
+          "nome": "FUNDO DE INVESTIMENTO FINANCEIRO - CI RENDA FIXA INCENTIVADO INVESTIMENTO EM INFRAESTRUTURA G5 TOKYO",
+          "gestor": "G5",
+          "segmento": "12431",
+          "retorno": 0.2797,
+          "pl": 12998945.16
         }
       ],
       "top12431Neg": [

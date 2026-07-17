@@ -21,11 +21,11 @@
   },
   "summary": [
     {
-      "texto": "1 nova(s) debênture(s) cadastrada(s)",
+      "texto": "4 nova(s) debênture(s) cadastrada(s)",
       "tom": "pos"
     },
     {
-      "texto": "Captação líquida Incentivados: −R$ 421 mi",
+      "texto": "Captação líquida Incentivados: −R$ 445 mi",
       "tom": "neg"
     },
     {
@@ -57,6 +57,34 @@
     "debentures": {
       "novas": [
         {
+          "ticker": "AXIAA0",
+          "empresa": "AXIA ENERGIA S.A.",
+          "grupo": "Axia",
+          "cnpj": "00001180000126",
+          "dataRegistro": "15/07/2026",
+          "dataEmissao": "15/07/2026",
+          "vencimento": "15/07/2033",
+          "indexador": "DI",
+          "taxa": "0,7",
+          "volumeEmitido": 1339500000,
+          "incentivada": false,
+          "coordenador": "ITAU UNIBANCO HOLDING S.A"
+        },
+        {
+          "ticker": "AXIAB0",
+          "empresa": "AXIA ENERGIA S.A.",
+          "grupo": "Axia",
+          "cnpj": "00001180000126",
+          "dataRegistro": "15/07/2026",
+          "dataEmissao": "15/07/2026",
+          "vencimento": "15/07/2036",
+          "indexador": "DI",
+          "taxa": "0,85",
+          "volumeEmitido": 660500000,
+          "incentivada": false,
+          "coordenador": "ITAU UNIBANCO HOLDING S.A"
+        },
+        {
           "ticker": "RBRAL2",
           "empresa": "OPEA SECURITIZADORA S/A",
           "grupo": "Opea Securitizadora",
@@ -69,6 +97,20 @@
           "volumeEmitido": 50000000,
           "incentivada": false,
           "coordenador": "ITAU UNIBANCO HOLDING S.A"
+        },
+        {
+          "ticker": "TFLEE1",
+          "empresa": "LOCALIZA FLEET S/A",
+          "grupo": "Localiza",
+          "cnpj": "02286479000108",
+          "dataRegistro": "15/07/2026",
+          "dataEmissao": "14/07/2026",
+          "vencimento": "14/07/2033",
+          "indexador": "DI",
+          "taxa": "1,25",
+          "volumeEmitido": 1418264000,
+          "incentivada": false,
+          "coordenador": "BTG PACTUAL INVESTMENT BANKING LTDA."
         }
       ],
       "saidas": [],
@@ -78,9 +120,9 @@
       "12431": {
         "dia": "2026-07-13",
         "captacao": 187974484.93,
-        "resgate": 609255600.8499999,
-        "liquido": -421281115.9199999,
-        "pl": 257408626819.88998,
+        "resgate": 633342488.2099998,
+        "liquido": -445368003.2799998,
+        "pl": 257385181271.71997,
         "numFundos": 1646,
         "curados": 1684,
         "fechados": 286,
@@ -89,26 +131,26 @@
           "captacao": 105225244.32999998,
           "resgate": 321852686.51,
           "liquido": -216627442.18,
-          "pl": 256206447061.85,
+          "pl": 256207825630.62,
           "numFundos": 1650
         }
       },
       "trad": {
         "dia": "2026-07-13",
-        "captacao": 1530496611.2300007,
-        "resgate": 1760144942.99,
-        "liquido": -229648331.75999928,
-        "pl": 1082790400480.1598,
-        "numFundos": 824,
+        "captacao": 1530938146.0100007,
+        "resgate": 1760439529.3100002,
+        "liquido": -229501383.29999948,
+        "pl": 1083547061510.27,
+        "numFundos": 826,
         "curados": 839,
         "fechados": 30,
         "anterior": {
           "dia": "2026-07-10",
-          "captacao": 2025244677.0500004,
-          "resgate": 1867822706.5200002,
-          "liquido": 157421970.5300002,
-          "pl": 1083837243205.8197,
-          "numFundos": 823
+          "captacao": 2024960097.0700004,
+          "resgate": 1867855466.1200001,
+          "liquido": 157104630.9500003,
+          "pl": 1084589016799.45,
+          "numFundos": 825
         }
       }
     },
@@ -147,7 +189,7 @@
           "captacao": 703824.41,
           "resgate": 0,
           "liquido": 703824.41,
-          "pl": 355130805.95
+          "pl": 354842580.86
         }
       ],
       "top12431Resgate": [
@@ -166,6 +208,13 @@
           "pl": 11239572768.19
         },
         {
+          "gestor": "BTG WM",
+          "captacao": 79299.34,
+          "resgate": 31458619.56,
+          "liquido": -31379320.22,
+          "pl": 15552772870.49
+        },
+        {
           "gestor": "BTG Asset",
           "captacao": 5047141.88,
           "resgate": 34304682.65,
@@ -178,13 +227,6 @@
           "resgate": 24979732.55,
           "liquido": -22220753.78,
           "pl": 21403689040.64
-        },
-        {
-          "gestor": "UBS",
-          "captacao": 0,
-          "resgate": 19658146.3,
-          "liquido": -19658146.3,
-          "pl": 7356204081.1
         }
       ],
       "topTradCaptacao": [
@@ -230,14 +272,14 @@
           "captacao": 2764968.57,
           "resgate": 130742174.4,
           "liquido": -127977205.83000001,
-          "pl": 15045963002.08
+          "pl": 15075881933.76
         },
         {
           "gestor": "IAM",
           "captacao": 91206833.52,
           "resgate": 209885901.22,
           "liquido": -118679067.7,
-          "pl": 217387597122.63
+          "pl": 217387597122.6
         },
         {
           "gestor": "Absolute",
@@ -892,7 +934,7 @@
               "ticker": "JSMLB5",
               "indexador": "IPCA + 7.9677%",
               "indexadorFamilia": "IPCA+",
-              "emissor": "SIMPAR S.A.",
+              "emissor": "JSL S.A",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "B30",
@@ -1388,6 +1430,14 @@
           "pl": 45933282.79
         },
         {
+          "cnpj": "62360992000115",
+          "nome": "BB MASTER II RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
+          "gestor": "BB Asset",
+          "segmento": "12431",
+          "retorno": 2.4532,
+          "pl": 1722416051.64
+        },
+        {
           "cnpj": "55073649000124",
           "nome": "VEREDA FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
           "gestor": "BTG WM",
@@ -1410,17 +1460,17 @@
           "segmento": "12431",
           "retorno": 0.4375,
           "pl": 29831507.61
-        },
-        {
-          "cnpj": "62805867000171",
-          "nome": "SANTANDER PB JFA INVESTIMENTO EM INFRA RENDA FIXA - FIF RESP LIMITADA",
-          "gestor": "San WM",
-          "segmento": "12431",
-          "retorno": 0.2554,
-          "pl": 22985410.66
         }
       ],
       "top12431Neg": [
+        {
+          "cnpj": "57075698000121",
+          "nome": "VINLAND FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA IPCA RF CRED PRIV LP RESP LIMITADA",
+          "gestor": "Vinland",
+          "segmento": "12431",
+          "retorno": -8.9835,
+          "pl": 161587094.14
+        },
         {
           "cnpj": "59123735000155",
           "nome": "PORTO PAINEIRA CDI FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA RF CRÉD PRIV RESP LIMITADA",
@@ -1452,14 +1502,6 @@
           "segmento": "12431",
           "retorno": -0.6058,
           "pl": 13692286.81
-        },
-        {
-          "cnpj": "61844366000131",
-          "nome": "SANTANDER PB 287 INVESTIMENTO EM INFRA RF - FIF RESP LIMITADA",
-          "gestor": "San WM",
-          "segmento": "12431",
-          "retorno": -0.5654,
-          "pl": 17671528.76
         }
       ],
       "topTradPos": [
@@ -1530,26 +1572,29 @@
           "pl": 64536414.49
         },
         {
+          "cnpj": "43636081000123",
+          "nome": "MAESTRANZA PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "gestor": "XPG",
+          "segmento": "trad",
+          "retorno": -0.8353,
+          "pl": 41947233.27
+        },
+        {
           "cnpj": "53726108000122",
           "nome": "CL VI FUNDO DE INVESTIMENTO MULTIMERCADO",
           "gestor": "Springs",
           "segmento": "trad",
           "retorno": -0.6669,
           "pl": 16793381.26
-        },
-        {
-          "cnpj": "50677561000106",
-          "nome": "STUTTGART FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
-          "gestor": "Rubik",
-          "segmento": "trad",
-          "retorno": -0.6216,
-          "pl": 7905717.11
         }
       ]
     },
     "inclusoes": {
       "novosDebentures": [
-        "RBRAL2"
+        "AXIAA0",
+        "AXIAB0",
+        "RBRAL2",
+        "TFLEE1"
       ],
       "novosBlc": [],
       "temSnapshotBlc": true
@@ -1560,58 +1605,7 @@
         "texto": "74 ativo(s) no BLC sem correspondencia em Debentures.csv"
       }
     ],
-    "emissoesCVM": {
-      "asOf": "2026-07-16",
-      "itens": [
-        {
-          "dataRegistro": "2026-07-13",
-          "dataRequerimento": "2026-07-13",
-          "emissor": "SOCICAM ADMINISTRACAO, PROJETOS E REPRESENTACOES S.A.",
-          "cnpj": "43217280000105",
-          "emissao": 2,
-          "valor": 100000000,
-          "incentivada": false,
-          "lider": "XP INVESTIMENTOS CCTVM S.A.",
-          "grupo": "Socicam"
-        },
-        {
-          "dataRegistro": "2026-07-14",
-          "dataRequerimento": "2026-07-06",
-          "emissor": "ENGIE BRASIL ENERGIA S.A.",
-          "cnpj": "02474103000119",
-          "emissao": 17,
-          "valor": 700000000,
-          "incentivada": false,
-          "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-          "grupo": "Engie"
-        },
-        {
-          "dataRegistro": "2026-07-15",
-          "dataRequerimento": "2026-06-26",
-          "emissor": "AXIA ENERGIA S.A.",
-          "cnpj": "00001180000126",
-          "emissao": 10,
-          "valor": 2000000000,
-          "incentivada": false,
-          "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-          "grupo": "Axia"
-        },
-        {
-          "dataRegistro": "2026-07-15",
-          "dataRequerimento": "2026-06-24",
-          "emissor": "LOCALIZA RENT A CAR SA",
-          "cnpj": "16670085000155",
-          "emissao": 48,
-          "valor": 5643014000,
-          "incentivada": false,
-          "lider": "BTG PACTUAL INVESTMENT BANKING LTDA.",
-          "grupo": "Localiza"
-        }
-      ]
-    },
-    "emissoresFaltantes": {
-      "itens": [],
-      "asOf": "2026-07-16"
-    }
+    "emissoesCVM": null,
+    "emissoresFaltantes": null
   }
 }

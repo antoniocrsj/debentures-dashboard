@@ -25,11 +25,11 @@
       "tom": "pos"
     },
     {
-      "texto": "Captação líquida Incentivados: −R$ 437 mi",
+      "texto": "Captação líquida Incentivados: −R$ 433 mi",
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional: −R$ 166 mi",
+      "texto": "Captação líquida Tradicional: −R$ 167 mi",
       "tom": "neg"
     },
     {
@@ -106,36 +106,36 @@
       "12431": {
         "dia": "2026-07-09",
         "captacao": 70678768.88999999,
-        "resgate": 507930868.44,
-        "liquido": -437252099.55,
-        "pl": 257952145299.58,
+        "resgate": 503279005.55,
+        "liquido": -432600236.66,
+        "pl": 257952889210.94998,
         "numFundos": 1647,
         "curados": 1684,
         "fechados": 286,
         "anterior": {
           "dia": "2026-07-08",
           "captacao": 133484496.72999999,
-          "resgate": 264983470.26000005,
-          "liquido": -131498973.53000006,
-          "pl": 259155318445.62003,
+          "resgate": 274727260.98,
+          "liquido": -141242764.25000003,
+          "pl": 259155300585.14,
           "numFundos": 1650
         }
       },
       "trad": {
         "dia": "2026-07-09",
-        "captacao": 887538532.2400001,
-        "resgate": 1053870067.9999999,
-        "liquido": -166331535.75999975,
-        "pl": 1085000198392.9198,
+        "captacao": 887203042.3400002,
+        "resgate": 1053882427.5999998,
+        "liquido": -166679385.25999963,
+        "pl": 1085000416589.4498,
         "numFundos": 829,
         "curados": 839,
         "fechados": 30,
         "anterior": {
           "dia": "2026-07-08",
-          "captacao": 1359399328.2800002,
-          "resgate": 1557073515.1700006,
-          "liquido": -197674186.89000034,
-          "pl": 1084494177131.8705,
+          "captacao": 1359117335.6000004,
+          "resgate": 1557171450.1700006,
+          "liquido": -198054114.57000017,
+          "pl": 1084494189507.0503,
           "numFundos": 831
         }
       }
@@ -157,6 +157,13 @@
           "pl": 2308446884.99
         },
         {
+          "gestor": "San WM",
+          "captacao": 1300000,
+          "resgate": 120000,
+          "liquido": 1180000,
+          "pl": 6961664284.67
+        },
+        {
           "gestor": "Bocaina",
           "captacao": 1034390,
           "resgate": 380000,
@@ -169,13 +176,6 @@
           "resgate": 0,
           "liquido": 150000,
           "pl": 69021425.06
-        },
-        {
-          "gestor": "Capitânia",
-          "captacao": 138757.97,
-          "resgate": 24644.76,
-          "liquido": 114113.21,
-          "pl": 2660061215.02
         }
       ],
       "top12431Resgate": [
