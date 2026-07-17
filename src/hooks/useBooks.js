@@ -8,8 +8,10 @@ const BOOKS_URL = '/data/Books_Primario.csv'
 // Opcional e nao-bloqueante: se o arquivo nao existir (app antes da 1a rodada
 // com essa base), o hook retorna um Map vazio e a secao do modal nao aparece.
 //
-// Retorna booksByGrupo: Map(Grupo -> [ book ]), book = { data, dataNum, rating,
-// regime, coordenador, series:[...] }, ordenado do mais recente pro mais antigo.
+// Retorna booksByGrupo: Map(Grupo -> [ book ]), book = { data, dataNum, emissor,
+// rating, regime, coordLider, coordenadores, series:[...] }, ordenado do mais
+// recente pro mais antigo. Cada book e' de UM emissor (grupos multi-emissor —
+// Energisa MT/MS/Sergipe — viram books separados).
 export function useBooks() {
   const [booksByGrupo, setBooksByGrupo] = useState(() => new Map())
 
@@ -34,32 +36,47 @@ const dnum = d => {
   return m ? +(m[3] + m[2] + m[1]) : 0
 }
 
-// dedup de reposts + agrupa as series de cada book (mesma data) por Grupo
+// dedup de reposts + agrupa as series por (Grupo, DataBook, Emissor). Cada book
+// e' de um emissor: assim "Energisa MT" e "Energisa MS" no mesmo dia ficam
+// separados (cada um com suas series e tickers).
 function agruparPorGrupo(rows) {
   const byGrupo = new Map()
   const seen = new Set()
   for (const r of rows) {
     const grupo = r.Grupo
     if (!grupo) continue // sem grupo casado: nao amarra a nenhuma debenture
+    const emissor = r.EmissorRaw || grupo
     // dedup de reposts por chave normalizada (nao pelo raw, que varia por espaco)
-    const k = [grupo, r.DataBook, r.Serie, r.Prazo, r.IndexadorFinal, r.SpreadFinalPct].join('|')
+    const k = [grupo, r.DataBook, emissor, r.Serie, r.Prazo, r.IndexadorFinal, r.SpreadFinalPct].join('|')
     if (seen.has(k)) continue
     seen.add(k)
     if (!byGrupo.has(grupo)) byGrupo.set(grupo, new Map())
     const books = byGrupo.get(grupo)
-    if (!books.has(r.DataBook)) {
-      books.set(r.DataBook, {
-        data: r.DataBook, dataNum: dnum(r.DataBook),
-        rating: r.Rating, regime: r.Regime, coordenador: r.Coordenador,
+    const bk = r.DataBook + '|' + emissor
+    if (!books.has(bk)) {
+      books.set(bk, {
+        data: r.DataBook, dataNum: dnum(r.DataBook), emissor,
+        rating: r.Rating, regime: r.Regime,
+        coordLider: r.CoordLider || '', coordenadores: r.Coordenadores || '',
         series: [],
       })
     }
-    books.get(r.DataBook).series.push(r)
+    books.get(bk).series.push(r)
   }
-  // Map(grupo -> array de books ordenado desc por data)
+  // Map(grupo -> array de books ordenado desc por data), com dedup de reposts
+  // preliminar/final da MESMA emissao (mesma data + mesma assinatura de series):
+  // guarda o mais completo (mais tickers casados).
   const out = new Map()
   for (const [grupo, books] of byGrupo) {
-    out.set(grupo, [...books.values()].sort((a, b) => b.dataNum - a.dataNum))
+    const porSig = new Map()
+    for (const bk of books.values()) {
+      const sig = bk.data + '|' + bk.series
+        .map(s => `${s.Serie}:${s.Prazo}:${s.IndexadorFinal}:${s.SpreadFinalPct}`).sort().join(';')
+      const nTk = bk.series.filter(s => s.Ticker).length
+      const cur = porSig.get(sig)
+      if (!cur || nTk > cur.nTk) porSig.set(sig, { bk, nTk })
+    }
+    out.set(grupo, [...porSig.values()].map(v => v.bk).sort((a, b) => b.dataNum - a.dataNum))
   }
   return out
 }

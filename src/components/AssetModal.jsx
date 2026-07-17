@@ -4,7 +4,7 @@ import { anbimaUrl } from '../utils/anbima.js'
 import { useAgenda } from '../hooks/useAgenda.js'
 import { useBooks, fmtBookTaxa, fmtBookDemanda } from '../hooks/useBooks.js'
 
-export default function AssetModal({ asset, onClose }) {
+export default function AssetModal({ asset, onClose, onSelectTicker }) {
   // Close on Escape
   useEffect(() => {
     const fn = e => e.key === 'Escape' && onClose()
@@ -68,7 +68,7 @@ export default function AssetModal({ asset, onClose }) {
 
           <AgendaSection asset={asset} />
 
-          <BookSection asset={asset} />
+          <BookSection asset={asset} onSelectTicker={onSelectTicker} />
 
           <Section title="Posição">
             <Row label="Vol. mercado" value={asset.volumeEmitido > 0 ? fmtBRL(asset.volumeEmitido) : '—'} />
@@ -130,27 +130,38 @@ function dataNum(str) {
 // primario. Casa pelo grupo; ordena pela proximidade da emissao desta debenture
 // (senao, recencia). So' aparece quando ha' book casado (degrada gracioso: sem
 // Books_Primario.csv, o hook devolve Map vazio e a secao some).
-function BookSection({ asset }) {
+function BookSection({ asset, onSelectTicker }) {
   const { booksByGrupo } = useBooks()
   if (!asset.grupo) return null
-  let books = booksByGrupo.get(asset.grupo) || []
-  if (!books.length) return null
+  const all = booksByGrupo.get(asset.grupo) || []
+  if (!all.length) return null
+  // O book DESTA debenture (contem uma serie com o ticker atual) vem primeiro;
+  // depois por proximidade da emissao / recencia.
+  const temEste = bk => bk.series.some(s => s.Ticker && s.Ticker === asset.codigoAtivo)
   const emi = dataNum(asset.emissao)
-  books = emi
-    ? [...books].sort((a, b) => Math.abs(a.dataNum - emi) - Math.abs(b.dataNum - emi))
-    : books
-  const mostra = books.slice(0, 3)
-  const resto = books.length - mostra.length
+  const ordenados = [...all].sort((a, b) => {
+    const d = (temEste(b) ? 1 : 0) - (temEste(a) ? 1 : 0)
+    if (d) return d
+    if (emi) return Math.abs(a.dataNum - emi) - Math.abs(b.dataNum - emi)
+    return b.dataNum - a.dataNum
+  })
+  const mostra = ordenados.slice(0, 3)
+  const resto = ordenados.length - mostra.length
   return (
     <div className="modal-section">
       <h3 className="modal-section-title">Emissão primária (book)</h3>
       {mostra.map((bk, i) => (
         <div className="book-entry" key={i}>
+          <p className="book-emissor">
+            {bk.emissor}
+            {norm(bk.emissor) !== norm(asset.grupo) && <span className="book-grupo"> · {asset.grupo}</span>}
+          </p>
           <p className="book-head">
             <span className="book-date">{bk.data}</span>
             {bk.rating && <span className="book-tag">{bk.rating}</span>}
             {bk.regime && <span className="book-tag">{bk.regime}</span>}
           </p>
+          {coordLabel(bk) && <p className="book-coord">🏦 {coordLabel(bk)}</p>}
           <ul className="book-series">
             {bk.series.map((s, j) => {
               const dem = fmtBookDemanda(s)
@@ -158,13 +169,18 @@ function BookSection({ asset }) {
               // do final -> evita "IPCA +9,30% -> B32 +1,00%" (bases diferentes).
               const temTeto = s.SpreadTetoPct !== '' && s.SpreadTetoPct != null
                 && s.IndexadorTeto === s.IndexadorFinal && s.SpreadTetoPct !== s.SpreadFinalPct
+              const isEste = s.Ticker && s.Ticker === asset.codigoAtivo
               return (
-                <li key={j}>
+                <li key={j} className={isEste ? 'book-serie-atual' : ''}>
                   <span className="book-prazo">{s.Serie === 'unica' ? 'Única' : s.Serie} · {s.Prazo || '—'}</span>
                   <span className="book-taxa">
                     {temTeto && <span className="book-teto">{fmtBookTaxa(s, 'Teto')} →</span>}
                     <b>{fmtBookTaxa(s, 'Final')}</b>
                     {dem && <span className="book-dem"> · {dem}</span>}
+                    {s.Ticker && (isEste
+                      ? <span className="book-ticker atual">{s.Ticker} ◄</span>
+                      : <button type="button" className="book-ticker link"
+                          onClick={() => onSelectTicker?.(s.Ticker)}>{s.Ticker}</button>)}
                   </span>
                 </li>
               )
@@ -172,10 +188,22 @@ function BookSection({ asset }) {
           </ul>
         </div>
       ))}
-      {resto > 0 && <p className="book-more">+{resto} book(s) anterior(es) de {asset.grupo}</p>}
-      <p className="book-src">Bookbuilding divulgado · casado pelo grupo</p>
+      {resto > 0 && <p className="book-more">+{resto} outra(s) emissão(ões) de {asset.grupo}</p>}
+      <p className="book-src">Bookbuilding divulgado (mercado primário)</p>
     </div>
   )
+}
+
+// normaliza p/ comparar emissor x grupo (evita repetir "Vale · Vale")
+function norm(s) {
+  return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '')
+}
+
+// "Itaú BBA (líder) · BBI · Santander · XP" a partir de coordLider + coordenadores.
+function coordLabel(bk) {
+  const lista = (bk.coordenadores || '').split(',').map(s => s.trim()).filter(Boolean)
+  if (!lista.length) return bk.coordLider || ''
+  return lista.map(b => (bk.coordLider && b === bk.coordLider) ? `${b} (líder)` : b).join(' · ')
 }
 
 function Section({ title, children }) {

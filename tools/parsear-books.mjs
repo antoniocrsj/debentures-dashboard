@@ -98,13 +98,96 @@ function carregarGrupos() {
   const raw = fs.readFileSync(p, 'utf8').split(/\r?\n/).filter(Boolean)
   const hdr = parseCsvLine(raw[0])
   const iG = hdr.indexOf('Grupo'), iE = hdr.indexOf('Emissor')
-  const grupos = new Map(), emissores = new Map()
+  const iC = hdr.findIndex(h => h.trim() === 'CNPJ Emissor')
+  const grupos = new Map(), emissores = new Map(), gByCnpj = new Map()
   for (const l of raw.slice(1)) {
     const c = parseCsvLine(l)
     if (c[iG]) grupos.set(norm(c[iG]), c[iG].trim())
     if (c[iE]) emissores.set(norm(c[iE]), c[iE].trim())
+    if (iC >= 0 && c[iC] && c[iG]) gByCnpj.set((c[iC] || '').replace(/\D/g, ''), c[iG].trim())
   }
-  return { grupos, emissores }
+  return { grupos, emissores, gByCnpj }
+}
+
+// ---------- carrega Debentures (p/ casar serie do book -> ticker real) ----------
+// Le public/Debentures.csv (cod, emissor, grupo via gByCnpj, emissao, venc, taxa).
+// Ausente -> [] (Ticker fica vazio; degrada gracioso).
+function carregarDebentures(gByCnpj) {
+  const p = path.join(ROOT, 'public', 'Debentures.csv')
+  if (!fs.existsSync(p)) return []
+  const raw = fs.readFileSync(p, 'utf8').split(/\r?\n/).filter(Boolean)
+  const hdr = parseCsvLine(raw[0])
+  const idx = (...names) => { for (const n of names) { const i = hdr.findIndex(h => h.trim() === n); if (i >= 0) return i } return -1 }
+  const iCod = idx('Codigo do Ativo', 'Código do Ativo'), iCnpj = idx('CNPJ')
+  const iEmi = idx('Data de Emissao', 'Data de Emissão'), iVen = idx('Data de Vencimento')
+  const iTax = idx('Juros Criterio Novo - Taxa', 'Taxa')
+  const P = s => { const m = String(s || '').match(/(\d{2})\/(\d{2})\/(\d{4})/); return m ? new Date(+m[3], +m[2] - 1, +m[1]) : null }
+  const out = []
+  for (const l of raw.slice(1)) {
+    const c = parseCsvLine(l)
+    const cnpj = (c[iCnpj] || '').replace(/\D/g, '')
+    out.push({
+      cod: (c[iCod] || '').trim(), emissor: c[1] || '', grupo: gByCnpj.get(cnpj) || '',
+      emi: P(c[iEmi]), ven: P(c[iVen]), taxa: parseFloat((c[iTax] || '').replace(',', '.')),
+    })
+  }
+  return out
+}
+
+const anosEntre = (a, b) => (a && b) ? Math.round((b - a) / (365.25 * 864e5)) : null
+
+// Casa uma serie do book -> ticker do Debentures.csv. Sinal forte: a taxa final
+// (all-in, via IPCA-equiv quando NTN-B) bate com a taxa do cadastro em ~4 casas;
+// desempata pelo emissor (EmissorRaw) e prazo. Fallback: janela de data + prazo.
+function acharTicker(debs, grupo, emissorRaw, taxaFinal, ipcaEquiv, prazoAnos, dataBook) {
+  if (!grupo || !debs.length) return null
+  const alvo = ipcaEquiv != null ? ipcaEquiv : taxaFinal
+  const bd = (() => { const m = String(dataBook).match(/(\d{2})\/(\d{2})\/(\d{4})/); return m ? new Date(+m[3], +m[2] - 1, +m[1]) : null })()
+  const c = debs.filter(d => d.grupo === grupo)
+  if (!c.length) return null
+  // tokens de emissor que "batem" a partir do inicio (emissoes-irmas do mesmo grupo
+  // so' se distinguem pelo nome: "...Mato Grosso" vs "...Mato Grosso do Sul").
+  const bt = norm(emissorRaw).split(' ').filter(Boolean)
+  const lead = d => { const dt = norm(d.emissor).split(' '); let i = 0; while (i < bt.length && i < dt.length && bt[i] === dt[i]) i++; return i }
+  // ordena por: taxa mais proxima -> mais tokens de emissor batendo -> nome mais curto.
+  const escolher = cand => cand.sort((x, y) => {
+    const dx = alvo != null ? Math.abs(x.taxa - alvo) : 0, dy = alvo != null ? Math.abs(y.taxa - alvo) : 0
+    if (Math.abs(dx - dy) > 0.001) return dx - dy
+    const lx = lead(x), ly = lead(y); if (lx !== ly) return ly - lx
+    return norm(x.emissor).length - norm(y.emissor).length
+  })[0]
+  // proximidade da emissao ao book (~<=75d): emissoes-irmas de datas diferentes
+  // podem ter taxas parecidas -> sem isso, casaria a de outro ano.
+  const pertoData = d => !bd || !d.emi || Math.abs(d.emi - bd) < 75 * 864e5
+  // 1) por taxa all-in (dentro de 6bps), respeitando prazo E data da emissao
+  if (alvo != null) {
+    let cand = c.filter(d => !isNaN(d.taxa) && Math.abs(d.taxa - alvo) < 0.06 && pertoData(d))
+    if (prazoAnos) cand = cand.filter(d => { const a = anosEntre(d.emi, d.ven); return a == null || Math.abs(a - prazoAnos) <= 1.5 })
+    if (cand.length) return escolher(cand)
+  }
+  // 2) fallback data+prazo: SO' quando fica 1 unico candidato (senao casaria irma errada)
+  if (bd) {
+    const cand = c.filter(d => d.emi && Math.abs(d.emi - bd) < 12 * 864e5 && (!prazoAnos || Math.abs(anosEntre(d.emi, d.ven) - prazoAnos) <= 1.5))
+    if (cand.length === 1) return cand[0]
+  }
+  return null
+}
+
+// Coordenadores: lider + sindicato. Formatos: "Coordenador Lider: X" + "Coordenadores:
+// A, B e C"; ou "Coordenadores: A (Lider), B, C"; ou "Coordenador: X".
+function extrairCoord(corpo) {
+  const listaRaw = campo(corpo, /coordenadores\s*:?\s*([^\n]+)/i)
+    || campo(corpo, /coordenador(?!\s*l[ií]der)[^:\n]*:?\s*([^\n]+)/i)
+  let liderRaw = campo(corpo, /coordenador\s*l[ií]der\s*:?\s*([^\n]+)/i)
+  const bancos = (listaRaw || '').split(/,| e |\/|·/).map(x => x.replace(/\(.*?\)/g, '').trim()).filter(Boolean)
+  if (!liderRaw) {
+    const mi = (listaRaw || '').match(/([^,]+?)\s*\(l[ií]der\)/i)
+    if (mi) liderRaw = mi[1].trim()
+  }
+  const lider = (liderRaw || '').replace(/\(.*?\)/g, '').replace(/^coordenador(es)?\s*/i, '').trim()
+  const seen = new Set(), ordem = []
+  for (const b of [lider, ...bancos]) { const k = b.toLowerCase(); if (b && !seen.has(k)) { seen.add(k); ordem.push(b) } }
+  return { lider, lista: ordem.join(', ') }
 }
 
 // aliases: nomes de mercado -> como aparece no Grupo do Emissores.csv
@@ -289,6 +372,7 @@ function main() {
   }
   const txt = fs.readFileSync(arqTxt, 'utf8')
   const grp = carregarGrupos()
+  const debs = carregarDebentures(grp.gByCnpj)
   const msgs = lerMensagens(txt)
 
   const rows = []
@@ -304,12 +388,15 @@ function main() {
     stats.deb++
 
     const corpo = msg.linhas.join('\n')
-    const dataBook = campo(corpo, /data do book\s*:?\s*(\d{2}\/\d{2}\/\d{4})/i) || msg.data
+    const dataBook = campo(corpo, /data do book(?:building|build)?\s*:?\s*(\d{2}\/\d{2}\/\d{4})/i) || msg.data
     const rating = campo(corpo, /rating\s*:?\s*([A-Za-z+\/.\- ]+?)(?:\n|$)/i).match?.(RATING_RE)?.[0]
       || (corpo.match(RATING_RE)?.[0] ?? '')
     const regime = /12\.?431/.test(corpo) || /12\.?431/i.test(title) ? '12.431'
       : /(i?cvm) ?160/i.test(corpo) ? 'CVM160' : ''
-    const coord = campo(corpo, /coordenador[^:\n]*:?\s*([^\n]+)/i).replace(/\s+/g, ' ').trim()
+    const coord = extrairCoord(corpo)
+    // Emissor "limpo" do titulo do book (tira juridiques de prefixo, preserva aval).
+    const emissorRaw = title.split(/ - | – /)[0]
+      .replace(/^\*?\s*(deb\.?|debentures?|book(building|build)?)\s*/i, '').replace(/12\.?431/g, '').trim()
 
     const cand = candidatoEmissor(title)
     const { grupo, via } = casarGrupo(cand, grp)
@@ -323,9 +410,14 @@ function main() {
       // ignora "serie" sem nenhuma taxa (ruido)
       if (s.spreadFinal == null && s.spreadTeto == null && !s.prazo) continue
       stats.series++
+      const prazoAnos = (s.prazo.match(/(\d+)\s*y/i) || [])[1]
+      const tk = acharTicker(debs, grupo, emissorRaw, s.spreadFinal, s.ipcaEquivFinal, prazoAnos ? +prazoAnos : null, dataBook)
+      if (tk) stats.comTicker = (stats.comTicker || 0) + 1
       rows.push({
-        DataBook: dataBook, Grupo: grupo, EmissorRaw: title.split(/ - | – /)[0].replace(/^\*?\s*(deb\.?|debentures?|book(building|build)?)\s*/i, '').replace(/12\.?431/g, '').trim(),
-        MatchVia: via, Instrumento: instr, Regime: regime, Rating: rating, Coordenador: coord,
+        DataBook: dataBook, Grupo: grupo, EmissorRaw: emissorRaw,
+        Ticker: tk ? tk.cod : '', TickerEmissor: tk ? tk.emissor : '',
+        MatchVia: via, Instrumento: instr, Regime: regime, Rating: rating,
+        CoordLider: coord.lider, Coordenadores: coord.lista,
         Serie: b.serie, Prazo: s.prazo,
         IndexadorFinal: s.indexadorFinal, SpreadFinalPct: s.spreadFinal ?? '',
         IpcaEquivFinalPct: s.ipcaEquivFinal ?? '',
@@ -350,13 +442,14 @@ function main() {
     fonte: path.basename(arqTxt),
     books_deb: stats.deb, series: stats.series,
     casados: stats.casados, pct_casado: stats.deb ? Math.round(100 * stats.casados / stats.deb) : 0,
+    series_com_ticker: stats.comTicker || 0,
     periodo: { de: rows[0]?.DataBook || '', ate: rows[rows.length - 1]?.DataBook || '' },
     nao_casados: [...new Set(stats.naoCasados)],
   }
   fs.writeFileSync(path.join(outDir, 'Books_Meta.json'), JSON.stringify(meta, null, 2))
 
   console.log(`Mensagens: ${stats.mensagens} | Books: ${stats.books} | DEB: ${stats.deb} | Series: ${stats.series}`)
-  console.log(`Casados ao Grupo: ${stats.casados}/${stats.deb} (${meta.pct_casado}%)`)
+  console.log(`Casados ao Grupo: ${stats.casados}/${stats.deb} (${meta.pct_casado}%) | Series com ticker: ${meta.series_com_ticker}/${stats.series}`)
   console.log(`Periodo: ${meta.periodo.de} -> ${meta.periodo.ate}`)
   console.log(`Nao casados (${meta.nao_casados.length}): ${meta.nao_casados.join(' | ')}`)
   console.log(`\n-> public/data/Books_Primario.csv (${rows.length} linhas)`)

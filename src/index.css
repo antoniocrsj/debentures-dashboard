@@ -699,6 +699,9 @@ a { color: var(--primary); }
 /* Emissão primária (book) — bookbuilding do grupo */
 .book-entry { padding: 6px 0; }
 .book-entry + .book-entry { border-top: 1px solid var(--border); }
+.book-emissor { font-weight: 600; font-size: 12.5px; margin: 2px 0 1px; }
+.book-grupo { color: var(--text-muted); font-weight: 400; }
+.book-coord { font-size: 11px; color: var(--text-muted); margin: 1px 0 4px; line-height: 1.3; }
 .book-head { display: flex; align-items: baseline; gap: 6px; margin: 2px 0 4px; }
 .book-date { font-weight: 700; font-size: 12.5px; font-variant-numeric: tabular-nums; }
 .book-tag { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .02em; color: var(--text-muted); background: var(--surface-2, rgba(127,127,127,.12)); border-radius: 4px; padding: 1px 5px; }
@@ -709,6 +712,11 @@ a { color: var(--primary); }
 .book-taxa b { font-weight: 700; color: var(--primary); }
 .book-teto { color: var(--text-muted); font-size: 11px; margin-right: 4px; }
 .book-dem { color: var(--text-muted); font-size: 11px; }
+.book-series li.book-serie-atual { background: color-mix(in srgb, var(--primary) 9%, transparent); border-radius: 5px; margin: 0 -6px; padding-left: 6px; padding-right: 6px; }
+.book-ticker { font-size: 11px; font-weight: 700; font-variant-numeric: tabular-nums; margin-left: 6px; white-space: nowrap; }
+.book-ticker.atual { color: var(--primary); }
+.book-ticker.link { background: none; border: none; padding: 0; cursor: pointer; color: var(--text-muted); text-decoration: underline dotted; }
+.book-ticker.link:hover { color: var(--primary); }
 .book-more { font-size: 11px; color: var(--text-muted); margin: 6px 0 0; }
 .book-src { font-size: 10px; color: var(--text-muted); opacity: .8; margin: 6px 0 0; }
 

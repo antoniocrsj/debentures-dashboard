@@ -227,6 +227,14 @@ export default function App() {
     setFilters(f => ({ ...f, [key]: f[key] === value ? '' : value }))
   , [])
 
+  // Abre o modal de outra debenture pelo codigo (ex.: series irmas de um book).
+  // Se estiver na base atual, abre o modal dela; senao filtra a tabela por ela.
+  const openTicker = useCallback(cod => {
+    const a = allAssets.find(x => x.codigoAtivo === cod)
+    if (a) setSelected(a)
+    else { setSelected(null); setFilters(f => ({ ...f, ativo: cod })) }
+  }, [allAssets])
+
   // Manager ranking — only BLC rows for currently-filtered assets
   const filteredCodes = useMemo(
     () => new Set(filteredAssets.map(a => a.codigoAtivo)),
@@ -473,7 +481,7 @@ export default function App() {
       {!desktop && <BottomNav section={section} onSection={selectSection} />}
 
       {selectedAsset && (
-        <AssetModal asset={selectedAsset} onClose={() => setSelected(null)} />
+        <AssetModal asset={selectedAsset} onClose={() => setSelected(null)} onSelectTicker={openTicker} />
       )}
 
       {showMonths && (
