@@ -696,6 +696,22 @@ a { color: var(--primary); }
 .badge-lei   { display: inline-block; color: var(--success); margin-right: 4px; font-weight: 600; }
 .modal-emis-data { color: var(--text-muted); font-weight: 400; }
 
+/* Emissão primária (book) — bookbuilding do grupo */
+.book-entry { padding: 6px 0; }
+.book-entry + .book-entry { border-top: 1px solid var(--border); }
+.book-head { display: flex; align-items: baseline; gap: 6px; margin: 2px 0 4px; }
+.book-date { font-weight: 700; font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.book-tag { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .02em; color: var(--text-muted); background: var(--surface-2, rgba(127,127,127,.12)); border-radius: 4px; padding: 1px 5px; }
+.book-series { list-style: none; margin: 0; padding: 0; }
+.book-series li { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 3px 0; font-size: 13px; }
+.book-prazo { color: var(--text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.book-taxa { text-align: right; font-variant-numeric: tabular-nums; }
+.book-taxa b { font-weight: 700; color: var(--primary); }
+.book-teto { color: var(--text-muted); font-size: 11px; margin-right: 4px; }
+.book-dem { color: var(--text-muted); font-size: 11px; }
+.book-more { font-size: 11px; color: var(--text-muted); margin: 6px 0 0; }
+.book-src { font-size: 10px; color: var(--text-muted); opacity: .8; margin: 6px 0 0; }
+
 /* Ação "Ver na ANBIMA" (link externo) — mesma identidade dos botões claros */
 .modal-actions { padding-top: 16px; }
 .btn-anbima {

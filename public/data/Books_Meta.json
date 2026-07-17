@@ -1,0 +1,30 @@
+{
+  "fonte": "Conversa do WhatsApp com CRM Books.txt",
+  "books_deb": 220,
+  "series": 336,
+  "casados": 202,
+  "pct_casado": 92,
+  "periodo": {
+    "de": "14/04/2025",
+    "ate": "15/07/2026"
+  },
+  "nao_casados": [
+    "DEB 12.431 - Vtal",
+    "DEB - Essentia Energia",
+    "DEB 12.431 - Usina Estiva",
+    "DEB - TecBan",
+    "Debs 12.431",
+    "DEB Sec - Refrescos Bandeirantes",
+    "DEB LM Mobilidade",
+    "DEB 12.431 - BTG Commodities",
+    "DEB 12.431 - AXS 11",
+    "DEB 12.431 - Casa dos Ventos (TotalEnergies)",
+    "DEB 12.431 - FS Etanol (FS Bio)",
+    "DEB Sec ER 2027",
+    "DEB 12.431 – TBG",
+    "DEB 12.431 – Casa dos Ventos",
+    "DEB Sec – Multilog",
+    "DEB Sec - Dívida Ativa DF",
+    "DEB – Serra do Facão Energia"
+  ]
+}

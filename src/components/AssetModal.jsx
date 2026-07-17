@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { fmtBRL, fmtDate, isYes } from '../utils/format.js'
 import { anbimaUrl } from '../utils/anbima.js'
 import { useAgenda } from '../hooks/useAgenda.js'
+import { useBooks, fmtBookTaxa, fmtBookDemanda } from '../hooks/useBooks.js'
 
 export default function AssetModal({ asset, onClose }) {
   // Close on Escape
@@ -67,6 +68,8 @@ export default function AssetModal({ asset, onClose }) {
 
           <AgendaSection asset={asset} />
 
+          <BookSection asset={asset} />
+
           <Section title="Posição">
             <Row label="Vol. mercado" value={asset.volumeEmitido > 0 ? fmtBRL(asset.volumeEmitido) : '—'} />
             <Row label="Alocação" value={asset.alocacao > 0 ? fmtBRL(asset.alocacao) : '—'} highlight />
@@ -113,6 +116,64 @@ function AgendaSection({ asset }) {
           </ul>
         </>
       )}
+    </div>
+  )
+}
+
+// yyyymmdd de "DD/MM/AAAA" (via fmtDate, tolerante a ISO/BR)
+function dataNum(str) {
+  const m = fmtDate(str).match(/(\d{2})\/(\d{2})\/(\d{4})/)
+  return m ? +(m[3] + m[2] + m[1]) : 0
+}
+
+// Emissao primaria: books (bookbuilding) do GRUPO da debenture, do mercado
+// primario. Casa pelo grupo; ordena pela proximidade da emissao desta debenture
+// (senao, recencia). So' aparece quando ha' book casado (degrada gracioso: sem
+// Books_Primario.csv, o hook devolve Map vazio e a secao some).
+function BookSection({ asset }) {
+  const { booksByGrupo } = useBooks()
+  if (!asset.grupo) return null
+  let books = booksByGrupo.get(asset.grupo) || []
+  if (!books.length) return null
+  const emi = dataNum(asset.emissao)
+  books = emi
+    ? [...books].sort((a, b) => Math.abs(a.dataNum - emi) - Math.abs(b.dataNum - emi))
+    : books
+  const mostra = books.slice(0, 3)
+  const resto = books.length - mostra.length
+  return (
+    <div className="modal-section">
+      <h3 className="modal-section-title">Emissão primária (book)</h3>
+      {mostra.map((bk, i) => (
+        <div className="book-entry" key={i}>
+          <p className="book-head">
+            <span className="book-date">{bk.data}</span>
+            {bk.rating && <span className="book-tag">{bk.rating}</span>}
+            {bk.regime && <span className="book-tag">{bk.regime}</span>}
+          </p>
+          <ul className="book-series">
+            {bk.series.map((s, j) => {
+              const dem = fmtBookDemanda(s)
+              // teto so' quando comparavel (mesmo indexador do final) e diferente
+              // do final -> evita "IPCA +9,30% -> B32 +1,00%" (bases diferentes).
+              const temTeto = s.SpreadTetoPct !== '' && s.SpreadTetoPct != null
+                && s.IndexadorTeto === s.IndexadorFinal && s.SpreadTetoPct !== s.SpreadFinalPct
+              return (
+                <li key={j}>
+                  <span className="book-prazo">{s.Serie === 'unica' ? 'Única' : s.Serie} · {s.Prazo || '—'}</span>
+                  <span className="book-taxa">
+                    {temTeto && <span className="book-teto">{fmtBookTaxa(s, 'Teto')} →</span>}
+                    <b>{fmtBookTaxa(s, 'Final')}</b>
+                    {dem && <span className="book-dem"> · {dem}</span>}
+                  </span>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      ))}
+      {resto > 0 && <p className="book-more">+{resto} book(s) anterior(es) de {asset.grupo}</p>}
+      <p className="book-src">Bookbuilding divulgado · casado pelo grupo</p>
     </div>
   )
 }
