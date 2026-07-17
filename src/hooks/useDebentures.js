@@ -12,6 +12,10 @@ export const DEB_URL =
 export const BLC_DEFAULT_URL =
   'https://script.google.com/macros/s/AKfycbz8A8fAJTD7yVIQzufOUKE8x64BOruRBDmYE2DM0ierH7seKkDxSoHhARvmPO1lJC6f/exec'
 
+// Cadastro de emissores (CNPJ -> Grupo / Setor / Modulo): gerado por
+// tools/preparar-emissores.ps1 a partir da Ana (fonte canonica). Estatico em
+// public/; a planilha do Google (CADASTRO_URL) fica so' como fallback.
+const STATIC_EMISSORES_URL = '/Emissores.csv'
 // BLC tratado: arquivo estatico servido pelo proprio app (public/). Sem GAS, sem proxy.
 const STATIC_BLC_URL = '/BLC_tratado.csv'
 // Cadastro de debentures: gerado por tools/preparar-debentures.ps1 a partir do Debentures.com.br.
@@ -97,9 +101,10 @@ export function useDebentures(blcUrl) {
     setState(s => ({ ...s, loading: !fresh, refreshing: !!fresh, raw: fresh ?? s.raw }))
 
     Promise.all([
-      // nocache=1: evita o cache de 6h do Apps Script — edições no Cadastro_Emissores
-      // aparecem no próximo load (o app já tem seu próprio cache local de 4h por cima).
-      fetchCSV(`${CADASTRO_URL}?sheet=Cadastro_Emissores&nocache=1`),
+      // Cadastro de emissores: estatico da Ana (fonte canonica), gerado por
+      // tools/preparar-emissores.ps1. Fallback para a planilha do Google
+      // (Cadastro_Emissores) so' se o estatico faltar/quebrar.
+      fetchStaticCSV(STATIC_EMISSORES_URL).catch(() => fetchCSV(`${CADASTRO_URL}?sheet=Cadastro_Emissores&nocache=1`)),
       fetchStaticCSV(STATIC_DEBENTURES_URL).catch(() => fetchCSV(DEB_URL)),
       fetchStaticCSV(STATIC_BLC_URL),
       // ANBIMA e PL_Gestores sao opcionais: se faltar/quebrar, o app segue sem essas colunas.
