@@ -35,8 +35,8 @@ function FluxoTooltip({ active, payload, label }) {
 }
 
 // Largura da barra por tamanho da janela (n de semanas na serie). Valores
-// escolhidos a olho pelo usuario, medidos no grafico: 3m=14px, 6m=10px,
-// 12m/tudo=6px; janelas curtas (1s, 1 mes) ficam nos 26px de sempre.
+// escolhidos a olho pelo usuario, medidos no grafico: 3m=14px, 6m=8px,
+// 12m/tudo=4,5px; janelas curtas (1s, 1 mes) ficam nos 26px de sempre.
 // E' barSize (largura EXATA) e nao maxBarSize (teto) de proposito: o teto
 // deixava o Recharts esticar a barra ate' encher a categoria -- em 3 meses ela
 // batia nos 26px. Por n de semanas, e nao pelo chip de periodo, p/ valer
@@ -45,8 +45,8 @@ function FluxoTooltip({ active, payload, label }) {
 function barSizeFor(n) {
   if (n <= 5) return 26   // 1s, 1 mes
   if (n <= 16) return 14  // 3 meses  (~14 semanas)
-  if (n <= 30) return 10  // 6 meses  (~26 semanas)
-  return 6                // 12 meses / tudo (~51 semanas)
+  if (n <= 30) return 8   // 6 meses  (~26 semanas)
+  return 4.5              // 12 meses / tudo (~51 semanas)
 }
 
 export default function FluxoChart({ weekly }) {
