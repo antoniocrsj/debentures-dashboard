@@ -372,8 +372,10 @@ a { color: var(--primary); }
    A barra de filtros/abas (antes creme) acompanha o header (--primary-dark).
    Chips e busca ficam translúcidos claros; a aba ativa vira branco + traço
    terracota. Só o topo — o conteúdo abaixo segue no claro. */
-.filter-bar { background: var(--primary-dark); border-bottom: 1px solid rgba(255,255,255,.08); }
-.tabs { background: transparent; border-bottom-color: rgba(255,255,255,.12); }
+.app-header { box-shadow: none; }                 /* sem sombra: emenda com a barra */
+.sticky-area { background: var(--primary-dark); box-shadow: 0 5px 12px rgba(0,0,0,.18); }  /* elevacao so' na base (fronteira com o conteudo) */
+.filter-bar { background: var(--primary-dark); border-bottom: 0; }
+.tabs { background: transparent; border-bottom: 0; }
 .app:not(.desktop) .tabs { background: var(--primary-dark); }
 .chip-select { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.22); color: #e8dfd2; }
 .chip-select-wrap.active .chip-select { background: rgba(140,94,58,.38); border-color: var(--primary); color: #f4e9dc; }
