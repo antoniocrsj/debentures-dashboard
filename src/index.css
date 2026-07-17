@@ -368,6 +368,23 @@ a { color: var(--primary); }
   font-weight: 600;
 }
 
+/* ─── Topo em carvão: header + filtros + busca + abas num bloco só ──────
+   A barra de filtros/abas (antes creme) acompanha o header (--primary-dark).
+   Chips e busca ficam translúcidos claros; a aba ativa vira branco + traço
+   terracota. Só o topo — o conteúdo abaixo segue no claro. */
+.filter-bar { background: var(--primary-dark); border-bottom: 1px solid rgba(255,255,255,.08); }
+.tabs { background: transparent; border-bottom-color: rgba(255,255,255,.12); }
+.app:not(.desktop) .tabs { background: var(--primary-dark); }
+.chip-select { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.22); color: #e8dfd2; }
+.chip-select-wrap.active .chip-select { background: rgba(140,94,58,.38); border-color: var(--primary); color: #f4e9dc; }
+.search-wrap { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.22); }
+.search-icon { color: rgba(255,255,255,.6); }
+.search-input { color: #fff; }
+.search-input::placeholder { color: rgba(255,255,255,.55); }
+.tab-btn { color: rgba(255,255,255,.6); }
+.tab-btn.active { color: #fff; border-bottom-color: var(--primary); }
+.data-updated { color: rgba(255,255,255,.55); }
+
 /* ─── Content area ───────────────────────────────────────────── */
 .content {
   flex: 1;
