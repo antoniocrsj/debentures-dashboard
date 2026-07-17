@@ -17,3 +17,6 @@ tools/Sugestao_*.csv
 
 # Cache de agendas ANBIMA (gerado por preparar-agenda.ps1; nao versionar)
 dados-anbima/agenda-cache/
+
+# Exports crus do grupo CRM Books (privados; so o CSV gerado e versionado)
+tools/books/*.txt

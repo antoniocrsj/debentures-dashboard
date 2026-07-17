@@ -11,9 +11,9 @@ DataBook,Grupo,EmissorRaw,MatchVia,Instrumento,Regime,Rating,Coordenador,Serie,P
 09/05/2025,Alloha,Giga Mais Fibra,alias~,DEB,12.431,A,"IBBA (Líder), SAN, UBS-BB, BBI, ABC",1a,7y,NTN-B,1.95,,"NTN-B30 + 1,95%",B30,,,,,,125,477,,18/18,,
 09/05/2025,Alloha,Giga Mais Fibra,alias~,DEB,12.431,A,"IBBA (Líder), SAN, UBS-BB, BBI, ABC",2a,10y,NTN-B,2.2,,"NTN-B32 + 2,20%",B32,,,,,,23,23,,5/5,,
 09/05/2025,Alloha,Giga Mais Fibra,alias~,DEB,12.431,A,"IBBA (Líder), SAN, UBS-BB, BBI, ABC",3a,6y,CDI,2,,"CDI + 2,00% (15bps de fechamento)",,CDI,2.15,,"CDI + 2,15%",15,290,250,,10/10,,
-12/05/2025,,,,DEB,12.431,AA,"BTG(Líder), BBI, Safra, Citi, Santander",1a,7y,,15.05,,"15,05% (DI Jan/32 + 1,26%)",,Fixa,32,,"Pré DI Jan/32 + 0,75% ou 15,05%",,1400,1650,,34/34,,6/7
-12/05/2025,,,,DEB,12.431,AA,"BTG(Líder), BBI, Safra, Citi, Santander",2a,7y,NTN-B,0.88,8.27,"IPCA + 8,27% (B33 + 0,88%)",B33,NTN-B,0.85,B33,"B33 + 0,85% ou IPCA + 8,27%",-3,559.8,559.8,,27/27,,6/7
-12/05/2025,,,,DEB,12.431,AA,"BTG(Líder), BBI, Safra, Citi, Santander",3a,10y,NTN-B,1.13,8.45,"IPCA + 8,45% (B35 + 1,13%)",B35,NTN-B,0.95,B35,"B35 + 0,95% ou IPCA + 8,45%",-18,163,195,,15/15,,8/9/10
+12/05/2025,V.tal,,alias,DEB,12.431,AA,"BTG(Líder), BBI, Safra, Citi, Santander",1a,7y,,15.05,,"15,05% (DI Jan/32 + 1,26%)",,Fixa,32,,"Pré DI Jan/32 + 0,75% ou 15,05%",,1400,1650,,34/34,,6/7
+12/05/2025,V.tal,,alias,DEB,12.431,AA,"BTG(Líder), BBI, Safra, Citi, Santander",2a,7y,NTN-B,0.88,8.27,"IPCA + 8,27% (B33 + 0,88%)",B33,NTN-B,0.85,B33,"B33 + 0,85% ou IPCA + 8,27%",-3,559.8,559.8,,27/27,,6/7
+12/05/2025,V.tal,,alias,DEB,12.431,AA,"BTG(Líder), BBI, Safra, Citi, Santander",3a,10y,NTN-B,1.13,8.45,"IPCA + 8,45% (B35 + 1,13%)",B35,NTN-B,0.95,B35,"B35 + 0,95% ou IPCA + 8,45%",-18,163,195,,15/15,,8/9/10
 14/05/2025,Hapvida,,grupo,DEB,CVM160,AAA,"BBI(Líder), IBBA e Santander",unica,7y Bullet,CDI,1.05,,"CDI + 1,05%",,CDI,1.05,,"CDI + 1,05%",0,,,,9/9<Mensagemeditada>,,
 14/05/2025,Comgás,,alias,DEB,CVM160,AAA,"Santander(Líder), IBBA, BBI e BV",unica,3y,CDI,0.48,,"CDI + 0,48%",,CDI,0.45,,"CDI + 0,45% Des(0,50%)",-3,,,,,,Semestral
 14/05/2025,VLI,,grupo,DEB,12.431,AAA,IBBA(Líder) e BTG,1a,10y,NTN-B,0.03,7.4247,"B33 + 0,03% (IPCA + 7,4247%)",B33,NTN-B,-0.35,B33,"B33 - 0,35% Des(+0,03%)",-38,813,750,,13/13,,8/9/10
@@ -50,7 +50,7 @@ DataBook,Grupo,EmissorRaw,MatchVia,Instrumento,Regime,Rating,Coordenador,Serie,P
 24/06/2025,Taesa,,alias~,DEB,CVM160,AAA,BBI(Líder),2a,7y Bullet,CDI,0.65,,"CDI + 0,59% com deságio para CDI + 0,65%",,,,,,,49,49,,5,,
 24/06/2025,Taesa,,alias~,DEB,CVM160,AAA,BBI(Líder),1a,5y Bullet,CDI,0.55,,"CDI + 0,50% com deságio para CDI + 0,55%",,,,,,,364,364,,,,
 24/06/2025,Taesa,,alias~,DEB,CVM160,AAA,BBI(Líder),2a,7y Bullet,CDI,0.65,,"CDI + 0,59% com deságio para CDI + 0,65%",,,,,,,86,86,,,,
-24/06/2025,,,,DEB,CVM160,,IBBA (Líder),unica,7y Bullet,CDI,1.9,,"CDI + 1,90%",,,,,,,,,,3/3,,
+24/06/2025,Pátria,,alias~,DEB,CVM160,,IBBA (Líder),unica,7y Bullet,CDI,1.9,,"CDI + 1,90%",,,,,,,,,,3/3,,
 25/06/2025,Desktop,Desktop,grupo,DEB,CVM160,A,BV,unica,7y (6/7),NTN-B,0.65,,"B30+0,65% (fixing hoje)",B30,,,,,,,,,17/16,,
 26/06/2025,Nadir Figueiredo,,grupo,DEB,CVM160,,IBBA (Líder),unica,7y Semestral 2y car.,CDI,1.15,,"CDI + 1,15%",,CDI,1.15,,"CDI + 1,15%",0,,,,,,
 27/06/2025,Equatorial,,alias~,DEB,12.431,AAA,"BTG(Líder), XP, Safra e IBBA",unica,12y 9/10/11/12,NTN-B,0.16,7.4468,"B35 + 0,16% (IPCA + 7,4468%)",B35,,,,,,1750,1750,1,11/11,,
@@ -61,7 +61,7 @@ DataBook,Grupo,EmissorRaw,MatchVia,Instrumento,Regime,Rating,Coordenador,Serie,P
 02/07/2025,ISA Energia,,alias,DEB,12.431,AAA,BBI (Líder) e IBBA,unica,10y Bullet,NTN-B,-0.15,6.9008,"B40 - 0,15% (IPCA + 6,9008%)",B40,NTN-B,-0.4,B40,"B40 - 0,40% ou IPCA + 6,70% Des(B40 - 0,15%)",-25,,,,3/3,,
 02/07/2025,Alupar,,grupo,DEB,CVM160,,ABC (Líder),unica,5y (4/5),CDI,0.59,,"CDI + 0,59%",,CDI,0.59,,"CDI + 0,59%",0,,,,,,
 02/07/2025,EDP,,grupo,DEB,CVM160,AAA,IBBA(Líder),unica,5y Bullet,CDI,0.55,,"CDI + 0,55%",,CDI,0.47,,"CDI + 0,47% Des(0,55%)",-8,,,,,,
-03/07/2025,,,,DEB,12.431,,IBBA(Líder),unica,7y,NTN-B,0.9,8.4401,"B30 + 0,90% (IPCA + 8,4401%)",B30,NTN-B,0.9,B30,"B30 + 0,90%",0,,,,,,Semestral car. 4y
+03/07/2025,Usina SAO Jose da Estiva SA,,alias,DEB,12.431,,IBBA(Líder),unica,7y,NTN-B,0.9,8.4401,"B30 + 0,90% (IPCA + 8,4401%)",B30,NTN-B,0.9,B30,"B30 + 0,90%",0,,,,,,Semestral car. 4y
 08/07/2025,CONCESSIONARIA ECOVIAS RAPOSO-CASTELO S.A,,emissor,DEB,12.431,AAA,BBI (Líder),unica,4y Bullet,NTN-B,0.1,7.7555,"B30 + 0,10% (IPCA + 7,7555%)",B30,,0.1,,"B30 + Max(0,10%) Min(-0,06%)",,,,,,,
 08/07/2025,Coqueiros,,grupo,DEB,CVM160,,BBI (Líder) e BTG,unica,5y Bullet,CDI,0.53,,"CDI + 0,53%",,CDI,0.5,,"CDI + 0,50% Des(0,53%)",-3,,,,,,
 10/07/2025,Athon Energia,,grupo,DEB,12.431,AAA,BTG(Líder),unica,5y Custon.,NTN-B,0.5,7.8969,"B35 + 0,50% (IPCA + 7,8969)",B35,NTN-B,0.5,B35,"B35 + 0,50% ou IPCA + 7,52%",0,,,,,,
@@ -172,11 +172,11 @@ DataBook,Grupo,EmissorRaw,MatchVia,Instrumento,Regime,Rating,Coordenador,Serie,P
 19/09/2025,Localiza,Localiza Fleet,grupo,DEB,CVM160,AAA,"IBBA (Líder), BBI, Santander e UBS BB",2a,7y (6/7),CDI,1.15,,"CDI + 1,15%",,CDI,1.25,,"CDI + 1,25%",10,847,400,,23/15,,
 19/09/2025,B3 S.A. - BRASIL BOLSA BALCAO,ênture B3,emissor,DEB,,AAA,,1a,5y,CDI,0.45,,"CDI + 0,45%",,CDI,0.55,,"CDI+0,55%",10,5900,2600,,28/21,"60,8%",
 19/09/2025,Winity,,grupo,DEB,12.431,AA,IBBA(Líder) e ABC,unica,"10y semestral, 4y carência",NTN-B,1.05,8.8737,"B32 + 1,05% (IPCA + 8,8737)",B32,NTN-B,0.8,B32,"B32 + 0,80% ou IPCA + 8,42% Des(1,05%)",-25,,,,3,,
-22/09/2025,,,,DEB,12.431,,BTG,1a,10y Bullet,Fixa,31,,"Pré DI Jan/31 - 0,70% (12,4821%)",,Fixa,31,,"Pré DI Jan/31 - 0,50%",0,,346.2,,,,
-22/09/2025,,,,DEB,12.431,,BTG,2a,10y Bullet,NTN-B,-0.7,6.7214,"B35 - 0,70% (IPCA + 6,7214%)",B35,NTN-B,-0.5,B35,"B35 - 0,50%",20,,469.9,,,,
-22/09/2025,,,,DEB,12.431,,BTG,3a,15y Bullet,Fixa,32,,"Pré DI Jan/32 - 0,70% (12,5794%)",,Fixa,32,,"Pré DI Jan/32 - 0,40%",0,,125,,,,
-22/09/2025,,,,DEB,12.431,,BTG,4a,15y Bullet,NTN-B,-0.7,6.477,"B40 - 0,70% (IPCA + 6,4770%)",B40,NTN-B,-0.4,B40,"B40 - 0,40%",30,,58.8,,,,
-24/09/2025,,,,DEB,12.431,,XP (Líder),unica,16y,NTN-B,3.02,10.76,"IPCA + 10,76% (B35 + 3,02%)",B35,,,,,,90,170,,3/3<Mensagemeditada>,,"Semestral, a partir do 24º mês"
+22/09/2025,BTG Pactual,,alias,DEB,12.431,,BTG,1a,10y Bullet,Fixa,31,,"Pré DI Jan/31 - 0,70% (12,4821%)",,Fixa,31,,"Pré DI Jan/31 - 0,50%",0,,346.2,,,,
+22/09/2025,BTG Pactual,,alias,DEB,12.431,,BTG,2a,10y Bullet,NTN-B,-0.7,6.7214,"B35 - 0,70% (IPCA + 6,7214%)",B35,NTN-B,-0.5,B35,"B35 - 0,50%",20,,469.9,,,,
+22/09/2025,BTG Pactual,,alias,DEB,12.431,,BTG,3a,15y Bullet,Fixa,32,,"Pré DI Jan/32 - 0,70% (12,5794%)",,Fixa,32,,"Pré DI Jan/32 - 0,40%",0,,125,,,,
+22/09/2025,BTG Pactual,,alias,DEB,12.431,,BTG,4a,15y Bullet,NTN-B,-0.7,6.477,"B40 - 0,70% (IPCA + 6,4770%)",B40,NTN-B,-0.4,B40,"B40 - 0,40%",30,,58.8,,,,
+24/09/2025,AXS Energia,,alias~,DEB,12.431,,XP (Líder),unica,16y,NTN-B,3.02,10.76,"IPCA + 10,76% (B35 + 3,02%)",B35,,,,,,90,170,,3/3<Mensagemeditada>,,"Semestral, a partir do 24º mês"
 26/09/2025,Equatorial,EQUATORIAL PARÁ(CELPA),alias~,DEB,CVM160,AAA,"XP (Líder), IBBA, BTG e BV",unica,7y (4/5/6/7),CDI,0.69,,"CDI + 0,69%",,CDI,0.65,,"CDI+0,65%(deságio 0,69%)",-4,,,,15/15,,
 26/09/2025,Usina Santa Adelia,enture,grupo,DEB,12.431,,SAN/XP/BV,1a,7y,NTN-B,20,,B30 + 20bps (Teto - 40bps),B30,,,,,,397.3,,,19/12,,
 26/09/2025,Usina Santa Adelia,enture,grupo,DEB,12.431,,SAN/XP/BV,2a,10y,NTN-B,35,,B32 + 35bps (Teto - 45bps),B32,,,,,,390.6,,,17/7,,
@@ -265,13 +265,13 @@ DataBook,Grupo,EmissorRaw,MatchVia,Instrumento,Regime,Rating,Coordenador,Serie,P
 27/02/2026,Sabesp,/DEB Sabesp,alias,DEB,12.431,AAA,"IBBA (Líder), XP, Santander, BTG, BBI e ABC",3a,15y (13/14/15),NTN-B,-0.45,,"B40 - 0,45% (pendente fixing)",B40,NTN-B,-0.84,B40,"B40 - 0,84% Des(-0,45%)",-39,608,1292,,14/14,,
 27/02/2026,Sabesp,/DEB Sabesp,alias,DEB,12.431,AAA,"IBBA (Líder), XP, Santander, BTG, BBI e ABC",1a,7y Bullet,CDI,0.64,,"CDI + 0,64%",,CDI,0.65,,"CDI + 0,65%",1,1092,1000,,13/12,,
 27/02/2026,Sabesp,/DEB Sabesp,alias,DEB,12.431,AAA,"IBBA (Líder), XP, Santander, BTG, BBI e ABC",2a,10y (8/9/10),CDI,0.72,,"CDI + 0,72%",,CDI,0.72,,"CDI + 0,72%",0,20,1000,,5/5,,
-27/02/2026,,,,DEB,12.431,AA,"Santander (Líder), XP e BTG",unica,7y (5/6/7),NTN-B,1.2,9.1451,"B32 + 1,20% ou IPCA + 9,1451% (pendente fixing)",B32,NTN-B,1.2,B32,"B32 + 1,20% ou IPCA + 9,1451%",0,,,,13/13,,
+27/02/2026,FS,,alias~,DEB,12.431,AA,"Santander (Líder), XP e BTG",unica,7y (5/6/7),NTN-B,1.2,9.1451,"B32 + 1,20% ou IPCA + 9,1451% (pendente fixing)",B32,NTN-B,1.2,B32,"B32 + 1,20% ou IPCA + 9,1451%",0,,,,13/13,,
 27/02/2026,Sabesp,/DEB Sabesp,alias,DEB,12.431,AAA,"IBBA (Líder), XP, Santander, BTG, BBI e ABC",1a,10y Bullet,NTN-B,-0.7,6.5913,"IPCA + 6,5913% (B35 - 0,70%) Bids/Aloc: 28/28",B35,NTN-B,-0.98,B35,"B35 - 0,98% Des(-0,70%)",-28,1088,1636,,28/28,,
 27/02/2026,Sabesp,/DEB Sabesp,alias,DEB,12.431,AAA,"IBBA (Líder), XP, Santander, BTG, BBI e ABC",2a,12y Bullet,NTN-B,-0.6,6.6619,"IPCA + 6,6619% (B37 - 0,60%)",B37,NTN-B,-0.89,B37,"B37 - 0,89% Des(-0,60%)",-29,816,1365,,17/17,,
 27/02/2026,Sabesp,/DEB Sabesp,alias,DEB,12.431,AAA,"IBBA (Líder), XP, Santander, BTG, BBI e ABC",3a,15y (13/14/15),NTN-B,-0.45,6.6645,"IPCA + 6,6645% (B40 - 0,45%)",B40,NTN-B,-0.84,B40,"B40 - 0,84% Des(-0,45%)",-39,608,1292,,14/14,,
 27/02/2026,Sabesp,/DEB Sabesp,alias,DEB,12.431,AAA,"IBBA (Líder), XP, Santander, BTG, BBI e ABC",1a,7y Bullet,CDI,0.64,,"CDI + 0,64%",,CDI,0.65,,"CDI + 0,65%",1,1092,1000,,13/12,,
 27/02/2026,Sabesp,/DEB Sabesp,alias,DEB,12.431,AAA,"IBBA (Líder), XP, Santander, BTG, BBI e ABC",2a,10y (8/9/10),CDI,0.72,,"CDI + 0,72%",,CDI,0.72,,"CDI + 0,72%",0,30,1000,,6/6,,
-27/02/2026,,,,DEB,12.431,AA,"Santander (Líder), XP e BTG",unica,7y (5/6/7),NTN-B,1.5636,9.1451,"IPCA + 9,1451% (B32 + 1,5636%)",B32,NTN-B,1.2,B32,"B32 + 1,20% ou IPCA + 9,1451%",-36,,,,13/13,,
+27/02/2026,FS,,alias~,DEB,12.431,AA,"Santander (Líder), XP e BTG",unica,7y (5/6/7),NTN-B,1.5636,9.1451,"IPCA + 9,1451% (B32 + 1,5636%)",B32,NTN-B,1.2,B32,"B32 + 1,20% ou IPCA + 9,1451%",-36,,,,13/13,,
 03/03/2026,,Sec ER 2027,,DEB,CVM160,AAA,XP (Líder),unica,2y (Cash Sweep),,14.947,,"14,9470% (DI1N27 + 1,75%)",,,,,,,1285,1547,0.83,2/2,,
 04/03/2026,Compagas,,alias,DEB,12.431,AA,BTG (Líder),unica,15y (13/14/15),NTN-B,-0.3,6.93,"IPCA + 6,93% (B40 - 0,30%)",B40,NTN-B,-0.54,B40,"NTN-B40 - 0,54% ou IPCA + 6,89% Des(-0,30%)",-24,,,,,,
 05/03/2026,Energisa,"Energisa (EMT, EPB, ESE, ETO)",grupo,DEB,12.431,AAA,"BBI (Líder), XP, IBBA, Santander, Citi, ABC e Safra",1a,10y Bullet,NTN-B,-0.55,7.0408,"IPCA + 7,0408% (B35 - 0,55%)",B35,NTN-B,-0.9,B35,"B35 - 0,90% ou IPCA + 6,50% Des(-0,55%)",-35,30,747,,1/1,,
@@ -310,7 +310,7 @@ DataBook,Grupo,EmissorRaw,MatchVia,Instrumento,Regime,Rating,Coordenador,Serie,P
 07/04/2026,Socicam,,grupo,DEB,12.431,,XP (Líder),unica,15y Sem. (2y Car.),NTN-B,4,,"NTN-B 35 + 4,00% (pendente fixing)",B35,NTN-B,4,B35,"NTN-B 35 + 4,00% ou IPCA + 11,80%",0,,,,10/10,,
 07/04/2026,Socicam,,grupo,DEB,12.431,,XP (Líder),unica,15y Sem. (2y Car.),NTN-B,4,,"11,9017% (NTN-B 35 + 4,00%)",B35,NTN-B,4,B35,"NTN-B 35 + 4,00% ou IPCA + 11,80%",0,,,,10/10,,
 07/04/2026,Vibra,,grupo,DEB,12.431,AAA,"XP (Líder), BTG, BBI, Safra e UBS BB",unica,10y (6/7/8/9/10),NTN-B,-0.34,7.38,"IPCA + 7,38% (NTN-B 33 - 0,34%)",B33,NTN-B,-0.5,B33,"NTN-B 33 - 0,50% ou IPCA + 7,38%",-16,,,,,,
-13/04/2026,,,,DEB,12.431,,XP (Líder),unica,10y (8/9/10),NTN-B,-1.14,6.18,"IPCA + 6,18% (NTN-B 35 - 1,14%)",B35,NTN-B,-1.14,B35,"NTN-B 35 - 1,14%",0,,,,,,
+13/04/2026,Transportadora Brasileira Gasoduto Bolivia Brasil,,alias,DEB,12.431,,XP (Líder),unica,10y (8/9/10),NTN-B,-1.14,6.18,"IPCA + 6,18% (NTN-B 35 - 1,14%)",B35,NTN-B,-1.14,B35,"NTN-B 35 - 1,14%",0,,,,,,
 14/04/2026,Motiva,,alias~,DEB,12.431,AAA,XP (Líder) e BTG,unica,4y Full Bullet,NTN-B,-0.38,7.23,"IPCA + 7,23% (NTN-B 30 - 0,38%)",B30,NTN-B,-0.52,B30,"NTN-B 30 - 0,52% ou IPCA + 7,23%",-14,,,,,,
 22/04/2026,,,,DEB,12.431,AAA,BBI (Líder) e Santander,unica,24y Sem. (2y Car.),NTN-B,-0.1,7.015,"IPCA + 7,0150% (NTN-B 40 - 0,10%)",B40,NTN-B,-0.52,B40,"NTN-B 40 - 0,52% ou IPCA + 6,15% Des(-0,10%)",-42,,,,,,
 27/04/2026,Equatorial,,alias~,DEB,CVM160,AA,CEF (Líder),unica,6y (4/5/6),CDI,0.9,,"CDI + 0,90% – Sem informações sobre deságio",,CDI,0.9,,"CDI + 0,90% – Sem informações sobre deságio",0,,,,,,
@@ -327,7 +327,7 @@ DataBook,Grupo,EmissorRaw,MatchVia,Instrumento,Regime,Rating,Coordenador,Serie,P
 23/06/2026,Motiva,,alias~,DEB,CVM160,AAA,UBS BB (Líder) e BBI,unica,2y Bullet,CDI,0.4,,"CDI + 0,40%",,,,,,,,,,,,
 25/06/2026,Ambiental,,grupo,DEB,CVM160,AA,XP (Líder) e BTG,1a,2y Bullet,CDI,1.65,,"CDI + 1,65%",,CDI,1.5,,"CDI + 1,50% Des(1,65%)",-15,150,150,,6/6,,
 25/06/2026,Ambiental,,grupo,DEB,CVM160,AA,XP (Líder) e BTG,2a,5y (3/4/5),CDI,1.9,,"CDI + 1,90%",,CDI,1.7,,"CDI + 1,70% Des(1,90%)",-20,150,150,,5/5,,
-26/06/2026,,,,DEB,CVM160,AAA,IBBA (Líder) e Safra,unica,7y Anual (2y Car.),CDI,0.85,,"CDI + 0,85%",,,,,,,,,,,,
+26/06/2026,Serra do Facão,,alias~,DEB,CVM160,AAA,IBBA (Líder) e Safra,unica,7y Anual (2y Car.),CDI,0.85,,"CDI + 0,85%",,,,,,,,,,,,
 01/07/2026,Eletrobras,,alias,DEB,12.431,AAA,BTG (Líder) e XP,unica,10y (8/9/10),NTN-B,-0.2,8.0036,"IPCA + 8,0036% (B35 - 0,20%)",B35,NTN-B,0,B35,"B35 + 0,00% ou IPCA + 7,66%",20,1964,1000,,31/22,,
 06/07/2026,Vale,,grupo,DEB,12.431,AA,XP (Líder) e BBI,1a,7y (6/7),NTN-B,1,9.4122,"IPCA + 9,4122% (B32 + 1,00%)",B32,IPCA,9.3,,"NTN-B 2032 + 1,00% ou IPCA + 9,30%",,0,200,,,,
 06/07/2026,Vale,,grupo,DEB,12.431,AA,XP (Líder) e BBI,2a,10y (8/9/10),,,,,,IPCA,9.27,,"NTN-B 2035 + 1,20% ou IPCA + 9,27% <Mensagem editada>",,0,,,,,

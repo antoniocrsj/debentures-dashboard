@@ -123,6 +123,15 @@ const ALIAS = {
   'compagas': 'Compagas', 'sabesp': 'Sabesp', 'rodovia das colinas': 'Motiva',
   'econoroeste': 'EcoRodovias', 'ecovias capixaba': 'EcoRodovias',
   'way 112': 'Way Brasil', 'metrorio ': 'MetroRio',
+  // nomes de mercado -> Grupo do cadastro (emissores JA cadastrados cujo apelido
+  // no book nao bate textualmente com o Grupo/razao social):
+  'vtal': 'V.tal', 'essentia': 'Pátria', 'usina estiva': 'Usina SAO Jose da Estiva SA',
+  'axs': 'AXS Energia', 'btg commodities': 'BTG Pactual',
+  'tbg': 'Transportadora Brasileira Gasoduto Bolivia Brasil',
+  'fs etanol': 'FS', 'fs bio': 'FS',
+  // emissor que FALTA no cadastro (tem debenture SRFC11): lado do book pronto;
+  // o link no modal so' fecha quando o emissor entrar na planilha Cadastro_Emissores.
+  'serra do facao': 'Serra do Facão',
 }
 
 // limpa o titulo do book -> candidato a emissor (normalizado)
@@ -258,6 +267,8 @@ function extrairSerie(texto) {
 }
 
 // ---------- main ----------
+// Acha o export .txt: argumento explicito, senao o mais recente em tools/books/.
+// Retorna null se nao houver nenhum (o passo do atualizar-tudo passa "batido").
 function acharExport() {
   if (process.argv[2]) return process.argv[2]
   const dir = path.join(ROOT, 'tools', 'books')
@@ -265,11 +276,17 @@ function acharExport() {
     const txts = fs.readdirSync(dir).filter(f => f.toLowerCase().endsWith('.txt'))
     if (txts.length) return path.join(dir, txts.sort().reverse()[0])
   }
-  throw new Error('Informe o caminho do export: node tools/parsear-books.mjs <arquivo.txt> (ou coloque em tools/books/)')
+  return null
 }
 
 function main() {
   const arqTxt = acharExport()
+  if (!arqTxt) {
+    console.log('Sem export de books (nenhum .txt em tools/books/ e nenhum caminho informado).')
+    console.log('Coloque o export do grupo "CRM Books" em tools/books/ ou rode: node tools/parsear-books.mjs <arquivo.txt>')
+    console.log('Books_Primario.csv preservado (nada a fazer).')
+    return
+  }
   const txt = fs.readFileSync(arqTxt, 'utf8')
   const grp = carregarGrupos()
   const msgs = lerMensagens(txt)

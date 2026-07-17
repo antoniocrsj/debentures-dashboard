@@ -32,6 +32,7 @@ param(
   [switch]$SkipRelatorios,
   [switch]$SkipAgenda,
   [switch]$SkipIda,
+  [switch]$SkipBooks,
   [switch]$NoPublishPrompt,
   [ValidateSet('Auto', 'Incremental', 'Completa')]
   [string]$CaptacaoModo = 'Auto',
@@ -74,6 +75,7 @@ if (-not $SkipOfertas)    { $script:StepsAtivos.Add('Ofertas') }
 if (-not $SkipRelatorios) { $script:StepsAtivos.Add('Relatorios') }
 if (-not $SkipAgenda)     { $script:StepsAtivos.Add('Agenda') }
 if (-not $SkipIda)        { $script:StepsAtivos.Add('IDA') }
+if (-not $SkipBooks)      { $script:StepsAtivos.Add('Books (mercado primario)') }
 $script:StepsAtivos.Add('Resumo')
 $script:StepTotal = $script:StepsAtivos.Count
 $script:StepIndex = 0
@@ -698,6 +700,26 @@ if ($SkipIda) {
   } catch {
     $summary.IDA = "FALHOU sem travar: $($_.Exception.Message)"
     Warn $summary.IDA
+  }
+}
+
+# 5f. Books (mercado primario) - parser Node do export do grupo "CRM Books"
+# (WhatsApp). Best-effort e "passa batido" quando nao ha export novo: le o .txt
+# mais recente de tools\books\ e grava public\data\Books_Primario.csv (spread de
+# saida por serie, casado ao Grupo do emissor). Sem export, preserva o CSV atual.
+if ($SkipBooks) {
+  $summary.Books = 'PULADO por parametro -SkipBooks'
+  Warn $summary.Books
+} else {
+  Progress 'Books (mercado primario)'
+  try {
+    & node (Join-Path $PSScriptRoot 'parsear-books.mjs')
+    if ($LASTEXITCODE -ne 0) { throw "node saiu com codigo $LASTEXITCODE" }
+    $summary.Books = 'OK'
+    Ok "Books atualizados (ou preservados) em public\data\Books_Primario.csv."
+  } catch {
+    $summary.Books = "FALHOU sem travar: $($_.Exception.Message)"
+    Warn $summary.Books
   }
 }
 
