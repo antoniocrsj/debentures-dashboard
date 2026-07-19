@@ -1,0 +1,94 @@
+{
+  "reports": [
+    {
+      "id": "2026-W29",
+      "label": "Semana 29/2026 · Parcial até 15/07",
+      "de": "2026-07-13",
+      "ate": "2026-07-15",
+      "status": "partial",
+      "json": "/reports/weekly/2026-W29.json",
+      "html": "/reports/weekly/2026-W29.html",
+      "sourceDates": {
+        "cap12431": "2026-07-15",
+        "capTrad": "2026-07-15",
+        "anbima": "2026-07-16",
+        "fundos": "2026-07-15",
+        "blc": "2026-07-15",
+        "ida": "2026-07-16",
+        "perf12431": "2026-07-19"
+      }
+    },
+    {
+      "id": "2026-W28",
+      "label": "Semana 28/2026 · 06/07–10/07",
+      "de": "2026-07-06",
+      "ate": "2026-07-10",
+      "status": "closed",
+      "json": "/reports/weekly/2026-W28.json",
+      "html": "/reports/weekly/2026-W28.html",
+      "sourceDates": {
+        "cap12431": "2026-07-10",
+        "capTrad": "2026-07-10",
+        "anbima": "2026-07-10",
+        "fundos": "2026-07-10",
+        "blc": "2026-07-10",
+        "ida": "2026-07-10",
+        "perf12431": "2026-07-12"
+      }
+    },
+    {
+      "id": "2026-W27",
+      "label": "Semana 27/2026 · 29/06–03/07",
+      "de": "2026-06-29",
+      "ate": "2026-07-03",
+      "status": "closed",
+      "json": "/reports/weekly/2026-W27.json",
+      "html": "/reports/weekly/2026-W27.html",
+      "sourceDates": {
+        "cap12431": "2026-07-03",
+        "capTrad": "2026-07-03",
+        "anbima": "2026-07-03",
+        "fundos": "2026-07-03",
+        "blc": "2026-07-03",
+        "ida": "2026-07-03",
+        "perf12431": "2026-07-05"
+      }
+    },
+    {
+      "id": "2026-W26",
+      "label": "Semana 26/2026 · 22/06–26/06",
+      "de": "2026-06-22",
+      "ate": "2026-06-26",
+      "status": "closed",
+      "json": "/reports/weekly/2026-W26.json",
+      "html": "/reports/weekly/2026-W26.html",
+      "sourceDates": {
+        "cap12431": "2026-06-26",
+        "capTrad": "2026-06-26",
+        "anbima": null,
+        "fundos": null,
+        "blc": null,
+        "ida": "2026-06-26",
+        "perf12431": "2026-06-28"
+      }
+    },
+    {
+      "id": "2026-W25",
+      "label": "Semana 25/2026 · 15/06–19/06",
+      "de": "2026-06-15",
+      "ate": "2026-06-19",
+      "status": "closed",
+      "json": "/reports/weekly/2026-W25.json",
+      "html": "/reports/weekly/2026-W25.html",
+      "sourceDates": {
+        "cap12431": "2026-06-19",
+        "capTrad": "2026-06-19",
+        "anbima": null,
+        "fundos": null,
+        "blc": null,
+        "ida": "2026-06-19",
+        "perf12431": "2026-06-21"
+      }
+    }
+  ]
+}

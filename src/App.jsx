@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback, useEffect, Suspense } from 'react'
 import { useDebentures, BLC_DEFAULT_URL } from './hooks/useDebentures.js'
-import { useDailyReports } from './hooks/useDailyReports.js'
+import { usePeriodReports } from './hooks/usePeriodReports.js'
 import { useAgenda12m } from './hooks/useAgenda12m.js'
 import {
   buildIndexes, buildBlcIndex, buildAnbimaIndex, buildPlByGestor,
@@ -65,8 +65,7 @@ export default function App() {
   const [selectedAsset, setSelected]  = useState(null)
   const [showMonths, setShowMonths]   = useState(false)
   const [showResumo, setShowResumo]   = useState(false)
-  const [resumoDate, setResumoDate]   = useState('')
-  const { index: reportsIndex, report, loadingReport, loadReport } = useDailyReports()
+  const periodReports = usePeriodReports()
   const [showAll, setShowAll]         = useState(false)
   const [desktop, setDesktop]         = useState(() => {
     try { return localStorage.getItem('view-desktop') === '1' && window.innerWidth >= 700 } catch { return false }
@@ -304,12 +303,8 @@ export default function App() {
         onToggleView={toggleDesktop}
         section={section}
         onSection={selectSection}
-        hasResumo={!!reportsIndex}
-        onOpenResumo={() => {
-          const first = reportsIndex?.reports?.[0]?.date
-          if (first) { setResumoDate(first); loadReport(first) }
-          setShowResumo(true)
-        }}
+        hasResumo={periodReports.hasAny}
+        onOpenResumo={() => setShowResumo(true)}
       />
 
       {/* Filters + tabs scroll together as one sticky block */}
@@ -493,16 +488,9 @@ export default function App() {
         />
       )}
 
-      {showResumo && reportsIndex && (
+      {showResumo && periodReports.hasAny && (
         <Suspense fallback={null}>
-          <ResumoDoDiaModal
-            index={reportsIndex}
-            report={report}
-            loadingReport={loadingReport}
-            selectedDate={resumoDate}
-            onSelectDate={d => { setResumoDate(d); loadReport(d) }}
-            onClose={() => setShowResumo(false)}
-          />
+          <ResumoDoDiaModal {...periodReports} onClose={() => setShowResumo(false)} />
         </Suspense>
       )}
 

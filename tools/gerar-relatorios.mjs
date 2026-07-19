@@ -19,6 +19,7 @@ import {
   parseDia, fmtDia, diffKeyed, topMovers,
   pickReportDates, previousDate, sourceDateFor, summarize, repairText, stepBackTradingDays,
 } from '../src/utils/reports.js'
+import { pruneDir } from './relatorios/retencao.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.join(__dirname, '..')
@@ -879,11 +880,10 @@ function saveSnapshot(fonte, dataKey, srcFile) {
   ensureDir(dir)
   const dest = path.join(dir, `${dataKey}.csv`)
   if (!fs.existsSync(dest)) fs.copyFileSync(srcFile, dest)
-  // Poda: mantem os SNAP_KEEP mais recentes.
-  const files = fs.readdirSync(dir).filter(f => f.endsWith('.csv')).sort()
-  for (const f of files.slice(0, Math.max(0, files.length - SNAP_KEEP))) {
-    try { fs.unlinkSync(path.join(dir, f)) } catch { /* ignore */ }
-  }
+  // Poda ciente de fronteira: mantem SNAP_KEEP dias recentes (Resumo do Dia) E
+  // as datas de fronteira das semanas/meses recentes (Resumo da Semana/Mes),
+  // para que relatorios FECHADOS continuem reproduziveis.
+  pruneDir(dir, null, { recentes: SNAP_KEEP })
 }
 
 function snapshotSources(src) {
@@ -903,8 +903,7 @@ function snapshotSources(src) {
       const lcdi = fs.existsSync(path.join(TOOLS, 'Fundos_CDI.csv')) ? fs.readFileSync(path.join(TOOLS, 'Fundos_CDI.csv'), 'utf8') : ''
       fs.writeFileSync(dest, l12431 + (lcdi ? '\n' + lcdi.split('\n').slice(1).join('\n') : ''), 'utf8')
     }
-    const files = fs.readdirSync(dir).filter(f => f.endsWith('.csv')).sort()
-    for (const f of files.slice(0, Math.max(0, files.length - SNAP_KEEP))) { try { fs.unlinkSync(path.join(dir, f)) } catch { /* */ } }
+    pruneDir(dir, null, { recentes: SNAP_KEEP })
   }
 }
 

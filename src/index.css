@@ -1417,6 +1417,12 @@ a { color: var(--primary); }
   .modal-wide { max-width: min(960px, 94vw); max-height: 92dvh; }
   .modal-wide .modal-body { padding-left: 24px; padding-right: 24px; }
 }
+/* Central de relatórios: segmentado Dia/Semana/Mês + selo de status */
+.rd-modes { width: auto; margin: 10px 20px 0; }
+.rd-status { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; margin-left: 8px; vertical-align: middle; }
+.rd-status.closed { background: var(--pos-soft); color: var(--pos); }
+.rd-status.partial { background: #f6ead0; color: #8a6d1f; }
+.rd-ida { margin-top: 8px; border-top: 1px dashed var(--border); padding-top: 8px; }
 .rd-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 20px; border-bottom: 1px solid var(--primary-border); flex-wrap: wrap; }
 .rd-dates { display: flex; gap: 6px; flex-wrap: wrap; }
 .rd-date-chip { padding: 4px 10px; border-radius: 99px; border: 1px solid var(--navy-light); background: var(--chip-bg); color: var(--navy-light); font-size: 12px; cursor: pointer; }

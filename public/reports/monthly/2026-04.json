@@ -1,0 +1,822 @@
+{
+  "periodo": "monthly",
+  "id": "2026-04",
+  "label": "abr/2026",
+  "status": "closed",
+  "de": "2026-04-01",
+  "ate": "2026-04-30",
+  "sourceDates": {
+    "cap12431": "2026-04-30",
+    "capTrad": "2026-04-30",
+    "anbima": null,
+    "fundos": null,
+    "blc": null,
+    "ida": "2026-04-30",
+    "perf12431": null
+  },
+  "sections": {
+    "debentures": {
+      "novas": [
+        {
+          "ticker": "ADGE15",
+          "empresa": "ADMINISTRADORA GERAL DE ESTACIONAMENTOS S.A.",
+          "grupo": "Estapar",
+          "dataRegistro": "2026-04-24",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "AEDI12",
+          "empresa": "AEDIFICA OESTE SP SPE S.A.",
+          "grupo": "Aedifica",
+          "dataRegistro": "2026-04-17",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "ASCYA1",
+          "empresa": "ASCENTY DATA CENTERS E TELECOMUNICACOES S/A",
+          "grupo": "Ascenty",
+          "dataRegistro": "2026-04-27",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "ASCYA2",
+          "empresa": "ASCENTY DATA CENTERS E TELECOMUNICACOES S/A",
+          "grupo": "Ascenty",
+          "dataRegistro": "2026-04-27",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "BATA11",
+          "empresa": "BASA SANEAMENTO AMBIENTAL S.A.",
+          "grupo": "Basa",
+          "dataRegistro": "2026-04-24",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "BMOL13",
+          "empresa": "BEMOL S/A",
+          "grupo": "Bemol",
+          "dataRegistro": "2026-04-29",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "CEAPA0",
+          "empresa": "COMPANHIA DE ELETRICIDADE DO AMAPA - CEA",
+          "grupo": "Equatorial",
+          "dataRegistro": "2026-04-28",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "CEEDA1",
+          "empresa": "COMPANHIA ESTADUAL DE DISTRIBUICAO DE ENERGIA ELETRICA - CEEE D",
+          "grupo": "Equatorial",
+          "dataRegistro": "2026-04-29",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "CMGDA5",
+          "empresa": "CEMIG DISTRIBUICAO S/A",
+          "grupo": "Cemig",
+          "dataRegistro": "2026-04-09",
+          "indexador": "IPCA",
+          "incentivada": true
+        },
+        {
+          "ticker": "CNLM17",
+          "empresa": "CONCESSIONARIA DA LINHA 4 DO METRO DE SAO PAULO S/A",
+          "grupo": "Motiva",
+          "dataRegistro": "2026-04-15",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "EXSE13",
+          "empresa": "EXES SECURITIZADORA S.A.",
+          "grupo": "Exes Securitizadora",
+          "dataRegistro": "2026-04-02",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "GBIO12",
+          "empresa": "GBIO ENERGIA SA",
+          "grupo": "Gbio Energia",
+          "dataRegistro": "2026-04-24",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "GSEC12",
+          "empresa": "GRANDE SERTAO III TRANSMISSORA DE ENERGIA S.A.",
+          "grupo": "Grande Sertao III",
+          "dataRegistro": "2026-04-08",
+          "indexador": "IPCA",
+          "incentivada": true
+        },
+        {
+          "ticker": "GSEC22",
+          "empresa": "GRANDE SERTAO III TRANSMISSORA DE ENERGIA S.A.",
+          "grupo": "Grande Sertao III",
+          "dataRegistro": "2026-04-08",
+          "indexador": "IPCA",
+          "incentivada": true
+        },
+        {
+          "ticker": "GSEC32",
+          "empresa": "GRANDE SERTAO III TRANSMISSORA DE ENERGIA S.A.",
+          "grupo": "Grande Sertao III",
+          "dataRegistro": "2026-04-08",
+          "indexador": "IPCA",
+          "incentivada": true
+        },
+        {
+          "ticker": "IRBH11",
+          "empresa": "INFRAESTRUTURA BRASIL HOLDING XVIII S.A.",
+          "grupo": "Pátria",
+          "dataRegistro": "2026-04-28",
+          "indexador": "IPCA",
+          "incentivada": false
+        },
+        {
+          "ticker": "IRBH12",
+          "empresa": "INFRAESTRUTURA BRASIL HOLDING XVIII S.A.",
+          "grupo": "Pátria",
+          "dataRegistro": "2026-04-28",
+          "indexador": "IPCA",
+          "incentivada": false
+        },
+        {
+          "ticker": "ISAEB2",
+          "empresa": "ISA ENERGIA BRASIL S.A.",
+          "grupo": "ISA Energia",
+          "dataRegistro": "2026-04-01",
+          "indexador": "IPCA",
+          "incentivada": true
+        },
+        {
+          "ticker": "ISAEC2",
+          "empresa": "ISA ENERGIA BRASIL S.A.",
+          "grupo": "ISA Energia",
+          "dataRegistro": "2026-04-01",
+          "indexador": "IPCA",
+          "incentivada": true
+        },
+        {
+          "ticker": "KEDU13",
+          "empresa": "CAEDU COMERCIO VAREJISTA DE ARTIGO DO VESTUARIO S/A",
+          "grupo": "Caedu",
+          "dataRegistro": "2026-04-10",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "LINS13",
+          "empresa": "LINS AGROINDUSTRIAL S.A.",
+          "grupo": "Lins Agroindustrial",
+          "dataRegistro": "2026-04-28",
+          "indexador": "IPCA",
+          "incentivada": true
+        },
+        {
+          "ticker": "MNRVB1",
+          "empresa": "MINERVA S/A",
+          "grupo": "Minerva",
+          "dataRegistro": "2026-04-29",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "MNRVB2",
+          "empresa": "MINERVA S/A",
+          "grupo": "Minerva",
+          "dataRegistro": "2026-04-29",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "OBIO17",
+          "empresa": "OLEOPLAN S/A - OLEOS VEGETAIS PLANALTO",
+          "grupo": "Oleoplan",
+          "dataRegistro": "2026-04-28",
+          "indexador": "PRÉ",
+          "incentivada": true
+        },
+        {
+          "ticker": "PAPP11",
+          "empresa": "PARAIPABA PARTICIPACOES S.A.",
+          "grupo": "Paraipaba",
+          "dataRegistro": "2026-04-29",
+          "indexador": "IPCA",
+          "incentivada": false
+        },
+        {
+          "ticker": "PAPP21",
+          "empresa": "PARAIPABA PARTICIPACOES S.A.",
+          "grupo": "Paraipaba",
+          "dataRegistro": "2026-04-29",
+          "indexador": "IPCA",
+          "incentivada": false
+        },
+        {
+          "ticker": "PAR511",
+          "empresa": "PARQUE EOLICO JACOBINA 05 S.A.",
+          "grupo": "Parque Eolico Jacobina 05",
+          "dataRegistro": "2026-04-24",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "PCHSF3",
+          "empresa": "TRAVESSIA SECURITIZADORA DE CREDITOS FINANCEIROS S.A",
+          "grupo": "Travessia Securitizadora de Creditos Financeiros",
+          "dataRegistro": "2026-04-09",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "PCHSG3",
+          "empresa": "TRAVESSIA SECURITIZADORA DE CREDITOS FINANCEIROS S.A",
+          "grupo": "Travessia Securitizadora de Creditos Financeiros",
+          "dataRegistro": "2026-04-09",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "PCHSH3",
+          "empresa": "TRAVESSIA SECURITIZADORA DE CREDITOS FINANCEIROS S.A",
+          "grupo": "Travessia Securitizadora de Creditos Financeiros",
+          "dataRegistro": "2026-04-09",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "PCHSI3",
+          "empresa": "TRAVESSIA SECURITIZADORA DE CREDITOS FINANCEIROS S.A",
+          "grupo": "Travessia Securitizadora de Creditos Financeiros",
+          "dataRegistro": "2026-04-09",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "PCHSJ3",
+          "empresa": "TRAVESSIA SECURITIZADORA DE CREDITOS FINANCEIROS S.A",
+          "grupo": "Travessia Securitizadora de Creditos Financeiros",
+          "dataRegistro": "2026-04-09",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "PCHSL3",
+          "empresa": "TRAVESSIA SECURITIZADORA DE CREDITOS FINANCEIROS S.A",
+          "grupo": "Travessia Securitizadora de Creditos Financeiros",
+          "dataRegistro": "2026-04-09",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "PCHSM3",
+          "empresa": "TRAVESSIA SECURITIZADORA DE CREDITOS FINANCEIROS S.A",
+          "grupo": "Travessia Securitizadora de Creditos Financeiros",
+          "dataRegistro": "2026-04-09",
+          "indexador": "SEM-ÍNDICE",
+          "incentivada": false
+        },
+        {
+          "ticker": "PLAE13",
+          "empresa": "PLAENGE PARTICIPACOES S/A",
+          "grupo": "Plaenge",
+          "dataRegistro": "2026-04-22",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "PRAN13",
+          "empresa": "PRANA SECURITIZADORA S/A",
+          "grupo": "Prana Securitizadora",
+          "dataRegistro": "2026-04-09",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "PRAN23",
+          "empresa": "PRANA SECURITIZADORA S/A",
+          "grupo": "Prana Securitizadora",
+          "dataRegistro": "2026-04-09",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "PRNR13",
+          "empresa": "PRINER SERVICOS INDUSTRIAIS S.A.",
+          "grupo": "Priner",
+          "dataRegistro": "2026-04-16",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "RBRAD6",
+          "empresa": "OPEA SECURITIZADORA S/A",
+          "grupo": "Opea Securitizadora",
+          "dataRegistro": "2026-04-20",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "RBRAE5",
+          "empresa": "OPEA SECURITIZADORA S/A",
+          "grupo": "Opea Securitizadora",
+          "dataRegistro": "2026-04-29",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "RED711",
+          "empresa": "REDE 7 S.A.",
+          "grupo": "Rede 7",
+          "dataRegistro": "2026-04-01",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "RGCI19",
+          "empresa": "ROGGA S.A. CONSTRUTORA E INCORPORADORA",
+          "grupo": "Rogga S.a. Construtora e Incorporadora",
+          "dataRegistro": "2026-04-07",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "RIAE11",
+          "empresa": "RIALMA ENERGIA SPE S.A",
+          "grupo": "Rialma",
+          "dataRegistro": "2026-04-24",
+          "indexador": "IPCA",
+          "incentivada": true
+        },
+        {
+          "ticker": "RIAE21",
+          "empresa": "RIALMA ENERGIA SPE S.A",
+          "grupo": "Rialma",
+          "dataRegistro": "2026-04-24",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "RNPU11",
+          "empresa": "RESERVA NOVOS PARQUES URBANOS S.A.",
+          "grupo": "Reserva Novos Parques Urbanos",
+          "dataRegistro": "2026-04-09",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "SBFC15",
+          "empresa": "SBF COMERCIO DE PRODUTOS ESPORTIVOS S.A.",
+          "grupo": "Grupo SBF",
+          "dataRegistro": "2026-04-24",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "SOCS11",
+          "empresa": "SOCICAM ADMINISTRACAO PROJETOS E REPRESENTACOES S.A.",
+          "grupo": "Socicam",
+          "dataRegistro": "2026-04-08",
+          "indexador": "IPCA",
+          "incentivada": true
+        },
+        {
+          "ticker": "SUZBA2",
+          "empresa": "SUZANO S.A.",
+          "grupo": "Suzano",
+          "dataRegistro": "2026-04-01",
+          "indexador": "IPCA",
+          "incentivada": true
+        },
+        {
+          "ticker": "TBGB11",
+          "empresa": "TRANSPORTADORA BRASILEIRA GASODUTO BOLIVIA BRASIL",
+          "grupo": "Transportadora Brasileira Gasoduto Bolivia Brasil",
+          "dataRegistro": "2026-04-14",
+          "indexador": "IPCA",
+          "incentivada": true
+        },
+        {
+          "ticker": "TSSAG6",
+          "empresa": "TRAVESSIA SECURITIZADORA S.A.",
+          "grupo": "Travessia Securitizadora",
+          "dataRegistro": "2026-04-30",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "VBBRA0",
+          "empresa": "VIBRA ENERGIA S.A",
+          "grupo": "Vibra",
+          "dataRegistro": "2026-04-08",
+          "indexador": "IPCA",
+          "incentivada": true
+        },
+        {
+          "ticker": "VERTD0",
+          "empresa": "VERT COMPANHIA  SECURITIZADORA",
+          "grupo": "Vert Companhia Securitizadora",
+          "dataRegistro": "2026-04-16",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "VIALA5",
+          "empresa": "RODOVIAS INTEGRADAS DO OESTE S/A",
+          "grupo": "Motiva",
+          "dataRegistro": "2026-04-16",
+          "indexador": "IPCA",
+          "incentivada": true
+        },
+        {
+          "ticker": "VRDT12",
+          "empresa": "VERDE TRANSMISSAO DE ENERGIA SA",
+          "grupo": "Verde",
+          "dataRegistro": "2026-04-29",
+          "indexador": "IPCA",
+          "incentivada": true
+        },
+        {
+          "ticker": "VSFE11",
+          "empresa": "SPAR I SUBHOLDING S.A.",
+          "grupo": "Spar I Subholding",
+          "dataRegistro": "2026-04-23",
+          "indexador": "IPCA",
+          "incentivada": true
+        }
+      ]
+    },
+    "captacao": {
+      "12431": {
+        "captacao": 6543539931.08,
+        "resgate": 14749852648.549995,
+        "liquido": -8206312717.4699955,
+        "pl": 287033761664.94995,
+        "numFundos": 1661,
+        "dataPl": "2026-04-30",
+        "de": "2026-04-01",
+        "ate": "2026-04-30",
+        "diasUteis": 20,
+        "anterior": {
+          "liquido": 2463112172.9400043,
+          "captacao": 12569244732.490004,
+          "resgate": 10106132559.55,
+          "de": "2026-03-02",
+          "ate": "2026-03-31"
+        }
+      },
+      "trad": {
+        "captacao": 31004014029.92007,
+        "resgate": 58620858912.78998,
+        "liquido": -27616844882.869907,
+        "pl": 1077883258906.0706,
+        "numFundos": 831,
+        "dataPl": "2026-04-30",
+        "de": "2026-04-01",
+        "ate": "2026-04-30",
+        "diasUteis": 20,
+        "anterior": {
+          "liquido": -17199764367.50004,
+          "captacao": 39166642101.409996,
+          "resgate": 56366406468.910034,
+          "de": "2026-03-02",
+          "ate": "2026-03-31"
+        }
+      }
+    },
+    "gestores": {
+      "top12431Captacao": [
+        {
+          "gestor": "BRAM",
+          "captacao": 1196510500.7199998,
+          "resgate": 446913842.36,
+          "liquido": 749596658.3599998,
+          "pl": 30754868250.53,
+          "dias": 20
+        },
+        {
+          "gestor": "Altera",
+          "captacao": 206680000,
+          "resgate": 9900000,
+          "liquido": 196780000,
+          "pl": 284949198.1,
+          "dias": 20
+        },
+        {
+          "gestor": "Sparta",
+          "captacao": 293384877.90999997,
+          "resgate": 214850121.43999997,
+          "liquido": 78534756.47,
+          "pl": 10306590123.95,
+          "dias": 20
+        },
+        {
+          "gestor": "BV Asset",
+          "captacao": 137198259.95,
+          "resgate": 76174655.37,
+          "liquido": 61023604.57999998,
+          "pl": 101828509.73,
+          "dias": 20
+        },
+        {
+          "gestor": "Nu Asset",
+          "captacao": 46242308.06,
+          "resgate": 0,
+          "liquido": 46242308.06,
+          "pl": 107434555.21,
+          "dias": 20
+        }
+      ],
+      "top12431Resgate": [
+        {
+          "gestor": "Safra Asset",
+          "captacao": 137599268.73,
+          "resgate": 1828528265.66,
+          "liquido": -1690928996.93,
+          "pl": 15563335525.24,
+          "dias": 20
+        },
+        {
+          "gestor": "IAM",
+          "captacao": 831553524.34,
+          "resgate": 2336720296.5199995,
+          "liquido": -1505166772.1799994,
+          "pl": 58861374478.95,
+          "dias": 20
+        },
+        {
+          "gestor": "Ibuina",
+          "captacao": 27180080.200000003,
+          "resgate": 1148446669.6899998,
+          "liquido": -1121266589.4899998,
+          "pl": 1260442403.2,
+          "dias": 20
+        },
+        {
+          "gestor": "Absolute",
+          "captacao": 428624353.07,
+          "resgate": 1250963662.63,
+          "liquido": -822339309.5600002,
+          "pl": 13571379160.04,
+          "dias": 20
+        },
+        {
+          "gestor": "BTG Asset",
+          "captacao": 241233286.21,
+          "resgate": 956447374.5199997,
+          "liquido": -715214088.3099997,
+          "pl": 8365807508.21,
+          "dias": 20
+        }
+      ],
+      "topTradCaptacao": [
+        {
+          "gestor": "Asset 1",
+          "captacao": 811514000,
+          "resgate": 19330000,
+          "liquido": 792184000,
+          "pl": 2273340822.82,
+          "dias": 20
+        },
+        {
+          "gestor": "Safra Asset",
+          "captacao": 1949792376.5799997,
+          "resgate": 1702368035.92,
+          "liquido": 247424340.6599996,
+          "pl": 52035970460.07,
+          "dias": 20
+        },
+        {
+          "gestor": "M8",
+          "captacao": 157167860.56,
+          "resgate": 26153633.72,
+          "liquido": 131014226.84,
+          "pl": 1848363236.56,
+          "dias": 20
+        },
+        {
+          "gestor": "Capitânia",
+          "captacao": 306789810.17,
+          "resgate": 203156488.59,
+          "liquido": 103633321.58000001,
+          "pl": 3853265110.72,
+          "dias": 20
+        },
+        {
+          "gestor": "Regia",
+          "captacao": 309463712.17,
+          "resgate": 227217524.17,
+          "liquido": 82246188.00000003,
+          "pl": 12727445555.85,
+          "dias": 20
+        }
+      ],
+      "topTradResgate": [
+        {
+          "gestor": "BB Asset",
+          "captacao": 11076645601.359999,
+          "resgate": 18302587408.91,
+          "liquido": -7225941807.550001,
+          "pl": 212434656890.59,
+          "dias": 20
+        },
+        {
+          "gestor": "IAM",
+          "captacao": 3524966640.1600003,
+          "resgate": 9714820688.93,
+          "liquido": -6189854048.77,
+          "pl": 218089537979.55,
+          "dias": 20
+        },
+        {
+          "gestor": "BRAM",
+          "captacao": 1892471940.65,
+          "resgate": 4403217491.749999,
+          "liquido": -2510745551.099999,
+          "pl": 97650894044.36,
+          "dias": 20
+        },
+        {
+          "gestor": "Kinea",
+          "captacao": 1446701308.01,
+          "resgate": 3252889288.0800004,
+          "liquido": -1806187980.0700004,
+          "pl": 58021754197.21,
+          "dias": 20
+        },
+        {
+          "gestor": "AZ Quest",
+          "captacao": 188378369.82000002,
+          "resgate": 1980312098.1899998,
+          "liquido": -1791933728.37,
+          "pl": 21905953397.22,
+          "dias": 20
+        }
+      ]
+    },
+    "anbima": {
+      "semAnterior": true,
+      "porMercado": null,
+      "totalComparados": 0,
+      "dataIni": null,
+      "dataFim": null
+    },
+    "ida": {
+      "12431": {
+        "indice": "IDA-IPCA Infraestrutura",
+        "retornoPct": -0.6215,
+        "dataIni": "2026-03-31",
+        "dataFim": "2026-04-30",
+        "spreadIniBps": null,
+        "spreadFimBps": null,
+        "variacaoBps": null,
+        "spreadConfiavel": false
+      },
+      "trad": {
+        "indice": "IDA-DI",
+        "retornoPct": 1.2317,
+        "dataIni": "2026-03-31",
+        "dataFim": "2026-04-30",
+        "spreadIniBps": 124,
+        "spreadFimBps": 123,
+        "variacaoBps": -1,
+        "spreadConfiavel": true
+      }
+    },
+    "fundos": {
+      "semAnterior": true,
+      "novos": [],
+      "removidos": []
+    },
+    "perf": {
+      "top12431Pos": [],
+      "top12431Neg": [],
+      "topTradPos": [],
+      "topTradNeg": []
+    },
+    "inclusoes": {
+      "novosDebentures": [
+        "ADGE15",
+        "AEDI12",
+        "ASCYA1",
+        "ASCYA2",
+        "BATA11",
+        "BMOL13",
+        "CEAPA0",
+        "CEEDA1",
+        "CMGDA5",
+        "CNLM17",
+        "EXSE13",
+        "GBIO12",
+        "GSEC12",
+        "GSEC22",
+        "GSEC32",
+        "IRBH11",
+        "IRBH12",
+        "ISAEB2",
+        "ISAEC2",
+        "KEDU13",
+        "LINS13",
+        "MNRVB1",
+        "MNRVB2",
+        "OBIO17",
+        "PAPP11",
+        "PAPP21",
+        "PAR511",
+        "PCHSF3",
+        "PCHSG3",
+        "PCHSH3",
+        "PCHSI3",
+        "PCHSJ3",
+        "PCHSL3",
+        "PCHSM3",
+        "PLAE13",
+        "PRAN13",
+        "PRAN23",
+        "PRNR13",
+        "RBRAD6",
+        "RBRAE5",
+        "RED711",
+        "RGCI19",
+        "RIAE11",
+        "RIAE21",
+        "RNPU11",
+        "SBFC15",
+        "SOCS11",
+        "SUZBA2",
+        "TBGB11",
+        "TSSAG6",
+        "VBBRA0",
+        "VERTD0",
+        "VIALA5",
+        "VRDT12",
+        "VSFE11"
+      ],
+      "novosBlc": [],
+      "saiuBlc": [],
+      "semAnterior": true
+    },
+    "alertas": [
+      {
+        "tipo": "anbima-sem-fronteira",
+        "texto": "Sem snapshot ANBIMA na fronteira do período — variação por ativo indisponível; use a direção agregada (IDA)."
+      },
+      {
+        "tipo": "fundos-sem-fronteira",
+        "texto": "Sem snapshot de fundos na fronteira — inclusões/exclusões indisponíveis neste período."
+      }
+    ],
+    "perfCobertura": {
+      "12431": {
+        "diasUteis": 0,
+        "excluidos": {
+          "insuficiente": 0,
+          "glitch": 0
+        },
+        "avaliados": 0,
+        "minCobertura": 0.6
+      },
+      "trad": {
+        "diasUteis": 0,
+        "excluidos": {
+          "insuficiente": 0,
+          "glitch": 0
+        },
+        "avaliados": 0,
+        "minCobertura": 0.6
+      }
+    }
+  },
+  "summary": [
+    {
+      "texto": "Captação líquida 12.431 no mês: −R$ 8,2 bi (capt. R$ 6,5 bi − resg. R$ 14,7 bi, 20 dia(s) útil(eis)).",
+      "tom": "neg"
+    },
+    {
+      "texto": "Captação líquida Tradicional no mês: −R$ 27,6 bi (capt. R$ 31 bi − resg. R$ 58,6 bi, 20 dia(s) útil(eis)).",
+      "tom": "neg"
+    },
+    {
+      "texto": "IDA-IPCA Infraestrutura rendeu -0,62% no mês."
+    },
+    {
+      "texto": "IDA-DI rendeu +1,23% no mês, spread fechou 1 bps."
+    },
+    {
+      "texto": "55 nova(s) debênture(s) registrada(s) no mês."
+    }
+  ]
+}

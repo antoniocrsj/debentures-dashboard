@@ -663,6 +663,18 @@ if ($SkipRelatorios) {
     $summary.Relatorios = "FALHOU sem travar: $($_.Exception.Message)"
     Warn "$($summary.Relatorios) (Node instalado? 'node -v')"
   }
+  # Resumo da SEMANA e do MES: agrega as series diarias completas + os snapshots
+  # de fronteira que o passo anterior acabou de salvar. Best-effort e' ISOLADO do
+  # Resumo do Dia: uma falha aqui NAO invalida os relatorios diarios ja gerados.
+  try {
+    & node (Join-Path $PSScriptRoot 'gerar-periodos.mjs')
+    if ($LASTEXITCODE -ne 0) { throw "node saiu com codigo $LASTEXITCODE" }
+    $summary.Periodos = 'OK'
+    Ok "Resumos de semana/mes gerados em public\reports\weekly\ e monthly\."
+  } catch {
+    $summary.Periodos = "FALHOU sem travar: $($_.Exception.Message)"
+    Warn "$($summary.Periodos) (o Resumo do Dia nao foi afetado)"
+  }
 }
 
 # 5d. Vencimentos 12m (juros + amortizacao) - gerador Node RAPIDO, best-effort.

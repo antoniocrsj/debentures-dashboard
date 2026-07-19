@@ -1,0 +1,94 @@
+{
+  "reports": [
+    {
+      "id": "2026-07",
+      "label": "jul/2026 · Parcial até 15/07",
+      "de": "2026-07-01",
+      "ate": "2026-07-15",
+      "status": "partial",
+      "json": "/reports/monthly/2026-07.json",
+      "html": "/reports/monthly/2026-07.html",
+      "sourceDates": {
+        "cap12431": "2026-07-15",
+        "capTrad": "2026-07-15",
+        "anbima": "2026-07-16",
+        "fundos": "2026-07-15",
+        "blc": "2026-07-15",
+        "ida": "2026-07-16",
+        "perf12431": "2026-07-31"
+      }
+    },
+    {
+      "id": "2026-06",
+      "label": "jun/2026",
+      "de": "2026-06-01",
+      "ate": "2026-06-30",
+      "status": "closed",
+      "json": "/reports/monthly/2026-06.json",
+      "html": "/reports/monthly/2026-06.html",
+      "sourceDates": {
+        "cap12431": "2026-06-30",
+        "capTrad": "2026-06-30",
+        "anbima": null,
+        "fundos": null,
+        "blc": null,
+        "ida": "2026-06-30",
+        "perf12431": "2026-06-30"
+      }
+    },
+    {
+      "id": "2026-05",
+      "label": "mai/2026",
+      "de": "2026-05-01",
+      "ate": "2026-05-29",
+      "status": "closed",
+      "json": "/reports/monthly/2026-05.json",
+      "html": "/reports/monthly/2026-05.html",
+      "sourceDates": {
+        "cap12431": "2026-05-29",
+        "capTrad": "2026-05-29",
+        "anbima": null,
+        "fundos": null,
+        "blc": null,
+        "ida": "2026-05-29",
+        "perf12431": null
+      }
+    },
+    {
+      "id": "2026-04",
+      "label": "abr/2026",
+      "de": "2026-04-01",
+      "ate": "2026-04-30",
+      "status": "closed",
+      "json": "/reports/monthly/2026-04.json",
+      "html": "/reports/monthly/2026-04.html",
+      "sourceDates": {
+        "cap12431": "2026-04-30",
+        "capTrad": "2026-04-30",
+        "anbima": null,
+        "fundos": null,
+        "blc": null,
+        "ida": "2026-04-30",
+        "perf12431": null
+      }
+    },
+    {
+      "id": "2026-03",
+      "label": "mar/2026",
+      "de": "2026-03-01",
+      "ate": "2026-03-31",
+      "status": "closed",
+      "json": "/reports/monthly/2026-03.json",
+      "html": "/reports/monthly/2026-03.html",
+      "sourceDates": {
+        "cap12431": "2026-03-31",
+        "capTrad": "2026-03-31",
+        "anbima": null,
+        "fundos": null,
+        "blc": null,
+        "ida": "2026-03-31",
+        "perf12431": null
+      }
+    }
+  ]
+}

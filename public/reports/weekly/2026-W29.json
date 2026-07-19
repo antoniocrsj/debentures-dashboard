@@ -1,0 +1,1015 @@
+{
+  "periodo": "weekly",
+  "id": "2026-W29",
+  "label": "Semana 29/2026 · Parcial até 15/07",
+  "status": "partial",
+  "de": "2026-07-13",
+  "ate": "2026-07-15",
+  "sourceDates": {
+    "cap12431": "2026-07-15",
+    "capTrad": "2026-07-15",
+    "anbima": "2026-07-16",
+    "fundos": "2026-07-15",
+    "blc": "2026-07-15",
+    "ida": "2026-07-16",
+    "perf12431": "2026-07-19"
+  },
+  "sections": {
+    "debentures": {
+      "novas": [
+        {
+          "ticker": "APLE11",
+          "empresa": "APPLE PARTICIPACOES S.A.",
+          "grupo": "Apple Participações",
+          "dataRegistro": "2026-07-13",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "AXIAA0",
+          "empresa": "AXIA ENERGIA S.A.",
+          "grupo": "Axia",
+          "dataRegistro": "2026-07-15",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "AXIAB0",
+          "empresa": "AXIA ENERGIA S.A.",
+          "grupo": "Axia",
+          "dataRegistro": "2026-07-15",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "BESA12",
+          "empresa": "BAESA-ENERGETICA BARRA GRANDE S/A",
+          "grupo": "BAESA",
+          "dataRegistro": "2026-07-13",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "ISAEB3",
+          "empresa": "ISA ENERGIA BRASIL S.A.",
+          "grupo": "ISA Energia",
+          "dataRegistro": "2026-07-14",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "RBRAL2",
+          "empresa": "OPEA SECURITIZADORA S/A",
+          "grupo": "Opea Securitizadora",
+          "dataRegistro": "2026-07-15",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "TFLEE1",
+          "empresa": "LOCALIZA FLEET S/A",
+          "grupo": "Localiza",
+          "dataRegistro": "2026-07-15",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
+          "ticker": "VERTB6",
+          "empresa": "VERT COMPANHIA  SECURITIZADORA",
+          "grupo": "Vert Companhia Securitizadora",
+          "dataRegistro": "2026-07-13",
+          "indexador": "PRÉ",
+          "incentivada": false
+        }
+      ]
+    },
+    "captacao": {
+      "12431": {
+        "captacao": 653754098.7700001,
+        "resgate": 1275656598.2899997,
+        "liquido": -621902499.5199996,
+        "pl": 248358584980.87006,
+        "numFundos": 1558,
+        "dataPl": "2026-07-15",
+        "de": "2026-07-13",
+        "ate": "2026-07-15",
+        "diasUteis": 3,
+        "anterior": {
+          "liquido": -1161171107.5699997,
+          "captacao": 593759809.1500003,
+          "resgate": 1754930916.72,
+          "de": "2026-07-06",
+          "ate": "2026-07-10"
+        }
+      },
+      "trad": {
+        "captacao": 4807823528.160004,
+        "resgate": 4621075176.780003,
+        "liquido": 186748351.38000107,
+        "pl": 1067775380895.0095,
+        "numFundos": 798,
+        "dataPl": "2026-07-15",
+        "de": "2026-07-13",
+        "ate": "2026-07-15",
+        "diasUteis": 3,
+        "anterior": {
+          "liquido": -988313539.4199982,
+          "captacao": 7422314868.899997,
+          "resgate": 8410628408.319995,
+          "de": "2026-07-06",
+          "ate": "2026-07-10"
+        }
+      }
+    },
+    "gestores": {
+      "top12431Captacao": [
+        {
+          "gestor": "Journey",
+          "captacao": 158136707.96,
+          "resgate": 233875.04,
+          "liquido": 157902832.92000002,
+          "pl": 281232457.87,
+          "dias": 3
+        },
+        {
+          "gestor": "JGP",
+          "captacao": 35112582.900000006,
+          "resgate": 16030077.62,
+          "liquido": 19082505.28000001,
+          "pl": 3783968146,
+          "dias": 3
+        },
+        {
+          "gestor": "Icatu",
+          "captacao": 38129089,
+          "resgate": 26091111.939999998,
+          "liquido": 12037977.060000002,
+          "pl": 4998230615.08,
+          "dias": 3
+        },
+        {
+          "gestor": "Bocaina",
+          "captacao": 8937091.02,
+          "resgate": 1110000,
+          "liquido": 7827091.02,
+          "pl": 1079153904.93,
+          "dias": 3
+        },
+        {
+          "gestor": "BRAM",
+          "captacao": 154150333.44,
+          "resgate": 148849111.70999998,
+          "liquido": 5301221.730000019,
+          "pl": 28974749387.22,
+          "dias": 3
+        }
+      ],
+      "top12431Resgate": [
+        {
+          "gestor": "Safra Asset",
+          "captacao": 4299245.38,
+          "resgate": 231654731.01999998,
+          "liquido": -227355485.64,
+          "pl": 8220546119.57,
+          "dias": 3
+        },
+        {
+          "gestor": "IAM",
+          "captacao": 82367446.03,
+          "resgate": 153764417.01999998,
+          "liquido": -71396970.98999998,
+          "pl": 55532748759.2,
+          "dias": 3
+        },
+        {
+          "gestor": "Kinea",
+          "captacao": 912600,
+          "resgate": 62379341.38999999,
+          "liquido": -61466741.38999999,
+          "pl": 14603335485.34,
+          "dias": 3
+        },
+        {
+          "gestor": "Absolute",
+          "captacao": 10130987.11,
+          "resgate": 65943911.78,
+          "liquido": -55812924.67,
+          "pl": 11226253045.34,
+          "dias": 3
+        },
+        {
+          "gestor": "SAM",
+          "captacao": 5672028.5,
+          "resgate": 56831800,
+          "liquido": -51159771.5,
+          "pl": 10470998304.36,
+          "dias": 3
+        }
+      ],
+      "topTradCaptacao": [
+        {
+          "gestor": "BB Asset",
+          "captacao": 2046818384.35,
+          "resgate": 1415367093.35,
+          "liquido": 631451291,
+          "pl": 212353259701.79,
+          "dias": 3
+        },
+        {
+          "gestor": "BRAM",
+          "captacao": 446866061.76,
+          "resgate": 305754257.53,
+          "liquido": 141111804.23000002,
+          "pl": 101102697566.38,
+          "dias": 3
+        },
+        {
+          "gestor": "Regia",
+          "captacao": 132666853.57,
+          "resgate": 30674424.36,
+          "liquido": 101992429.21,
+          "pl": 17235517267.72,
+          "dias": 3
+        },
+        {
+          "gestor": "BTG Asset",
+          "captacao": 141199729.96,
+          "resgate": 49581729.37,
+          "liquido": 91618000.59,
+          "pl": 25074713257.94,
+          "dias": 3
+        },
+        {
+          "gestor": "UBS",
+          "captacao": 194178106.74,
+          "resgate": 132336879.61999999,
+          "liquido": 61841227.12000002,
+          "pl": 7415057861.49,
+          "dias": 3
+        }
+      ],
+      "topTradResgate": [
+        {
+          "gestor": "IAM",
+          "captacao": 344585047.83,
+          "resgate": 558263142.3599999,
+          "liquido": -213678094.5299999,
+          "pl": 204275266750.52,
+          "dias": 3
+        },
+        {
+          "gestor": "XPG",
+          "captacao": 15310686.32,
+          "resgate": 159917729.93,
+          "liquido": -144607043.61,
+          "pl": 14815790171.19,
+          "dias": 3
+        },
+        {
+          "gestor": "AZ Quest",
+          "captacao": 15098545.84,
+          "resgate": 130150520.42000002,
+          "liquido": -115051974.58000001,
+          "pl": 19791694764.97,
+          "dias": 3
+        },
+        {
+          "gestor": "Absolute",
+          "captacao": 21987743.990000002,
+          "resgate": 135685876.99,
+          "liquido": -113698133,
+          "pl": 17955255709.6,
+          "dias": 3
+        },
+        {
+          "gestor": "ARX",
+          "captacao": 18129810.27,
+          "resgate": 80147919.71000001,
+          "liquido": -62018109.44000001,
+          "pl": 21202581283.68,
+          "dias": 3
+        }
+      ]
+    },
+    "anbima": {
+      "semAnterior": false,
+      "porMercado": {
+        "12431": {
+          "aberturas": [
+            {
+              "ticker": "MVLV26",
+              "emissor": "MOVIDA PARTICIPACOES S/A",
+              "grupo": "Simpar",
+              "indexadorFamilia": "IPCA/NTN-B",
+              "spreadAnteriorBps": 515,
+              "spreadAtualBps": 550,
+              "variacaoBps": 35,
+              "spreadAtual": "550 bps",
+              "durationAnos": 1.8
+            },
+            {
+              "ticker": "VAMO33",
+              "emissor": "VAMOS LOCACAO DE CAMINHOES MAQUINAS E EQUIPAMENTOS S.A.",
+              "grupo": "Simpar",
+              "indexadorFamilia": "IPCA/NTN-B",
+              "spreadAnteriorBps": 523,
+              "spreadAtualBps": 551,
+              "variacaoBps": 28,
+              "spreadAtual": "551 bps",
+              "durationAnos": 3.37
+            },
+            {
+              "ticker": "CMIN11",
+              "emissor": "CSN MINERACAO S.A.",
+              "grupo": "CSN",
+              "indexadorFamilia": "IPCA/NTN-B",
+              "spreadAnteriorBps": 644,
+              "spreadAtualBps": 666,
+              "variacaoBps": 22,
+              "spreadAtual": "666 bps",
+              "durationAnos": 4.32
+            },
+            {
+              "ticker": "MOVI37",
+              "emissor": "MOVIDA PARTICIPACOES S/A",
+              "grupo": "Simpar",
+              "indexadorFamilia": "IPCA/NTN-B",
+              "spreadAnteriorBps": 514,
+              "spreadAtualBps": 536,
+              "variacaoBps": 22,
+              "spreadAtual": "536 bps",
+              "durationAnos": 3.42
+            },
+            {
+              "ticker": "CMIN22",
+              "emissor": "CSN MINERACAO S.A.",
+              "grupo": "CSN",
+              "indexadorFamilia": "IPCA/NTN-B",
+              "spreadAnteriorBps": 637,
+              "spreadAtualBps": 657,
+              "variacaoBps": 20,
+              "spreadAtual": "657 bps",
+              "durationAnos": 6.45
+            }
+          ],
+          "fechamentos": [
+            {
+              "ticker": "CSNAA4",
+              "emissor": "COMPANHIA SIDERURGICA NACIONAL",
+              "grupo": "CSN",
+              "indexadorFamilia": "IPCA/NTN-B",
+              "spreadAnteriorBps": 1943,
+              "spreadAtualBps": 1858,
+              "variacaoBps": -85,
+              "spreadAtual": "1858 bps",
+              "durationAnos": 3.36
+            },
+            {
+              "ticker": "CSNAA5",
+              "emissor": "COMPANHIA SIDERURGICA NACIONAL",
+              "grupo": "CSN",
+              "indexadorFamilia": "IPCA/NTN-B",
+              "spreadAnteriorBps": 1172,
+              "spreadAtualBps": 1123,
+              "variacaoBps": -49,
+              "spreadAtual": "1123 bps",
+              "durationAnos": 4.78
+            },
+            {
+              "ticker": "CSNAC4",
+              "emissor": "COMPANHIA SIDERURGICA NACIONAL",
+              "grupo": "CSN",
+              "indexadorFamilia": "IPCA/NTN-B",
+              "spreadAnteriorBps": 987,
+              "spreadAtualBps": 945,
+              "variacaoBps": -42,
+              "spreadAtual": "945 bps",
+              "durationAnos": 6.33
+            },
+            {
+              "ticker": "USAS11",
+              "emissor": "USINA SANTA ADELIA S.A.",
+              "grupo": "Usina Santa Adelia",
+              "indexadorFamilia": "IPCA/NTN-B",
+              "spreadAnteriorBps": 106,
+              "spreadAtualBps": 69,
+              "variacaoBps": -37,
+              "spreadAtual": "69 bps",
+              "durationAnos": 1.06
+            },
+            {
+              "ticker": "CSAN33",
+              "emissor": "COSAN S.A.",
+              "grupo": "Cosan",
+              "indexadorFamilia": "IPCA/NTN-B",
+              "spreadAnteriorBps": 211,
+              "spreadAtualBps": 189,
+              "variacaoBps": -22,
+              "spreadAtual": "189 bps",
+              "durationAnos": 3.51
+            }
+          ],
+          "totalAberturas": 444,
+          "totalFechamentos": 122,
+          "totalComparados": 622,
+          "variacaoMediaBps": 2,
+          "variacaoMedianaBps": 2
+        },
+        "trad": {
+          "aberturas": [],
+          "fechamentos": [],
+          "totalAberturas": 0,
+          "totalFechamentos": 0,
+          "totalComparados": 22,
+          "variacaoMediaBps": 0,
+          "variacaoMedianaBps": 0
+        }
+      },
+      "totalComparados": 644,
+      "dataIni": "2026-07-10",
+      "dataFim": "2026-07-16"
+    },
+    "ida": {
+      "12431": {
+        "indice": "IDA-IPCA Infraestrutura",
+        "retornoPct": 0.1984,
+        "dataIni": "2026-07-10",
+        "dataFim": "2026-07-16",
+        "spreadIniBps": null,
+        "spreadFimBps": null,
+        "variacaoBps": null,
+        "spreadConfiavel": false
+      },
+      "trad": {
+        "indice": "IDA-DI",
+        "retornoPct": 0.2275,
+        "dataIni": "2026-07-10",
+        "dataFim": "2026-07-16",
+        "spreadIniBps": 97,
+        "spreadFimBps": 96,
+        "variacaoBps": -1,
+        "spreadConfiavel": true
+      }
+    },
+    "fundos": {
+      "semAnterior": false,
+      "novos": [
+        {
+          "cnpj": "62624041000106",
+          "nome": "AB INFRA INCENTIVADO EM…"
+        },
+        {
+          "cnpj": "62406671000104",
+          "nome": "ACACIA INCENTIVADO EM…"
+        },
+        {
+          "cnpj": "65847230000136",
+          "nome": "AMOR 12 FUNDO DE INV INV EM…"
+        },
+        {
+          "cnpj": "66632272000112",
+          "nome": "AZ QUEST AZRF MASTER 01/2033…"
+        },
+        {
+          "cnpj": "65680121000177",
+          "nome": "BB ALEF INFRA FUNDO INCENTIVADO…"
+        },
+        {
+          "cnpj": "65835445000137",
+          "nome": "BB ALNITAK INFRA FUNDO…"
+        },
+        {
+          "cnpj": "64436536000137",
+          "nome": "BB BSR INFRA FUNDO INCENTIVADO…"
+        },
+        {
+          "cnpj": "62361545000180",
+          "nome": "BB CARLI INFRA FUNDO…"
+        },
+        {
+          "cnpj": "65680395000166",
+          "nome": "BB JHA INFRA FUNDO INCENTIVADO…"
+        },
+        {
+          "cnpj": "65835458000106",
+          "nome": "BB LZ INFRA FUNDO INCENTIVADO…"
+        },
+        {
+          "cnpj": "64436974000103",
+          "nome": "BB MASTER III DEBÊNTURES…"
+        },
+        {
+          "cnpj": "63197072000190",
+          "nome": "BB RX2 INFRA FUNDO INCENTIVADO…"
+        },
+        {
+          "cnpj": "64566437000170",
+          "nome": "BLACKSWAN PLUS FUNDO…"
+        },
+        {
+          "cnpj": "65421221000189",
+          "nome": "BRAM DEBÊNTURES INCENTIVADAS…"
+        },
+        {
+          "cnpj": "55515189000147",
+          "nome": "BTG PACTUAL DÍVIDA INFRA CDI…"
+        },
+        {
+          "cnpj": "55588398000110",
+          "nome": "BTG PACTUAL HEDGE INCENTIVADO…"
+        },
+        {
+          "cnpj": "65888766000108",
+          "nome": "CAPITÂNIA INFRA 30 CDI…"
+        },
+        {
+          "cnpj": "65818203000135",
+          "nome": "CH INCENTIVADO DE INVESTIMENTO…"
+        },
+        {
+          "cnpj": "58313484000109",
+          "nome": "EDEN CDI FUNDO INCENTIVADO EM…"
+        },
+        {
+          "cnpj": "62317858000131",
+          "nome": "EL FUNDO INCENTIVADO EM…"
+        },
+        {
+          "cnpj": "62232457000189",
+          "nome": "EVEREST INCENTIVADO EM…"
+        },
+        {
+          "cnpj": "62363801000179",
+          "nome": "FAN INCENTIVADO EM DEBÊNTURES…"
+        },
+        {
+          "cnpj": "56052337000105",
+          "nome": "G5 VPRF RF INCENTIVADO DE…"
+        },
+        {
+          "cnpj": "62474207000155",
+          "nome": "GOMIN INCENTIVADO EM DEBÊNTURES…"
+        },
+        {
+          "cnpj": "62317574000145",
+          "nome": "GREEN 4 2026 FUNDO INCENTIVADO…"
+        },
+        {
+          "cnpj": "66404420000141",
+          "nome": "HEM 2 FUNDO DE INV INV EM…"
+        },
+        {
+          "cnpj": "62318643000135",
+          "nome": "ICON 3 INCENTIVADO EM…"
+        },
+        {
+          "cnpj": "64582548000170",
+          "nome": "ITAÚ DEBÊNTURES INCENTIVADAS…"
+        },
+        {
+          "cnpj": "62064607000192",
+          "nome": "JW JAPÃO FUNDO INCENTIVADO EM…"
+        },
+        {
+          "cnpj": "65079801000130",
+          "nome": "KINEA INFRA IX FUNDO…"
+        },
+        {
+          "cnpj": "59963244000112",
+          "nome": "MCFAMILY FUNDO INCENTIVADO EM…"
+        },
+        {
+          "cnpj": "61351211000163",
+          "nome": "MMROS INCENTIVADO EM DEBÊNTURES…"
+        },
+        {
+          "cnpj": "66572564000107",
+          "nome": "PARADISE FUNDO DE INV INV EM…"
+        },
+        {
+          "cnpj": "64593756000174",
+          "nome": "RB VITÓRIA 2 FUNDO INCENTIVADO…"
+        },
+        {
+          "cnpj": "56955481000143",
+          "nome": "RGR FUNDO INCENTIVADO EM…"
+        },
+        {
+          "cnpj": "65612787000198",
+          "nome": "SAFRA INFRA CDI MASTER VI INV…"
+        },
+        {
+          "cnpj": "65861280000178",
+          "nome": "SALB FUNDO DE INV INV EM…"
+        },
+        {
+          "cnpj": "64651483000177",
+          "nome": "SANTA LÚCIA INCENTIVADO DE…"
+        },
+        {
+          "cnpj": "61884366000165",
+          "nome": "SANTANDER PB 289 INVESTIMENTO…"
+        },
+        {
+          "cnpj": "63093259000144",
+          "nome": "SANTANDER PB 331 INVESTIMENTO…"
+        },
+        {
+          "cnpj": "66148609000110",
+          "nome": "SANTANDER PB CASARA…"
+        },
+        {
+          "cnpj": "65842530000122",
+          "nome": "SANTANDER PB CHAVES…"
+        },
+        {
+          "cnpj": "65529915000134",
+          "nome": "SANTANDER PB CORVETTE…"
+        },
+        {
+          "cnpj": "65529691000160",
+          "nome": "SANTANDER PB DALPA INVESTIMENTO…"
+        },
+        {
+          "cnpj": "61197890000168",
+          "nome": "SANTANDER PB KGC INVESTIMENTO…"
+        },
+        {
+          "cnpj": "64113409000105",
+          "nome": "SANTANDER PB MONTE BARBADO…"
+        },
+        {
+          "cnpj": "63761168000130",
+          "nome": "SANTANDER PB PORTO MADERO III…"
+        },
+        {
+          "cnpj": "65107242000124",
+          "nome": "SANTANDER PB QUESILE…"
+        },
+        {
+          "cnpj": "65073005000190",
+          "nome": "SANTANDER PB SACO SEM FUNDO…"
+        },
+        {
+          "cnpj": "64680282000106",
+          "nome": "SAPIENS RF INCENTIVADO DE…"
+        },
+        {
+          "cnpj": "66298117000101",
+          "nome": "SHIRA IV FUNDO DE INV INV EM…"
+        },
+        {
+          "cnpj": "64776777000125",
+          "nome": "TM RF INCENTIVADO DE…"
+        },
+        {
+          "cnpj": "65793919000125",
+          "nome": "AGIBANK CRÉDITO PRIVADO"
+        },
+        {
+          "cnpj": "64440839000123",
+          "nome": "BB TOP DEBÊNTURES INCENTIVADAS…"
+        },
+        {
+          "cnpj": "65927318000168",
+          "nome": "CAPITÂNIA CARTEIRA CRI II…"
+        },
+        {
+          "cnpj": "65927708000138",
+          "nome": "CAPITÂNIA MULTI RECEBÍVEIS II…"
+        },
+        {
+          "cnpj": "63790160000100",
+          "nome": "ITAÚ RIZA LOTUS PREV MASTER…"
+        },
+        {
+          "cnpj": "66161408000153",
+          "nome": "KINEA ATACAMA"
+        },
+        {
+          "cnpj": "65338884000134",
+          "nome": "LARINFRA KINEA INCENTIVADO EM…"
+        },
+        {
+          "cnpj": "58238959000140",
+          "nome": "MAUÁ IV"
+        },
+        {
+          "cnpj": "65796563000183",
+          "nome": "POLO II FUNDO INCENTIVADO DE…"
+        },
+        {
+          "cnpj": "64985472000123",
+          "nome": "SANTANDER PB ALOCAÇÃO…"
+        },
+        {
+          "cnpj": "64111034000136",
+          "nome": "TIVIO HYD60 CRÉDITO PRIVADO"
+        },
+        {
+          "cnpj": "62870208000119",
+          "nome": "UNIMED COOP CRÉDITO PRIVADO"
+        }
+      ],
+      "removidos": []
+    },
+    "perf": {
+      "top12431Pos": [
+        {
+          "cnpj": "53075427000115",
+          "nome": "KINEA INCENTIVADO RF CP LP…",
+          "gestor": "Kinea",
+          "retorno": 20.1017,
+          "obs": 3,
+          "de": "2026-07-13",
+          "ate": "2026-07-15",
+          "pl": 45922282.71,
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64436974000103",
+          "nome": "BB MASTER III DEBÊNTURES…",
+          "gestor": "BB Asset",
+          "retorno": 7.2324,
+          "obs": 3,
+          "de": "2026-07-13",
+          "ate": "2026-07-15",
+          "pl": 210904095.54,
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "63572496000198",
+          "nome": "VINLAND DEBÊNTURE INCENTIVADO 3…",
+          "gestor": "Vinland",
+          "retorno": 3.6291,
+          "obs": 3,
+          "de": "2026-07-13",
+          "ate": "2026-07-15",
+          "pl": 14626197.74,
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "63386988000199",
+          "nome": "LEGACY CAPITAL ARKAN FUNDO…",
+          "gestor": "Legacy",
+          "retorno": 2.7119,
+          "obs": 3,
+          "de": "2026-07-13",
+          "ate": "2026-07-15",
+          "pl": 49093930.82,
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "58758334000109",
+          "nome": "JOURNEY CAPITAL 60 FUNDO…",
+          "gestor": "Journey",
+          "retorno": 2.1083,
+          "obs": 3,
+          "de": "2026-07-13",
+          "ate": "2026-07-15",
+          "pl": 107719283.28,
+          "segmento": "12431"
+        }
+      ],
+      "top12431Neg": [
+        {
+          "cnpj": "63706652000166",
+          "nome": "VINLAND INC XP FUNDO…",
+          "gestor": "Vinland",
+          "retorno": -14.0211,
+          "obs": 3,
+          "de": "2026-07-13",
+          "ate": "2026-07-15",
+          "pl": 36643091.94,
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "57075698000121",
+          "nome": "VINLAND FUNDO INCENTIVADO EM…",
+          "gestor": "Vinland",
+          "retorno": -8.6072,
+          "obs": 3,
+          "de": "2026-07-13",
+          "ate": "2026-07-15",
+          "pl": 161255228.72,
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "61543507000186",
+          "nome": "VINLAND 2 INCENTIVADO EM DEB DE…",
+          "gestor": "Vinland",
+          "retorno": -1.8482,
+          "obs": 3,
+          "de": "2026-07-13",
+          "ate": "2026-07-15",
+          "pl": 3431559,
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "53906748000114",
+          "nome": "PSO 2 FUNDO INCENTIVADO DE…",
+          "gestor": "BTG WM",
+          "retorno": -1.3332,
+          "obs": 3,
+          "de": "2026-07-13",
+          "ate": "2026-07-15",
+          "pl": 152392077.84,
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "47102746000170",
+          "nome": "BTG INFRA MASTER II FUNDO…",
+          "gestor": "BTG Asset",
+          "retorno": -1.2994,
+          "obs": 3,
+          "de": "2026-07-13",
+          "ate": "2026-07-15",
+          "pl": 1087361380.96,
+          "segmento": "12431"
+        }
+      ],
+      "topTradPos": [
+        {
+          "cnpj": "64089192000137",
+          "nome": "TOP DEBÊNTURES 2025 INCENTIVADO…",
+          "gestor": "IAM",
+          "retorno": 7.5121,
+          "obs": 3,
+          "de": "2026-07-13",
+          "ate": "2026-07-15",
+          "pl": 11425704.6,
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "66161408000153",
+          "nome": "KINEA ATACAMA",
+          "gestor": "Kinea",
+          "retorno": 1.4326,
+          "obs": 3,
+          "de": "2026-07-13",
+          "ate": "2026-07-15",
+          "pl": 5151436.61,
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "51977823000102",
+          "nome": "CATTUS",
+          "gestor": "Starboard",
+          "retorno": 0.7706,
+          "obs": 3,
+          "de": "2026-07-13",
+          "ate": "2026-07-15",
+          "pl": 37831597.48,
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "57555092000193",
+          "nome": "BTG PACTUAL BRASLIGHT EOS",
+          "gestor": "BTG Asset",
+          "retorno": 0.6372,
+          "obs": 3,
+          "de": "2026-07-13",
+          "ate": "2026-07-15",
+          "pl": 70784362.03,
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "37842935000125",
+          "nome": "CTBG PREVIDÊNCIA",
+          "gestor": "BTG WM",
+          "retorno": 0.6091,
+          "obs": 3,
+          "de": "2026-07-13",
+          "ate": "2026-07-15",
+          "pl": 30475840.78,
+          "segmento": "trad"
+        }
+      ],
+      "topTradNeg": [
+        {
+          "cnpj": "34172479000165",
+          "nome": "MINERVA",
+          "gestor": "BTG WM",
+          "retorno": -1.772,
+          "obs": 3,
+          "de": "2026-07-13",
+          "ate": "2026-07-15",
+          "pl": 206267255.97,
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "52273351000170",
+          "nome": "PORTFOLIO RF II PREV CRÉDITO…",
+          "gestor": "XPG",
+          "retorno": -0.8097,
+          "obs": 3,
+          "de": "2026-07-13",
+          "ate": "2026-07-15",
+          "pl": 11049034.39,
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "36532178000120",
+          "nome": "CHRONOS CRÉDITO PRIVADO",
+          "gestor": "XPG",
+          "retorno": -0.6293,
+          "obs": 3,
+          "de": "2026-07-13",
+          "ate": "2026-07-15",
+          "pl": 16630462.51,
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "43584015000157",
+          "nome": "CHROMO MAKAPUU",
+          "gestor": "Chromo",
+          "retorno": -0.5879,
+          "obs": 3,
+          "de": "2026-07-13",
+          "ate": "2026-07-15",
+          "pl": 64739469.03,
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "51168708000197",
+          "nome": "LT",
+          "gestor": "BTG Asset",
+          "retorno": -0.5498,
+          "obs": 3,
+          "de": "2026-07-13",
+          "ate": "2026-07-15",
+          "pl": 1151285661.13,
+          "segmento": "trad"
+        }
+      ]
+    },
+    "inclusoes": {
+      "novosDebentures": [
+        "APLE11",
+        "AXIAA0",
+        "AXIAB0",
+        "BESA12",
+        "ISAEB3",
+        "RBRAL2",
+        "TFLEE1",
+        "VERTB6"
+      ],
+      "novosBlc": [],
+      "saiuBlc": [],
+      "semAnterior": false
+    },
+    "alertas": [
+      {
+        "tipo": "parcial",
+        "texto": "Período em andamento — dados até 2026-07-15."
+      },
+      {
+        "tipo": "perf-cobertura",
+        "texto": "Performance 12.431: 7 fundo(s) fora por cobertura < 60% e 2 por dado inválido."
+      },
+      {
+        "tipo": "perf-cobertura",
+        "texto": "Performance Tradicional: 3 fundo(s) fora por cobertura < 60% e 1 por dado inválido."
+      }
+    ],
+    "perfCobertura": {
+      "12431": {
+        "diasUteis": 3,
+        "excluidos": {
+          "insuficiente": 7,
+          "glitch": 2
+        },
+        "avaliados": 1637,
+        "minCobertura": 0.6
+      },
+      "trad": {
+        "diasUteis": 3,
+        "excluidos": {
+          "insuficiente": 3,
+          "glitch": 1
+        },
+        "avaliados": 823,
+        "minCobertura": 0.6
+      }
+    }
+  },
+  "summary": [
+    {
+      "texto": "Captação líquida 12.431 na semana: −R$ 622 mi (capt. R$ 654 mi − resg. R$ 1,3 bi, 3 dia(s) útil(eis)).",
+      "tom": "neg"
+    },
+    {
+      "texto": "Captação líquida Tradicional na semana: R$ 187 mi (capt. R$ 4,8 bi − resg. R$ 4,6 bi, 3 dia(s) útil(eis)).",
+      "tom": "pos"
+    },
+    {
+      "texto": "IDA-IPCA Infraestrutura rendeu +0,2% na semana."
+    },
+    {
+      "texto": "IDA-DI rendeu +0,23% na semana, spread fechou 1 bps."
+    },
+    {
+      "texto": "8 nova(s) debênture(s) registrada(s) na semana."
+    }
+  ]
+}

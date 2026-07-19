@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { fmtBRL } from '../utils/format.js'
 import { fmtDia } from '../utils/reports.js'
-import { downloadFile } from '../utils/download.js'
+import { downloadFile, downloadName } from '../utils/download.js'
 
 const money = v => fmtBRL(typeof v === 'number' ? v : Number(v))
 const pct = v => (v == null || Number.isNaN(+v) ? '—' : `${(+v).toFixed(2)}%`)
@@ -37,8 +37,28 @@ function Bullets({ items }) {
   )
 }
 
-function Debentures({ sec, cvm, faltantes }) {
+function Debentures({ sec, cvm, faltantes, periodo }) {
   const temNovas = sec?.novas?.length > 0
+  // Período: registro no intervalo (colunas Ticker/Emissor/Grupo/Registro).
+  if (periodo) {
+    return temNovas ? (
+      <div className="rd-tablewrap">
+        <table className="rd-table">
+          <thead><tr><th>Ativo</th><th>Emissor</th><th>Grupo</th><th>Registro</th></tr></thead>
+          <tbody>
+            {sec.novas.map((d, i) => (
+              <tr key={d.ticker || i}>
+                <td className="rd-strong">{d.ticker}{d.incentivada && <span className="rd-sub">12.431</span>}</td>
+                <td className="rd-empresa" title={d.empresa}>{d.empresa || '—'}</td>
+                <td className="rd-empresa" title={d.grupo}>{d.grupo || '—'}</td>
+                <td>{fmtDia(d.dataRegistro)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    ) : <Empty>Nenhuma nova debênture registrada no período.</Empty>
+  }
   return (
     <div className="rd-tablewrap">
       {temNovas ? (
@@ -123,28 +143,31 @@ function EmissoesCVM({ cvm }) {
   )
 }
 
-function Captacao({ sec }) {
+function Captacao({ sec, periodo }) {
   const seg = (c, nome) => {
-    if (!c) return <div className="rd-cap-seg"><h4>{nome}</h4><Empty>Sem dado de captação neste dia.</Empty></div>
+    if (!c || (periodo && !c.diasUteis)) return <div className="rd-cap-seg"><h4>{nome}</h4><Empty>Sem dado de captação no período.</Empty></div>
     const pos = c.liquido >= 0
+    const sub = periodo ? `${fmtDia(c.de)}–${fmtDia(c.ate)} · ${c.diasUteis} d.u.` : `· ${fmtDia(c.dia)}`
     return (
       <div className="rd-cap-seg">
-        <h4>{nome} <span className="rd-cap-dia">· {fmtDia(c.dia)}</span></h4>
+        <h4>{nome} <span className="rd-cap-dia">{sub}</span></h4>
         <div className="rd-kv"><span>Captação</span><b>{money(c.captacao)}</b></div>
         <div className="rd-kv"><span>Resgate</span><b>{money(c.resgate)}</b></div>
         <div className="rd-kv"><span>Cap. líquida</span><b className={pos ? 'rd-pos' : 'rd-neg'}>{money(c.liquido)}</b></div>
-        <div className="rd-kv"><span>PL</span><b>{money(c.pl)}</b></div>
-        <div className="rd-kv" title="Fundos da sua lista curada que reportaram no Informe Diário deste dia (a lista é constante)">
-          <span>Fundos reportados</span>
-          <b>{c.numFundos}{c.curados ? <span className="rd-cap-dia"> de {c.curados}</span> : ''}</b>
-        </div>
-        {c.fechados ? (
+        <div className="rd-kv"><span>PL{periodo && c.dataPl ? <span className="rd-cap-dia"> · {fmtDia(c.dataPl)}</span> : ''}</span><b>{money(c.pl)}</b></div>
+        {!periodo && (
+          <div className="rd-kv" title="Fundos da sua lista curada que reportaram no Informe Diário deste dia (a lista é constante)">
+            <span>Fundos reportados</span>
+            <b>{c.numFundos}{c.curados ? <span className="rd-cap-dia"> de {c.curados}</span> : ''}</b>
+          </div>
+        )}
+        {!periodo && c.fechados ? (
           <div className="rd-kv" title="Fundos de condomínio fechado na sua lista: captam por emissão de cotas (fluxo esporádico), não por aportes diários">
             <span>Fundos fechados</span>
             <b>{c.fechados} <span className="rd-cap-dia">condomínio fechado</span></b>
           </div>
         ) : null}
-        {c.anterior && <div className="rd-kv rd-muted"><span>Líquido {fmtDia(c.anterior.dia)}</span><b>{money(c.anterior.liquido)}</b></div>}
+        {c.anterior && <div className="rd-kv rd-muted"><span>Líquido {periodo ? (periodo === 'weekly' ? 'sem. anterior' : 'mês anterior') : fmtDia(c.anterior.dia)}</span><b>{money(c.anterior.liquido)}</b></div>}
       </div>
     )
   }
@@ -152,6 +175,29 @@ function Captacao({ sec }) {
     <div className="rd-cap">
       {seg(sec?.['12431'], '12.431')}
       {seg(sec?.trad, 'Tradicional')}
+    </div>
+  )
+}
+
+// Direção agregada de mercado (IDA) — só nos relatórios de período (complementa
+// a ANBIMA por ativo, especialmente no mês em cold-start de snapshots).
+function Ida({ sec }) {
+  if (!sec) return null
+  const seg = (x, nome) => {
+    if (!x) return null
+    const sp = x.variacaoBps == null ? null : (x.variacaoBps >= 0 ? 'abriu' : 'fechou')
+    return (
+      <div className="rd-kv">
+        <span className="rd-empresa">{nome} · {x.indice}</span>
+        <b>{x.retornoPct >= 0 ? '+' : ''}{x.retornoPct?.toFixed(2)}%{sp ? ` · spread ${sp} ${Math.abs(x.variacaoBps)} bps${x.spreadConfiavel ? '' : ' (aprox.)'}` : ''}</b>
+      </div>
+    )
+  }
+  return (
+    <div className="rd-ida">
+      <p className="rd-note">Índice de Debêntures ANBIMA (IDA) — direção agregada de mercado no período.</p>
+      {seg(sec['12431'], '12.431')}
+      {seg(sec.trad, 'Tradicional')}
     </div>
   )
 }
@@ -223,6 +269,7 @@ function Anbima({ sec }) {
         <p className="rd-note">
           <b className="rd-neg">{g.totalAberturas}</b> abertura(s) e <b className="rd-pos">{g.totalFechamentos}</b> fechamento(s) de spread — de {g.totalComparados} ativo(s) com taxa ANBIMA · média{' '}
           <b className={vm > 0 ? 'rd-neg' : vm < 0 ? 'rd-pos' : ''}>{vm > 0 ? '+' : ''}{vm} bps</b>
+          {g.variacaoMedianaBps != null && <> · mediana <b>{g.variacaoMedianaBps > 0 ? '+' : ''}{g.variacaoMedianaBps} bps</b></>}
         </p>
         {tabela(g.aberturas, 'Maiores aberturas')}
         {tabela(g.fechamentos, 'Maiores fechamentos')}
@@ -264,7 +311,16 @@ function Alertas({ arr }) {
   return <ul className="rd-bullets">{arr.map((a, i) => <li key={i} className="rd-warn">{a.texto}</li>)}</ul>
 }
 
-export default function ResumoDoDiaModal({ index, report, loadingReport, selectedDate, onSelectDate, onClose }) {
+const MODOS = [{ id: 'daily', label: 'Dia' }, { id: 'weekly', label: 'Semana' }, { id: 'monthly', label: 'Mês' }]
+const TITULO = { daily: 'Resumo do Dia', weekly: 'Resumo da Semana', monthly: 'Resumo do Mês' }
+const SUBTITULO = {
+  daily: 'Variações por data dos dados vs. dia anterior disponível',
+  weekly: 'Agregado da semana (ISO) — captação, spreads e performance no período',
+  monthly: 'Agregado do mês — captação, spreads e performance no período',
+}
+const entryId = e => e.id || e.date
+
+export default function ResumoDoDiaModal({ mode, setMode, index, available, selectedId, report, loading, select, onClose }) {
   useEffect(() => {
     const fn = e => e.key === 'Escape' && onClose()
     window.addEventListener('keydown', fn)
@@ -274,34 +330,44 @@ export default function ResumoDoDiaModal({ index, report, loadingReport, selecte
   const reports = index?.reports || []
   const s = report?.sections
   const inc = s?.inclusoes
+  const periodo = mode === 'daily' ? null : mode
 
   const baixar = ext => {
     if (!report) return
-    downloadFile(`/reports/daily/${report.date}.${ext}`, `resumo-do-dia-${report.date}.${ext}`).catch(() => {})
+    const id = entryId(report)
+    downloadFile(`/reports/${mode}/${id}.${ext}`, downloadName(mode, id, ext)).catch(() => {})
   }
 
   return (
     <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
-      <div className="modal modal-wide" role="dialog" aria-modal="true" aria-label="Resumo do Dia">
+      <div className="modal modal-wide" role="dialog" aria-modal="true" aria-label="Central de relatórios">
         <div className="modal-header">
           <div>
-            <h2 className="modal-title">Resumo do Dia</h2>
-            <p className="modal-subtitle">Variações por data dos dados vs. dia anterior disponível</p>
+            <h2 className="modal-title">{TITULO[mode]}{report?.status && (
+              <span className={`rd-status ${report.status === 'partial' ? 'partial' : 'closed'}`}>{report.status === 'partial' ? 'Parcial' : 'Fechado'}</span>
+            )}</h2>
+            <p className="modal-subtitle">{SUBTITULO[mode]}</p>
           </div>
           <button className="modal-close" onClick={onClose} aria-label="Fechar">✕</button>
         </div>
 
+        {/* Segmentado Dia / Semana / Mês (cada modo mantém sua seleção) */}
+        <div className="rd-modes segmented" role="tablist" aria-label="Tipo de relatório">
+          {MODOS.map(m => (
+            <button key={m.id} role="tab" aria-selected={mode === m.id} disabled={!available?.[m.id]}
+              className={`segmented-btn${mode === m.id ? ' active' : ''}`}
+              onClick={() => setMode(m.id)}>{m.label}</button>
+          ))}
+        </div>
+
         <div className="rd-toolbar">
-          <div className="rd-dates" role="tablist" aria-label="Datas disponíveis">
-            {reports.map(r => (
-              <button
-                key={r.date}
-                className={`rd-date-chip${r.date === selectedDate ? ' active' : ''}`}
-                onClick={() => onSelectDate(r.date)}
-              >
-                {r.label}
-              </button>
-            ))}
+          <div className="rd-dates" role="tablist" aria-label="Períodos disponíveis">
+            {reports.map(r => {
+              const id = entryId(r)
+              return (
+                <button key={id} className={`rd-date-chip${id === selectedId ? ' active' : ''}`} onClick={() => select(id)}>{r.label}</button>
+              )
+            })}
           </div>
           <div className="rd-download">
             <button className="rd-dl-btn" onClick={() => baixar('html')} disabled={!report}>Baixar HTML</button>
@@ -310,25 +376,29 @@ export default function ResumoDoDiaModal({ index, report, loadingReport, selecte
         </div>
 
         <div className="modal-body">
-          {loadingReport && <p className="rd-empty">Carregando…</p>}
-          {!loadingReport && !report && <p className="rd-empty">Selecione uma data.</p>}
-          {!loadingReport && report && (
+          {loading && <p className="rd-empty">Carregando…</p>}
+          {!loading && !report && <p className="rd-empty">{reports.length ? 'Selecione um período.' : 'Sem relatórios neste modo ainda.'}</p>}
+          {!loading && report && s && (
             <>
               <Section title="1. Sumário executivo"><Bullets items={report.summary} /></Section>
               <Section title="2. Novas debêntures e emissões">
-                <Debentures sec={s.debentures} cvm={s.emissoesCVM} faltantes={s.emissoresFaltantes} />
-                {inc?.temSnapshotBlc && inc.novosBlc?.length > 0 && (
+                <Debentures sec={s.debentures} cvm={s.emissoesCVM} faltantes={s.emissoresFaltantes} periodo={periodo} />
+                {!periodo && inc?.temSnapshotBlc && inc.novosBlc?.length > 0 && (
                   <p className="rd-note">Novos ativos no BLC/alocação: {inc.novosBlc.length}</p>
                 )}
               </Section>
-              <Section title="3. Captação líquida do dia"><Captacao sec={s.captacao} /></Section>
-              <Section title="4. Destaques por gestor (captação líquida)">
-                <GestoresLado gestores={s.gestores} />
-              </Section>
-              <Section title="5. Variação ANBIMA (spread)"><Anbima sec={s.anbima} /></Section>
+              <Section title={periodo ? '3. Captação do período' : '3. Captação líquida do dia'}><Captacao sec={s.captacao} periodo={periodo} /></Section>
+              <Section title="4. Destaques por gestor (captação líquida)"><GestoresLado gestores={s.gestores} /></Section>
+              <Section title="5. Variação ANBIMA (spread)"><Anbima sec={s.anbima} />{periodo && <Ida sec={s.ida} />}</Section>
               <Section title="6. Fundos incluídos/excluídos"><Fundos sec={s.fundos} /></Section>
-              <Section title="7. Performance de fundos"><Perf sec={s.perf} /></Section>
-              <Section title="8. Alertas de qualidade"><Alertas arr={s.alertas} /></Section>
+              {periodo && (
+                <Section title="7. Ativos incluídos nas tabelas">
+                  {inc?.semAnterior ? <Empty>Sem snapshot de fronteira BLC neste período.</Empty>
+                    : <p className="rd-note">Novos no cadastro: <b>{(inc?.novosDebentures || []).length}</b> · Passaram a aparecer nas carteiras: <b>{(inc?.novosBlc || []).length}</b> · Saíram: <b>{(inc?.saiuBlc || []).length}</b></p>}
+                </Section>
+              )}
+              <Section title={periodo ? '8. Performance de fundos (composto)' : '7. Performance de fundos'}><Perf sec={s.perf} /></Section>
+              <Section title={periodo ? '9. Alertas de qualidade' : '8. Alertas de qualidade'}><Alertas arr={s.alertas} /></Section>
             </>
           )}
         </div>
