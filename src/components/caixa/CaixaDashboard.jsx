@@ -16,7 +16,6 @@ export default function CaixaDashboard({ compact = false }) {
   const { loading, error, fundos, gestores, meta, historico, reload } = useCaixa()
   const [segmento, setSegmento] = useState('CDI')   // padrao: Tradicional (mercados separados)
   const [gestor, setGestor] = useState('')
-  const [search, setSearch] = useState('')
 
   // Gestores do mercado atual (para o dropdown de filtro).
   const gestorOpts = useMemo(() => {
@@ -28,14 +27,12 @@ export default function CaixaDashboard({ compact = false }) {
   const consolidaveis = useMemo(() => fundos.filter(f => f.noConsolidado), [fundos])
 
   const filtered = useMemo(() => {
-    const q = search.trim().toLowerCase()
     return fundos.filter(f => {
       if (segmento && f.segmento !== segmento) return false
       if (gestor && f.gestor !== gestor) return false
-      if (q && ![f.nome, f.gestor, f.cnpj].some(v => v?.toLowerCase().includes(q))) return false
       return true
     })
-  }, [fundos, segmento, gestor, search])
+  }, [fundos, segmento, gestor])
 
   // Recorte por segmento/gestor ativo (sem classe/busca: cards e contagens
   // agregam o consolidado do recorte, nao a lista filtrada por texto).
@@ -80,8 +77,8 @@ export default function CaixaDashboard({ compact = false }) {
 
   const mesBase = meta?.mesesRecentes?.[0] || fundos.find(f => f.mesBase)?.mesBase || ''
   // "Limpar" zera os sub-filtros mas mantem o mercado escolhido (nunca ha' "Todos").
-  const clearFilters = useCallback(() => { setGestor(''); setSearch('') }, [])
-  const hasFilter = gestor || search
+  const clearFilters = useCallback(() => { setGestor('') }, [])
+  const hasFilter = gestor
 
   return (
     <section className="fluxo caixa" aria-label="Nível de caixa dos fundos">
@@ -120,14 +117,6 @@ export default function CaixaDashboard({ compact = false }) {
               <option value="">Todos os gestores</option>
               {gestorOpts.map(g => <option key={g} value={g}>{g}</option>)}
             </select>
-            <input
-              className="caixa-search"
-              type="search"
-              aria-label="Buscar fundo, gestor ou CNPJ"
-              placeholder="Buscar fundo, gestor ou CNPJ…"
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-            />
             {/* SEMPRE montado (so' desabilita): se ele aparecesse/sumisse com o
                 filtro, a barra quebraria de linha e empurraria todo o conteudo
                 ~38px ao selecionar uma gestora -- o layout pulava embaixo do

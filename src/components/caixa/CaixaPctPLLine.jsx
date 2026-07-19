@@ -24,7 +24,15 @@ function niceStep(raw) {
 // "jun/26" (~20px) vazava do viewBox e o mes aparecia cortado.
 const PAD = { l: 52, r: 26, t: 14, b: 34 }
 
+// Janelas de tempo do grafico (meses recentes; 'total' = serie inteira).
+const PERIODOS = [
+  { id: 'total', label: 'Total', n: 0 },
+  { id: '12m', label: '12m', n: 12 },
+  { id: '6m', label: '6m', n: 6 },
+]
+
 export default function CaixaPctPLLine({ historico, segmento, gestor }) {
+  const [periodo, setPeriodo] = useState('total')
   // Mede largura E altura do container: a altura do card vem do CSS (como o
   // .fluxo-chart da Captacao: 350px no desktop / 300px no compacto) e o SVG
   // preenche o espaco que sobra. Assim o grafico acompanha o padrao da Captacao
@@ -50,7 +58,7 @@ export default function CaixaPctPLLine({ historico, segmento, gestor }) {
     roRef.current = ro
   }, [])
 
-  const pts = useMemo(() => {
+  const ptsAll = useMemo(() => {
     const series = historico?.series
     if (!Array.isArray(series) || !series.length) return []
     const byMes = new Map()
@@ -68,13 +76,29 @@ export default function CaixaPctPLLine({ historico, segmento, gestor }) {
       .filter(p => p.pct != null)
   }, [historico, segmento, gestor])
 
-  const escopo = gestor || (segmento === '12431' ? 'Incentivados' : 'Tradicional')
+  // Recorte da janela de tempo (12m/6m = ultimos N meses disponiveis).
+  const pts = useMemo(() => {
+    const n = PERIODOS.find(p => p.id === periodo)?.n || 0
+    return n > 0 ? ptsAll.slice(-n) : ptsAll
+  }, [ptsAll, periodo])
 
-  if (pts.length < 2) {
+  const escopo = gestor || (segmento === '12431' ? 'Incentivados' : 'Tradicional')
+  const Periodos = (
+    <div className="segmented caixa-periodo" role="tablist" aria-label="Período do gráfico">
+      {PERIODOS.map(p => (
+        <button key={p.id} type="button" role="tab" aria-selected={periodo === p.id}
+          className={`segmented-btn${periodo === p.id ? ' active' : ''}`}
+          onClick={() => setPeriodo(p.id)}>{p.label}</button>
+      ))}
+    </div>
+  )
+
+  if (ptsAll.length < 2) {
     return (
       <div className="caixa-trend">
         <div className="caixa-trend-head">
           <h3 className="fluxo-section-title">% do PL em caixa — evolução mensal</h3>
+          {Periodos}
         </div>
         <div className="caixa-line-empty">
           {historico?.series?.length
@@ -132,6 +156,7 @@ export default function CaixaPctPLLine({ historico, segmento, gestor }) {
     <div className="caixa-trend">
       <div className="caixa-trend-head">
         <h3 className="fluxo-section-title">% do PL em caixa — evolução mensal</h3>
+        {Periodos}
       </div>
       <div className="caixa-line-wrap" ref={wrapRef}>
         <svg className="caixa-line" width={W} height={H} viewBox={`0 0 ${W} ${H}`}

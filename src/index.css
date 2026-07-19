@@ -1698,7 +1698,10 @@ a { color: var(--primary); }
 
 /* Barras de tendência mensal (sem Recharts) */
 .caixa-trend { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 14px; box-shadow: var(--shadow); }
-.caixa-trend-head { margin-bottom: 10px; }
+.caixa-trend-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+/* Seletor de janela (Total/12m/6m) — pilula segmentada compacta. */
+.caixa-periodo { width: auto; flex: 0 0 auto; height: 26px; }
+.caixa-periodo .segmented-btn { padding: 0 10px; font-size: 11px; }
 /* Dropdown de gestor nos filtros do Nivel de Caixa. */
 .caixa-select {
   height: var(--btn-h); border-radius: 8px; border: 1px solid var(--primary-border);
