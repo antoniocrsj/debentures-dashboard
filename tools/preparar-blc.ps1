@@ -112,6 +112,31 @@ foreach ($kv in $agg.GetEnumerator()) {
 $utf8 = New-Object System.Text.UTF8Encoding($false)
 [System.IO.File]::WriteAllText($OutPath, $sb.ToString(), $utf8)
 
+# ---- 5b. Agregar por (fundo, ativo) -> BLC_PorFundo.csv --------------------
+# Posicao REAL por fundo (CNPJ), sem descartar o fundo como no agregado por
+# gestor. Alimenta gerar-agenda-12m.mjs para o detalhamento de vencimentos por
+# fundo. NAO vai pro deploy (esta no .gitignore): o app le so' o agregado enxuto
+# (porFundo) ja embutido em Agenda_12m.json. Aqui NAO ha rateio: cada linha e' a
+# posicao efetiva do fundo no ativo (mesma origem do agregado por gestor).
+$aggF = @{}
+foreach ($r in $rawRows) {
+  $g = if ($fundo2gestor.ContainsKey($r.Cnpj)) { $fundo2gestor[$r.Cnpj] } else { '(fundo nao cadastrado)' }
+  $k = $r.Cnpj + '|' + $r.Ativo + '|' + $g
+  if ($aggF.ContainsKey($k)) { $aggF[$k] += $r.Val } else { $aggF[$k] = $r.Val }
+}
+$sbF = New-Object System.Text.StringBuilder
+[void]$sbF.AppendLine('CNPJ_FUNDO_CLASSE,GESTOR,CD_ATIVO,VL_ALOCADO')
+foreach ($kv in $aggF.GetEnumerator()) {
+  $p = $kv.Key -split '\|', 3
+  $cnpjF  = $p[0].Replace('"','""')
+  $ativoF = $p[1].Replace('"','""')
+  $gestF  = $p[2].Replace('"','""')
+  $valF   = [math]::Round($kv.Value, 2).ToString([System.Globalization.CultureInfo]::InvariantCulture)
+  [void]$sbF.AppendLine('"' + $cnpjF + '","' + $gestF + '","' + $ativoF + '",' + $valF)
+}
+$outFundo = Join-Path (Split-Path $OutPath -Parent) 'BLC_PorFundo.csv'
+[System.IO.File]::WriteAllText($outFundo, $sbF.ToString(), $utf8)
+
 $swTotal.Stop()
 $kb = [math]::Round([System.Text.Encoding]::UTF8.GetByteCount($sb.ToString())/1024, 1)
 

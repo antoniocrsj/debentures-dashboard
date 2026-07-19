@@ -20,3 +20,6 @@ dados-anbima/agenda-cache/
 
 # Exports crus do grupo CRM Books (privados; so o CSV gerado e versionado)
 tools/books/*.txt
+
+# Posicao por fundo (build input do gerar-agenda-12m; nao deployar o cru)
+public/BLC_PorFundo.csv

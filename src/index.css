@@ -1598,10 +1598,23 @@ a { color: var(--primary); }
    sumir (emissor/grupo truncam com reticencias sob table-layout:fixed). */
 .venc-deb-table { table-layout: fixed; }
 .venc-deb-table th, .venc-deb-table td { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.venc-deb-table th:nth-child(1), .venc-deb-table td:nth-child(1) { width: 24%; }   /* Ativo (ticker + badge 12.431) */
+.venc-deb-table th:nth-child(1), .venc-deb-table td:nth-child(1) { width: 14%; }   /* Ativo (ticker + badge) */
 .venc-deb-table th:nth-child(2), .venc-deb-table td:nth-child(2) { width: 12%; }   /* Grupo (some no compacto) */
-.venc-deb-table th:nth-child(4), .venc-deb-table td:nth-child(4) { width: 19%; }   /* A vencer */
-.venc-deb-table th:last-child,   .venc-deb-table td:last-child   { width: 23%; }   /* Vol. mercado */
+.venc-deb-table th:nth-child(3), .venc-deb-table td:nth-child(3) { width: 22%; }   /* Emissor */
+.venc-deb-table th:nth-child(4), .venc-deb-table td:nth-child(4) { width: 12%; }   /* Juros (some no compacto) */
+.venc-deb-table th:nth-child(5), .venc-deb-table td:nth-child(5) { width: 12%; }   /* Amort (some no compacto) */
+.venc-deb-table th:nth-child(6), .venc-deb-table td:nth-child(6) { width: 15%; }   /* A vencer */
+.venc-deb-table th:last-child,   .venc-deb-table td:last-child   { width: 11%; }   /* Próx. */
+
+/* Gestor selecionado (tabela-seletor): mesmo realce das abas Caixa/Captação. */
+.venc-table tr.row-active > td { background: var(--primary-light); }
+.venc-table tr.row-active > td:first-child { box-shadow: inset 3px 0 0 var(--primary); }
+.venc-table tr.row-active .venc-ell { color: var(--primary); font-weight: 700; }
+
+/* Estado "indisponível" (detalhe por fundo antes de rodar o pipeline). */
+.venc-indisp { padding: 16px 14px; color: var(--text-muted); font-size: 13px; line-height: 1.5; }
+.venc-indisp strong { color: var(--text); }
+.venc-indisp code { background: rgba(0,0,0,.06); padding: 1px 5px; border-radius: 4px; }
 
 /* Cronograma: mesmo tratamento (a coluna R$ nunca some; emissor trunca). */
 .venc-crono-table { table-layout: fixed; }

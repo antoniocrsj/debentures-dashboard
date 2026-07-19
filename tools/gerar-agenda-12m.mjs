@@ -27,6 +27,7 @@ import { fileURLToPath } from 'node:url'
 import { parseCSV } from '../src/utils/csv.js'
 import { parseNum, isYes } from '../src/utils/format.js'
 import { parseAgenda } from '../src/utils/agenda.js'
+import { apelidoFundo } from '../src/utils/caixa.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.join(__dirname, '..')
@@ -132,6 +133,48 @@ function loadCarteira() {
 function carteiraTotal(rows) {
   return rows ? rows.reduce((s, x) => s + x.val, 0) : 0
 }
+// Carteira por FUNDO (CNPJ): ticker -> [{ cnpj, gestor, val }]. Fonte:
+// public/BLC_PorFundo.csv (gerado por preparar-blc.ps1; LOCAL, nao versionado).
+// Ausente -> { ok:false } e porFundo NAO e' emitido (a UI mostra "indisponivel";
+// nunca fabricamos posicao por fundo). Cada linha e' a posicao efetiva do fundo
+// no ativo — sem rateio proporcional do valor do gestor.
+function loadCarteiraFundo() {
+  const map = new Map()
+  const f = path.join(PUBLIC, 'BLC_PorFundo.csv')
+  if (!fs.existsSync(f)) return { map, ok: false }
+  for (const r of readCsv(f)) {
+    const tk = norm(r['CD_ATIVO']); if (!tk) continue
+    const val = parseNum(r['VL_ALOCADO']); if (val <= 0) continue
+    const cnpj = String(r['CNPJ_FUNDO_CLASSE'] || '').replace(/\D/g, ''); if (!cnpj) continue
+    const gestor = (r['GESTOR'] || '').trim() || '(sem gestor)'
+    if (!map.has(tk)) map.set(tk, [])
+    map.get(tk).push({ cnpj, gestor, val })
+  }
+  return { map, ok: map.size > 0 }
+}
+// Metadados por fundo (CNPJ 14) -> { nome(apelido), segmento }. Fundos_12431/CDI.
+function loadFundoMeta() {
+  const meta = new Map()
+  const add = (file, seg) => {
+    for (const r of readCsv(path.join(__dirname, file))) {
+      const cnpj = String(r['CNPJ_FUNDO_CLASSE'] || '').replace(/\D/g, '')
+      if (cnpj && !meta.has(cnpj)) meta.set(cnpj, { nome: apelidoFundo(r['DENOM_SOCIAL'] || '') || cnpj, segmento: seg })
+    }
+  }
+  add('Fundos_12431.csv', '12431')
+  add('Fundos_CDI.csv', 'CDI')
+  return meta
+}
+// PL por fundo (CNPJ 14) a partir de Caixa_Potencial_Fundos.csv (PL_Carteira).
+function loadFundoPL() {
+  const pl = new Map()
+  for (const r of readCsv(path.join(DATA, 'Caixa_Potencial_Fundos.csv'))) {
+    const cnpj = String(r['CNPJ'] || '').replace(/\D/g, '')
+    const v = parseNum(r['PL_Carteira'])
+    if (cnpj && v > 0) pl.set(cnpj, v)
+  }
+  return pl
+}
 // Emissor (CNPJ) -> grupo economico. Fonte: public/Emissores.csv (inteligencia
 // do usuario, gerada por preparar-emissores.ps1).
 function loadEmissores() {
@@ -199,6 +242,23 @@ function main() {
   const carteira = loadCarteira()
   const emissores = loadEmissores()
   const { map: anbima, refDate: anbRef } = loadAnbima()
+  const { map: fundoCart, ok: temFundo } = loadCarteiraFundo()
+  const fundoMeta = temFundo ? loadFundoMeta() : new Map()
+  const fundoPLmap = temFundo ? loadFundoPL() : new Map()
+
+  // Agregado por FUNDO (CNPJ): juros/amort 12m + por mes (pm). So' com posicao real.
+  const fundoAgg = new Map()
+  const addFundo = (cnpj, gestor, mi, j, a) => {
+    let o = fundoAgg.get(cnpj)
+    if (!o) {
+      const m = fundoMeta.get(cnpj) || {}
+      o = { cnpj, nome: m.nome || cnpj, gestor, segmento: m.segmento || '', pl: fundoPLmap.get(cnpj) || null, juros: 0, amort: 0, pm: new Map() }
+      fundoAgg.set(cnpj, o)
+    }
+    o.juros += j; o.amort += a
+    let pm = o.pm.get(mi); if (!pm) { pm = [0, 0]; o.pm.set(mi, pm) }
+    pm[0] += j; pm[1] += a
+  }
 
   // Agregados (o foco): caixa que entra por gestor (fundo), emissor e grupo.
   const gestorAgg = new Map()   // gestor -> { nome, juros, amort }   (so carteira)
@@ -303,6 +363,7 @@ function main() {
       aMerc.juros += jMerc; aCart.juros += jCart
       evs.push({ d: e.dataStr, t: 'J', mc: Math.round(jMerc), ct: Math.round(jCart) })
       for (const g of cartRows) addGestor(g.gestor, g.val * fracao, 0)
+      if (temFundo) for (const fr of (fundoCart.get(tk) || [])) addFundo(fr.cnpj, fr.gestor, mi, fr.val * fracao, 0)
     }
 
     // AMORTIZACAO: fracao = taxa%/100 do evento, sobre o VNA corrigido ate a data.
@@ -319,6 +380,7 @@ function main() {
       aMerc.amort += aM; aCart.amort += aC
       evs.push({ d: e.dataStr, t: 'A', pct: e.pct == null ? null : Math.round(e.pct * 100) / 100, mc: Math.round(aM), ct: Math.round(aC) })
       for (const g of cartRows) addGestor(g.gestor, 0, g.val * fracao)
+      if (temFundo) for (const fr of (fundoCart.get(tk) || [])) addFundo(fr.cnpj, fr.gestor, mi, 0, fr.val * fracao)
     }
 
     comAgenda++
@@ -361,6 +423,22 @@ function main() {
   const porEmissor = rankDim(emissorAgg, 'carteira', 60)
   const porGrupo = rankDim(grupoAgg, 'carteira', 60)
 
+  // porFundo: agregado ENXUTO por fundo (12m + por mes em `pm`). So' quando ha
+  // posicao real (BLC_PorFundo.csv). pm = [[mesIndex, juros, amort], ...] (so'
+  // meses com evento). Piso de R$ 1k p/ nao inflar o JSON com fundos irrisorios.
+  const porFundo = temFundo ? [...fundoAgg.values()]
+    .map(o => ({
+      cnpj: o.cnpj, nome: o.nome, gestor: o.gestor, segmento: o.segmento,
+      pl: o.pl ? Math.round(o.pl) : null,
+      juros: Math.round(o.juros), amort: Math.round(o.amort), total: Math.round(o.juros + o.amort),
+      pm: [...o.pm.entries()]
+        .filter(([, v]) => v[0] + v[1] > 0.5)
+        .map(([mi, v]) => [mi, Math.round(v[0]), Math.round(v[1])])
+        .sort((a, b) => a[0] - b[0]),
+    }))
+    .filter(o => o.total > 1000)
+    .sort((a, b) => b.total - a.total) : null
+
   // Arredonda os meses e fecha totais.
   for (const m of meses) {
     for (const p of ['carteira', 'mercado']) {
@@ -383,6 +461,7 @@ function main() {
       universo: universo.size,
       comAgenda, semAgenda, semCache,
       tickersCarteira: carteira.size,
+      fundosComPosicao: temFundo ? (porFundo ? porFundo.length : 0) : null,
     },
     totais: {
       carteira: totalCarteira,
@@ -392,6 +471,8 @@ function main() {
     porGestor,
     porEmissor,
     porGrupo,
+    // porFundo so' entra quando ha posicao real por fundo (BLC_PorFundo.csv).
+    ...(porFundo ? { porFundo } : {}),
     // TODOS os ativos com evento na janela, cada um com seus eventos individuais
     // (drill-down no app). Compacto (sem indent) pra segurar o tamanho do arquivo.
     ativos,
@@ -403,6 +484,7 @@ function main() {
   console.log(`ref: ${report.refDate} | horizonte: ${HORIZONTE_MESES}m`)
   console.log(`universo ${universo.size} | com agenda ${comAgenda} | sem agenda ${semAgenda} | sem cache ${semCache}`)
   console.log(`total carteira: R$ ${(totalCarteira / 1e6).toFixed(1)}mi | total mercado: R$ ${(totalMercado / 1e6).toFixed(1)}mi`)
+  console.log(temFundo ? `porFundo: ${porFundo.length} fundos com posicao real (BLC_PorFundo.csv)` : 'porFundo: (sem BLC_PorFundo.csv -> detalhe por fundo indisponivel na UI)')
   console.log(`-> ${OUT}`)
 }
 
