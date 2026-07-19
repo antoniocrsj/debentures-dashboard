@@ -61,7 +61,7 @@ export default function AssetModal({ asset, onClose, onSelectTicker }) {
             <Row label="Vencimento"        value={fmtDate(asset.vencimento)} />
             <Row label="Indexador"         value={asset.indexador} />
             <Row label="Taxa"              value={asset.taxa} highlight />
-            <Row label="Lei 12.431"        value={lei} tag={isYes(asset.lei12431Str)} />
+            <Row label="12.431"            value={lei} tag={isYes(asset.lei12431Str)} />
             <Row label="Garantia"          value={asset.garantia} />
             <Row label="Coordenador Líder" value={asset.coordenador} />
           </Section>

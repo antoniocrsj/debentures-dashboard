@@ -36,8 +36,8 @@ export const FLUXO_ATRIBUTOS_URL = '/data/Fundos_Atributos.csv'
 export const FLUXO_IS_MOCK = false
 
 export const FLUXO_TIPOS = [
-  { id: '12431', label: 'Incentivados (12.431)' },
-  { id: 'trad', label: 'Crédito Tradicional' },
+  { id: '12431', label: '12.431' },
+  { id: 'trad', label: 'Tradicional' },
 ]
 
 export function useFluxo(tipo) {

@@ -9,8 +9,8 @@ import CaixaFundosCaixaTable from './CaixaFundosCaixaTable.jsx'
 
 // Mercados vistos SEPARADAMENTE (sem "Todos"): a aba sempre mostra um mercado.
 const SEGMENTOS = [
-  { id: 'CDI', label: 'Tradicional (CDI)' },
-  { id: '12431', label: 'Incentivados (12.431)' },
+  { id: 'CDI', label: 'Tradicional' },
+  { id: '12431', label: '12.431' },
 ]
 export default function CaixaDashboard({ compact = false }) {
   const { loading, error, fundos, gestores, meta, historico, reload } = useCaixa()

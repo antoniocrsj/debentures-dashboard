@@ -41,8 +41,8 @@ const LABELS = {
 const SOURCES = [
   { key: 'debentures', title: 'Debêntures' },
   { key: 'fundos', title: 'Lista de Fundos 12.431/CDI' },
-  { key: 'captacao12431', title: 'Captação — Incentivado 12.431' },
-  { key: 'captacaoTrad', title: 'Captação — Crédito Tradicional' },
+  { key: 'captacao12431', title: 'Captação — 12.431' },
+  { key: 'captacaoTrad', title: 'Captação — Tradicional' },
   { key: 'blc', title: 'BLC / Alocação' },
   { key: 'anbima', title: 'ANBIMA' },
 ]

@@ -82,7 +82,7 @@ export default function CaixaPctPLLine({ historico, segmento, gestor }) {
     return n > 0 ? ptsAll.slice(-n) : ptsAll
   }, [ptsAll, periodo])
 
-  const escopo = gestor || (segmento === '12431' ? 'Incentivados' : 'Tradicional')
+  const escopo = gestor || (segmento === '12431' ? '12.431' : 'Tradicional')
   const Periodos = (
     <div className="segmented caixa-periodo" role="tablist" aria-label="Período do gráfico">
       {PERIODOS.map(p => (

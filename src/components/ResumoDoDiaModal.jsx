@@ -150,8 +150,8 @@ function Captacao({ sec }) {
   }
   return (
     <div className="rd-cap">
-      {seg(sec?.['12431'], 'Incentivados (12.431)')}
-      {seg(sec?.trad, 'Crédito Tradicional')}
+      {seg(sec?.['12431'], '12.431')}
+      {seg(sec?.trad, 'Tradicional')}
     </div>
   )
 }
@@ -179,8 +179,8 @@ function GestoresLado({ gestores }) {
   }
   return (
     <div className="rd-cap">
-      {seg(gestores?.top12431Captacao, gestores?.top12431Resgate, 'Incentivados (12.431)')}
-      {seg(gestores?.topTradCaptacao, gestores?.topTradResgate, 'Crédito Tradicional')}
+      {seg(gestores?.top12431Captacao, gestores?.top12431Resgate, '12.431')}
+      {seg(gestores?.topTradCaptacao, gestores?.topTradResgate, 'Tradicional')}
     </div>
   )
 }
@@ -231,7 +231,7 @@ function Anbima({ sec }) {
   }
   const pm = sec?.porMercado
   if (!pm) return <Empty>Sem variações de spread neste dia.</Empty>
-  return <>{mercado(pm['12431'], 'Incentivadas (12.431)')}{mercado(pm.trad, 'Tradicional')}</>
+  return <>{mercado(pm['12431'], '12.431')}{mercado(pm.trad, 'Tradicional')}</>
 }
 
 function Perf({ sec }) {
@@ -245,7 +245,7 @@ function Perf({ sec }) {
       </div>
     )
   }
-  return <><p className="rd-note">Retorno nominal da cota no dia (não é %CDI).</p>{bloco(sec?.top12431Pos, sec?.top12431Neg, 'Incentivados')}{bloco(sec?.topTradPos, sec?.topTradNeg, 'Tradicional')}</>
+  return <><p className="rd-note">Retorno nominal da cota no dia (não é %CDI).</p>{bloco(sec?.top12431Pos, sec?.top12431Neg, '12.431')}{bloco(sec?.topTradPos, sec?.topTradNeg, 'Tradicional')}</>
 }
 
 function Fundos({ sec }) {

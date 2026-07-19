@@ -13,7 +13,7 @@ export default function Filters({ filters, options, disabled, onChange, tabsSlot
         <SearchSelect label="Setor"      value={filters.setor}    options={options.setores}  disabled={disabled} onChange={v => set('setor', v)} />
         <SearchSelect label="Gestor"     value={filters.gestor}   options={options.gestores} disabled={disabled} onChange={v => set('gestor', v)} />
         <SearchSelect label="Ativo"      value={filters.ativo}    options={options.ativos}   disabled={disabled} onChange={v => set('ativo', v)} />
-        <SearchSelect label="Lei 12.431" value={filters.lei12431} options={['Sim', 'Não']}   disabled={disabled} onChange={v => set('lei12431', v)} />
+        <SearchSelect label="12.431" value={filters.lei12431} options={['Sim', 'Não']}   disabled={disabled} onChange={v => set('lei12431', v)} />
 
         {Object.values(filters).some(v => v !== '') && (
           <button className="chip-clear" onClick={() => onChange(EMPTY)}>✕ Limpar</button>

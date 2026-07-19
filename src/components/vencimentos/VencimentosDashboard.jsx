@@ -120,7 +120,7 @@ export default function VencimentosDashboard({ data, blc, plByGestor, compact })
   const [persp, setPerspRaw] = useState('carteira')       // 'carteira' | 'mercado'
   const [detalheDim, setDetalheDim] = useState('grupo')   // 'fundo' | 'grupo' | 'ativo'
   const [selMes, setSelMes] = useState(null)              // 'yyyy-MM' | null
-  const [seg, setSeg] = useState('todos')                 // 'todos' | '12431' | 'trad'
+  const [seg, setSeg] = useState('12431')                 // '12431' | 'trad' (segmento sempre ativo)
   const [gestorSel, setGestorSel] = useState(null)        // nome do gestor selecionado | null
   const [gestorSort, setGestorSort] = useState({ col: 'total', dir: 'desc' })
   const [detSort, setDetSort] = useState({ col: 'total', dir: 'desc' })
@@ -138,7 +138,7 @@ export default function VencimentosDashboard({ data, blc, plByGestor, compact })
     setPerspRaw(p => (p === 'mercado' ? 'carteira' : p))
   }
   const setPersp = p => { setPerspRaw(p); if (p === 'mercado') setGestorSel(null) }
-  const limparTudo = () => { setGestorSel(null); setSelMes(null); setSeg('todos'); setDetSort({ col: 'total', dir: 'desc' }) }
+  const limparTudo = () => { setGestorSel(null); setSelMes(null); setSeg('12431'); setDetSort({ col: 'total', dir: 'desc' }) }
 
   // Series mensais: R$ (perspectiva atual) e carteira (base do %PL).
   const mesesView = useMemo(() => aggMeses(data, eventos, gpt, { gestorSel, seg, persp, base: 'view' }),
@@ -186,7 +186,7 @@ export default function VencimentosDashboard({ data, blc, plByGestor, compact })
   const cdiFonte = prem.cdiFonte && prem.cdiFonte !== 'default' ? ` (${prem.cdiFonte})` : ''
   const premLabel = `CDI ${pctFmt((prem.cdi || 0) * 100)}${cdiFonte} · VNA +${pctFmt((prem.inflacaoVna || 0) * 100)} a.a.`
   const mesLabelSel = selMes ? (data.meses.find(m => m.mes === selMes)?.label || selMes) : null
-  const temFiltro = seg !== 'todos' || selMes || gestorSel
+  const temFiltro = selMes || gestorSel
   const escopoLbl = gestorSel ? gestorSel : (persp === 'carteira' ? 'carteira' : 'mercado')
 
   // ── Tabela de gestores (seletor principal) ──
@@ -326,7 +326,7 @@ export default function VencimentosDashboard({ data, blc, plByGestor, compact })
     </p>
   )
 
-  const gestorTitle = `Gestores — a vencer ${mesLabelSel || '12m'}${seg !== 'todos' ? (seg === '12431' ? ' · 12.431' : ' · Tradicional') : ''}`
+  const gestorTitle = `Gestores — a vencer ${mesLabelSel || '12m'} · ${seg === '12431' ? '12.431' : 'Tradicional'}`
   const detTitle = `${DETALHES.find(d => d.id === detalheDim)?.label} — ${gestorSel || 'todos os gestores'}${mesLabelSel ? ` · ${mesLabelSel}` : ''}`
 
   return (
@@ -349,8 +349,8 @@ export default function VencimentosDashboard({ data, blc, plByGestor, compact })
               className={`segmented-btn${persp === 'mercado' ? ' active' : ''}`}
               onClick={() => setPersp('mercado')} title={gestorSel ? 'Mercado limpa o gestor selecionado' : undefined}>Mercado</button>
           </div>
-          <div className="segmented" role="tablist" aria-label="Tipo de debênture">
-            {[['todos', 'Tudo'], ['12431', '12.431'], ['trad', 'Tradicional']].map(([id, lbl]) => (
+          <div className="segmented" role="tablist" aria-label="Segmento de mercado">
+            {[['12431', '12.431'], ['trad', 'Tradicional']].map(([id, lbl]) => (
               <button key={id} role="tab" aria-selected={seg === id}
                 className={`segmented-btn${seg === id ? ' active' : ''}`}
                 onClick={() => setSeg(id)}>{lbl}</button>
@@ -362,11 +362,6 @@ export default function VencimentosDashboard({ data, blc, plByGestor, compact })
       {temFiltro && (
         <div className="venc-crumbs">
           <span className="venc-crumbs-lbl">Filtros:</span>
-          {seg !== 'todos' && (
-            <button className="venc-chip" onClick={() => setSeg('todos')} title="Limpar tipo">
-              Tipo: <b>{seg === '12431' ? '12.431' : 'Tradicional'}</b> ✕
-            </button>
-          )}
           {gestorSel && (
             <button className="venc-chip" onClick={() => setGestorSel(null)} title="Limpar gestor">
               Gestor: <b>{gestorSel}</b> ✕
@@ -385,7 +380,7 @@ export default function VencimentosDashboard({ data, blc, plByGestor, compact })
         <div className="fluxo-card">
           <span className="fluxo-card-label">
             {gestorSel ? `${gestorSel}` : persp === 'carteira' ? 'Entra nos fundos' : 'Mercado'} · {mesLabelSel || '12m'}
-            {seg === '12431' ? ' · 12.431' : seg === 'trad' ? ' · Tradicional' : ''}
+            {seg === '12431' ? ' · 12.431' : ' · Tradicional'}
           </span>
           <span className="fluxo-card-value">{fmtBRL(card.total)}</span>
         </div>
