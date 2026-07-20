@@ -377,12 +377,17 @@ a { color: var(--primary); }
 .filter-bar { background: var(--primary-dark); border-bottom: 0; }
 .tabs { background: transparent; border-bottom: 0; }
 .app:not(.desktop) .tabs { background: var(--primary-dark); }
-.chip-select { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.22); color: #e8dfd2; }
-.chip-select-wrap.active .chip-select { background: rgba(140,94,58,.38); border-color: var(--primary); color: #f4e9dc; }
-.search-wrap { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.22); }
-.search-icon { color: rgba(255,255,255,.6); }
-.search-input { color: #fff; }
-.search-input::placeholder { color: rgba(255,255,255,.55); }
+/* ESCOPADAS na .sticky-area (jul/2026). Sem o escopo estas regras de tema
+   ESCURO valiam globalmente e vazavam p/ os mesmos componentes usados no
+   conteudo CLARO: o chip de gestor da Captacao saia com texto #e8dfd2 (creme)
+   sobre fundo quase branco -- contraste 1,32 contra o minimo 4,5 do WCAG AA,
+   ou seja, praticamente invisivel. No topo carvao seguem identicas. */
+.sticky-area .chip-select { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.22); color: #e8dfd2; }
+.sticky-area .chip-select-wrap.active .chip-select { background: rgba(140,94,58,.38); border-color: var(--primary); color: #f4e9dc; }
+.sticky-area .search-wrap { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.22); }
+.sticky-area .search-icon { color: rgba(255,255,255,.6); }
+.sticky-area .search-input { color: #fff; }
+.sticky-area .search-input::placeholder { color: rgba(255,255,255,.55); }
 .tab-btn { color: rgba(255,255,255,.6); }
 .tab-btn.active { color: #fff; border-bottom-color: var(--primary); }
 .data-updated { color: rgba(255,255,255,.55); }
@@ -901,17 +906,38 @@ a { color: var(--primary); }
 }
 .segmented-btn.active { background: var(--selected); color: #fff; }
 
-/* Seletor GLOBAL de corte de %Deb (topo do app). Fica na sticky-area junto das
-   abas; o rotulo "%Deb" ancora o significado dos numeros soltos (10/15/20...),
-   que sem ele pareceriam periodo ou qualquer outra coisa. */
-.corte-sel { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
-.corte-sel-label {
-  font-size: 11.5px; font-weight: 700; color: var(--text-faint);
-  letter-spacing: .02em; white-space: nowrap; cursor: help;
+/* Corte de %Deb: STEPPER compacto (< valor >), do tamanho de um filtro, p/
+   sentar ao lado dos outros. A versao anterior (5 botoes lado a lado) ocupava
+   a largura toda do topo e parecia o filtro principal da tela -- e' um
+   refinamento, nao o eixo da analise. */
+.corte-step { display: inline-flex; align-items: center; gap: 7px; }
+.corte-step-label {
+  font-size: 11px; font-weight: 700; color: var(--text-muted);
+  letter-spacing: .03em; white-space: nowrap; cursor: help;
 }
-.corte-sel-btns { width: auto; flex: 1; }
-.corte-sel .segmented-btn { font-size: 12px; padding: 0 8px; }
-.corte-sel.compact .segmented-btn { font-size: 11.5px; padding: 0 6px; }
+.corte-step-box {
+  display: inline-flex; align-items: center; height: var(--btn-h);
+  background: var(--chip-bg); border: 1px solid var(--navy-light);
+  border-radius: 99px; padding: 2px;
+}
+.corte-step-btn {
+  width: 26px; height: 100%; border: 0; background: transparent;
+  color: var(--navy-light); font-size: 17px; line-height: 1; cursor: pointer;
+  border-radius: 99px; display: flex; align-items: center; justify-content: center;
+  transition: background .12s, color .12s;
+}
+.corte-step-btn:hover:not(:disabled) { background: var(--blue-soft); color: var(--text); }
+.corte-step-btn:disabled { opacity: .3; cursor: default; }
+.corte-step-val {
+  min-width: 46px; text-align: center; font-size: 13px; font-weight: 700;
+  color: var(--text); font-variant-numeric: tabular-nums; cursor: help;
+  display: inline-flex; align-items: center; justify-content: center; gap: 3px;
+}
+/* Ponto discreto marcando a regua oficial -- o "*" antigo lia como nota de
+   rodape sem nota. */
+.corte-step-oficial { color: var(--primary); font-size: 15px; line-height: 0; }
+.corte-step.compact .corte-step-val { min-width: 42px; font-size: 12.5px; }
+.corte-step.compact .corte-step-btn { width: 24px; }
 
 /* Aviso de escopo: parte da tela que NAO acompanha o corte selecionado.
    Discreto de proposito -- informa sem competir com o dado. */

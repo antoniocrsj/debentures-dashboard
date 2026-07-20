@@ -87,9 +87,15 @@ export default function App() {
   // Seção atual (compacto): 'debentures' (abas Ativos/Gestores/Grupos), 'captacao'
   // ou 'atualizacao' (painel de controle, dev-only).
   const [lastDebTab, setLastDebTab] = useState('ativos')   // lembra a sub-aba ao voltar p/ Debêntures
+  // 'tecnico' PRECISA estar aqui: sem ele a aba caia no fallback 'debentures' e
+  // a <Filters> era montada junto (ela so' aparece nessa secao), levando o
+  // tabsSlot com a navegacao DENTRO -- que somava com a tabsNav standalone
+  // renderizada logo abaixo. Resultado: Debentures/Captacao/Caixa/Vencimentos/
+  // Tecnico apareciam DUAS vezes na aba Tecnico.
   const section = tab === 'captacao' ? 'captacao'
     : tab === 'vencimentos' ? 'vencimentos'
     : tab === 'caixa' ? 'caixa'
+    : tab === 'tecnico' ? 'tecnico'
     : tab === 'atualizacao' ? 'atualizacao'
     : 'debentures'
   const selectSection = useCallback(

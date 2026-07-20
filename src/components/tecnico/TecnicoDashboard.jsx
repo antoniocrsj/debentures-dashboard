@@ -26,16 +26,23 @@ import TecnicoGestorTable from './TecnicoGestorTable.jsx'
 // de um zero falso.
 const DEFAULT_MONTHS = 12
 const CAIXA_SEG = { '12431': '12431', trad: 'CDI' }
+// Mesmos degraus da aba Captacao (menos "Tudo"): aqui a leitura e' de conjuntura
+// -- o que esta' acontecendo agora com oferta e demanda --, entao a janela curta
+// e' o que interessa. "Total" saiu porque diluia justamente o movimento recente
+// que a aba existe p/ mostrar. '1w' e' tratado pelo startForMonths.
 const PERIODOS = [
-  { id: 'total', label: 'Total', n: null },
-  { id: '12m', label: '12m', n: 12 },
+  { id: '1s', label: '1s', n: '1w' },
+  { id: '1m', label: '1m', n: 1 },
+  { id: '3m', label: '3m', n: 3 },
   { id: '6m', label: '6m', n: 6 },
+  { id: '12m', label: '12m', n: 12 },
 ]
+const PERIODO_PADRAO = '6m'
 
 export default function TecnicoDashboard({ agenda12m, blc, plByGestor }) {
   const [tipo, setTipo] = useState('12431')
   const [gestorSel, setGestorSel] = useState('')
-  const [periodo, setPeriodo] = useState('total')
+  const [periodo, setPeriodo] = useState(PERIODO_PADRAO)
 
   const { loading, error, rows, monthly, rentabilidade } = useFluxo(tipo)
   const { historico } = useCaixa()
@@ -44,7 +51,7 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor }) {
   const onSelectGestor = g => setGestorSel(cur => (cur === g ? '' : g))
 
   // ---- Captacao (semanal + mensal + ranking) ----
-  const months = PERIODOS.find(p => p.id === periodo)?.n ?? null
+  const months = PERIODOS.find(p => p.id === periodo)?.n ?? 6
   const bounds = useMemo(() => periodBounds(rows), [rows])
   const effStart = useMemo(() => startForMonths(rows, months), [rows, months])
   const effEnd = bounds.max
@@ -130,6 +137,15 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor }) {
     venc12m: vencPorGestor.has(r.gestor) ? vencPorGestor.get(r.gestor) : null,
   })), [ranking, pctCaixaPorGestor, vencPorGestor])
 
+  // O grafico de caixa le uma serie MENSAL: em 1s/1m/3m ele teria 0-3 pontos e
+  // nao formaria linha. Pior, o lookup do id nao existente caia em n=0 e ele
+  // mostrava a serie INTEIRA calado, enquanto a captacao ao lado mostrava 1
+  // semana -- dois graficos lado a lado em janelas diferentes, sem aviso.
+  // Aqui o clamp e' explicito e vai rotulado na tela.
+  const CAIXA_MIN = '6m'
+  const periodoCurto = ['1s', '1m', '3m'].includes(periodo)
+  const periodoCaixa = periodoCurto ? CAIXA_MIN : periodo
+
   const semSelecao = gestorSel ? '' : 'Todos os gestores'
   const escopo = `${gestorSel || semSelecao} · ${tipo === '12431' ? '12.431' : 'Tradicional'}`
 
@@ -177,8 +193,11 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor }) {
                 <FluxoChart weekly={weekly} />
               </div>
               <div className="tecnico-chart-cell">
-                <p className="tecnico-chart-label">% do PL em caixa — mensal · {escopo}</p>
-                <CaixaPctPLLine historico={historico} segmento={caixaSeg} gestor={gestorSel} periodo={periodo} />
+                <p className="tecnico-chart-label">
+                  % do PL em caixa — mensal · {escopo}
+                  {periodoCurto && <span className="tecnico-chart-nota"> · janela mínima 6m (série mensal)</span>}
+                </p>
+                <CaixaPctPLLine historico={historico} segmento={caixaSeg} gestor={gestorSel} periodo={periodoCaixa} />
               </div>
             </div>
             {/* Linha 2: Vencimentos em R$ ao lado de Vencimentos em %PL — mesma largura. */}
