@@ -34,8 +34,8 @@ export default function TecnicoGestorTable({ rows, activeGestor, onSelect, refDa
         <table className="asset-table fluxo-table table-clickable">
           <thead>
             <tr>
-              <SortableTh col="gestor" label="Gestor" sort={sort} onSort={onSort} align="left" sticky />
               <SortableTh col="pl" label="PL" sort={sort} onSort={onSort} />
+              <SortableTh col="gestor" label="Gestor" sort={sort} onSort={onSort} align="left" />
               <SortableTh col="liquido" label="Cap. líq." sort={sort} onSort={onSort} />
               <SortableTh col="pctCaixa" label="% Caixa" sort={sort} onSort={onSort} />
               <SortableTh col="venc3m" label="Venc. 3M" sort={sort} onSort={onSort} />
@@ -49,8 +49,10 @@ export default function TecnicoGestorTable({ rows, activeGestor, onSelect, refDa
                 <tr key={g.gestor} className={active ? 'row-active' : ''} onClick={() => onSelect?.(g.gestor)}
                   tabIndex={0} onKeyDown={e => e.key === 'Enter' && onSelect?.(g.gestor)}
                   title={active ? `Limpar o filtro de ${g.gestor}` : `Filtrar por ${g.gestor}`}>
-                  <td className="col-sticky col-gestor"><span className="ativo-code">{g.gestor}</span></td>
                   <td className="col-num">{g.pl == null ? '—' : fmtFluxo(g.pl)}</td>
+                  {/* col-sticky sai junto com a 1a posicao: a coluna fixa e' sempre a
+                      da esquerda, e com o PL na frente o Gestor deixou de ser. */}
+                  <td className="col-gestor"><span className="ativo-code">{g.gestor}</span></td>
                   <td className={`col-num liq-cell${pos ? ' pos' : neg ? ' neg' : ''}`}>{fmtFluxoSigned(g.liquido)}</td>
                   <td className="col-num">{fmtPct(g.pctCaixa)}</td>
                   <td className="col-num">{g.venc3m == null ? '—' : fmtFluxo(g.venc3m)}</td>
