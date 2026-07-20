@@ -948,8 +948,12 @@ a { color: var(--primary); }
 }
 .grafico-card > .tecnico-chart-label { margin: 0 0 4px; font-size: 12px; }
 /* o grafico ocupa o que sobra do card, sem altura fixa propria */
+/* .venc-chart entrou aqui depois: sem ele o MonthBars parava na altura do
+   conteudo (68px) e sobravam 78px de branco no card de 170. Os tres graficos
+   preenchem o card. */
 .grafico-card > .fluxo-chart,
-.grafico-card > .caixa-trend { flex: 1; min-height: 0; margin: 0; }
+.grafico-card > .caixa-trend,
+.grafico-card > .venc-chart { flex: 1; min-height: 0; margin: 0; }
 
 /* Titulo de grafico da Tecnico: NOME em destaque + natureza temporal discreta.
    O nome carrega o assunto; a legenda diz se e' fluxo, estoque ou futuro. */
