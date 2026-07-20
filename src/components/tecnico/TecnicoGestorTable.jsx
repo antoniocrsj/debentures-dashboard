@@ -12,7 +12,6 @@ import TableWrap from '../TableWrap.jsx'
 const LIMIT = 20
 const DEFAULT_SORT = { col: 'liquido', dir: 'desc' }
 const KEYS = { gestor: g => g.gestor, liquido: g => g.liquido, pctCaixa: g => g.pctCaixa ?? -Infinity, venc12m: g => g.venc12m ?? -Infinity }
-const LABELS = { gestor: 'Gestor', liquido: 'Cap. líquida', pctCaixa: '% Caixa', venc12m: 'Vencimento 12m' }
 
 function fmtPct(v) { return v == null ? '—' : `${v.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%` }
 
@@ -23,16 +22,14 @@ export default function TecnicoGestorTable({ rows, activeGestor, onSelect, refDa
   const sorted = useMemo(() => sortRows(rows, KEYS[sort.col] || KEYS.liquido, sort.dir), [rows, sort])
   const onSort = col => setSort(s => cycleSort(s, col, DEFAULT_SORT))
   const shown = showAll ? sorted : sorted.slice(0, LIMIT)
-  const dirTxt = sort.dir === 'asc' ? '↑' : '↓'
 
   if (!rows || !rows.length) return null
 
   return (
     <div className="fluxo-ranking-block tecnico-gestor-table">
-      <div className="fluxo-ranking-head">
-        <h3 className="fluxo-section-title">Gestoras</h3>
-        <span className="fluxo-ranking-sub">Ordenado por: {LABELS[sort.col]} {dirTxt}</span>
-      </div>
+      {/* Sem "Gestoras" nem "Ordenado por: X": a 1a coluna ja' se chama Gestor e a
+          propria coluna ordenada mostra a seta -- os dois textos repetiam o que
+          a tabela dizia de si mesma, gastando uma linha inteira. */}
       <TableWrap title="Gestoras — filtro da aba Técnico">
         <table className="asset-table fluxo-table table-clickable">
           <thead>
