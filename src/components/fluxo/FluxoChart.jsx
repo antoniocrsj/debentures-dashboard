@@ -5,10 +5,19 @@ import {
 import { toChartSeries, fmtDayMonthYY, fmtWeekFull, fmtFluxo, fmtFluxoSigned } from '../../utils/fluxo.js'
 
 // Paleta quente (identidade Luc), legível sobre o card claro
-const COL_CAP = '#8c5e3a'  // captação — terracota
-const COL_RES = '#9a8c7a'  // resgate — taupe/cinza quente
-const COL_LIQ = '#2a2420'  // cap. líquida — carvão quente, alto contraste
-const COL_ZERO = '#94a3b8' // linha do zero — cinza discreto mas visível
+// CATALOGO DE 6 CORES (ver :root do index.css). O Recharts nao aceita var()
+// em fill/stroke, entao os hex sao repetidos aqui -- mas SAO os do catalogo,
+// nao tons proprios. Se mudar la', mude aqui.
+//
+// Sem fillOpacity de proposito: com 0.72 o terracota que aparecia na tela era
+// ~#a98467, uma cor que nao existe em catalogo nenhum -- foi assim que a
+// paleta inchou. A cor do token passa a ser a cor da tela.
+const COL_CAP = '#8c5e3a'  // captação    — terracota (serie 1)
+const COL_RES = '#9a8c7a'  // resgate     — taupe (serie 2)
+const COL_LIQ = '#2a2420'  // cap. líquida — carvão (linha)
+const COL_ZERO = '#9a8c7a' // linha do zero — taupe; era #94a3b8, um cinza
+                           // AZULADO herdado da paleta navy aposentada: a
+                           // unica cor fria fora das semanticas.
 
 // Eixo Y compacto, sem "R$"
 const axisFmt = v => {
@@ -90,8 +99,8 @@ export default function FluxoChart({ weekly }) {
           <ReferenceLine y={0} stroke={COL_ZERO} strokeWidth={1.25} />
           <Tooltip content={<FluxoTooltip />} />
           <Legend wrapperStyle={{ fontSize: 11 }} />
-          <Bar dataKey="captacao" name="Captação" fill={COL_CAP} stackId="fluxo" fillOpacity={0.72} radius={[2, 2, 0, 0]} barSize={barSize} />
-          <Bar dataKey="resgateNeg" name="Resgate" fill={COL_RES} stackId="fluxo" fillOpacity={0.72} radius={[0, 0, 2, 2]} barSize={barSize} />
+          <Bar dataKey="captacao" name="Captação" fill={COL_CAP} stackId="fluxo" radius={[2, 2, 0, 0]} barSize={barSize} />
+          <Bar dataKey="resgateNeg" name="Resgate" fill={COL_RES} stackId="fluxo" radius={[0, 0, 2, 2]} barSize={barSize} />
           <Line dataKey="liquido" name="Cap. líquida" stroke={COL_LIQ} strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
         </ComposedChart>
       </ResponsiveContainer>

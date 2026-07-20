@@ -12,23 +12,45 @@
 
 /* ─── Variables ──────────────────────────────────────────────── */
 :root {
-  /* Identidade "Luc": paleta quente/terrosa (do icone do mascote). Antes era
-     azul/navy frio. Estrutura de papeis mantida; so' as cores mudaram. Acento
-     interativo = terracota (realce: links/aba ativa/linha do grafico); solidos
-     ativos (toggles) = carvao. Verde/vermelho (semantica) e ambar preservados. */
-  --primary:        #8c5e3a;   /* terracota (acento/realce: abas ativas, links, linha do grafico) */
-  --primary-dark:   #26211d;   /* carvao quente (header) */
+  /* ===================================================================
+     CATALOGO DE CORES — 6 cores. Fonte de verdade do app.
+     ===================================================================
+     Regra: NENHUM componente inventa cor. Todo tom da interface e' uma
+     destas 6, ou uma mistura delas declarada logo abaixo. Antes existiam
+     ~12 marrons/beges separados por 2-5% de luminosidade -- indistinguiveis
+     na tela e impossiveis de manter.
+
+     NUCLEO (estrutura + series de dados)                                  */
+  --c-terracota:   #8c5e3a;   /* acento, aba ativa, link, SERIE 1 (captacao) */
+  --c-carvao:      #2a2420;   /* tinta, texto, LINHA de destaque (liquida)   */
+  --c-bege:        #f2ede5;   /* fundo da pagina, superficies                */
+  --c-taupe:       #9a8c7a;   /* SERIE 2 (resgate), neutro medio, grade      */
+
+  /* SEMANTICAS — so' significado. NUNCA decorativas, NUNCA serie de grafico:
+     se um grafico usar verde por estetica, o leitor le "positivo".          */
+  --c-verde:       #047857;   /* positivo */
+  --c-vermelho:    #b91c1c;   /* negativo */
+
+  /* Branco de card: neutro derivado do bege (bege levado ao extremo claro),
+     nao uma 7a cor -- e' superficie, nao tinta.                             */
+  --c-branco:      #ffffff;
+
+  /* ── Derivados: tudo abaixo SAI das 6 acima ──────────────────────────
+     Os nomes antigos ficam (60 usos de --text-muted, 49 de --primary...),
+     mas agora apontam p/ o catalogo em vez de trazer hex proprio.         */
+  --primary:        var(--c-terracota);
+  --primary-dark:   var(--c-carvao);   /* header (era #26211d, 2% mais escuro) */
   --primary-light:  #f1e7db;   /* bege claro (hover / selecionado leve) */
   --primary-border: #e4d5c3;   /* borda bege clara */
   --navy-light:    #6f5442;    /* castanho medio (borda/texto dos botoes/chips no estado normal) */
   --chip-bg:       #f8f4ee;    /* quase-branco quente (botoes/chips no estado normal) */
-  --bg:            #f2ede5;     /* bege claro de fundo */
-  --card:          #ffffff;
-  --text:          #2a2420;   /* carvao quente (nunca preto puro) */
-  --text-muted:    #6b6154;
-  --border:        #e8dfd2;
-  --pos:           #047857;    /* verde canonico: ganho / valor positivo (mantido) */
-  --neg:           #b91c1c;    /* vermelho canonico: perda / valor negativo (mantido) */
+  --bg:            var(--c-bege);
+  --card:          var(--c-branco);
+  --text:          var(--c-carvao);
+  --text-muted:    color-mix(in srgb, var(--c-taupe) 58%, var(--c-carvao));
+  --border:        color-mix(in srgb, var(--c-taupe) 15%, var(--c-bege));
+  --pos:           var(--c-verde);
+  --neg:           var(--c-vermelho);
   --success:       var(--pos); /* alias semantico (um verde so' no app) */
   --danger:        var(--neg); /* alias semantico (um vermelho so' no app) */
   --warn:          #d97706;    /* ambar (mantido — ja' e' quente) */
@@ -44,18 +66,18 @@
      --text-faint aqui: cor de acento e de texto sao escuras por obrigacao (
      precisam de contraste p/ ler) e pesam quando viram area grande. Estes sao
      os mesmos matizes (taupe ~36deg / terracota ~26deg), so' mais claros. */
-  --bar-juros:     #bdb3a2;    /* taupe claro    (base da barra) */
-  --bar-amort:     #c8935f;    /* terracota clara (topo da barra) */
+  --bar-juros:     color-mix(in srgb, var(--c-taupe) 61%, var(--c-bege));
+  --bar-amort:     color-mix(in srgb, var(--c-terracota) 61%, var(--c-bege));
   /* Grade dos graficos (Caixa e Captacao usam o MESMO token p/ nao divergirem:
      tracejada 3-3, horizontal, sem linha de eixo nem tick marks). */
-  --grid:          #e0d3c0;
+  --grid:          color-mix(in srgb, var(--c-taupe) 27%, var(--c-bege));
   /* Rampa bege quente (hover / borda / scroll) — era a rampa azul-acinzentada */
   --blue-soft:     #ece0d0;    /* fundo em hover / fundo desktop */
   --blue-press:    #e6d8c5;    /* fundo em active/press */
   --blue-line:     #ddd0bd;    /* divisor / borda */
   --blue-mute:     #ccbca6;    /* thumb de scrollbar */
-  --text-faint:    #7a6f5e;    /* texto discreto (notas, placeholders) — AA */
-  --text-soft:     #574e44;    /* texto secundario mais forte */
+  --text-faint:    color-mix(in srgb, var(--c-taupe) 71%, var(--c-carvao));   /* AA sobre bege */
+  --text-soft:     color-mix(in srgb, var(--c-taupe) 40%, var(--c-carvao));
   --shadow:        0 1px 3px rgba(38,33,29,.12), 0 1px 2px rgba(38,33,29,.07);
   --radius:        10px;
   --btn-h:         30px;       /* altura padrao de TODO botao (chips, abas, acoes) */
