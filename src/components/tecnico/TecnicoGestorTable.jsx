@@ -11,7 +11,7 @@ import TableWrap from '../TableWrap.jsx'
 // debenture a vencer em 12m etc.) em vez de mostrar um falso zero.
 const LIMIT = 20
 const DEFAULT_SORT = { col: 'liquido', dir: 'desc' }
-const KEYS = { gestor: g => g.gestor, liquido: g => g.liquido, pctCaixa: g => g.pctCaixa ?? -Infinity, venc12m: g => g.venc12m ?? -Infinity }
+const KEYS = { gestor: g => g.gestor, pl: g => g.pl ?? -Infinity, liquido: g => g.liquido, pctCaixa: g => g.pctCaixa ?? -Infinity, venc3m: g => g.venc3m ?? -Infinity }
 
 function fmtPct(v) { return v == null ? '—' : `${v.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%` }
 
@@ -35,9 +35,10 @@ export default function TecnicoGestorTable({ rows, activeGestor, onSelect, refDa
           <thead>
             <tr>
               <SortableTh col="gestor" label="Gestor" sort={sort} onSort={onSort} align="left" sticky />
-              <SortableTh col="liquido" label="Cap. líquida" sort={sort} onSort={onSort} />
+              <SortableTh col="pl" label="PL" sort={sort} onSort={onSort} />
+              <SortableTh col="liquido" label="Cap. líq." sort={sort} onSort={onSort} />
               <SortableTh col="pctCaixa" label="% Caixa" sort={sort} onSort={onSort} />
-              <SortableTh col="venc12m" label="Venc. 12m" sort={sort} onSort={onSort} />
+              <SortableTh col="venc3m" label="Venc. 3M" sort={sort} onSort={onSort} />
             </tr>
           </thead>
           <tbody>
@@ -49,9 +50,10 @@ export default function TecnicoGestorTable({ rows, activeGestor, onSelect, refDa
                   tabIndex={0} onKeyDown={e => e.key === 'Enter' && onSelect?.(g.gestor)}
                   title={active ? `Limpar o filtro de ${g.gestor}` : `Filtrar por ${g.gestor}`}>
                   <td className="col-sticky col-gestor"><span className="ativo-code">{g.gestor}</span></td>
+                  <td className="col-num">{g.pl == null ? '—' : fmtFluxo(g.pl)}</td>
                   <td className={`col-num liq-cell${pos ? ' pos' : neg ? ' neg' : ''}`}>{fmtFluxoSigned(g.liquido)}</td>
                   <td className="col-num">{fmtPct(g.pctCaixa)}</td>
-                  <td className="col-num">{g.venc12m == null ? '—' : fmtFluxo(g.venc12m)}</td>
+                  <td className="col-num">{g.venc3m == null ? '—' : fmtFluxo(g.venc3m)}</td>
                 </tr>
               )
             })}

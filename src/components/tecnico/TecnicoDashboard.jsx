@@ -139,17 +139,29 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, on
     () => aggGestores(agenda12m, eventos, gpt, { seg: tipo, selMes: null }),
     [agenda12m, eventos, gpt, tipo]
   )
-  const vencPorGestor = useMemo(
-    () => new Map(vencGestorRows.map(r => [r.nome, (r.juros || 0) + (r.amort || 0)])),
-    [vencGestorRows]
-  )
+  // Venc. 3M (nao 12m): a coluna serve p/ ler pressao de reinvestimento PROXIMA
+  // -- o que vence daqui a um ano nao concorre com a decisao de hoje. Somamos
+  // gestor a gestor os 3 primeiros meses da agenda, cada um pela mesma via do
+  // aggGestores (fatia por participacao real no ticker), em vez de ratear o 12m.
+  const vencPorGestor = useMemo(() => {
+    const meses3 = (agenda12m?.meses || []).slice(0, 3).map(m => m.mes)
+    if (!meses3.length) return new Map()
+    const acc = new Map()
+    for (const mes of meses3) {
+      for (const r of aggGestores(agenda12m, eventos, gpt, { seg: tipo, selMes: mes })) {
+        acc.set(r.nome, (acc.get(r.nome) || 0) + (r.juros || 0) + (r.amort || 0))
+      }
+    }
+    return acc
+  }, [agenda12m, eventos, gpt, tipo])
 
   // ---- Tabela combinada (filtro principal) ----
   const gestorRows = useMemo(() => ranking.map(r => ({
     gestor: r.gestor,
     liquido: r.liquido,
     pctCaixa: pctCaixaPorGestor.has(r.gestor) ? pctCaixaPorGestor.get(r.gestor) : null,
-    venc12m: vencPorGestor.has(r.gestor) ? vencPorGestor.get(r.gestor) : null,
+    venc3m: vencPorGestor.has(r.gestor) ? vencPorGestor.get(r.gestor) : null,
+    pl: r.plRecente ?? null,
   })), [ranking, pctCaixaPorGestor, vencPorGestor])
 
   // O grafico de caixa le uma serie MENSAL: em 1s/1m/3m ele teria 0-3 pontos e

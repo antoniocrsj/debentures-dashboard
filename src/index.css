@@ -2008,3 +2008,31 @@ a { color: var(--primary); }
 .venc-key { width: 7px; height: 7px; border-radius: 1px; display: inline-block; }
 .venc-key-juros { background: var(--bar-juros); }
 .venc-key-amort { background: var(--bar-amort); }
+
+/* TABELA DA TECNICA: densa de proposito -- e' o filtro principal da aba e
+   precisa caber gestora suficiente na altura dos 3 graficos ao lado.
+   Cabecalho com a MESMA altura das linhas: o th nao e' mais importante que o
+   dado, e a linha extra so' empurrava a lista p/ baixo. */
+.app.desktop .tecnico-gestor-table .fluxo-table { font-size: 10.5px; }
+.app.desktop .tecnico-gestor-table table.asset-table th,
+.app.desktop .tecnico-gestor-table table.asset-table td {
+  padding: 2px 5px !important;
+  height: 20px;
+  line-height: 1.15;
+  white-space: nowrap;
+  font-size: 10.5px;
+}
+/* th na MESMA altura do td: o padding vertical do cabecalho global era maior e
+   a seta de ordenacao esticava a linha. */
+.app.desktop .tecnico-gestor-table table.asset-table th {
+  font-size: 9.5px;
+  letter-spacing: 0;
+  vertical-align: middle;
+}
+.app.desktop .tecnico-gestor-table table.asset-table th > * {
+  padding: 0 !important;
+  min-height: 0;
+  line-height: 1.15;
+}
+/* numero fino: tabular p/ as casas alinharem em coluna estreita */
+.app.desktop .tecnico-gestor-table .fluxo-table .col-num { font-variant-numeric: tabular-nums; }
