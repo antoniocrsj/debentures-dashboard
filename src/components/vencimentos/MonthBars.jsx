@@ -45,16 +45,11 @@ export default function MonthBars({ rows, max, selMes, onPick, fmtVal, fmtLabel,
       )}
       <div className="venc-baseline" aria-hidden="true" />
       <div className="venc-axis">
-        {rows.map(m => {
-          // fim de trimestre: 'AAAA-MM' -> mes divisivel por 3
-          const fimTri = (+String(m.mes).slice(5, 7)) % 3 === 0
-          const mostra = !compacto || fimTri
-          return (
-            <span key={m.mes} className={`venc-lbl${selMes === m.mes ? ' sel' : ''}`}>
-              {mostra ? m.label : ''}
-            </span>
-          )
-        })}
+        {rows.map(m => (
+          // TODOS os meses: no compacto o rotulo e' vertical (writing-mode), entao
+          // cabe em cada coluna de 27px sem colidir com o vizinho.
+          <span key={m.mes} className={`venc-lbl${selMes === m.mes ? ' sel' : ''}`}>{m.label}</span>
+        ))}
       </div>
     </div>
   )

@@ -10,7 +10,7 @@ import TableWrap from '../TableWrap.jsx'
 // quando o gestor nao aparece naquela fonte (fundo sem caixa estimado, sem
 // debenture a vencer em 12m etc.) em vez de mostrar um falso zero.
 const LIMIT = 20
-const DEFAULT_SORT = { col: 'liquido', dir: 'desc' }
+const DEFAULT_SORT = { col: 'pl', dir: 'desc' }   // abre pelo maior PL (porte do gestor)
 const KEYS = { gestor: g => g.gestor, pl: g => g.pl ?? -Infinity, liquido: g => g.liquido, pctCaixa: g => g.pctCaixa ?? -Infinity, venc3m: g => g.venc3m ?? -Infinity }
 
 function fmtPct(v) { return v == null ? '—' : `${v.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%` }

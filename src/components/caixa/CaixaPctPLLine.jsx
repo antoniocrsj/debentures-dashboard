@@ -28,7 +28,7 @@ const PAD_LARGO = { l: 52, r: 20, t: 14, b: 52 }   /* b maior: rotulo vertical o
 // regua achar que so' cabiam 4 meses numa janela de 6 -- resultado: "mar/26
 // jun/26" e nenhuma ideia de QUANDO a curva se moveu. Aqui a folga encolhe e o
 // rotulo passa a ser medido pelo que ele realmente ocupa (~34px a 11px).
-const PAD_ESTREITO = { l: 28, r: 10, t: 8, b: 42 }   /* b maior: rotulo vertical ocupa altura */   /* card compacto da Tecnica: cada px de folga sai da curva */
+const PAD_ESTREITO = { l: 28, r: 10, t: 14, b: 42 }   /* t=14: o rotulo do tick mais ALTO (ex.: 30%) sobe 3px e vazava a borda de cima com t=8; b maior: rotulo vertical ocupa altura */   /* card compacto da Tecnica: cada px de folga sai da curva */
 const W_ESTREITO = 460
 
 // Janelas de tempo do grafico (meses recentes; 'total' = serie inteira).
