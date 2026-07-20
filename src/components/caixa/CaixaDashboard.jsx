@@ -6,14 +6,26 @@ import CaixaPctPLLine from './CaixaPctPLLine.jsx'
 import CaixaGestorTable from './CaixaGestorTable.jsx'
 import CaixaFundoTable from './CaixaFundoTable.jsx'
 import CaixaFundosCaixaTable from './CaixaFundosCaixaTable.jsx'
+import { CORTE_OFICIAL, isOficial, normCnpj } from '../../utils/corte.js'
 
 // Mercados vistos SEPARADAMENTE (sem "Todos"): a aba sempre mostra um mercado.
 const SEGMENTOS = [
   { id: 'CDI', label: 'Tradicional' },
   { id: '12431', label: '12.431' },
 ]
-export default function CaixaDashboard({ compact = false }) {
-  const { loading, error, fundos, gestores, meta, historico, reload } = useCaixa()
+export default function CaixaDashboard({ compact = false, corte = CORTE_OFICIAL, pctPorCnpj = null }) {
+  const { loading, error, fundos: fundosBase, gestores, meta, historico, reload } = useCaixa()
+
+  // Corte de %Deb global: como TODO o resto da aba (cards, ranking, tabelas)
+  // deriva de `fundos`, filtrar na origem propaga sozinho. No corte oficial
+  // devolve a base intacta -- o numero de sempre, sem passar por filtro.
+  const fundos = useMemo(() => {
+    if (isOficial(corte) || !pctPorCnpj) return fundosBase
+    return fundosBase.filter(f => {
+      const p = pctPorCnpj.get(normCnpj(f.cnpj))
+      return p != null && p > corte
+    })
+  }, [fundosBase, pctPorCnpj, corte])
   const [segmento, setSegmento] = useState('CDI')   // padrao: Tradicional (mercados separados)
   const [gestor, setGestor] = useState('')
 
@@ -149,7 +161,19 @@ export default function CaixaDashboard({ compact = false }) {
           {/* Mesma disposição da Captação: no desktop o gráfico fica à esquerda e
               o ranking de gestores à direita, na mesma altura; no compacto empilham. */}
           <div className="caixa-main-row">
+            {/* O historico vem agregado por (mes, gestor, segmento) -- SEM CNPJ,
+                entao nao ha' como aplicar o corte de %Deb nele. Em vez de
+                esconder o grafico (perder informacao) ou deixa-lo mudo (o
+                usuario leria a curva como se fosse do corte selecionado), ele
+                fica e se declara: a linha e' sempre do universo oficial. */}
             <CaixaPctPLLine historico={historico} segmento={segmento} gestor={gestor} />
+            {!isOficial(corte) && (
+              <p className="caixa-corte-aviso" role="note">
+                A curva acima é sempre do universo oficial ({CORTE_OFICIAL}%) — o histórico
+                é agregado por gestor/mês, sem o fundo individual, então não acompanha o corte de {corte}%.
+                Os cards e as tabelas acima já refletem o corte.
+              </p>
+            )}
             {/* A tabela fica SEMPRE montada: selecionar uma gestora nao pode
                 remove-la do DOM, senao o grafico (flex) se estica e o layout
                 pula embaixo do cursor. Selecionar so' filtra o grafico/os cards

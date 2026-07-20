@@ -376,7 +376,7 @@ export default function App() {
             <Suspense fallback={
               <div className="state-box"><div className="spinner" aria-label="Carregando" /><p>Carregando…</p></div>
             }>
-              <CaixaDashboard compact={!desktop} />
+              <CaixaDashboard compact={!desktop} corte={corte} pctPorCnpj={pctPorCnpj} />
             </Suspense>
           </ErrorBoundary>
         )}
