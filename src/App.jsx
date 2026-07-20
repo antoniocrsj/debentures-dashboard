@@ -388,7 +388,7 @@ export default function App() {
             um filtro do CONTEUDO -- muda o numero que esta' logo abaixo, entao
             e' onde o numero esta' que ele tem que morar. No compacto segue no
             topo, que la' e' a unica faixa de filtro disponivel. */}
-        {mostraCorte && desktop && (
+        {mostraCorte && desktop && tab !== 'tecnico' && (
           <div className="corte-bar">
             <CorteSelector corte={corte} onChange={setCorte} disponivel={corteDisponivel} />
           </div>
@@ -436,7 +436,8 @@ export default function App() {
             <Suspense fallback={
               <div className="state-box"><div className="spinner" aria-label="Carregando" /><p>Carregando…</p></div>
             }>
-              <TecnicoDashboard agenda12m={agenda12m} blc={raw?.blc} plByGestor={plByGestor} />
+              <TecnicoDashboard agenda12m={agenda12m} blc={raw?.blc} plByGestor={plByGestor}
+                corte={corte} onCorte={setCorte} corteDisponivel={corteDisponivel} />
             </Suspense>
           </ErrorBoundary>
         )}

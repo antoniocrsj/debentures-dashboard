@@ -61,7 +61,11 @@ export default function CaixaPctPLLine({ historico, segmento, gestor, periodo: p
   const wrapRef = useCallback(node => {
     if (roRef.current) { roRef.current.disconnect(); roRef.current = null }
     if (!node || typeof ResizeObserver === 'undefined') return
-    const read = (w, h) => setBox({ W: Math.max(260, Math.round(w) || 680), H: Math.max(160, Math.round(h) || 260) })
+    // Piso de altura 160 -> 70: o 160 vinha de quando este grafico so' existia na
+    // aba Caixa, alto. No card compacto da Tecnica a area util e' ~80px, e o piso
+    // fazia o SVG desenhar 160 dentro dela -- metade da curva ficava cortada, sem
+    // erro nenhum no console. 70 ainda garante eixo + linha legiveis.
+    const read = (w, h) => setBox({ W: Math.max(260, Math.round(w) || 680), H: Math.max(70, Math.round(h) || 260) })
     const r = node.getBoundingClientRect()
     read(r.width, r.height)
     const ro = new ResizeObserver(entries => {

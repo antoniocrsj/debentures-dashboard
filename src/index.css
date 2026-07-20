@@ -1908,8 +1908,12 @@ a { color: var(--primary); }
    gestora: 3 graficos empilhados a esquerda, tabela de gestoras (filtro
    principal) a direita, 2 tabelas de captacao (semanas/meses) abaixo. */
 .tecnico { padding: 12px 20px 24px; }
-.tecnico-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
-.tecnico-header .controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.tecnico-header { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 10px; }
+.tecnico-header .controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; width: 100%; }
+/* %Deb encostado na direita; os filtros ficam a esquerda. Mesma linha, extremos
+   opostos -- e' o alinhamento que o usuario pediu e o que devolve altura p/ os
+   graficos. */
+.tecnico-header .controls > .corte-step { margin-left: auto; }
 .tecnico-seg { width: auto; }
 .tecnico-filtro-ativo {
   display: inline-flex; align-items: center; gap: 8px; background: var(--card); border: 1.5px solid var(--primary);
@@ -1935,9 +1939,16 @@ a { color: var(--primary); }
   .app.desktop .tecnico-chart-cell .caixa-trend { margin-bottom: 0; }
   /* Graficos mais baixos (200px) so' na aba Tecnico -- Captacao/Caixa/Vencimentos
      sozinhas continuam com a altura normal (350px/200px). */
+  /* Metade da altura anterior (230 -> 115). Com titulo e legenda DENTRO do
+     card, a area de plot ficava alta demais p/ o que a serie precisa mostrar --
+     e empurrava as tabelas p/ fora da primeira dobra. */
+  /* A altura vive no CARD, nao no grafico: dentro do .grafico-card o grafico e'
+     flex:1 e ignora height proprio -- por isso fixar no filho nao pegava (media
+     299px). 115px de plot + ~55px de titulo/legenda = card de ~170px. */
+  .app.desktop .tecnico-chart-cell .grafico-card { height: 170px; }
   .app.desktop .tecnico-chart-cell .fluxo-chart,
   .app.desktop .tecnico-chart-cell .caixa-trend,
-  .app.desktop .tecnico-chart-cell .venc-chart { height: 230px; }
+  .app.desktop .tecnico-chart-cell .venc-chart { height: auto; min-height: 0; }
   .app.desktop .tecnico-gestor-table { position: sticky; top: 14px; }
   .app.desktop .tecnico-gestor-table .fluxo-ranking-head { margin-bottom: 8px; }
   .app.desktop .tecnico-gestor-table .table-wrap { max-height: none; height: 416px; margin: 0; }

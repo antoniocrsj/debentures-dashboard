@@ -13,6 +13,7 @@ import FluxoMonthlyTable from '../fluxo/FluxoMonthlyTable.jsx'
 import CaixaPctPLLine from '../caixa/CaixaPctPLLine.jsx'
 import MonthBars from '../vencimentos/MonthBars.jsx'
 import TecnicoGestorTable from './TecnicoGestorTable.jsx'
+import CorteSelector from '../CorteSelector.jsx'
 
 // Aba TECNICO: junta Captacao + Nivel de Caixa + Vencimentos (as 3 abas que
 // dependem de oferta e demanda do mesmo universo de fundos), com a tabela de
@@ -45,7 +46,7 @@ const UNIDADES = [
   { id: 'pct', label: '% do PL' },
 ]
 
-export default function TecnicoDashboard({ agenda12m, blc, plByGestor }) {
+export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, onCorte, corteDisponivel }) {
   const [tipo, setTipo] = useState('trad')   // Tradicional: padrao unico do app
   const [gestorSel, setGestorSel] = useState('')
   const [periodo, setPeriodo] = useState(PERIODO_PADRAO)
@@ -160,11 +161,12 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor }) {
     <section className="tecnico" aria-label="Visão técnica — oferta e demanda">
       <header className="tecnico-header">
         {/* Sem titulo/subtitulo/data soltos: nesta aba TODO texto vive dentro de
-            um grafico ou de uma tabela. O nome da aba ja' esta' na navegacao e o
-            subtitulo explicava o que os 3 graficos mostram -- que os proprios
-            titulos dos graficos agora dizem. A data-base migrou p/ o rodape da
-            tabela, junto do dado que ela data. */}
-        <div />
+            um grafico ou de uma tabela (a data-base migrou p/ o rodape da tabela
+            de gestoras). O header e' so' a barra de controle: filtros a
+            ESQUERDA e o corte de %Deb a DIREITA, na MESMA linha -- por isso o
+            Tecnico renderiza o CorteSelector aqui em vez de usar a .corte-bar
+            do App, que ficaria numa linha propria acima e empurraria os
+            graficos p/ baixo. */}
         <div className="controls">
           {gestorSel && (
             <span className="tecnico-filtro-ativo">
@@ -181,6 +183,7 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor }) {
               <button key={p.id} className={`segmented-btn${periodo === p.id ? ' active' : ''}`} onClick={() => setPeriodo(p.id)}>{p.label}</button>
             ))}
           </div>
+          <CorteSelector corte={corte} onChange={onCorte} disponivel={corteDisponivel} />
         </div>
       </header>
 
