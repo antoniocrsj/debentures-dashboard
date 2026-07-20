@@ -22,7 +22,7 @@ export default function MonthBars({ rows, max, selMes, onPick, fmtVal, fmtLabel,
               className={`venc-col${selMes === m.mes ? ' sel' : ''}`}
               title={`${m.label}: juros ${fmtVal(m.juros)} + amort. ${fmtVal(m.amort)} = ${fmtVal(m.total)} — clique para ${selMes === m.mes ? 'limpar o filtro' : 'filtrar'}`}
               onClick={() => onPick(m.mes)} aria-pressed={selMes === m.mes}>
-              {!compacto && <span className="venc-bar-total">{m.total > 0.00001 ? fmtLabel(m.total) : ''}</span>}
+              <span className="venc-bar-total">{m.total > 0.00001 ? fmtLabel(m.total) : ''}</span>
               <span className="venc-bar-wrap" style={{ height: `${barPct}%` }}>
                 <span className="venc-seg venc-seg-juros" style={{ height: `${jPct}%` }}>
                   {showJ && !compacto && <span className="venc-seg-lbl">{fmtLabel(m.juros)}</span>}

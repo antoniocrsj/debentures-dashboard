@@ -109,7 +109,13 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, on
     () => aggMeses(agenda12m, eventos, gpt, { gestorSel, seg: tipo, persp: 'carteira', base: 'view' }),
     [agenda12m, eventos, gpt, gestorSel, tipo]
   )
-  const maxVenc = Math.max(1, ...mesesView.map(m => m.total))
+  // 10 meses em vez dos 12 da agenda: com 12 colunas em 330px o valor em cima
+  // da barra nao cabia. Cortando 2 meses cada coluna ganha ~20% de largura e o
+  // numero volta a caber. A agenda segue gerando 12 -- o recorte e' so' desta
+  // aba (a aba Vencimentos, larga, continua com os 12).
+  const MESES_TECNICO = 10
+  const mesesViewCurto = useMemo(() => mesesView.slice(0, MESES_TECNICO), [mesesView])
+  const maxVenc = Math.max(1, ...mesesViewCurto.map(m => m.total))
   // % do PL: mesma base 'carteira' do VencimentosDashboard (sempre valor de
   // carteira, mesmo em outra perspectiva) dividida pelo PL do gestor selecionado
   // (ou PL total, sem selecao).
@@ -127,7 +133,8 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, on
     amort: plDenom > 0 ? (m.amort / plDenom) * 100 : 0,
     total: plDenom > 0 ? (m.total / plDenom) * 100 : 0,
   })), [mesesCarteira, plDenom])
-  const maxPct = Math.max(0.001, ...mesesPL.map(m => m.total))
+  const mesesPLCurto = useMemo(() => mesesPL.slice(0, MESES_TECNICO), [mesesPL])
+  const maxPct = Math.max(0.001, ...mesesPLCurto.map(m => m.total))
   const vencGestorRows = useMemo(
     () => aggGestores(agenda12m, eventos, gpt, { seg: tipo, selMes: null }),
     [agenda12m, eventos, gpt, tipo]
@@ -231,10 +238,10 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, on
                 {!agenda12m
                   ? <div className="caixa-line-empty">Sem agenda de vencimentos carregada ainda.</div>
                   : unidade === 'rs'
-                    ? <MonthBars rows={mesesView} max={maxVenc} selMes={null} onPick={() => {}}
+                    ? <MonthBars rows={mesesViewCurto} max={maxVenc} selMes={null} onPick={() => {}}
                         fmtVal={fmtBRL} fmtLabel={fmtBar} ariaLabel="Vencimentos por mês em reais" compacto />
                     : plDenom > 0
-                      ? <MonthBars rows={mesesPL} max={maxPct} selMes={null} onPick={() => {}}
+                      ? <MonthBars rows={mesesPLCurto} max={maxPct} selMes={null} onPick={() => {}}
                           fmtVal={pctFmt} fmtLabel={pctFmt} ariaLabel="Vencimentos por mês em % do PL" compacto />
                       : <div className="caixa-line-empty">Sem PL de {gestorSel || 'carteira'} para calcular %PL.</div>}
                 </div>
