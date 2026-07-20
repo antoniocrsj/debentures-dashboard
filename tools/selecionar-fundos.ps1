@@ -8,7 +8,9 @@
   e' sobrescrito automaticamente).
 
   Criterios:
-    - Primeiro filtro comum: fundo precisa ter > 15% do PL em debentures.
+    - Primeiro filtro comum: fundo precisa ter > 10% do PL em debentures.
+      (Era 15% ate' jul/2026; a regua desceu p/ 10% para alargar o universo -
+      um fundo com 10% do PL em debenture ja' e' comprador relevante.)
     - Fundo precisa ser elegivel como credito:
         * elegiveis: FIF de Renda Fixa/Multimercado/sem classificacao clara e FIDC.
         * nao elegiveis: Acoes/FIA, FIP, FII/FIIM, FIAGRO, Funcine, Cambial/FMP.
@@ -70,7 +72,11 @@ param(
   [string]$CdaDir = ("C:\Projeto Cr" + [char]233 + "dito\CVM _cda"),
   [string]$RegistroDir = ("C:\Projeto Cr" + [char]233 + "dito\CVM _cadastro_fundos"),
   [string]$CadastroUrl = 'https://script.google.com/macros/s/AKfycbxhTXC7FXkp9fEz0bw6Nnh_JDm4UVhRkqZF5zOW-Cb842RhFBikauGaWeChG0vQerPrBA/exec',
-  [double]$LimiarPct = 0.15,
+  # Regua oficial da curadoria. Desceu de 0.15 p/ 0.10 em jul/2026 (decisao do
+  # usuario): alarga o universo de fundos compradores de debenture.
+  [double]$LimiarPct = 0.10,
+  # Piso do universo candidato da analise de sensibilidade. Com a regua oficial
+  # em 10% os dois coincidem -- baixe este p/ estudar cortes abaixo da regua.
   [double]$LimiarCandidatosPct = 0.10,
   [double]$LimiarLei12431Pct = 0.05,
   [double]$LimiarLei12431FortePct = 0.20,

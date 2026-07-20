@@ -13,7 +13,10 @@ const JANELAS = [
   { id: '12m', label: '12m' },
   { id: '6m', label: '6m' },
 ]
-const CORTE_ATUAL = 15   // -LimiarPct de selecionar-fundos.ps1 (curadoria oficial hoje)
+// -LimiarPct de selecionar-fundos.ps1 (curadoria oficial hoje). Desceu de 15
+// p/ 10 em jul/2026 quando a regua da curadoria baixou -- se mexer no
+// LimiarPct de la', mexa aqui tambem (e' a linha "corte atual" do grafico).
+const CORTE_ATUAL = 10
 const PAD = { l: 56, r: 20, t: 14, b: 30 }
 
 function niceStep(raw) {
