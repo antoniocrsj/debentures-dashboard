@@ -1930,11 +1930,13 @@ a { color: var(--primary); }
 .tecnico-chart-label { font-size: 12.5px; font-weight: 600; color: var(--text-soft); margin: 0 0 6px; }
 
 @media (min-width: 700px) {
-  .app.desktop .tecnico-grid { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; align-items: start; margin-bottom: 14px; }
-  .app.desktop .tecnico-charts-col { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .app.desktop .tecnico-grid { display: grid; grid-template-columns: minmax(0, 1fr) 362px; gap: 8px; align-items: start; margin-bottom: 14px; }
+  .app.desktop .tecnico-charts-col { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
   /* Linha 1 (Captacao + Caixa) e linha 2 (Vencimentos R$ + %PL): 2 graficos
      lado a lado, mesma largura cada. */
-  .app.desktop .tecnico-chart-row { display: flex; gap: 16px; align-items: stretch; }
+    /* gap 8 e tabela 362px: com 1376px de grid, sobram 1006 p/ os graficos ->
+     (1006 - 2x8) / 3 = 330px por card, a medida pedida. */
+  .app.desktop .tecnico-chart-row { display: flex; gap: 8px; align-items: stretch; }
   .app.desktop .tecnico-chart-cell { flex: 1 1 0; min-width: 0; }
   /* Os 3 graficos com largura e altura IDENTICAS, numa linha so'. */
   .app.desktop .tecnico-chart-cell .fluxo-chart,
@@ -1947,7 +1949,7 @@ a { color: var(--primary); }
   /* A altura vive no CARD, nao no grafico: dentro do .grafico-card o grafico e'
      flex:1 e ignora height proprio -- por isso fixar no filho nao pegava (media
      299px). 115px de plot + ~55px de titulo/legenda = card de ~170px. */
-  .app.desktop .tecnico-chart-cell .grafico-card { height: 170px; }
+  .app.desktop .tecnico-chart-cell .grafico-card { height: 270px; }
   .app.desktop .tecnico-chart-cell .fluxo-chart,
   .app.desktop .tecnico-chart-cell .caixa-trend,
   .app.desktop .tecnico-chart-cell .venc-chart { height: auto; min-height: 0; }
