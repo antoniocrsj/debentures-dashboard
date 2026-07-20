@@ -50,6 +50,14 @@
     tools\Sugestao_Feeders_12431.csv     - nome infra mas com carteira no CDA sem
                                             debenture (investem em cotas de outros
                                             fundos) - excluidos dos candidatos.
+    tools\Universo_Candidatos.csv        - TODOS os fundos que batem o piso mais
+                                            baixo (-LimiarCandidatosPct, default
+                                            10%), com o %Deb de cada um persistido
+                                            (Pct_Debentures). E' o superset usado
+                                            pela analise de sensibilidade de corte
+                                            (ver preparar-fluxo.ps1 -IncluirCandidatos
+                                            e gerar-sensibilidade-corte.mjs) - nunca
+                                            aplicado como curadoria, so' leitura.
 
   Uso: powershell -File selecionar-fundos.ps1
        powershell -File selecionar-fundos.ps1 -MesAno 202603   # mes especifico
@@ -63,6 +71,7 @@ param(
   [string]$RegistroDir = ("C:\Projeto Cr" + [char]233 + "dito\CVM _cadastro_fundos"),
   [string]$CadastroUrl = 'https://script.google.com/macros/s/AKfycbxhTXC7FXkp9fEz0bw6Nnh_JDm4UVhRkqZF5zOW-Cb842RhFBikauGaWeChG0vQerPrBA/exec',
   [double]$LimiarPct = 0.15,
+  [double]$LimiarCandidatosPct = 0.10,
   [double]$LimiarLei12431Pct = 0.05,
   [double]$LimiarLei12431FortePct = 0.20,
   [double]$MinPl = 5000000,
@@ -260,7 +269,17 @@ $gestorApelidoMap = Get-GestorApelidoMap $CadastroUrl
 Step "  $($gestorApelidoMap.Count) gestoras cadastradas"
 
 # ---- 4. Classifica cada fundo com posicao em debentures --------------------
-Step "Classificando fundos (> $($LimiarPct*100)% debentures, PL > R$ 5 mi, tipo elegivel)..."
+# Classificamos no PISO mais baixo ($LimiarCandidatosPct, default 10%) para
+# capturar o UNIVERSO CANDIDATO inteiro (com %Deb persistido por fundo -> usado
+# depois pela analise de sensibilidade de corte). A curadoria oficial
+# ($candidatos, Sugestao_*/Lista_Final) continua exatamente igual a antes: e'
+# so' o subconjunto do universo que passa do corte $LimiarPct (default 15%).
+if ($LimiarCandidatosPct -gt $LimiarPct) {
+  Write-Host "    AVISO: -LimiarCandidatosPct ($($LimiarCandidatosPct*100)%) maior que -LimiarPct ($($LimiarPct*100)%); Universo_Candidatos.csv ficaria menor que a curadoria. Ajustando para $($LimiarPct*100)%." -ForegroundColor Yellow
+  $LimiarCandidatosPct = $LimiarPct
+}
+Step "Classificando fundos (> $($LimiarCandidatosPct*100)% debentures [piso do universo candidato; curadoria oficial > $($LimiarPct*100)%], PL > R$ 5 mi, tipo elegivel)..."
+$universo = New-Object System.Collections.Generic.List[object]
 $candidatos = New-Object System.Collections.Generic.List[object]
 $semRegistro = 0; $semPL = 0; $abaixoDeb = 0; $plBaixo = 0; $tipoNaoElegivel = 0
 $nome12431SemCarteira = 0; $carteira12431SemNome = 0; $carteiraForteSemNome = 0
@@ -273,7 +292,7 @@ foreach ($cnpj in $carteira.Keys) {
   $pl = if ($snap.PL -gt 0) { $snap.PL } else { $info.PL }
   if ($pl -le 0) { $semPL++; continue }
   $pct = $snap.Deb / $pl
-  if ($pct -le $LimiarPct) { $abaixoDeb++; continue }
+  if ($pct -le $LimiarCandidatosPct) { $abaixoDeb++; continue }
   if ($pl -le $MinPl) { $plBaixo++; continue }
   if (-not (Test-FundoCreditoElegivel $info)) { $tipoNaoElegivel++; continue }
 
@@ -282,25 +301,29 @@ foreach ($cnpj in $carteira.Keys) {
   $carteira12431Minima = ($pctLei -ge $LimiarLei12431Pct)
   $carteira12431Forte = ($pctLei -gt $LimiarLei12431FortePct)
   $eh12431 = (($carteira12431Minima -and $nome12431) -or $carteira12431Forte)
-  if ($nome12431 -and -not $carteira12431Minima) { $nome12431SemCarteira++ }
-  if ($carteira12431Minima -and -not $nome12431 -and -not $carteira12431Forte) { $carteira12431SemNome++ }
-  if ($carteira12431Forte -and -not $nome12431) { $carteiraForteSemNome++ }
+  if ($pct -gt $LimiarPct) {
+    if ($nome12431 -and -not $carteira12431Minima) { $nome12431SemCarteira++ }
+    if ($carteira12431Minima -and -not $nome12431 -and -not $carteira12431Forte) { $carteira12431SemNome++ }
+    if ($carteira12431Forte -and -not $nome12431) { $carteiraForteSemNome++ }
+  }
   $segmento = if ($eh12431) { '12431' } else { 'CDI' }
 
   $cnpjGestor = if ($fundoGestorCvm.ContainsKey($info.IdFundo)) { $fundoGestorCvm[$info.IdFundo] } else { '' }
   $apelido = if ($cnpjGestor -ne '' -and $gestorApelidoMap.ContainsKey($cnpjGestor)) { $gestorApelidoMap[$cnpjGestor] } else { '' }
 
-  $candidatos.Add([pscustomobject]@{
+  $item = [pscustomobject]@{
     Cnpj = $cnpj; Denom = $info.Denom; Segmento = $segmento; PctDeb = $pct; PctLei12431 = $pctLei
     PL = $pl; TipoClasse = $info.TipoClasse; Classificacao = $info.Classificacao
     CnpjGestor = $cnpjGestor; Apelido = $apelido
-  })
+  }
+  $universo.Add($item)
+  if ($pct -gt $LimiarPct) { $candidatos.Add($item) }   # curadoria oficial (corte atual)
 }
 $n12431 = ($candidatos | Where-Object { $_.Segmento -eq '12431' }).Count
 $nCdi   = ($candidatos | Where-Object { $_.Segmento -eq 'CDI' }).Count
-Step "  $($candidatos.Count) fundos qualificados (12431: $n12431 | CDI nao-isento: $nCdi)"
-Step "  excluidos -> sem registro: $semRegistro | sem PL valido: $semPL | <= $($LimiarPct*100)% deb: $abaixoDeb | PL <= R$ 5 mi: $plBaixo | tipo nao elegivel: $tipoNaoElegivel"
-Step "  alertas 12431 -> nome sem >= $($LimiarLei12431Pct*100)% Lei 12.431: $nome12431SemCarteira | >= $($LimiarLei12431Pct*100)% e <= $($LimiarLei12431FortePct*100)% Lei 12.431 sem nome: $carteira12431SemNome | > $($LimiarLei12431FortePct*100)% sem nome incluidos: $carteiraForteSemNome"
+Step "  $($candidatos.Count) fundos qualificados na curadoria oficial (12431: $n12431 | CDI nao-isento: $nCdi) | universo candidato (>$($LimiarCandidatosPct*100)%): $($universo.Count)"
+Step "  excluidos do universo -> sem registro: $semRegistro | sem PL valido: $semPL | <= $($LimiarCandidatosPct*100)% deb: $abaixoDeb | PL <= R$ 5 mi: $plBaixo | tipo nao elegivel: $tipoNaoElegivel"
+Step "  alertas 12431 (curadoria) -> nome sem >= $($LimiarLei12431Pct*100)% Lei 12.431: $nome12431SemCarteira | >= $($LimiarLei12431Pct*100)% e <= $($LimiarLei12431FortePct*100)% Lei 12.431 sem nome: $carteira12431SemNome | > $($LimiarLei12431FortePct*100)% sem nome incluidos: $carteiraForteSemNome"
 
 $semGestor = @($candidatos | Where-Object { $_.CnpjGestor -eq '' })
 $semApelido = @($candidatos | Where-Object { $_.CnpjGestor -ne '' -and $_.Apelido -eq '' })
@@ -398,6 +421,21 @@ $outFinalCdi   = Join-Path $OutDir 'Sugestao_Lista_Final_CDI.csv'
 Write-ListaFinal (@($candidatos | Where-Object { $_.Segmento -eq '12431' })) $outFinal12431
 Write-ListaFinal (@($candidatos | Where-Object { $_.Segmento -eq 'CDI' }))   $outFinalCdi
 
+# Universo_Candidatos.csv: TODO fundo do piso mais baixo, com %Deb persistido -
+# nunca aplicado como curadoria (so' leitura). Consumido por preparar-fluxo.ps1
+# -IncluirCandidatos (busca a captacao diaria desse universo mais largo) e por
+# gerar-sensibilidade-corte.mjs (varre o corte 10%-80% sobre a captacao real).
+$outUniverso = Join-Path $OutDir 'Universo_Candidatos.csv'
+$sbU = New-Object System.Text.StringBuilder
+[void]$sbU.AppendLine('CNPJ_FUNDO_CLASSE,DENOM_SOCIAL,Segmento,Pct_Debentures,Pct_Lei_12431,PL,Tipo_Classe,Classificacao,CNPJ Gestor,Apelido Gestor')
+foreach ($c in ($universo | Sort-Object Segmento, Denom)) {
+  $pct = ([Math]::Round($c.PctDeb * 100, 2)).ToString($ci)
+  $pctLei = ([Math]::Round($c.PctLei12431 * 100, 2)).ToString($ci)
+  $plFmt = ([Math]::Round($c.PL, 2)).ToString($ci)
+  [void]$sbU.AppendLine(('"{0}","{1}",{2},{3},{4},{5},"{6}","{7}","{8}","{9}"' -f $c.Cnpj, ([string]$c.Denom).Replace('"', '""'), $c.Segmento, $pct, $pctLei, $plFmt, ([string]$c.TipoClasse).Replace('"', '""'), ([string]$c.Classificacao).Replace('"', '""'), $c.CnpjGestor, ([string]$c.Apelido).Replace('"', '""')))
+}
+[void](Save-Text $outUniverso $sbU.ToString() $utf8)
+
 # ---- 6b. Candidatos novos (12.431 que ainda nao aparecem no CDA) ------------
 # O loop de classificacao acima so' enxerga fundos que JA tem posicao em
 # debentures no CDA. Um fundo novo (nascido depois da carteira de referencia)
@@ -474,6 +512,7 @@ if ($duplicados.Count -gt 0) {
 Write-Host "  Regra base                         : > $($LimiarPct*100)% do PL em debentures, PL > R$ 5 mi, tipo elegivel"
 Write-Host "  Regra 12431                        : >= $($LimiarLei12431Pct*100)% Lei 12.431 + nome infra/incentivado; ou > $($LimiarLei12431FortePct*100)% Lei 12.431 mesmo sem nome"
 Write-Host "  Fundos qualificados no CDA atual   : $($candidatos.Count) (12431: $n12431 | CDI nao-isento: $nCdi)"
+Write-Host "  Universo candidato (> $($LimiarCandidatosPct*100)%)      : $($universo.Count) fundos - para a analise de sensibilidade de corte"
 Write-Host "  Novos (nao estao nas abas hoje)    : $($novos.Count)"
 Write-Host "  Candidatos novos 12.431 (fora CDA) : $($candidatosNovos.Count) - nome infra, SEM carteira no CDA (novos de verdade, revisar)"
 Write-Host "  Feeders excluidos dos candidatos   : $($feedersExcluidos.Count) - nome infra, mas carteira sem debenture (investem em cotas)"

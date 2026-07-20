@@ -33,6 +33,7 @@ param(
   [switch]$SkipAgenda,
   [switch]$SkipIda,
   [switch]$SkipBooks,
+  [switch]$Sensibilidade,                  # opt-in: + captacao do universo candidato (10%-80%) p/ analise de sensibilidade de corte
   [switch]$NoPublishPrompt,
   [ValidateSet('Auto', 'Incremental', 'Completa')]
   [string]$CaptacaoModo = 'Auto',
@@ -69,6 +70,7 @@ $script:StepsAtivos = New-Object System.Collections.Generic.List[string]
 if (-not $SkipDebentures) { $script:StepsAtivos.Add('Debentures') }
 if (-not $SkipFundos)     { $script:StepsAtivos.Add('Fundos') }
 if (-not $SkipCaptacao)   { $script:StepsAtivos.Add('Captacao') }
+if (-not $SkipCaptacao -and $Sensibilidade) { $script:StepsAtivos.Add('Sensibilidade de corte (%Deb)') }
 if (-not $SkipBlc)        { $script:StepsAtivos.Add('BLC') }
 if (-not $SkipAnbima)     { $script:StepsAtivos.Add('ANBIMA') }
 if (-not $SkipOfertas)    { $script:StepsAtivos.Add('Ofertas') }
@@ -546,16 +548,20 @@ if ($SkipCaptacao) {
   Progress 'Captacao'
   try {
     $captacaoCompleta = ($CaptacaoModo -eq 'Completa') -or (($CaptacaoModo -eq 'Auto') -and $fundosAplicados)
+    # -Sensibilidade (opt-in): tambem busca a captacao diaria do universo
+    # candidato mais largo (10%-80%), alem da curadoria oficial. So' repassado
+    # se pedido -- por padrao o comportamento e' EXATAMENTE o mesmo de hoje.
+    $candArgs = @(); if ($Sensibilidade) { $candArgs = @('-IncluirCandidatos') }
     if ($captacaoCompleta) {
       if ($CaptacaoModo -eq 'Completa') {
         Ok "Modo Completa solicitado: recalculando ultimos 12 meses (repopula rentabilidade)."
       } else {
         Warn "Lista de fundos mudou; vou recalcular a captacao completa para evitar historico misto."
       }
-      & (Join-Path $PSScriptRoot 'preparar-fluxo.ps1')
+      & (Join-Path $PSScriptRoot 'preparar-fluxo.ps1') @candArgs
       $summary.Captacao = 'OK (recalculo completo)'
     } else {
-      & (Join-Path $PSScriptRoot 'preparar-fluxo.ps1') -Incremental
+      & (Join-Path $PSScriptRoot 'preparar-fluxo.ps1') -Incremental @candArgs
       $summary.Captacao = 'OK (incremental)'
     }
     Ok "Captacao atualizada."
@@ -563,6 +569,21 @@ if ($SkipCaptacao) {
     $summary.Captacao = "FALHOU: $($_.Exception.Message)"
     Fail $summary.Captacao
     throw "Interrompido: Captacao e a atualizacao principal."
+  }
+
+  # Analise de sensibilidade de corte de %Deb (opt-in, best-effort): NAO afeta
+  # a Captacao principal se falhar - so' roda quando -Sensibilidade foi pedido.
+  if ($Sensibilidade) {
+    Progress 'Sensibilidade de corte (%Deb)'
+    try {
+      & node (Join-Path $PSScriptRoot 'gerar-sensibilidade-corte.mjs')
+      if ($LASTEXITCODE -ne 0) { throw "node saiu com codigo $LASTEXITCODE" }
+      $summary.Sensibilidade = 'OK'
+      Ok "Sensibilidade de corte gerada em public\data\Sensibilidade_Corte_Deb.json."
+    } catch {
+      $summary.Sensibilidade = "FALHOU sem travar: $($_.Exception.Message)"
+      Warn "$($summary.Sensibilidade) (Captacao nao foi afetada)"
+    }
   }
 }
 

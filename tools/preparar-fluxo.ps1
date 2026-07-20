@@ -42,9 +42,21 @@
        pela aba Gestores do app) e public\data\Fluxo_Atualizacao.json (resumo
        estruturado desta rodada, usado pelo painel de controle web).
 
+       Com -IncluirCandidatos: ALEM da curadoria oficial, tambem busca a
+       captacao diaria do UNIVERSO CANDIDATO mais largo (tools\Universo_Candidatos.csv,
+       gerado por selecionar-fundos.ps1 -LimiarCandidatosPct, default piso 10%).
+       Grava public\data\Fluxo_Diario_Candidatos.csv (Dia,CNPJ_Fundo,Captacao,
+       Resgate,Liquido,PL - um registro por fundo por dia, sem agregar por
+       gestor). E' consumido por tools\gerar-sensibilidade-corte.mjs para varrer
+       o corte de %Deb (10%-80%) e mostrar como a captacao responderia a cada
+       corte, sem afetar a curadoria oficial (Fundos_12431/CDI.csv) nem os
+       arquivos Fluxo_Diario_12431/Trad.csv que o app usa hoje. Opt-in: baixa
+       mais fundos do Informe Diario (mais tempo/disco); off por padrao.
+
   Uso: clique 2x em preparar-fluxo.bat, ou:
        powershell -File preparar-fluxo.ps1 -Meses 202504,202505
        powershell -File preparar-fluxo.ps1 -Incremental   # rapido: so mes atual + anterior
+       powershell -File preparar-fluxo.ps1 -IncluirCandidatos   # + universo p/ sensibilidade de corte
 #>
 
 param(
@@ -54,7 +66,8 @@ param(
   [string]$CadastroUrl = 'https://script.google.com/macros/s/AKfycbxhTXC7FXkp9fEz0bw6Nnh_JDm4UVhRkqZF5zOW-Cb842RhFBikauGaWeChG0vQerPrBA/exec',
   [string]$OutDir,
   [switch]$NoDownload,                                # usa apenas os zips ja baixados (nao baixa nada)
-  [switch]$Incremental                                # so processa mes atual + anterior; mescla com CSV existente
+  [switch]$Incremental,                                # so processa mes atual + anterior; mescla com CSV existente
+  [switch]$IncluirCandidatos                          # + captacao diaria do universo candidato (sensibilidade de corte)
 )
 
 $ErrorActionPreference = 'Stop'
@@ -223,6 +236,27 @@ if ($excluirTes.Count -gt 0) {
   Step "Tesouraria: $($excluirTes.Count) CNPJ(s) na lista de exclusao; removidos $nRem registro(s) do universo de captacao."
 }
 
+# Universo candidato (sensibilidade de corte de %Deb): opt-in, le
+# tools\Universo_Candidatos.csv (gerado por selecionar-fundos.ps1) e monta o
+# HashSet de CNPJs cuja captacao diaria tambem sera' buscada no Informe Diario,
+# ALEM da curadoria oficial. Uniao com os ja' curados (nao so' o arquivo) para
+# garantir que a curadoria oficial nunca perde cobertura mesmo se um fundo ja
+# curado tiver ficado abaixo do piso do universo desde a ultima classificacao.
+$candCnpjs = New-Object System.Collections.Generic.HashSet[string]
+if ($IncluirCandidatos) {
+  $universoPath = Join-Path $PSScriptRoot 'Universo_Candidatos.csv'
+  if (Test-Path $universoPath) {
+    foreach ($row in (Import-Csv -LiteralPath $universoPath)) {
+      $c = NormCNPJ ([string]$row.CNPJ_FUNDO_CLASSE)
+      if ($c) { [void]$candCnpjs.Add($c) }
+    }
+    Step "Sensibilidade de corte: $($candCnpjs.Count) fundo(s) em Universo_Candidatos.csv"
+  } else {
+    Write-Host "    -IncluirCandidatos ativo mas tools\Universo_Candidatos.csv nao existe (rode selecionar-fundos.ps1 primeiro). Pulando sensibilidade de corte." -ForegroundColor Yellow
+  }
+  foreach ($m in @($bridge12431.map, $bridgeCdi.map)) { foreach ($c in $m.Keys) { [void]$candCnpjs.Add($c) } }
+}
+
 function Get-FundosMeta($fundoGestorMap, $fundoApelidoMap) {
   $porGestor = @{}
   foreach ($cnpj in $fundoApelidoMap.Keys) {
@@ -251,6 +285,7 @@ $utf8Meta = New-Object System.Text.UTF8Encoding($false)
 $agg      = @{ '12431' = @{}; 'trad' = @{} }
 $aggFundo = @{ '12431' = @{}; 'trad' = @{} }   # mesmo que $agg, mas por (semana|cnpj)
 $aggDia   = @{ '12431' = @{}; 'trad' = @{} }   # captacao/resgate/PL por (dia|gestor) - Resumo do Dia
+$aggDiaCand = @{}   # captacao/resgate/PL por (dia|cnpj) do universo candidato - sensibilidade de corte
 $seen     = @{ '12431' = @{}; 'trad' = @{} }
 $weekMax  = @{ '12431' = @{}; 'trad' = @{} }
 $aggMonth = @{ '12431' = @{}; 'trad' = @{} }
@@ -362,6 +397,27 @@ foreach ($mes in $Meses) {
       $c = $line.Split(';')
       if ($c.Count -le $iRes) { $invalidas++; continue }
       $cnpj = NormCNPJ $c[$iCnpj]
+
+      # Sensibilidade de corte (opt-in, -IncluirCandidatos): acumula ESTE fundo
+      # no universo candidato ANTES do filtro de curadoria logo abaixo - um
+      # fundo pode estar no universo (piso $LimiarCandidatosPct) sem estar
+      # curado ainda (-> $tipo seria nulo e a linha seria pulada pelo `continue`
+      # a seguir). Parse proprio (nao reaproveita as variaveis $dt/$cap/$res/$pl
+      # de baixo) para nao alterar em nada o fluxo existente da curadoria oficial.
+      if ($IncluirCandidatos -and $candCnpjs.Contains($cnpj)) {
+        $dtC = [datetime]::MinValue
+        if ([datetime]::TryParse($c[$iDt].Trim(), $ci, [System.Globalization.DateTimeStyles]::None, [ref]$dtC)) {
+          $capC = 0.0; $resC = 0.0; $plC = 0.0
+          [double]::TryParse($c[$iCap], [System.Globalization.NumberStyles]::Any, $ci, [ref]$capC) | Out-Null
+          [double]::TryParse($c[$iRes], [System.Globalization.NumberStyles]::Any, $ci, [ref]$resC) | Out-Null
+          [double]::TryParse($c[$iPl],  [System.Globalization.NumberStyles]::Any, $ci, [ref]$plC)  | Out-Null
+          $dkC = $dtC.ToString('yyyy-MM-dd') + '|' + $cnpj
+          $dbC = $aggDiaCand[$dkC]
+          if (-not $dbC) { $dbC = @{ cap = 0.0; resg = 0.0; pl = 0.0 }; $aggDiaCand[$dkC] = $dbC }
+          $dbC.cap += $capC; $dbC.resg += [Math]::Abs($resC); $dbC.pl = $plC   # PL = estoque do dia, nao soma
+        }
+      }
+
       $tipo = if ($tipos['12431'].ContainsKey($cnpj)) { '12431' } elseif ($tipos['trad'].ContainsKey($cnpj)) { 'trad' } else { $null }
       if (-not $tipo) { continue }
       $gestor = $tipos[$tipo][$cnpj]
@@ -645,6 +701,28 @@ function Write-BaseDiaria($tipo, $outFile) {
   return $keys.Count
 }
 
+# Captacao/resgate/PL do UNIVERSO CANDIDATO por (dia, fundo) - sem agregar por
+# gestor (o fundo pode nem estar curado ainda). So' escrito com -IncluirCandidatos.
+# Alimenta gerar-sensibilidade-corte.mjs (varredura do corte de %Deb 10%-80%).
+function Write-BaseDiariaCand($outFile) {
+  $sb = New-Object System.Text.StringBuilder
+  [void]$sb.AppendLine('Dia,CNPJ_Fundo,Captacao,Resgate,Liquido,PL')
+  $ci = [System.Globalization.CultureInfo]::InvariantCulture
+  $keys = $aggDiaCand.Keys | Sort-Object
+  foreach ($k in $keys) {
+    $b = $aggDiaCand[$k]
+    $parts = $k -split '\|', 2
+    $dia = $parts[0]; $cnpj = $parts[1]
+    $liq = [Math]::Round($b.cap - $b.resg, 2)
+    [void]$sb.AppendLine(('{0},{1},{2},{3},{4},{5}' -f $dia, $cnpj,
+      ([Math]::Round($b.cap,2)).ToString($ci), ([Math]::Round($b.resg,2)).ToString($ci),
+      $liq.ToString($ci), ([Math]::Round($b.pl,2)).ToString($ci)))
+  }
+  $utf8 = New-Object System.Text.UTF8Encoding($false)
+  [System.IO.File]::WriteAllText($outFile, $sb.ToString(), $utf8)
+  return $keys.Count
+}
+
 # Performance DIARIA por fundo: retorno da cota (quota[d]/quota[d-1]-1) por dia.
 # Janela movel dos ~$JanelaDias dias mais recentes (historico completo e' grande
 # e o Resumo do Dia so' le os 5 ultimos dias). Mesclada pela Merge-Semanal.
@@ -758,10 +836,11 @@ $outDia12431 = Join-Path $OutDir 'Fluxo_Diario_12431.csv'
 $outDiaTrad  = Join-Path $OutDir 'Fluxo_Diario_Trad.csv'
 $outPerf12431 = Join-Path $OutDir 'Perf_Diario_12431.csv'
 $outPerfTrad  = Join-Path $OutDir 'Perf_Diario_Trad.csv'
+$outDiaCand   = Join-Path $OutDir 'Fluxo_Diario_Candidatos.csv'
 
 # Salva conteudo antigo ANTES de sobrescrever (necessario para o merge incremental)
 $oldSem12431 = @(); $oldSemTrad = @(); $oldMes12431Lines = @(); $oldMesTradLines = @()
-$oldFun12431 = @(); $oldFunTrad = @(); $oldDia12431 = @(); $oldDiaTrad = @()
+$oldFun12431 = @(); $oldFunTrad = @(); $oldDia12431 = @(); $oldDiaTrad = @(); $oldDiaCand = @()
 if ($Incremental) {
   if (Test-Path $out12431)    { $oldSem12431      = [System.IO.File]::ReadAllLines($out12431) }
   if (Test-Path $outTrad)     { $oldSemTrad       = [System.IO.File]::ReadAllLines($outTrad) }
@@ -771,6 +850,7 @@ if ($Incremental) {
   if (Test-Path $outFunTrad)  { $oldFunTrad       = [System.IO.File]::ReadAllLines($outFunTrad) }
   if (Test-Path $outDia12431) { $oldDia12431      = [System.IO.File]::ReadAllLines($outDia12431) }
   if (Test-Path $outDiaTrad)  { $oldDiaTrad       = [System.IO.File]::ReadAllLines($outDiaTrad) }
+  if (Test-Path $outDiaCand)  { $oldDiaCand       = [System.IO.File]::ReadAllLines($outDiaCand) }
 }
 
 $n12431    = Write-Base       '12431' $out12431
@@ -784,6 +864,7 @@ $nDiaTrad  = Write-BaseDiaria 'trad'  $outDiaTrad
 # Perf diaria NAO e' mesclada (janela movel recalculada a cada rodada, como a rentabilidade).
 $nPerf12431 = Write-PerfDiaria '12431' $outPerf12431
 $nPerfTrad  = Write-PerfDiaria 'trad'  $outPerfTrad
+$nDiaCand = if ($IncluirCandidatos) { Write-BaseDiariaCand $outDiaCand } else { 0 }
 
 # Rentabilidade nao e' mesclada com o historico (diferente de Semanal/Mensal):
 # cada janela (1s..12m) precisa da serie de cota do periodo INTEIRO presente
@@ -827,6 +908,11 @@ if ($Incremental) {
   $aggDia['trad'].Keys | ForEach-Object { [void]$newDiaTrad.Add(($_ -split '\|', 2)[0]) }
   Merge-Semanal $oldDia12431      $outDia12431 $newDia12431
   Merge-Semanal $oldDiaTrad       $outDiaTrad  $newDiaTrad
+  if ($IncluirCandidatos) {
+    $newDiaCand = New-Object System.Collections.Generic.HashSet[string]
+    $aggDiaCand.Keys | ForEach-Object { [void]$newDiaCand.Add(($_ -split '\|', 2)[0]) }
+    Merge-Semanal $oldDiaCand $outDiaCand $newDiaCand
+  }
 }
 
 # 5. PL_Gestores.csv - PL mais recente por gestor (12431 + Trad somados), consumido pela aba Gestores do app.
@@ -892,6 +978,9 @@ Write-Host ("    $outDiaTrad  (diario: $nDiaTrad linhas)")  -ForegroundColor Yel
 Write-Host ("    $outPerf12431  (perf diaria: $nPerf12431 linhas)") -ForegroundColor Yellow
 Write-Host ("    $outPerfTrad  (perf diaria: $nPerfTrad linhas)")  -ForegroundColor Yellow
 Write-Host ("    $outPlGestores  ($($plByGestor.Count) gestoras)") -ForegroundColor Yellow
+if ($IncluirCandidatos) {
+  Write-Host ("    $outDiaCand  (universo candidato: $nDiaCand linhas, $($candCnpjs.Count) fundos - sensibilidade de corte)") -ForegroundColor Yellow
+}
 Write-Host ""
 Write-Host "  Proximo: revise os CSVs, troque FLUXO_IS_MOCK para false em src/hooks/useFluxo.js e publique." -ForegroundColor White
 Write-Host ""

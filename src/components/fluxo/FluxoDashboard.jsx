@@ -13,6 +13,7 @@ import FluxoTable from './FluxoTable.jsx'
 import FluxoMonthlyTable from './FluxoMonthlyTable.jsx'
 import GestorFlowRanking from './GestorFlowRanking.jsx'
 import FundoFlowTable from './FundoFlowTable.jsx'
+import SensibilidadeCorte from './SensibilidadeCorte.jsx'
 
 // Recharts só carrega ao abrir a aba (preserva a carga inicial do app).
 // lazyWithRetry: re-tenta o import se o chunk do gráfico falhar.
@@ -203,6 +204,8 @@ export default function FluxoDashboard({ compact = false }) {
             <FluxoTable weekly={weekly} />
             <FluxoMonthlyTable months={monthlyAgg} hideFechados={hideFechados} />
           </div>
+
+          <SensibilidadeCorte tipo={tipo} />
 
           {/* Ao filtrar por um gestor: lista de fundos que o compõem, mesmas colunas do ranking. */}
           {gestor && (
