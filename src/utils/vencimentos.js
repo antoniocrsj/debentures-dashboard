@@ -17,6 +17,21 @@ import { parseNum } from './format.js'
 
 export const SEM_GRUPO = '(sem classificacao)'
 
+// Percentual do PL (1 casa), usado nas barras/cards de "% do PL" do MonthBars.
+export function pctFmt(x) {
+  if (x == null || isNaN(x)) return '—'
+  return `${x.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%`
+}
+
+// Rotulo compacto p/ dentro das barras do MonthBars (sem "R$", com sufixo bi/mi/mil).
+export function fmtBar(v) {
+  const n = Math.abs(v || 0)
+  if (n >= 1e9) return `${(v / 1e9).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}bi`
+  if (n >= 1e6) return `${(v / 1e6).toLocaleString('pt-BR', { maximumFractionDigits: 0 })}mi`
+  if (n >= 1e3) return `${(v / 1e3).toLocaleString('pt-BR', { maximumFractionDigits: 0 })}mil`
+  return (v || 0).toLocaleString('pt-BR', { maximumFractionDigits: 0 })
+}
+
 // ticker -> { total, rows:[{ g, v }] } a partir do BLC_tratado (por gestor).
 export function buildGestoresPorTicker(blc) {
   const m = new Map()

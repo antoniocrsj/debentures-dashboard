@@ -27,6 +27,7 @@ const ResumoDoDiaModal = lazyWithRetry(() => import('./components/ResumoDoDiaMod
 const FluxoDashboard = lazyWithRetry(() => import('./components/fluxo/FluxoDashboard.jsx'))
 const VencimentosDashboard = lazyWithRetry(() => import('./components/vencimentos/VencimentosDashboard.jsx'))
 const CaixaDashboard = lazyWithRetry(() => import('./components/caixa/CaixaDashboard.jsx'))
+const TecnicoDashboard = lazyWithRetry(() => import('./components/tecnico/TecnicoDashboard.jsx'))
 
 // Painel de controle da atualização: só existe no bundle de DEV. Em produção
 // import.meta.env.DEV é substituído por `false` em tempo de build e o Rollup
@@ -92,6 +93,9 @@ export default function App() {
     setTab(t => {
       if (desktop && (t === 'ativos' || t === 'gestores' || t === 'grupos')) return 'debentures'
       if (!desktop && t === 'debentures') return 'ativos'
+      // "Técnico" é desktop-only (sem entrada no BottomNav) — se o usuário
+      // alternar pra compacto enquanto está nela, volta pra uma aba válida.
+      if (!desktop && t === 'tecnico') return 'ativos'
       return t
     })
   }, [desktop])
@@ -267,6 +271,7 @@ export default function App() {
             { id: 'captacao',    label: 'Captação' },
             { id: 'caixa',       label: 'Nível de Caixa' },
             { id: 'vencimentos', label: 'Vencimentos' },
+            { id: 'tecnico',     label: 'Técnico' },
           ]
         : [
             // Captação saiu daqui (virou ícone no header — GER-2); restam as sub-abas de Debêntures.
@@ -324,7 +329,7 @@ export default function App() {
 
         {/* Desktop: abas standalone só na Captação (nas demais vão ao lado da busca).
             Compacto: sub-abas só na seção Debêntures (Captação não tem sub-abas). */}
-        {(desktop ? (tab === 'captacao' || tab === 'vencimentos' || tab === 'caixa') : section === 'debentures') && tabsNav}
+        {(desktop ? (tab === 'captacao' || tab === 'vencimentos' || tab === 'caixa' || tab === 'tecnico') : section === 'debentures') && tabsNav}
       </div>
 
       {/* Scrollable content */}
@@ -361,6 +366,18 @@ export default function App() {
               <div className="state-box"><div className="spinner" aria-label="Carregando" /><p>Carregando…</p></div>
             }>
               <VencimentosDashboard data={agenda12m} blc={raw?.blc} assets={allAssets} plByGestor={plByGestor} compact={!desktop} />
+            </Suspense>
+          </ErrorBoundary>
+        )}
+
+        {/* Tecnico: Captacao + Caixa + Vencimentos sob o mesmo filtro de gestora.
+            Desktop apenas (sem entrada no BottomNav do compacto). */}
+        {tab === 'tecnico' && (
+          <ErrorBoundary label="a visão Técnica">
+            <Suspense fallback={
+              <div className="state-box"><div className="spinner" aria-label="Carregando" /><p>Carregando…</p></div>
+            }>
+              <TecnicoDashboard agenda12m={agenda12m} blc={raw?.blc} plByGestor={plByGestor} />
             </Suspense>
           </ErrorBoundary>
         )}

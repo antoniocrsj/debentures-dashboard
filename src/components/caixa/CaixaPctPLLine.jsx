@@ -31,8 +31,15 @@ const PERIODOS = [
   { id: '6m', label: '6m', n: 6 },
 ]
 
-export default function CaixaPctPLLine({ historico, segmento, gestor }) {
-  const [periodo, setPeriodo] = useState('total')
+// `periodo` (prop): quando informado, o grafico fica CONTROLADO por fora (usado
+// pela aba Tecnico, que sincroniza este grafico com o periodo da Captacao) e o
+// seletor Total/12m/6m interno some -- evita 2 filtros de tempo divergentes na
+// mesma tela. Sem a prop, comportamento igual a antes (Caixa sozinha): estado
+// e botoes proprios.
+export default function CaixaPctPLLine({ historico, segmento, gestor, periodo: periodoProp }) {
+  const [periodoState, setPeriodoState] = useState('total')
+  const controlled = periodoProp != null
+  const periodo = controlled ? periodoProp : periodoState
   // Mede largura E altura do container: a altura do card vem do CSS (como o
   // .fluxo-chart da Captacao: 350px no desktop / 300px no compacto) e o SVG
   // preenche o espaco que sobra. Assim o grafico acompanha o padrao da Captacao
@@ -83,12 +90,12 @@ export default function CaixaPctPLLine({ historico, segmento, gestor }) {
   }, [ptsAll, periodo])
 
   const escopo = gestor || (segmento === '12431' ? '12.431' : 'Tradicional')
-  const Periodos = (
+  const Periodos = controlled ? null : (
     <div className="segmented caixa-periodo" role="tablist" aria-label="Período do gráfico">
       {PERIODOS.map(p => (
         <button key={p.id} type="button" role="tab" aria-selected={periodo === p.id}
           className={`segmented-btn${periodo === p.id ? ' active' : ''}`}
-          onClick={() => setPeriodo(p.id)}>{p.label}</button>
+          onClick={() => setPeriodoState(p.id)}>{p.label}</button>
       ))}
     </div>
   )
