@@ -8,6 +8,7 @@ import {
 } from '../../utils/fluxo.js'
 import { buildGestoresPorTicker, flattenEventos, aggMeses, aggGestores, fmtBar, pctFmt } from '../../utils/vencimentos.js'
 import { fmtPct } from '../../utils/format.js'
+import { useCaixaFundosHistorico } from '../../hooks/useCaixaFundosHistorico.js'
 import { fmtBRL } from '../../utils/format.js'
 import FluxoChart from '../fluxo/FluxoChart.jsx'
 import FluxoTable from '../fluxo/FluxoTable.jsx'
@@ -16,7 +17,7 @@ import CaixaPctPLLine from '../caixa/CaixaPctPLLine.jsx'
 import MonthBars from '../vencimentos/MonthBars.jsx'
 import TecnicoGestorTable from './TecnicoGestorTable.jsx'
 import CorteSelector from '../CorteSelector.jsx'
-import { CORTE_OFICIAL, isOficial, cnpjsNoCorte } from '../../utils/corte.js'
+import { CORTE_OFICIAL, isOficial, cnpjsNoCorte, historicoNoCorte } from '../../utils/corte.js'
 
 // Aba TECNICO: junta Captacao + Nivel de Caixa + Vencimentos (as 3 abas que
 // dependem de oferta e demanda do mesmo universo de fundos), com a tabela de
@@ -42,6 +43,11 @@ const PERIODOS = [
   { id: '12m', label: '12m', n: 12 },
 ]
 const PERIODO_PADRAO = '6m'
+// O grafico de %PL em caixa e' MENSAL: janela abaixo de 3 meses nao forma linha
+// (1s = 1 semana, 1m = 1 ponto). 1s/1m/3m viram 3 meses -- o piso que ainda
+// desenha tendencia --, 6m/12m passam direto. Modulo (nao dentro do componente)
+// p/ ser usado tanto pelo KPI quanto pelo grafico sem armadilha de ordem.
+const CAIXA_MESES = { '1s': 3, '1m': 3, '3m': 3, '6m': 6, '12m': 12 }
 // Vencimentos: a MESMA serie em duas unidades. Alternador em vez de dois
 // graficos -- ver comentario no JSX.
 const UNIDADES = [
@@ -64,7 +70,17 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, on
     if (isOficial(corte) || !pctPorCnpj || !fundosSemana?.length) return rowsBase
     return agregarFundosPorGestor(fundosSemana, cnpjsNoCorte(pctPorCnpj, corte))
   }, [rowsBase, fundosSemana, pctPorCnpj, corte])
-  const { historico } = useCaixa()
+  const { historico: historicoBase } = useCaixa()
+
+  // Corte de %Deb no historico de caixa: o agregado nao tem CNPJ, entao fora do
+  // corte oficial trocamos pela serie POR FUNDO filtrada (carregada sob demanda,
+  // so' quando o corte sai do oficial). No oficial, o agregado leve de sempre.
+  const corteAtivo = !isOficial(corte) && !!pctPorCnpj
+  const { rows: caixaFundos } = useCaixaFundosHistorico(corteAtivo)
+  const historico = useMemo(() => {
+    if (!corteAtivo || !caixaFundos?.length) return historicoBase
+    return historicoNoCorte(caixaFundos, cnpjsNoCorte(pctPorCnpj, corte))
+  }, [corteAtivo, caixaFundos, historicoBase, pctPorCnpj, corte])
 
   const changeTipo = t => { setTipo(t); setGestorSel('') }
   const onSelectGestor = g => setGestorSel(cur => (cur === g ? '' : g))
@@ -132,9 +148,8 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, on
     }
     const meses = [...porMes.keys()].sort()
     // janela em meses: 1s/1m/3m caem no minimo de 6 (serie mensal), igual ao grafico
-    const nRaw = PERIODOS.find(p => p.id === periodo)?.n
-    const n = (nRaw === '1w' || nRaw === 1 || nRaw === 3) ? 6 : nRaw
-    const win = typeof n === 'number' ? meses.slice(-n) : meses
+    const n = CAIXA_MESES[periodo] || 6   // mesmo piso do grafico (3m)
+    const win = meses.slice(-n)
     if (win.length < 2) return null
     const ini = porMes.get(win[0]), fim = porMes.get(win[win.length - 1])
     if (!ini) return null
@@ -208,9 +223,8 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, on
   // mostrava a serie INTEIRA calado, enquanto a captacao ao lado mostrava 1
   // semana -- dois graficos lado a lado em janelas diferentes, sem aviso.
   // Aqui o clamp e' explicito e vai rotulado na tela.
-  const CAIXA_MIN = '6m'
-  const periodoCurto = ['1s', '1m', '3m'].includes(periodo)
-  const periodoCaixa = periodoCurto ? CAIXA_MIN : periodo
+  const caixaNMeses = CAIXA_MESES[periodo] || 6
+  const periodoAbaixoDoPiso = ['1s', '1m'].includes(periodo)   // pediu menos que o grafico mostra
 
   const semSelecao = gestorSel ? '' : 'Todos os gestores'
   const escopo = `${gestorSel || semSelecao} · ${tipo === '12431' ? '12.431' : 'Tradicional'}`
@@ -283,7 +297,7 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, on
               <div className="tecnico-chart-cell">
                 <div className="grafico-card">
                 <p className="tecnico-chart-label">
-                  Caixa
+                  Caixa{periodoAbaixoDoPiso && <span className="tecnico-chart-nota"> · mín. 3m (mensal)</span>}
                   {caixaPLVar && (
                     <span className="grafico-kpi">
                       <b className={caixaPLVar.pct >= 0 ? 'pos' : 'neg'}>{caixaPLVar.pct >= 0 ? '+' : ''}{fmtPct(caixaPLVar.pct)}</b>
@@ -291,7 +305,7 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, on
                     </span>
                   )}
                 </p>
-                <CaixaPctPLLine historico={historico} segmento={caixaSeg} gestor={gestorSel} periodo={periodoCaixa} />
+                <CaixaPctPLLine historico={historico} segmento={caixaSeg} gestor={gestorSel} nMeses={caixaNMeses} />
                 </div>
               </div>
               <div className="tecnico-chart-cell">

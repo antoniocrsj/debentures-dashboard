@@ -42,3 +42,29 @@ export function cnpjsNoCorte(pctPorCnpj, corte) {
 
 // Normaliza CNPJ p/ o mesmo formato do mapa (so' digitos).
 export function normCnpj(v) { return String(v || '').replace(/\D/g, '') }
+
+// Reconstroi a serie AGREGADA do %PL em caixa {mes,gestor,segmento,caixa,pl} a
+// partir das linhas POR FUNDO, mantendo so' os CNPJs que passam do corte. O
+// resultado tem o MESMO shape do Caixa_Potencial_Historico.json, entao o
+// grafico (CaixaPctPLLine) consome sem saber de onde veio -- no corte oficial
+// usa o agregado do pipeline; fora dele, esta reconstrucao filtrada.
+//
+// `meses` sai ordenado p/ o eixo do grafico. Fundo sem %Deb conhecido fica de
+// fora quando o corte aperta (mesma regra do resto do app).
+export function historicoNoCorte(fundoRows, cnpjsAceitos) {
+  const porChave = new Map()
+  const mesesSet = new Set()
+  for (const r of fundoRows || []) {
+    if (cnpjsAceitos && !cnpjsAceitos.has(r.cnpj)) continue
+    mesesSet.add(r.mes)
+    const chave = `${r.mes}|${r.gestor}|${r.segmento}`
+    let o = porChave.get(chave)
+    if (!o) { o = { mes: r.mes, gestor: r.gestor, segmento: r.segmento, caixa: 0, pl: 0 }; porChave.set(chave, o) }
+    o.caixa += r.caixa || 0
+    o.pl += r.pl || 0
+  }
+  return {
+    meses: [...mesesSet].sort(),
+    series: [...porChave.values()],
+  }
+}

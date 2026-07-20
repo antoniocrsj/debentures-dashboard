@@ -75,3 +75,30 @@ test('semanas saem ordenadas e o corte oficial esta na lista de degraus', () => 
   assert.deepEqual(out.map(r => r.weekKey), ['2026-01-05', '2026-02-02'])
   assert.ok(CORTES.includes(CORTE_OFICIAL), 'o corte oficial precisa ser selecionavel')
 })
+
+import { historicoNoCorte } from '../src/utils/corte.js'
+
+test('historicoNoCorte reagrega por mes/gestor/segmento mantendo so o corte', () => {
+  const perFundo = [
+    { mes: '202606', cnpj: '111', gestor: 'A', segmento: 'CDI', caixa: 10, pl: 100 },
+    { mes: '202606', cnpj: '222', gestor: 'A', segmento: 'CDI', caixa: 5, pl: 50 },
+    { mes: '202605', cnpj: '111', gestor: 'A', segmento: 'CDI', caixa: 8, pl: 100 },
+  ]
+  const aceitos = new Set(['111'])   // 222 fica de fora
+  const h = historicoNoCorte(perFundo, aceitos)
+  assert.deepEqual(h.meses, ['202605', '202606'], 'meses ordenados')
+  const jun = h.series.find(r => r.mes === '202606')
+  assert.equal(jun.caixa, 10, 'so o 111 entra no mes')
+  assert.equal(jun.pl, 100)
+  assert.equal(h.series.length, 2, 'um registro por (mes,gestor,seg)')
+})
+
+test('historicoNoCorte sem filtro soma todos os fundos', () => {
+  const perFundo = [
+    { mes: '202606', cnpj: '111', gestor: 'A', segmento: 'CDI', caixa: 10, pl: 100 },
+    { mes: '202606', cnpj: '222', gestor: 'A', segmento: 'CDI', caixa: 5, pl: 50 },
+  ]
+  const h = historicoNoCorte(perFundo, null)
+  assert.equal(h.series[0].caixa, 15, 'os dois somam')
+  assert.equal(h.series[0].pl, 150)
+})

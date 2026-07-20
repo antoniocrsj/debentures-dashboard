@@ -43,7 +43,7 @@ const PERIODOS = [
 // seletor Total/12m/6m interno some -- evita 2 filtros de tempo divergentes na
 // mesma tela. Sem a prop, comportamento igual a antes (Caixa sozinha): estado
 // e botoes proprios.
-export default function CaixaPctPLLine({ historico, segmento, gestor, periodo: periodoProp }) {
+export default function CaixaPctPLLine({ historico, segmento, gestor, periodo: periodoProp, nMeses }) {
   const [periodoState, setPeriodoState] = useState('total')
   const controlled = periodoProp != null
   const periodo = controlled ? periodoProp : periodoState
@@ -96,9 +96,12 @@ export default function CaixaPctPLLine({ historico, segmento, gestor, periodo: p
 
   // Recorte da janela de tempo (12m/6m = ultimos N meses disponiveis).
   const pts = useMemo(() => {
-    const n = PERIODOS.find(p => p.id === periodo)?.n || 0
+    // nMeses (numero) vence o mapa de PERIODOS: a Tecnica passa a contagem de
+    // meses direto (com piso proprio), sem precisar que este grafico conheca
+    // "3m"/"1m". Sem nMeses (aba Caixa sozinha), usa o seletor interno.
+    const n = (typeof nMeses === 'number' && nMeses > 0) ? nMeses : (PERIODOS.find(p => p.id === periodo)?.n || 0)
     return n > 0 ? ptsAll.slice(-n) : ptsAll
-  }, [ptsAll, periodo])
+  }, [ptsAll, periodo, nMeses])
 
   const escopo = gestor || (segmento === '12431' ? '12.431' : 'Tradicional')
   const Periodos = controlled ? null : (
