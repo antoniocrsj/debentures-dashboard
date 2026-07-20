@@ -35,14 +35,6 @@ export default function MonthBars({ rows, max, selMes, onPick, fmtVal, fmtLabel,
           )
         })}
       </div>
-      {/* Legenda: sem ela as duas cores da barra empilhada nao se explicavam --
-          os outros 2 graficos da Tecnica ja' tinham a sua. */}
-      {compacto && (
-        <div className="venc-legenda" aria-hidden="true">
-          <span><i className="venc-key venc-key-juros" />Juros</span>
-          <span><i className="venc-key venc-key-amort" />Amortização</span>
-        </div>
-      )}
       <div className="venc-baseline" aria-hidden="true" />
       <div className="venc-axis">
         {rows.map(m => (
@@ -51,6 +43,14 @@ export default function MonthBars({ rows, max, selMes, onPick, fmtVal, fmtLabel,
           <span key={m.mes} className={`venc-lbl${selMes === m.mes ? ' sel' : ''}`}>{m.label}</span>
         ))}
       </div>
+      {/* Legenda ABAIXO do eixo de meses, como no grafico da Captacao (Recharts
+          poe a legenda embaixo). Antes ela ficava entre as barras e o eixo. */}
+      {compacto && (
+        <div className="venc-legenda" aria-hidden="true">
+          <span><i className="venc-key venc-key-juros" />Juros</span>
+          <span><i className="venc-key venc-key-amort" />Amortização</span>
+        </div>
+      )}
     </div>
   )
 }
