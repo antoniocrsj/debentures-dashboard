@@ -83,8 +83,9 @@ export default function FluxoChart({ weekly }) {
           {/* Mesmo padrao do grafico do Caixa: grade tracejada horizontal fina e
               SEM moldura (axisLine/tickLine) -- a linha de eixo + os tick marks do
               Recharts eram o que deixava este grafico mais "sujo" que o outro.
-              #e0d3c0 = var(--grid); o Recharts nao aceita var() em stroke. */}
-          <CartesianGrid strokeDasharray="3 3" stroke="#e0d3c0" vertical={false} />
+              #f2ede5 = --c-bege = var(--grid). O Recharts nao aceita var() em
+              stroke, entao o hex e' repetido -- mas e' o do catalogo. */}
+          <CartesianGrid strokeDasharray="3 3" stroke="#f2ede5" vertical={false} />
           <XAxis
             dataKey="weekKey"
             tickFormatter={fmtDayMonthYY}

@@ -41,14 +41,14 @@
   --primary:        var(--c-terracota);
   --primary-dark:   var(--c-carvao);   /* header (era #26211d, 2% mais escuro) */
   --primary-light:  var(--c-bege);
-  --primary-border: var(--c-taupe);
+  --primary-border: var(--c-bege);
   --navy-light:    var(--c-carvao);
   --chip-bg:       var(--c-bege);
   --bg:            var(--c-bege);
   --card:          var(--c-branco);
   --text:          var(--c-carvao);
   --text-muted:    var(--c-carvao);
-  --border:        var(--c-taupe);
+  --border:        var(--c-bege);   /* bege, nao taupe: taupe cheio deixava toda linha de tabela e moldura de card pesada demais. Sobre o branco do card o bege ainda separa; sobre o bege da pagina o card se define pela cor, nao pela borda. */
   --pos:           var(--c-verde);
   --neg:           var(--c-vermelho);
   --success:       var(--pos); /* alias semantico (um verde so' no app) */
@@ -70,11 +70,11 @@
   --bar-amort:     var(--c-terracota);
   /* Grade dos graficos (Caixa e Captacao usam o MESMO token p/ nao divergirem:
      tracejada 3-3, horizontal, sem linha de eixo nem tick marks). */
-  --grid:          var(--c-taupe);
+  --grid:          var(--c-bege);   /* grade de grafico: mesma razao da borda */
   /* Rampa bege quente (hover / borda / scroll) — era a rampa azul-acinzentada */
   --blue-soft:     var(--c-bege);
   --blue-press:    var(--c-bege);
-  --blue-line:     var(--c-taupe);
+  --blue-line:     var(--c-bege);
   --blue-mute:     var(--c-taupe);
   --text-faint:    var(--c-carvao);   /* AA sobre bege */
   --text-soft:     var(--c-carvao);
@@ -940,7 +940,7 @@ a { color: var(--primary); }
    lado a lado. Cada grafico agora e' uma unidade fechada. */
 .grafico-card {
   background: var(--c-branco);
-  border: 1px solid var(--c-taupe);
+  border: 1px solid var(--c-bege);
   border-radius: var(--radius);
   padding: 12px 14px 10px;
   height: 100%;
