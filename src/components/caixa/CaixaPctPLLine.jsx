@@ -22,7 +22,14 @@ function niceStep(raw) {
 
 // r=26: o rotulo do ULTIMO mes e' centrado em x = W - PAD.r; com r=16 metade de
 // "jun/26" (~20px) vazava do viewBox e o mes aparecia cortado.
-const PAD = { l: 52, r: 26, t: 14, b: 34 }
+const PAD_LARGO = { l: 52, r: 26, t: 14, b: 34 }
+// Grafico ESTREITO (ex.: as celulas de ~300px do grid da aba Tecnico): o PAD
+// largo comia 26% da largura so' com rotulo de eixo, e o LBL_W de 46px fazia a
+// regua achar que so' cabiam 4 meses numa janela de 6 -- resultado: "mar/26
+// jun/26" e nenhuma ideia de QUANDO a curva se moveu. Aqui a folga encolhe e o
+// rotulo passa a ser medido pelo que ele realmente ocupa (~34px a 11px).
+const PAD_ESTREITO = { l: 40, r: 18, t: 12, b: 30 }
+const W_ESTREITO = 420
 
 // Janelas de tempo do grafico (meses recentes; 'total' = serie inteira).
 const PERIODOS = [
@@ -117,6 +124,8 @@ export default function CaixaPctPLLine({ historico, segmento, gestor, periodo: p
   }
 
   // Geometria (em px reais: W vem medido do container)
+  const estreito = W < W_ESTREITO
+  const PAD = estreito ? PAD_ESTREITO : PAD_LARGO
   const iw = W - PAD.l - PAD.r, ih = H - PAD.t - PAD.b
 
   // Escala Y ADAPTATIVA (nao comeca em 0): a serie varia poucos pontos (ex.: 26%
@@ -143,19 +152,30 @@ export default function CaixaPctPLLine({ historico, segmento, gestor, periodo: p
   // rareia (de 2 em 2, 4 em 4...) conforme a largura, mas sempre caindo em fim
   // de trimestre, nunca em mes quebrado. O rareamento conta A PARTIR DO ULTIMO
   // trimestre p/ a ponta recente ficar sempre ancorada.
-  const LBL_W = 46
+  const LBL_W = estreito ? 34 : 46
   const last = pts.length - 1
-  const tri = pts.map((p, i) => ({ i, m: +String(p.mes).slice(4, 6) }))
-                 .filter(o => o.m % 3 === 0).map(o => o.i)
+  const cabe = Math.max(2, Math.floor(iw / LBL_W))
   let idx
-  if (!tri.length) {
-    idx = [last]                                   // serie curta demais p/ ter trimestre
+  if (pts.length <= cabe) {
+    // Janela CURTA (ex.: 6m na aba Tecnico): todos os meses cabem, entao mostra
+    // todos. A regua de fim-de-trimestre foi pensada p/ 42 meses; aplicada a 6
+    // ela rendia so' "mar/26 jun/26" -- dois rotulos p/ uma curva inteira, que
+    // nao deixa ler QUANDO a coisa aconteceu. Densidade tem que seguir a
+    // janela, nao um calendario fixo.
+    idx = pts.map((_, i) => i)
   } else {
-    const cabe = Math.max(2, Math.floor(iw / LBL_W))
-    const salto = Math.max(1, Math.ceil(tri.length / cabe))
-    idx = tri.filter((_, k) => (tri.length - 1 - k) % salto === 0)
-    // o ultimo mes entra sempre; se o trimestre anterior ficaria colado, ele cede a vez
-    if (!idx.includes(last)) idx = idx.filter(i => x(last) - x(i) > LBL_W).concat(last)
+    // Serie longa: ancora em fins de trimestre (mar/jun/set/dez) p/ o rotulo
+    // nunca cair em mes quebrado, rareando conforme a largura.
+    const tri = pts.map((p, i) => ({ i, m: +String(p.mes).slice(4, 6) }))
+                   .filter(o => o.m % 3 === 0).map(o => o.i)
+    if (!tri.length) {
+      idx = [last]
+    } else {
+      const salto = Math.max(1, Math.ceil(tri.length / cabe))
+      idx = tri.filter((_, k) => (tri.length - 1 - k) % salto === 0)
+      // o ultimo mes entra sempre; se o trimestre anterior ficaria colado, ele cede a vez
+      if (!idx.includes(last)) idx = idx.filter(i => x(last) - x(i) > LBL_W).concat(last)
+    }
   }
   const showX = new Set(idx)
 
