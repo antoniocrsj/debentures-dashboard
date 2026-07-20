@@ -232,10 +232,10 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, on
                   ? <div className="caixa-line-empty">Sem agenda de vencimentos carregada ainda.</div>
                   : unidade === 'rs'
                     ? <MonthBars rows={mesesView} max={maxVenc} selMes={null} onPick={() => {}}
-                        fmtVal={fmtBRL} fmtLabel={fmtBar} ariaLabel="Vencimentos por mês em reais" />
+                        fmtVal={fmtBRL} fmtLabel={fmtBar} ariaLabel="Vencimentos por mês em reais" compacto />
                     : plDenom > 0
                       ? <MonthBars rows={mesesPL} max={maxPct} selMes={null} onPick={() => {}}
-                          fmtVal={pctFmt} fmtLabel={pctFmt} ariaLabel="Vencimentos por mês em % do PL" />
+                          fmtVal={pctFmt} fmtLabel={pctFmt} ariaLabel="Vencimentos por mês em % do PL" compacto />
                       : <div className="caixa-line-empty">Sem PL de {gestorSel || 'carteira'} para calcular %PL.</div>}
                 </div>
               </div>
