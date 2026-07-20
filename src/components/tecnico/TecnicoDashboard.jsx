@@ -3,6 +3,7 @@ import { useFluxo } from '../../hooks/useFluxo.js'
 import { useCaixa } from '../../hooks/useCaixa.js'
 import {
   filterFluxo, aggregateByWeek, aggregateByMonth, aggregateByGestor, mergeRentabilidade,
+  agregarFundosPorGestor,
   filterMensal, periodBounds, startForMonths, fmtWeekFull, latestBaseDate,
 } from '../../utils/fluxo.js'
 import { buildGestoresPorTicker, flattenEventos, aggMeses, aggGestores, fmtBar, pctFmt } from '../../utils/vencimentos.js'
@@ -14,6 +15,7 @@ import CaixaPctPLLine from '../caixa/CaixaPctPLLine.jsx'
 import MonthBars from '../vencimentos/MonthBars.jsx'
 import TecnicoGestorTable from './TecnicoGestorTable.jsx'
 import CorteSelector from '../CorteSelector.jsx'
+import { CORTE_OFICIAL, isOficial, cnpjsNoCorte } from '../../utils/corte.js'
 
 // Aba TECNICO: junta Captacao + Nivel de Caixa + Vencimentos (as 3 abas que
 // dependem de oferta e demanda do mesmo universo de fundos), com a tabela de
@@ -46,13 +48,21 @@ const UNIDADES = [
   { id: 'pct', label: '%PL' },   /* era '% do PL': o botao competia em largura com o titulo */
 ]
 
-export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, onCorte, corteDisponivel }) {
+export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, onCorte, corteDisponivel, pctPorCnpj }) {
   const [tipo, setTipo] = useState('trad')   // Tradicional: padrao unico do app
   const [gestorSel, setGestorSel] = useState('')
   const [periodo, setPeriodo] = useState(PERIODO_PADRAO)
   const [unidade, setUnidade] = useState('rs')
 
-  const { loading, error, rows, monthly, rentabilidade } = useFluxo(tipo)
+  const { loading, error, rows: rowsBase, monthly, rentabilidade, fundosSemana } = useFluxo(tipo)
+
+  // O seletor de %Deb estava RENDERIZADO aqui mas nunca ligado ao calculo: o
+  // botao mudava e o numero nao. Mesmo caminho da aba Captacao -- no corte
+  // oficial usa o agregado do pipeline; fora dele re-soma do per-fundo.
+  const rows = useMemo(() => {
+    if (isOficial(corte) || !pctPorCnpj || !fundosSemana?.length) return rowsBase
+    return agregarFundosPorGestor(fundosSemana, cnpjsNoCorte(pctPorCnpj, corte))
+  }, [rowsBase, fundosSemana, pctPorCnpj, corte])
   const { historico } = useCaixa()
 
   const changeTipo = t => { setTipo(t); setGestorSel('') }

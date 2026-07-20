@@ -437,7 +437,7 @@ export default function App() {
               <div className="state-box"><div className="spinner" aria-label="Carregando" /><p>Carregando…</p></div>
             }>
               <TecnicoDashboard agenda12m={agenda12m} blc={raw?.blc} plByGestor={plByGestor}
-                corte={corte} onCorte={setCorte} corteDisponivel={corteDisponivel} />
+                corte={corte} onCorte={setCorte} corteDisponivel={corteDisponivel} pctPorCnpj={pctPorCnpj} />
             </Suspense>
           </ErrorBoundary>
         )}
