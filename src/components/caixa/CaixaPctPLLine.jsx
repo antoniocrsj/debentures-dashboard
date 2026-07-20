@@ -115,7 +115,7 @@ export default function CaixaPctPLLine({ historico, segmento, gestor, periodo: p
     return (
       <div className="caixa-trend">
         <div className="caixa-trend-head">
-          <h3 className="fluxo-section-title">% do PL em caixa — evolução mensal</h3>
+          {!controlled && <h3 className="fluxo-section-title">% do PL em caixa — evolução mensal</h3>}
           {Periodos}
         </div>
         <div className="caixa-line-empty">
@@ -185,8 +185,12 @@ export default function CaixaPctPLLine({ historico, segmento, gestor, periodo: p
 
   return (
     <div className="caixa-trend">
+      {/* Titulo interno so' quando o grafico e' dono da propria caixa (aba Caixa).
+          Na Tecnica o card ja' se chama "Caixa" -- este h3 virava um SEGUNDO
+          titulo do mesmo grafico, roubando altura do desenho. Mesmo criterio
+          que ja' esconde o seletor de periodo interno. */}
       <div className="caixa-trend-head">
-        <h3 className="fluxo-section-title">% do PL em caixa — evolução mensal</h3>
+        {!controlled && <h3 className="fluxo-section-title">% do PL em caixa — evolução mensal</h3>}
         {Periodos}
       </div>
       <div className="caixa-line-wrap" ref={wrapRef}>
