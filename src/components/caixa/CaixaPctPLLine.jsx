@@ -199,7 +199,7 @@ export default function CaixaPctPLLine({ historico, segmento, gestor, periodo: p
           {yTicks.map((v, k) => (
             <g key={k}>
               <line x1={PAD.l} x2={W - PAD.r} y1={y(v)} y2={y(v)} className="caixa-line-grid" />
-              <text x={PAD.l - 8} y={y(v) + 4} className="caixa-line-ylabel" textAnchor="end">{pct1(v)}</text>
+              <text x={2} y={y(v) - 3} className="caixa-line-ylabel" textAnchor="start">{pct1(v)}</text>
             </g>
           ))}
           <polyline className="caixa-line-path" points={linePts} fill="none" />

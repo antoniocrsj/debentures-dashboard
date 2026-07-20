@@ -96,7 +96,13 @@ export default function FluxoChart({ weekly }) {
             axisLine={false}
             tickLine={false}
           />
-          <YAxis tickFormatter={axisFmt} tick={{ fontSize: 9 }} width={32} axisLine={false} tickLine={false} />
+          {/* Rotulo do eixo Y encostado na ESQUERDA (textAnchor start + dx negativo p/
+              a borda da faixa do eixo), e nao alinhado a' direita como e' o padrao
+              do Recharts. Assim o "30bi" comeca na MESMA margem do titulo do card
+              -- alinhado a' direita, cada rotulo comecava num x diferente ("0"
+              ficava 19px adentro) e nenhum casava com o "C" de Captacao. */}
+          <YAxis tickFormatter={axisFmt} tick={{ fontSize: 9, textAnchor: 'start' }} dx={-22}
+                 width={32} axisLine={false} tickLine={false} />
           <ReferenceLine y={0} stroke={COL_ZERO} strokeWidth={1.25} />
           <Tooltip content={<FluxoTooltip />} />
           <Legend wrapperStyle={{ fontSize: 9 }} iconSize={7} />
