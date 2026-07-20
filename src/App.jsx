@@ -317,6 +317,13 @@ export default function App() {
   // demais p/ um card e estreita demais p/ um grafico com eixo. As demais abas
   // seguem em 1120 de proposito: la' o teto existe p/ nao esticar linha de
   // tabela alem do confortavel de ler.
+  // Onde o corte de %Deb aparece. Debentures fica de fora (visao do ATIVO, sem
+  // universo de fundos p/ cortar) e Vencimentos tambem, ate' a divergencia
+  // entre porFundo e aggMeses ser reconciliada -- filtro inerte e' pior que
+  // filtro ausente.
+  const mostraCorte = ['captacao', 'caixa', 'tecnico'].includes(tab)
+  const corteDisponivel = !!pctPorCnpj && pctPorCnpj.size > 0
+
   const appCls = `app${desktop ? ' desktop' : ''}${desktop && tab === 'tecnico' ? ' tecnico-wide' : ''}`
 
   return (
@@ -363,18 +370,29 @@ export default function App() {
             30,1 bi. Ligar assim faria o total SUBIR ao apertar o corte. Filtro
             inerte e' pior que filtro ausente, entao o seletor nem aparece la'
             ate' a divergencia ser reconciliada. */}
-        {['captacao', 'caixa', 'tecnico'].includes(tab) && (
+        {mostraCorte && !desktop && (
           <CorteSelector
             corte={corte}
             onChange={setCorte}
-            disponivel={!!pctPorCnpj && pctPorCnpj.size > 0}
-            compact={!desktop}
+            disponivel={corteDisponivel}
+            compact
           />
         )}
       </div>
 
       {/* Scrollable content */}
       <main className="content" role="tabpanel">
+        {/* DESKTOP: o corte vive aqui, no topo da area BEGE, e nao na
+            sticky-area carvao. Na barra escura ele se misturava com a
+            navegacao (abas, busca) e parecia parte do chrome do app; o corte e'
+            um filtro do CONTEUDO -- muda o numero que esta' logo abaixo, entao
+            e' onde o numero esta' que ele tem que morar. No compacto segue no
+            topo, que la' e' a unica faixa de filtro disponivel. */}
+        {mostraCorte && desktop && (
+          <div className="corte-bar">
+            <CorteSelector corte={corte} onChange={setCorte} disponivel={corteDisponivel} />
+          </div>
+        )}
         {/* Aba Captação: independente do carregamento do BLC/debêntures.
             ErrorBoundary garante que uma falha no import do chunk NUNCA deixe
             a aba em branco — mostra erro + "Tentar novamente". */}

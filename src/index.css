@@ -906,6 +906,11 @@ a { color: var(--primary); }
 }
 .segmented-btn.active { background: var(--selected); color: #fff; }
 
+/* Barra do corte no DESKTOP: alinhada a' direita, no topo da area bege, logo
+   acima do conteudo da aba. Padding lateral igual ao das secoes (20px) p/ o
+   stepper alinhar com a borda direita dos cards/tabelas em vez de flutuar. */
+.corte-bar { display: flex; justify-content: flex-end; padding: 10px 20px 0; }
+
 /* Corte de %Deb: STEPPER compacto (< valor >), do tamanho de um filtro, p/
    sentar ao lado dos outros. A versao anterior (5 botoes lado a lado) ocupava
    a largura toda do topo e parecia o filtro principal da tela -- e' um
