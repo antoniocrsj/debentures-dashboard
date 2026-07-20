@@ -40,7 +40,7 @@ const PERIODOS = [
 const PERIODO_PADRAO = '6m'
 
 export default function TecnicoDashboard({ agenda12m, blc, plByGestor }) {
-  const [tipo, setTipo] = useState('12431')
+  const [tipo, setTipo] = useState('trad')   // Tradicional: padrao unico do app
   const [gestorSel, setGestorSel] = useState('')
   const [periodo, setPeriodo] = useState(PERIODO_PADRAO)
 
@@ -165,8 +165,8 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor }) {
             </span>
           )}
           <div className="segmented tecnico-seg" role="tablist" aria-label="Segmento">
-            <button className={`segmented-btn${tipo === '12431' ? ' active' : ''}`} onClick={() => changeTipo('12431')}>12.431</button>
             <button className={`segmented-btn${tipo === 'trad' ? ' active' : ''}`} onClick={() => changeTipo('trad')}>Tradicional</button>
+            <button className={`segmented-btn${tipo === '12431' ? ' active' : ''}`} onClick={() => changeTipo('12431')}>12.431</button>
           </div>
           <div className="segmented tecnico-seg" role="tablist" aria-label="Período (Captação)">
             {PERIODOS.map(p => (

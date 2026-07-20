@@ -71,7 +71,7 @@ export default function VencimentosDashboard({ data, blc, plByGestor, compact })
   const [persp, setPerspRaw] = useState('carteira')       // 'carteira' | 'mercado'
   const [detalheDim, setDetalheDim] = useState('grupo')   // 'fundo' | 'grupo' | 'ativo'
   const [selMes, setSelMes] = useState(null)              // 'yyyy-MM' | null
-  const [seg, setSeg] = useState('12431')                 // '12431' | 'trad' (segmento sempre ativo)
+  const [seg, setSeg] = useState('trad')                  // Tradicional: padrao unico do app ('12431' | 'trad')
   const [gestorSel, setGestorSel] = useState(null)        // nome do gestor selecionado | null
   const [gestorSort, setGestorSort] = useState({ col: 'total', dir: 'desc' })
   const [detSort, setDetSort] = useState({ col: 'total', dir: 'desc' })
@@ -301,7 +301,7 @@ export default function VencimentosDashboard({ data, blc, plByGestor, compact })
               onClick={() => setPersp('mercado')} title={gestorSel ? 'Mercado limpa o gestor selecionado' : undefined}>Mercado</button>
           </div>
           <div className="segmented" role="tablist" aria-label="Segmento de mercado">
-            {[['12431', '12.431'], ['trad', 'Tradicional']].map(([id, lbl]) => (
+            {[['trad', 'Tradicional'], ['12431', '12.431']].map(([id, lbl]) => (
               <button key={id} role="tab" aria-selected={seg === id}
                 className={`segmented-btn${seg === id ? ' active' : ''}`}
                 onClick={() => setSeg(id)}>{lbl}</button>

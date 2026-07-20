@@ -35,9 +35,14 @@ export const FLUXO_META_URL = '/data/Fluxo_Meta.json'
 export const FLUXO_ATRIBUTOS_URL = '/data/Fundos_Atributos.csv'
 export const FLUXO_IS_MOCK = false
 
+// Tradicional PRIMEIRO e como padrao em todo o app: e' o mercado maior (PL de
+// R$ 1,58 tri contra R$ 311 bi do incentivado) e o ponto de partida natural da
+// leitura. A ordem/padrao tem que ser a MESMA nas 4 abas -- alternar entre elas
+// e ver o segmento trocar sozinho e' o tipo de coisa que faz o usuario comparar
+// numero de mercados diferentes sem perceber.
 export const FLUXO_TIPOS = [
-  { id: '12431', label: '12.431' },
   { id: 'trad', label: 'Tradicional' },
+  { id: '12431', label: '12.431' },
 ]
 
 export function useFluxo(tipo) {

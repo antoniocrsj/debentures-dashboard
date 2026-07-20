@@ -24,7 +24,7 @@ const DEFAULT_MONTHS = 12
 
 
 export default function FluxoDashboard({ compact = false, corte = CORTE_OFICIAL, pctPorCnpj = null }) {
-  const [tipo, setTipo]     = useState('12431')
+  const [tipo, setTipo]     = useState('trad')   // Tradicional: padrao unico do app
   const [gestor, setGestor] = useState('')
   const [months, setMonths] = useState(DEFAULT_MONTHS)   // null = todo o histórico
   const [hideFechados, setHideFechados] = useState(false)  // ocultar fundos de condomínio fechado
