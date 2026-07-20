@@ -988,25 +988,7 @@ a { color: var(--primary); }
 .fluxo-tooltip-pl { margin-top: 3px; padding-top: 3px; border-top: 1px solid #e8dfd2; color: var(--text-soft); }
 
 /* Sensibilidade de corte (%Deb) — painel na Captação */
-.fluxo-sens { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 18px; box-shadow: var(--shadow); }
-.fluxo-sens-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
-.fluxo-sens-head .fluxo-section-title { margin: 0; }
-.fluxo-sens-janela { width: auto; }
-.fluxo-sens-sub { font-size: 12.5px; color: var(--text-soft); margin: 0 0 12px; }
-.fluxo-sens-slider-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-.fluxo-sens-slider { flex: 1; accent-color: var(--primary); height: 6px; cursor: pointer; }
-.fluxo-sens-slider-val { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--primary); min-width: 44px; text-align: right; }
-.fluxo-sens-cards.fluxo-cards { grid-template-columns: repeat(2, 1fr); margin-bottom: 12px; }
-.fluxo-sens-chart-wrap { width: 100%; height: 200px; }
-.fluxo-sens-zero { stroke: var(--text-faint); stroke-width: 1; }
-.fluxo-sens-ref { stroke: var(--text-faint); stroke-width: 1; stroke-dasharray: 4 3; }
-.fluxo-sens-ref-label { fill: var(--text-faint); font-size: 10px; text-anchor: middle; }
-.fluxo-sens-foot { font-size: 11.5px; color: var(--text-faint); margin: 8px 0 0; }
-.fluxo-sens-empty { background: var(--card); border: 1px dashed var(--border); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 18px; color: var(--text-soft); font-size: 13px; }
-.fluxo-sens-empty code { background: var(--chip-bg); padding: 1px 5px; border-radius: 4px; font-size: 12px; }
 @media (min-width: 900px) {
-  .fluxo-sens-cards.fluxo-cards { grid-template-columns: repeat(5, 1fr); }
-  .fluxo-sens-chart-wrap { height: 240px; }
 }
 
 /* Seções / tabela / ranking */
