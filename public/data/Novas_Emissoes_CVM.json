@@ -1,6 +1,6 @@
 {
-    "asOf":  "2026-07-17",
-    "geradoEm":  "2026-07-17T08:51:28",
+    "asOf":  "2026-07-20",
+    "geradoEm":  "2026-07-20T10:22:04",
     "itens":  [
                   {
                       "dataRegistro":  "2026-07-13",
@@ -19,26 +19,6 @@
                       "cnpj":  "16670085000155",
                       "emissao":  48,
                       "valor":  5643014000,
-                      "incentivada":  false,
-                      "lider":  "BTG PACTUAL INVESTMENT BANKING LTDA."
-                  },
-                  {
-                      "dataRegistro":  "2026-07-16",
-                      "dataRequerimento":  "2026-07-09",
-                      "emissor":  "ENERGISA MATO GROSSO DO SUL - DIST DE ENERGIA S.A.",
-                      "cnpj":  "15413826000150",
-                      "emissao":  28,
-                      "valor":  350000000,
-                      "incentivada":  false,
-                      "lider":  "BTG PACTUAL INVESTMENT BANKING LTDA."
-                  },
-                  {
-                      "dataRegistro":  "2026-07-16",
-                      "dataRequerimento":  "2026-07-09",
-                      "emissor":  "ENERGISA MATO GROSSO-DISTRIBUIDORA DE ENERGIA S/A",
-                      "cnpj":  "03467321000199",
-                      "emissao":  29,
-                      "valor":  350000000,
                       "incentivada":  false,
                       "lider":  "BTG PACTUAL INVESTMENT BANKING LTDA."
                   }

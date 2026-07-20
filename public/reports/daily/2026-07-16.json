@@ -3,17 +3,17 @@
   "label": "16/07/2026",
   "previousDate": "2026-07-15",
   "sourceDates": {
-    "debentures": "2026-07-15",
+    "debentures": "2026-07-16",
     "cap12431": "2026-07-14",
     "capTrad": "2026-07-14",
     "perf12431": "2026-07-14",
     "perfTrad": "2026-07-14",
     "anbima": "2026-07-16",
-    "blc": "2026-07-14",
+    "blc": "2026-07-15",
     "fundos": "2026-07-14"
   },
   "novoPorFonte": {
-    "debentures": false,
+    "debentures": true,
     "cap": true,
     "anbima": true,
     "fundos": true,
@@ -21,11 +21,15 @@
   },
   "summary": [
     {
-      "texto": "Captação líquida Incentivados: −R$ 124 mi",
+      "texto": "2 nova(s) debênture(s) cadastrada(s)",
+      "tom": "pos"
+    },
+    {
+      "texto": "Captação líquida Incentivados: −R$ 141 mi",
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional: +R$ 408 mi",
+      "texto": "Captação líquida Tradicional: +R$ 607 mi",
       "tom": "pos"
     },
     {
@@ -45,51 +49,83 @@
       "tom": ""
     },
     {
+      "texto": "Fundos: +242 / -31 no universo"
+    },
+    {
       "texto": "1 alerta(s) de qualidade",
       "tom": "warn"
     }
   ],
   "sections": {
     "debentures": {
-      "novas": [],
+      "novas": [
+        {
+          "ticker": "ENERB8",
+          "empresa": "ENERGISA MATO GROSSO DO SUL - DISTRIBUIDORA DE ENERGIA S.A.",
+          "grupo": "Energisa",
+          "cnpj": "15413826000150",
+          "dataRegistro": "16/07/2026",
+          "dataEmissao": "15/07/2026",
+          "vencimento": "15/07/2036",
+          "indexador": "IPCA",
+          "taxa": "7,892",
+          "volumeEmitido": 350000000,
+          "incentivada": true,
+          "coordenador": "BTG PACTUAL INVESTMENT BANKING LTDA."
+        },
+        {
+          "ticker": "ENMTD9",
+          "empresa": "ENERGISA MATO GROSSO - DISTRIBUIDORA DE ENERGIA S.A.",
+          "grupo": "Energisa",
+          "cnpj": "03467321000199",
+          "dataRegistro": "16/07/2026",
+          "dataEmissao": "15/07/2026",
+          "vencimento": "15/07/2036",
+          "indexador": "IPCA",
+          "taxa": "7,892",
+          "volumeEmitido": 350000000,
+          "incentivada": true,
+          "coordenador": "BTG PACTUAL INVESTMENT BANKING LTDA."
+        }
+      ],
       "saidas": [],
       "temSnapshotAnterior": false
     },
     "captacao": {
       "12431": {
         "dia": "2026-07-14",
-        "captacao": 169051382.45000008,
-        "resgate": 293265169.66999996,
-        "liquido": -124213787.21999988,
-        "pl": 258020214426.55994,
-        "numFundos": 1651,
-        "curados": 1684,
-        "fechados": 286,
+        "captacao": 155784111.48000008,
+        "resgate": 296541656.19,
+        "liquido": -140757544.70999992,
+        "pl": 261756260728.7199,
+        "numFundos": 1688,
+        "curados": 1720,
+        "fechados": 289,
         "anterior": {
           "dia": "2026-07-13",
-          "captacao": 187974484.93,
-          "resgate": 633342488.2099998,
-          "liquido": -445368003.2799998,
-          "pl": 257385181271.71997,
-          "numFundos": 1646
+          "captacao": 167005989.29000005,
+          "resgate": 650231166.1399997,
+          "liquido": -483225176.84999967,
+          "pl": 261138878385.13995,
+          "numFundos": 1684
         }
       },
       "trad": {
         "dia": "2026-07-14",
-        "captacao": 1714252154.1299996,
-        "resgate": 1305786032.7200005,
-        "liquido": 408466121.40999913,
-        "pl": 1086548098658.8298,
-        "numFundos": 824,
-        "curados": 839,
-        "fechados": 30,
+        "captacao": 2787216339.1299996,
+        "resgate": 2180053594.8,
+        "liquido": 607162744.3299994,
+        "pl": 1583844232080.67,
+        "numFundos": 999,
+        "curados": 1014,
+        "fechados": 51,
         "anterior": {
           "dia": "2026-07-13",
-          "captacao": 1530938146.0100007,
-          "resgate": 1760439529.3100002,
-          "liquido": -229501383.29999948,
-          "pl": 1083547061510.27,
-          "numFundos": 826
+          "captacao": 2969525594.7,
+          "resgate": 2560265014.4699993,
+          "liquido": 409260580.2300005,
+          "pl": 1580335022111.6309,
+          "numFundos": 999
         }
       }
     },
@@ -105,9 +141,9 @@
         {
           "gestor": "BB Asset",
           "captacao": 22633130.26,
-          "resgate": 6362130.96,
-          "liquido": 16270999.3,
-          "pl": 21433789358.23
+          "resgate": 6076517.48,
+          "liquido": 16556612.780000001,
+          "pl": 20153422203.49
         },
         {
           "gestor": "JGP",
@@ -121,7 +157,7 @@
           "captacao": 12691860.26,
           "resgate": 6590515.06,
           "liquido": 6101345.2,
-          "pl": 7239582549.9
+          "pl": 7116686444.26
         },
         {
           "gestor": "Bocaina",
@@ -137,81 +173,81 @@
           "captacao": 18991956.03,
           "resgate": 82077552.55,
           "liquido": -63085596.519999996,
-          "pl": 55518102887.87
+          "pl": 55802458398.54
         },
         {
           "gestor": "Safra Asset",
           "captacao": 57206.59,
           "resgate": 54148590.07,
           "liquido": -54091383.48,
-          "pl": 8846366679.08
+          "pl": 9955236998.77
         },
         {
           "gestor": "San WM",
           "captacao": 8730000,
-          "resgate": 45434522.58,
-          "liquido": -36704522.58,
-          "pl": 6938614890.55
+          "resgate": 45484522.58,
+          "liquido": -36754522.58,
+          "pl": 7535116045.06
         },
         {
           "gestor": "SAM",
-          "captacao": 764126.05,
-          "resgate": 24955300,
-          "liquido": -24191173.95,
-          "pl": 10479283342.61
+          "captacao": 1011186.36,
+          "resgate": 28467400,
+          "liquido": -27456213.64,
+          "pl": 11831228572.62
         },
         {
           "gestor": "BRAM",
-          "captacao": 28257882.97,
+          "captacao": 14246673.97,
           "resgate": 39997296.41,
-          "liquido": -11739413.439999998,
-          "pl": 28987299750.44
+          "liquido": -25750622.439999998,
+          "pl": 28463352599.88
         }
       ],
       "topTradCaptacao": [
         {
+          "gestor": "IAM",
+          "captacao": 734553344.59,
+          "resgate": 490194310.14,
+          "liquido": 244359034.45000005,
+          "pl": 453391336483.44
+        },
+        {
           "gestor": "BB Asset",
-          "captacao": 775698750.93,
-          "resgate": 399847173.52,
-          "liquido": 375851577.40999997,
-          "pl": 212184221018.66
+          "captacao": 797848684.32,
+          "resgate": 559360780.3,
+          "liquido": 238487904.0200001,
+          "pl": 245671224111.08
+        },
+        {
+          "gestor": "SAM",
+          "captacao": 218751810.68,
+          "resgate": 84600623.68,
+          "liquido": 134151187,
+          "pl": 135510423867.6
+        },
+        {
+          "gestor": "Icatu",
+          "captacao": 71279697.87,
+          "resgate": 7685953.08,
+          "liquido": 63593744.79000001,
+          "pl": 26339681268.74
         },
         {
           "gestor": "UBS",
           "captacao": 80774649.02,
           "resgate": 29071064.27,
           "liquido": 51703584.75,
-          "pl": 9529205439.65
-        },
-        {
-          "gestor": "CEF Asset",
-          "captacao": 139750996.2,
-          "resgate": 91214446.67,
-          "liquido": 48536549.52999999,
-          "pl": 68951967393.34
-        },
-        {
-          "gestor": "BTG Asset",
-          "captacao": 49132276.68,
-          "resgate": 10361977.08,
-          "liquido": 38770299.6,
-          "pl": 25015838683.62
-        },
-        {
-          "gestor": "Regia",
-          "captacao": 46873191.96,
-          "resgate": 15211775.49,
-          "liquido": 31661416.47,
-          "pl": 17179039066.66
+          "pl": 11090051590.7
         }
       ],
       "topTradResgate": [
         {
-          "gestor": "IAM",
-          "captacao": 112628073.57,
-          "resgate": 164711915.69,
-          "liquido": -52083842.120000005,
-          "pl": 217439060630.64
+          "gestor": "BRAM",
+          "captacao": 214386175.85,
+          "resgate": 381162771.28,
+          "liquido": -166776595.42999998,
+          "pl": 191457276661.53
         },
         {
           "gestor": "JGP",
@@ -221,25 +257,25 @@
           "pl": 14665633268.59
         },
         {
-          "gestor": "BRAM",
-          "captacao": 90181694.36,
-          "resgate": 115638601.49,
-          "liquido": -25456907.129999995,
-          "pl": 100952168450.98
-        },
-        {
           "gestor": "Tivio",
-          "captacao": 8431342.4,
+          "captacao": 5087001.4,
           "resgate": 31816774.26,
-          "liquido": -23385431.86,
-          "pl": 7185839739.7
+          "liquido": -26729772.86,
+          "pl": 7018161915.11
         },
         {
           "gestor": "AZ Quest",
           "captacao": 5197084.25,
           "resgate": 27636623.54,
           "liquido": -22439539.29,
-          "pl": 19811143877.44
+          "pl": 20093811357.36
+        },
+        {
+          "gestor": "Absolute",
+          "captacao": 6047904.43,
+          "resgate": 23259887.69,
+          "liquido": -17211983.26,
+          "pl": 17937367239.36
         }
       ]
     },
@@ -1325,7 +1361,7 @@
               "ticker": "JSMLB5",
               "indexador": "IPCA + 7.9677%",
               "indexadorFamilia": "IPCA+",
-              "emissor": "JSL S.A",
+              "emissor": "SIMPAR S.A.",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "B30",
@@ -1354,27 +1390,1386 @@
       "semAnterior": false
     },
     "fundos": {
-      "novos": [],
-      "removidos": [],
+      "novos": [
+        {
+          "cnpj": "64739277000113",
+          "nome": "ARANDU RPPBTG FUNDO DE DEBENTURES INCENTIVADAS FI DE INVESTIMENTO FINANCEIRO EM INFRA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "58542057000100",
+          "nome": "ARER FUNDO DE INVESTIMENTO FINANCEIRO  INV EM INFRAESTRUTURA CI EM INFRA RENDA FIXA RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65255255000140",
+          "nome": "ATID SF FIF INV EM INFRAESTRUTURA CLASSE DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "63285255000168",
+          "nome": "AUGURI 2 FUNDO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65096801000148",
+          "nome": "AZ QUEST CONDOTTO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65180245000193",
+          "nome": "BEALFE FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "62899553000185",
+          "nome": "BRP DESCANSO FI FINANCEIRO RENDA FIXA INVESTIMENTO EM INFRAESTRUTURA - RESPONSABILIDADE LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "62852498000178",
+          "nome": "CR2 FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65197885000106",
+          "nome": "CRISMAJE FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64678185000170",
+          "nome": "DHANA FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "58459098000120",
+          "nome": "G5 MJL FIF - CLASSE DE INVESTIMENTO RF INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA - RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "60868496000141",
+          "nome": "GPBK FUNDO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65344961000169",
+          "nome": "HERITAGE LINE IPCA FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA INVESTIMENTO EM INFRA CP RESP LIMIT",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "63912056000132",
+          "nome": "HORIZON DEBENTURES INCENTIVADAS FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "62911331000130",
+          "nome": "JAE 2 FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64203998000104",
+          "nome": "JMC FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "62049166000150",
+          "nome": "K2 INFRA FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64511682000180",
+          "nome": "LBW FIF - CLASSE DE INVESTIMENTO RENDA FIXA INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64091639000102",
+          "nome": "MUCUGÊ FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "55230301000101",
+          "nome": "SAFRA INFRA LIQUIDEZ PROGRESSIVO FIF INV EM INFRA CLASSE DE INV EM INFRAESTRUTURA RF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "63989000000186",
+          "nome": "SANTANDER FUNDO INCENTIVADO CDI PROJETOS INV EM INFRA RF CRÉDITO PRIVADO - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "62876542000180",
+          "nome": "SANTANDER PB 316 INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64059160000199",
+          "nome": "SANTANDER PB ALLGREEN INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "66302938000174",
+          "nome": "SANTANDER PB AURUM INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65835898000163",
+          "nome": "SANTANDER PB FSC INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64540699000165",
+          "nome": "SANTANDER PB GUAIRACA INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "63914463000189",
+          "nome": "SANTANDER PB ISADORA INVESTIMENTO EM INFRA RF - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "63740555000190",
+          "nome": "SANTANDER PB JFK INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64582055000130",
+          "nome": "SANTANDER PB PHRONESIS INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "66633063000193",
+          "nome": "SANTANDER PB R&M INVESTIMENTO EM INFRA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64094799000105",
+          "nome": "SANTANDER PB RANCHEIRO INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "62806621000114",
+          "nome": "SANTANDER PB SHAKTI INVESTIMENTO EM INFRA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "61809225000188",
+          "nome": "SANTANDER PB SOLIMÕES INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "63740800000169",
+          "nome": "SANTANDER PB TELDAR INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "63761174000197",
+          "nome": "SANTANDER PB TRUAZA INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "63893287000146",
+          "nome": "SANTANDER PB VAF INVESTIMENTO EM INFRA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64986160000134",
+          "nome": "SANTANDER PB VIENA INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "66148652000186",
+          "nome": "SANTANDER PB VILLA INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64507265000163",
+          "nome": "SONMA FIF - CLASSE DE INVESTIMENTO RENDA FIXA INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "50038992000114",
+          "nome": "SPARTA DEB INC ESTRAT FUNDOS INCENTIVADOS DE INVEST FINANCEIRO EM INFRA RENDA FIXA - RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64723744000117",
+          "nome": "SPARTA MAR MASTER FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64185185000139",
+          "nome": "SPARTA VP HEDGE FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "61954776000135",
+          "nome": "STEN DEBÊNTURES INCENTIVADAS FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "55267271000108",
+          "nome": "TAURUS FIF INVESTIMENTO EM INFRAESTRUTURA CLASSE DE INV EM INFRAESTRUTURA RENDA FIXA RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "62769923000160",
+          "nome": "TIVIO INSTITUCIONAL INCENTIVADO CDI MASTER FIF - CI RF REF DE INVESTIMENTO EM INFRA - RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "63405764000187",
+          "nome": "VINLAND DEB DE INFRA A IPCA IMA-B5 FIF FUNDO INC EM INVEST EM DEB DE INFRA RF CP RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "27974854000125",
+          "nome": "1960 PREVIDÊNCIA FIF - CLASSE DE INVESTIMENTO MULT CRED PRIV - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "63727006000185",
+          "nome": "ABSOLUTE HIDRA PRÉ 2 ANOS A MASTER FI DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "44109989000141",
+          "nome": "ACUERE QUALIFICADO ICATU FI FINANCEIRO - CI MULT CRED PRIV - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "04885403000116",
+          "nome": "AGNES I FIF - CLASSE DE INVESTIMENTO MULTIMERCADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "60490407000176",
+          "nome": "ALFA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "43636043000170",
+          "nome": "AMG PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "43960245000173",
+          "nome": "AMW ÍSIS MASTER FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "03369970000157",
+          "nome": "AQUILA FUNDO DE INVESTIMENTO FINANCEIRO - CLASSE DE INVESTIMENTO MULTIMERCADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "23225882000199",
+          "nome": "ATENA TAPYR MASTER FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "54233243000107",
+          "nome": "ATENA VP YIELD D30 FUNDO DE INVESTIMENTO RENDA FIXA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "03099639000164",
+          "nome": "ATHENA I FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "44672489000113",
+          "nome": "ATSU II PREVIDÊNCIA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "30353549000120",
+          "nome": "AUGME PRO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "39354788000170",
+          "nome": "AUGME PRO TB FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "64487678000123",
+          "nome": "AZ QUEST STRUTTURATO OPPORTUNA PREVIDENCIÁRIO FIF MULTIMERCADO CRÉDITO PRIVADO RL",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "59907848000141",
+          "nome": "BANRISUL +100 FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA LONGO PRAZO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "01822655000108",
+          "nome": "BANRISUL MASTER FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA REFERENCIADO DI LONGO PRAZO RESPONSABILI",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "08960971000195",
+          "nome": "BANRISUL PREMIUM FUNDO DE INVESTIMENTO RENDA FIXA DE LONGO PRAZO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "04573108000124",
+          "nome": "BARRA VELHA II FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "26773252000147",
+          "nome": "BB 3F FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO LONGO PRAZO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "46467107000145",
+          "nome": "BB EVANGELISTA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO LONGO PRAZO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "15398622000197",
+          "nome": "BB MWP FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO LONGO PRAZO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "00852311000189",
+          "nome": "BB TOP DI RENDA FIXA REFERENCIADO DI LONGO PRAZO FIF RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "39314609000170",
+          "nome": "BENAIA FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO INVESTIMENTO NO EXTERIOR",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "41610520000101",
+          "nome": "BERMAN PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "48670714000133",
+          "nome": "BLUE 2 FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "67288854000196",
+          "nome": "BOA VISTA FIF - CLASSE DE INVESTIMENTO RENDA FIXA INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "04841576000132",
+          "nome": "BRADESCO FIF - CLASSE DE INVESTIMENTO SUPRE II - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "00322699000106",
+          "nome": "BRADESCO H FIF - CLASSE DE INVESTIMENTO RF REFERENCIADA DI CRED PRIV LP EXECUTIVO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "09522705000143",
+          "nome": "BRADESCO H HEALTH CARE PLUS FIF - CLASSE DE INVESTIMENTO RENDA FIXA CRÉDITO PRIVADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "02998164000185",
+          "nome": "BRADESCO PLUS I FI FINANCEIRO - CI MULT - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "09523207000115",
+          "nome": "BRADESCO TEJO FI FINANCEIRO - CI MULT - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "54104510000138",
+          "nome": "BRAIN CONSERVADOR PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "32312120000110",
+          "nome": "BRAM CORAL II FIF - CLASSE DE INVESTIMENTO RENDA FIXA REFERENCIADA DI - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "15675431000125",
+          "nome": "BRAM FIF - CLASSE DE INVESTIMENTO RF REFERENCIADA DI CORAL - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "66275639000198",
+          "nome": "BRAM WAREHOUSE 2 FIF - CLASSE DE INVESTIMENTO RENDA FIXA CRÉDITO PRIVADO - RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "13049660000109",
+          "nome": "BRASIL ASSET FUND II FIF - CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO - RESP LIMITADA.",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "54463551000110",
+          "nome": "BRISA NOGAT FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "43140750000171",
+          "nome": "BTG CASSI FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "00888897000131",
+          "nome": "BTG PACTUAL HEDGE FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "52319866000163",
+          "nome": "BTG PACTUAL HEDGE II FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "50875116000142",
+          "nome": "BTG PACTUAL HEDGE PREV FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "54952299000103",
+          "nome": "BTG PACTUAL TOTAL RENDA FIXA ATIVA FUNDO DE INVESTIMENTO RENDA FIXA LONGO PRAZO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "21336427000135",
+          "nome": "BTG PACTUAL YIELD PREVIDÊNCIA FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "18007644000177",
+          "nome": "CAIXA MASTER PERFORMANCE 50 FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA LONGO PRAZO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "63900490000100",
+          "nome": "CAMPANIA KINEA FIF - FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA RF CRED PRIV - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "05642617000124",
+          "nome": "CHATEAUBRIAND PREVIDENCIÁRIO FI FINANCEIRO - CI RF - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "64138938000155",
+          "nome": "CNTA FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA INVESTIMENTO EM INFRAESTRUTURA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "04588017000162",
+          "nome": "COMSHELL WA CLASSE DE INVESTIMENTO RENDA  FIXA - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "20468262000192",
+          "nome": "COMSHELL WA IMA-S CLASSE DE INVESTIMENTO  RENDA FIXA- RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "35916528000190",
+          "nome": "CORDILHEIRA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "43790956000147",
+          "nome": "CORETUBA ICATU PREVIDÊNCIA QUALIFICADO FI FINANCEIRO - CI MULT CRED PRIV - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "10355529000181",
+          "nome": "CORLEONE II FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "60490963000142",
+          "nome": "DIAMÃ FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "44110011000108",
+          "nome": "DPL ICATU QUALIFICADO PREVIDÊNCIA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "04786966000157",
+          "nome": "DUCAPE FUNDO DE INVESTIMENTO FINANCEIRO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "57074069000187",
+          "nome": "EDUMAR FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA RF CRÉD PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "09639927000140",
+          "nome": "ELS QUATRE GATS FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "49454180000170",
+          "nome": "EQX FUNDO DE INVESTIMENTO FINANCEIRO - CI MULTIMERCADO CRÉDITO PRIVADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "50421373000104",
+          "nome": "ESMERALDAS FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "26173300000166",
+          "nome": "EXPERTISE FIF - CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "55767954000116",
+          "nome": "EXPL ROCKDAYS FUNDO DE INVESTIMENTO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "19770499000144",
+          "nome": "EXPLORITAS ALPHA AMERICA LATINA MASTER FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "18814287000159",
+          "nome": "FAIRFIELD FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "37887955000112",
+          "nome": "FAMILIA PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "42046759000155",
+          "nome": "FATOR MACRO MASTER MULTIMERCADO FUNDO DE INVESTIMENTO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "55984087000170",
+          "nome": "FEROME FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "18086741000100",
+          "nome": "FIF MULTIMERCADO PEDRA REDONDA INVESTIMENTO NO EXTERIOR CRÉDITO PRIVADO - RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "19038997000105",
+          "nome": "FINACAP FI FINANCEIRO - CI MULT CRED PRIV - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "11952676000100",
+          "nome": "FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO DOREL",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "52195023000100",
+          "nome": "G5 ADRX QUALIFICADO PREV FIF - CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "54217318000158",
+          "nome": "G5 ALLOCATION DISTRESSED E LEGAL CLAIMS II FUNDO DE INVESTIMENTO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "51511514000142",
+          "nome": "G5 ALLOCATION PREVIDÊNCIA CRÉDITO INFLAÇÃO II FI FINANCEIRO - CI MULT CRED PRIV - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "61520265000105",
+          "nome": "G5 GRANDE PRAIRIE FUNDO DE INVESTIMENTO FINANCEIRO - CLASSE DE RENDA FIXA INFRA - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "25036659000129",
+          "nome": "G5 LRM FIF - CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO - RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "26725148000187",
+          "nome": "G5 MOON FI FINANCEIRO - CI MULT CRED PRIV - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "37008673000106",
+          "nome": "GALAPAGOS PELICAN INSTITUCIONAL FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "41710798000142",
+          "nome": "GIRASSOL CLASSE DE INVESTIMENTO  MULTIMERCADO CRÉDITO PRIVADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "34447278000123",
+          "nome": "GJ33 PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "19675080000103",
+          "nome": "GLMB CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "63278825000192",
+          "nome": "GRIF LIQUIDEZ FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "63806809000125",
+          "nome": "HERITAGE RUBY MASTER II FUNDO DE INVESTIMENTO RENDA FIXA INFRA CRÉDITO PRIVADO - RESP LIMT",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "65838693000131",
+          "nome": "HERITAGE RUBY MASTER OFFSHORE FIF RF INVESTIMENTO EM INFRA CRÉDITO  PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "64626717000126",
+          "nome": "IBIUNA RF ATIVO INFRA FIF - CI RENDA FIXA INCENTIVADO DE  INVESTIMENTO EM INFRA - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "26370161000160",
+          "nome": "ICATU SEG APOSENTADORIA PREV RENDA FIXA FIF II RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "52986103000176",
+          "nome": "ICATU VANGUARDA ABSOLUTO INFLAÇÃO XP SEG FI RF CRÉDITO PRIVADO PREVIDENCIÁRIO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "64717139000133",
+          "nome": "ICATU VANGUARDA BP DINÂMICO CDI PREVIDÊNCIA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "52163627000167",
+          "nome": "ICATU VANGUARDA DINÂMICO INSTITUCIONAL FIF - CI MULTIMERCADO - RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "52164607000100",
+          "nome": "ICATU VANGUARDA IPCA DINÂMICO FIF  - CLASSE DE INVESTIMENTO MULTIMERCADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "05755769000133",
+          "nome": "ICATU VANGUARDA PLUS FIF  RF  LONGO PRAZO - RESP  LTDA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "17329683000128",
+          "nome": "ICATU VANGUARDA PLUS FIFE FIF- CLASSE DE INVESTIMENTO RENDA FIXA PREVIDENCIÁRIO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "53074033000142",
+          "nome": "ICATU VANGUARDA PLUS XP SEG FUNDO DE INVESTIMENTO EM RENDA FIXA PREVIDENCIÁRIO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "42295379000154",
+          "nome": "IG FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "20468779000181",
+          "nome": "IMPACTO HORIZONTE CLASSE DE INVESTIMENTO  RENDA FIXA CRÉDITO PRIVADO LONGO PRAZO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "36499357000103",
+          "nome": "IRONWORKS FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "41083033000120",
+          "nome": "ITAÚ CRÉDITO ESTRUTURADO FIJI MASTER FIF MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "46449621000158",
+          "nome": "ITAÚ FLEXPREV LUMINA PLUS FIF RF - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "42814769000193",
+          "nome": "ITAÚ FLEXPREV PRIVILÈGE FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA REFERENCIADO DI - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "67280664000122",
+          "nome": "ITAÚ FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAEST IFRI CDI II RF CRED PRIV RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "53823295000162",
+          "nome": "ITAÚ HIMALAIA PRIVATE MARKETS FUNDO DE INVESTIMENTO EM DIREITOS CREDITÓRIOS RESPONSABILIDADE LIMITAD",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "00832435000100",
+          "nome": "ITAÚ INSTITUCIONAL RENDA FIXA REFERENCIADO DI FIF RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "25341064000187",
+          "nome": "ITAÚ WEALTH MASTER RENDA FIXA REFERENCIADO DI FUNDO DE INVESTIMENTO FINANCEIRO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "04087328000148",
+          "nome": "IU WESTERN ASSET CORPORATE III FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "04511306000163",
+          "nome": "IU WESTERN ASSET PERFORMANCE V FIF RENDA FIXA RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "42220374000162",
+          "nome": "JAGUACY CLASSE DE INVESTIMENTO  MULTIMERCADO CRÉDITO PRIVADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "04356413000164",
+          "nome": "JAGUAR FIF MULTIMERCADO CRÉDITO PRIVADO INVESTIMENTO NO EXTERIOR - RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "58490605000198",
+          "nome": "JTFC FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "39375554000109",
+          "nome": "KILIMA MAJI FUNDO DE INVESTIMENTO EM RENDA FIXA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "52203642000191",
+          "nome": "KINEA VIII FIF RENDA FIXA CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "44409359000192",
+          "nome": "KNOX MIAMI PREV FUNDO DE INVESTIMENTO MULTIMERCADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "63174249000133",
+          "nome": "LA REINA KINEA FIF FI INCENTIVADO EM DEBÊNTURES DE INFRA RENDA FIXA CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "61690888000126",
+          "nome": "LAVALLA 200 CLASSE DE INVESTIMENTO RENDA FIXA CRÉDITO PRIVADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "39573262000180",
+          "nome": "LCE FIF - CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO - RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "54022134000132",
+          "nome": "LEGATO FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "11690117000160",
+          "nome": "LEROSA MODERADO FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA CRÉDITO PRIVADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "42813715000103",
+          "nome": "LTD PREV FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "65189035000166",
+          "nome": "LUMINA FEEDER OFFSHORE III FIM CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "19718324000198",
+          "nome": "MAG OABPREV SC FIF - CLASSE DE INVESTIMENTO MULT  - RESP  LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "43790923000105",
+          "nome": "MAIO FULLNESS PREVIDÊNCIA QUALIFICADO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "13425757000179",
+          "nome": "MAIS VIDA II FIF - CLASSE DE INVESTIMENTO MULTIMERCADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "53109614000172",
+          "nome": "MARTINA II ICATU PREVIDÊNCIA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "13454232000161",
+          "nome": "MILANO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "55582812000184",
+          "nome": "MIRABEL FUNDO DE INVESTIMENTO RENDA FIXA REFERENCIADO DI RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "27566032000105",
+          "nome": "MIRNO CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "61972672000153",
+          "nome": "MMTH FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "40963283000191",
+          "nome": "MODAL FEI FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "19366021000153",
+          "nome": "MONGERAL AEGON SBOTPREV FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO - RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "46975834000113",
+          "nome": "MULTICOOP MODERADO FIF MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "21082099000198",
+          "nome": "NAN CDI FI FINANCEIRO - CI MULT LP - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "40226109000166",
+          "nome": "NESSO CAPITAL FI FINANCEIRO - CI MULT CRED PRIV - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "42847484000159",
+          "nome": "NINESUL PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "37467474000158",
+          "nome": "NORTE LONG BIAS MASTER CLASSE DE  INVESTIMENTO MULTIMERCADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "56052260000165",
+          "nome": "NU ATER FUNDO DE INVESTIMENTO RENDA FIXA REFERENCIADO DI",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "42716764000128",
+          "nome": "NU RESERVA IMEDIATA MASTER FIF RF REFERENCIADO DI RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "62970324000100",
+          "nome": "PATRI 2 FIF FI INCENTIVADO EM DEBÊNTURES DE INFRAESTRUTURA RENDA FIXA CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "57711375000187",
+          "nome": "PATRIA PREVIDENCIÁRIO XP SEG FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "63953556000112",
+          "nome": "POLO FI FINANCEIRO RENDA FIXA INVESTIMENTO EM INFRAESTRUTURA - RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "62155864000130",
+          "nome": "PORTO GUANABARA FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "24011864000177",
+          "nome": "PORTO SEGURO IMA-B5 FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA LONGO PRAZO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "17072641000154",
+          "nome": "PORTO SEGURO INFLAÇÃO MASTER PREVIDENCIÁRIO FIF RENDA FIXA RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "62910859000195",
+          "nome": "PRINCE FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "42066551000106",
+          "nome": "REALE FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "52203762000199",
+          "nome": "ROOT ANGELIM FIF MULTIMERCADO CRÉDITO PRIVADO INVESTIMENTO NO EXTERIOR - RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "38111943000164",
+          "nome": "RT ENDOWMENT II FIF MULT CRÉD PRIV - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "10264179000148",
+          "nome": "RT ENDURANCE FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "44458613000142",
+          "nome": "RTC CAPITAL PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "57890176000183",
+          "nome": "RUBI 2 FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "33842492000111",
+          "nome": "SAFRA REFERENCIADO II FIF CLASSE DE INVEST RENDA FIXA REFERENCIADA DI CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "34657939000145",
+          "nome": "SANTANDER PB CANGUARA MULTIMERCADO CRÉDITO PRIVADO - FIF",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "35120235000100",
+          "nome": "SANTANDER PB HOLLY III MULTIMERCADO CRÉDITO PRIVADO - FUNDO DE INVESTIMENTO FINANCEIRO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "66148281000132",
+          "nome": "SANTANDER PB MONTE BARBADO RENDA FIXA CRÉDITO PRIVADO - FIF RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "43165507000108",
+          "nome": "SANTANDER PB TENERIFE MULTIMERCADO CRÉDITO PRIVADO - FUNDO DE INVESTIMENTO FINANCEIRO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "55274875000173",
+          "nome": "SANTANDER PREV RENDA FIXA REFERENCIADO DI CRÉDITO PRIVADO EQUILIBRIO FIF RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "01630558000113",
+          "nome": "SANTANDER RENDA FIXA REFERENCIADO DI - FIF RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "14843629000108",
+          "nome": "SANTIAGO FIF - CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "56926582000196",
+          "nome": "SEALS FUNDO DE INVESTIMENTO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "18685779000191",
+          "nome": "SEVEN SONS CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO - RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "53991112000118",
+          "nome": "SOMMA TRENTO PREV FUNDO DE INVESTIMENTO EM RENDA FIXA CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "09484942000167",
+          "nome": "SONG II FUNDO DE INVESTIMENTO  FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "01597187000115",
+          "nome": "SPECIAL RENDA FIXA REFERENCIADO DI FUNDO DE INVESTIMENTO FINANCEIRO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "41837419000180",
+          "nome": "SPECIALE HORIZONTE PREVIDÊNCIA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "61472550000106",
+          "nome": "SPECIALE MULTI CREDIT PREV FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRED PRIV RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "51942073000133",
+          "nome": "STB CLASSE DE INVESTIMENTO  MULTIMERCADO CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "13030850000184",
+          "nome": "SUL AMÉRICA TURIDO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO DE RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "62203847000120",
+          "nome": "SULAMÉRICA CRÉDITO ESG MASTER FIF RENDA FIXA CRÉDITO PRIVADO LONGO PRAZO IS DE RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "20889471000100",
+          "nome": "SULAMÉRICA FIX 100 PLUS FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "20889498000100",
+          "nome": "SULAMÉRICA VOO LIVRE PREV FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO DE RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "26374791000103",
+          "nome": "THE STORM CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "02846259000183",
+          "nome": "TIBAGI FI FINANCEIRO - CI MULT CRED PRIV - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "44917400000131",
+          "nome": "TORDILHO ICATU PREVIDÊNCIA QUALIFICADO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "66608223000144",
+          "nome": "TRN FLOATING HIGH GRADE FIF - CLASSE DE INVESTIMENTO RF CRÉDITO PRIVADO - RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "65448597000187",
+          "nome": "TYTON CRÉDITO PREVIDÊNCIA IQ PREVIDÊNCIA FUNDO DE INVESTIMENTO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "44900549000108",
+          "nome": "UBS CONSENSO CONSERVADOR ICATU QUALIFICADO PREVIDENCIÁRIO FIF - CI MULT CRED PRIV - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "63530215000134",
+          "nome": "UBS EVOLUTION ESTRUTURA FUND II INFRA FI EM INFRAESTRUTURA RENDA FIXA CREDITO PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "42921777000139",
+          "nome": "UBS EVOLUTION MACRO STRATEGIES MASTER FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "63534145000192",
+          "nome": "UBS EVOLUTION ROKA FUJI FUNDO DE INVESTIMENTO EM INFRAESTRUTURA - RENDA FIXA CRED PRIV RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "63533177000173",
+          "nome": "UBS EVOLUTION STARLINK FUNDO DE INVESTIMENTO EM INFRAESTRUTURA - RENDA FIXA CRED PRIV RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "23731475000153",
+          "nome": "UBS FANRONG FUNDO DE INVESTIMENTO FINANCEIRO - MULTIMERCADO CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "09418454000151",
+          "nome": "UBS MINUANO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "36015218000167",
+          "nome": "UBS PITANGUEIRAS FUNDO DE INVESTIMENTO FINANCEIRO  MULTIMERCADO CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "03960320000181",
+          "nome": "UNIMED RF 100 C EM FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "63406337000113",
+          "nome": "VALORA ITAU PREVIDENCIA FIFE FIF RF CRED PRIV LONGO PRAZO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "65131307000177",
+          "nome": "VALORA OPPORTUNA PREVIDENCIÁRIO FI FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO - RESPONSABILIDADE LIMITA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "35916343000185",
+          "nome": "VENETO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "37780270000172",
+          "nome": "VERITAS PREMIUM INSTITUCIONAL FUNDO DE INVESTIMENTO RENDA FIXA CRÉDITO PRIVADO LONGO PRAZO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "34200585000105",
+          "nome": "VILA DO CONDE FIF CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "66572852000161",
+          "nome": "VINLAND OPPORTUNA FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA CRÉDITO PRIVADO LP RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "38120661000123",
+          "nome": "VISSAN FUNDO DE INVESTIMENTO MULTIMERCADO - CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "20519416000128",
+          "nome": "VOLKS UP! CRÉDITO PRIVADO FIF - CLASSE DE INVESTIMENTO MULT  - RESP  LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "44283966000159",
+          "nome": "WARREN FO TÁTICO RF1 FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "20833938000108",
+          "nome": "WM FIF- CLASSE DE INVESTIMENTO RENDA FIXA CRED PRIV PREVIDENCIÁRIO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "42418908000160",
+          "nome": "XP CRÉDITO ESTRUTURADO HIGH YIELD SEGUROS MASTER PREV FIF MULTIMERCADO CRÉD PRIV - RESP LTDA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "10843445000197",
+          "nome": "XP REFERENCIADO DI FI FINANCEIRO RENDA FIXA CRÉDITO PRIVADO - RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "45147116000196",
+          "nome": "XPA ITAJUÍ PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "21015780000113",
+          "nome": "Z4 FI FINANCEIRO - CI MULT CRED PRIV - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "39488674000112",
+          "nome": "ZEUS CLASSE DE INVESTIMENTO MULTIMERCADO - RESP LIMITADA",
+          "segmento": "trad"
+        }
+      ],
+      "removidos": [
+        {
+          "cnpj": "63197072000190",
+          "nome": "BB RX2 INFRA RENDA FIXA FUNDO INCENTIVADO DE INVEST FINAN EM INFRAESTRUTURA RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "64566437000170",
+          "nome": "BLACKSWAN PLUS FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EMINFRAESTRUTURA RENDA FIXA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "65421221000189",
+          "nome": "BRAM DEBÊNTURES INCENTIVADAS CDI 2602 FIF - CI EM INFRAESTRUTURA RF LP - RESPONSABILIDADE LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "58313484000109",
+          "nome": "EDEN CDI FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA RENDA FIXA CRED PRIV RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "56052337000105",
+          "nome": "G5 VPRF FIF - CLASSE DE INVESTIMENTO RF INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "35819455000118",
+          "nome": "MACADÂMIA FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO",
+          "segmento": ""
+        },
+        {
+          "cnpj": "63921677000182",
+          "nome": "PS GAMA FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "65861280000178",
+          "nome": "SALB FUNDO DE INV FINANCEIRO INV EM INFRAESTRUTURA CLASSE DE INV EM INFRA RENDA FIXA RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "65529691000160",
+          "nome": "SANTANDER PB DALPA INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "61197890000168",
+          "nome": "SANTANDER PB KGC INVESTIMENTO EM INFRA RF - FIF RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "64113409000105",
+          "nome": "SANTANDER PB MONTE BARBADO INVESTIMENTO EM INFRA RF - FIF RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "63092952000100",
+          "nome": "SANTANDER PB MS INVESTMENTS INVESTIMENTO EM INFRA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "63138979000189",
+          "nome": "SANTANDER PB PJ INVESTIMENTO EM INFRA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "65107242000124",
+          "nome": "SANTANDER PB QUESILE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "65073005000190",
+          "nome": "SANTANDER PB SACO SEM FUNDO INVESTIMENTO EM INFRA RF - FIF RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "42598117000169",
+          "nome": "SÃO PEDRO FUNDO INCENTIVADO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO",
+          "segmento": ""
+        },
+        {
+          "cnpj": "61818679000115",
+          "nome": "UBS EVOLUTION VIVRE FUNDO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "65793919000125",
+          "nome": "AGIBANK CRÉDITO PRIVADO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": ""
+        },
+        {
+          "cnpj": "63387076000131",
+          "nome": "AUGME BALANCEADO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": ""
+        },
+        {
+          "cnpj": "40783237000100",
+          "nome": "AZ QUEST MULTI MAX PREV MASTER FIFE FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO RESP LTDA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "21321600000121",
+          "nome": "BRADESCO BRFPREV FIF CLASSE DE INVESTIMENTO RENDA FIXA CRÉDITO PRIVADO - RESPONSABILIDADE LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "65028465000104",
+          "nome": "CAPITÂNIA MASTER INFRA GERAL ADVISORY RENDA FIXA FUNDO DE INVESTIMENTO EM INFRAESTRUTURA RL",
+          "segmento": ""
+        },
+        {
+          "cnpj": "22003346000186",
+          "nome": "DEVANT SOLIDUS CASH FUNDO DE INVESTIMENTO FINANCEIRO",
+          "segmento": ""
+        },
+        {
+          "cnpj": "63790160000100",
+          "nome": "ITAÚ RIZA LOTUS PREV MASTER FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA CRED PRIV RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "66161408000153",
+          "nome": "KINEA ATACAMA FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA LONGO PRAZO RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "65338884000134",
+          "nome": "LARINFRA KINEA FIF FI INCENTIVADO EM DEBÊNTURES DE INFRAESTRUTURA RF CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "26803172000197",
+          "nome": "NW1 FUNDO DE INVESTIMENTO MULTIMERCADO CREDITO PRIVADO IE - RESPONSABILIDADE LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "50825877000190",
+          "nome": "PEACE FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "65796563000183",
+          "nome": "POLO II FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "42220424000101",
+          "nome": "SANTANDER PB ALOCAÇÃO RENDA FIXA CRÉDITO PRIVADO - CIC FIF",
+          "segmento": ""
+        },
+        {
+          "cnpj": "64111034000136",
+          "nome": "TIVIO HYD60 FIF - CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO - RESPONSABILIDADE LIMITADA",
+          "segmento": ""
+        }
+      ],
       "semAnterior": false
     },
     "perf": {
       "top12431Pos": [
         {
-          "cnpj": "57075698000121",
-          "nome": "VINLAND FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA IPCA RF CRED PRIV LP RESP LIMITADA",
+          "cnpj": "63706652000166",
+          "nome": "VINLAND INC XP FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA FIF RF CRED PRIV RESP LIMITADA",
           "gestor": "Vinland",
           "segmento": "12431",
-          "retorno": 10.0059,
-          "pl": 6719421.31
-        },
-        {
-          "cnpj": "64436974000103",
-          "nome": "BB MASTER III RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
-          "gestor": "BB Asset",
-          "segmento": "12431",
-          "retorno": 6.0169,
-          "pl": 208617830.75
+          "retorno": 17.0686,
+          "pl": 283851824.03
         },
         {
           "cnpj": "59123735000155",
@@ -1399,6 +2794,14 @@
           "segmento": "12431",
           "retorno": 1.2981,
           "pl": 37617254.11
+        },
+        {
+          "cnpj": "54005088000163",
+          "nome": "FX FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
+          "gestor": "BTG WM",
+          "segmento": "12431",
+          "retorno": 0.655,
+          "pl": 82840762.61
         }
       ],
       "top12431Neg": [
@@ -1445,44 +2848,44 @@
       ],
       "topTradPos": [
         {
+          "cnpj": "64436974000103",
+          "nome": "BB MASTER III RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
+          "gestor": "BB Asset",
+          "segmento": "trad",
+          "retorno": 6.0169,
+          "pl": 208617830.75
+        },
+        {
+          "cnpj": "19770499000144",
+          "nome": "EXPLORITAS ALPHA AMERICA LATINA MASTER FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "gestor": "Exploritas",
+          "segmento": "trad",
+          "retorno": 4.3075,
+          "pl": 18061757.57
+        },
+        {
+          "cnpj": "37467474000158",
+          "nome": "NORTE LONG BIAS MASTER CLASSE DE  INVESTIMENTO MULTIMERCADO - RESP LIMITADA",
+          "gestor": "Norte",
+          "segmento": "trad",
+          "retorno": 2.3259,
+          "pl": 197488803.58
+        },
+        {
+          "cnpj": "34657939000145",
+          "nome": "SANTANDER PB CANGUARA MULTIMERCADO CRÉDITO PRIVADO - FIF",
+          "gestor": "San WM",
+          "segmento": "trad",
+          "retorno": 1.4622,
+          "pl": 21811246.97
+        },
+        {
           "cnpj": "52273351000170",
           "nome": "PORTFOLIO RF II PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
           "gestor": "XPG",
           "segmento": "trad",
           "retorno": 0.6868,
           "pl": 11097524.9
-        },
-        {
-          "cnpj": "43636081000123",
-          "nome": "MAESTRANZA PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
-          "gestor": "XPG",
-          "segmento": "trad",
-          "retorno": 0.5144,
-          "pl": 42163028.23
-        },
-        {
-          "cnpj": "41649957000140",
-          "nome": "ITAÚ CRÉDITO ESTRUTURADO ALPES MASTER FIF MULTIMERCADO CRÉDITO PRIVADO RESP LIMITADA",
-          "gestor": "IAM",
-          "segmento": "trad",
-          "retorno": 0.5112,
-          "pl": 53904655.06
-        },
-        {
-          "cnpj": "29106510000120",
-          "nome": "CSHG FASSIS FUNDO DE INVESTIMENTO FINANCEIRO - MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LTDA",
-          "gestor": "UBS",
-          "segmento": "trad",
-          "retorno": 0.5009,
-          "pl": 21972946.1
-        },
-        {
-          "cnpj": "63610895000104",
-          "nome": "GUANACO KINEA FIF FI INCENTIVADO EM DEBÊNTURES DE INFRA RF CRED PRIV RESP LIMITADA",
-          "gestor": "Kinea",
-          "segmento": "trad",
-          "retorno": 0.43,
-          "pl": 22169822.59
         }
       ],
       "topTradNeg": [
@@ -1503,20 +2906,12 @@
           "pl": 11721523.89
         },
         {
-          "cnpj": "66161408000153",
-          "nome": "KINEA ATACAMA FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA LONGO PRAZO RESP LIMITADA",
-          "gestor": "Kinea",
+          "cnpj": "42921777000139",
+          "nome": "UBS EVOLUTION MACRO STRATEGIES MASTER FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO - RESP LIMITADA",
+          "gestor": "UBS",
           "segmento": "trad",
-          "retorno": -1.2101,
-          "pl": 4534557.75
-        },
-        {
-          "cnpj": "64089192000137",
-          "nome": "TOP DEBÊNTURES 2025 FI INCENTIVADO EM DEBÊNTURES DE INFRA FIF RENDA FIXA CRED PRIV RESP LIMITADA",
-          "gestor": "IAM",
-          "segmento": "trad",
-          "retorno": -0.4794,
-          "pl": 11424221.25
+          "retorno": -0.5869,
+          "pl": 550867940.35
         },
         {
           "cnpj": "38150833000101",
@@ -1525,11 +2920,22 @@
           "segmento": "trad",
           "retorno": -0.3805,
           "pl": 61433341.57
+        },
+        {
+          "cnpj": "58729502000138",
+          "nome": "XP STRATEGY FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "gestor": "XPG",
+          "segmento": "trad",
+          "retorno": -0.3014,
+          "pl": 326457470.24
         }
       ]
     },
     "inclusoes": {
-      "novosDebentures": [],
+      "novosDebentures": [
+        "ENERB8",
+        "ENMTD9"
+      ],
       "novosBlc": [],
       "temSnapshotBlc": true
     },
@@ -1539,58 +2945,7 @@
         "texto": "74 ativo(s) no BLC sem correspondencia em Debentures.csv"
       }
     ],
-    "emissoesCVM": {
-      "asOf": "2026-07-17",
-      "itens": [
-        {
-          "dataRegistro": "2026-07-13",
-          "dataRequerimento": "2026-07-13",
-          "emissor": "SOCICAM ADMINISTRACAO, PROJETOS E REPRESENTACOES S.A.",
-          "cnpj": "43217280000105",
-          "emissao": 2,
-          "valor": 100000000,
-          "incentivada": false,
-          "lider": "XP INVESTIMENTOS CCTVM S.A.",
-          "grupo": "Socicam"
-        },
-        {
-          "dataRegistro": "2026-07-16",
-          "dataRequerimento": "2026-07-09",
-          "emissor": "ENERGISA MATO GROSSO DO SUL - DIST DE ENERGIA S.A.",
-          "cnpj": "15413826000150",
-          "emissao": 28,
-          "valor": 350000000,
-          "incentivada": false,
-          "lider": "BTG PACTUAL INVESTMENT BANKING LTDA.",
-          "grupo": "Energisa"
-        },
-        {
-          "dataRegistro": "2026-07-16",
-          "dataRequerimento": "2026-07-09",
-          "emissor": "ENERGISA MATO GROSSO-DISTRIBUIDORA DE ENERGIA S/A",
-          "cnpj": "03467321000199",
-          "emissao": 29,
-          "valor": 350000000,
-          "incentivada": false,
-          "lider": "BTG PACTUAL INVESTMENT BANKING LTDA.",
-          "grupo": "Energisa"
-        },
-        {
-          "dataRegistro": "2026-07-15",
-          "dataRequerimento": "2026-06-24",
-          "emissor": "LOCALIZA RENT A CAR SA",
-          "cnpj": "16670085000155",
-          "emissao": 48,
-          "valor": 5643014000,
-          "incentivada": false,
-          "lider": "BTG PACTUAL INVESTMENT BANKING LTDA.",
-          "grupo": "Localiza"
-        }
-      ]
-    },
-    "emissoresFaltantes": {
-      "itens": [],
-      "asOf": "2026-07-17"
-    }
+    "emissoesCVM": null,
+    "emissoresFaltantes": null
   }
 }

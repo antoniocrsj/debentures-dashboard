@@ -1,0 +1,2944 @@
+{
+  "date": "2026-07-17",
+  "label": "17/07/2026",
+  "previousDate": "2026-07-16",
+  "sourceDates": {
+    "debentures": "2026-07-16",
+    "cap12431": "2026-07-15",
+    "capTrad": "2026-07-15",
+    "perf12431": "2026-07-15",
+    "perfTrad": "2026-07-15",
+    "anbima": "2026-07-17",
+    "blc": "2026-07-15",
+    "fundos": "2026-07-15"
+  },
+  "novoPorFonte": {
+    "debentures": false,
+    "cap": true,
+    "anbima": true,
+    "fundos": true,
+    "blc": false
+  },
+  "summary": [
+    {
+      "texto": "Captação líquida Incentivados: +R$ 183 mi",
+      "tom": "pos"
+    },
+    {
+      "texto": "Captação líquida Tradicional: −R$ 608 mi",
+      "tom": "neg"
+    },
+    {
+      "texto": "Maior captação: Sparta (+R$ 237 mi)",
+      "tom": "pos"
+    },
+    {
+      "texto": "Maior resgate: Kinea (−R$ 61 mi)",
+      "tom": "neg"
+    },
+    {
+      "texto": "ANBIMA Incentivadas: 319 abertura(s) e 174 fechamento(s) de spread (de 493 ativos; média +1 bps)",
+      "tom": "neg"
+    },
+    {
+      "texto": "ANBIMA Tradicional: 221 abertura(s) e 318 fechamento(s) de spread (de 539 ativos; média -1 bps)",
+      "tom": "pos"
+    },
+    {
+      "texto": "Fundos: +242 / -31 no universo"
+    },
+    {
+      "texto": "1 alerta(s) de qualidade",
+      "tom": "warn"
+    }
+  ],
+  "sections": {
+    "debentures": {
+      "novas": [],
+      "saidas": [],
+      "temSnapshotAnterior": false
+    },
+    "captacao": {
+      "12431": {
+        "dia": "2026-07-15",
+        "captacao": 546385562.39,
+        "resgate": 363639366.7999998,
+        "liquido": 182746195.5900002,
+        "pl": 262997802837.24997,
+        "numFundos": 1689,
+        "curados": 1720,
+        "fechados": 289,
+        "anterior": {
+          "dia": "2026-07-14",
+          "captacao": 155784111.48000008,
+          "resgate": 296541656.19,
+          "liquido": -140757544.70999992,
+          "pl": 261756260728.7199,
+          "numFundos": 1688
+        }
+      },
+      "trad": {
+        "dia": "2026-07-15",
+        "captacao": 2042325978.4400003,
+        "resgate": 2650195938.4900002,
+        "liquido": -607869960.05,
+        "pl": 1582065439513.87,
+        "numFundos": 988,
+        "curados": 1014,
+        "fechados": 51,
+        "anterior": {
+          "dia": "2026-07-14",
+          "captacao": 2787216339.1299996,
+          "resgate": 2180053594.8,
+          "liquido": 607162744.3299994,
+          "pl": 1583844232080.67,
+          "numFundos": 999
+        }
+      }
+    },
+    "gestores": {
+      "top12431Captacao": [
+        {
+          "gestor": "Sparta",
+          "captacao": 245501368.22,
+          "resgate": 8410206.53,
+          "liquido": 237091161.69,
+          "pl": 10423380579.64
+        },
+        {
+          "gestor": "Journey",
+          "captacao": 158106376.16,
+          "resgate": 100794.97,
+          "liquido": 158005581.19,
+          "pl": 281232457.87
+        },
+        {
+          "gestor": "UBS",
+          "captacao": 17090054.24,
+          "resgate": 3989897.78,
+          "liquido": 13100156.459999999,
+          "pl": 7401981411.5
+        },
+        {
+          "gestor": "IAM",
+          "captacao": 44010240.98,
+          "resgate": 32928099.1,
+          "liquido": 11082141.879999995,
+          "pl": 55844183841.83
+        },
+        {
+          "gestor": "JGP",
+          "captacao": 12174857.88,
+          "resgate": 7329226.1,
+          "liquido": 4845631.780000001,
+          "pl": 3783968146
+        }
+      ],
+      "top12431Resgate": [
+        {
+          "gestor": "Kinea",
+          "captacao": 12000,
+          "resgate": 61368015.66,
+          "liquido": -61356015.66,
+          "pl": 14625363627.65
+        },
+        {
+          "gestor": "BRAM",
+          "captacao": 17187863.08,
+          "resgate": 53567777.57,
+          "liquido": -36379914.49,
+          "pl": 28439793289.95
+        },
+        {
+          "gestor": "BB Asset",
+          "captacao": 10957904.51,
+          "resgate": 44609087.7,
+          "liquido": -33651183.190000005,
+          "pl": 20140669075.42
+        },
+        {
+          "gestor": "ARX",
+          "captacao": 4040440.09,
+          "resgate": 19542932.41,
+          "liquido": -15502492.32,
+          "pl": 6854759120.68
+        },
+        {
+          "gestor": "Rubik",
+          "captacao": 0,
+          "resgate": 15000000,
+          "liquido": -15000000,
+          "pl": 38365630.41
+        }
+      ],
+      "topTradCaptacao": [
+        {
+          "gestor": "BTG Asset",
+          "captacao": 56826496.6,
+          "resgate": 11404114.04,
+          "liquido": 45422382.56,
+          "pl": 28499817940.38
+        },
+        {
+          "gestor": "Regia",
+          "captacao": 50698121.48,
+          "resgate": 6295022.99,
+          "liquido": 44403098.489999995,
+          "pl": 17235517267.72
+        },
+        {
+          "gestor": "BRAM",
+          "captacao": 293356779.17,
+          "resgate": 257789252.2,
+          "liquido": 35567526.97000003,
+          "pl": 191598135502.45
+        },
+        {
+          "gestor": "JGP",
+          "captacao": 34085756.71,
+          "resgate": 2644406.12,
+          "liquido": 31441350.59,
+          "pl": 14706167304.33
+        },
+        {
+          "gestor": "XPG",
+          "captacao": 48485137.83,
+          "resgate": 31471831.15,
+          "liquido": 17013306.68,
+          "pl": 22323413598.87
+        }
+      ],
+      "topTradResgate": [
+        {
+          "gestor": "IAM",
+          "captacao": 357663543.82,
+          "resgate": 686306028.58,
+          "liquido": -328642484.76000005,
+          "pl": 453306535420.78
+        },
+        {
+          "gestor": "SAM",
+          "captacao": 51234658.5,
+          "resgate": 231669147.8,
+          "liquido": -180434489.3,
+          "pl": 135405379467.95
+        },
+        {
+          "gestor": "Safra Asset",
+          "captacao": 47182673.22,
+          "resgate": 107781968.78,
+          "liquido": -60599295.56,
+          "pl": 57925878206.04
+        },
+        {
+          "gestor": "BB Asset",
+          "captacao": 600824453.7,
+          "resgate": 651998381.84,
+          "liquido": -51173928.139999986,
+          "pl": 245776065819.27
+        },
+        {
+          "gestor": "Vinland",
+          "captacao": 26239579.73,
+          "resgate": 68865881.67,
+          "liquido": -42626301.94,
+          "pl": 3969013428.62
+        }
+      ]
+    },
+    "anbima": {
+      "porMercado": {
+        "12431": {
+          "aberturas": [
+            {
+              "ticker": "SUMI37",
+              "indexador": "IPCA + 8.0993%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "GIGA MAIS FIBRA TELECOMUNICACOES S.A.",
+              "grupo": "Giga+",
+              "incentivada": true,
+              "base": "B32",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 591,
+              "spreadAtualBps": 612,
+              "variacaoBps": 21,
+              "fmtAnterior": "B32 + 591 bps",
+              "fmtAtual": "B32 + 612 bps",
+              "spreadAtual": "B32+612",
+              "durationAnos": 5.13,
+              "status": "ok"
+            },
+            {
+              "ticker": "HGLB23",
+              "indexador": "IPCA + 9.1196%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "HIGHLINE DO BRASIL II INFRAESTRUTURA DE TELECOMUNICACOES S.A",
+              "grupo": "Highline",
+              "incentivada": true,
+              "base": "B31",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 239,
+              "spreadAtualBps": 257,
+              "variacaoBps": 18,
+              "fmtAnterior": "B31 + 239 bps",
+              "fmtAtual": "B31 + 257 bps",
+              "spreadAtual": "B31+257",
+              "durationAnos": 4.32,
+              "status": "ok"
+            },
+            {
+              "ticker": "CSNAA5",
+              "indexador": "IPCA + 6.8300%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "COMPANHIA SIDERURGICA NACIONAL",
+              "grupo": "CSN",
+              "incentivada": true,
+              "base": "B32",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 1123,
+              "spreadAtualBps": 1139,
+              "variacaoBps": 16,
+              "fmtAnterior": "B32 + 1123 bps",
+              "fmtAtual": "B32 + 1139 bps",
+              "spreadAtual": "B32+1139",
+              "durationAnos": 4.76,
+              "status": "ok"
+            },
+            {
+              "ticker": "MVLV26",
+              "indexador": "IPCA + 7.2413%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "MOVIDA PARTICIPACOES S/A",
+              "grupo": "Simpar",
+              "incentivada": true,
+              "base": "B28",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 550,
+              "spreadAtualBps": 566,
+              "variacaoBps": 16,
+              "fmtAnterior": "B28 + 550 bps",
+              "fmtAtual": "B28 + 566 bps",
+              "spreadAtual": "B28+566",
+              "durationAnos": 1.8,
+              "status": "ok"
+            },
+            {
+              "ticker": "CSNAB4",
+              "indexador": "IPCA + 6.8000%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "COMPANHIA SIDERURGICA NACIONAL",
+              "grupo": "CSN",
+              "incentivada": true,
+              "base": "B31",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 1105,
+              "spreadAtualBps": 1119,
+              "variacaoBps": 14,
+              "fmtAnterior": "B31 + 1105 bps",
+              "fmtAtual": "B31 + 1119 bps",
+              "spreadAtual": "B31+1119",
+              "durationAnos": 4.56,
+              "status": "ok"
+            },
+            {
+              "ticker": "AURP12",
+              "indexador": "IPCA + 7.4515%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "AUREN OPERACOES S.A.",
+              "grupo": "Auren",
+              "incentivada": true,
+              "base": "B33",
+              "tipo": "ipca",
+              "spreadAnteriorBps": -7,
+              "spreadAtualBps": 3,
+              "variacaoBps": 10,
+              "fmtAnterior": "B33 - 7 bps",
+              "fmtAtual": "B33 + 3 bps",
+              "spreadAtual": "B33+3",
+              "durationAnos": 5.85,
+              "status": "ok"
+            },
+            {
+              "ticker": "CLAG15",
+              "indexador": "IPCA + 7.7700%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "COLOMBO AGROINDUSTRIA SA",
+              "grupo": "Colombo Agroindustria",
+              "incentivada": true,
+              "base": "B32",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 81,
+              "spreadAtualBps": 91,
+              "variacaoBps": 10,
+              "fmtAnterior": "B32 + 81 bps",
+              "fmtAtual": "B32 + 91 bps",
+              "spreadAtual": "B32+91",
+              "durationAnos": 4.76,
+              "status": "ok"
+            },
+            {
+              "ticker": "CEAD11",
+              "indexador": "IPCA + 6.6605%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "ASSURUA 2 ENERGIA S.A.",
+              "grupo": "Auren",
+              "incentivada": true,
+              "base": "B28",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 9,
+              "spreadAtualBps": 18,
+              "variacaoBps": 9,
+              "fmtAnterior": "B28 + 9 bps",
+              "fmtAtual": "B28 + 18 bps",
+              "spreadAtual": "B28+18",
+              "durationAnos": 1.97,
+              "status": "ok"
+            },
+            {
+              "ticker": "PRPO12",
+              "indexador": "IPCA + 4.2200%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "PIRAPORA II SOLAR HOLDING S.A.",
+              "grupo": "Pirapora II Solar",
+              "incentivada": true,
+              "base": "B29",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 8,
+              "spreadAtualBps": 17,
+              "variacaoBps": 9,
+              "fmtAnterior": "B29 + 8 bps",
+              "fmtAtual": "B29 + 17 bps",
+              "spreadAtual": "B29+17",
+              "durationAnos": 2.85,
+              "status": "ok"
+            },
+            {
+              "ticker": "TEPA12",
+              "indexador": "IPCA + 10.0924%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "BRASIL TECNOLOGIA E PARTICIPACAO S.A.",
+              "grupo": "Brasil Tecnologia e Participacao",
+              "incentivada": true,
+              "base": "B29",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 743,
+              "spreadAtualBps": 752,
+              "variacaoBps": 9,
+              "fmtAnterior": "B29 + 743 bps",
+              "fmtAtual": "B29 + 752 bps",
+              "spreadAtual": "B29+752",
+              "durationAnos": 2.48,
+              "status": "ok"
+            },
+            {
+              "ticker": "TUPW21",
+              "indexador": "IPCA + 8.2194%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "TUPI ENERGIAS RENOVAVEIS S.A.",
+              "grupo": "Tupi",
+              "incentivada": true,
+              "base": "B32",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 288,
+              "spreadAtualBps": 297,
+              "variacaoBps": 9,
+              "fmtAnterior": "B32 + 288 bps",
+              "fmtAtual": "B32 + 297 bps",
+              "spreadAtual": "B32+297",
+              "durationAnos": 4.77,
+              "status": "ok"
+            },
+            {
+              "ticker": "USAS12",
+              "indexador": "IPCA + 8.0857%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "USINA SANTA ADELIA S.A.",
+              "grupo": "Usina Santa Adelia",
+              "incentivada": true,
+              "base": "B30",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 89,
+              "spreadAtualBps": 98,
+              "variacaoBps": 9,
+              "fmtAnterior": "B30 + 89 bps",
+              "fmtAtual": "B30 + 98 bps",
+              "spreadAtual": "B30+98",
+              "durationAnos": 3.8,
+              "status": "ok"
+            },
+            {
+              "ticker": "WNTY12",
+              "indexador": "IPCA + 8.6044%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "WINITY S.A.",
+              "grupo": "Winity",
+              "incentivada": true,
+              "base": "B31",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 135,
+              "spreadAtualBps": 144,
+              "variacaoBps": 9,
+              "fmtAnterior": "B31 + 135 bps",
+              "fmtAtual": "B31 + 144 bps",
+              "spreadAtual": "B31+144",
+              "durationAnos": 4.54,
+              "status": "ok"
+            },
+            {
+              "ticker": "CRMG15",
+              "indexador": "IPCA + 5.9668%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "CONCESSIONARIA DA RODOVIA MG-050 S.A.",
+              "grupo": "Via Appia",
+              "incentivada": true,
+              "base": "B29",
+              "tipo": "ipca",
+              "spreadAnteriorBps": -10,
+              "spreadAtualBps": -2,
+              "variacaoBps": 8,
+              "fmtAnterior": "B29 - 10 bps",
+              "fmtAtual": "B29 - 2 bps",
+              "spreadAtual": "B29−2",
+              "durationAnos": 2.67,
+              "status": "ok"
+            },
+            {
+              "ticker": "EBAS13",
+              "indexador": "IPCA + 8.6000%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "EMPRESA BAIANA DE AGUAS E SANEAMENTO SA",
+              "grupo": "Embasa",
+              "incentivada": true,
+              "base": "B30",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 17,
+              "spreadAtualBps": 25,
+              "variacaoBps": 8,
+              "fmtAnterior": "B30 + 17 bps",
+              "fmtAtual": "B30 + 25 bps",
+              "spreadAtual": "B30+25",
+              "durationAnos": 3.78,
+              "status": "ok"
+            }
+          ],
+          "fechamentos": [
+            {
+              "ticker": "ORIG21",
+              "indexador": "Pré-Fixado 14.1500%",
+              "indexadorFamilia": "Pré",
+              "emissor": "ORIGEM ENERGIA S.A.",
+              "grupo": "Origem Energia",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 227.69,
+              "spreadAtualBps": 207.92000000000002,
+              "variacaoBps": -19.769999999999982,
+              "fmtAnterior": "17,10%",
+              "fmtAtual": "17,07%",
+              "spreadAtual": "CDI + 2,08%",
+              "durationAnos": 4.27,
+              "status": "ok"
+            },
+            {
+              "ticker": "EKTRA5",
+              "indexador": "Pré-Fixado 13.5966%",
+              "indexadorFamilia": "Pré",
+              "emissor": "ELEKTRO REDES S.A.",
+              "grupo": "Neoenergia",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": -62.69,
+              "spreadAtualBps": -80.02,
+              "variacaoBps": -17.33,
+              "fmtAnterior": "13,77%",
+              "fmtAtual": "13,77%",
+              "spreadAtual": "CDI − 0,80%",
+              "durationAnos": 4.07,
+              "status": "ok"
+            },
+            {
+              "ticker": "ENAT23",
+              "indexador": "Pré-Fixado 13.5733%",
+              "indexadorFamilia": "Pré",
+              "emissor": "BRAVA ENERGIA S.A.",
+              "grupo": "Brava Energia",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 44.66,
+              "spreadAtualBps": 28.299999999999997,
+              "variacaoBps": -16.36,
+              "fmtAnterior": "14,85%",
+              "fmtAtual": "14,87%",
+              "spreadAtual": "CDI + 0,28%",
+              "durationAnos": 3.1,
+              "status": "ok"
+            },
+            {
+              "ticker": "TEPA23",
+              "indexador": "Pré-Fixado 18.5067%",
+              "indexadorFamilia": "Pré",
+              "emissor": "BRASIL TECNOLOGIA E PARTICIPACAO S.A.",
+              "grupo": "Brasil Tecnologia e Participacao",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 412.89,
+              "spreadAtualBps": 397.92,
+              "variacaoBps": -14.96999999999997,
+              "fmtAnterior": "19,22%",
+              "fmtAtual": "19,25%",
+              "spreadAtual": "CDI + 3,98%",
+              "durationAnos": 3.26,
+              "status": "ok"
+            },
+            {
+              "ticker": "ENERB6",
+              "indexador": "Pré-Fixado 13.7000%",
+              "indexadorFamilia": "Pré",
+              "emissor": "ENERGISA MATO GROSSO DO SUL - DISTRIBUIDORA DE ENERGIA S.A.",
+              "grupo": "Energisa",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": -37.69,
+              "spreadAtualBps": -51.67,
+              "variacaoBps": -13.980000000000004,
+              "fmtAnterior": "14,06%",
+              "fmtAtual": "14,09%",
+              "spreadAtual": "CDI − 0,52%",
+              "durationAnos": 4.11,
+              "status": "ok"
+            },
+            {
+              "ticker": "ENMTC4",
+              "indexador": "Pré-Fixado 13.7000%",
+              "indexadorFamilia": "Pré",
+              "emissor": "ENERGISA MATO GROSSO - DISTRIBUIDORA DE ENERGIA S.A.",
+              "grupo": "Energisa",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": -37.64,
+              "spreadAtualBps": -51.09,
+              "variacaoBps": -13.450000000000003,
+              "fmtAnterior": "14,06%",
+              "fmtAtual": "14,10%",
+              "spreadAtual": "CDI − 0,51%",
+              "durationAnos": 4.11,
+              "status": "ok"
+            },
+            {
+              "ticker": "AEGPA8",
+              "indexador": "Pré-Fixado 16.3433%",
+              "indexadorFamilia": "Pré",
+              "emissor": "AEGEA SANEAMENTO E PARTICIPACOES S/A",
+              "grupo": "Aegea",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 221.11999999999998,
+              "spreadAtualBps": 208.07000000000002,
+              "variacaoBps": -13.049999999999955,
+              "fmtAnterior": "17,02%",
+              "fmtAtual": "17,07%",
+              "spreadAtual": "CDI + 2,08%",
+              "durationAnos": 3.35,
+              "status": "ok"
+            },
+            {
+              "ticker": "CGEE23",
+              "indexador": "IPCA + 8.7219%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "COMPANHIA ESTADUAL DE GERACAO DE ENERGIA ELETRICA - CEEE-G",
+              "grupo": "CSN",
+              "incentivada": true,
+              "base": "B33",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 552,
+              "spreadAtualBps": 539,
+              "variacaoBps": -13,
+              "fmtAnterior": "B33 + 552 bps",
+              "fmtAtual": "B33 + 539 bps",
+              "spreadAtual": "B33+539",
+              "durationAnos": 5.55,
+              "status": "ok"
+            },
+            {
+              "ticker": "ORIG22",
+              "indexador": "Pré-Fixado 15.6300%",
+              "indexadorFamilia": "Pré",
+              "emissor": "ORIGEM ENERGIA S.A.",
+              "grupo": "Origem Energia",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 216.81,
+              "spreadAtualBps": 204.31,
+              "variacaoBps": -12.5,
+              "fmtAnterior": "16,97%",
+              "fmtAtual": "17,03%",
+              "spreadAtual": "CDI + 2,04%",
+              "durationAnos": 4.2,
+              "status": "ok"
+            },
+            {
+              "ticker": "RSAN16",
+              "indexador": "IPCA + 6.9875%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "COMPANHIA RIOGRANDENSE DE SANEAMENTO - CORSAN",
+              "grupo": "Aegea",
+              "incentivada": true,
+              "base": "B33",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 164,
+              "spreadAtualBps": 153,
+              "variacaoBps": -11,
+              "fmtAnterior": "B33 + 164 bps",
+              "fmtAtual": "B33 + 153 bps",
+              "spreadAtual": "B33+153",
+              "durationAnos": 5.46,
+              "status": "ok"
+            },
+            {
+              "ticker": "EGIEC1",
+              "indexador": "Pré-Fixado 10.9000%",
+              "indexadorFamilia": "Pré",
+              "emissor": "ENGIE BRASIL ENERGIA SA",
+              "grupo": "Engie",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": -49.93,
+              "spreadAtualBps": -60.760000000000005,
+              "variacaoBps": -10.830000000000005,
+              "fmtAnterior": "13,53%",
+              "fmtAtual": "13,63%",
+              "spreadAtual": "CDI − 0,61%",
+              "durationAnos": 2.32,
+              "status": "ok"
+            },
+            {
+              "ticker": "EGIEA2",
+              "indexador": "Pré-Fixado 12.4974%",
+              "indexadorFamilia": "Pré",
+              "emissor": "ENGIE BRASIL ENERGIA SA",
+              "grupo": "Engie",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": -60.75000000000001,
+              "spreadAtualBps": -71.56,
+              "variacaoBps": -10.809999999999995,
+              "fmtAnterior": "13,60%",
+              "fmtAtual": "13,68%",
+              "spreadAtual": "CDI − 0,72%",
+              "durationAnos": 2.6,
+              "status": "ok"
+            },
+            {
+              "ticker": "EGIEA5",
+              "indexador": "Pré-Fixado 12.8775%",
+              "indexadorFamilia": "Pré",
+              "emissor": "ENGIE BRASIL ENERGIA SA",
+              "grupo": "Engie",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": -47.67,
+              "spreadAtualBps": -57.709999999999994,
+              "variacaoBps": -10.039999999999992,
+              "fmtAnterior": "13,95%",
+              "fmtAtual": "14,02%",
+              "spreadAtual": "CDI − 0,58%",
+              "durationAnos": 4.76,
+              "status": "ok"
+            },
+            {
+              "ticker": "VBBRA0",
+              "indexador": "IPCA + 7.3800%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "VIBRA ENERGIA S.A",
+              "grupo": "Vibra",
+              "incentivada": true,
+              "base": "B33",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 8,
+              "spreadAtualBps": -1,
+              "variacaoBps": -9,
+              "fmtAnterior": "B33 + 8 bps",
+              "fmtAtual": "B33 - 1 bps",
+              "spreadAtual": "B33−1",
+              "durationAnos": 5.77,
+              "status": "ok"
+            },
+            {
+              "ticker": "PEJA13",
+              "indexador": "Pré-Fixado 11.0121%",
+              "indexadorFamilia": "Pré",
+              "emissor": "PRIO FORTE S.A.",
+              "grupo": "Prio Forte",
+              "incentivada": true,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": -16.81,
+              "spreadAtualBps": -25.77,
+              "variacaoBps": -8.96,
+              "fmtAnterior": "14,10%",
+              "fmtAtual": "14,20%",
+              "spreadAtual": "CDI − 0,26%",
+              "durationAnos": 2.35,
+              "status": "ok"
+            }
+          ],
+          "totalAberturas": 319,
+          "totalFechamentos": 174,
+          "totalComparados": 493,
+          "variacaoMediaBps": 0.5786206896551725
+        },
+        "trad": {
+          "aberturas": [
+            {
+              "ticker": "MEAL14",
+              "indexador": "DI + 4.2000%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "INTERNATIONAL MEAL COMPANY ALIMENTACAO S/A",
+              "grupo": "IMC",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 453.72,
+              "spreadAtualBps": 486.51,
+              "variacaoBps": 32.789999999999964,
+              "fmtAnterior": "CDI + 4,54%",
+              "fmtAtual": "CDI + 4,87%",
+              "spreadAtual": "CDI + 4,87%",
+              "durationAnos": 1.06,
+              "status": "ok"
+            },
+            {
+              "ticker": "HAPV19",
+              "indexador": "DI + 1.0500%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "HAPVIDA PARTICIPACOES E INVESTIMENTOS S.A.",
+              "grupo": "Hapvida",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 696.1,
+              "spreadAtualBps": 716.08,
+              "variacaoBps": 19.980000000000018,
+              "fmtAnterior": "CDI + 6,96%",
+              "fmtAtual": "CDI + 7,16%",
+              "spreadAtual": "CDI + 7,16%",
+              "durationAnos": 3.72,
+              "status": "ok"
+            },
+            {
+              "ticker": "CSNAA1",
+              "indexador": "DI + 1.6500%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "COMPANHIA SIDERURGICA NACIONAL",
+              "grupo": "CSN",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 1657.34,
+              "spreadAtualBps": 1673.63,
+              "variacaoBps": 16.29000000000019,
+              "fmtAnterior": "CDI + 16,57%",
+              "fmtAtual": "CDI + 16,74%",
+              "spreadAtual": "CDI + 16,74%",
+              "durationAnos": 1.53,
+              "status": "ok"
+            },
+            {
+              "ticker": "HAPV17",
+              "indexador": "DI + 1.6000%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "HAPVIDA PARTICIPACOES E INVESTIMENTOS S.A.",
+              "grupo": "Hapvida",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 702.75,
+              "spreadAtualBps": 718.4,
+              "variacaoBps": 15.649999999999977,
+              "fmtAnterior": "CDI + 7,03%",
+              "fmtAtual": "CDI + 7,18%",
+              "spreadAtual": "CDI + 7,18%",
+              "durationAnos": 2.79,
+              "status": "ok"
+            },
+            {
+              "ticker": "HAPVA0",
+              "indexador": "DI + 1.0500%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "HAPVIDA PARTICIPACOES E INVESTIMENTOS S.A.",
+              "grupo": "Hapvida",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 717.39,
+              "spreadAtualBps": 732.14,
+              "variacaoBps": 14.75,
+              "fmtAnterior": "CDI + 7,17%",
+              "fmtAtual": "CDI + 7,32%",
+              "spreadAtual": "CDI + 7,32%",
+              "durationAnos": 3.92,
+              "status": "ok"
+            },
+            {
+              "ticker": "VAMO34",
+              "indexador": "IPCA + 7.6897%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "VAMOS LOCACAO DE CAMINHOES MAQUINAS E EQUIPAMENTOS S.A.",
+              "grupo": "Simpar",
+              "incentivada": false,
+              "base": "B30",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 602,
+              "spreadAtualBps": 616,
+              "variacaoBps": 14,
+              "fmtAnterior": "B30 + 602 bps",
+              "fmtAtual": "B30 + 616 bps",
+              "spreadAtual": "B30+616",
+              "durationAnos": 3.48,
+              "status": "ok"
+            },
+            {
+              "ticker": "ARML26",
+              "indexador": "DI + 1.5500%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "ARMAC LOCACAO LOGISTICA E SERVICOS S.A.",
+              "grupo": "Armac",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 301.6,
+              "spreadAtualBps": 312.31,
+              "variacaoBps": 10.70999999999998,
+              "fmtAnterior": "CDI + 3,02%",
+              "fmtAtual": "CDI + 3,12%",
+              "spreadAtual": "CDI + 3,12%",
+              "durationAnos": 3.15,
+              "status": "ok"
+            },
+            {
+              "ticker": "RNDNA2",
+              "indexador": "DI + 0.8500%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "RANDONCORP S.A.",
+              "grupo": "Randoncorp",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 247.29000000000002,
+              "spreadAtualBps": 257.56,
+              "variacaoBps": 10.269999999999982,
+              "fmtAnterior": "CDI + 2,47%",
+              "fmtAtual": "CDI + 2,58%",
+              "spreadAtual": "CDI + 2,58%",
+              "durationAnos": 2.91,
+              "status": "ok"
+            },
+            {
+              "ticker": "ANIM18",
+              "indexador": "DI + 1.5000%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "ANIMA HOLDING S/A",
+              "grupo": "Ânima",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 181.16,
+              "spreadAtualBps": 190.11,
+              "variacaoBps": 8.950000000000017,
+              "fmtAnterior": "CDI + 1,81%",
+              "fmtAtual": "CDI + 1,90%",
+              "spreadAtual": "CDI + 1,90%",
+              "durationAnos": 2.34,
+              "status": "ok"
+            },
+            {
+              "ticker": "TFLEA4",
+              "indexador": "DI + 1.8500%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "LOCALIZA FLEET S/A",
+              "grupo": "Localiza",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 129.22,
+              "spreadAtualBps": 137.62,
+              "variacaoBps": 8.400000000000006,
+              "fmtAnterior": "CDI + 1,29%",
+              "fmtAtual": "CDI + 1,38%",
+              "spreadAtual": "CDI + 1,38%",
+              "durationAnos": 2.02,
+              "status": "ok"
+            },
+            {
+              "ticker": "JSMLB5",
+              "indexador": "IPCA + 7.9677%",
+              "indexadorFamilia": "IPCA+",
+              "emissor": "SIMPAR S.A.",
+              "grupo": "Simpar",
+              "incentivada": false,
+              "base": "B30",
+              "tipo": "ipca",
+              "spreadAnteriorBps": 588,
+              "spreadAtualBps": 596,
+              "variacaoBps": 8,
+              "fmtAnterior": "B30 + 588 bps",
+              "fmtAtual": "B30 + 596 bps",
+              "spreadAtual": "B30+596",
+              "durationAnos": 3.38,
+              "status": "ok"
+            },
+            {
+              "ticker": "CSANB0",
+              "indexador": "DI + 1.5000%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "COSAN S.A.",
+              "grupo": "Cosan",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 168.18,
+              "spreadAtualBps": 175.22,
+              "variacaoBps": 7.039999999999992,
+              "fmtAnterior": "CDI + 1,68%",
+              "fmtAtual": "CDI + 1,75%",
+              "spreadAtual": "CDI + 1,75%",
+              "durationAnos": 4.39,
+              "status": "ok"
+            },
+            {
+              "ticker": "CLIS11",
+              "indexador": "DI + 3.2000%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "CLI SUL S/A",
+              "grupo": "CLI",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 164.59,
+              "spreadAtualBps": 171.38,
+              "variacaoBps": 6.789999999999992,
+              "fmtAnterior": "CDI + 1,65%",
+              "fmtAtual": "CDI + 1,71%",
+              "spreadAtual": "CDI + 1,71%",
+              "durationAnos": 2.36,
+              "status": "ok"
+            },
+            {
+              "ticker": "CSANC1",
+              "indexador": "DI + 1.3000%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "COSAN S.A.",
+              "grupo": "Cosan",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 214.12,
+              "spreadAtualBps": 220.73000000000002,
+              "variacaoBps": 6.610000000000014,
+              "fmtAnterior": "CDI + 2,14%",
+              "fmtAtual": "CDI + 2,21%",
+              "spreadAtual": "CDI + 2,21%",
+              "durationAnos": 4.89,
+              "status": "ok"
+            },
+            {
+              "ticker": "UNIP39",
+              "indexador": "DI + 1.6500%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "UNIPAR CARBOCLORO S/A",
+              "grupo": "Unipar",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 153.82,
+              "spreadAtualBps": 159.84,
+              "variacaoBps": 6.02000000000001,
+              "fmtAnterior": "CDI + 1,54%",
+              "fmtAtual": "CDI + 1,60%",
+              "spreadAtual": "CDI + 1,60%",
+              "durationAnos": 4.26,
+              "status": "ok"
+            }
+          ],
+          "fechamentos": [
+            {
+              "ticker": "ELPLA6",
+              "indexador": "DI + 1.6400%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "ELETROPAULO METROPOL. ELETR. DE S.P. S/A",
+              "grupo": "Enel Brasil",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 336.76,
+              "spreadAtualBps": 314.92,
+              "variacaoBps": -21.839999999999975,
+              "fmtAnterior": "CDI + 3,37%",
+              "fmtAtual": "CDI + 3,15%",
+              "spreadAtual": "CDI + 3,15%",
+              "durationAnos": 1.48,
+              "status": "ok"
+            },
+            {
+              "ticker": "CSNAA2",
+              "indexador": "DI + 2.5000%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "COMPANHIA SIDERURGICA NACIONAL",
+              "grupo": "CSN",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 1477.3899999999999,
+              "spreadAtualBps": 1458.06,
+              "variacaoBps": -19.329999999999927,
+              "fmtAnterior": "CDI + 14,77%",
+              "fmtAtual": "CDI + 14,58%",
+              "spreadAtual": "CDI + 14,58%",
+              "durationAnos": 0.84,
+              "status": "ok"
+            },
+            {
+              "ticker": "FISI15",
+              "indexador": "DI + 0.8500%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "FISIA COMERCIO DE PRODUTOS ESPORTIVOS S.A.",
+              "grupo": "Grupo SBF",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 149.15,
+              "spreadAtualBps": 130.77,
+              "variacaoBps": -18.379999999999995,
+              "fmtAnterior": "CDI + 1,49%",
+              "fmtAtual": "CDI + 1,31%",
+              "spreadAtual": "CDI + 1,31%",
+              "durationAnos": 2.47,
+              "status": "ok"
+            },
+            {
+              "ticker": "RADLA1",
+              "indexador": "DI + 0.4400%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "RAIA DROGASIL S/A",
+              "grupo": "RaiaDrogasil",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 58.720000000000006,
+              "spreadAtualBps": 41.9,
+              "variacaoBps": -16.820000000000007,
+              "fmtAnterior": "CDI + 0,59%",
+              "fmtAtual": "CDI + 0,42%",
+              "spreadAtual": "CDI + 0,42%",
+              "durationAnos": 4,
+              "status": "ok"
+            },
+            {
+              "ticker": "RADL19",
+              "indexador": "DI + 0.6500%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "RAIA DROGASIL S/A",
+              "grupo": "RaiaDrogasil",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 55.34,
+              "spreadAtualBps": 40.08,
+              "variacaoBps": -15.260000000000005,
+              "fmtAnterior": "CDI + 0,55%",
+              "fmtAtual": "CDI + 0,40%",
+              "spreadAtual": "CDI + 0,40%",
+              "durationAnos": 3.19,
+              "status": "ok"
+            },
+            {
+              "ticker": "ARML15",
+              "indexador": "DI + 1.3500%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "ARMAC LOCACAO LOGISTICA E SERVICOS S.A.",
+              "grupo": "Armac",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 282.73,
+              "spreadAtualBps": 269.91,
+              "variacaoBps": -12.819999999999993,
+              "fmtAnterior": "CDI + 2,83%",
+              "fmtAtual": "CDI + 2,70%",
+              "spreadAtual": "CDI + 2,70%",
+              "durationAnos": 3.51,
+              "status": "ok"
+            },
+            {
+              "ticker": "CPGT18",
+              "indexador": "DI + 1.4000%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "COPEL GERACAO E TRANSMISSAO S.A.",
+              "grupo": "Copel",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 74.05000000000001,
+              "spreadAtualBps": 61.24000000000001,
+              "variacaoBps": -12.810000000000002,
+              "fmtAnterior": "CDI + 0,74%",
+              "fmtAtual": "CDI + 0,61%",
+              "spreadAtual": "CDI + 0,61%",
+              "durationAnos": 2.48,
+              "status": "ok"
+            },
+            {
+              "ticker": "SAPRB4",
+              "indexador": "DI + 1.0500%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "COMPANHIA DE SANEAMENTO  DO PARANA - SANEPAR",
+              "grupo": "Sanepar",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 72,
+              "spreadAtualBps": 59.25,
+              "variacaoBps": -12.75,
+              "fmtAnterior": "CDI + 0,72%",
+              "fmtAtual": "CDI + 0,59%",
+              "spreadAtual": "CDI + 0,59%",
+              "durationAnos": 2.83,
+              "status": "ok"
+            },
+            {
+              "ticker": "AZZA12",
+              "indexador": "DI + 1.2500%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "AZZAS 2154 S.A.",
+              "grupo": "Azzas",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 179.99,
+              "spreadAtualBps": 167.28,
+              "variacaoBps": -12.710000000000008,
+              "fmtAnterior": "CDI + 1,80%",
+              "fmtAtual": "CDI + 1,67%",
+              "spreadAtual": "CDI + 1,67%",
+              "durationAnos": 2.69,
+              "status": "ok"
+            },
+            {
+              "ticker": "SMFTC3",
+              "indexador": "DI + 0.9500%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "SMARTFIT ESCOLA DE GINASTICA E DANCA S/A",
+              "grupo": "Smart Fit",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 112.18999999999998,
+              "spreadAtualBps": 99.49,
+              "variacaoBps": -12.699999999999989,
+              "fmtAnterior": "CDI + 1,12%",
+              "fmtAtual": "CDI + 0,99%",
+              "spreadAtual": "CDI + 0,99%",
+              "durationAnos": 4.77,
+              "status": "ok"
+            },
+            {
+              "ticker": "ASAI18",
+              "indexador": "DI + 1.8500%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "SENDAS  DISTRIBUIDORA S/A",
+              "grupo": "Assaí",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 146.38,
+              "spreadAtualBps": 135.20000000000002,
+              "variacaoBps": -11.179999999999978,
+              "fmtAnterior": "CDI + 1,46%",
+              "fmtAtual": "CDI + 1,35%",
+              "spreadAtual": "CDI + 1,35%",
+              "durationAnos": 1.31,
+              "status": "ok"
+            },
+            {
+              "ticker": "GRRB16",
+              "indexador": "DI + 0.9500%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "AGUAS GUARIROBA  S/A",
+              "grupo": "Aegea",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 251.33,
+              "spreadAtualBps": 240.67,
+              "variacaoBps": -10.660000000000025,
+              "fmtAnterior": "CDI + 2,51%",
+              "fmtAtual": "CDI + 2,41%",
+              "spreadAtual": "CDI + 2,41%",
+              "durationAnos": 2.4,
+              "status": "ok"
+            },
+            {
+              "ticker": "CHSF12",
+              "indexador": "DI + 0.8500%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "COMPANHIA HIDRO ELETRICA DO SAO FRANCISCO - CHESF",
+              "grupo": "Axia",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 61.24000000000001,
+              "spreadAtualBps": 50.82,
+              "variacaoBps": -10.420000000000009,
+              "fmtAnterior": "CDI + 0,61%",
+              "fmtAtual": "CDI + 0,51%",
+              "spreadAtual": "CDI + 0,51%",
+              "durationAnos": 2.26,
+              "status": "ok"
+            },
+            {
+              "ticker": "RADLA0",
+              "indexador": "DI + 0.6000%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "RAIA DROGASIL S/A",
+              "grupo": "RaiaDrogasil",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 50.349999999999994,
+              "spreadAtualBps": 39.96,
+              "variacaoBps": -10.389999999999993,
+              "fmtAnterior": "CDI + 0,50%",
+              "fmtAtual": "CDI + 0,40%",
+              "spreadAtual": "CDI + 0,40%",
+              "durationAnos": 3.69,
+              "status": "ok"
+            },
+            {
+              "ticker": "AEGPA9",
+              "indexador": "DI + 2.7500%",
+              "indexadorFamilia": "CDI+",
+              "emissor": "AEGEA SANEAMENTO E PARTICIPACOES S/A",
+              "grupo": "Aegea",
+              "incentivada": false,
+              "base": "CDI",
+              "tipo": "cdi",
+              "spreadAnteriorBps": 314.89,
+              "spreadAtualBps": 305.5,
+              "variacaoBps": -9.389999999999986,
+              "fmtAnterior": "CDI + 3,15%",
+              "fmtAtual": "CDI + 3,06%",
+              "spreadAtual": "CDI + 3,06%",
+              "durationAnos": 2.05,
+              "status": "ok"
+            }
+          ],
+          "totalAberturas": 221,
+          "totalFechamentos": 318,
+          "totalComparados": 539,
+          "variacaoMediaBps": -0.6763265306122455
+        }
+      },
+      "totalAberturas": 540,
+      "totalFechamentos": 492,
+      "totalComparados": 1032,
+      "atual": "2026-07-17",
+      "anterior": "2026-07-16",
+      "semAnterior": false
+    },
+    "fundos": {
+      "novos": [
+        {
+          "cnpj": "64739277000113",
+          "nome": "ARANDU RPPBTG FUNDO DE DEBENTURES INCENTIVADAS FI DE INVESTIMENTO FINANCEIRO EM INFRA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "58542057000100",
+          "nome": "ARER FUNDO DE INVESTIMENTO FINANCEIRO  INV EM INFRAESTRUTURA CI EM INFRA RENDA FIXA RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65255255000140",
+          "nome": "ATID SF FIF INV EM INFRAESTRUTURA CLASSE DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "63285255000168",
+          "nome": "AUGURI 2 FUNDO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65096801000148",
+          "nome": "AZ QUEST CONDOTTO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65180245000193",
+          "nome": "BEALFE FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "62899553000185",
+          "nome": "BRP DESCANSO FI FINANCEIRO RENDA FIXA INVESTIMENTO EM INFRAESTRUTURA - RESPONSABILIDADE LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "62852498000178",
+          "nome": "CR2 FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65197885000106",
+          "nome": "CRISMAJE FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64678185000170",
+          "nome": "DHANA FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "58459098000120",
+          "nome": "G5 MJL FIF - CLASSE DE INVESTIMENTO RF INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA - RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "60868496000141",
+          "nome": "GPBK FUNDO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65344961000169",
+          "nome": "HERITAGE LINE IPCA FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA INVESTIMENTO EM INFRA CP RESP LIMIT",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "63912056000132",
+          "nome": "HORIZON DEBENTURES INCENTIVADAS FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "62911331000130",
+          "nome": "JAE 2 FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64203998000104",
+          "nome": "JMC FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "62049166000150",
+          "nome": "K2 INFRA FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64511682000180",
+          "nome": "LBW FIF - CLASSE DE INVESTIMENTO RENDA FIXA INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64091639000102",
+          "nome": "MUCUGÊ FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "55230301000101",
+          "nome": "SAFRA INFRA LIQUIDEZ PROGRESSIVO FIF INV EM INFRA CLASSE DE INV EM INFRAESTRUTURA RF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "63989000000186",
+          "nome": "SANTANDER FUNDO INCENTIVADO CDI PROJETOS INV EM INFRA RF CRÉDITO PRIVADO - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "62876542000180",
+          "nome": "SANTANDER PB 316 INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64059160000199",
+          "nome": "SANTANDER PB ALLGREEN INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "66302938000174",
+          "nome": "SANTANDER PB AURUM INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65835898000163",
+          "nome": "SANTANDER PB FSC INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64540699000165",
+          "nome": "SANTANDER PB GUAIRACA INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "63914463000189",
+          "nome": "SANTANDER PB ISADORA INVESTIMENTO EM INFRA RF - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "63740555000190",
+          "nome": "SANTANDER PB JFK INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64582055000130",
+          "nome": "SANTANDER PB PHRONESIS INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "66633063000193",
+          "nome": "SANTANDER PB R&M INVESTIMENTO EM INFRA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64094799000105",
+          "nome": "SANTANDER PB RANCHEIRO INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "62806621000114",
+          "nome": "SANTANDER PB SHAKTI INVESTIMENTO EM INFRA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "61809225000188",
+          "nome": "SANTANDER PB SOLIMÕES INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "63740800000169",
+          "nome": "SANTANDER PB TELDAR INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "63761174000197",
+          "nome": "SANTANDER PB TRUAZA INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "63893287000146",
+          "nome": "SANTANDER PB VAF INVESTIMENTO EM INFRA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64986160000134",
+          "nome": "SANTANDER PB VIENA INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "66148652000186",
+          "nome": "SANTANDER PB VILLA INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64507265000163",
+          "nome": "SONMA FIF - CLASSE DE INVESTIMENTO RENDA FIXA INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "50038992000114",
+          "nome": "SPARTA DEB INC ESTRAT FUNDOS INCENTIVADOS DE INVEST FINANCEIRO EM INFRA RENDA FIXA - RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64723744000117",
+          "nome": "SPARTA MAR MASTER FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "64185185000139",
+          "nome": "SPARTA VP HEDGE FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "61954776000135",
+          "nome": "STEN DEBÊNTURES INCENTIVADAS FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "55267271000108",
+          "nome": "TAURUS FIF INVESTIMENTO EM INFRAESTRUTURA CLASSE DE INV EM INFRAESTRUTURA RENDA FIXA RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "62769923000160",
+          "nome": "TIVIO INSTITUCIONAL INCENTIVADO CDI MASTER FIF - CI RF REF DE INVESTIMENTO EM INFRA - RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "63405764000187",
+          "nome": "VINLAND DEB DE INFRA A IPCA IMA-B5 FIF FUNDO INC EM INVEST EM DEB DE INFRA RF CP RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "27974854000125",
+          "nome": "1960 PREVIDÊNCIA FIF - CLASSE DE INVESTIMENTO MULT CRED PRIV - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "63727006000185",
+          "nome": "ABSOLUTE HIDRA PRÉ 2 ANOS A MASTER FI DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "44109989000141",
+          "nome": "ACUERE QUALIFICADO ICATU FI FINANCEIRO - CI MULT CRED PRIV - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "04885403000116",
+          "nome": "AGNES I FIF - CLASSE DE INVESTIMENTO MULTIMERCADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "60490407000176",
+          "nome": "ALFA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "43636043000170",
+          "nome": "AMG PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "43960245000173",
+          "nome": "AMW ÍSIS MASTER FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "03369970000157",
+          "nome": "AQUILA FUNDO DE INVESTIMENTO FINANCEIRO - CLASSE DE INVESTIMENTO MULTIMERCADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "23225882000199",
+          "nome": "ATENA TAPYR MASTER FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "54233243000107",
+          "nome": "ATENA VP YIELD D30 FUNDO DE INVESTIMENTO RENDA FIXA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "03099639000164",
+          "nome": "ATHENA I FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "44672489000113",
+          "nome": "ATSU II PREVIDÊNCIA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "30353549000120",
+          "nome": "AUGME PRO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "39354788000170",
+          "nome": "AUGME PRO TB FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "64487678000123",
+          "nome": "AZ QUEST STRUTTURATO OPPORTUNA PREVIDENCIÁRIO FIF MULTIMERCADO CRÉDITO PRIVADO RL",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "59907848000141",
+          "nome": "BANRISUL +100 FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA LONGO PRAZO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "01822655000108",
+          "nome": "BANRISUL MASTER FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA REFERENCIADO DI LONGO PRAZO RESPONSABILI",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "08960971000195",
+          "nome": "BANRISUL PREMIUM FUNDO DE INVESTIMENTO RENDA FIXA DE LONGO PRAZO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "04573108000124",
+          "nome": "BARRA VELHA II FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "26773252000147",
+          "nome": "BB 3F FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO LONGO PRAZO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "46467107000145",
+          "nome": "BB EVANGELISTA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO LONGO PRAZO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "15398622000197",
+          "nome": "BB MWP FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO LONGO PRAZO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "00852311000189",
+          "nome": "BB TOP DI RENDA FIXA REFERENCIADO DI LONGO PRAZO FIF RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "39314609000170",
+          "nome": "BENAIA FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO INVESTIMENTO NO EXTERIOR",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "41610520000101",
+          "nome": "BERMAN PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "48670714000133",
+          "nome": "BLUE 2 FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "67288854000196",
+          "nome": "BOA VISTA FIF - CLASSE DE INVESTIMENTO RENDA FIXA INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "04841576000132",
+          "nome": "BRADESCO FIF - CLASSE DE INVESTIMENTO SUPRE II - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "00322699000106",
+          "nome": "BRADESCO H FIF - CLASSE DE INVESTIMENTO RF REFERENCIADA DI CRED PRIV LP EXECUTIVO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "09522705000143",
+          "nome": "BRADESCO H HEALTH CARE PLUS FIF - CLASSE DE INVESTIMENTO RENDA FIXA CRÉDITO PRIVADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "02998164000185",
+          "nome": "BRADESCO PLUS I FI FINANCEIRO - CI MULT - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "09523207000115",
+          "nome": "BRADESCO TEJO FI FINANCEIRO - CI MULT - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "54104510000138",
+          "nome": "BRAIN CONSERVADOR PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "32312120000110",
+          "nome": "BRAM CORAL II FIF - CLASSE DE INVESTIMENTO RENDA FIXA REFERENCIADA DI - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "15675431000125",
+          "nome": "BRAM FIF - CLASSE DE INVESTIMENTO RF REFERENCIADA DI CORAL - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "66275639000198",
+          "nome": "BRAM WAREHOUSE 2 FIF - CLASSE DE INVESTIMENTO RENDA FIXA CRÉDITO PRIVADO - RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "13049660000109",
+          "nome": "BRASIL ASSET FUND II FIF - CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO - RESP LIMITADA.",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "54463551000110",
+          "nome": "BRISA NOGAT FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "43140750000171",
+          "nome": "BTG CASSI FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "00888897000131",
+          "nome": "BTG PACTUAL HEDGE FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "52319866000163",
+          "nome": "BTG PACTUAL HEDGE II FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "50875116000142",
+          "nome": "BTG PACTUAL HEDGE PREV FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "54952299000103",
+          "nome": "BTG PACTUAL TOTAL RENDA FIXA ATIVA FUNDO DE INVESTIMENTO RENDA FIXA LONGO PRAZO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "21336427000135",
+          "nome": "BTG PACTUAL YIELD PREVIDÊNCIA FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "18007644000177",
+          "nome": "CAIXA MASTER PERFORMANCE 50 FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA LONGO PRAZO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "63900490000100",
+          "nome": "CAMPANIA KINEA FIF - FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA RF CRED PRIV - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "05642617000124",
+          "nome": "CHATEAUBRIAND PREVIDENCIÁRIO FI FINANCEIRO - CI RF - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "64138938000155",
+          "nome": "CNTA FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA INVESTIMENTO EM INFRAESTRUTURA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "04588017000162",
+          "nome": "COMSHELL WA CLASSE DE INVESTIMENTO RENDA  FIXA - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "20468262000192",
+          "nome": "COMSHELL WA IMA-S CLASSE DE INVESTIMENTO  RENDA FIXA- RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "35916528000190",
+          "nome": "CORDILHEIRA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "43790956000147",
+          "nome": "CORETUBA ICATU PREVIDÊNCIA QUALIFICADO FI FINANCEIRO - CI MULT CRED PRIV - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "10355529000181",
+          "nome": "CORLEONE II FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "60490963000142",
+          "nome": "DIAMÃ FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "44110011000108",
+          "nome": "DPL ICATU QUALIFICADO PREVIDÊNCIA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "04786966000157",
+          "nome": "DUCAPE FUNDO DE INVESTIMENTO FINANCEIRO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "57074069000187",
+          "nome": "EDUMAR FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA RF CRÉD PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "09639927000140",
+          "nome": "ELS QUATRE GATS FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "49454180000170",
+          "nome": "EQX FUNDO DE INVESTIMENTO FINANCEIRO - CI MULTIMERCADO CRÉDITO PRIVADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "50421373000104",
+          "nome": "ESMERALDAS FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "26173300000166",
+          "nome": "EXPERTISE FIF - CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "55767954000116",
+          "nome": "EXPL ROCKDAYS FUNDO DE INVESTIMENTO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "19770499000144",
+          "nome": "EXPLORITAS ALPHA AMERICA LATINA MASTER FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "18814287000159",
+          "nome": "FAIRFIELD FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "37887955000112",
+          "nome": "FAMILIA PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "42046759000155",
+          "nome": "FATOR MACRO MASTER MULTIMERCADO FUNDO DE INVESTIMENTO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "55984087000170",
+          "nome": "FEROME FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "18086741000100",
+          "nome": "FIF MULTIMERCADO PEDRA REDONDA INVESTIMENTO NO EXTERIOR CRÉDITO PRIVADO - RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "19038997000105",
+          "nome": "FINACAP FI FINANCEIRO - CI MULT CRED PRIV - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "11952676000100",
+          "nome": "FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO DOREL",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "52195023000100",
+          "nome": "G5 ADRX QUALIFICADO PREV FIF - CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "54217318000158",
+          "nome": "G5 ALLOCATION DISTRESSED E LEGAL CLAIMS II FUNDO DE INVESTIMENTO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "51511514000142",
+          "nome": "G5 ALLOCATION PREVIDÊNCIA CRÉDITO INFLAÇÃO II FI FINANCEIRO - CI MULT CRED PRIV - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "61520265000105",
+          "nome": "G5 GRANDE PRAIRIE FUNDO DE INVESTIMENTO FINANCEIRO - CLASSE DE RENDA FIXA INFRA - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "25036659000129",
+          "nome": "G5 LRM FIF - CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO - RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "26725148000187",
+          "nome": "G5 MOON FI FINANCEIRO - CI MULT CRED PRIV - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "37008673000106",
+          "nome": "GALAPAGOS PELICAN INSTITUCIONAL FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "41710798000142",
+          "nome": "GIRASSOL CLASSE DE INVESTIMENTO  MULTIMERCADO CRÉDITO PRIVADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "34447278000123",
+          "nome": "GJ33 PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "19675080000103",
+          "nome": "GLMB CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "63278825000192",
+          "nome": "GRIF LIQUIDEZ FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "63806809000125",
+          "nome": "HERITAGE RUBY MASTER II FUNDO DE INVESTIMENTO RENDA FIXA INFRA CRÉDITO PRIVADO - RESP LIMT",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "65838693000131",
+          "nome": "HERITAGE RUBY MASTER OFFSHORE FIF RF INVESTIMENTO EM INFRA CRÉDITO  PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "64626717000126",
+          "nome": "IBIUNA RF ATIVO INFRA FIF - CI RENDA FIXA INCENTIVADO DE  INVESTIMENTO EM INFRA - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "26370161000160",
+          "nome": "ICATU SEG APOSENTADORIA PREV RENDA FIXA FIF II RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "52986103000176",
+          "nome": "ICATU VANGUARDA ABSOLUTO INFLAÇÃO XP SEG FI RF CRÉDITO PRIVADO PREVIDENCIÁRIO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "64717139000133",
+          "nome": "ICATU VANGUARDA BP DINÂMICO CDI PREVIDÊNCIA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "52163627000167",
+          "nome": "ICATU VANGUARDA DINÂMICO INSTITUCIONAL FIF - CI MULTIMERCADO - RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "52164607000100",
+          "nome": "ICATU VANGUARDA IPCA DINÂMICO FIF  - CLASSE DE INVESTIMENTO MULTIMERCADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "05755769000133",
+          "nome": "ICATU VANGUARDA PLUS FIF  RF  LONGO PRAZO - RESP  LTDA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "17329683000128",
+          "nome": "ICATU VANGUARDA PLUS FIFE FIF- CLASSE DE INVESTIMENTO RENDA FIXA PREVIDENCIÁRIO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "53074033000142",
+          "nome": "ICATU VANGUARDA PLUS XP SEG FUNDO DE INVESTIMENTO EM RENDA FIXA PREVIDENCIÁRIO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "42295379000154",
+          "nome": "IG FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "20468779000181",
+          "nome": "IMPACTO HORIZONTE CLASSE DE INVESTIMENTO  RENDA FIXA CRÉDITO PRIVADO LONGO PRAZO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "36499357000103",
+          "nome": "IRONWORKS FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "41083033000120",
+          "nome": "ITAÚ CRÉDITO ESTRUTURADO FIJI MASTER FIF MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "46449621000158",
+          "nome": "ITAÚ FLEXPREV LUMINA PLUS FIF RF - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "42814769000193",
+          "nome": "ITAÚ FLEXPREV PRIVILÈGE FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA REFERENCIADO DI - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "67280664000122",
+          "nome": "ITAÚ FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAEST IFRI CDI II RF CRED PRIV RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "53823295000162",
+          "nome": "ITAÚ HIMALAIA PRIVATE MARKETS FUNDO DE INVESTIMENTO EM DIREITOS CREDITÓRIOS RESPONSABILIDADE LIMITAD",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "00832435000100",
+          "nome": "ITAÚ INSTITUCIONAL RENDA FIXA REFERENCIADO DI FIF RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "25341064000187",
+          "nome": "ITAÚ WEALTH MASTER RENDA FIXA REFERENCIADO DI FUNDO DE INVESTIMENTO FINANCEIRO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "04087328000148",
+          "nome": "IU WESTERN ASSET CORPORATE III FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "04511306000163",
+          "nome": "IU WESTERN ASSET PERFORMANCE V FIF RENDA FIXA RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "42220374000162",
+          "nome": "JAGUACY CLASSE DE INVESTIMENTO  MULTIMERCADO CRÉDITO PRIVADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "04356413000164",
+          "nome": "JAGUAR FIF MULTIMERCADO CRÉDITO PRIVADO INVESTIMENTO NO EXTERIOR - RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "58490605000198",
+          "nome": "JTFC FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "39375554000109",
+          "nome": "KILIMA MAJI FUNDO DE INVESTIMENTO EM RENDA FIXA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "52203642000191",
+          "nome": "KINEA VIII FIF RENDA FIXA CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "44409359000192",
+          "nome": "KNOX MIAMI PREV FUNDO DE INVESTIMENTO MULTIMERCADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "63174249000133",
+          "nome": "LA REINA KINEA FIF FI INCENTIVADO EM DEBÊNTURES DE INFRA RENDA FIXA CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "61690888000126",
+          "nome": "LAVALLA 200 CLASSE DE INVESTIMENTO RENDA FIXA CRÉDITO PRIVADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "39573262000180",
+          "nome": "LCE FIF - CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO - RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "54022134000132",
+          "nome": "LEGATO FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "11690117000160",
+          "nome": "LEROSA MODERADO FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA CRÉDITO PRIVADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "42813715000103",
+          "nome": "LTD PREV FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "65189035000166",
+          "nome": "LUMINA FEEDER OFFSHORE III FIM CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "19718324000198",
+          "nome": "MAG OABPREV SC FIF - CLASSE DE INVESTIMENTO MULT  - RESP  LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "43790923000105",
+          "nome": "MAIO FULLNESS PREVIDÊNCIA QUALIFICADO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "13425757000179",
+          "nome": "MAIS VIDA II FIF - CLASSE DE INVESTIMENTO MULTIMERCADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "53109614000172",
+          "nome": "MARTINA II ICATU PREVIDÊNCIA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "13454232000161",
+          "nome": "MILANO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "55582812000184",
+          "nome": "MIRABEL FUNDO DE INVESTIMENTO RENDA FIXA REFERENCIADO DI RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "27566032000105",
+          "nome": "MIRNO CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "61972672000153",
+          "nome": "MMTH FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "40963283000191",
+          "nome": "MODAL FEI FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "19366021000153",
+          "nome": "MONGERAL AEGON SBOTPREV FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO - RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "46975834000113",
+          "nome": "MULTICOOP MODERADO FIF MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "21082099000198",
+          "nome": "NAN CDI FI FINANCEIRO - CI MULT LP - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "40226109000166",
+          "nome": "NESSO CAPITAL FI FINANCEIRO - CI MULT CRED PRIV - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "42847484000159",
+          "nome": "NINESUL PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "37467474000158",
+          "nome": "NORTE LONG BIAS MASTER CLASSE DE  INVESTIMENTO MULTIMERCADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "56052260000165",
+          "nome": "NU ATER FUNDO DE INVESTIMENTO RENDA FIXA REFERENCIADO DI",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "42716764000128",
+          "nome": "NU RESERVA IMEDIATA MASTER FIF RF REFERENCIADO DI RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "62970324000100",
+          "nome": "PATRI 2 FIF FI INCENTIVADO EM DEBÊNTURES DE INFRAESTRUTURA RENDA FIXA CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "57711375000187",
+          "nome": "PATRIA PREVIDENCIÁRIO XP SEG FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "63953556000112",
+          "nome": "POLO FI FINANCEIRO RENDA FIXA INVESTIMENTO EM INFRAESTRUTURA - RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "62155864000130",
+          "nome": "PORTO GUANABARA FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "24011864000177",
+          "nome": "PORTO SEGURO IMA-B5 FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA LONGO PRAZO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "17072641000154",
+          "nome": "PORTO SEGURO INFLAÇÃO MASTER PREVIDENCIÁRIO FIF RENDA FIXA RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "62910859000195",
+          "nome": "PRINCE FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "42066551000106",
+          "nome": "REALE FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "52203762000199",
+          "nome": "ROOT ANGELIM FIF MULTIMERCADO CRÉDITO PRIVADO INVESTIMENTO NO EXTERIOR - RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "38111943000164",
+          "nome": "RT ENDOWMENT II FIF MULT CRÉD PRIV - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "10264179000148",
+          "nome": "RT ENDURANCE FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "44458613000142",
+          "nome": "RTC CAPITAL PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "57890176000183",
+          "nome": "RUBI 2 FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "33842492000111",
+          "nome": "SAFRA REFERENCIADO II FIF CLASSE DE INVEST RENDA FIXA REFERENCIADA DI CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "34657939000145",
+          "nome": "SANTANDER PB CANGUARA MULTIMERCADO CRÉDITO PRIVADO - FIF",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "35120235000100",
+          "nome": "SANTANDER PB HOLLY III MULTIMERCADO CRÉDITO PRIVADO - FUNDO DE INVESTIMENTO FINANCEIRO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "66148281000132",
+          "nome": "SANTANDER PB MONTE BARBADO RENDA FIXA CRÉDITO PRIVADO - FIF RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "43165507000108",
+          "nome": "SANTANDER PB TENERIFE MULTIMERCADO CRÉDITO PRIVADO - FUNDO DE INVESTIMENTO FINANCEIRO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "55274875000173",
+          "nome": "SANTANDER PREV RENDA FIXA REFERENCIADO DI CRÉDITO PRIVADO EQUILIBRIO FIF RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "01630558000113",
+          "nome": "SANTANDER RENDA FIXA REFERENCIADO DI - FIF RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "14843629000108",
+          "nome": "SANTIAGO FIF - CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "56926582000196",
+          "nome": "SEALS FUNDO DE INVESTIMENTO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "18685779000191",
+          "nome": "SEVEN SONS CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO - RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "53991112000118",
+          "nome": "SOMMA TRENTO PREV FUNDO DE INVESTIMENTO EM RENDA FIXA CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "09484942000167",
+          "nome": "SONG II FUNDO DE INVESTIMENTO  FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "01597187000115",
+          "nome": "SPECIAL RENDA FIXA REFERENCIADO DI FUNDO DE INVESTIMENTO FINANCEIRO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "41837419000180",
+          "nome": "SPECIALE HORIZONTE PREVIDÊNCIA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "61472550000106",
+          "nome": "SPECIALE MULTI CREDIT PREV FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRED PRIV RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "51942073000133",
+          "nome": "STB CLASSE DE INVESTIMENTO  MULTIMERCADO CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "13030850000184",
+          "nome": "SUL AMÉRICA TURIDO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO DE RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "62203847000120",
+          "nome": "SULAMÉRICA CRÉDITO ESG MASTER FIF RENDA FIXA CRÉDITO PRIVADO LONGO PRAZO IS DE RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "20889471000100",
+          "nome": "SULAMÉRICA FIX 100 PLUS FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "20889498000100",
+          "nome": "SULAMÉRICA VOO LIVRE PREV FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO DE RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "26374791000103",
+          "nome": "THE STORM CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "02846259000183",
+          "nome": "TIBAGI FI FINANCEIRO - CI MULT CRED PRIV - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "44917400000131",
+          "nome": "TORDILHO ICATU PREVIDÊNCIA QUALIFICADO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "66608223000144",
+          "nome": "TRN FLOATING HIGH GRADE FIF - CLASSE DE INVESTIMENTO RF CRÉDITO PRIVADO - RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "65448597000187",
+          "nome": "TYTON CRÉDITO PREVIDÊNCIA IQ PREVIDÊNCIA FUNDO DE INVESTIMENTO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "44900549000108",
+          "nome": "UBS CONSENSO CONSERVADOR ICATU QUALIFICADO PREVIDENCIÁRIO FIF - CI MULT CRED PRIV - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "63530215000134",
+          "nome": "UBS EVOLUTION ESTRUTURA FUND II INFRA FI EM INFRAESTRUTURA RENDA FIXA CREDITO PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "42921777000139",
+          "nome": "UBS EVOLUTION MACRO STRATEGIES MASTER FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "63534145000192",
+          "nome": "UBS EVOLUTION ROKA FUJI FUNDO DE INVESTIMENTO EM INFRAESTRUTURA - RENDA FIXA CRED PRIV RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "63533177000173",
+          "nome": "UBS EVOLUTION STARLINK FUNDO DE INVESTIMENTO EM INFRAESTRUTURA - RENDA FIXA CRED PRIV RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "23731475000153",
+          "nome": "UBS FANRONG FUNDO DE INVESTIMENTO FINANCEIRO - MULTIMERCADO CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "09418454000151",
+          "nome": "UBS MINUANO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "36015218000167",
+          "nome": "UBS PITANGUEIRAS FUNDO DE INVESTIMENTO FINANCEIRO  MULTIMERCADO CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "03960320000181",
+          "nome": "UNIMED RF 100 C EM FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "63406337000113",
+          "nome": "VALORA ITAU PREVIDENCIA FIFE FIF RF CRED PRIV LONGO PRAZO RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "65131307000177",
+          "nome": "VALORA OPPORTUNA PREVIDENCIÁRIO FI FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO - RESPONSABILIDADE LIMITA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "35916343000185",
+          "nome": "VENETO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "37780270000172",
+          "nome": "VERITAS PREMIUM INSTITUCIONAL FUNDO DE INVESTIMENTO RENDA FIXA CRÉDITO PRIVADO LONGO PRAZO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "34200585000105",
+          "nome": "VILA DO CONDE FIF CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "66572852000161",
+          "nome": "VINLAND OPPORTUNA FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA CRÉDITO PRIVADO LP RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "38120661000123",
+          "nome": "VISSAN FUNDO DE INVESTIMENTO MULTIMERCADO - CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "20519416000128",
+          "nome": "VOLKS UP! CRÉDITO PRIVADO FIF - CLASSE DE INVESTIMENTO MULT  - RESP  LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "44283966000159",
+          "nome": "WARREN FO TÁTICO RF1 FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "20833938000108",
+          "nome": "WM FIF- CLASSE DE INVESTIMENTO RENDA FIXA CRED PRIV PREVIDENCIÁRIO - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "42418908000160",
+          "nome": "XP CRÉDITO ESTRUTURADO HIGH YIELD SEGUROS MASTER PREV FIF MULTIMERCADO CRÉD PRIV - RESP LTDA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "10843445000197",
+          "nome": "XP REFERENCIADO DI FI FINANCEIRO RENDA FIXA CRÉDITO PRIVADO - RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "45147116000196",
+          "nome": "XPA ITAJUÍ PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "21015780000113",
+          "nome": "Z4 FI FINANCEIRO - CI MULT CRED PRIV - RESP LIMITADA",
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "39488674000112",
+          "nome": "ZEUS CLASSE DE INVESTIMENTO MULTIMERCADO - RESP LIMITADA",
+          "segmento": "trad"
+        }
+      ],
+      "removidos": [
+        {
+          "cnpj": "63197072000190",
+          "nome": "BB RX2 INFRA RENDA FIXA FUNDO INCENTIVADO DE INVEST FINAN EM INFRAESTRUTURA RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "64566437000170",
+          "nome": "BLACKSWAN PLUS FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EMINFRAESTRUTURA RENDA FIXA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "65421221000189",
+          "nome": "BRAM DEBÊNTURES INCENTIVADAS CDI 2602 FIF - CI EM INFRAESTRUTURA RF LP - RESPONSABILIDADE LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "58313484000109",
+          "nome": "EDEN CDI FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA RENDA FIXA CRED PRIV RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "56052337000105",
+          "nome": "G5 VPRF FIF - CLASSE DE INVESTIMENTO RF INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "35819455000118",
+          "nome": "MACADÂMIA FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO",
+          "segmento": ""
+        },
+        {
+          "cnpj": "63921677000182",
+          "nome": "PS GAMA FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "65861280000178",
+          "nome": "SALB FUNDO DE INV FINANCEIRO INV EM INFRAESTRUTURA CLASSE DE INV EM INFRA RENDA FIXA RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "65529691000160",
+          "nome": "SANTANDER PB DALPA INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "61197890000168",
+          "nome": "SANTANDER PB KGC INVESTIMENTO EM INFRA RF - FIF RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "64113409000105",
+          "nome": "SANTANDER PB MONTE BARBADO INVESTIMENTO EM INFRA RF - FIF RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "63092952000100",
+          "nome": "SANTANDER PB MS INVESTMENTS INVESTIMENTO EM INFRA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "63138979000189",
+          "nome": "SANTANDER PB PJ INVESTIMENTO EM INFRA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "65107242000124",
+          "nome": "SANTANDER PB QUESILE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "65073005000190",
+          "nome": "SANTANDER PB SACO SEM FUNDO INVESTIMENTO EM INFRA RF - FIF RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "42598117000169",
+          "nome": "SÃO PEDRO FUNDO INCENTIVADO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO",
+          "segmento": ""
+        },
+        {
+          "cnpj": "61818679000115",
+          "nome": "UBS EVOLUTION VIVRE FUNDO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "65793919000125",
+          "nome": "AGIBANK CRÉDITO PRIVADO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": ""
+        },
+        {
+          "cnpj": "63387076000131",
+          "nome": "AUGME BALANCEADO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "segmento": ""
+        },
+        {
+          "cnpj": "40783237000100",
+          "nome": "AZ QUEST MULTI MAX PREV MASTER FIFE FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO RESP LTDA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "21321600000121",
+          "nome": "BRADESCO BRFPREV FIF CLASSE DE INVESTIMENTO RENDA FIXA CRÉDITO PRIVADO - RESPONSABILIDADE LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "65028465000104",
+          "nome": "CAPITÂNIA MASTER INFRA GERAL ADVISORY RENDA FIXA FUNDO DE INVESTIMENTO EM INFRAESTRUTURA RL",
+          "segmento": ""
+        },
+        {
+          "cnpj": "22003346000186",
+          "nome": "DEVANT SOLIDUS CASH FUNDO DE INVESTIMENTO FINANCEIRO",
+          "segmento": ""
+        },
+        {
+          "cnpj": "63790160000100",
+          "nome": "ITAÚ RIZA LOTUS PREV MASTER FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA CRED PRIV RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "66161408000153",
+          "nome": "KINEA ATACAMA FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA LONGO PRAZO RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "65338884000134",
+          "nome": "LARINFRA KINEA FIF FI INCENTIVADO EM DEBÊNTURES DE INFRAESTRUTURA RF CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "26803172000197",
+          "nome": "NW1 FUNDO DE INVESTIMENTO MULTIMERCADO CREDITO PRIVADO IE - RESPONSABILIDADE LIMITADA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "50825877000190",
+          "nome": "PEACE FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "65796563000183",
+          "nome": "POLO II FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": ""
+        },
+        {
+          "cnpj": "42220424000101",
+          "nome": "SANTANDER PB ALOCAÇÃO RENDA FIXA CRÉDITO PRIVADO - CIC FIF",
+          "segmento": ""
+        },
+        {
+          "cnpj": "64111034000136",
+          "nome": "TIVIO HYD60 FIF - CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO - RESPONSABILIDADE LIMITADA",
+          "segmento": ""
+        }
+      ],
+      "semAnterior": false
+    },
+    "perf": {
+      "top12431Pos": [
+        {
+          "cnpj": "58758334000109",
+          "nome": "JOURNEY CAPITAL 60 FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM  INFRAESTRUTURA RENDA FIXA",
+          "gestor": "Journey",
+          "segmento": "12431",
+          "retorno": 1.9517,
+          "pl": 107719283.28
+        },
+        {
+          "cnpj": "61141536000111",
+          "nome": "BB MASTER RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
+          "gestor": "BB Asset",
+          "segmento": "12431",
+          "retorno": 1.8044,
+          "pl": 581463936.4
+        },
+        {
+          "cnpj": "62360992000115",
+          "nome": "BB MASTER II RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
+          "gestor": "BB Asset",
+          "segmento": "12431",
+          "retorno": 1.455,
+          "pl": 347569666.12
+        },
+        {
+          "cnpj": "58903850000180",
+          "nome": "JOURNEY CAPITAL 70 FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM  INFRAESTRUTURA RENDA FIXA",
+          "gestor": "Journey",
+          "segmento": "12431",
+          "retorno": 1.3585,
+          "pl": 60556018.6
+        },
+        {
+          "cnpj": "32999416000151",
+          "nome": "SAFRA INFRA PREMIUM PROFISSIONAL II FIF INV EM INFRAESTRUTURA CI EM INFRA RENDA FIXA RESP LIMITADA",
+          "gestor": "Safra Asset",
+          "segmento": "12431",
+          "retorno": 1.1114,
+          "pl": 87870363.59
+        }
+      ],
+      "top12431Neg": [
+        {
+          "cnpj": "54794799000164",
+          "nome": "SANTANDER PB JPL INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA INFLAÇÃO - FIF RESP LIMITADA",
+          "gestor": "San WM",
+          "segmento": "12431",
+          "retorno": -99.429,
+          "pl": 67320.67
+        },
+        {
+          "cnpj": "64089192000137",
+          "nome": "TOP DEBÊNTURES 2025 FI INCENTIVADO EM DEBÊNTURES DE INFRA FIF RENDA FIXA CRED PRIV RESP LIMITADA",
+          "gestor": "IAM",
+          "segmento": "12431",
+          "retorno": -6.8431,
+          "pl": 95740613.14
+        },
+        {
+          "cnpj": "59123735000155",
+          "nome": "PORTO PAINEIRA CDI FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA RF CRÉD PRIV RESP LIMITADA",
+          "gestor": "Porto Asset",
+          "segmento": "12431",
+          "retorno": -4.0109,
+          "pl": 2453323.29
+        },
+        {
+          "cnpj": "52342478000101",
+          "nome": "G5 CDM FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
+          "gestor": "G5",
+          "segmento": "12431",
+          "retorno": -1.2475,
+          "pl": 10463923.23
+        },
+        {
+          "cnpj": "54341666000132",
+          "nome": "V7 FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
+          "gestor": "BTG WM",
+          "segmento": "12431",
+          "retorno": -0.2537,
+          "pl": 126602826.69
+        }
+      ],
+      "topTradPos": [
+        {
+          "cnpj": "57154741000144",
+          "nome": "QUANTITAS FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA FIJI CRÉDITO PRIVADO LONGO PRAZO RESP LIMITADA",
+          "gestor": "Quantitas",
+          "segmento": "trad",
+          "retorno": 16.9704,
+          "pl": 24731785.89
+        },
+        {
+          "cnpj": "51977823000102",
+          "nome": "CATTUS FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
+          "gestor": "Starboard",
+          "segmento": "trad",
+          "retorno": 1.3292,
+          "pl": 37831597.48
+        },
+        {
+          "cnpj": "64436974000103",
+          "nome": "BB MASTER III RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
+          "gestor": "BB Asset",
+          "segmento": "trad",
+          "retorno": 1.0959,
+          "pl": 210904095.54
+        },
+        {
+          "cnpj": "57555092000193",
+          "nome": "BTG PACTUAL BRASLIGHT EOS FUNDO DE INVESTIMENTO FINANCEIRO",
+          "gestor": "BTG Asset",
+          "segmento": "trad",
+          "retorno": 0.7387,
+          "pl": 70784362.03
+        },
+        {
+          "cnpj": "11435262000103",
+          "nome": "PIRAHY FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "gestor": "BTG WM",
+          "segmento": "trad",
+          "retorno": 0.6329,
+          "pl": 16584606.35
+        }
+      ],
+      "topTradNeg": [
+        {
+          "cnpj": "44109989000141",
+          "nome": "ACUERE QUALIFICADO ICATU FI FINANCEIRO - CI MULT CRED PRIV - RESP LIMITADA",
+          "gestor": "AMW",
+          "segmento": "trad",
+          "retorno": -3.4325,
+          "pl": 50744621.36
+        },
+        {
+          "cnpj": "19770499000144",
+          "nome": "EXPLORITAS ALPHA AMERICA LATINA MASTER FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "gestor": "Exploritas",
+          "segmento": "trad",
+          "retorno": -1.5414,
+          "pl": 17783354.3
+        },
+        {
+          "cnpj": "34172479000165",
+          "nome": "MINERVA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "gestor": "BTG WM",
+          "segmento": "trad",
+          "retorno": -1.0941,
+          "pl": 206267255.97
+        },
+        {
+          "cnpj": "34657939000145",
+          "nome": "SANTANDER PB CANGUARA MULTIMERCADO CRÉDITO PRIVADO - FIF",
+          "gestor": "San WM",
+          "segmento": "trad",
+          "retorno": -0.5501,
+          "pl": 21691258.76
+        },
+        {
+          "cnpj": "37467474000158",
+          "nome": "NORTE LONG BIAS MASTER CLASSE DE  INVESTIMENTO MULTIMERCADO - RESP LIMITADA",
+          "gestor": "Norte",
+          "segmento": "trad",
+          "retorno": -0.4658,
+          "pl": 196433902.43
+        }
+      ]
+    },
+    "inclusoes": {
+      "novosDebentures": [],
+      "novosBlc": [],
+      "temSnapshotBlc": true
+    },
+    "alertas": [
+      {
+        "tipo": "blc-sem-cadastro",
+        "texto": "74 ativo(s) no BLC sem correspondencia em Debentures.csv"
+      }
+    ],
+    "emissoesCVM": {
+      "asOf": "2026-07-20",
+      "itens": [
+        {
+          "dataRegistro": "2026-07-13",
+          "dataRequerimento": "2026-07-13",
+          "emissor": "SOCICAM ADMINISTRACAO, PROJETOS E REPRESENTACOES S.A.",
+          "cnpj": "43217280000105",
+          "emissao": 2,
+          "valor": 100000000,
+          "incentivada": false,
+          "lider": "XP INVESTIMENTOS CCTVM S.A.",
+          "grupo": "Socicam"
+        },
+        {
+          "dataRegistro": "2026-07-15",
+          "dataRequerimento": "2026-06-24",
+          "emissor": "LOCALIZA RENT A CAR SA",
+          "cnpj": "16670085000155",
+          "emissao": 48,
+          "valor": 5643014000,
+          "incentivada": false,
+          "lider": "BTG PACTUAL INVESTMENT BANKING LTDA.",
+          "grupo": "Localiza"
+        }
+      ]
+    },
+    "emissoresFaltantes": {
+      "itens": [],
+      "asOf": "2026-07-20"
+    }
+  }
+}

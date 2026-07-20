@@ -92,7 +92,7 @@
         {
           "ticker": "DUXC12",
           "empresa": "DUX COMPANY LTDA.",
-          "grupo": "Dux",
+          "grupo": "",
           "dataRegistro": "2026-06-29",
           "indexador": "DI",
           "incentivada": false
@@ -291,8 +291,8 @@
         },
         {
           "ticker": "IVIS11",
-          "empresa": "IVI Energia SH III S.A.",
-          "grupo": "Brookfield - Geracao Distribuida",
+          "empresa": "IVI ENERGIA SH III S.A",
+          "grupo": "IVI Energia SH III",
           "dataRegistro": "2026-06-11",
           "indexador": "IPCA",
           "incentivada": true
@@ -444,7 +444,7 @@
         {
           "ticker": "SRFC11",
           "empresa": "SERRA DO FACAO ENERGIA S.A.",
-          "grupo": "Axia Energia",
+          "grupo": "",
           "dataRegistro": "2026-06-29",
           "indexador": "DI",
           "incentivada": false
@@ -485,37 +485,37 @@
     },
     "captacao": {
       "12431": {
-        "captacao": 5461412188.070004,
-        "resgate": 18171263806.790016,
-        "liquido": -12709851618.720013,
-        "pl": 258150017484.05008,
-        "numFundos": 1655,
+        "captacao": 7681319884.310002,
+        "resgate": 17404873540.250015,
+        "liquido": -9723553655.940014,
+        "pl": 260985926665.39,
+        "numFundos": 1691,
         "dataPl": "2026-06-30",
         "de": "2026-06-01",
         "ate": "2026-06-30",
         "diasUteis": 21,
         "anterior": {
-          "liquido": -12814678199.80999,
-          "captacao": 4760397402.779998,
-          "resgate": 17575075602.58999,
+          "liquido": -12922674767.589994,
+          "captacao": 4221979461.990003,
+          "resgate": 17144654229.579998,
           "de": "2026-05-04",
           "ate": "2026-05-29"
         }
       },
       "trad": {
-        "captacao": 35269868879.30999,
-        "resgate": 37923611875.96007,
-        "liquido": -2653742996.650078,
-        "pl": 1082183027586.3801,
-        "numFundos": 829,
+        "captacao": 62982094864.83997,
+        "resgate": 66061971031.16,
+        "liquido": -3079876166.32003,
+        "pl": 1574405419931.1685,
+        "numFundos": 998,
         "dataPl": "2026-06-30",
         "de": "2026-06-01",
         "ate": "2026-06-30",
         "diasUteis": 21,
         "anterior": {
-          "liquido": -17569933029.740017,
-          "captacao": 32897699554.810024,
-          "resgate": 50467632584.55004,
+          "liquido": -19460635926.35997,
+          "captacao": 59344573565.45006,
+          "resgate": 78805209491.81003,
           "de": "2026-05-04",
           "ate": "2026-05-29"
         }
@@ -525,10 +525,10 @@
       "top12431Captacao": [
         {
           "gestor": "Safra Asset",
-          "captacao": 1413717239.9400003,
-          "resgate": 562569879.92,
-          "liquido": 851147360.0200003,
-          "pl": 8903709129.44,
+          "captacao": 2263624129.4500003,
+          "resgate": 1469020981.61,
+          "liquido": 794603147.8400004,
+          "pl": 8971955527.02,
           "dias": 21
         },
         {
@@ -556,53 +556,53 @@
           "dias": 21
         },
         {
-          "gestor": "Oriz",
-          "captacao": 4931960.48,
-          "resgate": 0,
-          "liquido": 4931960.48,
-          "pl": 349040338.57,
+          "gestor": "Sten",
+          "captacao": 11583740.66,
+          "resgate": 50000,
+          "liquido": 11533740.66,
+          "pl": 148600565.75,
           "dias": 21
         }
       ],
       "top12431Resgate": [
         {
-          "gestor": "SAM",
-          "captacao": 137773740.61999997,
-          "resgate": 2626543781.05,
-          "liquido": -2488770040.4300003,
-          "pl": 10650237071.85,
-          "dias": 21
-        },
-        {
           "gestor": "IAM",
-          "captacao": 524352905.1300001,
-          "resgate": 2820468760.7700005,
-          "liquido": -2296115855.6400003,
-          "pl": 55455257090.4,
-          "dias": 21
-        },
-        {
-          "gestor": "BTG WM",
-          "captacao": 311522226.96000004,
-          "resgate": 2342293931.6700006,
-          "liquido": -2030771704.7100005,
-          "pl": 15575519018.52,
+          "captacao": 526441063.86000013,
+          "resgate": 2829356740.5100007,
+          "liquido": -2302915676.6500006,
+          "pl": 55737494542.78,
           "dias": 21
         },
         {
           "gestor": "BRAM",
-          "captacao": 888575362.24,
+          "captacao": 707370937.6400001,
           "resgate": 2006568798.1299999,
-          "liquido": -1117993435.8899999,
-          "pl": 28885180711.55,
+          "liquido": -1299197860.4899998,
+          "pl": 28479172528.49,
+          "dias": 21
+        },
+        {
+          "gestor": "SAM",
+          "captacao": 1574617664.0300002,
+          "resgate": 2711659241.05,
+          "liquido": -1137041577.02,
+          "pl": 12022234054.39,
           "dias": 21
         },
         {
           "gestor": "Absolute",
-          "captacao": 156405440.85000002,
-          "resgate": 1141782623.2699997,
-          "liquido": -985377182.4199997,
-          "pl": 11279535010.3,
+          "captacao": 158046783.6,
+          "resgate": 1145912399.6,
+          "liquido": -987865615.9999999,
+          "pl": 11322725666.01,
+          "dias": 21
+        },
+        {
+          "gestor": "BB Asset",
+          "captacao": 407013574.34000003,
+          "resgate": 1028850594.1399999,
+          "liquido": -621837019.7999998,
+          "pl": 20179154428.72,
           "dias": 21
         }
       ],
@@ -617,76 +617,76 @@
         },
         {
           "gestor": "CEF Asset",
-          "captacao": 2388234960.99,
-          "resgate": 1546530274.6800003,
-          "liquido": 841704686.3099995,
-          "pl": 68351042541.63,
+          "captacao": 2427327368.9799995,
+          "resgate": 1654706520.1799998,
+          "liquido": 772620848.7999997,
+          "pl": 75103305894.57,
           "dias": 21
         },
         {
           "gestor": "XPG",
-          "captacao": 1404964883.1699996,
-          "resgate": 919035723.9699999,
-          "liquido": 485929159.1999997,
-          "pl": 16273345550.98,
+          "captacao": 1909073352.0200005,
+          "resgate": 1546019913.73,
+          "liquido": 363053438.29000044,
+          "pl": 23597933551.38,
+          "dias": 21
+        },
+        {
+          "gestor": "BTG Asset",
+          "captacao": 892685423.59,
+          "resgate": 573814407.3799999,
+          "liquido": 318871016.21000016,
+          "pl": 28900684526.44,
           "dias": 21
         },
         {
           "gestor": "BRAM",
-          "captacao": 3012207741.8300004,
-          "resgate": 2577901587.09,
-          "liquido": 434306154.74000025,
-          "pl": 100167795763.6,
-          "dias": 21
-        },
-        {
-          "gestor": "BB Asset",
-          "captacao": 11817314344.549997,
-          "resgate": 11399518593.319998,
-          "liquido": 417795751.22999954,
-          "pl": 209564927154.46,
+          "captacao": 9537225909.07,
+          "resgate": 9220791935.650002,
+          "liquido": 316433973.41999817,
+          "pl": 191118582089.82,
           "dias": 21
         }
       ],
       "topTradResgate": [
         {
           "gestor": "IAM",
-          "captacao": 3449551379.48,
-          "resgate": 5218901542.22,
-          "liquido": -1769350162.7400002,
-          "pl": 217272721268.18,
+          "captacao": 16581658167.519995,
+          "resgate": 17912058657.45,
+          "liquido": -1330400489.930006,
+          "pl": 450343915445.46,
           "dias": 21
         },
         {
           "gestor": "AZ Quest",
-          "captacao": 155406826.54999998,
-          "resgate": 1047870399.38,
-          "liquido": -892463572.83,
-          "pl": 20150174104.56,
+          "captacao": 155401719.82,
+          "resgate": 1047982159.19,
+          "liquido": -892580439.3700001,
+          "pl": 20431362833.86,
           "dias": 21
         },
         {
           "gestor": "Safra Asset",
-          "captacao": 1332387871.66,
-          "resgate": 1858710786.36,
-          "liquido": -526322914.6999998,
-          "pl": 52543842234.4,
+          "captacao": 1836161562.9599998,
+          "resgate": 2688692761.8299994,
+          "liquido": -852531198.8699996,
+          "pl": 58169939876.42,
           "dias": 21
         },
         {
           "gestor": "Absolute",
-          "captacao": 200969542.57,
-          "resgate": 684352051.4399999,
-          "liquido": -483382508.86999995,
-          "pl": 18063021446.56,
+          "captacao": 202452199.82,
+          "resgate": 680523698.8899999,
+          "liquido": -478071499.0699999,
+          "pl": 18037948459.52,
           "dias": 21
         },
         {
-          "gestor": "ARX",
-          "captacao": 240863225.86000004,
-          "resgate": 690954830.28,
-          "liquido": -450091604.41999996,
-          "pl": 21249049764.7,
+          "gestor": "BB Asset",
+          "captacao": 13886171027.3,
+          "resgate": 14242833085.119999,
+          "liquido": -356662057.8199997,
+          "pl": 242738528010.91,
           "dias": 21
         }
       ]
@@ -731,9 +731,9 @@
           "cnpj": "53075427000115",
           "nome": "KINEA INCENTIVADO RF CP LP…",
           "gestor": "Kinea",
-          "retorno": 22.3439,
-          "obs": 20,
-          "de": "2026-06-02",
+          "retorno": 22.4153,
+          "obs": 21,
+          "de": "2026-06-01",
           "ate": "2026-06-30",
           "pl": 279113949.24,
           "segmento": "12431"
@@ -742,42 +742,42 @@
           "cnpj": "62360992000115",
           "nome": "BB MASTER II DEBÊNTURES…",
           "gestor": "BB Asset",
-          "retorno": 11.8407,
-          "obs": 20,
-          "de": "2026-06-02",
+          "retorno": 11.8706,
+          "obs": 21,
+          "de": "2026-06-01",
           "ate": "2026-06-30",
           "pl": 1747749752.98,
           "segmento": "12431"
         },
         {
-          "cnpj": "64436974000103",
-          "nome": "BB MASTER III DEBÊNTURES…",
-          "gestor": "BB Asset",
-          "retorno": 6.8429,
-          "obs": 20,
-          "de": "2026-06-02",
+          "cnpj": "64089192000137",
+          "nome": "TOP DEBÊNTURES 2025 INCENTIVADO…",
+          "gestor": "IAM",
+          "retorno": 8.4012,
+          "obs": 21,
+          "de": "2026-06-01",
           "ate": "2026-06-30",
-          "pl": 207190769.84,
+          "pl": 11362196.83,
           "segmento": "12431"
         },
         {
-          "cnpj": "59123735000155",
-          "nome": "PORTO PAINEIRA CDI FUNDO…",
-          "gestor": "Porto Asset",
-          "retorno": 4.1962,
-          "obs": 20,
-          "de": "2026-06-02",
+          "cnpj": "63942021000146",
+          "nome": "OCCAM BB INFRA LINEAR…",
+          "gestor": "Occam",
+          "retorno": 6.4986,
+          "obs": 21,
+          "de": "2026-06-01",
           "ate": "2026-06-30",
-          "pl": 22989516.09,
+          "pl": 115955585.35,
           "segmento": "12431"
         },
         {
           "cnpj": "58580968000114",
           "nome": "ACE CAPITAL INFRA FUNDO…",
           "gestor": "Ace",
-          "retorno": 3.098,
-          "obs": 20,
-          "de": "2026-06-02",
+          "retorno": 2.8618,
+          "obs": 21,
+          "de": "2026-06-01",
           "ate": "2026-06-30",
           "pl": 22989929.47,
           "segmento": "12431"
@@ -785,12 +785,23 @@
       ],
       "top12431Neg": [
         {
+          "cnpj": "43122017000124",
+          "nome": "AMG1 KINEA FUNDO INCENTIVADO EM…",
+          "gestor": "Kinea",
+          "retorno": -20.4674,
+          "obs": 21,
+          "de": "2026-06-01",
+          "ate": "2026-06-30",
+          "pl": 73039270.66,
+          "segmento": "12431"
+        },
+        {
           "cnpj": "57279886000171",
           "nome": "UBS EVOLUTION FASSIS EM…",
           "gestor": "UBS",
-          "retorno": -15.9314,
-          "obs": 20,
-          "de": "2026-06-02",
+          "retorno": -15.8714,
+          "obs": 21,
+          "de": "2026-06-01",
           "ate": "2026-06-30",
           "pl": 23939357.28,
           "segmento": "12431"
@@ -799,31 +810,20 @@
           "cnpj": "60936335000148",
           "nome": "TITANIUM FUNDO INCENTIVADO EM…",
           "gestor": "IAM",
-          "retorno": -9.271,
-          "obs": 20,
-          "de": "2026-06-02",
+          "retorno": -9.1981,
+          "obs": 21,
+          "de": "2026-06-01",
           "ate": "2026-06-30",
           "pl": 2122106.1,
-          "segmento": "12431"
-        },
-        {
-          "cnpj": "63942021000146",
-          "nome": "OCCAM BB INFRA LINEAR…",
-          "gestor": "Occam",
-          "retorno": -6.3311,
-          "obs": 20,
-          "de": "2026-06-02",
-          "ate": "2026-06-30",
-          "pl": 115955585.35,
           "segmento": "12431"
         },
         {
           "cnpj": "45019458000120",
           "nome": "RBR INFRA MASTER I FUNDO…",
           "gestor": "RBR",
-          "retorno": -5.738,
-          "obs": 20,
-          "de": "2026-06-02",
+          "retorno": -5.9528,
+          "obs": 21,
+          "de": "2026-06-01",
           "ate": "2026-06-30",
           "pl": 69605703.85,
           "segmento": "12431"
@@ -832,9 +832,9 @@
           "cnpj": "53906981000105",
           "nome": "PSO 3 FUNDO INCENTIVADO DE…",
           "gestor": "BTG WM",
-          "retorno": -5.1824,
-          "obs": 20,
-          "de": "2026-06-02",
+          "retorno": -5.2915,
+          "obs": 21,
+          "de": "2026-06-01",
           "ate": "2026-06-30",
           "pl": 30502630.96,
           "segmento": "12431"
@@ -842,23 +842,23 @@
       ],
       "topTradPos": [
         {
-          "cnpj": "64089192000137",
-          "nome": "TOP DEBÊNTURES 2025 INCENTIVADO…",
-          "gestor": "IAM",
-          "retorno": 8.3491,
-          "obs": 20,
-          "de": "2026-06-02",
+          "cnpj": "64436974000103",
+          "nome": "BB MASTER III DEBÊNTURES…",
+          "gestor": "BB Asset",
+          "retorno": 6.8973,
+          "obs": 21,
+          "de": "2026-06-01",
           "ate": "2026-06-30",
-          "pl": 11362196.83,
+          "pl": 207190769.84,
           "segmento": "trad"
         },
         {
           "cnpj": "51977823000102",
           "nome": "CATTUS",
           "gestor": "Starboard",
-          "retorno": 6.0296,
-          "obs": 20,
-          "de": "2026-06-02",
+          "retorno": 3.7625,
+          "obs": 21,
+          "de": "2026-06-01",
           "ate": "2026-06-30",
           "pl": 38716892.9,
           "segmento": "trad"
@@ -867,22 +867,22 @@
           "cnpj": "57555092000193",
           "nome": "BTG PACTUAL BRASLIGHT EOS",
           "gestor": "BTG Asset",
-          "retorno": 5.7115,
-          "obs": 20,
-          "de": "2026-06-02",
+          "retorno": 3.4316,
+          "obs": 21,
+          "de": "2026-06-01",
           "ate": "2026-06-30",
           "pl": 70927848.98,
           "segmento": "trad"
         },
         {
-          "cnpj": "65028465000104",
-          "nome": "CAPITÂNIA MASTER INFRA GERAL…",
+          "cnpj": "26498249000162",
+          "nome": "CAPITÂNIA PREVIDENCE ADVISORY…",
           "gestor": "Capitânia",
-          "retorno": 3.5135,
-          "obs": 20,
-          "de": "2026-06-02",
+          "retorno": 2.5075,
+          "obs": 21,
+          "de": "2026-06-01",
           "ate": "2026-06-30",
-          "pl": 38628357.04,
+          "pl": 59127352.1,
           "segmento": "trad"
         },
         {
@@ -890,8 +890,8 @@
           "nome": "UBS ROKA CRÉDITO PRIVADO",
           "gestor": "UBS",
           "retorno": 2.4634,
-          "obs": 20,
-          "de": "2026-06-02",
+          "obs": 21,
+          "de": "2026-06-01",
           "ate": "2026-06-30",
           "pl": 47219083.37,
           "segmento": "trad"
@@ -902,20 +902,42 @@
           "cnpj": "29106510000120",
           "nome": "CSHG FASSIS CRÉDITO PRIVADO…",
           "gestor": "UBS",
-          "retorno": -18.9046,
-          "obs": 20,
-          "de": "2026-06-02",
+          "retorno": -19.0341,
+          "obs": 21,
+          "de": "2026-06-01",
           "ate": "2026-06-30",
           "pl": 21799183.77,
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "19770499000144",
+          "nome": "EXPLORITAS ALPHA AMERICA LATINA…",
+          "gestor": "Exploritas",
+          "retorno": -18.6937,
+          "obs": 21,
+          "de": "2026-06-01",
+          "ate": "2026-06-30",
+          "pl": 16982166.83,
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "11952676000100",
+          "nome": "DOREL",
+          "gestor": "BTG WM",
+          "retorno": -10.6749,
+          "obs": 21,
+          "de": "2026-06-01",
+          "ate": "2026-06-30",
+          "pl": 213120593.33,
           "segmento": "trad"
         },
         {
           "cnpj": "30568485000185",
           "nome": "AUGME INSTITUCIONAL DE…",
           "gestor": "Augme",
-          "retorno": -9.2606,
-          "obs": 20,
-          "de": "2026-06-02",
+          "retorno": -9.1708,
+          "obs": 21,
+          "de": "2026-06-01",
           "ate": "2026-06-30",
           "pl": 18814587.97,
           "segmento": "trad"
@@ -924,33 +946,11 @@
           "cnpj": "53726108000122",
           "nome": "CL VI",
           "gestor": "Springs",
-          "retorno": -6.4842,
-          "obs": 20,
-          "de": "2026-06-02",
+          "retorno": -7.028,
+          "obs": 21,
+          "de": "2026-06-01",
           "ate": "2026-06-30",
           "pl": 17228415.8,
-          "segmento": "trad"
-        },
-        {
-          "cnpj": "36532178000120",
-          "nome": "CHRONOS CRÉDITO PRIVADO",
-          "gestor": "XPG",
-          "retorno": -5.4424,
-          "obs": 20,
-          "de": "2026-06-02",
-          "ate": "2026-06-30",
-          "pl": 16870451.65,
-          "segmento": "trad"
-        },
-        {
-          "cnpj": "12059831000118",
-          "nome": "DHF M",
-          "gestor": "Dynamo",
-          "retorno": -3.5067,
-          "obs": 20,
-          "de": "2026-06-02",
-          "ate": "2026-06-30",
-          "pl": 190149580.49,
           "segmento": "trad"
         }
       ]
@@ -1031,41 +1031,41 @@
       },
       {
         "tipo": "perf-cobertura",
-        "texto": "Performance 12.431: 17 fundo(s) fora por cobertura < 60% e 5 por dado inválido."
+        "texto": "Performance 12.431: 22 fundo(s) fora por cobertura < 60% e 5 por dado inválido."
       },
       {
         "tipo": "perf-cobertura",
-        "texto": "Performance Tradicional: 0 fundo(s) fora por cobertura < 60% e 2 por dado inválido."
+        "texto": "Performance Tradicional: 9 fundo(s) fora por cobertura < 60% e 3 por dado inválido."
       }
     ],
     "perfCobertura": {
       "12431": {
-        "diasUteis": 20,
+        "diasUteis": 21,
         "excluidos": {
-          "insuficiente": 17,
+          "insuficiente": 22,
           "glitch": 5
         },
-        "avaliados": 1653,
+        "avaliados": 1687,
         "minCobertura": 0.6
       },
       "trad": {
-        "diasUteis": 20,
+        "diasUteis": 21,
         "excluidos": {
-          "insuficiente": 0,
-          "glitch": 2
+          "insuficiente": 9,
+          "glitch": 3
         },
-        "avaliados": 832,
+        "avaliados": 995,
         "minCobertura": 0.6
       }
     }
   },
   "summary": [
     {
-      "texto": "Captação líquida 12.431 no mês: −R$ 12,7 bi (capt. R$ 5,5 bi − resg. R$ 18,2 bi, 21 dia(s) útil(eis)).",
+      "texto": "Captação líquida 12.431 no mês: −R$ 9,7 bi (capt. R$ 7,7 bi − resg. R$ 17,4 bi, 21 dia(s) útil(eis)).",
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional no mês: −R$ 2,7 bi (capt. R$ 35,3 bi − resg. R$ 37,9 bi, 21 dia(s) útil(eis)).",
+      "texto": "Captação líquida Tradicional no mês: −R$ 3,1 bi (capt. R$ 63 bi − resg. R$ 66,1 bi, 21 dia(s) útil(eis)).",
       "tom": "neg"
     },
     {
