@@ -1965,7 +1965,12 @@ a { color: var(--primary); }
 /* Dentro do .grafico-card as superficies internas somem: uma so' borda por
    grafico, senao vira card dentro de card. */
 .grafico-card .caixa-trend,
-.grafico-card .fluxo-chart { background: transparent; border: 0; box-shadow: none; padding: 0; }
+/* .app.desktop e' 3 classes e vencia este reset (2 classes), reaplicando o
+   padding 10/8/6 do card antigo da Captacao -- por isso Captacao e Vencimentos
+   desenhavam com 17px de folga contra 9px do Caixa. Especificidade igualada. */
+.app.desktop .grafico-card .fluxo-chart,
+.app.desktop .grafico-card .venc-chart,
+.app.desktop .grafico-card .caixa-trend { background: transparent; border: 0; box-shadow: none; padding: 0; }
 
 /* TABELA como unidade fechada, mesma premissa do .grafico-card: titulo,
    ordenacao e rodape vivem na MESMA superficie branca da tabela. Na Tecnica
