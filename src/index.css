@@ -2041,3 +2041,11 @@ a { color: var(--primary); }
 }
 /* numero fino: tabular p/ as casas alinharem em coluna estreita */
 .app.desktop .tecnico-gestor-table .fluxo-table .col-num { font-variant-numeric: tabular-nums; }
+
+/* KPI dentro do card do grafico: valor-resumo alinhado a' direita do titulo, na
+   mesma faixa. Le antes de olhar a curva -- "quanto" antes de "como variou". */
+.grafico-kpi { margin-left: auto; display: inline-flex; align-items: baseline; gap: 6px; }
+.grafico-kpi b { font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.grafico-kpi b.pos { color: var(--c-verde); }
+.grafico-kpi b.neg { color: var(--c-vermelho); }
+.grafico-kpi em { font-size: 9px; font-style: normal; color: var(--text-faint); }

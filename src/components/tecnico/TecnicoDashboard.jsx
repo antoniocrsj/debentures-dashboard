@@ -3,10 +3,11 @@ import { useFluxo } from '../../hooks/useFluxo.js'
 import { useCaixa } from '../../hooks/useCaixa.js'
 import {
   filterFluxo, aggregateByWeek, aggregateByMonth, aggregateByGestor, mergeRentabilidade,
-  agregarFundosPorGestor,
+  agregarFundosPorGestor, computeCards, fmtFluxoSigned,
   filterMensal, periodBounds, startForMonths, fmtWeekFull, latestBaseDate,
 } from '../../utils/fluxo.js'
 import { buildGestoresPorTicker, flattenEventos, aggMeses, aggGestores, fmtBar, pctFmt } from '../../utils/vencimentos.js'
+import { fmtPct } from '../../utils/format.js'
 import { fmtBRL } from '../../utils/format.js'
 import FluxoChart from '../fluxo/FluxoChart.jsx'
 import FluxoTable from '../fluxo/FluxoTable.jsx'
@@ -80,6 +81,11 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, on
     [rows, gestorSel, effStart, effEnd]
   )
   const weekly = useMemo(() => aggregateByWeek(filtered), [filtered])
+  // KPI da Captacao: cap. liquida do periodo em R$ e como % do PL medio.
+  const capKpi = useMemo(() => {
+    const c = computeCards(filtered)
+    return { liquido: c.liquido, pctPL: c.plTotalMedio > 0 ? (c.liquido / c.plTotalMedio) * 100 : null }
+  }, [filtered])
   const monthlyAgg = useMemo(
     () => aggregateByMonth(filterMensal(monthly, gestorSel), effStart, null, monthly),
     [monthly, gestorSel, effStart]
@@ -111,6 +117,29 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, on
     for (const [g, o] of agg) if (o.pl > 0) m.set(g, (o.caixa / o.pl) * 100)
     return m
   }, [historico, caixaSeg])
+
+  // KPI do Caixa: variacao do PL no periodo selecionado. Serie mensal de PL do
+  // recorte (segmento + gestor), recortada pela mesma janela do grafico, e a
+  // variacao ponta a ponta. Reage ao periodo -- p/ 6m/12m; nas janelas curtas o
+  // grafico ja' cai no minimo de 6m e o KPI acompanha.
+  const caixaPLVar = useMemo(() => {
+    const series = historico?.series || []
+    const porMes = new Map()
+    for (const r of series) {
+      if (r.segmento !== caixaSeg) continue
+      if (gestorSel && r.gestor !== gestorSel) continue
+      porMes.set(r.mes, (porMes.get(r.mes) || 0) + (r.pl || 0))
+    }
+    const meses = [...porMes.keys()].sort()
+    // janela em meses: 1s/1m/3m caem no minimo de 6 (serie mensal), igual ao grafico
+    const nRaw = PERIODOS.find(p => p.id === periodo)?.n
+    const n = (nRaw === '1w' || nRaw === 1 || nRaw === 3) ? 6 : nRaw
+    const win = typeof n === 'number' ? meses.slice(-n) : meses
+    if (win.length < 2) return null
+    const ini = porMes.get(win[0]), fim = porMes.get(win[win.length - 1])
+    if (!ini) return null
+    return { pct: ((fim - ini) / ini) * 100, deMes: win[0], ateMes: win[win.length - 1] }
+  }, [historico, caixaSeg, gestorSel, periodo])
 
   // ---- Vencimentos (agenda 12m, sempre olhando pra frente — sem corte por periodo) ----
   const gpt = useMemo(() => buildGestoresPorTicker(blc), [blc])
@@ -216,14 +245,18 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, on
         </div>
       </header>
 
-      {loading && (
+      {/* Spinner SO' no 1o carregamento (sem dado ainda). Ao trocar de segmento o
+          useFluxo mantem as linhas antigas e so' liga loading -- se desmontasse
+          o grid aqui, o conteudo sumia e voltava, e' o "pisca". Mantendo montado
+          enquanto a nova serie chega, a troca e' um swap suave. */}
+      {loading && !rows.length && (
         <div className="state-box"><div className="spinner" aria-label="Carregando" /><p>Carregando…</p></div>
       )}
-      {!loading && error && (
+      {error && !rows.length && (
         <div className="state-box error"><span className="state-icon">⚠️</span><p className="error-msg">Não foi possível carregar a Captação.</p><small>{error}</small></div>
       )}
 
-      {!loading && !error && (
+      {!error && rows.length > 0 && (
         <div className="tecnico-grid">
           <div className="tecnico-charts-col">
             {/* Linha 1: Captacao (fluxo) ao lado de Caixa (estoque). Titulo de UMA
@@ -235,13 +268,29 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, on
             <div className="tecnico-chart-row">
               <div className="tecnico-chart-cell">
                 <div className="grafico-card">
-                <p className="tecnico-chart-label">Captação</p>
+                <p className="tecnico-chart-label">
+                  Captação
+                  {capKpi && (
+                    <span className="grafico-kpi">
+                      <b className={capKpi.liquido >= 0 ? 'pos' : 'neg'}>{fmtFluxoSigned(capKpi.liquido)}</b>
+                      {capKpi.pctPL != null && <em>{fmtPct(capKpi.pctPL)} do PL</em>}
+                    </span>
+                  )}
+                </p>
                 <FluxoChart weekly={weekly} />
                 </div>
               </div>
               <div className="tecnico-chart-cell">
                 <div className="grafico-card">
-                <p className="tecnico-chart-label">Caixa</p>
+                <p className="tecnico-chart-label">
+                  Caixa
+                  {caixaPLVar && (
+                    <span className="grafico-kpi">
+                      <b className={caixaPLVar.pct >= 0 ? 'pos' : 'neg'}>{caixaPLVar.pct >= 0 ? '+' : ''}{fmtPct(caixaPLVar.pct)}</b>
+                      <em>PL no período</em>
+                    </span>
+                  )}
+                </p>
                 <CaixaPctPLLine historico={historico} segmento={caixaSeg} gestor={gestorSel} periodo={periodoCaixa} />
                 </div>
               </div>
@@ -275,7 +324,7 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, on
         </div>
       )}
 
-      {!loading && !error && (
+      {!error && rows.length > 0 && (
         <div className="fluxo-tables-row tecnico-tables-row">
           <FluxoTable weekly={weekly} />
           <FluxoMonthlyTable months={monthlyAgg} />
