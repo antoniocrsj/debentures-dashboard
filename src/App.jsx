@@ -344,7 +344,13 @@ export default function App() {
         {/* Corte de %Deb: so' nas abas com universo de fundos p/ cortar.
             Debentures e' visao do ATIVO (emissor/serie/vencimento) -- nao ha'
             fundo p/ filtrar la', entao o seletor nem aparece. */}
-        {['captacao', 'caixa', 'vencimentos', 'tecnico'].includes(tab) && (
+        {/* Vencimentos ficou de FORA: o porFundo do Agenda_12m e' recomputavel
+            por corte, mas nao bate com o agregado que a aba usa hoje -- no MESMO
+            escopo (1.686 fundos do 12.431) o porFundo soma 33,13 bi e o aggMeses
+            30,1 bi. Ligar assim faria o total SUBIR ao apertar o corte. Filtro
+            inerte e' pior que filtro ausente, entao o seletor nem aparece la'
+            ate' a divergencia ser reconciliada. */}
+        {['captacao', 'caixa', 'tecnico'].includes(tab) && (
           <CorteSelector
             corte={corte}
             onChange={setCorte}
@@ -387,7 +393,7 @@ export default function App() {
             <Suspense fallback={
               <div className="state-box"><div className="spinner" aria-label="Carregando" /><p>Carregando…</p></div>
             }>
-              <VencimentosDashboard data={agenda12m} blc={raw?.blc} assets={allAssets} plByGestor={plByGestor} compact={!desktop} />
+              <VencimentosDashboard data={agenda12m} blc={raw?.blc} assets={allAssets} plByGestor={plByGestor} compact={!desktop} corte={corte} pctPorCnpj={pctPorCnpj} />
             </Suspense>
           </ErrorBoundary>
         )}

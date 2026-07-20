@@ -1,16 +1,16 @@
 {
     "mesAno":  "202603",
     "status":  "verde",
-    "cobertura":  0.9881,
-    "reportaram":  2493,
-    "totalLista":  2523,
+    "cobertura":  0.9813,
+    "reportaram":  2683,
+    "totalLista":  2734,
     "fundosPLmercado":  25567,
-    "fundosComDeb":  2476,
-    "debAlocadaBi":  683.56,
+    "fundosComDeb":  2683,
+    "debAlocadaBi":  744.93,
     "linhasBLC4":  231508,
     "mesAnterior":  "202602",
-    "reportaramAnterior":  2459,
+    "reportaramAnterior":  2652,
     "fundosPLmercadoAnterior":  25682,
-    "razao":  1.0138,
-    "updatedAt":  "2026-07-16T08:47:28"
+    "razao":  1.0117,
+    "updatedAt":  "2026-07-20T09:17:20"
 }

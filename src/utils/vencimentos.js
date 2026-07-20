@@ -185,7 +185,96 @@ export function aggAtivos(data, gpt, { gestorSel, seg, selMes, persp }) {
 
 // ─── Detalhe: FUNDOS (posicao REAL por CNPJ; vem do pipeline) ────────────────
 // Retorna { disponivel:false } quando nao ha porFundo (nunca fabrica).
-export function aggFundos(data, { gestorSel, seg, selMes }) {
+// ───────────── Corte de %Deb (filtro global) ─────────────
+//
+// ATENCAO -- NAO LIGADAS NA UI (jul/2026). Estas funcoes estao corretas e sao
+// internamente coerentes (apertar o corte reduz o total, como deve), mas a
+// BASE delas nao bate com o aggMeses/aggGestores que a aba usa hoje: no MESMO
+// escopo (os 1.686 fundos do 12.431, sem corte nenhum) o porFundo soma
+// R$ 33,13 bi e o aggMeses R$ 30,1 bi -- 3 bi de diferenca, ~10%.
+//
+// Enquanto isso nao for reconciliado, ligar o corte aqui faria o total SUBIR
+// ao apertar a regua (30,1 -> 33,1), que le como "menos fundos vencendo mais".
+// O seletor de corte fica OCULTO na aba Vencimentos por isso.
+//
+// P/ reconciliar: entender por que o aggMeses (que fatia por participacao do
+// gestor no ticker, via gpt) chega a um carteira menor que a soma direta das
+// posicoes por fundo. Suspeita: fundo sem gestor resolvido, ou dupla contagem
+// tratada de um lado e nao do outro.
+//
+// O `carteira` desta aba e' a posicao do universo curado, entao mudar o corte
+// muda o numero. So' que os agregados prontos (meses/porGestor/porGrupo) vem
+// somados sobre o universo INTEIRO -- p/ cortar e' preciso re-somar a partir do
+// porFundo, que e' a unica base com granularidade de CNPJ aqui.
+//
+// LIMITE do porFundo: ele traz total 12m + quebra por MES (pm), mas NAO por
+// ativo. Entao gestores, fundos e as barras mensais sao recomputaveis; grupo e
+// ativo NAO -- p/ esses seria preciso posicao (fundo x ativo), que so' existe
+// no BLC_PorFundo.csv (11 MB, insumo de build que nao e' deployado).
+
+/** Fundos do porFundo que passam do corte, ja' filtrados por gestor/segmento. */
+function fundosNoCorte(data, { gestorSel, seg, cnpjsAceitos }) {
+  const pf = data?.porFundo
+  if (!Array.isArray(pf)) return null
+  return pf.filter(f => {
+    if (gestorSel && f.gestor !== gestorSel) return false
+    if (!matchSegFundo(f.segmento, seg)) return false
+    if (cnpjsAceitos && !cnpjsAceitos.has(String(f.cnpj || '').replace(/\D/g, ''))) return false
+    return true
+  })
+}
+
+/**
+ * Barras mensais (juros/amort/total por mes) re-somadas a partir do porFundo,
+ * respeitando o corte. Devolve o mesmo shape de `meses[].carteira` p/ ser
+ * intercambiavel com o agregado pronto.
+ */
+export function aggMesesPorFundo(data, { gestorSel, seg, cnpjsAceitos }) {
+  const fundos = fundosNoCorte(data, { gestorSel, seg, cnpjsAceitos })
+  if (!fundos) return null
+  const meses = data?.meses || []
+  const out = meses.map(m => ({ mes: m.mes, label: m.label, juros: 0, amort: 0, total: 0 }))
+  for (const f of fundos) {
+    for (const [i, juros, amort] of (f.pm || [])) {
+      const o = out[i]
+      if (!o) continue
+      o.juros += juros || 0
+      o.amort += amort || 0
+    }
+  }
+  for (const o of out) o.total = o.juros + o.amort
+  return out
+}
+
+/** Ranking de gestores re-somado do porFundo, respeitando o corte. */
+export function aggGestoresPorFundo(data, { seg, selMes, cnpjsAceitos }) {
+  const fundos = fundosNoCorte(data, { gestorSel: '', seg, cnpjsAceitos })
+  if (!fundos) return null
+  const mesIndex = selMes ? (data.meses || []).findIndex(m => m.mes === selMes) : -1
+  const porGestor = new Map()
+  for (const f of fundos) {
+    let juros = f.juros, amort = f.amort
+    if (mesIndex >= 0) {
+      const hit = (f.pm || []).find(p => p[0] === mesIndex)
+      juros = hit ? hit[1] : 0
+      amort = hit ? hit[2] : 0
+    }
+    const nome = f.gestor || '(sem gestor)'
+    let o = porGestor.get(nome)
+    if (!o) { o = { nome, juros: 0, amort: 0, total: 0 }; porGestor.set(nome, o) }
+    o.juros += juros
+    o.amort += amort
+  }
+  const rows = []
+  for (const o of porGestor.values()) {
+    o.total = o.juros + o.amort
+    if (o.total > 0.5) rows.push(o)
+  }
+  rows.sort((a, b) => b.total - a.total)
+  return rows
+}
+
+export function aggFundos(data, { gestorSel, seg, selMes, cnpjsAceitos }) {
   const pf = data?.porFundo
   if (!Array.isArray(pf)) return { disponivel: false, rows: [] }
   const mesIndex = selMes ? (data.meses || []).findIndex(m => m.mes === selMes) : -1
@@ -193,6 +282,7 @@ export function aggFundos(data, { gestorSel, seg, selMes }) {
   for (const f of pf) {
     if (gestorSel && f.gestor !== gestorSel) continue
     if (!matchSegFundo(f.segmento, seg)) continue
+    if (cnpjsAceitos && !cnpjsAceitos.has(String(f.cnpj || '').replace(/\D/g, ''))) continue
     let juros = f.juros, amort = f.amort
     if (mesIndex >= 0) {
       const hit = (f.pm || []).find(p => p[0] === mesIndex)
