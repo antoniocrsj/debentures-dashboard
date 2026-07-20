@@ -255,6 +255,19 @@ if ($IncluirCandidatos) {
     Write-Host "    -IncluirCandidatos ativo mas tools\Universo_Candidatos.csv nao existe (rode selecionar-fundos.ps1 primeiro). Pulando sensibilidade de corte." -ForegroundColor Yellow
   }
   foreach ($m in @($bridge12431.map, $bridgeCdi.map)) { foreach ($c in $m.Keys) { [void]$candCnpjs.Add($c) } }
+  # MESMA exclusao de tesouraria da curadoria oficial (bloco acima). Sem isto o
+  # universo candidato ficava com os fundos de posicao propria dos bancos que a
+  # captacao oficial remove, e o sweep inflava: no corte 15% dava R$ 194 bi de
+  # captacao no 12.431 contra R$ 166 bi registrados -- +16,6%, sendo que 6
+  # fundos de tesouraria respondiam por R$ 28,67 bi disso. Descontados, o corte
+  # 15% reproduz o historico com -0,6% de diferenca (o resto e' vintage de
+  # curadoria). O sweep TEM que medir o mesmo universo que a aba Captacao,
+  # senao os dois numeros nao sao comparaveis.
+  if ($excluirTes.Count -gt 0) {
+    $nRemCand = 0
+    foreach ($c in @($excluirTes)) { if ($candCnpjs.Remove($c)) { $nRemCand++ } }
+    Step "Tesouraria (universo candidato): removidos $nRemCand fundo(s) -- mesma lista da curadoria oficial."
+  }
 }
 
 function Get-FundosMeta($fundoGestorMap, $fundoApelidoMap) {

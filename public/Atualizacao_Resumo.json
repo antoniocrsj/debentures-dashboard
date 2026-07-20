@@ -1,5 +1,5 @@
 {
-    "timestamp":  "2026-07-20T07:41:45",
+    "timestamp":  "2026-07-20T08:08:26",
     "captacaoModo":  "Completa",
     "etapas":  {
                    "Debentures":  "PULADO",
@@ -30,7 +30,7 @@
                                                           "depois":  51
                                                       },
                                           "Gestores":  {
-                                                           "antes":  111,
+                                                           "antes":  112,
                                                            "depois":  112
                                                        },
                                           "UltimaSemana":  {
@@ -38,19 +38,19 @@
                                                                "depois":  "2026-07-13"
                                                            },
                                           "LiquidoRecente":  {
-                                                                 "antes":  -569481528.69999981,
+                                                                 "antes":  -623982721.56,
                                                                  "depois":  -623982721.56
                                                              },
                                           "CaptacaoRecente":  {
-                                                                  "antes":  357126129.17999983,
+                                                                  "antes":  322790100.76999992,
                                                                   "depois":  322790100.76999992
                                                               },
                                           "ResgateRecente":  {
-                                                                 "antes":  926607657.87999964,
+                                                                 "antes":  946772822.3299998,
                                                                  "depois":  946772822.3299998
                                                              },
                                           "PLRecente":  {
-                                                            "antes":  257708259743.78003,
+                                                            "antes":  261447569557.02005,
                                                             "depois":  261447569557.02005
                                                         }
                                       },
@@ -60,7 +60,7 @@
                                                          "depois":  51
                                                      },
                                          "Gestores":  {
-                                                          "antes":  131,
+                                                          "antes":  148,
                                                           "depois":  148
                                                       },
                                          "UltimaSemana":  {
@@ -68,19 +68,19 @@
                                                               "depois":  "2026-07-13"
                                                           },
                                          "LiquidoRecente":  {
-                                                                "antes":  177878857.69999933,
+                                                                "antes":  1016423324.5600023,
                                                                 "depois":  1016423324.5600023
                                                             },
                                          "CaptacaoRecente":  {
-                                                                 "antes":  3245187631.7199993,
+                                                                 "antes":  5756741933.8300018,
                                                                  "depois":  5756741933.8300018
                                                              },
                                          "ResgateRecente":  {
-                                                                "antes":  3067308774.02,
+                                                                "antes":  4740318609.2699995,
                                                                 "depois":  4740318609.2699995
                                                             },
                                          "PLRecente":  {
-                                                           "antes":  1085674028459.3402,
+                                                           "antes":  1582132784651.6492,
                                                            "depois":  1582132784651.6492
                                                        }
                                      },
