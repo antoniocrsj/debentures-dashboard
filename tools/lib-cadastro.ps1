@@ -15,6 +15,17 @@
   Uso: dot-source no inicio do script -> . (Join-Path $PSScriptRoot 'lib-cadastro.ps1')
 #>
 
+# TLS 1.2 EXPLICITO. O PowerShell 5.1 negocia TLS 1.0/1.1 por padrao, e tanto o
+# Google Apps Script quanto a CVM ja' recusam esses protocolos -- o handshake
+# morre com "Nao foi possivel estabelecer relacao de confianca para o canal
+# seguro de SSL/TLS". Como o padrao do processo depende de registro/versao do
+# .NET, a falha e' INTERMITENTE: o mesmo script funciona numa hora e quebra na
+# seguinte (foi o que derrubou o passo BLC em jul/2026, depois de o mesmo
+# preparar-blc.ps1 ter rodado inteiro pouco antes). Fixar aqui, na lib que os 9
+# scripts do pipeline carregam, cobre todos de uma vez. -bor preserva o que ja'
+# estiver habilitado em vez de sobrescrever.
+[Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
+
 function NormCNPJ($s) { return ($s -replace '\D', '') }
 
 # Faz GET numa URL do GAS e retorna o corpo (string). Lanca erro se vier HTML.
