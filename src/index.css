@@ -81,7 +81,7 @@
   --shadow:        0 1px 3px rgba(38,33,29,.12), 0 1px 2px rgba(38,33,29,.07);
   --radius:        10px;
   --btn-h:         30px;       /* altura padrao de TODO botao (chips, abas, acoes) */
-  --selected:      var(--c-carvao);
+  --selected:      var(--c-terracota);   /* fundo de botao/chip SELECIONADO. Era carvao: com o solido cheio o botao ativo virava o objeto mais escuro da tela e puxava o olho p/ o controle em vez do dado. Terracota marca o estado sem pesar. */
   --header-h:      52px;
   --filter-h:      48px;
   --tabs-h:        42px;
@@ -1949,3 +1949,19 @@ a { color: var(--primary); }
    grafico, senao vira card dentro de card. */
 .grafico-card .caixa-trend,
 .grafico-card .fluxo-chart { background: transparent; border: 0; box-shadow: none; padding: 0; }
+
+/* TABELA como unidade fechada, mesma premissa do .grafico-card: titulo,
+   ordenacao e rodape vivem na MESMA superficie branca da tabela. Na Tecnica
+   "Gestoras", "Semanas" e "Meses" flutuavam sobre o bege, soltos do dado que
+   nomeavam. */
+.app.desktop .tecnico .fluxo-ranking-block,
+.app.desktop .tecnico .fluxo-table-block {
+  background: var(--c-branco);
+  border: 1px solid var(--c-bege);
+  border-radius: var(--radius);
+  padding: 12px 14px 8px;
+}
+.app.desktop .tecnico .fluxo-ranking-head { margin-top: 0; }
+/* uma borda por bloco: a tabela interna nao repete moldura */
+.app.desktop .tecnico .fluxo-ranking-block .table-wrap,
+.app.desktop .tecnico .fluxo-table-block .table-wrap { border: 0; background: transparent; }

@@ -159,11 +159,12 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor }) {
   return (
     <section className="tecnico" aria-label="Visão técnica — oferta e demanda">
       <header className="tecnico-header">
-        <div>
-          <h2 className="fluxo-title">Técnico — Oferta &amp; Demanda</h2>
-          <p className="fluxo-subtitle">Captação, caixa e vencimentos sob o mesmo filtro de gestora</p>
-          {refDate && <p className="fluxo-ref">Base atualizada até {refDate}</p>}
-        </div>
+        {/* Sem titulo/subtitulo/data soltos: nesta aba TODO texto vive dentro de
+            um grafico ou de uma tabela. O nome da aba ja' esta' na navegacao e o
+            subtitulo explicava o que os 3 graficos mostram -- que os proprios
+            titulos dos graficos agora dizem. A data-base migrou p/ o rodape da
+            tabela, junto do dado que ela data. */}
+        <div />
         <div className="controls">
           {gestorSel && (
             <span className="tecnico-filtro-ativo">
@@ -246,7 +247,7 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor }) {
             </div>
           </div>
 
-          <TecnicoGestorTable rows={gestorRows} activeGestor={gestorSel} onSelect={onSelectGestor} />
+          <TecnicoGestorTable rows={gestorRows} activeGestor={gestorSel} onSelect={onSelectGestor} refDate={refDate} />
         </div>
       )}
 

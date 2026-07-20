@@ -16,7 +16,7 @@ const LABELS = { gestor: 'Gestor', liquido: 'Cap. líquida', pctCaixa: '% Caixa'
 
 function fmtPct(v) { return v == null ? '—' : `${v.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%` }
 
-export default function TecnicoGestorTable({ rows, activeGestor, onSelect }) {
+export default function TecnicoGestorTable({ rows, activeGestor, onSelect, refDate }) {
   const [sort, setSort] = useState(DEFAULT_SORT)
   const [showAll, setShowAll] = useState(false)
 
@@ -67,7 +67,7 @@ export default function TecnicoGestorTable({ rows, activeGestor, onSelect }) {
             Mostrando {LIMIT} de {fmtInt(sorted.length)} gestores — ver todos
           </button>
         )
-        : <p className="fluxo-note">{fmtInt(sorted.length)} gestores no filtro.</p>}
+        : <p className="fluxo-note">{fmtInt(sorted.length)} gestores no filtro{refDate ? ` · base ${refDate}` : ''}.</p>}
     </div>
   )
 }
