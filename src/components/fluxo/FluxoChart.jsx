@@ -76,7 +76,7 @@ export default function FluxoChart({ weekly }) {
             manda e' o barSize (ver barSizeFor). */}
         <ComposedChart
           data={data}
-          margin={{ top: 8, right: 8, bottom: 4, left: 4 }}
+          margin={{ top: 4, right: 4, bottom: 0, left: 0 }}
           stackOffset="sign"
           barCategoryGap="8%"
         >
@@ -91,15 +91,15 @@ export default function FluxoChart({ weekly }) {
             tickFormatter={fmtDayMonthYY}
             interval="preserveStartEnd"
             minTickGap={44}
-            tick={{ fontSize: 11 }}
-            tickMargin={6}
+            tick={{ fontSize: 9 }}
+            tickMargin={3}
             axisLine={false}
             tickLine={false}
           />
-          <YAxis tickFormatter={axisFmt} tick={{ fontSize: 11 }} width={44} axisLine={false} tickLine={false} />
+          <YAxis tickFormatter={axisFmt} tick={{ fontSize: 9 }} width={32} axisLine={false} tickLine={false} />
           <ReferenceLine y={0} stroke={COL_ZERO} strokeWidth={1.25} />
           <Tooltip content={<FluxoTooltip />} />
-          <Legend wrapperStyle={{ fontSize: 11 }} />
+          <Legend wrapperStyle={{ fontSize: 9 }} iconSize={7} />
           <Bar dataKey="captacao" name="Captação" fill={COL_CAP} stackId="fluxo" radius={[2, 2, 0, 0]} barSize={barSize} />
           <Bar dataKey="resgateNeg" name="Resgate" fill={COL_RES} stackId="fluxo" radius={[0, 0, 2, 2]} barSize={barSize} />
           <Line dataKey="liquido" name="Cap. líquida" stroke={COL_LIQ} strokeWidth={2} dot={false} activeDot={{ r: 4 }} />

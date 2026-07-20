@@ -28,8 +28,8 @@ const PAD_LARGO = { l: 52, r: 26, t: 14, b: 34 }
 // regua achar que so' cabiam 4 meses numa janela de 6 -- resultado: "mar/26
 // jun/26" e nenhuma ideia de QUANDO a curva se moveu. Aqui a folga encolhe e o
 // rotulo passa a ser medido pelo que ele realmente ocupa (~34px a 11px).
-const PAD_ESTREITO = { l: 40, r: 18, t: 12, b: 30 }
-const W_ESTREITO = 420
+const PAD_ESTREITO = { l: 28, r: 12, t: 8, b: 18 }   /* card compacto da Tecnica: cada px de folga sai da curva */
+const W_ESTREITO = 460
 
 // Janelas de tempo do grafico (meses recentes; 'total' = serie inteira).
 const PERIODOS = [

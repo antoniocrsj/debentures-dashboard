@@ -206,28 +206,20 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, on
             <div className="tecnico-chart-row">
               <div className="tecnico-chart-cell">
                 <div className="grafico-card">
-                <p className="tecnico-chart-label">Captação <span className="tecnico-chart-nota">entra por semana</span></p>
+                <p className="tecnico-chart-label">Captação</p>
                 <FluxoChart weekly={weekly} />
                 </div>
               </div>
               <div className="tecnico-chart-cell">
                 <div className="grafico-card">
-                <p className="tecnico-chart-label">
-                  Caixa <span className="tecnico-chart-nota">parado hoje{periodoCurto ? ' · janela mínima 6m' : ''}</span>
-                </p>
+                <p className="tecnico-chart-label">Caixa</p>
                 <CaixaPctPLLine historico={historico} segmento={caixaSeg} gestor={gestorSel} periodo={periodoCaixa} />
                 </div>
               </div>
-            </div>
-            {/* Linha 2: Vencimentos, UM grafico com alternador de unidade. Antes
-                eram dois graficos lado a lado mostrando a MESMA serie em R$ e em
-                %PL -- peso visual de dois assuntos p/ um so'. Unidos, sobra a
-                largura inteira p/ os 12 meses respirarem. */}
-            <div className="tecnico-chart-row">
-              <div className="tecnico-chart-cell tecnico-chart-cell-full">
+              <div className="tecnico-chart-cell">
                 <div className="grafico-card">
                 <p className="tecnico-chart-label">
-                  Vencimentos <span className="tecnico-chart-nota">volta em 12m</span>
+                  Vencimentos
                   <span className="segmented tecnico-unidade" role="tablist" aria-label="Unidade dos vencimentos">
                     {UNIDADES.map(u => (
                       <button key={u.id} type="button" role="tab" aria-selected={unidade === u.id}
