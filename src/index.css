@@ -80,6 +80,11 @@
   --text-soft:     var(--c-carvao);
   --shadow:        0 1px 3px rgba(38,33,29,.12), 0 1px 2px rgba(38,33,29,.07);
   --radius:        10px;
+  /* TIPOGRAFIA DOS GRAFICOS (aba Tecnica) -- 3 papeis, nao 6 tamanhos avulsos.
+     Antes: 8,5/9/9,5/10/12/12,5px espalhados e uma regra de titulo duplicada.  */
+  --fz-graf-titulo: 12px;   /* nome do card: Captacao / Caixa / Vencimentos     */
+  --fz-graf-kpi:    12px;   /* numero em destaque do KPI                        */
+  --fz-graf-dado:    9px;   /* tudo o mais: eixo, legenda, rotulo, valor, botao */
   --btn-h:         30px;       /* altura padrao de TODO botao (chips, abas, acoes) */
   --selected:      var(--c-terracota);   /* fundo de botao/chip SELECIONADO. Era carvao: com o solido cheio o botao ativo virava o objeto mais escuro da tela e puxava o olho p/ o controle em vez do dado. Terracota marca o estado sem pesar. */
   --header-h:      52px;
@@ -946,7 +951,7 @@ a { color: var(--primary); }
   height: 100%;
   display: flex; flex-direction: column;
 }
-.grafico-card > .tecnico-chart-label { margin: 0 0 4px; font-size: 12px; }
+.grafico-card > .tecnico-chart-label { margin: 0 0 4px; font-size: var(--fz-graf-titulo); }
 /* o grafico ocupa o que sobra do card, sem altura fixa propria */
 /* .venc-chart entrou aqui depois: sem ele o MonthBars parava na altura do
    conteudo (68px) e sobravam 78px de branco no card de 170. Os tres graficos
@@ -964,7 +969,7 @@ a { color: var(--primary); }
 /* Alternador menor: e' um controle secundario dentro do card, nao pode
    competir com o titulo do grafico. */
 .tecnico-unidade { width: auto; margin-left: auto; height: 19px; padding: 1px; }
-.tecnico-unidade .segmented-btn { font-size: 9.5px; padding: 0 7px; }
+.tecnico-unidade .segmented-btn { font-size: var(--fz-graf-dado); padding: 0 7px; }
 
 /* Corte de %Deb: STEPPER compacto (< valor >), do tamanho de um filtro, p/
    sentar ao lado dos outros. A versao anterior (5 botoes lado a lado) ocupava
@@ -1633,7 +1638,7 @@ a { color: var(--primary); }
 /* Segmento centraliza seu rotulo; recorta o que nao couber. */
 .venc-seg { width: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
 /* Rotulo dentro do segmento: juros na barra cinza (texto escuro), amort na azul (branco). */
-.venc-seg-lbl { font-size: 8.5px; font-weight: 700; line-height: 1; white-space: nowrap; color: var(--primary-dark); font-variant-numeric: tabular-nums; padding: 0 1px; }
+.venc-seg-lbl { font-size: var(--fz-graf-dado); font-weight: 700; line-height: 1; white-space: nowrap; color: var(--primary-dark); font-variant-numeric: tabular-nums; padding: 0 1px; }
 /* Os dois rotulos sao ESCUROS: com o topo mais claro (--bar-amort), o branco
    antigo perdia contraste. .venc-seg-lbl ja' define a cor -- nao ha' modificador. */
 .venc-seg-juros { background: var(--bar-juros); }   /* taupe claro */
@@ -1643,7 +1648,7 @@ a { color: var(--primary); }
 /* Linha-base (eixo horizontal) cinza, cruzando o grafico inteiro. */
 .venc-baseline { height: 0; border-top: 1.5px solid var(--blue-line); margin-top: -0.5px; }
 .venc-axis { display: flex; gap: 3px; padding-top: 5px; }
-.venc-lbl { flex: 1 1 0; min-width: 0; text-align: center; font-size: 10px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.venc-lbl { flex: 1 1 0; min-width: 0; text-align: center; font-size: var(--fz-graf-dado); color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .venc-lbl.sel { color: var(--primary); font-weight: 600; }
 /* Painel %PL sem PL disponivel: nota no lugar das barras. */
 .venc-nopl {
@@ -1854,7 +1859,7 @@ a { color: var(--primary); }
 /* Grade tracejada fina, igual a da Captacao (mesmo padrao nos dois graficos). */
 .caixa-line-grid { stroke: var(--grid); stroke-width: 1; stroke-dasharray: 3 3; }
 /* Fonte dos eixos = a do app (herda do body); 11px reais, igual a tabela ao lado. */
-.caixa-line-ylabel, .caixa-line-xlabel { fill: var(--text-muted); font-family: inherit; font-size: 9px; font-variant-numeric: tabular-nums; }
+.caixa-line-ylabel, .caixa-line-xlabel { fill: var(--text-muted); font-family: inherit; font-size: var(--fz-graf-dado); font-variant-numeric: tabular-nums; }
 .caixa-line-path { stroke: var(--primary); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
 /* Invisivel de proposito: e' so' o alvo do tooltip de cada mes (fill transparent
    ainda captura o mouse; fill:none NAO capturaria). */
@@ -1929,7 +1934,7 @@ a { color: var(--primary); }
   border: none; background: var(--primary-light); color: var(--primary-dark); width: 20px; height: 20px;
   border-radius: 50%; cursor: pointer; font-size: 13px; line-height: 1;
 }
-.tecnico-chart-label { font-size: 12.5px; font-weight: 600; color: var(--text-soft); margin: 0 0 6px; }
+.tecnico-chart-label { font-size: var(--fz-graf-titulo); font-weight: 600; color: var(--text); margin: 0 0 6px; }  /* fz duplicado removido: 12,5 -> token; text-soft -> text (carvao unico) */
 
 @media (min-width: 700px) {
   .app.desktop .tecnico-grid { display: grid; grid-template-columns: minmax(0, 1fr) 362px; gap: 8px; align-items: start; margin-bottom: 14px; }
@@ -2008,7 +2013,7 @@ a { color: var(--primary); }
 
 /* Legenda do grafico de vencimentos: mesmo peso e tamanho da legenda do
    Recharts nos outros dois cards, p/ os 3 lerem igual. */
-.venc-legenda { display: flex; gap: 12px; justify-content: center; font-size: 9px; color: var(--text); margin: 2px 0 0; }
+.venc-legenda { display: flex; gap: 12px; justify-content: center; font-size: var(--fz-graf-dado); color: var(--text); margin: 2px 0 0; }
 .venc-legenda span { display: inline-flex; align-items: center; gap: 4px; }
 .venc-key { width: 7px; height: 7px; border-radius: 1px; display: inline-block; }
 .venc-key-juros { background: var(--bar-juros); }
@@ -2045,7 +2050,7 @@ a { color: var(--primary); }
 /* KPI dentro do card do grafico: valor-resumo alinhado a' direita do titulo, na
    mesma faixa. Le antes de olhar a curva -- "quanto" antes de "como variou". */
 .grafico-kpi { margin-left: auto; display: inline-flex; align-items: baseline; gap: 6px; }
-.grafico-kpi b { font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.grafico-kpi b { font-size: var(--fz-graf-kpi); font-weight: 700; font-variant-numeric: tabular-nums; }
 .grafico-kpi b.pos { color: var(--c-verde); }
 .grafico-kpi b.neg { color: var(--c-vermelho); }
-.grafico-kpi em { font-size: 9px; font-style: normal; color: var(--text-faint); }
+.grafico-kpi em { font-size: var(--fz-graf-dado); font-style: normal; color: var(--text-faint); }

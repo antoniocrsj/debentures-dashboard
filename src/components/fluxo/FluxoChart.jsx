@@ -15,6 +15,10 @@ import { toChartSeries, fmtDayMonthYY, fmtWeekFull, fmtFluxo, fmtFluxoSigned } f
 const COL_CAP = '#8c5e3a'  // captação    — terracota (serie 1)
 const COL_RES = '#9a8c7a'  // resgate     — taupe (serie 2)
 const COL_LIQ = '#2a2420'  // cap. líquida — carvão (linha)
+// Fonte dos eixos/legenda = --fz-graf-dado do catalogo (9px). O Recharts nao
+// le var() em tick/wrapperStyle, entao o numero e' repetido aqui -- se mudar o
+// token no CSS, mude aqui tambem.
+const FZ_DADO = 9
 const COL_ZERO = '#9a8c7a' // linha do zero — taupe; era #94a3b8, um cinza
                            // AZULADO herdado da paleta navy aposentada: a
                            // unica cor fria fora das semanticas.
@@ -90,7 +94,7 @@ export default function FluxoChart({ weekly }) {
             dataKey="weekKey"
             tickFormatter={fmtDayMonthYY}
             minTickGap={20}
-            tick={{ fontSize: 9 }}
+            tick={{ fontSize: FZ_DADO }}
             tickMargin={3}
             interval="preserveStartEnd" 
             axisLine={false}
@@ -101,11 +105,11 @@ export default function FluxoChart({ weekly }) {
               do Recharts. Assim o "30bi" comeca na MESMA margem do titulo do card
               -- alinhado a' direita, cada rotulo comecava num x diferente ("0"
               ficava 19px adentro) e nenhum casava com o "C" de Captacao. */}
-          <YAxis tickFormatter={axisFmt} tick={{ fontSize: 9, textAnchor: 'start' }} dx={-22}
+          <YAxis tickFormatter={axisFmt} tick={{ fontSize: FZ_DADO, textAnchor: 'start' }} dx={-22}
                  width={32} axisLine={false} tickLine={false} />
           <ReferenceLine y={0} stroke={COL_ZERO} strokeWidth={1.25} />
           <Tooltip content={<FluxoTooltip />} />
-          <Legend wrapperStyle={{ fontSize: 9 }} iconSize={7} />
+          <Legend wrapperStyle={{ fontSize: FZ_DADO }} iconSize={7} />
           <Bar dataKey="captacao" name="Captação" fill={COL_CAP} stackId="fluxo" radius={[2, 2, 0, 0]} barSize={barSize} />
           <Bar dataKey="resgateNeg" name="Resgate" fill={COL_RES} stackId="fluxo" radius={[0, 0, 2, 2]} barSize={barSize} />
           <Line dataKey="liquido" name="Cap. líquida" stroke={COL_LIQ} strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
