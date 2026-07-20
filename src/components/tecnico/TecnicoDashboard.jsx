@@ -38,11 +38,18 @@ const PERIODOS = [
   { id: '12m', label: '12m', n: 12 },
 ]
 const PERIODO_PADRAO = '6m'
+// Vencimentos: a MESMA serie em duas unidades. Alternador em vez de dois
+// graficos -- ver comentario no JSX.
+const UNIDADES = [
+  { id: 'rs', label: 'R$' },
+  { id: 'pct', label: '% do PL' },
+]
 
 export default function TecnicoDashboard({ agenda12m, blc, plByGestor }) {
   const [tipo, setTipo] = useState('trad')   // Tradicional: padrao unico do app
   const [gestorSel, setGestorSel] = useState('')
   const [periodo, setPeriodo] = useState(PERIODO_PADRAO)
+  const [unidade, setUnidade] = useState('rs')
 
   const { loading, error, rows, monthly, rentabilidade } = useFluxo(tipo)
   const { historico } = useCaixa()
@@ -186,35 +193,49 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor }) {
       {!loading && !error && (
         <div className="tecnico-grid">
           <div className="tecnico-charts-col">
-            {/* Linha 1: Captacao ao lado de %PL em caixa — mesma largura. */}
+            {/* Linha 1: Captacao (fluxo) ao lado de Caixa (estoque). Titulo de UMA
+                palavra + a natureza temporal na legenda: lendo de cima a baixo o
+                usuario percorre a linha do tempo do dinheiro -- entra, fica
+                parado, volta. O escopo saiu dos 4 titulos: repetia "Todos os
+                gestores - 12.431" quatro vezes e ja' esta' no cabecalho e no
+                filtro. */}
             <div className="tecnico-chart-row">
               <div className="tecnico-chart-cell">
-                <p className="tecnico-chart-label">Captação líquida — semanal · {escopo}</p>
+                <p className="tecnico-chart-label">Captação <span className="tecnico-chart-nota">entra por semana</span></p>
                 <FluxoChart weekly={weekly} />
               </div>
               <div className="tecnico-chart-cell">
                 <p className="tecnico-chart-label">
-                  % do PL em caixa — mensal · {escopo}
-                  {periodoCurto && <span className="tecnico-chart-nota"> · janela mínima 6m (série mensal)</span>}
+                  Caixa <span className="tecnico-chart-nota">parado hoje{periodoCurto ? ' · janela mínima 6m' : ''}</span>
                 </p>
                 <CaixaPctPLLine historico={historico} segmento={caixaSeg} gestor={gestorSel} periodo={periodoCaixa} />
               </div>
             </div>
-            {/* Linha 2: Vencimentos em R$ ao lado de Vencimentos em %PL — mesma largura. */}
+            {/* Linha 2: Vencimentos, UM grafico com alternador de unidade. Antes
+                eram dois graficos lado a lado mostrando a MESMA serie em R$ e em
+                %PL -- peso visual de dois assuntos p/ um so'. Unidos, sobra a
+                largura inteira p/ os 12 meses respirarem. */}
             <div className="tecnico-chart-row">
-              <div className="tecnico-chart-cell">
-                <p className="tecnico-chart-label">Vencimentos — R$ · {escopo}</p>
-                {agenda12m
-                  ? <MonthBars rows={mesesView} max={maxVenc} selMes={null} onPick={() => {}}
-                      fmtVal={fmtBRL} fmtLabel={fmtBar} ariaLabel="Vencimentos por mês em reais" />
-                  : <div className="caixa-line-empty">Sem agenda de vencimentos carregada ainda.</div>}
-              </div>
-              <div className="tecnico-chart-cell">
-                <p className="tecnico-chart-label">Vencimentos — % do PL · {escopo}</p>
-                {agenda12m && plDenom > 0
-                  ? <MonthBars rows={mesesPL} max={maxPct} selMes={null} onPick={() => {}}
-                      fmtVal={pctFmt} fmtLabel={pctFmt} ariaLabel="Vencimentos por mês em % do PL" />
-                  : <div className="caixa-line-empty">{agenda12m ? `Sem PL de ${gestorSel || 'carteira'} para calcular %PL.` : 'Sem agenda de vencimentos carregada ainda.'}</div>}
+              <div className="tecnico-chart-cell tecnico-chart-cell-full">
+                <p className="tecnico-chart-label">
+                  Vencimentos <span className="tecnico-chart-nota">volta em 12m</span>
+                  <span className="segmented tecnico-unidade" role="tablist" aria-label="Unidade dos vencimentos">
+                    {UNIDADES.map(u => (
+                      <button key={u.id} type="button" role="tab" aria-selected={unidade === u.id}
+                        className={`segmented-btn${unidade === u.id ? ' active' : ''}`}
+                        onClick={() => setUnidade(u.id)}>{u.label}</button>
+                    ))}
+                  </span>
+                </p>
+                {!agenda12m
+                  ? <div className="caixa-line-empty">Sem agenda de vencimentos carregada ainda.</div>
+                  : unidade === 'rs'
+                    ? <MonthBars rows={mesesView} max={maxVenc} selMes={null} onPick={() => {}}
+                        fmtVal={fmtBRL} fmtLabel={fmtBar} ariaLabel="Vencimentos por mês em reais" />
+                    : plDenom > 0
+                      ? <MonthBars rows={mesesPL} max={maxPct} selMes={null} onPick={() => {}}
+                          fmtVal={pctFmt} fmtLabel={pctFmt} ariaLabel="Vencimentos por mês em % do PL" />
+                      : <div className="caixa-line-empty">Sem PL de {gestorSel || 'carteira'} para calcular %PL.</div>}
               </div>
             </div>
           </div>
