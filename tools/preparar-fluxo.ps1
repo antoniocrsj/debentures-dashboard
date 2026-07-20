@@ -488,6 +488,18 @@ foreach ($mes in $Meses) {
   }
 }
 
+# TRAVA DE SEGURANCA (jul/2026): se NENHUM mes foi processado, nao ha' nada p/
+# escrever -- e seguir adiante sobrescreveria todas as series com arquivo so' de
+# cabecalho. Foi exatamente o que aconteceu quando um bug de splat fez o script
+# procurar um "mes" inexistente: 404 em tudo, zero meses OK, e as 14 series de
+# Fluxo_/Perf_ foram zeradas com o run reportando sucesso. Abortar aqui deixa os
+# dados anteriores intactos: perder a atualizacao e' recuperavel, perder a serie
+# historica nao. Rodada legitima SEMPRE processa pelo menos um mes.
+if (-not $mesesOk -or $mesesOk.Count -eq 0) {
+  $det = if ($mesesFalha.Count) { " Meses que falharam: $($mesesFalha -join ', ')." } else { '' }
+  throw "ABORTADO: nenhum mes foi processado com sucesso.$det Nada foi escrito -- as series existentes ficaram intactas. Verifique a conectividade com a CVM e os meses pedidos."
+}
+
 # Uma semana pode ficar parcial quando um dos seus dias cai num mes ainda nao
 # disponivel (ex: mes atual, antes da CVM publicar) ou nao reprocessado neste
 # run. Isso e' esperado e mostrado normalmente (nao escondemos a semana) -- a

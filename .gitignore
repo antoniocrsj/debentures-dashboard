@@ -23,3 +23,12 @@ tools/books/*.txt
 
 # Posicao por fundo (build input do gerar-agenda-12m; nao deployar o cru)
 public/BLC_PorFundo.csv
+
+# Captacao diaria do universo candidato (~30 MB): insumo do
+# gerar-sensibilidade-corte.mjs, regenerado por preparar-fluxo.ps1
+# -IncluirCandidatos. O app NAO le este arquivo -- so' o
+# Sensibilidade_Corte_Deb.json (92 KB), que e' versionado.
+public/data/Fluxo_Diario_Candidatos.csv
+
+# Universo candidato do sweep (regenerado por selecionar-fundos.ps1)
+tools/Universo_Candidatos.csv

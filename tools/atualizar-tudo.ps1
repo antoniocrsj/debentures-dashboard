@@ -551,7 +551,13 @@ if ($SkipCaptacao) {
     # -Sensibilidade (opt-in): tambem busca a captacao diaria do universo
     # candidato mais largo (10%-80%), alem da curadoria oficial. So' repassado
     # se pedido -- por padrao o comportamento e' EXATAMENTE o mesmo de hoje.
-    $candArgs = @(); if ($Sensibilidade) { $candArgs = @('-IncluirCandidatos') }
+    # BUG (corrigido jul/2026): isto era @('-IncluirCandidatos'), um splat de
+    # ARRAY. Array splat passa o elemento como POSICIONAL, entao a string caia
+    # no [string[]]$Meses do preparar-fluxo.ps1 e o switch ficava $false. O
+    # script ia buscar na CVM um "mes" chamado -IncluirCandidatos, tomava 404,
+    # processava zero meses e sobrescrevia TODAS as series com arquivo vazio --
+    # reportando "OK" no fim. Splat de HASHTABLE liga o switch de verdade.
+    $candArgs = @{}; if ($Sensibilidade) { $candArgs = @{ IncluirCandidatos = $true } }
     if ($captacaoCompleta) {
       if ($CaptacaoModo -eq 'Completa') {
         Ok "Modo Completa solicitado: recalculando ultimos 12 meses (repopula rentabilidade)."
