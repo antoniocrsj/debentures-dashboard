@@ -40,48 +40,48 @@
      mas agora apontam p/ o catalogo em vez de trazer hex proprio.         */
   --primary:        var(--c-terracota);
   --primary-dark:   var(--c-carvao);   /* header (era #26211d, 2% mais escuro) */
-  --primary-light:  #f1e7db;   /* bege claro (hover / selecionado leve) */
-  --primary-border: #e4d5c3;   /* borda bege clara */
-  --navy-light:    #6f5442;    /* castanho medio (borda/texto dos botoes/chips no estado normal) */
-  --chip-bg:       #f8f4ee;    /* quase-branco quente (botoes/chips no estado normal) */
+  --primary-light:  var(--c-bege);
+  --primary-border: var(--c-taupe);
+  --navy-light:    var(--c-carvao);
+  --chip-bg:       var(--c-bege);
   --bg:            var(--c-bege);
   --card:          var(--c-branco);
   --text:          var(--c-carvao);
-  --text-muted:    color-mix(in srgb, var(--c-taupe) 58%, var(--c-carvao));
-  --border:        color-mix(in srgb, var(--c-taupe) 15%, var(--c-bege));
+  --text-muted:    var(--c-carvao);
+  --border:        var(--c-taupe);
   --pos:           var(--c-verde);
   --neg:           var(--c-vermelho);
   --success:       var(--pos); /* alias semantico (um verde so' no app) */
   --danger:        var(--neg); /* alias semantico (um vermelho so' no app) */
-  --warn:          #d97706;    /* ambar (mantido — ja' e' quente) */
-  --pos-soft:      #ecfdf5;    /* fundo verde claro (card positivo) */
-  --pos-line:      #a7f3d0;    /* borda verde clara */
-  --neg-soft:      #fef2f2;    /* fundo vermelho claro (card negativo, limpar) */
-  --neg-line:      #fecaca;    /* borda vermelha clara */
+  --warn:          var(--c-terracota);   /* o ambar era a 7a cor: fora do catalogo */
+  --pos-soft:      var(--c-bege);
+  --pos-line:      var(--c-verde);
+  --neg-soft:      var(--c-bege);
+  --neg-line:      var(--c-vermelho);
   /* Paleta "atencao / fechado" (ambar) — harmoniza com a identidade quente */
-  --flag-bg:       #fef3c7;    /* fundo da tag/aviso */
-  --flag-ink:      #92400e;    /* texto da tag/aviso */
-  --flag-line:     #fde68a;    /* borda da tag/aviso */
+  --flag-bg:       var(--c-bege);
+  --flag-ink:      var(--c-terracota);
+  --flag-line:     var(--c-terracota);
   /* Preenchimento de BARRA (area do grafico). Proposital NAO reusar --primary /
      --text-faint aqui: cor de acento e de texto sao escuras por obrigacao (
      precisam de contraste p/ ler) e pesam quando viram area grande. Estes sao
      os mesmos matizes (taupe ~36deg / terracota ~26deg), so' mais claros. */
-  --bar-juros:     color-mix(in srgb, var(--c-taupe) 61%, var(--c-bege));
-  --bar-amort:     color-mix(in srgb, var(--c-terracota) 61%, var(--c-bege));
+  --bar-juros:     var(--c-taupe);
+  --bar-amort:     var(--c-terracota);
   /* Grade dos graficos (Caixa e Captacao usam o MESMO token p/ nao divergirem:
      tracejada 3-3, horizontal, sem linha de eixo nem tick marks). */
-  --grid:          color-mix(in srgb, var(--c-taupe) 27%, var(--c-bege));
+  --grid:          var(--c-taupe);
   /* Rampa bege quente (hover / borda / scroll) — era a rampa azul-acinzentada */
-  --blue-soft:     #ece0d0;    /* fundo em hover / fundo desktop */
-  --blue-press:    #e6d8c5;    /* fundo em active/press */
-  --blue-line:     #ddd0bd;    /* divisor / borda */
-  --blue-mute:     #ccbca6;    /* thumb de scrollbar */
-  --text-faint:    color-mix(in srgb, var(--c-taupe) 71%, var(--c-carvao));   /* AA sobre bege */
-  --text-soft:     color-mix(in srgb, var(--c-taupe) 40%, var(--c-carvao));
+  --blue-soft:     var(--c-bege);
+  --blue-press:    var(--c-bege);
+  --blue-line:     var(--c-taupe);
+  --blue-mute:     var(--c-taupe);
+  --text-faint:    var(--c-carvao);   /* AA sobre bege */
+  --text-soft:     var(--c-carvao);
   --shadow:        0 1px 3px rgba(38,33,29,.12), 0 1px 2px rgba(38,33,29,.07);
   --radius:        10px;
   --btn-h:         30px;       /* altura padrao de TODO botao (chips, abas, acoes) */
-  --selected:      #4a3f36;    /* fundo de botao/chip SELECIONADO (carvao-marrom, texto branco) */
+  --selected:      var(--c-carvao);
   --header-h:      52px;
   --filter-h:      48px;
   --tabs-h:        42px;
@@ -932,6 +932,24 @@ a { color: var(--primary); }
    acima do conteudo da aba. Padding lateral igual ao das secoes (20px) p/ o
    stepper alinhar com a borda direita dos cards/tabelas em vez de flutuar. */
 .corte-bar { display: flex; justify-content: flex-end; padding: 10px 20px 0; }
+
+/* CARD DO GRAFICO: titulo, alternador, legenda e area de plot vivem TODOS
+   dentro da mesma superficie branca. Antes o titulo flutuava sobre o bege e o
+   alternador junto com ele, entao o grafico parecia comecar no meio do card --
+   e nao dava p/ saber a que grafico um controle pertencia quando havia dois
+   lado a lado. Cada grafico agora e' uma unidade fechada. */
+.grafico-card {
+  background: var(--c-branco);
+  border: 1px solid var(--c-taupe);
+  border-radius: var(--radius);
+  padding: 12px 14px 10px;
+  height: 100%;
+  display: flex; flex-direction: column;
+}
+.grafico-card > .tecnico-chart-label { margin: 0 0 10px; }
+/* o grafico ocupa o que sobra do card, sem altura fixa propria */
+.grafico-card > .fluxo-chart,
+.grafico-card > .caixa-trend { flex: 1; min-height: 0; margin: 0; }
 
 /* Titulo de grafico da Tecnico: NOME em destaque + natureza temporal discreta.
    O nome carrega o assunto; a legenda diz se e' fluxo, estoque ou futuro. */
@@ -1926,3 +1944,8 @@ a { color: var(--primary); }
 
   .app.desktop .tecnico-tables-row { margin-bottom: 0; }
 }
+
+/* Dentro do .grafico-card as superficies internas somem: uma so' borda por
+   grafico, senao vira card dentro de card. */
+.grafico-card .caixa-trend,
+.grafico-card .fluxo-chart { background: transparent; border: 0; box-shadow: none; padding: 0; }

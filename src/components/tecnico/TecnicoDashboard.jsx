@@ -201,14 +201,18 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor }) {
                 filtro. */}
             <div className="tecnico-chart-row">
               <div className="tecnico-chart-cell">
+                <div className="grafico-card">
                 <p className="tecnico-chart-label">Captação <span className="tecnico-chart-nota">entra por semana</span></p>
                 <FluxoChart weekly={weekly} />
+                </div>
               </div>
               <div className="tecnico-chart-cell">
+                <div className="grafico-card">
                 <p className="tecnico-chart-label">
                   Caixa <span className="tecnico-chart-nota">parado hoje{periodoCurto ? ' · janela mínima 6m' : ''}</span>
                 </p>
                 <CaixaPctPLLine historico={historico} segmento={caixaSeg} gestor={gestorSel} periodo={periodoCaixa} />
+                </div>
               </div>
             </div>
             {/* Linha 2: Vencimentos, UM grafico com alternador de unidade. Antes
@@ -217,6 +221,7 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor }) {
                 largura inteira p/ os 12 meses respirarem. */}
             <div className="tecnico-chart-row">
               <div className="tecnico-chart-cell tecnico-chart-cell-full">
+                <div className="grafico-card">
                 <p className="tecnico-chart-label">
                   Vencimentos <span className="tecnico-chart-nota">volta em 12m</span>
                   <span className="segmented tecnico-unidade" role="tablist" aria-label="Unidade dos vencimentos">
@@ -236,6 +241,7 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor }) {
                       ? <MonthBars rows={mesesPL} max={maxPct} selMes={null} onPick={() => {}}
                           fmtVal={pctFmt} fmtLabel={pctFmt} ariaLabel="Vencimentos por mês em % do PL" />
                       : <div className="caixa-line-empty">Sem PL de {gestorSel || 'carteira'} para calcular %PL.</div>}
+                </div>
               </div>
             </div>
           </div>
