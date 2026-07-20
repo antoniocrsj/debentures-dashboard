@@ -961,8 +961,10 @@ a { color: var(--primary); }
 .tecnico-chart-nota {
   font-size: 11px; font-weight: 400; color: var(--text-faint); letter-spacing: 0;
 }
-.tecnico-unidade { width: auto; margin-left: auto; height: 24px; }
-.tecnico-unidade .segmented-btn { font-size: 11px; padding: 0 9px; }
+/* Alternador menor: e' um controle secundario dentro do card, nao pode
+   competir com o titulo do grafico. */
+.tecnico-unidade { width: auto; margin-left: auto; height: 19px; padding: 1px; }
+.tecnico-unidade .segmented-btn { font-size: 9.5px; padding: 0 7px; }
 
 /* Corte de %Deb: STEPPER compacto (< valor >), do tamanho de um filtro, p/
    sentar ao lado dos outros. A versao anterior (5 botoes lado a lado) ocupava
@@ -1998,3 +2000,11 @@ a { color: var(--primary); }
    .grafico-card ela virava uma SEGUNDA borda, desenhada por dentro da do card. */
 .grafico-card > .venc-chart { border: 0; background: transparent; box-shadow: none; }
 .grafico-card .venc-plot { border: 0; }
+
+/* Legenda do grafico de vencimentos: mesmo peso e tamanho da legenda do
+   Recharts nos outros dois cards, p/ os 3 lerem igual. */
+.venc-legenda { display: flex; gap: 12px; justify-content: center; font-size: 9px; color: var(--text); margin: 2px 0 0; }
+.venc-legenda span { display: inline-flex; align-items: center; gap: 4px; }
+.venc-key { width: 7px; height: 7px; border-radius: 1px; display: inline-block; }
+.venc-key-juros { background: var(--bar-juros); }
+.venc-key-amort { background: var(--bar-amort); }

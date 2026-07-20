@@ -43,7 +43,7 @@ const PERIODO_PADRAO = '6m'
 // graficos -- ver comentario no JSX.
 const UNIDADES = [
   { id: 'rs', label: 'R$' },
-  { id: 'pct', label: '% do PL' },
+  { id: 'pct', label: '%PL' },   /* era '% do PL': o botao competia em largura com o titulo */
 ]
 
 export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, onCorte, corteDisponivel }) {
