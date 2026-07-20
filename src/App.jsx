@@ -18,6 +18,9 @@ import ManagerRanking from './components/ManagerRanking.jsx'
 import GroupRanking from './components/GroupRanking.jsx'
 import MonthSelector from './components/MonthSelector.jsx'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
+import CorteSelector from './components/CorteSelector.jsx'
+import { usePctDeb } from './hooks/usePctDeb.js'
+import { CORTE_OFICIAL } from './utils/corte.js'
 
 // Resumo do Dia (modal do relógio) — carregado sob demanda.
 const ResumoDoDiaModal = lazyWithRetry(() => import('./components/ResumoDoDiaModal.jsx'))
@@ -73,6 +76,13 @@ export default function App() {
   })
 
   const toggleDesktop = useCallback(() => setDesktop(d => !d), [])
+
+  // Corte de %Deb GLOBAL (topo): redefine quais fundos entram na conta em
+  // Captacao, Caixa e no lado "carteira" do Vencimentos. Vive aqui, e nao em
+  // cada dashboard, justamente p/ o recorte ser o MESMO nas tres abas -- trocar
+  // de aba mantendo o corte e' o ponto do filtro ser global.
+  const [corte, setCorte] = useState(CORTE_OFICIAL)
+  const { pctPorCnpj } = usePctDeb()
 
   // Seção atual (compacto): 'debentures' (abas Ativos/Gestores/Grupos), 'captacao'
   // ou 'atualizacao' (painel de controle, dev-only).
@@ -330,6 +340,18 @@ export default function App() {
         {/* Desktop: abas standalone só na Captação (nas demais vão ao lado da busca).
             Compacto: sub-abas só na seção Debêntures (Captação não tem sub-abas). */}
         {(desktop ? (tab === 'captacao' || tab === 'vencimentos' || tab === 'caixa' || tab === 'tecnico') : section === 'debentures') && tabsNav}
+
+        {/* Corte de %Deb: so' nas abas com universo de fundos p/ cortar.
+            Debentures e' visao do ATIVO (emissor/serie/vencimento) -- nao ha'
+            fundo p/ filtrar la', entao o seletor nem aparece. */}
+        {['captacao', 'caixa', 'vencimentos', 'tecnico'].includes(tab) && (
+          <CorteSelector
+            corte={corte}
+            onChange={setCorte}
+            disponivel={!!pctPorCnpj && pctPorCnpj.size > 0}
+            compact={!desktop}
+          />
+        )}
       </div>
 
       {/* Scrollable content */}
@@ -342,7 +364,7 @@ export default function App() {
             <Suspense fallback={
               <div className="state-box"><div className="spinner" aria-label="Carregando" /><p>Carregando…</p></div>
             }>
-              <FluxoDashboard compact={!desktop} />
+              <FluxoDashboard compact={!desktop} corte={corte} pctPorCnpj={pctPorCnpj} />
             </Suspense>
           </ErrorBoundary>
         )}

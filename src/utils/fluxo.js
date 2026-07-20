@@ -54,6 +54,59 @@ export function normalizeRow(row) {
   }
 }
 
+/**
+ * Reconstroi as linhas SEMANAIS POR GESTOR a partir das linhas POR FUNDO,
+ * mantendo apenas os CNPJs de `cnpjsAceitos`. E' o que permite o corte de %Deb
+ * global: no corte oficial o app usa o CSV ja' agregado pelo pipeline (rapido e
+ * identico ao de sempre); em qualquer outro corte o universo muda, o agregado
+ * pronto deixa de servir e a semana precisa ser somada de novo aqui.
+ *
+ * Devolve o MESMO shape de normalizeRow p/ ser intercambiavel rio abaixo --
+ * grafico, tabelas e ranking nao sabem de onde a linha veio.
+ *
+ * numFundos e' contado por CNPJ DISTINTO na semana (nao linhas), senao um fundo
+ * com mais de um registro na mesma semana inflaria a contagem.
+ */
+export function agregarFundosPorGestor(fundoRows, cnpjsAceitos) {
+  const porChave = new Map()
+  for (const r of fundoRows || []) {
+    if (cnpjsAceitos && !cnpjsAceitos.has(r.cnpj)) continue
+    if (!r.gestor) continue
+    const chave = `${r.weekKey}|${r.gestor}`
+    let o = porChave.get(chave)
+    if (!o) {
+      o = {
+        weekKey: r.weekKey,
+        weekDate: r.weekDate,
+        weekLabel: r.weekLabel || fmtWeekFull(r.weekKey),
+        dataBase: r.dataBase,
+        gestor: r.gestor,
+        captacao: 0,
+        resgate: 0,
+        liquido: 0,
+        plSemana: 0,
+        _cnpjs: new Set(),
+      }
+      porChave.set(chave, o)
+    }
+    o.captacao += r.captacao
+    o.resgate += r.resgate
+    o.plSemana += r.plSemana || 0
+    o._cnpjs.add(r.cnpj)
+    // DataBase da semana = o dia mais recente entre os fundos dela.
+    if (r.dataBase > o.dataBase) o.dataBase = r.dataBase
+  }
+  const rows = []
+  for (const o of porChave.values()) {
+    o.liquido = o.captacao - o.resgate
+    o.numFundos = o._cnpjs.size
+    delete o._cnpjs
+    rows.push(o)
+  }
+  rows.sort((a, b) => a.weekDate - b.weekDate)
+  return rows
+}
+
 /** Data do dado mais recente da base (max DataBase). É o "atualizada até" real. */
 export function latestBaseDate(rows) {
   if (!rows || !rows.length) return null

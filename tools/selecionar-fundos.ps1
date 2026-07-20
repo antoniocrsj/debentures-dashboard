@@ -442,6 +442,22 @@ foreach ($c in ($universo | Sort-Object Segmento, Denom)) {
 }
 [void](Save-Text $outUniverso $sbU.ToString() $utf8)
 
+# public\data\Fundos_PctDeb.csv: versao ENXUTA do mapa acima (so' CNPJ -> %Deb),
+# esta sim DEPLOYADA. E' o que permite ao app filtrar por corte de %Deb sem
+# baixar o Universo_Candidatos inteiro: o filtro global cruza este mapa com as
+# bases por fundo que ja' existem no cliente (Fluxo_Semanal_Fundos_*, o
+# Caixa_Potencial_Fundos e o porFundo do Agenda_12m) e reagrega no navegador.
+# So' duas colunas de proposito -- nome/gestor/PL o app ja' tem nas outras bases,
+# repetir aqui so' engordaria o download.
+$outPct = Join-Path (Split-Path $PSScriptRoot -Parent) 'public\data\Fundos_PctDeb.csv'
+$sbP = New-Object System.Text.StringBuilder
+[void]$sbP.AppendLine('CNPJ,Pct_Debentures')
+foreach ($c in ($universo | Sort-Object Cnpj)) {
+  [void]$sbP.AppendLine(('{0},{1}' -f $c.Cnpj, ([Math]::Round($c.PctDeb * 100, 2)).ToString($ci)))
+}
+[void](Save-Text $outPct $sbP.ToString() $utf8)
+Step "Mapa de corte p/ o app: $($universo.Count) fundo(s) em public\data\Fundos_PctDeb.csv"
+
 # ---- 6b. Candidatos novos (12.431 que ainda nao aparecem no CDA) ------------
 # O loop de classificacao acima so' enxerga fundos que JA tem posicao em
 # debentures no CDA. Um fundo novo (nascido depois da carteira de referencia)

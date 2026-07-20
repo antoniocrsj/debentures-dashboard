@@ -900,6 +900,18 @@ a { color: var(--primary); }
   padding: 0 12px; border-radius: 99px; white-space: nowrap; text-align: center;
 }
 .segmented-btn.active { background: var(--selected); color: #fff; }
+
+/* Seletor GLOBAL de corte de %Deb (topo do app). Fica na sticky-area junto das
+   abas; o rotulo "%Deb" ancora o significado dos numeros soltos (10/15/20...),
+   que sem ele pareceriam periodo ou qualquer outra coisa. */
+.corte-sel { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+.corte-sel-label {
+  font-size: 11.5px; font-weight: 700; color: var(--text-faint);
+  letter-spacing: .02em; white-space: nowrap; cursor: help;
+}
+.corte-sel-btns { width: auto; flex: 1; }
+.corte-sel .segmented-btn { font-size: 12px; padding: 0 8px; }
+.corte-sel.compact .segmented-btn { font-size: 11.5px; padding: 0 6px; }
 .segmented-btn:disabled { opacity: .5; cursor: default; }
 
 .period-shortcuts { display: flex; gap: 6px; flex-wrap: wrap; }

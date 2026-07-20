@@ -5,6 +5,7 @@ import {
   gestorOptions, startForMonths, periodBounds, fmtWeekFull, latestBaseDate,
   filterMensal, aggregateByMonth, mergeRentabilidade,
   filterFundos, aggregateByFundo, mergeFundos, excludeFechados,
+  agregarFundosPorGestor,
 } from '../../utils/fluxo.js'
 import { lazyWithRetry } from '../../utils/lazyWithRetry.js'
 import FluxoFilters from './FluxoFilters.jsx'
@@ -14,6 +15,7 @@ import FluxoMonthlyTable from './FluxoMonthlyTable.jsx'
 import GestorFlowRanking from './GestorFlowRanking.jsx'
 import FundoFlowTable from './FundoFlowTable.jsx'
 import SensibilidadeCorte from './SensibilidadeCorte.jsx'
+import { CORTE_OFICIAL, isOficial, cnpjsNoCorte } from '../../utils/corte.js'
 
 // Recharts só carrega ao abrir a aba (preserva a carga inicial do app).
 // lazyWithRetry: re-tenta o import se o chunk do gráfico falhar.
@@ -22,14 +24,38 @@ const FluxoChart = lazyWithRetry(() => import('./FluxoChart.jsx'))
 const DEFAULT_MONTHS = 12
 
 
-export default function FluxoDashboard({ compact = false }) {
+export default function FluxoDashboard({ compact = false, corte = CORTE_OFICIAL, pctPorCnpj = null }) {
   const [tipo, setTipo]     = useState('12431')
   const [gestor, setGestor] = useState('')
   const [months, setMonths] = useState(DEFAULT_MONTHS)   // null = todo o histórico
   const [hideFechados, setHideFechados] = useState(false)  // ocultar fundos de condomínio fechado
 
-  const { loading, error, rows, invalid, isMock, reload, monthly, meta, rentabilidade, fundosSemana, fundosMeta, fechados } = useFluxo(tipo)
+  const { loading, error, rows: rowsBase, invalid, isMock, reload, monthly, meta, rentabilidade, fundosSemana, fundosMeta, fechados } = useFluxo(tipo)
   const tipoLabel = FLUXO_TIPOS.find(t => t.id === tipo)?.label ?? tipo
+
+  // Corte de %Deb global. No corte OFICIAL usa-se o CSV ja' agregado pelo
+  // pipeline (caminho rapido; numero identico ao de sempre). Fora dele o
+  // universo muda e a semana e' somada de novo a partir do per-fundo.
+  // Memoizado por (corte, base): trocar de degrau nao reprocessa o mesmo corte
+  // duas vezes -- foi por isso que escolhemos degraus fixos e nao slider.
+  const rows = useMemo(() => {
+    if (isOficial(corte) || !pctPorCnpj || !fundosSemana?.length) return rowsBase
+    const aceitos = cnpjsNoCorte(pctPorCnpj, corte)
+    return agregarFundosPorGestor(fundosSemana, aceitos)
+  }, [rowsBase, fundosSemana, pctPorCnpj, corte])
+
+  // Tamanho do universo no corte: CNPJs distintos da base por fundo acima da
+  // regua, SEM filtro de janela/gestor -- responde "quantos fundos existem
+  // acima da linha", a mesma pergunta da contagem estatica do corte oficial.
+  const numFundosNoCorte = useMemo(() => {
+    if (isOficial(corte) || !pctPorCnpj || !fundosSemana?.length) return null
+    const vistos = new Set()
+    for (const r of fundosSemana) {
+      const p = pctPorCnpj.get(r.cnpj)
+      if (p != null && p > corte) vistos.add(r.cnpj)
+    }
+    return vistos.size
+  }, [fundosSemana, pctPorCnpj, corte])
 
   const gestores = useMemo(() => gestorOptions(rows), [rows])
   const bounds   = useMemo(() => periodBounds(rows), [rows])
@@ -55,6 +81,18 @@ export default function FluxoDashboard({ compact = false }) {
     // Ao ocultar fechados, a contagem estática (lista curada) incluiria os fechados;
     // usa a contagem computada da base já filtrada.
     if (hideFechados) return base
+    // Fora do corte oficial a contagem estatica (meta do pipeline) nao serve:
+    // ela so' conhece a curadoria e mostraria os 1.714 de sempre enquanto os
+    // valores ja' caíram, sugerindo que os fundos captaram menos -- quando na
+    // verdade sao MENOS fundos.
+    //
+    // Mas nao da' p/ usar a contagem da base filtrada tambem: ela conta fundos
+    // COM FLUXO NA JANELA, enquanto a estatica conta o TAMANHO DO UNIVERSO.
+    // Trocar de criterio junto com o corte faria o numero despencar de 1.714 p/
+    // ~1.575 so' por mudar a forma de contar, escondendo o efeito real do corte.
+    // Entao aqui conta-se universo tambem: CNPJs distintos da base por fundo que
+    // passam da regua -- mesma pergunta que a estatica responde, outro corte.
+    if (!isOficial(corte)) return { ...base, numFundos: numFundosNoCorte }
     const metaTipo = meta?.[tipo]
     const staticFundos = gestor
       ? metaTipo?.porGestor?.[gestor]
@@ -63,7 +101,7 @@ export default function FluxoDashboard({ compact = false }) {
       ...base,
       numFundos: staticFundos ?? base.numFundos,
     }
-  }, [filtered, meta, tipo, gestor, hideFechados])
+  }, [filtered, meta, tipo, gestor, hideFechados, corte, numFundosNoCorte])
   // Mensal: mesmo gestor/período da seção; agregação por mês (do diário), zero-fill.
   // Fim = último mês COM dado (dataMax, dentro do aggregate), não effEnd — este é a
   // semana-início da base semanal (ex.: 29/06), que escondia o mês corrente (julho)
