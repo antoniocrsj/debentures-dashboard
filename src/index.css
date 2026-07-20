@@ -1159,6 +1159,12 @@ a { color: var(--primary); }
 
 /* ─── Visão desktop: alarga o app e espalha melhor o conteúdo ── */
 .app.desktop { max-width: 1120px; }
+/* A Tecnico e' a unica aba com 4 graficos + tabela na mesma tela: no teto de
+   1120 cada celula ficava com 334px de largura util, o que empurrava o eixo do
+   grafico p/ 2 rotulos e apertava as barras. min() p/ nao encostar na borda em
+   tela menor. As demais abas ficam em 1120 de proposito -- la' o teto existe
+   p/ nao esticar linha de tabela alem do confortavel de ler. */
+.app.desktop.tecnico-wide { max-width: min(1440px, 100vw - 24px); }
 @media (min-width: 700px) {
   /* 1. Margens padronizadas com a aba Debêntures (24px lateral) */
   .app.desktop .fluxo { padding: 14px 24px 28px; }
@@ -1880,7 +1886,7 @@ a { color: var(--primary); }
 .tecnico-chart-label { font-size: 12.5px; font-weight: 600; color: var(--text-soft); margin: 0 0 6px; }
 
 @media (min-width: 700px) {
-  .app.desktop .tecnico-grid { display: grid; grid-template-columns: 1fr 380px; gap: 16px; align-items: start; margin-bottom: 14px; }
+  .app.desktop .tecnico-grid { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; align-items: start; margin-bottom: 14px; }
   .app.desktop .tecnico-charts-col { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
   /* Linha 1 (Captacao + Caixa) e linha 2 (Vencimentos R$ + %PL): 2 graficos
      lado a lado, mesma largura cada. */
@@ -1892,7 +1898,7 @@ a { color: var(--primary); }
      sozinhas continuam com a altura normal (350px/200px). */
   .app.desktop .tecnico-chart-cell .fluxo-chart,
   .app.desktop .tecnico-chart-cell .caixa-trend,
-  .app.desktop .tecnico-chart-cell .venc-chart { height: 200px; }
+  .app.desktop .tecnico-chart-cell .venc-chart { height: 230px; }
   .app.desktop .tecnico-gestor-table { position: sticky; top: 14px; }
   .app.desktop .tecnico-gestor-table .fluxo-ranking-head { margin-bottom: 8px; }
   .app.desktop .tecnico-gestor-table .table-wrap { max-height: none; height: 416px; margin: 0; }

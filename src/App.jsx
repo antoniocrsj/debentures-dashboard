@@ -312,8 +312,15 @@ export default function App() {
     </nav>
   )
 
+  // 'tecnico-wide': a aba Tecnico e' a unica que poe 4 graficos + tabela na
+  // mesma tela. No teto global de 1120px cada celula ficava com 334px -- larga
+  // demais p/ um card e estreita demais p/ um grafico com eixo. As demais abas
+  // seguem em 1120 de proposito: la' o teto existe p/ nao esticar linha de
+  // tabela alem do confortavel de ler.
+  const appCls = `app${desktop ? ' desktop' : ''}${desktop && tab === 'tecnico' ? ' tecnico-wide' : ''}`
+
   return (
-    <div className={`app${desktop ? ' desktop' : ''}`}>
+    <div className={appCls}>
 
       {/* Fixed header */}
       <Header
