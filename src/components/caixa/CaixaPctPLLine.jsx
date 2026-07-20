@@ -22,13 +22,13 @@ function niceStep(raw) {
 
 // r=26: o rotulo do ULTIMO mes e' centrado em x = W - PAD.r; com r=16 metade de
 // "jun/26" (~20px) vazava do viewBox e o mes aparecia cortado.
-const PAD_LARGO = { l: 52, r: 26, t: 14, b: 34 }
+const PAD_LARGO = { l: 52, r: 20, t: 14, b: 52 }   /* b maior: rotulo vertical ocupa altura */
 // Grafico ESTREITO (ex.: as celulas de ~300px do grid da aba Tecnico): o PAD
 // largo comia 26% da largura so' com rotulo de eixo, e o LBL_W de 46px fazia a
 // regua achar que so' cabiam 4 meses numa janela de 6 -- resultado: "mar/26
 // jun/26" e nenhuma ideia de QUANDO a curva se moveu. Aqui a folga encolhe e o
 // rotulo passa a ser medido pelo que ele realmente ocupa (~34px a 11px).
-const PAD_ESTREITO = { l: 28, r: 12, t: 8, b: 18 }   /* card compacto da Tecnica: cada px de folga sai da curva */
+const PAD_ESTREITO = { l: 28, r: 10, t: 8, b: 42 }   /* b maior: rotulo vertical ocupa altura */   /* card compacto da Tecnica: cada px de folga sai da curva */
 const W_ESTREITO = 460
 
 // Janelas de tempo do grafico (meses recentes; 'total' = serie inteira).
@@ -211,8 +211,14 @@ export default function CaixaPctPLLine({ historico, segmento, gestor, periodo: p
               <title>{`${fmtMes(p.mes)}: ${pct1(p.pct)}`}</title>
             </circle>
           ))}
+          {/* Rotulos de data na VERTICAL: na horizontal, "jan/26 fev/26..." se
+              encostava no rotulo do eixo Y e nos vizinhos. Girado -90 o rotulo
+              ocupa altura em vez de largura, entao cabem todos os meses sem
+              colidir. textAnchor=end + o pivo no proprio ponto mantem o texto
+              terminando na base do eixo. */}
           {pts.map((p, i) => showX.has(i) ? (
-            <text key={'x' + p.mes} x={x(i)} y={H - 12} className="caixa-line-xlabel" textAnchor="middle">{fmtMes(p.mes)}</text>
+            <text key={'x' + p.mes} x={x(i)} y={H - PAD.b + 6} className="caixa-line-xlabel"
+                  textAnchor="end" transform={`rotate(-90 ${x(i)} ${H - PAD.b + 6})`}>{fmtMes(p.mes)}</text>
           ) : null)}
         </svg>
       </div>

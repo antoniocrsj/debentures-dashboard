@@ -1980,3 +1980,21 @@ a { color: var(--primary); }
 /* uma borda por bloco: a tabela interna nao repete moldura */
 .app.desktop .tecnico .fluxo-ranking-block .table-wrap,
 .app.desktop .tecnico .fluxo-table-block .table-wrap { border: 0; background: transparent; }
+
+/* Datas na VERTICAL nos 3 graficos da Tecnica. No MonthBars os rotulos sao
+   HTML (nao SVG), entao a rotacao vem de writing-mode -- que reserva altura
+   automaticamente, sem precisar recalcular a caixa. */
+.app.desktop .tecnico .venc-lbl {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  line-height: 1;
+  height: 34px;
+  display: inline-flex;
+  align-items: flex-start;
+}
+.app.desktop .tecnico .venc-axis { align-items: flex-start; min-height: 36px; }
+
+/* O .venc-chart trazia moldura propria da aba Vencimentos; dentro do
+   .grafico-card ela virava uma SEGUNDA borda, desenhada por dentro da do card. */
+.grafico-card > .venc-chart { border: 0; background: transparent; box-shadow: none; }
+.grafico-card .venc-plot { border: 0; }

@@ -89,10 +89,10 @@ export default function FluxoChart({ weekly }) {
           <XAxis
             dataKey="weekKey"
             tickFormatter={fmtDayMonthYY}
-            interval="preserveStartEnd"
-            minTickGap={44}
+            minTickGap={20}
             tick={{ fontSize: 9 }}
             tickMargin={3}
+            interval="preserveStartEnd" 
             axisLine={false}
             tickLine={false}
           />
