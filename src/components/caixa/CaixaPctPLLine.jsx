@@ -45,7 +45,9 @@ const PERIODOS = [
 // e botoes proprios.
 export default function CaixaPctPLLine({ historico, segmento, gestor, periodo: periodoProp, nMeses }) {
   const [periodoState, setPeriodoState] = useState('total')
-  const controlled = periodoProp != null
+  // controlado tambem por nMeses: a Tecnica passa nMeses (nao periodo), e sem
+  // isto o grafico se achava standalone e reexibia titulo + seletor proprios.
+  const controlled = periodoProp != null || nMeses != null
   const periodo = controlled ? periodoProp : periodoState
   // Mede largura E altura do container: a altura do card vem do CSS (como o
   // .fluxo-chart da Captacao: 350px no desktop / 300px no compacto) e o SVG
