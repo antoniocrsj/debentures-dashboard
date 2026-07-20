@@ -1658,7 +1658,6 @@ a { color: var(--primary); }
 .venc.compact .venc-table-h { margin: 12px 2px 6px; }
 .venc-tk { font-weight: 700; color: var(--text); }
 .venc-tot { font-weight: 700; }
-.venc-est { font-size: 9px; color: var(--text-faint); margin-left: 4px; vertical-align: super; }
 .venc-inc {
   margin-left: 6px; font-size: 9.5px; font-weight: 700; padding: 1px 5px; border-radius: 6px;
   background: var(--pos-soft); color: var(--pos); border: 1px solid var(--pos-line);

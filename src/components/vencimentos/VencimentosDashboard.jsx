@@ -146,7 +146,7 @@ export default function VencimentosDashboard({ data, blc, plByGestor, compact })
       <thead>
         <tr>
           <SortTh label="Gestor" col="nome" sort={gestorSort} setSort={setGestorSort} />
-          <SortTh label={<>Juros<span className="venc-est">est.</span></>} col="juros" sort={gestorSort} setSort={setGestorSort} numeric />
+          <SortTh label="Juros" col="juros" sort={gestorSort} setSort={setGestorSort} numeric />
           <SortTh label="Amort." col="amort" sort={gestorSort} setSort={setGestorSort} numeric />
           <SortTh label={<>A vencer {mesLabelSel || '12m'}</>} col="total" sort={gestorSort} setSort={setGestorSort} numeric />
         </tr>
@@ -188,7 +188,7 @@ export default function VencimentosDashboard({ data, blc, plByGestor, compact })
           <tr>
             <SortTh label="Fundo" col="nome" sort={detSort} setSort={setDetSort} />
             {!gestorSel && <SortTh label="Gestor" col="gestor" sort={detSort} setSort={setDetSort} className="hide-compact" />}
-            <SortTh label={<>Juros<span className="venc-est">est.</span></>} col="juros" sort={detSort} setSort={setDetSort} numeric />
+            <SortTh label="Juros" col="juros" sort={detSort} setSort={setDetSort} numeric />
             <SortTh label="Amort." col="amort" sort={detSort} setSort={setDetSort} numeric />
             <SortTh label={<>A vencer {mesLabelSel || '12m'}</>} col="total" sort={detSort} setSort={setDetSort} numeric />
             <SortTh label="% PL" col="pctPL" sort={detSort} setSort={setDetSort} numeric />
@@ -215,7 +215,7 @@ export default function VencimentosDashboard({ data, blc, plByGestor, compact })
         <thead>
           <tr>
             <SortTh label="Grupo" col="nome" sort={detSort} setSort={setDetSort} />
-            <SortTh label={<>Juros<span className="venc-est">est.</span></>} col="juros" sort={detSort} setSort={setDetSort} numeric />
+            <SortTh label="Juros" col="juros" sort={detSort} setSort={setDetSort} numeric />
             <SortTh label="Amort." col="amort" sort={detSort} setSort={setDetSort} numeric />
             <SortTh label={<>A vencer {mesLabelSel || '12m'}</>} col="total" sort={detSort} setSort={setDetSort} numeric />
           </tr>
@@ -241,7 +241,7 @@ export default function VencimentosDashboard({ data, blc, plByGestor, compact })
             <SortTh label="Ativo" col="ticker" sort={detSort} setSort={setDetSort} />
             <SortTh label="Grupo" col="grupo" sort={detSort} setSort={setDetSort} className="hide-compact" />
             <SortTh label="Emissor" col="emissor" sort={detSort} setSort={setDetSort} />
-            <SortTh label={<>Juros<span className="venc-est">est.</span></>} col="juros" sort={detSort} setSort={setDetSort} numeric className="hide-compact" />
+            <SortTh label="Juros" col="juros" sort={detSort} setSort={setDetSort} numeric className="hide-compact" />
             <SortTh label="Amort." col="amort" sort={detSort} setSort={setDetSort} numeric className="hide-compact" />
             <SortTh label={<>A vencer {mesLabelSel || '12m'}</>} col="total" sort={detSort} setSort={setDetSort} numeric />
             <SortTh label="Próx." col="prox" sort={detSort} setSort={setDetSort} />

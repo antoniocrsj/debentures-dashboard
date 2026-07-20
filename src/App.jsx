@@ -414,7 +414,6 @@ export default function App() {
 
         {section === 'debentures' && tab !== 'debentures' && !loading && !error && raw && (
           <>
-            <BlcMaturitySelo maturidade={raw.blcMaturidade} />
             {tab === 'ativos' && (
               <>
                 <AssetTable
@@ -451,6 +450,7 @@ export default function App() {
                 desktop={desktop}
               />
             )}
+            <BlcMaturitySelo maturidade={raw.blcMaturidade} />
           </>
         )}
 
