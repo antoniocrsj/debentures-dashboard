@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-17T11:52:27.821Z",
+  "updatedAt": "2026-07-20T02:04:12.247Z",
   "fonte": "ANBIMA - Indice de Debentures (IDA) + familia IMA, arquivos historicos S3 (indices-historico)",
   "indices": [
     {
@@ -35,6 +35,20 @@
       "nome": "IDA-IPCA ex-Infraestrutura",
       "dias": 2893,
       "dataInicio": "2015-01-05",
+      "dataFim": "2026-07-16"
+    },
+    {
+      "codigo": "IDALIQDI",
+      "nome": "IDA-LIQ DI",
+      "dias": 2144,
+      "dataInicio": "2018-01-02",
+      "dataFim": "2026-07-16"
+    },
+    {
+      "codigo": "IDALIQIPCAINFRAESTRUTURA",
+      "nome": "IDA-LIQ IPCA Infraestrutura",
+      "dias": 2144,
+      "dataInicio": "2018-01-02",
       "dataFim": "2026-07-16"
     }
   ],

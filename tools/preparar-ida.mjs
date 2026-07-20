@@ -38,6 +38,12 @@ const INDICES = [
   { codigo: 'IDAIPCA',                 nome: 'IDA-IPCA' },
   { codigo: 'IDAIPCAINFRAESTRUTURA',   nome: 'IDA-IPCA Infraestrutura' },
   { codigo: 'IDAIPCAEXINFRAESTRUTURA', nome: 'IDA-IPCA ex-Infraestrutura' },
+  // Variantes "LIQ": mesma cesta, restrita as debentures com liquidez
+  // suficiente pro indice (ANBIMA publica as duas). Util como sinal de
+  // liquidez -- o gap entre a serie cheia e a LIQ tende a abrir quando o
+  // secundario fica estressado.
+  { codigo: 'IDALIQDI',                nome: 'IDA-LIQ DI' },
+  { codigo: 'IDALIQIPCAINFRAESTRUTURA', nome: 'IDA-LIQ IPCA Infraestrutura' },
 ]
 // Benchmarks govt livres de risco (baixados so' pro calculo do spread).
 const BENCH = [
