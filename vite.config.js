@@ -305,6 +305,12 @@ export default defineConfig({
       },
       workbox: {
         navigateFallback: '/index.html',
+        // cleanupOutdatedCaches: remove os precaches de deploys ANTIGOS. Sem ele,
+        // chunks velhos ficavam no cache e o index.html cacheado podia apontar p/
+        // um arquivo ja' removido -> tela BRANCA ate' limpar o cache na mao. Com o
+        // registerType 'autoUpdate' (skipWaiting/clientsClaim implicitos), o SW
+        // novo assume na hora e limpa o antigo.
+        cleanupOutdatedCaches: true,
         runtimeCaching: [{
           urlPattern: /^https:\/\/.*\/api\//,
           handler: 'NetworkFirst',
