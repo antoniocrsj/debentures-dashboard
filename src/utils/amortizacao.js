@@ -18,19 +18,20 @@ function hojeStr() {
 // assets: [{ codigoAtivo, volumeEmitido }]  (volumeEmitido = qtd em mercado x VNA)
 // cronoMap: Map(ticker -> [{ data:'yyyy-mm-dd', pct:number }])  (pct = fracao do principal, 0-100)
 // -> [{ ano:'2026', valor: R$, fontes: Set }]  ordenado por ano.
-export function amortPorAno(assets, cronoMap, { ateAno = null } = {}) {
+export function amortPorAno(assets, cronoMap, { ateAno = null, campo = 'volumeEmitido' } = {}) {
   if (!assets || !cronoMap) return []
   const hoje = hojeStr()
   const porAno = new Map()
   const fontesPorAno = new Map()
   for (const a of assets) {
     const evs = cronoMap.get(a.codigoAtivo)
-    if (!evs || !(a.volumeEmitido > 0)) continue
+    const vol = a[campo]
+    if (!evs || !(vol > 0)) continue
     const fut = evs.filter(e => e.data >= hoje)
     const somaFut = fut.reduce((s, e) => s + e.pct, 0)
     if (somaFut <= 0) continue
     for (const e of fut) {
-      const rs = a.volumeEmitido * (e.pct / somaFut)
+      const rs = vol * (e.pct / somaFut)
       let ano = e.data.slice(0, 4)
       if (ateAno && +ano > ateAno) ano = `${ateAno}+`
       porAno.set(ano, (porAno.get(ano) || 0) + rs)
@@ -46,14 +47,15 @@ export function amortPorAno(assets, cronoMap, { ateAno = null } = {}) {
 
 // Fracao do total que e' ESTIMADA (fonte 'linear') no conjunto -- p/ a UI avisar
 // quando parte relevante do grafico e' aproximacao, nao cronograma real.
-export function fracaoEstimada(assets, cronoMap) {
+export function fracaoEstimada(assets, cronoMap, campo = 'volumeEmitido') {
   if (!assets || !cronoMap) return 0
   let est = 0, tot = 0
   for (const a of assets) {
     const evs = cronoMap.get(a.codigoAtivo)
-    if (!evs || !(a.volumeEmitido > 0)) continue
-    tot += a.volumeEmitido
-    if (evs.some(e => e.fonte === 'linear')) est += a.volumeEmitido
+    const vol = a[campo]
+    if (!evs || !(vol > 0)) continue
+    tot += vol
+    if (evs.some(e => e.fonte === 'linear')) est += vol
   }
   return tot > 0 ? est / tot : 0
 }

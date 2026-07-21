@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts'
 import { amortPorAno, fracaoEstimada } from '../utils/amortizacao.js'
 
@@ -36,21 +36,30 @@ function AmortTooltip({ active, payload }) {
   )
 }
 
+const MODOS = [
+  { id: 'mercado', label: 'Mercado', campo: 'volumeEmitido' },
+  { id: 'carteira', label: 'Carteira', campo: 'alocacao' },
+]
+
 export default function AmortChart({ assets, cronoMap, loading }) {
+  // Mercado = volume em mercado (qtd x VNA); Carteira = posicao real (alocacao,
+  // ja' ajustada por gestor pelo App quando ha' filtro de gestora).
+  const [modo, setModo] = useState('mercado')
+  const campo = MODOS.find(m => m.id === modo)?.campo || 'volumeEmitido'
   const dados = useMemo(() => {
-    const base = amortPorAno(assets, cronoMap, { ateAno: ATE_ANO })
+    const base = amortPorAno(assets, cronoMap, { ateAno: ATE_ANO, campo })
     return base.map(d => ({
       ...d,
       anoCurto: d.ano.length > 4 ? d.ano : `'${d.ano.slice(2)}`,   // 2026 -> '26 ; "2035+" fica
       estimado: d.fontes.has('linear'),
     }))
-  }, [assets, cronoMap])
+  }, [assets, cronoMap, campo])
 
   const totalRotulo = useMemo(() => {
     const t = dados.reduce((s, d) => s + d.valor, 0)
-    return t > 0 ? fmtBRL(t) : null
+    return t > 0 ? 'R$ ' + fmtBi(t) : null
   }, [dados])
-  const pctEstim = useMemo(() => fracaoEstimada(assets, cronoMap), [assets, cronoMap])
+  const pctEstim = useMemo(() => fracaoEstimada(assets, cronoMap, campo), [assets, cronoMap, campo])
 
   return (
     <div className="grafico-card amort-card">
@@ -59,6 +68,13 @@ export default function AmortChart({ assets, cronoMap, loading }) {
         {totalRotulo && (
           <span className="grafico-kpi"><b>{totalRotulo}</b><em>a vencer</em></span>
         )}
+        <span className="segmented tecnico-unidade amort-modo" role="tablist" aria-label="Base do valor">
+          {MODOS.map(m => (
+            <button key={m.id} type="button" role="tab" aria-selected={modo === m.id}
+              className={`segmented-btn${modo === m.id ? ' active' : ''}`}
+              onClick={() => setModo(m.id)}>{m.label}</button>
+          ))}
+        </span>
       </p>
       {loading && !cronoMap
         ? <div className="caixa-line-empty">Carregando cronograma…</div>
