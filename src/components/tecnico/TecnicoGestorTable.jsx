@@ -23,6 +23,22 @@ export default function TecnicoGestorTable({ rows, activeGestor, onSelect, refDa
   const onSort = col => setSort(s => cycleSort(s, col, DEFAULT_SORT))
   const shown = showAll ? sorted : sorted.slice(0, LIMIT)
 
+  // Total sobre TODAS as gestoras do filtro (nao so' as 20 visiveis). PL, cap.
+  // liquida e venc. somam; % Caixa NAO -- somar percentual nao significa nada.
+  // Vai a media ponderada pelo PL: sum(pct*PL)/sum(PL), que e' o caixa total
+  // sobre o PL total = o nivel de caixa real do conjunto. Ponderada so' sobre
+  // quem TEM %Caixa (gestor sem dado de caixa nao dilui o denominador com 0).
+  const totais = useMemo(() => {
+    let pl = 0, liquido = 0, venc = 0, pctNum = 0, pctDen = 0
+    for (const g of rows || []) {
+      if (g.pl != null) pl += g.pl
+      liquido += g.liquido || 0
+      if (g.venc3m != null) venc += g.venc3m
+      if (g.pctCaixa != null && g.pl != null && g.pl > 0) { pctNum += g.pctCaixa * g.pl; pctDen += g.pl }
+    }
+    return { pl, liquido, venc, pctCaixa: pctDen > 0 ? pctNum / pctDen : null }
+  }, [rows])
+
   if (!rows || !rows.length) return null
 
   return (
@@ -58,6 +74,15 @@ export default function TecnicoGestorTable({ rows, activeGestor, onSelect, refDa
               )
             })}
           </tbody>
+          <tfoot>
+            <tr className="venc-foot-row tecnico-foot-row">
+              <td className="col-sticky col-gestor"><b>Total · {fmtInt(sorted.length)}</b></td>
+              <td className="col-num"><b>{fmtFluxo(totais.pl)}</b></td>
+              <td className={`col-num liq-cell${totais.liquido > 0 ? ' pos' : totais.liquido < 0 ? ' neg' : ''}`}><b>{fmtFluxoSigned(totais.liquido)}</b></td>
+              <td className="col-num" title="Média ponderada pelo PL (caixa total ÷ PL total)"><b>{fmtPct(totais.pctCaixa)}</b></td>
+              <td className="col-num"><b>{fmtFluxo(totais.venc)}</b></td>
+            </tr>
+          </tfoot>
         </table>
       </TableWrap>
       {!showAll && sorted.length > LIMIT

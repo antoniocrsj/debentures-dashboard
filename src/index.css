@@ -2047,3 +2047,14 @@ a { color: var(--primary); }
 .grafico-kpi b.pos { color: var(--c-verde); }
 .grafico-kpi b.neg { color: var(--c-vermelho); }
 .grafico-kpi em { font-size: var(--fz-graf-dado); font-style: normal; color: var(--text-faint); }
+
+/* Linha de TOTAL da tabela de gestoras (Tecnica): fixada no rodape do container
+   que rola, p/ ficar visivel mesmo com 148 linhas. Fundo branco opaco p/ nao
+   deixar as linhas passarem por tras ao rolar. */
+.app.desktop .tecnico-gestor-table tfoot .tecnico-foot-row td {
+  position: sticky; bottom: 0; z-index: 2;
+  background: var(--c-branco);
+  border-top: 1.5px solid var(--c-taupe);
+  font-variant-numeric: tabular-nums;
+}
+.app.desktop .tecnico-gestor-table tfoot .tecnico-foot-row .col-sticky { left: 0; z-index: 3; }
