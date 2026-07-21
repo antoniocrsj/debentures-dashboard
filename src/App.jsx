@@ -18,6 +18,8 @@ import ManagerRanking from './components/ManagerRanking.jsx'
 import GroupRanking from './components/GroupRanking.jsx'
 import MonthSelector from './components/MonthSelector.jsx'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
+import AmortChart from './components/AmortChart.jsx'
+import { useCronogramaAmort } from './hooks/useCronogramaAmort.js'
 import CorteSelector from './components/CorteSelector.jsx'
 import { usePctDeb } from './hooks/usePctDeb.js'
 import { CORTE_OFICIAL } from './utils/corte.js'
@@ -103,6 +105,9 @@ export default function App() {
     [lastDebTab]
   )
   const { data: agenda12m } = useAgenda12m()
+  // Cronograma de amortizacao (aba Debentures): carga sob demanda -- DEPOIS de
+  // `section` existir (usa-lo antes dava ReferenceError e derrubava o App).
+  const { cronoMap, loading: cronoLoading } = useCronogramaAmort(section === 'debentures')
 
   useEffect(() => {
     try { localStorage.setItem('view-desktop', desktop ? '1' : '0') } catch {}
@@ -526,6 +531,11 @@ export default function App() {
               anbimaRef={anbimaRef}
               desktop={desktop}
             />
+            {/* Grafico de vencimentos: reage a filteredAssets, entao acompanha
+                todos os filtros da pagina (grupo/gestor/ativo/setor/12.431/busca). */}
+            <ErrorBoundary label="o gráfico de vencimentos">
+              <AmortChart assets={filteredAssets} cronoMap={cronoMap} loading={cronoLoading} />
+            </ErrorBoundary>
             <div className="desktop-split">
               <div className="desktop-split-col">
                 <ManagerRanking

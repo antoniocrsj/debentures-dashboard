@@ -2058,3 +2058,15 @@ a { color: var(--primary); }
   font-variant-numeric: tabular-nums;
 }
 .app.desktop .tecnico-gestor-table tfoot .tecnico-foot-row .col-sticky { left: 0; z-index: 3; }
+
+/* Grafico de vencimentos da aba Debentures (AmortChart). Card com o mesmo visual
+   dos graficos da Tecnica (.grafico-card ja' da' borda/fundo), + a area de plot
+   e a nota de estimativa. Largura inteira, acima do split Gestor/Grupo. */
+.amort-card { margin-bottom: 12px; }
+.app.desktop .amort-card { padding: 10px 12px 8px; }
+.amort-plot { height: 190px; }
+.amort-nota {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 10.5px; color: var(--text-faint); margin: 6px 0 0;
+}
+.amort-nota .venc-key { width: 8px; height: 8px; border-radius: 2px; flex: none; }
