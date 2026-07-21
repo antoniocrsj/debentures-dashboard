@@ -2079,3 +2079,11 @@ a { color: var(--primary); }
   font-size: 10.5px; color: var(--text-faint); margin: 6px 0 0;
 }
 .amort-nota .venc-key { width: 8px; height: 8px; border-radius: 2px; flex: none; }
+
+/* Sem outline de foco no grafico de vencimentos: ao clicar numa barra p/
+   filtrar, o Chrome dava foco ao SVG do Recharts e desenhava um retangulo PRETO
+   em volta do plot. A selecao ja' e' indicada pelo desbote das outras barras. */
+.amort-card .recharts-wrapper:focus,
+.amort-card .recharts-wrapper :focus,
+.amort-card .recharts-surface,
+.amort-card svg:focus { outline: none; }
