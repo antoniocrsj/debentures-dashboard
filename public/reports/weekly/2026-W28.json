@@ -19,8 +19,8 @@
       "novas": [
         {
           "ticker": "ACCQ11",
-          "empresa": "CONC. ACCIONA AGUA LOTE 2 PR SPE S/A",
-          "grupo": "",
+          "empresa": "Concessionaria ACCIONA Agua - Lote 2 Parana - SPE S.A.",
+          "grupo": "Acciona",
           "dataRegistro": "2026-07-08",
           "indexador": "DI",
           "incentivada": false
@@ -28,7 +28,7 @@
         {
           "ticker": "ARSD11",
           "empresa": "ARENA SERRA DOURADA SA.",
-          "grupo": "",
+          "grupo": "Construcap",
           "dataRegistro": "2026-07-10",
           "indexador": "DI",
           "incentivada": false
@@ -52,7 +52,7 @@
         {
           "ticker": "VTIJ18",
           "empresa": "VALE DO TIJUCO ACUCAR E ALCOOL S/A",
-          "grupo": "",
+          "grupo": "CMAA",
           "dataRegistro": "2026-07-07",
           "indexador": "IPCA",
           "incentivada": true
@@ -64,33 +64,33 @@
         "captacao": 542940284.4800001,
         "resgate": 1758926267.5000002,
         "liquido": -1215985983.02,
-        "pl": 260066612470.67996,
+        "pl": 260066612470.66995,
         "numFundos": 1689,
         "dataPl": "2026-07-10",
         "de": "2026-07-06",
         "ate": "2026-07-10",
         "diasUteis": 5,
         "anterior": {
-          "liquido": -1431103141.3299987,
-          "captacao": 1592073333.45,
+          "liquido": -1431122889.4899986,
+          "captacao": 1592053585.2900002,
           "resgate": 3023176474.779999,
           "de": "2026-06-29",
           "ate": "2026-07-03"
         }
       },
       "trad": {
-        "captacao": 13650558412.710001,
-        "resgate": 14199322606.880005,
-        "liquido": -548764194.1700039,
-        "pl": 1579098545039.5105,
+        "captacao": 13647700097.35,
+        "resgate": 14199946258.190004,
+        "liquido": -552246160.840004,
+        "pl": 1579099259265.8804,
         "numFundos": 992,
         "dataPl": "2026-07-10",
         "de": "2026-07-06",
         "ate": "2026-07-10",
         "diasUteis": 5,
         "anterior": {
-          "liquido": -1384801082.2099934,
-          "captacao": 14836506677.09,
+          "liquido": -1388841416.2099934,
+          "captacao": 14832466343.09,
           "resgate": 16221307759.299994,
           "de": "2026-06-29",
           "ate": "2026-07-03"
@@ -154,7 +154,7 @@
           "captacao": 107460288.41,
           "resgate": 282596065.87,
           "liquido": -175135777.46,
-          "pl": 55867661829.52,
+          "pl": 55867661829.51,
           "dias": 5
         },
         {
@@ -227,9 +227,9 @@
       "topTradResgate": [
         {
           "gestor": "XPG",
-          "captacao": 183004568.23000002,
+          "captacao": 178964234.23000002,
           "resgate": 770041854.6100001,
-          "liquido": -587037286.3800001,
+          "liquido": -591077620.3800001,
           "pl": 22660053481.95,
           "dias": 5
         },
@@ -238,7 +238,7 @@
           "captacao": 3077045046.13,
           "resgate": 3510795663.9400005,
           "liquido": -433750617.8100004,
-          "pl": 452614694929.39,
+          "pl": 452614694878.53,
           "dias": 5
         },
         {
@@ -536,14 +536,14 @@
           "segmento": "12431"
         },
         {
-          "cnpj": "52248139000152",
-          "nome": "CAPITANIA INFRA RENDA 90 FUNDO…",
-          "gestor": "Capitânia",
-          "retorno": -1.0357,
+          "cnpj": "62360992000115",
+          "nome": "BB MASTER II DEBÊNTURES…",
+          "gestor": "BB Asset",
+          "retorno": -2.1007,
           "obs": 5,
           "de": "2026-07-06",
           "ate": "2026-07-10",
-          "pl": 523140983.97,
+          "pl": 344536392.7,
           "segmento": "12431"
         }
       ],
@@ -606,6 +606,17 @@
       ],
       "topTradNeg": [
         {
+          "cnpj": "57154741000144",
+          "nome": "QUANTITAS FIJI CRÉDITO PRIVADO",
+          "gestor": "Quantitas",
+          "retorno": -14.1906,
+          "obs": 5,
+          "de": "2026-07-06",
+          "ate": "2026-07-10",
+          "pl": 5300629.92,
+          "segmento": "trad"
+        },
+        {
           "cnpj": "26664935000166",
           "nome": "DEVANT AUDAX",
           "gestor": "Devant",
@@ -647,17 +658,6 @@
           "de": "2026-07-06",
           "ate": "2026-07-10",
           "pl": 12531119.96,
-          "segmento": "trad"
-        },
-        {
-          "cnpj": "57030535000122",
-          "nome": "G5 FEJUCA III",
-          "gestor": "G5",
-          "retorno": -1.5427,
-          "obs": 5,
-          "de": "2026-07-06",
-          "ate": "2026-07-10",
-          "pl": 88064741.65,
           "segmento": "trad"
         }
       ]
@@ -713,7 +713,7 @@
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional na semana: −R$ 549 mi (capt. R$ 13,7 bi − resg. R$ 14,2 bi, 5 dia(s) útil(eis)).",
+      "texto": "Captação líquida Tradicional na semana: −R$ 552 mi (capt. R$ 13,6 bi − resg. R$ 14,2 bi, 5 dia(s) útil(eis)).",
       "tom": "neg"
     },
     {

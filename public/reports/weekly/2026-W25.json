@@ -288,6 +288,17 @@
     "perf": {
       "top12431Pos": [
         {
+          "cnpj": "57075698000121",
+          "nome": "VINLAND FUNDO INCENTIVADO EM…",
+          "gestor": "Vinland",
+          "retorno": 9.2826,
+          "obs": 5,
+          "de": "2026-06-15",
+          "ate": "2026-06-19",
+          "pl": 6701889.28,
+          "segmento": "12431"
+        },
+        {
           "cnpj": "54341666000132",
           "nome": "V7 FUNDO INCENTIVADO DE…",
           "gestor": "BTG WM",
@@ -330,17 +341,6 @@
           "ate": "2026-06-19",
           "pl": 75102840.87,
           "segmento": "12431"
-        },
-        {
-          "cnpj": "62340543000105",
-          "nome": "JOMITESI INCENTIVADO DE…",
-          "gestor": "BRAM",
-          "retorno": 1.4091,
-          "obs": 5,
-          "de": "2026-06-15",
-          "ate": "2026-06-19",
-          "pl": 38875271.78,
-          "segmento": "12431"
         }
       ],
       "top12431Neg": [
@@ -359,7 +359,7 @@
           "cnpj": "63942021000146",
           "nome": "OCCAM BB INFRA LINEAR…",
           "gestor": "Occam",
-          "retorno": -5.0476,
+          "retorno": -5.0475,
           "obs": 5,
           "de": "2026-06-15",
           "ate": "2026-06-19",

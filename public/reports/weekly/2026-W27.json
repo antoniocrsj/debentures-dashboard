@@ -36,7 +36,7 @@
         {
           "ticker": "DUXC12",
           "empresa": "DUX COMPANY LTDA.",
-          "grupo": "",
+          "grupo": "Dux",
           "dataRegistro": "2026-06-29",
           "indexador": "DI",
           "incentivada": false
@@ -92,7 +92,7 @@
         {
           "ticker": "SRFC11",
           "empresa": "SERRA DO FACAO ENERGIA S.A.",
-          "grupo": "",
+          "grupo": "Axia",
           "dataRegistro": "2026-06-29",
           "indexador": "DI",
           "incentivada": false
@@ -117,9 +117,9 @@
     },
     "captacao": {
       "12431": {
-        "captacao": 1592073333.45,
+        "captacao": 1592053585.2900002,
         "resgate": 3023176474.779999,
-        "liquido": -1431103141.3299987,
+        "liquido": -1431122889.4899986,
         "pl": 261894108430.21,
         "numFundos": 1687,
         "dataPl": "2026-07-03",
@@ -135,10 +135,10 @@
         }
       },
       "trad": {
-        "captacao": 14836506677.09,
+        "captacao": 14832466343.09,
         "resgate": 16221307759.299994,
-        "liquido": -1384801082.2099934,
-        "pl": 1576610817433.2002,
+        "liquido": -1388841416.2099934,
+        "pl": 1576610795938.2603,
         "numFundos": 999,
         "dataPl": "2026-07-03",
         "de": "2026-06-29",
@@ -173,9 +173,9 @@
         },
         {
           "gestor": "San WM",
-          "captacao": 15547416.71,
+          "captacao": 15527668.55,
           "resgate": 4332631.9,
-          "liquido": 11214784.81,
+          "liquido": 11195036.65,
           "pl": 7516852329.42,
           "dias": 5
         },
@@ -283,10 +283,10 @@
       "topTradResgate": [
         {
           "gestor": "XPG",
-          "captacao": 183237367.21,
+          "captacao": 179197033.21,
           "resgate": 1181080795.07,
-          "liquido": -997843427.8599999,
-          "pl": 23018533438.5,
+          "liquido": -1001883761.8599999,
+          "pl": 23018511943.56,
           "dias": 5
         },
         {
@@ -360,10 +360,21 @@
     "perf": {
       "top12431Pos": [
         {
+          "cnpj": "63706652000166",
+          "nome": "VINLAND INC XP FUNDO…",
+          "gestor": "Vinland",
+          "retorno": 18.2523,
+          "obs": 5,
+          "de": "2026-06-29",
+          "ate": "2026-07-03",
+          "pl": 284957872.71,
+          "segmento": "12431"
+        },
+        {
           "cnpj": "60775750000167",
           "nome": "G5 ALLOCATION II FUNDO…",
           "gestor": "G5",
-          "retorno": 7.0278,
+          "retorno": 7.0277,
           "obs": 5,
           "de": "2026-06-29",
           "ate": "2026-07-03",
@@ -401,17 +412,6 @@
           "de": "2026-06-29",
           "ate": "2026-07-03",
           "pl": 1748278226.04,
-          "segmento": "12431"
-        },
-        {
-          "cnpj": "63386988000199",
-          "nome": "LEGACY CAPITAL ARKAN FUNDO…",
-          "gestor": "Legacy",
-          "retorno": 2.9923,
-          "obs": 5,
-          "de": "2026-06-29",
-          "ate": "2026-07-03",
-          "pl": 47162225.27,
           "segmento": "12431"
         }
       ],
@@ -474,6 +474,17 @@
       ],
       "topTradPos": [
         {
+          "cnpj": "57154741000144",
+          "nome": "QUANTITAS FIJI CRÉDITO PRIVADO",
+          "gestor": "Quantitas",
+          "retorno": 17.1686,
+          "obs": 5,
+          "de": "2026-06-29",
+          "ate": "2026-07-03",
+          "pl": 25410282.99,
+          "segmento": "trad"
+        },
+        {
           "cnpj": "14473842000175",
           "nome": "UBS ROKA CRÉDITO PRIVADO",
           "gestor": "UBS",
@@ -515,17 +526,6 @@
           "de": "2026-06-29",
           "ate": "2026-07-03",
           "pl": 7917548.57,
-          "segmento": "trad"
-        },
-        {
-          "cnpj": "26664935000166",
-          "nome": "DEVANT AUDAX",
-          "gestor": "Devant",
-          "retorno": 0.8746,
-          "obs": 5,
-          "de": "2026-06-29",
-          "ate": "2026-07-03",
-          "pl": 6785752.27,
           "segmento": "trad"
         }
       ],
@@ -621,7 +621,7 @@
       },
       {
         "tipo": "perf-cobertura",
-        "texto": "Performance Tradicional: 5 fundo(s) fora por cobertura < 60% e 0 por dado inválido."
+        "texto": "Performance Tradicional: 5 fundo(s) fora por cobertura < 60% e 1 por dado inválido."
       }
     ],
     "perfCobertura": {
@@ -638,9 +638,9 @@
         "diasUteis": 5,
         "excluidos": {
           "insuficiente": 5,
-          "glitch": 0
+          "glitch": 1
         },
-        "avaliados": 999,
+        "avaliados": 998,
         "minCobertura": 0.6
       }
     }

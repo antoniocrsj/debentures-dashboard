@@ -12,7 +12,7 @@
     "fundos": null,
     "blc": null,
     "ida": "2026-05-29",
-    "perf12431": "2026-05-31"
+    "perf12431": null
   },
   "sections": {
     "debentures": {
@@ -654,234 +654,10 @@
       "removidos": []
     },
     "perf": {
-      "top12431Pos": [
-        {
-          "cnpj": "60775750000167",
-          "nome": "G5 ALLOCATION II FUNDO…",
-          "gestor": "G5",
-          "retorno": 5.4187,
-          "obs": 6,
-          "de": "2026-05-22",
-          "ate": "2026-05-29",
-          "pl": 35823808.93,
-          "segmento": "12431"
-        },
-        {
-          "cnpj": "52342478000101",
-          "nome": "G5 CDM FUNDO INCENTIVADO DE…",
-          "gestor": "G5",
-          "retorno": 5.3094,
-          "obs": 6,
-          "de": "2026-05-22",
-          "ate": "2026-05-29",
-          "pl": 9342838.58,
-          "segmento": "12431"
-        },
-        {
-          "cnpj": "55539196000189",
-          "nome": "INCENTIVADO INVESTIMENTO EM…",
-          "gestor": "G5",
-          "retorno": 3.4935,
-          "obs": 6,
-          "de": "2026-05-22",
-          "ate": "2026-05-29",
-          "pl": 29211664.16,
-          "segmento": "12431"
-        },
-        {
-          "cnpj": "63942021000146",
-          "nome": "OCCAM BB INFRA LINEAR…",
-          "gestor": "Occam",
-          "retorno": 3.008,
-          "obs": 6,
-          "de": "2026-05-22",
-          "ate": "2026-05-29",
-          "pl": 98633569.33,
-          "segmento": "12431"
-        },
-        {
-          "cnpj": "56154549000195",
-          "nome": "INCENTIVADO INVESTIMENTO EM…",
-          "gestor": "G5",
-          "retorno": 2.5072,
-          "obs": 6,
-          "de": "2026-05-22",
-          "ate": "2026-05-29",
-          "pl": 12818416.94,
-          "segmento": "12431"
-        }
-      ],
-      "top12431Neg": [
-        {
-          "cnpj": "53075427000115",
-          "nome": "KINEA INCENTIVADO RF CP LP…",
-          "gestor": "Kinea",
-          "retorno": -16.0116,
-          "obs": 6,
-          "de": "2026-05-22",
-          "ate": "2026-05-29",
-          "pl": 20363272.32,
-          "segmento": "12431"
-        },
-        {
-          "cnpj": "63159716000156",
-          "nome": "SANTANDER PB MARÓSTICA…",
-          "gestor": "San WM",
-          "retorno": -4.1696,
-          "obs": 6,
-          "de": "2026-05-22",
-          "ate": "2026-05-29",
-          "pl": 20161718.76,
-          "segmento": "12431"
-        },
-        {
-          "cnpj": "63319624000196",
-          "nome": "A1 CRÉDITO INVESTIMENTO EM…",
-          "gestor": "Asset 1",
-          "retorno": -3.7089,
-          "obs": 6,
-          "de": "2026-05-22",
-          "ate": "2026-05-29",
-          "pl": 12260321.86,
-          "segmento": "12431"
-        },
-        {
-          "cnpj": "63572496000198",
-          "nome": "VINLAND DEBÊNTURE INCENTIVADO 3…",
-          "gestor": "Vinland",
-          "retorno": -2.654,
-          "obs": 6,
-          "de": "2026-05-22",
-          "ate": "2026-05-29",
-          "pl": 10184415.97,
-          "segmento": "12431"
-        },
-        {
-          "cnpj": "63386988000199",
-          "nome": "LEGACY CAPITAL ARKAN FUNDO…",
-          "gestor": "Legacy",
-          "retorno": -2.1788,
-          "obs": 6,
-          "de": "2026-05-22",
-          "ate": "2026-05-29",
-          "pl": 543256188.59,
-          "segmento": "12431"
-        }
-      ],
-      "topTradPos": [
-        {
-          "cnpj": "17913386000125",
-          "nome": "GIDU INVEST NO EXTERIOR CRÉD…",
-          "gestor": "BTG WM",
-          "retorno": 2.4931,
-          "obs": 6,
-          "de": "2026-05-22",
-          "ate": "2026-05-29",
-          "pl": 26041789.28,
-          "segmento": "trad"
-        },
-        {
-          "cnpj": "51977823000102",
-          "nome": "CATTUS",
-          "gestor": "Starboard",
-          "retorno": 2.3073,
-          "obs": 6,
-          "de": "2026-05-22",
-          "ate": "2026-05-29",
-          "pl": 37312916.09,
-          "segmento": "trad"
-        },
-        {
-          "cnpj": "45683322000110",
-          "nome": "JGP ECOSSISTEMA CRÉDITO PRIVADO",
-          "gestor": "JGP",
-          "retorno": 2.1116,
-          "obs": 6,
-          "de": "2026-05-22",
-          "ate": "2026-05-29",
-          "pl": 349015513.83,
-          "segmento": "trad"
-        },
-        {
-          "cnpj": "19770499000144",
-          "nome": "EXPLORITAS ALPHA AMERICA LATINA…",
-          "gestor": "Exploritas",
-          "retorno": 2.0223,
-          "obs": 5,
-          "de": "2026-05-22",
-          "ate": "2026-05-29",
-          "pl": 22132598.77,
-          "segmento": "trad"
-        },
-        {
-          "cnpj": "57555092000193",
-          "nome": "BTG PACTUAL BRASLIGHT EOS",
-          "gestor": "BTG Asset",
-          "retorno": 1.9871,
-          "obs": 6,
-          "de": "2026-05-22",
-          "ate": "2026-05-29",
-          "pl": 68574623.38,
-          "segmento": "trad"
-        }
-      ],
-      "topTradNeg": [
-        {
-          "cnpj": "57154741000144",
-          "nome": "QUANTITAS FIJI CRÉDITO PRIVADO",
-          "gestor": "Quantitas",
-          "retorno": -14.0162,
-          "obs": 6,
-          "de": "2026-05-22",
-          "ate": "2026-05-29",
-          "pl": 4794150.71,
-          "segmento": "trad"
-        },
-        {
-          "cnpj": "43597393000175",
-          "nome": "VERDE AM CARRY MASTER CRÉDITO…",
-          "gestor": "Verde",
-          "retorno": -1.6057,
-          "obs": 6,
-          "de": "2026-05-22",
-          "ate": "2026-05-29",
-          "pl": 211803621.59,
-          "segmento": "trad"
-        },
-        {
-          "cnpj": "64436974000103",
-          "nome": "BB MASTER III DEBÊNTURES…",
-          "gestor": "BB Asset",
-          "retorno": -1.1095,
-          "obs": 6,
-          "de": "2026-05-22",
-          "ate": "2026-05-29",
-          "pl": 1063335057.75,
-          "segmento": "trad"
-        },
-        {
-          "cnpj": "51168708000197",
-          "nome": "LT",
-          "gestor": "BTG Asset",
-          "retorno": -0.8629,
-          "obs": 5,
-          "de": "2026-05-22",
-          "ate": "2026-05-29",
-          "pl": 1184716686.49,
-          "segmento": "trad"
-        },
-        {
-          "cnpj": "12059831000118",
-          "nome": "DHF M",
-          "gestor": "Dynamo",
-          "retorno": -0.8322,
-          "obs": 6,
-          "de": "2026-05-22",
-          "ate": "2026-05-29",
-          "pl": 197323923.07,
-          "segmento": "trad"
-        }
-      ]
+      "top12431Pos": [],
+      "top12431Neg": [],
+      "topTradPos": [],
+      "topTradNeg": []
     },
     "inclusoes": {
       "novosDebentures": [
@@ -947,33 +723,25 @@
       {
         "tipo": "fundos-sem-fronteira",
         "texto": "Sem snapshot de fundos na fronteira — inclusões/exclusões indisponíveis neste período."
-      },
-      {
-        "tipo": "perf-cobertura",
-        "texto": "Performance 12.431: 16 fundo(s) fora por cobertura < 60% e 2 por dado inválido."
-      },
-      {
-        "tipo": "perf-cobertura",
-        "texto": "Performance Tradicional: 2 fundo(s) fora por cobertura < 60% e 3 por dado inválido."
       }
     ],
     "perfCobertura": {
       "12431": {
-        "diasUteis": 6,
+        "diasUteis": 0,
         "excluidos": {
-          "insuficiente": 16,
-          "glitch": 2
+          "insuficiente": 0,
+          "glitch": 0
         },
-        "avaliados": 1688,
+        "avaliados": 0,
         "minCobertura": 0.6
       },
       "trad": {
-        "diasUteis": 6,
+        "diasUteis": 0,
         "excluidos": {
-          "insuficiente": 2,
-          "glitch": 3
+          "insuficiente": 0,
+          "glitch": 0
         },
-        "avaliados": 991,
+        "avaliados": 0,
         "minCobertura": 0.6
       }
     }

@@ -473,6 +473,17 @@
       ],
       "top12431Neg": [
         {
+          "cnpj": "63706652000166",
+          "nome": "VINLAND INC XP FUNDO…",
+          "gestor": "Vinland",
+          "retorno": -14.9986,
+          "obs": 5,
+          "de": "2026-06-22",
+          "ate": "2026-06-26",
+          "pl": 35947918.58,
+          "segmento": "12431"
+        },
+        {
           "cnpj": "52879059000103",
           "nome": "BOCAINA INFRA MASTER IV FUNDO…",
           "gestor": "Bocaina",
@@ -514,17 +525,6 @@
           "de": "2026-06-22",
           "ate": "2026-06-26",
           "pl": 115963647.41,
-          "segmento": "12431"
-        },
-        {
-          "cnpj": "54341666000132",
-          "nome": "V7 FUNDO INCENTIVADO DE…",
-          "gestor": "BTG WM",
-          "retorno": -0.801,
-          "obs": 5,
-          "de": "2026-06-22",
-          "ate": "2026-06-26",
-          "pl": 124657244.58,
           "segmento": "12431"
         }
       ],

@@ -92,7 +92,7 @@
         {
           "ticker": "DUXC12",
           "empresa": "DUX COMPANY LTDA.",
-          "grupo": "",
+          "grupo": "Dux",
           "dataRegistro": "2026-06-29",
           "indexador": "DI",
           "incentivada": false
@@ -291,8 +291,8 @@
         },
         {
           "ticker": "IVIS11",
-          "empresa": "IVI ENERGIA SH III S.A",
-          "grupo": "IVI Energia SH III",
+          "empresa": "IVI Energia SH III S.A.",
+          "grupo": "Brookfield - Geracao Distribuida",
           "dataRegistro": "2026-06-11",
           "indexador": "IPCA",
           "incentivada": true
@@ -444,7 +444,7 @@
         {
           "ticker": "SRFC11",
           "empresa": "SERRA DO FACAO ENERGIA S.A.",
-          "grupo": "",
+          "grupo": "Axia",
           "dataRegistro": "2026-06-29",
           "indexador": "DI",
           "incentivada": false
@@ -485,10 +485,10 @@
     },
     "captacao": {
       "12431": {
-        "captacao": 7681319884.310002,
+        "captacao": 7681300136.1500025,
         "resgate": 17404873540.250015,
-        "liquido": -9723553655.940014,
-        "pl": 260985926665.39,
+        "liquido": -9723573404.100014,
+        "pl": 260985950361.33002,
         "numFundos": 1691,
         "dataPl": "2026-06-30",
         "de": "2026-06-01",
@@ -715,8 +715,8 @@
         "dataIni": "2026-05-29",
         "dataFim": "2026-06-30",
         "spreadIniBps": 100,
-        "spreadFimBps": 99,
-        "variacaoBps": -1,
+        "spreadFimBps": 100,
+        "variacaoBps": 0,
         "spreadConfiavel": true
       }
     },
@@ -731,9 +731,9 @@
           "cnpj": "53075427000115",
           "nome": "KINEA INCENTIVADO RF CP LP…",
           "gestor": "Kinea",
-          "retorno": 22.4153,
-          "obs": 21,
-          "de": "2026-06-01",
+          "retorno": 22.3439,
+          "obs": 20,
+          "de": "2026-06-02",
           "ate": "2026-06-30",
           "pl": 279113949.24,
           "segmento": "12431"
@@ -742,66 +742,55 @@
           "cnpj": "62360992000115",
           "nome": "BB MASTER II DEBÊNTURES…",
           "gestor": "BB Asset",
-          "retorno": 11.8706,
-          "obs": 21,
-          "de": "2026-06-01",
+          "retorno": 11.8407,
+          "obs": 20,
+          "de": "2026-06-02",
           "ate": "2026-06-30",
           "pl": 1747749752.98,
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "60276080000134",
+          "nome": "DAYCOVAL INCENTIVADO DE…",
+          "gestor": "Daycoval",
+          "retorno": 10.0866,
+          "obs": 20,
+          "de": "2026-06-02",
+          "ate": "2026-06-30",
+          "pl": 88610374.27,
           "segmento": "12431"
         },
         {
           "cnpj": "64089192000137",
           "nome": "TOP DEBÊNTURES 2025 INCENTIVADO…",
           "gestor": "IAM",
-          "retorno": 8.4012,
-          "obs": 21,
-          "de": "2026-06-01",
+          "retorno": 8.349,
+          "obs": 20,
+          "de": "2026-06-02",
           "ate": "2026-06-30",
           "pl": 11362196.83,
           "segmento": "12431"
         },
         {
-          "cnpj": "63942021000146",
-          "nome": "OCCAM BB INFRA LINEAR…",
-          "gestor": "Occam",
-          "retorno": 6.4986,
-          "obs": 21,
-          "de": "2026-06-01",
+          "cnpj": "59123735000155",
+          "nome": "PORTO PAINEIRA CDI FUNDO…",
+          "gestor": "Porto Asset",
+          "retorno": 4.1962,
+          "obs": 20,
+          "de": "2026-06-02",
           "ate": "2026-06-30",
-          "pl": 115955585.35,
-          "segmento": "12431"
-        },
-        {
-          "cnpj": "58580968000114",
-          "nome": "ACE CAPITAL INFRA FUNDO…",
-          "gestor": "Ace",
-          "retorno": 2.8618,
-          "obs": 21,
-          "de": "2026-06-01",
-          "ate": "2026-06-30",
-          "pl": 22989929.47,
+          "pl": 22989516.09,
           "segmento": "12431"
         }
       ],
       "top12431Neg": [
         {
-          "cnpj": "43122017000124",
-          "nome": "AMG1 KINEA FUNDO INCENTIVADO EM…",
-          "gestor": "Kinea",
-          "retorno": -20.4674,
-          "obs": 21,
-          "de": "2026-06-01",
-          "ate": "2026-06-30",
-          "pl": 73039270.66,
-          "segmento": "12431"
-        },
-        {
           "cnpj": "57279886000171",
           "nome": "UBS EVOLUTION FASSIS EM…",
           "gestor": "UBS",
-          "retorno": -15.8714,
-          "obs": 21,
-          "de": "2026-06-01",
+          "retorno": -15.9314,
+          "obs": 20,
+          "de": "2026-06-02",
           "ate": "2026-06-30",
           "pl": 23939357.28,
           "segmento": "12431"
@@ -810,20 +799,31 @@
           "cnpj": "60936335000148",
           "nome": "TITANIUM FUNDO INCENTIVADO EM…",
           "gestor": "IAM",
-          "retorno": -9.1981,
-          "obs": 21,
-          "de": "2026-06-01",
+          "retorno": -9.271,
+          "obs": 20,
+          "de": "2026-06-02",
           "ate": "2026-06-30",
           "pl": 2122106.1,
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "63942021000146",
+          "nome": "OCCAM BB INFRA LINEAR…",
+          "gestor": "Occam",
+          "retorno": -6.3311,
+          "obs": 20,
+          "de": "2026-06-02",
+          "ate": "2026-06-30",
+          "pl": 115955585.35,
           "segmento": "12431"
         },
         {
           "cnpj": "45019458000120",
           "nome": "RBR INFRA MASTER I FUNDO…",
           "gestor": "RBR",
-          "retorno": -5.9528,
-          "obs": 21,
-          "de": "2026-06-01",
+          "retorno": -5.738,
+          "obs": 20,
+          "de": "2026-06-02",
           "ate": "2026-06-30",
           "pl": 69605703.85,
           "segmento": "12431"
@@ -832,9 +832,9 @@
           "cnpj": "53906981000105",
           "nome": "PSO 3 FUNDO INCENTIVADO DE…",
           "gestor": "BTG WM",
-          "retorno": -5.2915,
-          "obs": 21,
-          "de": "2026-06-01",
+          "retorno": -5.1824,
+          "obs": 20,
+          "de": "2026-06-02",
           "ate": "2026-06-30",
           "pl": 30502630.96,
           "segmento": "12431"
@@ -842,23 +842,23 @@
       ],
       "topTradPos": [
         {
-          "cnpj": "64436974000103",
-          "nome": "BB MASTER III DEBÊNTURES…",
-          "gestor": "BB Asset",
-          "retorno": 6.8973,
-          "obs": 21,
-          "de": "2026-06-01",
+          "cnpj": "57154741000144",
+          "nome": "QUANTITAS FIJI CRÉDITO PRIVADO",
+          "gestor": "Quantitas",
+          "retorno": 18.1531,
+          "obs": 20,
+          "de": "2026-06-02",
           "ate": "2026-06-30",
-          "pl": 207190769.84,
+          "pl": 25378502.94,
           "segmento": "trad"
         },
         {
           "cnpj": "51977823000102",
           "nome": "CATTUS",
           "gestor": "Starboard",
-          "retorno": 3.7625,
-          "obs": 21,
-          "de": "2026-06-01",
+          "retorno": 6.0296,
+          "obs": 20,
+          "de": "2026-06-02",
           "ate": "2026-06-30",
           "pl": 38716892.9,
           "segmento": "trad"
@@ -867,22 +867,22 @@
           "cnpj": "57555092000193",
           "nome": "BTG PACTUAL BRASLIGHT EOS",
           "gestor": "BTG Asset",
-          "retorno": 3.4316,
-          "obs": 21,
-          "de": "2026-06-01",
+          "retorno": 5.7115,
+          "obs": 20,
+          "de": "2026-06-02",
           "ate": "2026-06-30",
           "pl": 70927848.98,
           "segmento": "trad"
         },
         {
-          "cnpj": "26498249000162",
-          "nome": "CAPITÂNIA PREVIDENCE ADVISORY…",
-          "gestor": "Capitânia",
-          "retorno": 2.5075,
-          "obs": 21,
-          "de": "2026-06-01",
+          "cnpj": "64436974000103",
+          "nome": "BB MASTER III DEBÊNTURES…",
+          "gestor": "BB Asset",
+          "retorno": 4.2257,
+          "obs": 20,
+          "de": "2026-06-02",
           "ate": "2026-06-30",
-          "pl": 59127352.1,
+          "pl": 207190769.84,
           "segmento": "trad"
         },
         {
@@ -890,8 +890,8 @@
           "nome": "UBS ROKA CRÉDITO PRIVADO",
           "gestor": "UBS",
           "retorno": 2.4634,
-          "obs": 21,
-          "de": "2026-06-01",
+          "obs": 20,
+          "de": "2026-06-02",
           "ate": "2026-06-30",
           "pl": 47219083.37,
           "segmento": "trad"
@@ -902,9 +902,9 @@
           "cnpj": "29106510000120",
           "nome": "CSHG FASSIS CRÉDITO PRIVADO…",
           "gestor": "UBS",
-          "retorno": -19.0341,
-          "obs": 21,
-          "de": "2026-06-01",
+          "retorno": -18.9046,
+          "obs": 20,
+          "de": "2026-06-02",
           "ate": "2026-06-30",
           "pl": 21799183.77,
           "segmento": "trad"
@@ -913,9 +913,9 @@
           "cnpj": "19770499000144",
           "nome": "EXPLORITAS ALPHA AMERICA LATINA…",
           "gestor": "Exploritas",
-          "retorno": -18.6937,
-          "obs": 21,
-          "de": "2026-06-01",
+          "retorno": -16.768,
+          "obs": 20,
+          "de": "2026-06-02",
           "ate": "2026-06-30",
           "pl": 16982166.83,
           "segmento": "trad"
@@ -924,9 +924,9 @@
           "cnpj": "11952676000100",
           "nome": "DOREL",
           "gestor": "BTG WM",
-          "retorno": -10.6749,
-          "obs": 21,
-          "de": "2026-06-01",
+          "retorno": -10.5753,
+          "obs": 20,
+          "de": "2026-06-02",
           "ate": "2026-06-30",
           "pl": 213120593.33,
           "segmento": "trad"
@@ -935,9 +935,9 @@
           "cnpj": "30568485000185",
           "nome": "AUGME INSTITUCIONAL DE…",
           "gestor": "Augme",
-          "retorno": -9.1708,
-          "obs": 21,
-          "de": "2026-06-01",
+          "retorno": -9.2606,
+          "obs": 20,
+          "de": "2026-06-02",
           "ate": "2026-06-30",
           "pl": 18814587.97,
           "segmento": "trad"
@@ -946,9 +946,9 @@
           "cnpj": "53726108000122",
           "nome": "CL VI",
           "gestor": "Springs",
-          "retorno": -7.028,
-          "obs": 21,
-          "de": "2026-06-01",
+          "retorno": -6.4842,
+          "obs": 20,
+          "de": "2026-06-02",
           "ate": "2026-06-30",
           "pl": 17228415.8,
           "segmento": "trad"
@@ -1031,7 +1031,7 @@
       },
       {
         "tipo": "perf-cobertura",
-        "texto": "Performance 12.431: 22 fundo(s) fora por cobertura < 60% e 5 por dado inválido."
+        "texto": "Performance 12.431: 20 fundo(s) fora por cobertura < 60% e 4 por dado inválido."
       },
       {
         "tipo": "perf-cobertura",
@@ -1040,16 +1040,16 @@
     ],
     "perfCobertura": {
       "12431": {
-        "diasUteis": 21,
+        "diasUteis": 20,
         "excluidos": {
-          "insuficiente": 22,
-          "glitch": 5
+          "insuficiente": 20,
+          "glitch": 4
         },
-        "avaliados": 1687,
+        "avaliados": 1688,
         "minCobertura": 0.6
       },
       "trad": {
-        "diasUteis": 21,
+        "diasUteis": 20,
         "excluidos": {
           "insuficiente": 9,
           "glitch": 3
@@ -1072,7 +1072,7 @@
       "texto": "IDA-IPCA Infraestrutura rendeu -0,06% no mês."
     },
     {
-      "texto": "IDA-DI rendeu +1,23% no mês, spread fechou 1 bps."
+      "texto": "IDA-DI rendeu +1,23% no mês, spread abriu 0 bps."
     },
     {
       "texto": "58 nova(s) debênture(s) registrada(s) no mês."

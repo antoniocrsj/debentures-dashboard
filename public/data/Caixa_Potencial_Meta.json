@@ -1,5 +1,5 @@
 {
-    "updatedAt":  "2026-07-16T14:24:20",
+    "updatedAt":  "2026-07-20T19:16:37",
     "definicao":  "Caixa Potencial Direto = Disponibilidades + Titulos Publicos + Operacoes Compromissadas (por TP_APLIC, todos os blocos). Nao inclui titulos bancarios/CDB/LCI/LCA/LF/DPGE, credito privado/debentures, valores a receber nem cotas comuns.",
     "mesesRecentes":  [
                           "202606",
@@ -28,59 +28,61 @@
                    "Consolidado conta o ativo final 1x: universo curado sem feeders; caixa indireto so via fundo-caixa FORA do universo (evita dupla contagem com a linha do proprio fundo-caixa)."
                ],
     "totais":  {
-                   "comCotasNaoIdentificadas":  881,
-                   "candidatos":  8,
-                   "caixaConsolidadoDataBase":  351893934782.45,
-                   "caixaEstimadoAtualConsolidado":  351494147139.48,
-                   "fundosNaTabela":  2622,
-                   "fundosCaixaConfirmados":  89,
+                   "comCotasNaoIdentificadas":  970,
+                   "candidatos":  10,
+                   "caixaConsolidadoDataBase":  648599694563.61,
+                   "caixaEstimadoAtualConsolidado":  652097810825.02,
+                   "fundosNaTabela":  2853,
+                   "fundosCaixaConfirmados":  107,
                    "dadosInsuficientes":  4,
-                   "excluidosDoConsolidado":  110
+                   "excluidosDoConsolidado":  129
                },
     "comparacaoMeses":  [
                             {
                                 "Mes":  "202603",
-                                "Disp":  729489230.36999953,
-                                "TitPub":  165897541398.79993,
-                                "Compr":  178280222679.70029,
-                                "CaixaDireto":  344907253308.87024,
-                                "FundosCaixaConfirmados":  15,
-                                "Candidatos":  26
+                                "Disp":  757977797.68,
+                                "TitPub":  296317421227.45966,
+                                "Compr":  336139987800.31018,
+                                "CaixaDireto":  633215386825.44983,
+                                "FundosCaixaConfirmados":  8,
+                                "Candidatos":  54
                             },
                             {
                                 "Mes":  "202604",
-                                "Disp":  195721564.24000016,
-                                "TitPub":  166133923669.45981,
-                                "Compr":  167962715571.9198,
-                                "CaixaDireto":  334292360805.61963,
-                                "FundosCaixaConfirmados":  10,
-                                "Candidatos":  26
+                                "Disp":  236386216.98000017,
+                                "TitPub":  299105857229.36987,
+                                "Compr":  323871423949.54028,
+                                "CaixaDireto":  623213667395.89014,
+                                "FundosCaixaConfirmados":  16,
+                                "Candidatos":  44
                             },
                             {
                                 "Mes":  "202605",
-                                "Disp":  164851949.99999994,
-                                "TitPub":  166873916273.82993,
-                                "Compr":  169696503669.83002,
-                                "CaixaDireto":  336735271893.65991,
-                                "FundosCaixaConfirmados":  8,
-                                "Candidatos":  22
+                                "Disp":  229278695.97000006,
+                                "TitPub":  311513834433.54962,
+                                "Compr":  309135867753.58942,
+                                "CaixaDireto":  620878980883.109,
+                                "FundosCaixaConfirmados":  14,
+                                "Candidatos":  40
                             },
                             {
                                 "Mes":  "202606",
-                                "Disp":  202088597.45999986,
-                                "TitPub":  165496847836.56976,
-                                "Compr":  173246737239.65936,
-                                "CaixaDireto":  338945673673.68909,
-                                "FundosCaixaConfirmados":  12,
-                                "Candidatos":  23
+                                "Disp":  233872968.27999964,
+                                "TitPub":  322309760903.57983,
+                                "Compr":  311172330498.97974,
+                                "CaixaDireto":  633715964370.8396,
+                                "FundosCaixaConfirmados":  16,
+                                "Candidatos":  42
                             }
                         ],
     "discrepancia_839_835":  {
                                  "fundosSemSerieDiaria":  [
                                                               "10643489000173",
+                                                              "53823295000162",
                                                               "20889217000101",
-                                                              "65793919000125",
-                                                              "58238959000140"
+                                                              "58238959000140",
+                                                              "65189035000166",
+                                                              "36499357000103"
                                                           ],
                                  "descricao":  "Fundos_CDI.csv tem 839 fundos; Fluxo_Atualizacao.json (trad) processou 835 no Informe Diario. Gap = 4 fundos sem serie diaria."
                              },

@@ -97,35 +97,35 @@
         "captacao": 155784111.48000008,
         "resgate": 296541656.19,
         "liquido": -140757544.70999992,
-        "pl": 261756260728.7199,
-        "numFundos": 1688,
+        "pl": 261766681533.7799,
+        "numFundos": 1689,
         "curados": 1720,
-        "fechados": 289,
+        "fechados": 288,
         "anterior": {
           "dia": "2026-07-13",
           "captacao": 167005989.29000005,
-          "resgate": 650231166.1399997,
-          "liquido": -483225176.84999967,
-          "pl": 261138878385.13995,
+          "resgate": 648756366.1399997,
+          "liquido": -481750376.84999967,
+          "pl": 261138202576.17996,
           "numFundos": 1684
         }
       },
       "trad": {
         "dia": "2026-07-14",
-        "captacao": 2787216339.1299996,
+        "captacao": 2787245377.93,
         "resgate": 2180053594.8,
-        "liquido": 607162744.3299994,
-        "pl": 1583844232080.67,
-        "numFundos": 999,
+        "liquido": 607191783.1299996,
+        "pl": 1583968106542.39,
+        "numFundos": 1002,
         "curados": 1014,
-        "fechados": 51,
+        "fechados": 50,
         "anterior": {
           "dia": "2026-07-13",
           "captacao": 2969525594.7,
           "resgate": 2560265014.4699993,
           "liquido": 409260580.2300005,
-          "pl": 1580335022111.6309,
-          "numFundos": 999
+          "pl": 1580372528733.9407,
+          "numFundos": 1001
         }
       }
     },
@@ -396,7 +396,7 @@
               "indexador": "IPCA + 6.0444%",
               "indexadorFamilia": "IPCA+",
               "emissor": "HIDROVIAS DO BRASIL S.A.",
-              "grupo": "Hidrovias do Brasil",
+              "grupo": "Ultrapar",
               "incentivada": true,
               "base": "B30",
               "tipo": "ipca",
@@ -1361,7 +1361,7 @@
               "ticker": "JSMLB5",
               "indexador": "IPCA + 7.9677%",
               "indexadorFamilia": "IPCA+",
-              "emissor": "SIMPAR S.A.",
+              "emissor": "JSL S.A",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "B30",
@@ -2764,14 +2764,6 @@
     "perf": {
       "top12431Pos": [
         {
-          "cnpj": "63706652000166",
-          "nome": "VINLAND INC XP FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA FIF RF CRED PRIV RESP LIMITADA",
-          "gestor": "Vinland",
-          "segmento": "12431",
-          "retorno": 17.0686,
-          "pl": 283851824.03
-        },
-        {
           "cnpj": "59123735000155",
           "nome": "PORTO PAINEIRA CDI FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA RF CRÉD PRIV RESP LIMITADA",
           "gestor": "Porto Asset",
@@ -2802,17 +2794,17 @@
           "segmento": "12431",
           "retorno": 0.655,
           "pl": 82840762.61
+        },
+        {
+          "cnpj": "42378579000170",
+          "nome": "ITAÚ ACTION DEBÊNTURES INCENTIVADAS FIF INCENTIVADO INFRA RF CRED PRIV LP - RESP LIMITADA",
+          "gestor": "IAM",
+          "segmento": "12431",
+          "retorno": 0.621,
+          "pl": 733893043.35
         }
       ],
       "top12431Neg": [
-        {
-          "cnpj": "61141536000111",
-          "nome": "BB MASTER RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
-          "gestor": "BB Asset",
-          "segmento": "12431",
-          "retorno": -25.7952,
-          "pl": 571158238.25
-        },
         {
           "cnpj": "53075427000115",
           "nome": "KINEA INCENTIVADO RF CP LP FI FINANCEIRO FUNDO INCENT EM INV EM DEBÊN DE INFRAESTRUTURA - RESP LTDA",
@@ -2844,17 +2836,17 @@
           "segmento": "12431",
           "retorno": -1.1835,
           "pl": 1085921847.19
+        },
+        {
+          "cnpj": "64089192000137",
+          "nome": "TOP DEBÊNTURES 2025 FI INCENTIVADO EM DEBÊNTURES DE INFRA FIF RENDA FIXA CRED PRIV RESP LIMITADA",
+          "gestor": "IAM",
+          "segmento": "12431",
+          "retorno": -0.4794,
+          "pl": 11424221.25
         }
       ],
       "topTradPos": [
-        {
-          "cnpj": "64436974000103",
-          "nome": "BB MASTER III RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
-          "gestor": "BB Asset",
-          "segmento": "trad",
-          "retorno": 6.0169,
-          "pl": 208617830.75
-        },
         {
           "cnpj": "19770499000144",
           "nome": "EXPLORITAS ALPHA AMERICA LATINA MASTER FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
@@ -2886,6 +2878,14 @@
           "segmento": "trad",
           "retorno": 0.6868,
           "pl": 11097524.9
+        },
+        {
+          "cnpj": "27883656000156",
+          "nome": "DHF FUNDO DE INVESTIMENTO FINANCEIRO",
+          "gestor": "Dynamo",
+          "segmento": "trad",
+          "retorno": 0.6714,
+          "pl": 545321643.69
         }
       ],
       "topTradNeg": [

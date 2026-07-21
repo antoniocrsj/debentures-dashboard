@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-20T13:22:31.369Z",
+  "updatedAt": "2026-07-21T10:49:02.762Z",
   "fonte": "ANBIMA - Indice de Debentures (IDA) + familia IMA, arquivos historicos S3 (indices-historico)",
   "indices": [
     {
@@ -56,8 +56,8 @@
     "metodo": "ExcRet252 = excesso de retorno anualizado credito vs govt (REGIME, todos os pares). SpreadNivelBps = nivel implicito por decomposicao retorno+duration ancorado no spread real de hoje (mediana Anbima_Tx) — SO no CDI (IMA-S/LFT tem duration ~0 -> excesso e credito puro). No IPCA a curva de juro real nao cancela e se acumula na integracao -> so regime. Nivel IPCA por ativo virah do secundario diario. Ancoras: CDI+ e NTN-B+ amplo (todas IPCA) e NTN-B+ incentivadas (12.431).",
     "ancorasBps": {
       "cdi": 96,
-      "ipca": 0,
-      "ipcaInfra": -2
+      "ipca": -1,
+      "ipcaInfra": -3
     },
     "pares": [
       {
@@ -74,7 +74,7 @@
         "govt": "IMAB",
         "nivel": false,
         "dias": 4403,
-        "ancoraBps": 0
+        "ancoraBps": -1
       },
       {
         "par": "IPCAINFRA",
@@ -82,7 +82,7 @@
         "govt": "IMAB",
         "nivel": false,
         "dias": 2894,
-        "ancoraBps": -2
+        "ancoraBps": -3
       }
     ]
   }

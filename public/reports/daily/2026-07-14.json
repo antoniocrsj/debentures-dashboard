@@ -1,7 +1,7 @@
 {
   "date": "2026-07-14",
   "label": "14/07/2026",
-  "previousDate": "2026-07-13",
+  "previousDate": null,
   "sourceDates": {
     "debentures": "2026-07-14",
     "cap12431": "2026-07-10",
@@ -111,10 +111,10 @@
         "captacao": 87316995.01,
         "resgate": 319720111.73999995,
         "liquido": -232403116.72999996,
-        "pl": 260066612470.67996,
+        "pl": 260066612470.66995,
         "numFundos": 1689,
         "curados": 1720,
-        "fechados": 289,
+        "fechados": 288,
         "anterior": {
           "dia": "2026-07-09",
           "captacao": 68779942.8,
@@ -129,16 +129,16 @@
         "captacao": 2951336619.150001,
         "resgate": 3787796432.079999,
         "liquido": -836459812.9299979,
-        "pl": 1579098545039.5105,
+        "pl": 1579099259265.8804,
         "numFundos": 992,
         "curados": 1014,
-        "fechados": 51,
+        "fechados": 50,
         "anterior": {
           "dia": "2026-07-09",
           "captacao": 1308974686.34,
           "resgate": 1579229608.64,
           "liquido": -270254922.3000002,
-          "pl": 1580642242324.229,
+          "pl": 1580642441778.629,
           "numFundos": 997
         }
       }
@@ -201,7 +201,7 @@
           "captacao": 41503292.3,
           "resgate": 67424704.47,
           "liquido": -25921412.17,
-          "pl": 55867661829.52
+          "pl": 55867661829.51
         },
         {
           "gestor": "XPG",
@@ -268,7 +268,7 @@
           "captacao": 696952291.9,
           "resgate": 1125770218.14,
           "liquido": -428817926.2400001,
-          "pl": 452614694929.39
+          "pl": 452614694878.53
         },
         {
           "gestor": "BB Asset",
@@ -1085,7 +1085,7 @@
               "ticker": "JSMLA5",
               "indexador": "DI + 3.5000%",
               "indexadorFamilia": "CDI+",
-              "emissor": "SIMPAR S.A.",
+              "emissor": "JSL S.A",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "CDI",
@@ -2986,6 +2986,14 @@
           "pl": 95604948.99
         },
         {
+          "cnpj": "62360992000115",
+          "nome": "BB MASTER II RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
+          "gestor": "BB Asset",
+          "segmento": "12431",
+          "retorno": -2.2966,
+          "pl": 344536392.7
+        },
+        {
           "cnpj": "61643338000156",
           "nome": "SPARTA INFRA INFLAÇÃO LONGA MASTER II FI EM INFRAESTRUTURA RENDA FIXA - RESP LIMITADA",
           "gestor": "Sparta",
@@ -3000,14 +3008,6 @@
           "segmento": "12431",
           "retorno": -0.9538,
           "pl": 28088130.69
-        },
-        {
-          "cnpj": "52342478000101",
-          "nome": "G5 CDM FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
-          "gestor": "G5",
-          "segmento": "12431",
-          "retorno": -0.6195,
-          "pl": 10505209.16
         }
       ],
       "topTradPos": [

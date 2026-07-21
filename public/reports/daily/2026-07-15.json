@@ -25,7 +25,7 @@
       "tom": "pos"
     },
     {
-      "texto": "Captação líquida Incentivados: −R$ 483 mi",
+      "texto": "Captação líquida Incentivados: −R$ 482 mi",
       "tom": "neg"
     },
     {
@@ -120,18 +120,18 @@
       "12431": {
         "dia": "2026-07-13",
         "captacao": 167005989.29000005,
-        "resgate": 650231166.1399997,
-        "liquido": -483225176.84999967,
-        "pl": 261138878385.13995,
+        "resgate": 648756366.1399997,
+        "liquido": -481750376.84999967,
+        "pl": 261138202576.17996,
         "numFundos": 1684,
         "curados": 1720,
-        "fechados": 289,
+        "fechados": 288,
         "anterior": {
           "dia": "2026-07-10",
           "captacao": 87316995.01,
           "resgate": 319720111.73999995,
           "liquido": -232403116.72999996,
-          "pl": 260066612470.67996,
+          "pl": 260066612470.66995,
           "numFundos": 1689
         }
       },
@@ -140,16 +140,16 @@
         "captacao": 2969525594.7,
         "resgate": 2560265014.4699993,
         "liquido": 409260580.2300005,
-        "pl": 1580335022111.6309,
-        "numFundos": 999,
+        "pl": 1580372528733.9407,
+        "numFundos": 1001,
         "curados": 1014,
-        "fechados": 51,
+        "fechados": 50,
         "anterior": {
           "dia": "2026-07-10",
           "captacao": 2951336619.150001,
           "resgate": 3787796432.079999,
           "liquido": -836459812.9299979,
-          "pl": 1579098545039.5105,
+          "pl": 1579099259265.8804,
           "numFundos": 992
         }
       }
@@ -249,7 +249,7 @@
           "captacao": 456079382.3,
           "resgate": 397161633.77,
           "liquido": 58917748.53000003,
-          "pl": 452919650553.25
+          "pl": 452919650553.13
         },
         {
           "gestor": "Icatu",
@@ -272,7 +272,7 @@
           "captacao": 23126297.51,
           "resgate": 153755077.27,
           "liquido": -130628779.76,
-          "pl": 22804099153.46
+          "pl": 22804099152.31
         },
         {
           "gestor": "Absolute",
@@ -934,7 +934,7 @@
               "ticker": "JSMLB5",
               "indexador": "IPCA + 7.9677%",
               "indexadorFamilia": "IPCA+",
-              "emissor": "SIMPAR S.A.",
+              "emissor": "JSL S.A",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "B30",
@@ -2805,39 +2805,31 @@
           "pl": 11479253.42
         },
         {
+          "cnpj": "62360992000115",
+          "nome": "BB MASTER II RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
+          "gestor": "BB Asset",
+          "segmento": "12431",
+          "retorno": 2.4532,
+          "pl": 1722416051.64
+        },
+        {
+          "cnpj": "61543507000186",
+          "nome": "VINLAND 2 FI INCENTIVADO EM DEB DE INFRA ATIVO FIF RF CRED PRIV LP RESPONSABILIDADE LIMITADA",
+          "gestor": "Vinland",
+          "segmento": "12431",
+          "retorno": 1.8624,
+          "pl": 119414241.24
+        },
+        {
           "cnpj": "52342478000101",
           "nome": "G5 CDM FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
           "gestor": "G5",
           "segmento": "12431",
           "retorno": 0.6319,
           "pl": 10571595.93
-        },
-        {
-          "cnpj": "55539196000189",
-          "nome": "FUNDO DE INVESTIMENTO FINANCEIRO CI RENDA FIXA INCENTIVADO INVESTIMENTO EM INFRAESTRUTURA G5 CAMBUCÁ",
-          "gestor": "G5",
-          "segmento": "12431",
-          "retorno": 0.4375,
-          "pl": 29831507.61
-        },
-        {
-          "cnpj": "62805867000171",
-          "nome": "SANTANDER PB JFA INVESTIMENTO EM INFRA RENDA FIXA - FIF RESP LIMITADA",
-          "gestor": "San WM",
-          "segmento": "12431",
-          "retorno": 0.2554,
-          "pl": 22985410.66
         }
       ],
       "top12431Neg": [
-        {
-          "cnpj": "63706652000166",
-          "nome": "VINLAND INC XP FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA FIF RF CRED PRIV RESP LIMITADA",
-          "gestor": "Vinland",
-          "segmento": "12431",
-          "retorno": -14.492,
-          "pl": 36442430.05
-        },
         {
           "cnpj": "59123735000155",
           "nome": "PORTO PAINEIRA CDI FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA RF CRÉD PRIV RESP LIMITADA",
@@ -2869,6 +2861,14 @@
           "segmento": "12431",
           "retorno": -0.6058,
           "pl": 13692286.81
+        },
+        {
+          "cnpj": "61844366000131",
+          "nome": "SANTANDER PB 287 INVESTIMENTO EM INFRA RF - FIF RESP LIMITADA",
+          "gestor": "San WM",
+          "segmento": "12431",
+          "retorno": -0.5654,
+          "pl": 17671528.76
         }
       ],
       "topTradPos": [
