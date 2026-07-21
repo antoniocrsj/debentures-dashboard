@@ -1,5 +1,5 @@
 {
-    "updatedAt":  "2026-07-20T19:16:37",
+    "updatedAt":  "2026-07-21T15:20:34",
     "definicao":  "Caixa Potencial Direto = Disponibilidades + Titulos Publicos + Operacoes Compromissadas (por TP_APLIC, todos os blocos). Nao inclui titulos bancarios/CDB/LCI/LCA/LF/DPGE, credito privado/debentures, valores a receber nem cotas comuns.",
     "mesesRecentes":  [
                           "202606",
@@ -31,7 +31,7 @@
                    "comCotasNaoIdentificadas":  970,
                    "candidatos":  10,
                    "caixaConsolidadoDataBase":  648599694563.61,
-                   "caixaEstimadoAtualConsolidado":  652097810825.02,
+                   "caixaEstimadoAtualConsolidado":  652553203965.73,
                    "fundosNaTabela":  2853,
                    "fundosCaixaConfirmados":  107,
                    "dadosInsuficientes":  4,
@@ -80,6 +80,8 @@
                                                               "10643489000173",
                                                               "53823295000162",
                                                               "20889217000101",
+                                                              "58258574000144",
+                                                              "55572497000104",
                                                               "58238959000140",
                                                               "65189035000166",
                                                               "36499357000103"
