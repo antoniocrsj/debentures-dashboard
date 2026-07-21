@@ -785,12 +785,22 @@ try {
   }
   $histCacheDir = Join-Path $CdaDir 'historico-caixa-cache'
   New-Item -ItemType Directory -Force -Path $histCacheDir | Out-Null
+  # Cache PARALELO por fundo (CNPJ preservado). O cache agregado acima joga o
+  # CNPJ fora (agrega por gestor|segmento), entao o corte de %Deb no app nao
+  # tinha por onde filtrar o historico. Este mantem uma linha por fundo/mes.
+  # Enquanto ele nao existir p/ um mes, o CDA e' relido mesmo que o cache
+  # agregado ja' exista -- por isso a 1a rodada apos esta mudanca releem os 42.
+  $histFundoCacheDir = Join-Path $CdaDir 'historico-caixa-fundos-cache'
+  New-Item -ItemType Directory -Force -Path $histFundoCacheDir | Out-Null
   Step "Historico de %PL: $($mesesHist.Count) mes(es) ($iniHist..$mesFimHist); cache em $histCacheDir"
 
   $histSeries = New-Object System.Collections.Generic.List[object]
+  $histFundos = New-Object System.Collections.Generic.List[object]
   foreach ($hm in $mesesHist) {
     $cachePath = Join-Path $histCacheDir "$hm.json"
+    $fundoCachePath = Join-Path $histFundoCacheDir "$hm.json"
     $rows = $null
+    $fundoRows = $null
     if (Test-Path $cachePath) {
       # Atencao (PS 5.1): ConvertFrom-Json emite o array como UM objeto no pipe,
       # entao `@(... | ConvertFrom-Json)` viraria 1 elemento (o array inteiro) e
@@ -801,7 +811,14 @@ try {
         $rows = @($parsedCache | Where-Object { $null -ne $_ })
       } catch { $rows = $null }
     }
-    if ($null -eq $rows) {
+    if (Test-Path $fundoCachePath) {
+      try {
+        $parsedFundo = Get-Content $fundoCachePath -Raw -Encoding UTF8 | ConvertFrom-Json
+        $fundoRows = @($parsedFundo | Where-Object { $null -ne $_ })
+      } catch { $fundoRows = $null }
+    }
+    # Le o CDA se QUALQUER um dos dois caches faltar (o por-fundo e' novo).
+    if (($null -eq $rows) -or ($null -eq $fundoRows)) {
       $accH = $null; $plH = $null
       if ($modelos.ContainsKey($hm)) {
         $accH = $modelos[$hm].Acc; $plH = $modelos[$hm].PL           # reusa os meses recentes ja' lidos
@@ -816,6 +833,7 @@ try {
         Step "  [$hm] historico: lido do CDA."
       }
       $buck = @{}
+      $fundoList = New-Object System.Collections.Generic.List[object]
       foreach ($cnpj in $accH.Keys) {
         if (-not $segmento.ContainsKey($cnpj)) { continue }          # so' universo curado (12431 + CDI)
         $plv = if ($plH.ContainsKey($cnpj)) { [double]$plH[$cnpj] } else { 0.0 }
@@ -823,17 +841,31 @@ try {
         $seg = $segmento[$cnpj]
         $g = if ($fundo2apelido.ContainsKey($cnpj) -and $fundo2apelido[$cnpj] -ne '') { $fundo2apelido[$cnpj] } else { '(sem gestor)' }
         $a = $accH[$cnpj]
-        $cx = $a.Disp + $a.TitPub + $a.Compr
+        # [double] explicito: sem ele, se Disp/TitPub/Compr vierem como string o
+        # `+` concatena e [math]::Round($cx,2) estoura ("Os tipos de argumento nao
+        # correspondem"). O agregado sobrevivia por acumular sobre 0.0 (forca
+        # double); o per-fundo chama Round direto no valor, entao precisa do cast.
+        $cx = [double]$a.Disp + [double]$a.TitPub + [double]$a.Compr
         $key = "$g|$seg"
         if (-not $buck.ContainsKey($key)) { $buck[$key] = @{ gestor=$g; segmento=$seg; caixa=0.0; pl=0.0 } }
         $buck[$key].caixa += $cx; $buck[$key].pl += $plv
+        $fundoList.Add([pscustomobject]@{ cnpj=$cnpj; gestor=$g; segmento=$seg; caixa=[math]::Round($cx,2); pl=[math]::Round($plv,2) })
       }
       $rows = @($buck.Values | ForEach-Object { [pscustomobject]@{ gestor=$_.gestor; segmento=$_.segmento; caixa=[math]::Round($_.caixa,2); pl=[math]::Round($_.pl,2) } })
       $json = if ($rows.Count -gt 0) { $rows | ConvertTo-Json -Depth 5 -Compress } else { '[]' }
       [System.IO.File]::WriteAllText($cachePath, $json, $utf8)
+      # .ToArray() e nao @($fundoList): @() sobre uma List[object] com
+      # pscustomobjects estoura "Os tipos de argumento nao correspondem" neste
+      # PS 5.1 (reproduzido isolado). ToArray() e' o caminho canonico.
+      $fundoRows = $fundoList.ToArray()
+      $jsonF = if ($fundoRows.Count -gt 0) { $fundoRows | ConvertTo-Json -Depth 5 -Compress } else { '[]' }
+      [System.IO.File]::WriteAllText($fundoCachePath, $jsonF, $utf8)
     }
     foreach ($r in $rows) {
       $histSeries.Add([pscustomobject]@{ mes=$hm; gestor=$r.gestor; segmento=$r.segmento; caixa=$r.caixa; pl=$r.pl })
+    }
+    foreach ($f in $fundoRows) {
+      $histFundos.Add([pscustomobject]@{ mes=$hm; cnpj=$f.cnpj; gestor=$f.gestor; segmento=$f.segmento; caixa=$f.caixa; pl=$f.pl })
     }
   }
 
@@ -841,9 +873,25 @@ try {
   $outHist = Join-Path $dataDir 'Caixa_Potencial_Historico.json'
   [System.IO.File]::WriteAllText($outHist, ($histObj | ConvertTo-Json -Depth 5 -Compress), $utf8)
   Step "Gravado: $outHist ($($histSeries.Count) linhas, $($mesesHist.Count) meses)"
+
+  # Historico POR FUNDO em CSV (mais compacto que JSON p/ ~90 mil linhas; o
+  # Vercel serve gzipado, entao o gestor repetido custa pouco na rede). O app
+  # carrega SOB DEMANDA -- so' quando o corte de %Deb sai do oficial.
+  $outHistF = Join-Path $dataDir 'Caixa_Potencial_Fundos_Historico.csv'
+  $ciF = [System.Globalization.CultureInfo]::InvariantCulture
+  $sbF = New-Object System.Text.StringBuilder
+  [void]$sbF.AppendLine('Mes,CNPJ,Gestor,Segmento,Caixa,PL')
+  foreach ($f in $histFundos) {
+    $gEsc = if ([string]$f.gestor -match '[",]') { '"' + ([string]$f.gestor).Replace('"','""') + '"' } else { [string]$f.gestor }
+    [void]$sbF.AppendLine(('{0},{1},{2},{3},{4},{5}' -f $f.mes, $f.cnpj, $gEsc, $f.segmento, ([double]$f.caixa).ToString($ciF), ([double]$f.pl).ToString($ciF)))
+  }
+  [System.IO.File]::WriteAllText($outHistF, $sbF.ToString(), $utf8)
+  Step "Gravado: $outHistF ($($histFundos.Count) linhas por fundo)"
 }
 catch {
-  Warn "Historico de %PL falhou (nao-fatal): $($_.Exception.Message)"
+  # Mantem a linha do erro no aviso: foi o que revelou o @($List) que estourava
+  # -- barato de manter e util na proxima falha nao-fatal do historico.
+  Warn "Historico de %PL falhou (nao-fatal): $($_.Exception.Message) @ linha $($_.InvocationInfo.ScriptLineNumber)"
 }
 
 # ─── Meta.json ─────────────────────────────────────────────────────────────
