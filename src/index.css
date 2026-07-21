@@ -1288,6 +1288,13 @@ a { color: var(--primary); }
   gap: 20px;
   padding: 18px 24px 0;
 }
+/* 3 colunas (grafico | gestor | grupo) na aba Debentures. O grafico e' a 1a
+   coluna e preenche a altura das tabelas ao lado. */
+.desktop-split.desktop-split-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }  /* minmax(0,..): sem o 0 as tabelas nao encolhem abaixo do conteudo e as colunas ficam desiguais (295/359/452) */
+.desktop-split-3 .amort-card { margin-bottom: 0; height: 100%; display: flex; flex-direction: column; }
+.desktop-split-3 .amort-card .amort-plot { flex: 1; height: auto; min-height: 0; }
+.desktop-split-3 .desktop-split-col { min-width: 0; }
+.desktop-split-3 .desktop-split-col .ranking-panel { width: 100%; }
 
 /* ─── Desktop: busca + abas na mesma linha (libera espaço p/ tabela) ── */
 @media (min-width: 700px) {

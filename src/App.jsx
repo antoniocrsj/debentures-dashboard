@@ -531,12 +531,14 @@ export default function App() {
               anbimaRef={anbimaRef}
               desktop={desktop}
             />
-            {/* Grafico de vencimentos: reage a filteredAssets, entao acompanha
-                todos os filtros da pagina (grupo/gestor/ativo/setor/12.431/busca). */}
-            <ErrorBoundary label="o gráfico de vencimentos">
-              <AmortChart assets={filteredAssets} cronoMap={cronoMap} loading={cronoLoading} />
-            </ErrorBoundary>
-            <div className="desktop-split">
+            {/* 3 colunas: grafico | gestor | grupo. O grafico reage a
+                filteredAssets, entao acompanha todos os filtros da pagina. */}
+            <div className="desktop-split desktop-split-3">
+              <div className="desktop-split-col">
+                <ErrorBoundary label="o gráfico de vencimentos">
+                  <AmortChart assets={filteredAssets} cronoMap={cronoMap} loading={cronoLoading} />
+                </ErrorBoundary>
+              </div>
               <div className="desktop-split-col">
                 <ManagerRanking
                   managers={managers}
