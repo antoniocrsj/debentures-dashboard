@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts'
-import { amortPorAno, fracaoEstimada } from '../utils/amortizacao.js'
+import { amortPorAno } from '../utils/amortizacao.js'
 
 // Grafico de VENCIMENTOS (amortizacao de principal) por ano, do conjunto de
 // debentures FILTRADO na aba Debentures -- reage a todos os filtros da pagina.
@@ -59,7 +59,6 @@ export default function AmortChart({ assets, cronoMap, loading }) {
     const t = dados.reduce((s, d) => s + d.valor, 0)
     return t > 0 ? 'R$ ' + fmtBi(t) : null
   }, [dados])
-  const pctEstim = useMemo(() => fracaoEstimada(assets, cronoMap, campo), [assets, cronoMap, campo])
 
   return (
     <div className="grafico-card amort-card">
@@ -97,11 +96,6 @@ export default function AmortChart({ assets, cronoMap, loading }) {
               </ResponsiveContainer>
             </div>
           )}
-      {pctEstim > 0.005 && dados.length > 0 && (
-        <p className="amort-nota">
-          <i className="venc-key" style={{ background: COL_ESTIM }} /> {(pctEstim * 100).toFixed(0)}% do volume tem cronograma estimado (amortização linear — falta agenda ANBIMA).
-        </p>
-      )}
     </div>
   )
 }
