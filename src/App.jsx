@@ -20,6 +20,7 @@ import MonthSelector from './components/MonthSelector.jsx'
 import ErrorBoundary from './components/ErrorBoundary.jsx'
 import AmortChart from './components/AmortChart.jsx'
 import { useCronogramaAmort } from './hooks/useCronogramaAmort.js'
+import { amortizaNoAno } from './utils/amortizacao.js'
 import CorteSelector from './components/CorteSelector.jsx'
 import { usePctDeb } from './hooks/usePctDeb.js'
 import { CORTE_OFICIAL } from './utils/corte.js'
@@ -54,7 +55,7 @@ function saveMonths(m) {
   try { localStorage.setItem('blc-months', JSON.stringify(m)) } catch {}
 }
 
-const INIT_FILTERS = { grupo: '', setor: '', gestor: '', lei12431: '', ativo: '', search: '' }
+const INIT_FILTERS = { grupo: '', setor: '', gestor: '', lei12431: '', ativo: '', search: '', anoVenc: '' }
 const INIT_SORT    = { col: 'emissao', dir: 'desc' }
 const PAGE_SIZE    = 100  // mostra os 100 mais recentes ao abrir
 
@@ -203,6 +204,10 @@ export default function App() {
       if (filters.ativo    && a.codigoAtivo     !== filters.ativo)           return false
       if (q && ![a.codigoAtivo, a.emissorNome, a.grupo, a.setor]
         .some(v => v?.toLowerCase().includes(q))) return false
+      // Clicou numa barra de vencimento: so' os ativos que amortizam naquele ano
+      // (mesmo bucket do grafico). Precisa do cronoMap carregado; sem ele o
+      // filtro nao restringe (o clique so' vale na aba Debentures, onde carrega).
+      if (filters.anoVenc && cronoMap && !amortizaNoAno(cronoMap.get(a.codigoAtivo), filters.anoVenc)) return false
       return true
     })
     // Quando gestor está ativo, mostra só a alocação desse gestor
@@ -210,7 +215,7 @@ export default function App() {
       assets = recomputeAlocByGestor(assets, indexes.blcByAtivo, filters.gestor)
     }
     return assets
-  }, [allAssets, filters, indexes])
+  }, [allAssets, filters, indexes, cronoMap])
 
   // Sort
   const sortedAssets = useMemo(() => {
@@ -536,7 +541,7 @@ export default function App() {
             <div className="desktop-split desktop-split-3">
               <div className="desktop-split-col">
                 <ErrorBoundary label="o gráfico de vencimentos">
-                  <AmortChart assets={filteredAssets} cronoMap={cronoMap} loading={cronoLoading} />
+                  <AmortChart assets={filteredAssets} cronoMap={cronoMap} loading={cronoLoading} onFilter={handleFilter} anoAtivo={filters.anoVenc} />
                 </ErrorBoundary>
               </div>
               <div className="desktop-split-col">

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts'
-import { amortPorAno } from '../utils/amortizacao.js'
+import { amortPorAno, ATE_ANO } from '../utils/amortizacao.js'
 
 // Grafico de VENCIMENTOS (amortizacao de principal) por ano, do conjunto de
 // debentures FILTRADO na aba Debentures -- reage a todos os filtros da pagina.
@@ -13,7 +13,6 @@ const COL_EIXO = '#2a2420'
 const COL_GRID = '#f2ede5'
 const FZ = 9
 
-const ATE_ANO = new Date().getFullYear() + 9   // horizonte: 10 anos + balde "N+"
 
 const fmtBi = v => {
   const a = Math.abs(v)
@@ -41,7 +40,7 @@ const MODOS = [
   { id: 'carteira', label: 'Carteira', campo: 'alocacao' },
 ]
 
-export default function AmortChart({ assets, cronoMap, loading }) {
+export default function AmortChart({ assets, cronoMap, loading, onFilter, anoAtivo }) {
   // Mercado = volume em mercado (qtd x VNA); Carteira = posicao real (alocacao,
   // ja' ajustada por gestor pelo App quando ha' filtro de gestora).
   const [modo, setModo] = useState('mercado')
@@ -89,8 +88,15 @@ export default function AmortChart({ assets, cronoMap, loading }) {
                   <YAxis tickFormatter={fmtBi} tick={{ fontSize: FZ, fill: COL_EIXO, textAnchor: 'start' }}
                          dx={-22} width={32} axisLine={false} tickLine={false} />
                   <Tooltip content={<AmortTooltip />} cursor={{ fill: 'rgba(140,94,58,.08)' }} />
-                  <Bar dataKey="valor" radius={[2, 2, 0, 0]} maxBarSize={38}>
-                    {dados.map((d, i) => <Cell key={i} fill={d.estimado ? COL_ESTIM : COL_BARRA} />)}
+                  <Bar dataKey="valor" radius={[2, 2, 0, 0]} maxBarSize={38}
+                       cursor={onFilter ? 'pointer' : undefined}
+                       onClick={onFilter ? (e => e && onFilter('anoVenc', e.ano === anoAtivo ? '' : e.ano)) : undefined}>
+                    {dados.map((d, i) => {
+                      const base = d.estimado ? COL_ESTIM : COL_BARRA
+                      // com um ano selecionado, os demais desbotam p/ destacar o clicado
+                      const fill = anoAtivo && d.ano !== anoAtivo ? 'rgba(140,94,58,.28)' : base
+                      return <Cell key={i} fill={fill} />
+                    })}
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>

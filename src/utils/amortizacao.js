@@ -59,3 +59,21 @@ export function fracaoEstimada(assets, cronoMap, campo = 'volumeEmitido') {
   }
   return tot > 0 ? est / tot : 0
 }
+
+// Teto de anos do grafico/filtro (10 anos + balde "N+"). Compartilhado p/ o
+// clique na barra filtrar pelo MESMO bucket que a barra representa.
+export const ATE_ANO = new Date().getFullYear() + 9
+
+// Bucket de ano de uma data 'yyyy-mm-dd': o ano, ou 'ATE_ANO+' se passar do teto.
+export function anoBucket(dataStr, ateAno = ATE_ANO) {
+  const y = +dataStr.slice(0, 4)
+  return y > ateAno ? `${ateAno}+` : String(y)
+}
+
+// O ativo tem alguma amortizacao FUTURA no bucket `ano`? (mesma regra do grafico)
+export function amortizaNoAno(evs, ano, ateAno = ATE_ANO) {
+  if (!evs) return false
+  const d = new Date()
+  const hoje = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+  return evs.some(e => e.data >= hoje && anoBucket(e.data, ateAno) === ano)
+}
