@@ -6,7 +6,8 @@ import CaixaPctPLLine from './CaixaPctPLLine.jsx'
 import CaixaGestorTable from './CaixaGestorTable.jsx'
 import CaixaFundoTable from './CaixaFundoTable.jsx'
 import CaixaFundosCaixaTable from './CaixaFundosCaixaTable.jsx'
-import { CORTE_OFICIAL, isOficial, normCnpj } from '../../utils/corte.js'
+import { CORTE_OFICIAL, isOficial, normCnpj, cnpjsNoCorte, historicoNoCorte } from '../../utils/corte.js'
+import { useCaixaFundosHistorico } from '../../hooks/useCaixaFundosHistorico.js'
 
 // Mercados vistos SEPARADAMENTE (sem "Todos"): a aba sempre mostra um mercado.
 const SEGMENTOS = [
@@ -14,7 +15,17 @@ const SEGMENTOS = [
   { id: '12431', label: '12.431' },
 ]
 export default function CaixaDashboard({ compact = false, corte = CORTE_OFICIAL, pctPorCnpj = null }) {
-  const { loading, error, fundos: fundosBase, gestores, meta, historico, reload } = useCaixa()
+  const { loading, error, fundos: fundosBase, gestores, meta, historico: historicoBase, reload } = useCaixa()
+
+  // Corte de %Deb no grafico de %PL em caixa: o agregado nao tem CNPJ, entao
+  // fora do corte oficial troca pela serie POR FUNDO filtrada (carregada sob
+  // demanda -- so' quando o corte sai do oficial). Mesmo caminho da aba Tecnica.
+  const corteAtivo = !isOficial(corte) && !!pctPorCnpj
+  const { rows: caixaFundos } = useCaixaFundosHistorico(corteAtivo)
+  const historico = useMemo(() => {
+    if (!corteAtivo || !caixaFundos?.length) return historicoBase
+    return historicoNoCorte(caixaFundos, cnpjsNoCorte(pctPorCnpj, corte))
+  }, [corteAtivo, caixaFundos, historicoBase, pctPorCnpj, corte])
 
   // Corte de %Deb global: como TODO o resto da aba (cards, ranking, tabelas)
   // deriva de `fundos`, filtrar na origem propaga sozinho. No corte oficial
@@ -161,19 +172,10 @@ export default function CaixaDashboard({ compact = false, corte = CORTE_OFICIAL,
           {/* Mesma disposição da Captação: no desktop o gráfico fica à esquerda e
               o ranking de gestores à direita, na mesma altura; no compacto empilham. */}
           <div className="caixa-main-row">
-            {/* O historico vem agregado por (mes, gestor, segmento) -- SEM CNPJ,
-                entao nao ha' como aplicar o corte de %Deb nele. Em vez de
-                esconder o grafico (perder informacao) ou deixa-lo mudo (o
-                usuario leria a curva como se fosse do corte selecionado), ele
-                fica e se declara: a linha e' sempre do universo oficial. */}
+            {/* O grafico agora SEGUE o corte: fora do oficial, `historico` vem da
+                serie por fundo (Caixa_Potencial_Fundos_Historico) reagregada so'
+                com os fundos acima da regua. No oficial, o agregado leve. */}
             <CaixaPctPLLine historico={historico} segmento={segmento} gestor={gestor} />
-            {!isOficial(corte) && (
-              <p className="caixa-corte-aviso" role="note">
-                A curva acima é sempre do universo oficial ({CORTE_OFICIAL}%) — o histórico
-                é agregado por gestor/mês, sem o fundo individual, então não acompanha o corte de {corte}%.
-                Os cards e as tabelas acima já refletem o corte.
-              </p>
-            )}
             {/* A tabela fica SEMPRE montada: selecionar uma gestora nao pode
                 remove-la do DOM, senao o grafico (flex) se estica e o layout
                 pula embaixo do cursor. Selecionar so' filtra o grafico/os cards
