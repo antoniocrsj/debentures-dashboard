@@ -508,6 +508,26 @@ function Read-RegistroFundoGestor([string]$path) {
   return $map
 }
 
+# Le' registro_fundo.csv e retorna hashtable: CNPJ_Fundo(norm) -> CNPJ_Gestor(norm).
+# Fallback p/ quando o CDA reporta o CNPJ no nivel de FUNDO (nao de classe): alguns
+# fundos aparecem no BLC_4 com o CNPJ do fundo, ausente do registro_classe.
+function Read-RegistroFundoGestorPorCnpj([string]$path) {
+  $rf = Read-RegistroCsv $path
+  $iCnpj = $rf.idx['CNPJ_Fundo']; $iGestor = $rf.idx['CPF_CNPJ_Gestor']
+  if ($null -eq $iCnpj -or $null -eq $iGestor) {
+    throw "registro_fundo.csv: colunas esperadas nao encontradas (CNPJ_Fundo/CPF_CNPJ_Gestor)."
+  }
+  $map = @{}
+  for ($i = 1; $i -lt $rf.lines.Count; $i++) {
+    $l = $rf.lines[$i]; if ($l.Trim() -eq '') { continue }
+    $c = $l.Split(';')
+    if ($c.Count -le $iGestor) { continue }
+    $cnpj = NormCNPJ $c[$iCnpj]; $g = NormCNPJ $c[$iGestor]
+    if ($cnpj -ne '' -and $g -ne '') { $map[$cnpj] = $g }
+  }
+  return $map
+}
+
 # --- CDA da CVM (cda_fi_AAAAMM.zip) - fonte primaria de selecionar-fundos.ps1 ---
 # Diferente do CDA_FI_BLC.xlsx (que o usuario baixa e as vezes ajusta manualmente
 # em outra pasta), este e' o CSV CRU publicado pela CVM, baixado e cacheado

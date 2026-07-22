@@ -97,7 +97,8 @@ if ($bridge.semGestorCadastrado -gt 0) {
 # Cadastro_Gestores continua no balde (fica visivel no diagnostico abaixo p/
 # cadastrar). Assim o rotulo por gestora e' sempre o apelido curado, nunca o nome
 # cru do registro.
-$cvmFundo2Apelido = @{}
+$cvmFundo2Apelido = @{}       # por CNPJ de CLASSE (via registro_classe)
+$cvmFundoCnpj2Apelido = @{}   # por CNPJ de FUNDO  (via registro_fundo) - 2o fallback
 try {
   Write-Step "Fallback: registro da CVM (registro_fundo_classe) p/ fundos fora do catalogo..."
   $regDir = Get-RegistroFundoClasseDir $RegistroDir -NoDownload:$NoDownload
@@ -110,7 +111,16 @@ try {
     $gc = $fundoGestorCvm[$idFundo]
     if ($gestorApelidoMap.ContainsKey($gc)) { $cvmFundo2Apelido[$cnpjClasse] = $gestorApelidoMap[$gc] }
   }
-  Write-Step "  $($cvmFundo2Apelido.Count) fundos extras resolvidos a uma gestora ja cadastrada (via registro CVM)"
+  Write-Step "  $($cvmFundo2Apelido.Count) fundos extras resolvidos por CNPJ de CLASSE (registro CVM)"
+  # 2o fallback: alguns fundos aparecem no BLC_4 com o CNPJ do FUNDO (nao da classe),
+  # ausente do registro_classe. Resolve direto por CNPJ_Fundo -> gestor.
+  $fundoCnpjGestorCvm = Read-RegistroFundoGestorPorCnpj (Join-Path $regDir 'registro_fundo.csv')
+  foreach ($cnpjFundo in $fundoCnpjGestorCvm.Keys) {
+    if ($fundo2gestor.ContainsKey($cnpjFundo) -or $cvmFundo2Apelido.ContainsKey($cnpjFundo)) { continue }
+    $gc = $fundoCnpjGestorCvm[$cnpjFundo]
+    if ($gestorApelidoMap.ContainsKey($gc)) { $cvmFundoCnpj2Apelido[$cnpjFundo] = $gestorApelidoMap[$gc] }
+  }
+  Write-Step "  $($cvmFundoCnpj2Apelido.Count) fundos extras resolvidos por CNPJ de FUNDO (registro CVM)"
 } catch {
   Write-Host "    AVISO: fallback pelo registro CVM indisponivel ($($_.Exception.Message)); fundos fora do catalogo vao ao balde." -ForegroundColor Yellow
 }
@@ -125,6 +135,7 @@ foreach ($r in $rawRows) {
   [void]$ativos.Add($r.Ativo)
   $g = if ($fundo2gestor.ContainsKey($r.Cnpj)) { $fundo2gestor[$r.Cnpj] }
        elseif ($cvmFundo2Apelido.ContainsKey($r.Cnpj)) { $cvmFundo2Apelido[$r.Cnpj] }
+       elseif ($cvmFundoCnpj2Apelido.ContainsKey($r.Cnpj)) { $cvmFundoCnpj2Apelido[$r.Cnpj] }
        else { $semMatch++; '(fundo nao cadastrado)' }
   [void]$gestores.Add($g)
   $k = $r.Ativo + '|' + $g
@@ -154,6 +165,7 @@ $aggF = @{}
 foreach ($r in $rawRows) {
   $g = if ($fundo2gestor.ContainsKey($r.Cnpj)) { $fundo2gestor[$r.Cnpj] }
        elseif ($cvmFundo2Apelido.ContainsKey($r.Cnpj)) { $cvmFundo2Apelido[$r.Cnpj] }
+       elseif ($cvmFundoCnpj2Apelido.ContainsKey($r.Cnpj)) { $cvmFundoCnpj2Apelido[$r.Cnpj] }
        else { '(fundo nao cadastrado)' }
   $k = $r.Cnpj + '|' + $r.Ativo + '|' + $g
   if ($aggF.ContainsKey($k)) { $aggF[$k] += $r.Val } else { $aggF[$k] = $r.Val }
