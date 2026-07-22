@@ -3,19 +3,22 @@
 <title>Resumo do Dia 15/07/2026</title>
 <style>
   :root{
-    --primary:#1f4e9c; --primary-dark:#14253f; --primary-light:#e9eef7;
-    --primary-border:#cdd9ea; --bg:#eef1f5; --card:#fff; --text:#1e293b;
-    --text-muted:#64748b; --border:#e2e8f0;
-    /* mesma dupla canonica do app: um verde (--pos) e um vermelho (--neg) */
-    --pos:#047857; --neg:#b91c1c; --success:#047857; --danger:#b91c1c;
-    --warn:#92400e;
+    /* Catalogo da casa: 6 cores cruas + branco. Navy APOSENTADA (jul/2026).
+       Texto sempre carvao (--text-muted=carvao, hierarquia por tamanho/peso);
+       borda e grade bege; ambar aposentado (--warn=terracota). */
+    --c-terracota:#8c5e3a;--c-carvao:#2a2420;--c-bege:#f2ede5;--c-taupe:#9a8c7a;--c-verde:#047857;--c-vermelho:#b91c1c;--c-branco:#fff;
+    --primary:var(--c-terracota); --primary-dark:var(--c-carvao); --primary-light:var(--c-bege);
+    --primary-border:var(--c-bege); --bg:var(--c-bege); --card:var(--c-branco); --text:var(--c-carvao);
+    --text-muted:var(--c-carvao); --border:var(--c-bege);
+    --pos:var(--c-verde); --neg:var(--c-vermelho); --success:var(--c-verde); --danger:var(--c-vermelho);
+    --warn:var(--c-terracota);
   }
   *{box-sizing:border-box}
   body{font-family:system-ui,Segoe UI,Arial,sans-serif;max-width:860px;margin:0 auto;
     padding:24px 20px 48px;color:var(--text);background:var(--bg);line-height:1.5}
   .head{background:var(--primary-dark);color:#fff;border-radius:12px;padding:18px 22px;margin-bottom:18px}
   h1{font-size:22px;margin:0 0 4px;font-weight:600}
-  .head .sub{color:#c7d3e6;margin:0;font-size:12.5px}
+  .head .sub{color:var(--c-bege);margin:0;font-size:12.5px}
   section{background:var(--card);border:1px solid var(--border);border-radius:12px;
     padding:16px 18px;margin-bottom:14px}
   h2{font-size:15px;margin:0 0 10px;color:var(--primary-dark);font-weight:600;
@@ -63,7 +66,7 @@
   ul.alertas li{padding:5px 0 5px 14px;position:relative;font-size:12.5px;color:var(--warn)}
   ul.alertas li::before{content:"!";position:absolute;left:0;color:var(--warn);font-weight:700}
   .tally{font-size:13px;margin:2px 0 6px} .tally strong{color:var(--primary-dark)}
-  .empty{color:#94a3b8;font-style:italic;font-size:12.5px;margin:4px 0}
+  .empty{color:var(--text-muted);font-style:italic;font-size:12.5px;margin:4px 0}
   @media(max-width:560px){
     body{padding:14px 12px 32px} .cap-grid{grid-template-columns:1fr}
     ol.rank li{flex-wrap:wrap;gap:2px}
