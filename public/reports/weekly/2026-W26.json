@@ -12,7 +12,8 @@
     "fundos": null,
     "blc": null,
     "ida": "2026-06-26",
-    "perf12431": "2026-06-28"
+    "perf12431": "2026-06-26",
+    "perfTrad": "2026-06-26"
   },
   "sections": {
     "debentures": {
@@ -402,8 +403,8 @@
         "retornoPct": 0.3095,
         "dataIni": "2026-06-19",
         "dataFim": "2026-06-26",
-        "spreadIniBps": 101,
-        "spreadFimBps": 100,
+        "spreadIniBps": 102,
+        "spreadFimBps": 101,
         "variacaoBps": -1,
         "spreadConfiavel": true
       }

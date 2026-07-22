@@ -11,8 +11,9 @@
     "anbima": "2026-07-21",
     "fundos": "2026-07-21",
     "blc": "2026-07-21",
-    "ida": "2026-07-17",
-    "perf12431": "2026-07-31"
+    "ida": "2026-07-21",
+    "perf12431": "2026-07-20",
+    "perfTrad": "2026-07-21"
   },
   "sections": {
     "debentures": {
@@ -413,9 +414,9 @@
     "ida": {
       "12431": {
         "indice": "IDA-IPCA Infraestrutura",
-        "retornoPct": 0.8183,
+        "retornoPct": 0.6189,
         "dataIni": "2026-06-30",
-        "dataFim": "2026-07-17",
+        "dataFim": "2026-07-21",
         "spreadIniBps": null,
         "spreadFimBps": null,
         "variacaoBps": null,
@@ -423,11 +424,11 @@
       },
       "trad": {
         "indice": "IDA-DI",
-        "retornoPct": 0.8396,
+        "retornoPct": 0.9619,
         "dataIni": "2026-06-30",
-        "dataFim": "2026-07-17",
-        "spreadIniBps": 100,
-        "spreadFimBps": 96,
+        "dataFim": "2026-07-21",
+        "spreadIniBps": 101,
+        "spreadFimBps": 97,
         "variacaoBps": -4,
         "spreadConfiavel": true
       }
@@ -749,10 +750,10 @@
       "tom": "neg"
     },
     {
-      "texto": "IDA-IPCA Infraestrutura rendeu +0,82% no mês."
+      "texto": "IDA-IPCA Infraestrutura rendeu +0,62% no mês."
     },
     {
-      "texto": "IDA-DI rendeu +0,84% no mês, spread fechou 4 bps."
+      "texto": "IDA-DI rendeu +0,96% no mês, spread fechou 4 bps."
     },
     {
       "texto": "22 nova(s) debênture(s) registrada(s) no mês."

@@ -14,8 +14,9 @@
         "anbima": "2026-07-21",
         "fundos": "2026-07-21",
         "blc": "2026-07-21",
-        "ida": "2026-07-17",
-        "perf12431": "2026-07-31"
+        "ida": "2026-07-21",
+        "perf12431": "2026-07-20",
+        "perfTrad": "2026-07-21"
       }
     },
     {
@@ -33,7 +34,8 @@
         "fundos": null,
         "blc": null,
         "ida": "2026-06-30",
-        "perf12431": "2026-06-30"
+        "perf12431": "2026-06-30",
+        "perfTrad": "2026-06-30"
       }
     },
     {
@@ -51,7 +53,8 @@
         "fundos": null,
         "blc": null,
         "ida": "2026-05-29",
-        "perf12431": null
+        "perf12431": null,
+        "perfTrad": null
       }
     },
     {
@@ -69,7 +72,8 @@
         "fundos": null,
         "blc": null,
         "ida": "2026-04-30",
-        "perf12431": null
+        "perf12431": null,
+        "perfTrad": null
       }
     },
     {
@@ -87,7 +91,8 @@
         "fundos": null,
         "blc": null,
         "ida": "2026-03-31",
-        "perf12431": null
+        "perf12431": null,
+        "perfTrad": null
       }
     }
   ]

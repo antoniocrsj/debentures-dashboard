@@ -11,8 +11,9 @@
     "anbima": "2026-07-21",
     "fundos": "2026-07-21",
     "blc": "2026-07-21",
-    "ida": "2026-07-17",
-    "perf12431": "2026-07-26"
+    "ida": "2026-07-21",
+    "perf12431": "2026-07-20",
+    "perfTrad": "2026-07-21"
   },
   "sections": {
     "debentures": {
@@ -386,8 +387,26 @@
       "dataFim": "2026-07-21"
     },
     "ida": {
-      "12431": null,
-      "trad": null
+      "12431": {
+        "indice": "IDA-IPCA Infraestrutura",
+        "retornoPct": -0.1978,
+        "dataIni": "2026-07-17",
+        "dataFim": "2026-07-21",
+        "spreadIniBps": null,
+        "spreadFimBps": null,
+        "variacaoBps": null,
+        "spreadConfiavel": false
+      },
+      "trad": {
+        "indice": "IDA-DI",
+        "retornoPct": 0.1213,
+        "dataIni": "2026-07-17",
+        "dataFim": "2026-07-21",
+        "spreadIniBps": 97,
+        "spreadFimBps": 97,
+        "variacaoBps": 0,
+        "spreadConfiavel": true
+      }
     },
     "fundos": {
       "semAnterior": false,
@@ -463,6 +482,12 @@
     {
       "texto": "Captação líquida Tradicional na semana: −R$ 3 bi (capt. R$ 2 bi − resg. R$ 5 bi, 2 dia(s) útil(eis)).",
       "tom": "neg"
+    },
+    {
+      "texto": "IDA-IPCA Infraestrutura rendeu -0,2% na semana."
+    },
+    {
+      "texto": "IDA-DI rendeu +0,12% na semana, spread abriu 0 bps."
     },
     {
       "texto": "1 nova(s) debênture(s) registrada(s) na semana."

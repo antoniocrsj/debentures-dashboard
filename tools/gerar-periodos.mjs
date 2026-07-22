@@ -17,7 +17,7 @@ import { diffKeyed, topMovers } from '../src/utils/reports.js'
 import {
   weekRange, monthRange, monthId, isoWeekId, recentPeriods, weekLabel, monthLabel, periodStatus,
 } from '../src/utils/periods.js'
-import { aggCaptacaoPeriodo, aggGestoresPeriodo, aggPerfPeriodo } from '../src/utils/aggregacao.js'
+import { aggCaptacaoPeriodo, aggGestoresPeriodo, aggPerfPeriodo, diasNoIntervalo } from '../src/utils/aggregacao.js'
 import { aggIda, IDA_SEG } from '../src/utils/ida.js'
 import { renderPeriodoHtml } from './relatorios/render-periodo.mjs'
 
@@ -148,12 +148,14 @@ function buildPeriodo(tipo, id, src, tickerInfo) {
   // §8 Performance por segmento (composto)
   const perf = {}
   const perfCob = {}
+  const perfDataFim = {}   // ultima data COM DADO de perf no periodo (nao a fronteira nominal)
   for (const seg of ['12431', 'trad']) {
     const p = aggPerfPeriodo(src.perf[seg], range, { nomePorCnpj: src.nomePorCnpj })
     const S = seg === '12431' ? '12431' : 'Trad'
     perf[`top${S}Pos`] = p.fundos.filter(f => f.retorno > 0).slice(0, 5).map(f => ({ ...f, segmento: seg }))
     perf[`top${S}Neg`] = [...p.fundos].filter(f => f.retorno < 0).sort((a, b) => a.retorno - b.retorno).slice(0, 5).map(f => ({ ...f, segmento: seg }))
     perfCob[seg] = { diasUteis: p.diasUteis, excluidos: p.excluidos, avaliados: p.fundos.length, minCobertura: p.minCobertura }
+    perfDataFim[seg] = diasNoIntervalo(src.perf[seg], range).pop() || null
   }
 
   // §2 Novas debentures registradas no periodo (dedup ticker)
@@ -190,7 +192,10 @@ function buildPeriodo(tipo, id, src, tickerInfo) {
   const sourceDates = {
     cap12431: captacao['12431'].ate, capTrad: captacao.trad.ate,
     anbima: anbFim, fundos: fFim, blc: bFim, ida: idaFim,
-    perf12431: perfCob['12431'].diasUteis ? range.end : null,
+    // Data REAL do ultimo dado de perf no periodo -- NAO range.end (o domingo
+    // nominal da semana, que pode estar no FUTURO num periodo em andamento).
+    perf12431: perfDataFim['12431'],
+    perfTrad: perfDataFim.trad,
   }
 
   // §9 Alertas

@@ -12,7 +12,8 @@
     "fundos": null,
     "blc": null,
     "ida": "2026-04-30",
-    "perf12431": null
+    "perf12431": null,
+    "perfTrad": null
   },
   "sections": {
     "debentures": {
@@ -690,9 +691,9 @@
         "retornoPct": 1.2317,
         "dataIni": "2026-03-31",
         "dataFim": "2026-04-30",
-        "spreadIniBps": 125,
+        "spreadIniBps": 126,
         "spreadFimBps": 124,
-        "variacaoBps": -1,
+        "variacaoBps": -2,
         "spreadConfiavel": true
       }
     },
@@ -813,7 +814,7 @@
       "texto": "IDA-IPCA Infraestrutura rendeu -0,62% no mês."
     },
     {
-      "texto": "IDA-DI rendeu +1,23% no mês, spread fechou 1 bps."
+      "texto": "IDA-DI rendeu +1,23% no mês, spread fechou 2 bps."
     },
     {
       "texto": "55 nova(s) debênture(s) registrada(s) no mês."
