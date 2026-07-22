@@ -76,11 +76,11 @@ export default function TecnicoGestorTable({ rows, activeGestor, onSelect, refDa
           </tbody>
           <tfoot>
             <tr className="venc-foot-row tecnico-foot-row">
-              <td className="col-sticky col-gestor"><b>Total · {fmtInt(sorted.length)}</b></td>
-              <td className="col-num"><b>{fmtFluxo(totais.pl)}</b></td>
-              <td className={`col-num liq-cell${totais.liquido > 0 ? ' pos' : totais.liquido < 0 ? ' neg' : ''}`}><b>{fmtFluxoSigned(totais.liquido)}</b></td>
-              <td className="col-num" title="Média ponderada pelo PL (caixa total ÷ PL total)"><b>{fmtPct(totais.pctCaixa)}</b></td>
-              <td className="col-num"><b>{fmtFluxo(totais.venc)}</b></td>
+              <td className="col-sticky col-gestor">Total · {fmtInt(sorted.length)}</td>
+              <td className="col-num">{fmtFluxo(totais.pl)}</td>
+              <td className={`col-num liq-cell${totais.liquido > 0 ? ' pos' : totais.liquido < 0 ? ' neg' : ''}`}>{fmtFluxoSigned(totais.liquido)}</td>
+              <td className="col-num" title="Média ponderada pelo PL (caixa total ÷ PL total)">{fmtPct(totais.pctCaixa)}</td>
+              <td className="col-num">{fmtFluxo(totais.venc)}</td>
             </tr>
           </tfoot>
         </table>

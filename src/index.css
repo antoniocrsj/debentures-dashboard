@@ -2060,11 +2060,18 @@ a { color: var(--primary); }
 /* Linha de TOTAL da tabela de gestoras (Tecnica): fixada no rodape do container
    que rola, p/ ficar visivel mesmo com 148 linhas. Fundo branco opaco p/ nao
    deixar as linhas passarem por tras ao rolar. */
+/* Mesmo PADRAO de linha de total das tabelas de Ativos/Gestores/Grupos:
+   peso 600 (nao <b>/700), fundo bege, borda superior fina bege, tinta carvao.
+   Vale desktop e compacto; o sticky fica so' no desktop. */
+.tecnico-gestor-table tfoot .tecnico-foot-row td {
+  font-weight: 600;
+  color: var(--text);
+  background: var(--primary-light);
+  border-top: 1px solid var(--primary-border);
+  font-variant-numeric: tabular-nums;
+}
 .app.desktop .tecnico-gestor-table tfoot .tecnico-foot-row td {
   position: sticky; bottom: 0; z-index: 2;
-  background: var(--c-branco);
-  border-top: 1.5px solid var(--c-taupe);
-  font-variant-numeric: tabular-nums;
 }
 .app.desktop .tecnico-gestor-table tfoot .tecnico-foot-row .col-sticky { left: 0; z-index: 3; }
 
