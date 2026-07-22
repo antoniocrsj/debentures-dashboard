@@ -183,8 +183,8 @@
         "ate": "2026-06-26",
         "diasUteis": 5,
         "anterior": {
-          "liquido": -2199360028.679998,
-          "captacao": 1248066573.9100003,
+          "liquido": -2199366431.829998,
+          "captacao": 1248060170.7600005,
           "resgate": 3447426602.5899982,
           "de": "2026-06-15",
           "ate": "2026-06-19"
@@ -402,8 +402,8 @@
         "retornoPct": 0.3095,
         "dataIni": "2026-06-19",
         "dataFim": "2026-06-26",
-        "spreadIniBps": 100,
-        "spreadFimBps": 99,
+        "spreadIniBps": 101,
+        "spreadFimBps": 100,
         "variacaoBps": -1,
         "spreadConfiavel": true
       }
@@ -424,6 +424,17 @@
           "de": "2026-06-22",
           "ate": "2026-06-26",
           "pl": 45136457.2,
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "57075698000121",
+          "nome": "VINLAND FUNDO INCENTIVADO EM…",
+          "gestor": "Vinland",
+          "retorno": 10.4421,
+          "obs": 5,
+          "de": "2026-06-22",
+          "ate": "2026-06-26",
+          "pl": 6750191.53,
           "segmento": "12431"
         },
         {
@@ -458,29 +469,18 @@
           "ate": "2026-06-26",
           "pl": 44268801.89,
           "segmento": "12431"
-        },
-        {
-          "cnpj": "62283336000166",
-          "nome": "ITAÚ DEB INCENTIVADAS PRÉ…",
-          "gestor": "IAM",
-          "retorno": 2.0558,
-          "obs": 5,
-          "de": "2026-06-22",
-          "ate": "2026-06-26",
-          "pl": 246017737.77,
-          "segmento": "12431"
         }
       ],
       "top12431Neg": [
         {
-          "cnpj": "63706652000166",
-          "nome": "VINLAND INC XP FUNDO…",
-          "gestor": "Vinland",
-          "retorno": -14.9986,
+          "cnpj": "63942021000146",
+          "nome": "OCCAM BB INFRA LINEAR…",
+          "gestor": "Occam",
+          "retorno": -6.9298,
           "obs": 5,
           "de": "2026-06-22",
           "ate": "2026-06-26",
-          "pl": 35947918.58,
+          "pl": 115963647.41,
           "segmento": "12431"
         },
         {
@@ -517,14 +517,14 @@
           "segmento": "12431"
         },
         {
-          "cnpj": "63942021000146",
-          "nome": "OCCAM BB INFRA LINEAR…",
-          "gestor": "Occam",
-          "retorno": -1.7378,
+          "cnpj": "54341666000132",
+          "nome": "V7 FUNDO INCENTIVADO DE…",
+          "gestor": "BTG WM",
+          "retorno": -0.801,
           "obs": 5,
           "de": "2026-06-22",
           "ate": "2026-06-26",
-          "pl": 115963647.41,
+          "pl": 124657244.58,
           "segmento": "12431"
         }
       ],
@@ -587,6 +587,17 @@
       ],
       "topTradNeg": [
         {
+          "cnpj": "64436974000103",
+          "nome": "BB MASTER III DEBÊNTURES…",
+          "gestor": "BB Asset",
+          "retorno": -4.6357,
+          "obs": 5,
+          "de": "2026-06-22",
+          "ate": "2026-06-26",
+          "pl": 1057339503.05,
+          "segmento": "trad"
+        },
+        {
           "cnpj": "41083033000120",
           "nome": "ITAÚ CRÉDITO ESTRUTURADO FIJI…",
           "gestor": "IAM",
@@ -628,17 +639,6 @@
           "de": "2026-06-22",
           "ate": "2026-06-26",
           "pl": 192707675.46,
-          "segmento": "trad"
-        },
-        {
-          "cnpj": "61572789000140",
-          "nome": "VERDE AM HIGH YIELD II MASTER…",
-          "gestor": "Verde",
-          "retorno": -0.8143,
-          "obs": 5,
-          "de": "2026-06-22",
-          "ate": "2026-06-26",
-          "pl": 143074691.27,
           "segmento": "trad"
         }
       ]

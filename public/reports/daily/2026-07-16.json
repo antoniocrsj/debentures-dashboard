@@ -25,7 +25,7 @@
       "tom": "pos"
     },
     {
-      "texto": "Captação líquida Incentivados: −R$ 141 mi",
+      "texto": "Captação líquida Incentivados: −R$ 127 mi",
       "tom": "neg"
     },
     {
@@ -95,10 +95,10 @@
       "12431": {
         "dia": "2026-07-14",
         "captacao": 155784111.48000008,
-        "resgate": 296541656.19,
-        "liquido": -140757544.70999992,
-        "pl": 261766681533.7799,
-        "numFundos": 1689,
+        "resgate": 283208756.19,
+        "liquido": -127424644.70999992,
+        "pl": 261767174748.7199,
+        "numFundos": 1690,
         "curados": 1720,
         "fechados": 288,
         "anterior": {
@@ -106,7 +106,7 @@
           "captacao": 167005989.29000005,
           "resgate": 648756366.1399997,
           "liquido": -481750376.84999967,
-          "pl": 261138202576.17996,
+          "pl": 261137808476.20996,
           "numFundos": 1684
         }
       },
@@ -115,7 +115,7 @@
         "captacao": 2787245377.93,
         "resgate": 2180053594.8,
         "liquido": 607191783.1299996,
-        "pl": 1583968106542.39,
+        "pl": 1583967989112.7,
         "numFundos": 1002,
         "curados": 1014,
         "fechados": 50,
@@ -124,7 +124,7 @@
           "captacao": 2969525594.7,
           "resgate": 2560265014.4699993,
           "liquido": 409260580.2300005,
-          "pl": 1580372528733.9407,
+          "pl": 1580372391073.6907,
           "numFundos": 1001
         }
       }
@@ -183,13 +183,6 @@
           "pl": 9955236998.77
         },
         {
-          "gestor": "San WM",
-          "captacao": 8730000,
-          "resgate": 45484522.58,
-          "liquido": -36754522.58,
-          "pl": 7535116045.06
-        },
-        {
           "gestor": "SAM",
           "captacao": 1011186.36,
           "resgate": 28467400,
@@ -202,6 +195,13 @@
           "resgate": 39997296.41,
           "liquido": -25750622.439999998,
           "pl": 28463352599.88
+        },
+        {
+          "gestor": "San WM",
+          "captacao": 8730000,
+          "resgate": 32151622.58,
+          "liquido": -23421622.58,
+          "pl": 7535116045.06
         }
       ],
       "topTradCaptacao": [
@@ -210,7 +210,7 @@
           "captacao": 734553344.59,
           "resgate": 490194310.14,
           "liquido": 244359034.45000005,
-          "pl": 453391336483.44
+          "pl": 453391161316.59
         },
         {
           "gestor": "BB Asset",
@@ -396,7 +396,7 @@
               "indexador": "IPCA + 6.0444%",
               "indexadorFamilia": "IPCA+",
               "emissor": "HIDROVIAS DO BRASIL S.A.",
-              "grupo": "Ultrapar",
+              "grupo": "Hidrovias do Brasil",
               "incentivada": true,
               "base": "B30",
               "tipo": "ipca",
@@ -2822,6 +2822,14 @@
           "pl": 342584977.11
         },
         {
+          "cnpj": "61543507000186",
+          "nome": "VINLAND 2 FI INCENTIVADO EM DEB DE INFRA ATIVO FIF RF CRED PRIV LP RESPONSABILIDADE LIMITADA",
+          "gestor": "Vinland",
+          "segmento": "12431",
+          "retorno": -2.9139,
+          "pl": 3427716.7
+        },
+        {
           "cnpj": "53906748000114",
           "nome": "PSO 2 FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
           "gestor": "BTG WM",
@@ -2836,17 +2844,17 @@
           "segmento": "12431",
           "retorno": -1.1835,
           "pl": 1085921847.19
-        },
-        {
-          "cnpj": "64089192000137",
-          "nome": "TOP DEBÊNTURES 2025 FI INCENTIVADO EM DEBÊNTURES DE INFRA FIF RENDA FIXA CRED PRIV RESP LIMITADA",
-          "gestor": "IAM",
-          "segmento": "12431",
-          "retorno": -0.4794,
-          "pl": 11424221.25
         }
       ],
       "topTradPos": [
+        {
+          "cnpj": "64436974000103",
+          "nome": "BB MASTER III RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
+          "gestor": "BB Asset",
+          "segmento": "trad",
+          "retorno": 6.0169,
+          "pl": 208617830.75
+        },
         {
           "cnpj": "19770499000144",
           "nome": "EXPLORITAS ALPHA AMERICA LATINA MASTER FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
@@ -2878,14 +2886,6 @@
           "segmento": "trad",
           "retorno": 0.6868,
           "pl": 11097524.9
-        },
-        {
-          "cnpj": "27883656000156",
-          "nome": "DHF FUNDO DE INVESTIMENTO FINANCEIRO",
-          "gestor": "Dynamo",
-          "segmento": "trad",
-          "retorno": 0.6714,
-          "pl": 545321643.69
         }
       ],
       "topTradNeg": [

@@ -1,63 +1,63 @@
 {
-  "updatedAt": "2026-07-21T10:49:02.762Z",
+  "updatedAt": "2026-07-22T12:03:20.047Z",
   "fonte": "ANBIMA - Indice de Debentures (IDA) + familia IMA, arquivos historicos S3 (indices-historico)",
   "indices": [
     {
       "codigo": "IDAGERAL",
       "nome": "IDA-Geral",
-      "dias": 4403,
+      "dias": 4405,
       "dataInicio": "2009-01-05",
-      "dataFim": "2026-07-17"
+      "dataFim": "2026-07-21"
     },
     {
       "codigo": "IDADI",
       "nome": "IDA-DI",
-      "dias": 4403,
+      "dias": 4405,
       "dataInicio": "2009-01-05",
-      "dataFim": "2026-07-17"
+      "dataFim": "2026-07-21"
     },
     {
       "codigo": "IDAIPCA",
       "nome": "IDA-IPCA",
-      "dias": 4403,
+      "dias": 4405,
       "dataInicio": "2009-01-05",
-      "dataFim": "2026-07-17"
+      "dataFim": "2026-07-21"
     },
     {
       "codigo": "IDAIPCAINFRAESTRUTURA",
       "nome": "IDA-IPCA Infraestrutura",
-      "dias": 2894,
+      "dias": 2896,
       "dataInicio": "2015-01-05",
-      "dataFim": "2026-07-17"
+      "dataFim": "2026-07-21"
     },
     {
       "codigo": "IDAIPCAEXINFRAESTRUTURA",
       "nome": "IDA-IPCA ex-Infraestrutura",
-      "dias": 2894,
+      "dias": 2896,
       "dataInicio": "2015-01-05",
-      "dataFim": "2026-07-17"
+      "dataFim": "2026-07-21"
     },
     {
       "codigo": "IDALIQDI",
       "nome": "IDA-LIQ DI",
-      "dias": 2145,
+      "dias": 2146,
       "dataInicio": "2018-01-02",
-      "dataFim": "2026-07-17"
+      "dataFim": "2026-07-20"
     },
     {
       "codigo": "IDALIQIPCAINFRAESTRUTURA",
       "nome": "IDA-LIQ IPCA Infraestrutura",
-      "dias": 2145,
+      "dias": 2146,
       "dataInicio": "2018-01-02",
-      "dataFim": "2026-07-17"
+      "dataFim": "2026-07-20"
     }
   ],
   "spread": {
     "metodo": "ExcRet252 = excesso de retorno anualizado credito vs govt (REGIME, todos os pares). SpreadNivelBps = nivel implicito por decomposicao retorno+duration ancorado no spread real de hoje (mediana Anbima_Tx) — SO no CDI (IMA-S/LFT tem duration ~0 -> excesso e credito puro). No IPCA a curva de juro real nao cancela e se acumula na integracao -> so regime. Nivel IPCA por ativo virah do secundario diario. Ancoras: CDI+ e NTN-B+ amplo (todas IPCA) e NTN-B+ incentivadas (12.431).",
     "ancorasBps": {
-      "cdi": 96,
-      "ipca": -1,
-      "ipcaInfra": -3
+      "cdi": 97,
+      "ipca": -2,
+      "ipcaInfra": -4
     },
     "pares": [
       {
@@ -65,24 +65,24 @@
         "credito": "IDADI",
         "govt": "IMAS",
         "nivel": true,
-        "dias": 4403,
-        "ancoraBps": 96
+        "dias": 4405,
+        "ancoraBps": 97
       },
       {
         "par": "IPCA",
         "credito": "IDAIPCA",
         "govt": "IMAB",
         "nivel": false,
-        "dias": 4403,
-        "ancoraBps": -1
+        "dias": 4405,
+        "ancoraBps": -2
       },
       {
         "par": "IPCAINFRA",
         "credito": "IDAIPCAINFRAESTRUTURA",
         "govt": "IMAB",
         "nivel": false,
-        "dias": 2894,
-        "ancoraBps": -3
+        "dias": 2896,
+        "ancoraBps": -4
       }
     ]
   }

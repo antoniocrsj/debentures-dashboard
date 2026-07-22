@@ -1,7 +1,7 @@
 {
   "date": "2026-07-15",
   "label": "15/07/2026",
-  "previousDate": "2026-07-14",
+  "previousDate": null,
   "sourceDates": {
     "debentures": "2026-07-15",
     "cap12431": "2026-07-13",
@@ -16,7 +16,7 @@
     "debentures": true,
     "cap": true,
     "anbima": true,
-    "fundos": false,
+    "fundos": true,
     "blc": false
   },
   "summary": [
@@ -47,6 +47,9 @@
     {
       "texto": "ANBIMA Tradicional: 276 abertura(s) e 267 fechamento(s) de spread (de 543 ativos; média 0 bps)",
       "tom": ""
+    },
+    {
+      "texto": "Fundos: +242 / -31 no universo"
     },
     {
       "texto": "1 alerta(s) de qualidade",
@@ -122,7 +125,7 @@
         "captacao": 167005989.29000005,
         "resgate": 648756366.1399997,
         "liquido": -481750376.84999967,
-        "pl": 261138202576.17996,
+        "pl": 261137808476.20996,
         "numFundos": 1684,
         "curados": 1720,
         "fechados": 288,
@@ -140,16 +143,16 @@
         "captacao": 2969525594.7,
         "resgate": 2560265014.4699993,
         "liquido": 409260580.2300005,
-        "pl": 1580372528733.9407,
+        "pl": 1580372391073.6907,
         "numFundos": 1001,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
           "dia": "2026-07-10",
-          "captacao": 2951336619.150001,
+          "captacao": 2951161619.150001,
           "resgate": 3787796432.079999,
-          "liquido": -836459812.9299979,
-          "pl": 1579099259265.8804,
+          "liquido": -836634812.9299979,
+          "pl": 1579099108104.9502,
           "numFundos": 992
         }
       }
@@ -249,14 +252,14 @@
           "captacao": 456079382.3,
           "resgate": 397161633.77,
           "liquido": 58917748.53000003,
-          "pl": 452919650553.13
+          "pl": 452919475446.89
         },
         {
           "gestor": "Icatu",
           "captacao": 64883411.26,
           "resgate": 14288668.17,
           "liquido": 50594743.089999996,
-          "pl": 26259143590.6
+          "pl": 26259143590.49
         },
         {
           "gestor": "Regia",
@@ -2817,8 +2820,8 @@
           "nome": "VINLAND 2 FI INCENTIVADO EM DEB DE INFRA ATIVO FIF RF CRED PRIV LP RESPONSABILIDADE LIMITADA",
           "gestor": "Vinland",
           "segmento": "12431",
-          "retorno": 1.8624,
-          "pl": 119414241.24
+          "retorno": 0.9845,
+          "pl": 149030620.93
         },
         {
           "cnpj": "52342478000101",

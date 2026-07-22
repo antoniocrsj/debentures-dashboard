@@ -92,7 +92,7 @@
         {
           "ticker": "DUXC12",
           "empresa": "DUX COMPANY LTDA.",
-          "grupo": "Dux",
+          "grupo": "",
           "dataRegistro": "2026-06-29",
           "indexador": "DI",
           "incentivada": false
@@ -291,8 +291,8 @@
         },
         {
           "ticker": "IVIS11",
-          "empresa": "IVI Energia SH III S.A.",
-          "grupo": "Brookfield - Geracao Distribuida",
+          "empresa": "IVI ENERGIA SH III S.A",
+          "grupo": "IVI Energia SH III",
           "dataRegistro": "2026-06-11",
           "indexador": "IPCA",
           "incentivada": true
@@ -444,7 +444,7 @@
         {
           "ticker": "SRFC11",
           "empresa": "SERRA DO FACAO ENERGIA S.A.",
-          "grupo": "Axia",
+          "grupo": "",
           "dataRegistro": "2026-06-29",
           "indexador": "DI",
           "incentivada": false
@@ -485,9 +485,9 @@
     },
     "captacao": {
       "12431": {
-        "captacao": 7681300136.1500025,
+        "captacao": 7681198853.080002,
         "resgate": 17404873540.250015,
-        "liquido": -9723573404.100014,
+        "liquido": -9723674687.170013,
         "pl": 260985950361.33002,
         "numFundos": 1691,
         "dataPl": "2026-06-30",
@@ -506,7 +506,7 @@
         "captacao": 62982094864.83997,
         "resgate": 66061971031.16,
         "liquido": -3079876166.32003,
-        "pl": 1574405419931.1685,
+        "pl": 1574405458199.6284,
         "numFundos": 998,
         "dataPl": "2026-06-30",
         "de": "2026-06-01",
@@ -654,7 +654,7 @@
           "captacao": 16581658167.519995,
           "resgate": 17912058657.45,
           "liquido": -1330400489.930006,
-          "pl": 450343915445.46,
+          "pl": 450343915445.45,
           "dias": 21
         },
         {
@@ -714,9 +714,9 @@
         "retornoPct": 1.2262,
         "dataIni": "2026-05-29",
         "dataFim": "2026-06-30",
-        "spreadIniBps": 100,
+        "spreadIniBps": 101,
         "spreadFimBps": 100,
-        "variacaoBps": 0,
+        "variacaoBps": -1,
         "spreadConfiavel": true
       }
     },
@@ -750,21 +750,10 @@
           "segmento": "12431"
         },
         {
-          "cnpj": "60276080000134",
-          "nome": "DAYCOVAL INCENTIVADO DE…",
-          "gestor": "Daycoval",
-          "retorno": 10.0866,
-          "obs": 20,
-          "de": "2026-06-02",
-          "ate": "2026-06-30",
-          "pl": 88610374.27,
-          "segmento": "12431"
-        },
-        {
           "cnpj": "64089192000137",
           "nome": "TOP DEBÊNTURES 2025 INCENTIVADO…",
           "gestor": "IAM",
-          "retorno": 8.349,
+          "retorno": 8.3491,
           "obs": 20,
           "de": "2026-06-02",
           "ate": "2026-06-30",
@@ -780,6 +769,17 @@
           "de": "2026-06-02",
           "ate": "2026-06-30",
           "pl": 22989516.09,
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "60775750000167",
+          "nome": "G5 ALLOCATION II FUNDO…",
+          "gestor": "G5",
+          "retorno": 3.8105,
+          "obs": 19,
+          "de": "2026-06-02",
+          "ate": "2026-06-30",
+          "pl": 36716508.79,
           "segmento": "12431"
         }
       ],
@@ -842,17 +842,6 @@
       ],
       "topTradPos": [
         {
-          "cnpj": "57154741000144",
-          "nome": "QUANTITAS FIJI CRÉDITO PRIVADO",
-          "gestor": "Quantitas",
-          "retorno": 18.1531,
-          "obs": 20,
-          "de": "2026-06-02",
-          "ate": "2026-06-30",
-          "pl": 25378502.94,
-          "segmento": "trad"
-        },
-        {
           "cnpj": "51977823000102",
           "nome": "CATTUS",
           "gestor": "Starboard",
@@ -878,7 +867,7 @@
           "cnpj": "64436974000103",
           "nome": "BB MASTER III DEBÊNTURES…",
           "gestor": "BB Asset",
-          "retorno": 4.2257,
+          "retorno": 4.2256,
           "obs": 20,
           "de": "2026-06-02",
           "ate": "2026-06-30",
@@ -894,6 +883,17 @@
           "de": "2026-06-02",
           "ate": "2026-06-30",
           "pl": 47219083.37,
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "26498249000162",
+          "nome": "CAPITÂNIA PREVIDENCE ADVISORY…",
+          "gestor": "Capitânia",
+          "retorno": 2.3254,
+          "obs": 20,
+          "de": "2026-06-02",
+          "ate": "2026-06-30",
+          "pl": 59127352.1,
           "segmento": "trad"
         }
       ],
@@ -1072,7 +1072,7 @@
       "texto": "IDA-IPCA Infraestrutura rendeu -0,06% no mês."
     },
     {
-      "texto": "IDA-DI rendeu +1,23% no mês, spread abriu 0 bps."
+      "texto": "IDA-DI rendeu +1,23% no mês, spread fechou 1 bps."
     },
     {
       "texto": "58 nova(s) debênture(s) registrada(s) no mês."

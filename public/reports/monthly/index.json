@@ -2,18 +2,18 @@
   "reports": [
     {
       "id": "2026-07",
-      "label": "jul/2026 · Parcial até 17/07",
+      "label": "jul/2026 · Parcial até 21/07",
       "de": "2026-07-01",
-      "ate": "2026-07-17",
+      "ate": "2026-07-21",
       "status": "partial",
       "json": "/reports/monthly/2026-07.json",
       "html": "/reports/monthly/2026-07.html",
       "sourceDates": {
-        "cap12431": "2026-07-17",
-        "capTrad": "2026-07-17",
-        "anbima": "2026-07-20",
-        "fundos": "2026-07-17",
-        "blc": "2026-07-17",
+        "cap12431": "2026-07-21",
+        "capTrad": "2026-07-21",
+        "anbima": "2026-07-21",
+        "fundos": "2026-07-21",
+        "blc": "2026-07-21",
         "ida": "2026-07-17",
         "perf12431": "2026-07-31"
       }

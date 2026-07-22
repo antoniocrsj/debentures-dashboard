@@ -83,17 +83,17 @@
         "captacao": 546385562.39,
         "resgate": 363737985.2899998,
         "liquido": 182647577.1000002,
-        "pl": 263083138174.83997,
-        "numFundos": 1691,
+        "pl": 263083195242.18994,
+        "numFundos": 1692,
         "curados": 1720,
         "fechados": 288,
         "anterior": {
           "dia": "2026-07-14",
           "captacao": 155784111.48000008,
-          "resgate": 296541656.19,
-          "liquido": -140757544.70999992,
-          "pl": 261766681533.7799,
-          "numFundos": 1689
+          "resgate": 283208756.19,
+          "liquido": -127424644.70999992,
+          "pl": 261767174748.7199,
+          "numFundos": 1690
         }
       },
       "trad": {
@@ -101,8 +101,8 @@
         "captacao": 2042588018.8700004,
         "resgate": 2650374264.3700004,
         "liquido": -607786245.5,
-        "pl": 1583214308768.9497,
-        "numFundos": 997,
+        "pl": 1583359424661.5398,
+        "numFundos": 999,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
@@ -110,7 +110,7 @@
           "captacao": 2787245377.93,
           "resgate": 2180053594.8,
           "liquido": 607191783.1299996,
-          "pl": 1583968106542.39,
+          "pl": 1583967989112.7,
           "numFundos": 1002
         }
       }
@@ -224,7 +224,7 @@
           "captacao": 48485137.83,
           "resgate": 31471831.15,
           "liquido": 17013306.68,
-          "pl": 22835254829.22
+          "pl": 22890221435.28
         }
       ],
       "topTradResgate": [
@@ -233,7 +233,7 @@
           "captacao": 357663543.82,
           "resgate": 686306028.58,
           "liquido": -328642484.76000005,
-          "pl": 453306535420.73
+          "pl": 453306357444.28
         },
         {
           "gestor": "SAM",
@@ -2750,6 +2750,14 @@
     "perf": {
       "top12431Pos": [
         {
+          "cnpj": "61543507000186",
+          "nome": "VINLAND 2 FI INCENTIVADO EM DEB DE INFRA ATIVO FIF RF CRED PRIV LP RESPONSABILIDADE LIMITADA",
+          "gestor": "Vinland",
+          "segmento": "12431",
+          "retorno": 2.0921,
+          "pl": 119191351.19
+        },
+        {
           "cnpj": "58758334000109",
           "nome": "JOURNEY CAPITAL 60 FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM  INFRAESTRUTURA RENDA FIXA",
           "gestor": "Journey",
@@ -2780,14 +2788,6 @@
           "segmento": "12431",
           "retorno": 1.1114,
           "pl": 87870363.59
-        },
-        {
-          "cnpj": "58516864000140",
-          "nome": "SAFRA INFRA PREFIXADO CARTEIRA MASTER FIF INV EM INFRAESTRUTURA CI EM INFRA RF RESP LIMITADA",
-          "gestor": "Safra Asset",
-          "segmento": "12431",
-          "retorno": 0.8923,
-          "pl": 512492374.58
         }
       ],
       "top12431Neg": [
@@ -2816,39 +2816,23 @@
           "pl": 2453323.29
         },
         {
-          "cnpj": "55230301000101",
-          "nome": "SAFRA INFRA LIQUIDEZ PROGRESSIVO FIF INV EM INFRA CLASSE DE INV EM INFRAESTRUTURA RF RESP LIMITADA",
-          "gestor": "Safra Asset",
-          "segmento": "12431",
-          "retorno": -3.8392,
-          "pl": 933335210.26
-        },
-        {
           "cnpj": "52342478000101",
           "nome": "G5 CDM FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
           "gestor": "G5",
           "segmento": "12431",
           "retorno": -1.2475,
           "pl": 10463923.23
+        },
+        {
+          "cnpj": "55539196000189",
+          "nome": "FUNDO DE INVESTIMENTO FINANCEIRO CI RENDA FIXA INCENTIVADO INVESTIMENTO EM INFRAESTRUTURA G5 CAMBUCÁ",
+          "gestor": "G5",
+          "segmento": "12431",
+          "retorno": -0.9247,
+          "pl": 29630070.77
         }
       ],
       "topTradPos": [
-        {
-          "cnpj": "57154741000144",
-          "nome": "QUANTITAS FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA FIJI CRÉDITO PRIVADO LONGO PRAZO RESP LIMITADA",
-          "gestor": "Quantitas",
-          "segmento": "trad",
-          "retorno": 16.9704,
-          "pl": 24731785.89
-        },
-        {
-          "cnpj": "64436974000103",
-          "nome": "BB MASTER III RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
-          "gestor": "BB Asset",
-          "segmento": "trad",
-          "retorno": 7.1251,
-          "pl": 210904095.54
-        },
         {
           "cnpj": "51977823000102",
           "nome": "CATTUS FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
@@ -2856,6 +2840,14 @@
           "segmento": "trad",
           "retorno": 1.3292,
           "pl": 37831597.48
+        },
+        {
+          "cnpj": "64436974000103",
+          "nome": "BB MASTER III RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
+          "gestor": "BB Asset",
+          "segmento": "trad",
+          "retorno": 1.0959,
+          "pl": 210904095.54
         },
         {
           "cnpj": "57555092000193",
@@ -2872,6 +2864,14 @@
           "segmento": "trad",
           "retorno": 0.6329,
           "pl": 16584606.35
+        },
+        {
+          "cnpj": "17913386000125",
+          "nome": "FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO GIDU INVEST NO EXTERIOR CRÉD PRIV - RESP LIMITADA",
+          "gestor": "BTG WM",
+          "segmento": "trad",
+          "retorno": 0.499,
+          "pl": 27534898.6
         }
       ],
       "topTradNeg": [

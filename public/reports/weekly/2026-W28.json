@@ -19,8 +19,8 @@
       "novas": [
         {
           "ticker": "ACCQ11",
-          "empresa": "Concessionaria ACCIONA Agua - Lote 2 Parana - SPE S.A.",
-          "grupo": "Acciona",
+          "empresa": "CONC. ACCIONA AGUA LOTE 2 PR SPE S/A",
+          "grupo": "",
           "dataRegistro": "2026-07-08",
           "indexador": "DI",
           "incentivada": false
@@ -28,7 +28,7 @@
         {
           "ticker": "ARSD11",
           "empresa": "ARENA SERRA DOURADA SA.",
-          "grupo": "Construcap",
+          "grupo": "",
           "dataRegistro": "2026-07-10",
           "indexador": "DI",
           "incentivada": false
@@ -52,7 +52,7 @@
         {
           "ticker": "VTIJ18",
           "empresa": "VALE DO TIJUCO ACUCAR E ALCOOL S/A",
-          "grupo": "CMAA",
+          "grupo": "",
           "dataRegistro": "2026-07-07",
           "indexador": "IPCA",
           "incentivada": true
@@ -71,18 +71,18 @@
         "ate": "2026-07-10",
         "diasUteis": 5,
         "anterior": {
-          "liquido": -1431122889.4899986,
-          "captacao": 1592053585.2900002,
+          "liquido": -1431217769.4099987,
+          "captacao": 1591958705.3700001,
           "resgate": 3023176474.779999,
           "de": "2026-06-29",
           "ate": "2026-07-03"
         }
       },
       "trad": {
-        "captacao": 13647700097.35,
+        "captacao": 13647525097.35,
         "resgate": 14199946258.190004,
-        "liquido": -552246160.840004,
-        "pl": 1579099259265.8804,
+        "liquido": -552421160.840004,
+        "pl": 1579099108104.9502,
         "numFundos": 992,
         "dataPl": "2026-07-10",
         "de": "2026-07-06",
@@ -235,10 +235,10 @@
         },
         {
           "gestor": "IAM",
-          "captacao": 3077045046.13,
+          "captacao": 3076870046.13,
           "resgate": 3510795663.9400005,
-          "liquido": -433750617.8100004,
-          "pl": 452614694878.53,
+          "liquido": -433925617.8100004,
+          "pl": 452614519878.45,
           "dias": 5
         },
         {
@@ -421,9 +421,9 @@
         "retornoPct": 0.3552,
         "dataIni": "2026-07-03",
         "dataFim": "2026-07-10",
-        "spreadIniBps": 99,
+        "spreadIniBps": 100,
         "spreadFimBps": 97,
-        "variacaoBps": -2,
+        "variacaoBps": -3,
         "spreadConfiavel": true
       }
     },
@@ -720,7 +720,7 @@
       "texto": "IDA-IPCA Infraestrutura rendeu +0,96% na semana."
     },
     {
-      "texto": "IDA-DI rendeu +0,36% na semana, spread fechou 2 bps."
+      "texto": "IDA-DI rendeu +0,36% na semana, spread fechou 3 bps."
     },
     {
       "texto": "5 nova(s) debênture(s) registrada(s) na semana."

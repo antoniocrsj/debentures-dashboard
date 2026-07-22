@@ -1,13 +1,13 @@
 {
-    "timestamp":  "2026-07-21T07:49:56",
-    "captacaoModo":  "Incremental",
+    "timestamp":  "2026-07-22T09:04:18",
+    "captacaoModo":  "Auto",
     "etapas":  {
                    "Debentures":  "OK",
                    "Fundos":  "PULADO por parametro -SkipFundos",
                    "Captacao":  "OK (incremental)",
                    "BLC":  "PULADO",
                    "ANBIMA":  "OK",
-                   "Ofertas":  "OK (4 emissao(oes) registrada(s) na CVM ainda nao no cadastro)"
+                   "Ofertas":  "OK (3 emissao(oes) registrada(s) na CVM ainda nao no cadastro)"
                },
     "impacto":  {
                     "fundos":  {
@@ -38,20 +38,20 @@
                                                                "depois":  "2026-07-13"
                                                            },
                                           "LiquidoRecente":  {
-                                                                 "antes":  -441236525.96999979,
-                                                                 "depois":  -573875991.56999969
+                                                                 "antes":  -573875991.56999969,
+                                                                 "depois":  -762423086.11999989
                                                              },
                                           "CaptacaoRecente":  {
-                                                                  "antes":  869175663.15999985,
-                                                                  "depois":  967258897.06
+                                                                  "antes":  967258897.06,
+                                                                  "depois":  1065434732.1199999
                                                               },
                                           "ResgateRecente":  {
-                                                                 "antes":  1310412189.1299996,
-                                                                 "depois":  1541134888.6299996
+                                                                 "antes":  1541134888.6299996,
+                                                                 "depois":  1827857818.2399998
                                                              },
                                           "PLRecente":  {
-                                                            "antes":  261989366497.38995,
-                                                            "depois":  262535924996.10004
+                                                            "antes":  262535924996.10004,
+                                                            "depois":  262328316112.30991
                                                         }
                                       },
                     "captacaoTrad":  {
@@ -68,26 +68,26 @@
                                                               "depois":  "2026-07-13"
                                                           },
                                          "LiquidoRecente":  {
-                                                                "antes":  408553364.50999928,
-                                                                "depois":  1525346812.1600037
+                                                                "antes":  1525346812.1600037,
+                                                                "depois":  1832718234.6099892
                                                             },
                                          "CaptacaoRecente":  {
-                                                                 "antes":  7799067912.2699986,
-                                                                 "depois":  10794084181.750008
+                                                                 "antes":  10794084181.750008,
+                                                                 "depois":  13538428110.79999
                                                              },
                                          "ResgateRecente":  {
-                                                                "antes":  7390514547.7599993,
-                                                                "depois":  9268737369.590004
+                                                                "antes":  9268737369.590004,
+                                                                "depois":  11705709876.19
                                                             },
                                          "PLRecente":  {
-                                                           "antes":  1582175063379.0798,
-                                                           "depois":  1583275538470.0596
+                                                           "antes":  1583275538470.0596,
+                                                           "depois":  1583198675469.2197
                                                        }
                                      },
                     "debentures":  {
                                        "Ativos":  {
                                                       "antes":  4670,
-                                                      "depois":  4670
+                                                      "depois":  4674
                                                   },
                                        "Emissores":  {
                                                          "antes":  1456,
@@ -95,11 +95,11 @@
                                                      },
                                        "Incentivadas":  {
                                                             "antes":  1284,
-                                                            "depois":  1284
+                                                            "depois":  1285
                                                         },
                                        "Registradas":  {
                                                            "antes":  4670,
-                                                           "depois":  4670
+                                                           "depois":  4674
                                                        }
                                    },
                     "blc":  {
@@ -122,28 +122,20 @@
                             },
                     "anbima":  {
                                    "DataRef":  {
-                                                   "antes":  "2026-07-17",
-                                                   "depois":  "2026-07-20"
+                                                   "antes":  "2026-07-20",
+                                                   "depois":  "2026-07-21"
                                                },
                                    "Tickers":  {
                                                    "antes":  1272,
-                                                   "depois":  1272
+                                                   "depois":  1271
                                                },
                                    "ComTaxa":  {
-                                                   "antes":  1219,
-                                                   "depois":  1220
+                                                   "antes":  1220,
+                                                   "depois":  1218
                                                }
                                }
                 },
     "novasEmissoes":  [
-                          {
-                              "dataRegistro":  "2026-07-13",
-                              "emissor":  "SOCICAM ADMINISTRACAO, PROJETOS E REPRESENTACOES S.A.",
-                              "emissao":  2,
-                              "valor":  100000000,
-                              "incentivada":  false,
-                              "lider":  "XP INVESTIMENTOS CCTVM S.A."
-                          },
                           {
                               "dataRegistro":  "2026-07-15",
                               "emissor":  "LOCALIZA RENT A CAR SA",
@@ -161,12 +153,12 @@
                               "lider":  "XP INVESTIMENTOS CCTVM S.A."
                           },
                           {
-                              "dataRegistro":  "2026-07-20",
-                              "emissor":  "DIAGNOSTICOS DA AMERICA SA",
-                              "emissao":  23,
-                              "valor":  700000000,
+                              "dataRegistro":  "2026-07-21",
+                              "emissor":  "ISA ENERGIA BRASIL S.A.",
+                              "emissao":  24,
+                              "valor":  1000000000,
                               "incentivada":  false,
-                              "lider":  "BANCO BRADESCO BBI S.A."
+                              "lider":  "ITAU BBA ASSESSORIA FINANCEIRA S.A"
                           }
                       ]
 }
