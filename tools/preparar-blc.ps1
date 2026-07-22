@@ -29,6 +29,7 @@ param(
   [string]$XlsxPath = '',
   [string]$OutPath  = '',
   [string]$CdaDir = ("C:\Projeto Cr" + [char]233 + "dito\CVM _cda"),
+  [string]$RegistroDir = ("C:\Projeto Cr" + [char]233 + "dito\CVM _cadastro_fundos"),
   [string]$CadastroUrl = 'https://script.google.com/macros/s/AKfycbxhTXC7FXkp9fEz0bw6Nnh_JDm4UVhRkqZF5zOW-Cb842RhFBikauGaWeChG0vQerPrBA/exec',
   [switch]$NoDownload
 )
@@ -85,6 +86,35 @@ if ($bridge.semGestorCadastrado -gt 0) {
   if ($faltando.Count) { Write-Host "      CNPJs de gestor ausentes: $($faltando -join ', ')" -ForegroundColor DarkYellow }
 }
 
+# ---- 3b. Fallback fundo->gestor pelo REGISTRO da CVM -----------------------
+# O catalogo manual (Fundos_12431/CDI) so' cobre os fundos SELECIONADOS. O BLC_4,
+# porem, traz TODO o mercado (mantemos o mercado inteiro na tabela por gestor).
+# Para nao jogar ~6% do mercado no balde "(fundo nao cadastrado)", resolvemos os
+# fundos ausentes do catalogo pela mesma cadeia que o sweep usa:
+#   CNPJ_Classe -> ID_Registro_Fundo (registro_classe) -> CNPJ_Gestor
+#   (registro_fundo) -> Apelido (Cadastro_Gestores).
+# So' rotulamos com apelido quando a gestora JA esta' cadastrada; gestora fora do
+# Cadastro_Gestores continua no balde (fica visivel no diagnostico abaixo p/
+# cadastrar). Assim o rotulo por gestora e' sempre o apelido curado, nunca o nome
+# cru do registro.
+$cvmFundo2Apelido = @{}
+try {
+  Write-Step "Fallback: registro da CVM (registro_fundo_classe) p/ fundos fora do catalogo..."
+  $regDir = Get-RegistroFundoClasseDir $RegistroDir -NoDownload:$NoDownload
+  $classeInfo     = Read-RegistroClasse      (Join-Path $regDir 'registro_classe.csv')
+  $fundoGestorCvm = Read-RegistroFundoGestor (Join-Path $regDir 'registro_fundo.csv')
+  foreach ($cnpjClasse in $classeInfo.Keys) {
+    if ($fundo2gestor.ContainsKey($cnpjClasse)) { continue }   # catalogo manual vence
+    $idFundo = $classeInfo[$cnpjClasse].IdFundo
+    if (-not $fundoGestorCvm.ContainsKey($idFundo)) { continue }
+    $gc = $fundoGestorCvm[$idFundo]
+    if ($gestorApelidoMap.ContainsKey($gc)) { $cvmFundo2Apelido[$cnpjClasse] = $gestorApelidoMap[$gc] }
+  }
+  Write-Step "  $($cvmFundo2Apelido.Count) fundos extras resolvidos a uma gestora ja cadastrada (via registro CVM)"
+} catch {
+  Write-Host "    AVISO: fallback pelo registro CVM indisponivel ($($_.Exception.Message)); fundos fora do catalogo vao ao balde." -ForegroundColor Yellow
+}
+
 # ---- 4. Agregar por (ativo, gestor) ---------------------------------------
 Write-Step "Agregando por (ativo, gestor)..."
 $agg = @{}
@@ -93,7 +123,9 @@ $gestores = New-Object System.Collections.Generic.HashSet[string]
 $semMatch = 0
 foreach ($r in $rawRows) {
   [void]$ativos.Add($r.Ativo)
-  $g = if ($fundo2gestor.ContainsKey($r.Cnpj)) { $fundo2gestor[$r.Cnpj] } else { $semMatch++; '(fundo nao cadastrado)' }
+  $g = if ($fundo2gestor.ContainsKey($r.Cnpj)) { $fundo2gestor[$r.Cnpj] }
+       elseif ($cvmFundo2Apelido.ContainsKey($r.Cnpj)) { $cvmFundo2Apelido[$r.Cnpj] }
+       else { $semMatch++; '(fundo nao cadastrado)' }
   [void]$gestores.Add($g)
   $k = $r.Ativo + '|' + $g
   if ($agg.ContainsKey($k)) { $agg[$k] += $r.Val } else { $agg[$k] = $r.Val }
@@ -120,7 +152,9 @@ $utf8 = New-Object System.Text.UTF8Encoding($false)
 # posicao efetiva do fundo no ativo (mesma origem do agregado por gestor).
 $aggF = @{}
 foreach ($r in $rawRows) {
-  $g = if ($fundo2gestor.ContainsKey($r.Cnpj)) { $fundo2gestor[$r.Cnpj] } else { '(fundo nao cadastrado)' }
+  $g = if ($fundo2gestor.ContainsKey($r.Cnpj)) { $fundo2gestor[$r.Cnpj] }
+       elseif ($cvmFundo2Apelido.ContainsKey($r.Cnpj)) { $cvmFundo2Apelido[$r.Cnpj] }
+       else { '(fundo nao cadastrado)' }
   $k = $r.Cnpj + '|' + $r.Ativo + '|' + $g
   if ($aggF.ContainsKey($k)) { $aggF[$k] += $r.Val } else { $aggF[$k] = $r.Val }
 }
