@@ -205,14 +205,45 @@ function buildPeriodo(tipo, id, src, tickerInfo) {
   if (fundos.semAnterior) alertas.push({ tipo: 'fundos-sem-fronteira', texto: 'Sem snapshot de fundos na fronteira — inclusões/exclusões indisponíveis neste período.' })
   for (const seg of ['12431', 'trad']) if (perfCob[seg].excluidos.insuficiente + perfCob[seg].excluidos.glitch > 0) alertas.push({ tipo: 'perf-cobertura', texto: `Performance ${seg === '12431' ? '12.431' : 'Tradicional'}: ${perfCob[seg].excluidos.insuficiente} fundo(s) fora por cobertura < ${Math.round(perfCob[seg].minCobertura * 100)}% e ${perfCob[seg].excluidos.glitch} por dado inválido.` })
 
-  // §1 Sumario
+  // §1 Sumario -- lê como um desk de credito: primeiro a DIRECAO do mercado
+  // (spread ANBIMA por ativo + IDA agregado), depois o FLUXO (captacao), por fim
+  // as novas emissoes. A direcao ANBIMA era a informacao mais importante da
+  // semana e nao estava no sumario -- ficava enterrada na secao 5.
   const per = tipo === 'weekly' ? 'na semana' : 'no mês'
+  const fmtDia = d => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(d || ''); return m ? `${m[3]}/${m[2]}` : (d || '') }
   const summary = []
+
+  // Direcao do spread por mercado (spread FECHA = bps negativo = preco sobe = bom
+  // p/ quem carrega -> tom 'pos'; ABRE = bps positivo -> 'neg').
+  if (!anbima.semAnterior) {
+    const janela = (anbima.dataIni && anbima.dataFim) ? ` (${fmtDia(anbima.dataIni)}→${fmtDia(anbima.dataFim)})` : ''
+    for (const [mk, nome] of [['12431', '12.431'], ['trad', 'Tradicional']]) {
+      const a = anbima.porMercado?.[mk]
+      if (!a || a.totalComparados < 10) continue   // mercado fino demais p/ ler direcao
+      const media = a.variacaoMediaBps || 0
+      const dir = media < -0.5 ? 'fechou' : media > 0.5 ? 'abriu' : 'estável'
+      const mediaTxt = `${media >= 0 ? '+' : '−'}${Math.abs(media).toFixed(1)} bps`
+      // forma nominal (fechamentos/aberturas) evita concordancia quebrada em n=1
+      const estaveis = Math.max(0, a.totalComparados - a.totalFechamentos - a.totalAberturas)
+      const detalhe = `${a.totalFechamentos} fechamentos, ${a.totalAberturas} aberturas e ${estaveis} sem mudança (${a.totalComparados} papéis)`
+      summary.push({
+        texto: `Spread ANBIMA ${nome} ${dir} ${per}${janela}: média ${mediaTxt} — ${detalhe}.`,
+        tom: media < -0.5 ? 'pos' : media > 0.5 ? 'neg' : '',
+      })
+    }
+  } else {
+    summary.push({ texto: `Variação ANBIMA por ativo indisponível ${per} (sem snapshot na fronteira) — ver direção agregada pelo IDA abaixo.` })
+  }
+
+  // IDA: retorno do indice + spread agregado (complementa a leitura por ativo).
+  if (ida) for (const seg of ['12431', 'trad']) if (ida[seg]) { const x = ida[seg]; const sp = x.variacaoBps != null ? (Math.abs(x.variacaoBps) < 0.5 ? ', spread estável' : `, spread ${x.variacaoBps >= 0 ? 'abriu' : 'fechou'} ${Math.abs(x.variacaoBps)} bps${x.spreadConfiavel ? '' : ' (aprox.)'}`) : ''; summary.push({ texto: `${x.indice} rendeu ${x.retornoPct >= 0 ? '+' : ''}${x.retornoPct.toLocaleString('pt-BR', { maximumFractionDigits: 2 })}% ${per}${sp}.` }) }
+
+  // Fluxo: captacao liquida por mercado (com o n de dias uteis explicito, p/ nao
+  // ler um periodo parcial como semana cheia).
   for (const seg of ['12431', 'trad']) {
     const c = captacao[seg]; const nome = seg === '12431' ? '12.431' : 'Tradicional'
     if (c.diasUteis) summary.push({ texto: `Captação líquida ${nome} ${per}: ${fmtSum(c.liquido)} (capt. ${fmtSum(c.captacao)} − resg. ${fmtSum(c.resgate)}, ${c.diasUteis} dia(s) útil(eis)).`, tom: c.liquido >= 0 ? 'pos' : 'neg' })
   }
-  if (ida) for (const seg of ['12431', 'trad']) if (ida[seg]) { const x = ida[seg]; summary.push({ texto: `${x.indice} rendeu ${x.retornoPct >= 0 ? '+' : ''}${x.retornoPct.toLocaleString('pt-BR', { maximumFractionDigits: 2 })}% ${per}${x.variacaoBps != null ? `, spread ${x.variacaoBps >= 0 ? 'abriu' : 'fechou'} ${Math.abs(x.variacaoBps)} bps${x.spreadConfiavel ? '' : ' (aprox.)'}` : ''}.` }) }
   if (novasDeb.length) summary.push({ texto: `${novasDeb.length} nova(s) debênture(s) registrada(s) ${per}.` })
 
   return {

@@ -1994,18 +1994,26 @@
   },
   "summary": [
     {
-      "texto": "Captação líquida 12.431 na semana: −R$ 762 mi (capt. R$ 1,1 bi − resg. R$ 1,8 bi, 5 dia(s) útil(eis)).",
+      "texto": "Spread ANBIMA 12.431 abriu na semana (10/07→17/07): média +2.0 bps — 91 fechamentos, 476 aberturas e 51 sem mudança (618 papéis).",
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional na semana: R$ 1,8 bi (capt. R$ 13,5 bi − resg. R$ 11,7 bi, 5 dia(s) útil(eis)).",
-      "tom": "pos"
+      "texto": "Spread ANBIMA Tradicional estável na semana (10/07→17/07): média +0.0 bps — 0 fechamentos, 0 aberturas e 22 sem mudança (22 papéis).",
+      "tom": ""
     },
     {
       "texto": "IDA-IPCA Infraestrutura rendeu -0,15% na semana."
     },
     {
       "texto": "IDA-DI rendeu +0,3% na semana, spread fechou 1 bps."
+    },
+    {
+      "texto": "Captação líquida 12.431 na semana: −R$ 762 mi (capt. R$ 1,1 bi − resg. R$ 1,8 bi, 5 dia(s) útil(eis)).",
+      "tom": "neg"
+    },
+    {
+      "texto": "Captação líquida Tradicional na semana: R$ 1,8 bi (capt. R$ 13,5 bi − resg. R$ 11,7 bi, 5 dia(s) útil(eis)).",
+      "tom": "pos"
     },
     {
       "texto": "13 nova(s) debênture(s) registrada(s) na semana."

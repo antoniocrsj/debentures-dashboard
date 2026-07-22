@@ -648,18 +648,21 @@
   },
   "summary": [
     {
+      "texto": "Variação ANBIMA por ativo indisponível na semana (sem snapshot na fronteira) — ver direção agregada pelo IDA abaixo."
+    },
+    {
+      "texto": "IDA-IPCA Infraestrutura rendeu +0,23% na semana."
+    },
+    {
+      "texto": "IDA-DI rendeu +0,29% na semana, spread estável."
+    },
+    {
       "texto": "Captação líquida 12.431 na semana: −R$ 1,4 bi (capt. R$ 1,6 bi − resg. R$ 3 bi, 5 dia(s) útil(eis)).",
       "tom": "neg"
     },
     {
       "texto": "Captação líquida Tradicional na semana: −R$ 1,4 bi (capt. R$ 14,8 bi − resg. R$ 16,2 bi, 5 dia(s) útil(eis)).",
       "tom": "neg"
-    },
-    {
-      "texto": "IDA-IPCA Infraestrutura rendeu +0,23% na semana."
-    },
-    {
-      "texto": "IDA-DI rendeu +0,29% na semana, spread abriu 0 bps."
     },
     {
       "texto": "12 nova(s) debênture(s) registrada(s) na semana."

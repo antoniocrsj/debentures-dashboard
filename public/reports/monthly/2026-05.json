@@ -749,18 +749,21 @@
   },
   "summary": [
     {
-      "texto": "Captação líquida 12.431 no mês: −R$ 12,9 bi (capt. R$ 4,2 bi − resg. R$ 17,1 bi, 20 dia(s) útil(eis)).",
-      "tom": "neg"
-    },
-    {
-      "texto": "Captação líquida Tradicional no mês: −R$ 19,5 bi (capt. R$ 59,3 bi − resg. R$ 78,8 bi, 20 dia(s) útil(eis)).",
-      "tom": "neg"
+      "texto": "Variação ANBIMA por ativo indisponível no mês (sem snapshot na fronteira) — ver direção agregada pelo IDA abaixo."
     },
     {
       "texto": "IDA-IPCA Infraestrutura rendeu +0,16% no mês."
     },
     {
       "texto": "IDA-DI rendeu +1,82% no mês, spread fechou 23 bps."
+    },
+    {
+      "texto": "Captação líquida 12.431 no mês: −R$ 12,9 bi (capt. R$ 4,2 bi − resg. R$ 17,1 bi, 20 dia(s) útil(eis)).",
+      "tom": "neg"
+    },
+    {
+      "texto": "Captação líquida Tradicional no mês: −R$ 19,5 bi (capt. R$ 59,3 bi − resg. R$ 78,8 bi, 20 dia(s) útil(eis)).",
+      "tom": "neg"
     },
     {
       "texto": "49 nova(s) debênture(s) registrada(s) no mês."
