@@ -332,10 +332,19 @@ function Get-DiasDoMes([string]$mes) {
       for ($i = 0; $i -lt $hdr.Count; $i++) { if ($hdr[$i].Trim() -eq 'DT_COMPTC') { $iDt = $i; break } }
       $ci = [System.Globalization.CultureInfo]::InvariantCulture
       if ($iDt -ge 0) {
+        # Perf: extrai so' a coluna DT_COMPTC (Split com limite, nao aloca as ~10
+        # colunas) e evita o round-trip de datetime por linha. DT_COMPTC ja' vem
+        # 'yyyy-MM-dd', entao a string crua == $d.ToString('yyyy-MM-dd') do parse.
+        # Fallback ao parse so' se vier formato inesperado -> saida IDENTICA a antes.
+        $need = $iDt + 2; $sep = [char[]]@(';')
         while ($null -ne ($ln = $sr.ReadLine())) {
-          $c = $ln.Split(';'); if ($c.Count -le $iDt) { continue }
-          [datetime]$d = [datetime]::MinValue
-          if ([datetime]::TryParse($c[$iDt].Trim(), $ci, [System.Globalization.DateTimeStyles]::None, [ref]$d)) { [void]$dias.Add($d.ToString('yyyy-MM-dd')) }
+          $c = $ln.Split($sep, $need); if ($c.Count -le $iDt) { continue }
+          $v = $c[$iDt].Trim()
+          if ($v.Length -eq 10 -and $v[4] -eq '-' -and $v[7] -eq '-') { [void]$dias.Add($v) }
+          else {
+            [datetime]$d = [datetime]::MinValue
+            if ([datetime]::TryParse($v, $ci, [System.Globalization.DateTimeStyles]::None, [ref]$d)) { [void]$dias.Add($d.ToString('yyyy-MM-dd')) }
+          }
         }
       }
       $sr.Close()
