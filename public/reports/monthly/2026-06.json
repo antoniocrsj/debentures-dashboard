@@ -505,9 +505,9 @@
       },
       "trad": {
         "captacao": 62982094864.83997,
-        "resgate": 66061971031.16,
-        "liquido": -3079876166.32003,
-        "pl": 1574405458199.6284,
+        "resgate": 66061311136.72001,
+        "liquido": -3079216271.8800354,
+        "pl": 1574404938760.9482,
         "numFundos": 998,
         "dataPl": "2026-06-30",
         "de": "2026-06-01",
@@ -843,6 +843,17 @@
       ],
       "topTradPos": [
         {
+          "cnpj": "64436974000103",
+          "nome": "BB MASTER III DEBÊNTURES…",
+          "gestor": "BB Asset",
+          "retorno": 6.8429,
+          "obs": 20,
+          "de": "2026-06-02",
+          "ate": "2026-06-30",
+          "pl": 207190769.84,
+          "segmento": "trad"
+        },
+        {
           "cnpj": "51977823000102",
           "nome": "CATTUS",
           "gestor": "Starboard",
@@ -862,17 +873,6 @@
           "de": "2026-06-02",
           "ate": "2026-06-30",
           "pl": 70927848.98,
-          "segmento": "trad"
-        },
-        {
-          "cnpj": "64436974000103",
-          "nome": "BB MASTER III DEBÊNTURES…",
-          "gestor": "BB Asset",
-          "retorno": 4.2256,
-          "obs": 20,
-          "de": "2026-06-02",
-          "ate": "2026-06-30",
-          "pl": 207190769.84,
           "segmento": "trad"
         },
         {

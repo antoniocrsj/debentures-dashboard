@@ -21,7 +21,7 @@
   },
   "summary": [
     {
-      "texto": "1 nova(s) debênture(s) cadastrada(s)",
+      "texto": "3 nova(s) debênture(s) cadastrada(s)",
       "tom": "pos"
     },
     {
@@ -69,6 +69,34 @@
           "volumeEmitido": 700000000,
           "incentivada": false,
           "coordenador": "BANCO BRADESCO BBI S/A"
+        },
+        {
+          "ticker": "OREN11",
+          "empresa": "ORIGEM ENERGIA PILAR S.A.",
+          "grupo": "",
+          "cnpj": "43094886000192",
+          "dataRegistro": "20/07/2026",
+          "dataEmissao": "20/07/2026",
+          "vencimento": "20/01/2028",
+          "indexador": "DI",
+          "taxa": "1,9",
+          "volumeEmitido": 200000000,
+          "incentivada": false,
+          "coordenador": "XP INVESTIMENTOS CCTVM S/A"
+        },
+        {
+          "ticker": "OREN31",
+          "empresa": "ORIGEM ENERGIA PILAR S.A.",
+          "grupo": "",
+          "cnpj": "43094886000192",
+          "dataRegistro": "20/07/2026",
+          "dataEmissao": "20/07/2026",
+          "vencimento": "20/01/2028",
+          "indexador": "DI",
+          "taxa": "1,9",
+          "volumeEmitido": 250000000,
+          "incentivada": false,
+          "coordenador": "XP INVESTIMENTOS CCTVM S/A"
         }
       ],
       "saidas": [],
@@ -80,7 +108,7 @@
         "captacao": 98025810.58,
         "resgate": 232098881.01000002,
         "liquido": -134073070.43000002,
-        "pl": 264182662973.05005,
+        "pl": 264182651707.76007,
         "numFundos": 1691,
         "curados": 1720,
         "fechados": 288,
@@ -89,25 +117,25 @@
           "captacao": 546385562.39,
           "resgate": 363737985.2899998,
           "liquido": 182647577.1000002,
-          "pl": 263083195242.18994,
+          "pl": 263083143877.33997,
           "numFundos": 1692
         }
       },
       "trad": {
         "dia": "2026-07-16",
         "captacao": 2960315640.8599987,
-        "resgate": 1914134848.3300002,
-        "liquido": 1046180792.5299985,
-        "pl": 1585927846461.3303,
+        "resgate": 1921513623.23,
+        "liquido": 1038802017.6299987,
+        "pl": 1585919124401.3804,
         "numFundos": 997,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
           "dia": "2026-07-15",
-          "captacao": 2042588018.8700004,
-          "resgate": 2650374264.3700004,
-          "liquido": -607786245.5,
-          "pl": 1583359424661.5398,
+          "captacao": 2042589330.7700002,
+          "resgate": 2657748503.2700005,
+          "liquido": -615159172.5000002,
+          "pl": 1583350828103.9998,
           "numFundos": 999
         }
       }
@@ -230,14 +258,14 @@
           "captacao": 6578000.91,
           "resgate": 28327068.85,
           "liquido": -21749067.94,
-          "pl": 20073776615.61
+          "pl": 20073777928.44
         },
         {
           "gestor": "Kinea",
           "captacao": 37137829.3,
           "resgate": 58203273.54,
           "liquido": -21065444.240000002,
-          "pl": 58294598410.27
+          "pl": 58294598410.26
         },
         {
           "gestor": "Absolute",
@@ -1464,6 +1492,14 @@
       ],
       "topTradPos": [
         {
+          "cnpj": "52241587000124",
+          "nome": "KINEA NEPAL FIF MULT CRED PRIV - RESP LIMITADA",
+          "gestor": "Kinea",
+          "segmento": "trad",
+          "retorno": 25.0939,
+          "pl": 1545455.78
+        },
+        {
           "cnpj": "57555092000193",
           "nome": "BTG PACTUAL BRASLIGHT EOS FUNDO DE INVESTIMENTO FINANCEIRO",
           "gestor": "BTG Asset",
@@ -1494,14 +1530,6 @@
           "segmento": "trad",
           "retorno": 1.0998,
           "pl": 954956685.78
-        },
-        {
-          "cnpj": "27883656000156",
-          "nome": "DHF FUNDO DE INVESTIMENTO FINANCEIRO",
-          "gestor": "Dynamo",
-          "segmento": "trad",
-          "retorno": 0.4373,
-          "pl": 548288061.53
         }
       ],
       "topTradNeg": [
@@ -1549,7 +1577,9 @@
     },
     "inclusoes": {
       "novosDebentures": [
-        "DASAD3"
+        "DASAD3",
+        "OREN11",
+        "OREN31"
       ],
       "novosBlc": [],
       "temSnapshotBlc": true

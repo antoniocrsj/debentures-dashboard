@@ -1,6 +1,6 @@
 {
-    "asOf":  "2026-07-22",
-    "geradoEm":  "2026-07-22T09:02:11",
+    "asOf":  "2026-07-23",
+    "geradoEm":  "2026-07-23T08:54:46",
     "itens":  [
                   {
                       "dataRegistro":  "2026-07-15",
@@ -13,24 +13,14 @@
                       "lider":  "BTG PACTUAL INVESTMENT BANKING LTDA."
                   },
                   {
-                      "dataRegistro":  "2026-07-20",
-                      "dataRequerimento":  "2026-07-20",
-                      "emissor":  "ORIGEM ENERGIA PILAR S.A.",
-                      "cnpj":  "43094886000192",
-                      "emissao":  1,
+                      "dataRegistro":  "2026-07-22",
+                      "dataRequerimento":  "2026-07-17",
+                      "emissor":  "CARBON HOLDING S.A.",
+                      "cnpj":  "29694063000177",
+                      "emissao":  6,
                       "valor":  650000000,
                       "incentivada":  false,
-                      "lider":  "XP INVESTIMENTOS CCTVM S.A."
-                  },
-                  {
-                      "dataRegistro":  "2026-07-21",
-                      "dataRequerimento":  "2026-07-16",
-                      "emissor":  "ISA ENERGIA BRASIL S.A.",
-                      "cnpj":  "02998611000104",
-                      "emissao":  24,
-                      "valor":  1000000000,
-                      "incentivada":  false,
-                      "lider":  "ITAU BBA ASSESSORIA FINANCEIRA S.A"
+                      "lider":  "BANCO BRADESCO BBI S.A."
                   }
               ]
 }

@@ -29,7 +29,7 @@
       "tom": "pos"
     },
     {
-      "texto": "Captação líquida Tradicional: −R$ 608 mi",
+      "texto": "Captação líquida Tradicional: −R$ 615 mi",
       "tom": "neg"
     },
     {
@@ -83,7 +83,7 @@
         "captacao": 546385562.39,
         "resgate": 363737985.2899998,
         "liquido": 182647577.1000002,
-        "pl": 263083195242.18994,
+        "pl": 263083143877.33997,
         "numFundos": 1692,
         "curados": 1720,
         "fechados": 288,
@@ -92,25 +92,25 @@
           "captacao": 155784111.48000008,
           "resgate": 283208756.19,
           "liquido": -127424644.70999992,
-          "pl": 261767174748.7199,
+          "pl": 261767404827.6899,
           "numFundos": 1690
         }
       },
       "trad": {
         "dia": "2026-07-15",
-        "captacao": 2042588018.8700004,
-        "resgate": 2650374264.3700004,
-        "liquido": -607786245.5,
-        "pl": 1583359424661.5398,
+        "captacao": 2042589330.7700002,
+        "resgate": 2657748503.2700005,
+        "liquido": -615159172.5000002,
+        "pl": 1583350828103.9998,
         "numFundos": 999,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
           "dia": "2026-07-14",
           "captacao": 2787245377.93,
-          "resgate": 2180053594.8,
-          "liquido": 607191783.1299996,
-          "pl": 1583967989112.7,
+          "resgate": 2187427833.7000003,
+          "liquido": 599817544.2299995,
+          "pl": 1583959330795.3398,
           "numFundos": 1002
         }
       }
@@ -2750,14 +2750,6 @@
     "perf": {
       "top12431Pos": [
         {
-          "cnpj": "61543507000186",
-          "nome": "VINLAND 2 FI INCENTIVADO EM DEB DE INFRA ATIVO FIF RF CRED PRIV LP RESPONSABILIDADE LIMITADA",
-          "gestor": "Vinland",
-          "segmento": "12431",
-          "retorno": 2.0921,
-          "pl": 119191351.19
-        },
-        {
           "cnpj": "58758334000109",
           "nome": "JOURNEY CAPITAL 60 FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM  INFRAESTRUTURA RENDA FIXA",
           "gestor": "Journey",
@@ -2788,17 +2780,17 @@
           "segmento": "12431",
           "retorno": 1.1114,
           "pl": 87870363.59
+        },
+        {
+          "cnpj": "58516864000140",
+          "nome": "SAFRA INFRA PREFIXADO CARTEIRA MASTER FIF INV EM INFRAESTRUTURA CI EM INFRA RF RESP LIMITADA",
+          "gestor": "Safra Asset",
+          "segmento": "12431",
+          "retorno": 0.8923,
+          "pl": 512492374.58
         }
       ],
       "top12431Neg": [
-        {
-          "cnpj": "54794799000164",
-          "nome": "SANTANDER PB JPL INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA INFLAÇÃO - FIF RESP LIMITADA",
-          "gestor": "San WM",
-          "segmento": "12431",
-          "retorno": -99.429,
-          "pl": 67320.67
-        },
         {
           "cnpj": "64089192000137",
           "nome": "TOP DEBÊNTURES 2025 FI INCENTIVADO EM DEBÊNTURES DE INFRA FIF RENDA FIXA CRED PRIV RESP LIMITADA",
@@ -2830,6 +2822,14 @@
           "segmento": "12431",
           "retorno": -0.9247,
           "pl": 29630070.77
+        },
+        {
+          "cnpj": "56154549000195",
+          "nome": "FUNDO DE INVESTIMENTO FINANCEIRO - CI RENDA FIXA INCENTIVADO INVESTIMENTO EM INFRAESTRUTURA G5 TOKYO",
+          "gestor": "G5",
+          "segmento": "12431",
+          "retorno": -0.544,
+          "pl": 12986097.77
         }
       ],
       "topTradPos": [

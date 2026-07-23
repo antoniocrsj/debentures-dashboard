@@ -3,17 +3,17 @@
   "label": "21/07/2026",
   "previousDate": "2026-07-20",
   "sourceDates": {
-    "debentures": "2026-07-20",
+    "debentures": "2026-07-21",
     "cap12431": "2026-07-17",
     "capTrad": "2026-07-17",
     "perf12431": "2026-07-17",
     "perfTrad": "2026-07-17",
     "anbima": "2026-07-21",
-    "blc": "2026-07-17",
+    "blc": "2026-07-21",
     "fundos": "2026-07-17"
   },
   "novoPorFonte": {
-    "debentures": false,
+    "debentures": true,
     "cap": true,
     "anbima": true,
     "fundos": true,
@@ -21,11 +21,15 @@
   },
   "summary": [
     {
-      "texto": "Captação líquida Incentivados: −R$ 202 mi",
+      "texto": "3 nova(s) debênture(s) cadastrada(s)",
+      "tom": "pos"
+    },
+    {
+      "texto": "Captação líquida Incentivados: −R$ 203 mi",
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional: +R$ 378 mi",
+      "texto": "Captação líquida Tradicional: +R$ 387 mi",
       "tom": "pos"
     },
     {
@@ -51,18 +55,61 @@
   ],
   "sections": {
     "debentures": {
-      "novas": [],
+      "novas": [
+        {
+          "ticker": "AUUT13",
+          "empresa": "AUTOPASS S.A.",
+          "grupo": "Autopass",
+          "cnpj": "07140538000140",
+          "dataRegistro": "21/07/2026",
+          "dataEmissao": "15/07/2026",
+          "vencimento": "15/07/2031",
+          "indexador": "DI",
+          "taxa": "3,55",
+          "volumeEmitido": 185000000,
+          "incentivada": false,
+          "coordenador": "BANCO BRADESCO BBI S/A"
+        },
+        {
+          "ticker": "CPLDA2",
+          "empresa": "COPEL  DISTRIBUICAO S/A",
+          "grupo": "Copel",
+          "cnpj": "04368898000106",
+          "dataRegistro": "21/07/2026",
+          "dataEmissao": "15/07/2026",
+          "vencimento": "15/07/2028",
+          "indexador": "DI",
+          "taxa": "0,25",
+          "volumeEmitido": 1300000000,
+          "incentivada": false,
+          "coordenador": "XP INVESTIMENTOS CCTVM S/A"
+        },
+        {
+          "ticker": "ISAEB4",
+          "empresa": "ISA ENERGIA BRASIL S.A.",
+          "grupo": "ISA Energia",
+          "cnpj": "02998611000104",
+          "dataRegistro": "21/07/2026",
+          "dataEmissao": "10/06/2026",
+          "vencimento": "10/01/2031",
+          "indexador": "DI",
+          "taxa": "0,42",
+          "volumeEmitido": 1000000000,
+          "incentivada": false,
+          "coordenador": "ITAU UNIBANCO HOLDING S.A"
+        }
+      ],
       "saidas": [],
       "temSnapshotAnterior": false
     },
     "captacao": {
       "12431": {
         "dia": "2026-07-17",
-        "captacao": 98233258.38000001,
-        "resgate": 300055829.6100001,
-        "liquido": -201822571.23000008,
-        "pl": 261395488441.0199,
-        "numFundos": 1684,
+        "captacao": 98588704.63000001,
+        "resgate": 301305914.69000006,
+        "liquido": -202717210.06000006,
+        "pl": 262507251591.6399,
+        "numFundos": 1688,
         "curados": 1720,
         "fechados": 288,
         "anterior": {
@@ -70,25 +117,25 @@
           "captacao": 98025810.58,
           "resgate": 232098881.01000002,
           "liquido": -134073070.43000002,
-          "pl": 264182662973.05005,
+          "pl": 264182651707.76007,
           "numFundos": 1691
         }
       },
       "trad": {
         "dia": "2026-07-17",
-        "captacao": 2778753478.440001,
-        "resgate": 2400882154.2199993,
-        "liquido": 377871324.2200017,
-        "pl": 1581667692213.4,
-        "numFundos": 984,
+        "captacao": 2792126000.7100005,
+        "resgate": 2405187741.75,
+        "liquido": 386938258.9600005,
+        "pl": 1583082671592.7898,
+        "numFundos": 991,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
           "dia": "2026-07-16",
           "captacao": 2960315640.8599987,
-          "resgate": 1914134848.3300002,
-          "liquido": 1046180792.5299985,
-          "pl": 1585927846461.3303,
+          "resgate": 1921513623.23,
+          "liquido": 1038802017.6299987,
+          "pl": 1585919124401.3804,
           "numFundos": 997
         }
       }
@@ -165,7 +212,7 @@
           "captacao": 1159015.62,
           "resgate": 15351839.8,
           "liquido": -14192824.18,
-          "pl": 28416800737.15
+          "pl": 28411385723.73
         }
       ],
       "topTradCaptacao": [
@@ -174,7 +221,7 @@
           "captacao": 729953535.84,
           "resgate": 395679008.87,
           "liquido": 334274526.97,
-          "pl": 455410484572.99
+          "pl": 455410309123.63
         },
         {
           "gestor": "BB Asset",
@@ -198,11 +245,11 @@
           "pl": 75933363065.87
         },
         {
-          "gestor": "Regia",
-          "captacao": 49269998.75,
-          "resgate": 7839337.84,
-          "liquido": 41430660.91,
-          "pl": 17346356992.95
+          "gestor": "Capitânia",
+          "captacao": 56050224.12,
+          "resgate": 9917456.76,
+          "liquido": 46132767.36,
+          "pl": 4059687117.59
         }
       ],
       "topTradResgate": [
@@ -218,21 +265,21 @@
           "captacao": 19769634.86,
           "resgate": 160438485.67,
           "liquido": -140668850.81,
-          "pl": 10903008890.82
+          "pl": 10903004352.41
         },
         {
           "gestor": "BRAM",
-          "captacao": 409423587.35,
+          "captacao": 414860664.35,
           "resgate": 450927792.86,
-          "liquido": -41504205.50999999,
-          "pl": 191829675950.43
+          "liquido": -36067128.50999999,
+          "pl": 191835293416.43
         },
         {
           "gestor": "AZ Quest",
           "captacao": 3651922.18,
           "resgate": 38399280.74,
           "liquido": -34747358.56,
-          "pl": 20048612898.13
+          "pl": 20048614211.69
         },
         {
           "gestor": "Kinea",
@@ -1403,14 +1450,6 @@
       ],
       "top12431Neg": [
         {
-          "cnpj": "61141536000111",
-          "nome": "BB MASTER RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
-          "gestor": "BB Asset",
-          "segmento": "12431",
-          "retorno": -25.8239,
-          "pl": 571859739.1
-        },
-        {
           "cnpj": "54426679000104",
           "nome": "SPARTA RENDA FI FINANCEIRO INCENTIVADO EM INFRAESTRUTURA RENDA FIXA RESPONSABILIDADE LIMITADA",
           "gestor": "Sparta",
@@ -1441,6 +1480,14 @@
           "segmento": "12431",
           "retorno": -2.9419,
           "pl": 343119635.96
+        },
+        {
+          "cnpj": "54341666000132",
+          "nome": "V7 FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
+          "gestor": "BTG WM",
+          "segmento": "12431",
+          "retorno": -1.0944,
+          "pl": 124792772.28
         }
       ],
       "topTradPos": [
@@ -1461,6 +1508,14 @@
           "pl": 135241258.52
         },
         {
+          "cnpj": "35916528000190",
+          "nome": "CORDILHEIRA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "gestor": "Brainvest",
+          "segmento": "trad",
+          "retorno": 0.4892,
+          "pl": 46811804.15
+        },
+        {
           "cnpj": "63806809000125",
           "nome": "HERITAGE RUBY MASTER II FUNDO DE INVESTIMENTO RENDA FIXA INFRA CRÉDITO PRIVADO - RESP LIMT",
           "gestor": "Heritage",
@@ -1469,20 +1524,12 @@
           "pl": 88109062.94
         },
         {
-          "cnpj": "26143135000108",
-          "nome": "G5 POLARIS PREV ICATU QUALIFICADO FIF - CLASSE DE INVESTIMENTO MULT CRED PRIV - RESP LIMITADA",
-          "gestor": "G5",
+          "cnpj": "15207219000133",
+          "nome": "CONFIANCE MULTISTRATEGIES FUNDO DE INVESTIMENTO MULTIMERCADO - CRÉDITO PRIVADO",
+          "gestor": "Capri",
           "segmento": "trad",
-          "retorno": 0.2663,
-          "pl": 22306633.46
-        },
-        {
-          "cnpj": "35646238000173",
-          "nome": "SPX SEAHAWK PLUS MASTER FIF MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
-          "gestor": "SPX",
-          "segmento": "trad",
-          "retorno": 0.2404,
-          "pl": 253063654.11
+          "retorno": 0.3167,
+          "pl": 38166983.84
         }
       ],
       "topTradNeg": [
@@ -1519,17 +1566,21 @@
           "pl": 70893686.42
         },
         {
-          "cnpj": "34172479000165",
-          "nome": "MINERVA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
-          "gestor": "BTG WM",
+          "cnpj": "52241587000124",
+          "nome": "KINEA NEPAL FIF MULT CRED PRIV - RESP LIMITADA",
+          "gestor": "Kinea",
           "segmento": "trad",
-          "retorno": -1.1332,
-          "pl": 203929811.37
+          "retorno": -1.6727,
+          "pl": 10016232.07
         }
       ]
     },
     "inclusoes": {
-      "novosDebentures": [],
+      "novosDebentures": [
+        "AUUT13",
+        "CPLDA2",
+        "ISAEB4"
+      ],
       "novosBlc": [],
       "temSnapshotBlc": true
     },
@@ -1539,52 +1590,7 @@
         "texto": "74 ativo(s) no BLC sem correspondencia em Debentures.csv"
       }
     ],
-    "emissoesCVM": {
-      "asOf": "2026-07-22",
-      "itens": [
-        {
-          "dataRegistro": "2026-07-20",
-          "dataRequerimento": "2026-07-20",
-          "emissor": "ORIGEM ENERGIA PILAR S.A.",
-          "cnpj": "43094886000192",
-          "emissao": 1,
-          "valor": 650000000,
-          "incentivada": false,
-          "lider": "XP INVESTIMENTOS CCTVM S.A.",
-          "grupo": ""
-        },
-        {
-          "dataRegistro": "2026-07-21",
-          "dataRequerimento": "2026-07-16",
-          "emissor": "ISA ENERGIA BRASIL S.A.",
-          "cnpj": "02998611000104",
-          "emissao": 24,
-          "valor": 1000000000,
-          "incentivada": false,
-          "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-          "grupo": "ISA Energia"
-        },
-        {
-          "dataRegistro": "2026-07-15",
-          "dataRequerimento": "2026-06-24",
-          "emissor": "LOCALIZA RENT A CAR SA",
-          "cnpj": "16670085000155",
-          "emissao": 48,
-          "valor": 5643014000,
-          "incentivada": false,
-          "lider": "BTG PACTUAL INVESTMENT BANKING LTDA.",
-          "grupo": "Localiza"
-        }
-      ]
-    },
-    "emissoresFaltantes": {
-      "itens": [
-        {
-          "cnpj": "43094886000192",
-          "emissor": "ORIGEM ENERGIA PILAR S.A."
-        }
-      ],
-      "asOf": "2026-07-22"
-    }
+    "emissoesCVM": null,
+    "emissoresFaltantes": null
   }
 }

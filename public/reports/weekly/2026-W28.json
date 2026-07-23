@@ -65,8 +65,8 @@
         "captacao": 542940284.4800001,
         "resgate": 1758926267.5000002,
         "liquido": -1215985983.02,
-        "pl": 260066612470.66995,
-        "numFundos": 1689,
+        "pl": 260225073541.80997,
+        "numFundos": 1690,
         "dataPl": "2026-07-10",
         "de": "2026-07-06",
         "ate": "2026-07-10",
@@ -80,19 +80,19 @@
         }
       },
       "trad": {
-        "captacao": 13647525097.35,
-        "resgate": 14199946258.190004,
-        "liquido": -552421160.840004,
-        "pl": 1579099108104.9502,
+        "captacao": 13647532423.92,
+        "resgate": 14210878191.640003,
+        "liquido": -563345767.7200031,
+        "pl": 1579090381090.1902,
         "numFundos": 992,
         "dataPl": "2026-07-10",
         "de": "2026-07-06",
         "ate": "2026-07-10",
         "diasUteis": 5,
         "anterior": {
-          "liquido": -1388841416.2099934,
-          "captacao": 14832466343.09,
-          "resgate": 16221307759.299994,
+          "liquido": -1384466836.609995,
+          "captacao": 14832468543.09,
+          "resgate": 16216935379.699995,
           "de": "2026-06-29",
           "ate": "2026-07-03"
         }
@@ -724,7 +724,7 @@
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional na semana: −R$ 552 mi (capt. R$ 13,6 bi − resg. R$ 14,2 bi, 5 dia(s) útil(eis)).",
+      "texto": "Captação líquida Tradicional na semana: −R$ 563 mi (capt. R$ 13,6 bi − resg. R$ 14,2 bi, 5 dia(s) útil(eis)).",
       "tom": "neg"
     },
     {

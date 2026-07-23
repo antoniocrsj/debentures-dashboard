@@ -1,7 +1,7 @@
 {
   "date": "2026-07-16",
   "label": "16/07/2026",
-  "previousDate": "2026-07-15",
+  "previousDate": null,
   "sourceDates": {
     "debentures": "2026-07-16",
     "cap12431": "2026-07-14",
@@ -29,7 +29,7 @@
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional: +R$ 607 mi",
+      "texto": "Captação líquida Tradicional: +R$ 600 mi",
       "tom": "pos"
     },
     {
@@ -97,7 +97,7 @@
         "captacao": 155784111.48000008,
         "resgate": 283208756.19,
         "liquido": -127424644.70999992,
-        "pl": 261767174748.7199,
+        "pl": 261767404827.6899,
         "numFundos": 1690,
         "curados": 1720,
         "fechados": 288,
@@ -113,18 +113,18 @@
       "trad": {
         "dia": "2026-07-14",
         "captacao": 2787245377.93,
-        "resgate": 2180053594.8,
-        "liquido": 607191783.1299996,
-        "pl": 1583967989112.7,
+        "resgate": 2187427833.7000003,
+        "liquido": 599817544.2299995,
+        "pl": 1583959330795.3398,
         "numFundos": 1002,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
           "dia": "2026-07-13",
           "captacao": 2969525594.7,
-          "resgate": 2560265014.4699993,
-          "liquido": 409260580.2300005,
-          "pl": 1580372391073.6907,
+          "resgate": 2567639253.3699994,
+          "liquido": 401886341.3300004,
+          "pl": 1580363664058.5005,
           "numFundos": 1001
         }
       }
@@ -2822,14 +2822,6 @@
           "pl": 342584977.11
         },
         {
-          "cnpj": "61543507000186",
-          "nome": "VINLAND 2 FI INCENTIVADO EM DEB DE INFRA ATIVO FIF RF CRED PRIV LP RESPONSABILIDADE LIMITADA",
-          "gestor": "Vinland",
-          "segmento": "12431",
-          "retorno": -2.9139,
-          "pl": 3427716.7
-        },
-        {
           "cnpj": "53906748000114",
           "nome": "PSO 2 FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
           "gestor": "BTG WM",
@@ -2844,6 +2836,14 @@
           "segmento": "12431",
           "retorno": -1.1835,
           "pl": 1085921847.19
+        },
+        {
+          "cnpj": "64089192000137",
+          "nome": "TOP DEBÊNTURES 2025 FI INCENTIVADO EM DEBÊNTURES DE INFRA FIF RENDA FIXA CRED PRIV RESP LIMITADA",
+          "gestor": "IAM",
+          "segmento": "12431",
+          "retorno": -0.4794,
+          "pl": 11424221.25
         }
       ],
       "topTradPos": [

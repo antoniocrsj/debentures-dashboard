@@ -474,17 +474,6 @@
       ],
       "top12431Neg": [
         {
-          "cnpj": "63942021000146",
-          "nome": "OCCAM BB INFRA LINEAR…",
-          "gestor": "Occam",
-          "retorno": -6.9298,
-          "obs": 5,
-          "de": "2026-06-22",
-          "ate": "2026-06-26",
-          "pl": 115963647.41,
-          "segmento": "12431"
-        },
-        {
           "cnpj": "52879059000103",
           "nome": "BOCAINA INFRA MASTER IV FUNDO…",
           "gestor": "Bocaina",
@@ -515,6 +504,17 @@
           "de": "2026-06-22",
           "ate": "2026-06-26",
           "pl": 69413189.02,
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "63942021000146",
+          "nome": "OCCAM BB INFRA LINEAR…",
+          "gestor": "Occam",
+          "retorno": -1.7378,
+          "obs": 5,
+          "de": "2026-06-22",
+          "ate": "2026-06-26",
+          "pl": 115963647.41,
           "segmento": "12431"
         },
         {
