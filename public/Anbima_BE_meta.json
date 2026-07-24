@@ -1,0 +1,35 @@
+{
+  "fonte": "ANBIMA PU Par + Premio (xlsx)",
+  "sourceFile": "PU Par + Prêmio_260717.xlsx",
+  "dataReferencia": "2026-07-17",
+  "geradoEm": "2026-07-24T20:09:28.474Z",
+  "total": 939,
+  "emExercicio": 272,
+  "futuro": 667,
+  "tickersNoCadastro": 938,
+  "tickersNaoEncontrados": [
+    "FEPS11"
+  ],
+  "registrosIncompletos": [
+    "ABSP12",
+    "CEEBA3",
+    "CEPEA1",
+    "CPGT17",
+    "CSANA2",
+    "CSMGB6",
+    "DASAA6",
+    "EKTRA0",
+    "KLAS12",
+    "LMTP18",
+    "MGLUA0",
+    "MNRVA1",
+    "MOVI17",
+    "MOVIA2",
+    "RSAN15",
+    "SAPRB1",
+    "SBSPF8",
+    "VAMO22"
+  ],
+  "dupsEntreAbas": [],
+  "preservado": false
+}

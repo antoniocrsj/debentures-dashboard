@@ -132,6 +132,25 @@ export function fmtTaxa(str) {
   return s
 }
 
+/** Formata a taxa de recompra/breakeven conforme a REMUNERACAO do papel.
+ *  Conceito separado de Taxa (emissao) e Tx Anbima.
+ *   - "% do DI"  -> "105,47% DI"      (nivel: percentual do DI)
+ *   - "DI + ..." -> "DI +2,51%" / "DI −1,26%"   (spread sobre o DI; preserva negativo)
+ *   - "IPCA ..." -> "IPCA +6,18%"     (spread sobre o IPCA)
+ *  taxa e' numero (pode ser negativo). null/NaN -> "-".
+ */
+export function fmtRecompraTaxa(taxa, remuneracao) {
+  if (taxa == null || isNaN(taxa)) return '-'
+  const dec2 = n => n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+  const r = String(remuneracao || '').toLowerCase()
+  if (r.includes('% do di') || r.replace(/\s/g, '').includes('%di')) return `${dec2(taxa)}% DI`
+  const sinal = taxa < 0 ? '−' : '+'
+  const abs = dec2(Math.abs(taxa))
+  if (r.includes('ipca')) return `IPCA ${sinal}${abs}%`
+  if (r.startsWith('di') || r.includes('cdi')) return `DI ${sinal}${abs}%`
+  return dec2(taxa)
+}
+
 /** Normalize a boolean-like field (Sim/S/1/true) */
 export function isYes(str) {
   return /^(s|sim|yes|1|true|x)$/i.test((str || '').trim())

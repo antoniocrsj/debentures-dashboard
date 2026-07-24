@@ -33,6 +33,7 @@ param(
   [switch]$SkipAgenda,
   [switch]$SkipIda,
   [switch]$SkipBooks,
+  [switch]$SkipBE,
   [switch]$Sensibilidade,                  # opt-in: + captacao do universo candidato (10%-80%) p/ analise de sensibilidade de corte
   [switch]$NoPublishPrompt,
   [ValidateSet('Auto', 'Incremental', 'Completa')]
@@ -59,6 +60,7 @@ $summary = [ordered]@{
   ANBIMA   = 'nao executado'
   Ofertas  = 'nao executado'
   Emissores = 'nao executado'
+  RecompraBE = 'nao executado'
   Relatorios = 'nao executado'
   Publicacao = 'nao executada'
 }
@@ -80,6 +82,7 @@ if (-not $SkipRelatorios) { $script:StepsAtivos.Add('Relatorios') }
 if (-not $SkipAgenda)     { $script:StepsAtivos.Add('Agenda') }
 if (-not $SkipIda)        { $script:StepsAtivos.Add('IDA') }
 if (-not $SkipBooks)      { $script:StepsAtivos.Add('Books (mercado primario)') }
+if (-not $SkipBE)         { $script:StepsAtivos.Add('Recompra/BE (ANBIMA)') }
 $script:StepsAtivos.Add('Resumo')
 $script:StepTotal = $script:StepsAtivos.Count
 $script:StepIndex = 0
@@ -425,6 +428,7 @@ function Write-ResumoPublicado($before, $after, $summary, [string]$captacaoModo,
       ANBIMA     = $summary.ANBIMA
       Ofertas    = $summary.Ofertas
       Emissores  = $summary.Emissores
+      RecompraBE = $summary.RecompraBE
     }
     impacto = [ordered]@{
       fundos = Get-ResumoFonte $before.Fundos $after.Fundos @('Total', 'Gestores', 'SemGestor')
@@ -776,6 +780,38 @@ if ($SkipBooks) {
   } catch {
     $summary.Books = "FALHOU sem travar: $($_.Exception.Message)"
     Warn $summary.Books
+  }
+}
+
+# 5g. Recompra antecipada / breakeven (ANBIMA "PU Par + Premio") - node + exceljs.
+# OPCIONAL e ISOLADO: a atualizacao NAO falha se a planilha faltar/estiver
+# invalida (o prep preserva o Anbima_BE.csv anterior). Registra o resumo tecnico.
+if ($SkipBE) {
+  $summary.RecompraBE = 'PULADO por parametro -SkipBE'
+  Warn $summary.RecompraBE
+} else {
+  Progress 'Recompra/BE (ANBIMA)'
+  try {
+    & node (Join-Path $PSScriptRoot 'preparar-anbima-be.mjs')
+    if ($LASTEXITCODE -ne 0) { throw "node saiu com codigo $LASTEXITCODE" }
+    $beMeta = Read-MetaJson 'Anbima_BE_meta.json'
+    if ($beMeta -and -not $beMeta.preservado -and $beMeta.dataReferencia) {
+      $nf = @($beMeta.tickersNaoEncontrados).Count
+      $inc = @($beMeta.registrosIncompletos).Count
+      $summary.RecompraBE = "OK (ref $($beMeta.dataReferencia); em exercicio $($beMeta.emExercicio), futuro $($beMeta.futuro); $($beMeta.tickersNoCadastro) no cadastro, $nf nao encontrado(s), $inc incompleto(s))"
+      Ok $summary.RecompraBE
+      Write-Host "     arquivo de origem: $($beMeta.sourceFile)"
+      if ($nf -gt 0) { Warn ("     tickers da planilha AUSENTES no cadastro (Debentures.csv): " + (@($beMeta.tickersNaoEncontrados) -join ', ')) }
+    } elseif ($beMeta -and $beMeta.preservado) {
+      $summary.RecompraBE = "PRESERVADO (planilha ausente/invalida: $($beMeta.motivo))"
+      Warn $summary.RecompraBE
+    } else {
+      $summary.RecompraBE = 'executado (sem meta legivel)'
+      Warn $summary.RecompraBE
+    }
+  } catch {
+    $summary.RecompraBE = "FALHOU sem travar: $($_.Exception.Message)"
+    Warn "$($summary.RecompraBE) (recompra/BE fica com o snapshot anterior)"
   }
 }
 

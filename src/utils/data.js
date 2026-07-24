@@ -80,11 +80,38 @@ export function buildAnbimaIndex(anbima) {
   return map
 }
 
-export function enrichDebenture(deb, { emissorMap, blcByAtivo, anbimaByTicker }) {
+// Indexa a base de recompra antecipada / breakeven (Anbima_BE.csv, gerado por
+// preparar-anbima-be.mjs) por ticker. Converte os campos numericos para numero
+// (mantendo taxa negativa) e vazio -> null. Conceito separado de Taxa/Tx Anbima.
+export function buildAnbimaBEIndex(anbimaBE) {
+  const map = {}
+  const num = (row, k) => { const v = (row[k] ?? '').trim(); return v === '' ? null : parseNum(v) }
+  ;(anbimaBE || []).forEach(row => {
+    const t = (row['ticker'] || '').trim().toUpperCase()
+    if (!t) return
+    map[t] = {
+      ticker: t,
+      statusExercicio: row['statusExercicio'] || '',
+      dataEvento: (row['dataEvento'] || '').trim(),
+      diasUteisAteEvento: num(row, 'diasUteisAteEvento'),
+      pctPuPar: num(row, 'pctPuPar'),
+      taxaEvento: num(row, 'taxaEvento'),
+      tipoTaxa: row['tipoTaxa'] || '',
+      remuneracao: row['remuneracao'] || '',
+      dataReferencia: (row['dataReferencia'] || '').trim(),
+      origemAba: row['origemAba'] || '',
+    }
+  })
+  return map
+}
+
+export function enrichDebenture(deb, { emissorMap, blcByAtivo, anbimaByTicker, anbimaBEByTicker }) {
   const codigoAtivo = (pick(deb, FIELDS.codigoAtivo) || '').trim()
   const cnpjKey = normCNPJ(pick(deb, FIELDS.cnpjEmissor))
   const emissor = emissorMap[cnpjKey] || {}
   const anbima = (anbimaByTicker || {})[codigoAtivo.toUpperCase()] || null
+  // Recompra antecipada / breakeven (fonte opcional; null quando o ticker nao consta).
+  const recompra = (anbimaBEByTicker || {})[codigoAtivo.toUpperCase()] || null
 
   const blcRows = (blcByAtivo || {})[codigoAtivo] || []
   const alocacao = blcRows.reduce((s, r) => s + r.valor, 0)
@@ -119,6 +146,8 @@ export function enrichDebenture(deb, { emissorMap, blcByAtivo, anbimaByTicker })
     // Duration em anos (dias uteis / 252, ja convertido na preparacao).
     durationAnbima: (anbima && anbima['durationAnbimaAnos']) ? anbima['durationAnbimaAnos'] : '—',
     anbimaInfo: anbima,
+    // Recompra antecipada / breakeven (objeto ou null). Conceito separado de Taxa/Tx Anbima.
+    recompra,
   }
 }
 

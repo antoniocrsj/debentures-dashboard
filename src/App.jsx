@@ -3,7 +3,7 @@ import { useDebentures, BLC_DEFAULT_URL } from './hooks/useDebentures.js'
 import { usePeriodReports } from './hooks/usePeriodReports.js'
 import { useAgenda12m } from './hooks/useAgenda12m.js'
 import {
-  buildIndexes, buildBlcIndex, buildAnbimaIndex, buildPlByGestor,
+  buildIndexes, buildBlcIndex, buildAnbimaIndex, buildAnbimaBEIndex, buildPlByGestor,
   enrichDebenture, computeManagers, computeGroups, recomputeAlocByGestor
 } from './utils/data.js'
 import { isYes, dateKey, fmtDateOnly, parseBRDateTime, parseISODate, fmtMesAno } from './utils/format.js'
@@ -165,6 +165,7 @@ export default function App() {
       ...buildIndexes(raw),
       blcByAtivo: buildBlcIndex(raw.blc),
       anbimaByTicker: buildAnbimaIndex(raw.anbima),
+      anbimaBEByTicker: buildAnbimaBEIndex(raw.anbimaBE),
     }
   }, [raw])
 
@@ -173,6 +174,15 @@ export default function App() {
   // Data de referencia da ANBIMA (vem do arquivo, nao do relogio). DD/MM/AAAA.
   const anbimaRef = useMemo(() => {
     const d = raw?.anbima?.find(r => r.dataReferenciaAnbima)?.dataReferenciaAnbima
+    if (!d) return ''
+    const [y, m, dd] = d.split('-')
+    return (y && m && dd) ? `${dd}/${m}/${y}` : d
+  }, [raw])
+
+  // Data de referencia da base de recompra/breakeven (fonte separada da ANBIMA
+  // diaria; nao mexe na data geral de atualizacao). DD/MM/AAAA.
+  const recompraRef = useMemo(() => {
+    const d = raw?.anbimaBEMeta?.dataReferencia || raw?.anbimaBE?.find(r => r.dataReferencia)?.dataReferencia
     if (!d) return ''
     const [y, m, dd] = d.split('-')
     return (y && m && dd) ? `${dd}/${m}/${y}` : d
@@ -229,6 +239,15 @@ export default function App() {
       if (col === 'taxa')       return parseFloat((a.taxa || '').replace(',', '.')) || 0
       if (col === 'vol')        return a.volumeEmitido
       if (col === 'alocacao')   return a.alocacao
+      // Recompra/breakeven: registros SEM valor vao sempre para o fim (independe da direcao).
+      if (col === 'recompraTaxa') {
+        const v = a.recompra?.taxaEvento
+        return v == null ? (dir === 'asc' ? Infinity : -Infinity) : v
+      }
+      if (col === 'recompraData') {
+        const k = dateKey(a.recompra?.dataEvento)
+        return k || (dir === 'asc' ? '99999999' : '00000000')
+      }
       return ''
     }
     arr.sort((a, b) => {
@@ -494,6 +513,7 @@ export default function App() {
                   onFilter={handleFilter}
                   onInfoClick={setSelected}
                   anbimaRef={anbimaRef}
+                  recompraRef={recompraRef}
                   desktop={desktop}
                 />
                 {!showAll && filteredAssets.length > PAGE_SIZE && (
@@ -534,6 +554,7 @@ export default function App() {
               onFilter={handleFilter}
               onInfoClick={setSelected}
               anbimaRef={anbimaRef}
+              recompraRef={recompraRef}
               desktop={desktop}
             />
             {/* 3 colunas: grafico | gestor | grupo. O grafico reage a

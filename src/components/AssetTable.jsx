@@ -1,15 +1,18 @@
-import { fmtBRL, fmtDateShort, fmtDateDDMMYY, fmtTaxa, shortEmissor } from '../utils/format.js'
+import { fmtBRL, fmtDate, fmtDateShort, fmtDateDDMMYY, fmtTaxa, fmtRecompraTaxa, shortEmissor } from '../utils/format.js'
 import TableWrap from './TableWrap.jsx'
 
 const COLS = [
-  { id: 'ativo',      label: 'Ativo',      sticky: true,  sortable: true  },
-  { id: 'emissao',    label: 'Emis.',      sticky: false, sortable: true  },
-  { id: 'vencimento', label: 'Venc.',      sticky: false, sortable: true  },
-  { id: 'taxa',       label: 'Taxa',       sticky: false, sortable: true  },
-  { id: 'txanbima',   label: 'Tx Anbima',  sticky: false, sortable: false },
-  { id: 'duration',   label: 'Duration',   sticky: false, sortable: false },
-  { id: 'vol',        label: 'Vol. mercado', sticky: false, sortable: true  },
-  { id: 'alocacao',   label: 'Alocação',   sticky: false, sortable: true  },
+  { id: 'ativo',        label: 'Ativo',          sticky: true,  sortable: true  },
+  { id: 'emissao',      label: 'Emis.',          sticky: false, sortable: true  },
+  { id: 'vencimento',   label: 'Venc.',          sticky: false, sortable: true  },
+  { id: 'taxa',         label: 'Taxa',           sticky: false, sortable: true  },
+  { id: 'txanbima',     label: 'Tx Anbima',      sticky: false, sortable: false },
+  { id: 'duration',     label: 'Duration',       sticky: false, sortable: false },
+  // Recompra antecipada / breakeven (fonte separada; nao mistura com Taxa/Tx Anbima).
+  { id: 'recompraTaxa', label: 'Tx. recompra/BE', sticky: false, sortable: true },
+  { id: 'recompraData', label: 'Data recompra',  sticky: false, sortable: true },
+  { id: 'vol',          label: 'Vol. mercado',   sticky: false, sortable: true  },
+  { id: 'alocacao',     label: 'Alocação',       sticky: false, sortable: true  },
 ]
 
 // Monta o tooltip com os dados originais da ANBIMA (auditoria) para uma debênture.
@@ -32,7 +35,28 @@ function anbimaTooltip(a, ref) {
   return L.join('\n')
 }
 
-export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter, onInfoClick, anbimaRef, desktop }) {
+// Tooltip de recompra/breakeven — conceito da taxa (implícita vs breakeven),
+// data do evento, %PU Par estimado, remuneração e a data de referência da fonte.
+function recompraTooltip(a, ref) {
+  const r = a.recompra
+  if (!r) return undefined
+  const L = []
+  if (r.statusExercicio === 'Em exercício') {
+    L.push('Recompra JÁ em exercício (valendo)')
+    L.push(r.dataEvento ? `Próximo evento: ${fmtDate(r.dataEvento)}` : 'Sem próximo evento informado')
+    L.push(r.taxaEvento != null ? `Taxa implícita no próximo evento: ${fmtRecompraTaxa(r.taxaEvento, r.remuneracao)}` : 'Taxa do próximo evento: —')
+  } else {
+    L.push('Recompra em exercício FUTURO')
+    L.push(`Início do resgate: ${fmtDate(r.dataEvento)}${r.diasUteisAteEvento != null ? ` (${r.diasUteisAteEvento} dias úteis)` : ''}`)
+    L.push(`Breakeven estimado: ${fmtRecompraTaxa(r.taxaEvento, r.remuneracao)}`)
+  }
+  if (r.pctPuPar != null) L.push(`%PU Par estimado: ${(r.pctPuPar * 100).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`)
+  L.push(`Remuneração: ${r.remuneracao || '—'}`)
+  L.push(`Ref: ${ref || (r.dataReferencia ? fmtDate(r.dataReferencia) : '—')}`)
+  return L.join('\n')
+}
+
+export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter, onInfoClick, anbimaRef, recompraRef, desktop }) {
   const fmtData = desktop ? fmtDateDDMMYY : fmtDateShort
   if (!assets.length) {
     return (
@@ -56,6 +80,8 @@ export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter
           <col className="c-taxa" />
           <col className="c-anbima" />
           <col className="c-duration" />
+          <col className="c-recompra" />
+          <col className="c-recompra" />
           <col className="c-vol" />
           <col className="c-aloc" />
         </colgroup>
@@ -67,7 +93,11 @@ export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter
                 className={`${col.sticky ? 'col-sticky' : ''}${col.sortable ? '' : ' th-nosort'}`}
                 onClick={col.sortable ? () => onSort(col.id) : undefined}
                 aria-sort={col.sortable && sort.col === col.id ? (sort.dir === 'asc' ? 'ascending' : 'descending') : undefined}
-                title={col.id === 'txanbima' && anbimaRef ? `Taxa indicativa ANBIMA — ref ${anbimaRef}` : undefined}
+                title={
+                  col.id === 'txanbima' && anbimaRef ? `Taxa indicativa ANBIMA — ref ${anbimaRef}`
+                  : (col.id === 'recompraTaxa' || col.id === 'recompraData') && recompraRef ? `Recompra antecipada / breakeven (ANBIMA) — ref ${recompraRef}`
+                  : undefined
+                }
               >
                 {col.label}
                 {col.sortable && sort.col === col.id && (
@@ -80,6 +110,7 @@ export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter
         <tbody>
           {assets.map((a, i) => {
             const selected = activeAtivo === a.codigoAtivo
+            const r = a.recompra
             return (
               <tr
                 key={a.codigoAtivo || i}
@@ -113,6 +144,16 @@ export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter
                 <td className="col-num">{fmtTaxa(a.taxa)}</td>
                 <td className="col-num col-anbima" title={anbimaTooltip(a, anbimaRef)}>{(a.txAnbima && a.txAnbima !== '—') ? a.txAnbima : '-'}</td>
                 <td className="col-num col-anbima">{(a.durationAnbima && a.durationAnbima !== '—') ? a.durationAnbima : '-'}</td>
+                <td className="col-num col-recompra" title={recompraTooltip(a, recompraRef)}>
+                  {r ? fmtRecompraTaxa(r.taxaEvento, r.remuneracao) : '-'}
+                </td>
+                <td className="col-num col-recompra" title={recompraTooltip(a, recompraRef)}>
+                  {r
+                    ? (r.statusExercicio === 'Em exercício'
+                        ? <span className="recompra-valendo">Valendo</span>
+                        : (r.dataEvento ? fmtData(r.dataEvento) : '-'))
+                    : '-'}
+                </td>
                 <td className="col-num">{a.volumeEmitido > 0 ? fmtBRL(a.volumeEmitido) : '-'}</td>
                 <td className={`col-num col-aloc${a.alocacao > 0 ? ' has-aloc' : ''}`}>
                   {a.alocacao > 0 ? fmtBRL(a.alocacao) : '-'}
@@ -130,6 +171,8 @@ export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter
               <td className="col-num"></td>
               <td className="col-num col-anbima"></td>
               <td className="col-num col-anbima"></td>
+              <td className="col-num col-recompra"></td>
+              <td className="col-num col-recompra"></td>
               <td className="col-num">{fmtBRL(totalVol)}</td>
               <td className="col-num col-aloc">{fmtBRL(totalAloc)}</td>
             </tr>

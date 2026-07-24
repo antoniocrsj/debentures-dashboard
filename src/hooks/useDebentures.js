@@ -22,6 +22,10 @@ const STATIC_BLC_URL = '/BLC_tratado.csv'
 const STATIC_DEBENTURES_URL = '/Debentures.csv'
 // Taxas ANBIMA (coluna Tx Anbima): tambem estatico em public/.
 const STATIC_ANBIMA_URL = '/Anbima_Tx.csv'
+// Recompra antecipada / breakeven (PU Par + Premio): gerado por
+// tools/preparar-anbima-be.mjs. OPCIONAL — o app segue sem ele.
+const STATIC_ANBIMA_BE_URL = '/Anbima_BE.csv'
+const STATIC_ANBIMA_BE_META_URL = '/Anbima_BE_meta.json'
 // PL por gestor: gerado por preparar-fluxo.ps1 a partir do Informe Diario da CVM.
 const STATIC_PL_GESTORES_URL = '/PL_Gestores.csv'
 // Metadados de quando cada fonte foi gerada (nao o cache do navegador) — usados em App.jsx (dataFreshness).
@@ -53,7 +57,7 @@ async function fetchStaticJSON(path) {
 }
 
 function cacheKey() {
-  return 'deb-cache-v6'  // v6: inclui metadados de geracao (Debentures_meta/BLC_meta)
+  return 'deb-cache-v7'  // v7: inclui recompra/breakeven (Anbima_BE) no objeto enriquecido
 }
 
 function readCache() {
@@ -115,9 +119,12 @@ export function useDebentures(blcUrl) {
       fetchStaticJSON(STATIC_BLC_META_URL).catch(() => null),
       // Maturidade do CDA (selo de confiabilidade) — opcional.
       fetchStaticJSON(STATIC_BLC_MATURIDADE_URL).catch(() => null),
+      // Recompra antecipada / breakeven — opcional: se faltar, o app segue sem as colunas.
+      fetchStaticCSV(STATIC_ANBIMA_BE_URL).catch(() => []),
+      fetchStaticJSON(STATIC_ANBIMA_BE_META_URL).catch(() => null),
     ])
-      .then(([emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade]) => {
-        const raw = { emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade }
+      .then(([emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta]) => {
+        const raw = { emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta }
         writeCache(raw)
         if (alive) setState({ loading: false, refreshing: false, error: null, raw, cachedAt: Date.now() })
       })

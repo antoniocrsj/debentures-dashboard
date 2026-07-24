@@ -532,6 +532,7 @@ a { color: var(--primary); }
 .asset-table col.c-taxa     { width: 70px; }
 .asset-table col.c-anbima   { width: 92px; }
 .asset-table col.c-duration { width: 64px; }
+.asset-table col.c-recompra { width: 82px; }
 .asset-table col.c-vol      { width: 92px; }
 .asset-table col.c-aloc     { width: 78px; }
 
@@ -539,6 +540,9 @@ a { color: var(--primary); }
 .asset-table th.th-nosort { cursor: default; }
 .asset-table th.th-nosort:hover { color: var(--text-muted); }
 .col-anbima { font-variant-numeric: tabular-nums; }
+/* Recompra antecipada / breakeven — conceito separado de Taxa/Tx Anbima. */
+.col-recompra { font-variant-numeric: tabular-nums; }
+.recompra-valendo { color: var(--c-verde); font-weight: 600; }
 
 .asset-table th {
   background: var(--card);
