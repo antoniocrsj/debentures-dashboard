@@ -55,7 +55,7 @@ function saveMonths(m) {
   try { localStorage.setItem('blc-months', JSON.stringify(m)) } catch {}
 }
 
-const INIT_FILTERS = { grupo: '', setor: '', gestor: '', lei12431: '', ativo: '', search: '', anoVenc: '' }
+const INIT_FILTERS = { grupo: '', setor: '', gestor: '', lei12431: '', ativo: '', search: '', anoVenc: '', comRecompra: '' }
 const INIT_SORT    = { col: 'emissao', dir: 'desc' }
 const PAGE_SIZE    = 100  // mostra os 100 mais recentes ao abrir
 
@@ -212,6 +212,7 @@ export default function App() {
       if (filters.lei12431 === 'Sim' && !isYes(a.lei12431Str))              return false
       if (filters.lei12431 === 'Não' && isYes(a.lei12431Str))               return false
       if (filters.ativo    && a.codigoAtivo     !== filters.ativo)           return false
+      if (filters.comRecompra && !a.recompra)                                return false
       if (q && ![a.codigoAtivo, a.emissorNome, a.grupo, a.setor]
         .some(v => v?.toLowerCase().includes(q))) return false
       // Clicou numa barra de vencimento: so' os ativos que amortizam naquele ano

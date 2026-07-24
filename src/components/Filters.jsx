@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import SearchSelect from './SearchSelect.jsx'
 
-const EMPTY = { grupo: '', setor: '', gestor: '', lei12431: '', ativo: '', search: '' }
+const EMPTY = { grupo: '', setor: '', gestor: '', lei12431: '', ativo: '', search: '', comRecompra: '' }
 
 export default function Filters({ filters, options, disabled, onChange, tabsSlot, updatedLabel, updatedTooltip, compact = false }) {
   const set = useCallback((key, val) => onChange(f => ({ ...f, [key]: val })), [onChange])
@@ -14,6 +14,15 @@ export default function Filters({ filters, options, disabled, onChange, tabsSlot
         <SearchSelect label="Gestor"     value={filters.gestor}   options={options.gestores} disabled={disabled} onChange={v => set('gestor', v)} />
         <SearchSelect label="Ativo"      value={filters.ativo}    options={options.ativos}   disabled={disabled} onChange={v => set('ativo', v)} />
         <SearchSelect label="12.431" value={filters.lei12431} options={['Sim', 'Não']}   disabled={disabled} onChange={v => set('lei12431', v)} />
+
+        <button
+          type="button"
+          className={`chip-toggle${filters.comRecompra ? ' is-active' : ''}`}
+          disabled={disabled}
+          aria-pressed={!!filters.comRecompra}
+          title="Mostrar só debêntures com recompra antecipada / breakeven"
+          onClick={() => set('comRecompra', filters.comRecompra ? '' : '1')}
+        >Só com recompra</button>
 
         {Object.values(filters).some(v => v !== '') && (
           <button className="chip-clear" onClick={() => onChange(EMPTY)}>✕ Limpar</button>

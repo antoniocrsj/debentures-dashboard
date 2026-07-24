@@ -276,6 +276,33 @@ a { color: var(--primary); }
   white-space: nowrap;
 }
 
+/* Filtro rápido (toggle) — pílula que liga/desliga; ativo usa a cor primária */
+.chip-toggle {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--btn-h);
+  background: var(--chip-bg);
+  border: 1px solid var(--navy-light);
+  border-radius: 99px;
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--navy-light);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color .15s, background .15s, color .15s;
+}
+.chip-toggle.is-active {
+  border-color: var(--primary);
+  background: var(--primary-light);
+  color: var(--primary);
+  font-weight: 600;
+}
+.chip-toggle:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
+.chip-toggle:disabled { opacity: .35; cursor: default; }
+
 .search-wrap {
   display: flex;
   align-items: center;
