@@ -58,6 +58,7 @@ $summary = [ordered]@{
   BLC      = 'nao executado'
   ANBIMA   = 'nao executado'
   Ofertas  = 'nao executado'
+  Emissores = 'nao executado'
   Relatorios = 'nao executado'
   Publicacao = 'nao executada'
 }
@@ -74,6 +75,7 @@ if (-not $SkipCaptacao -and $Sensibilidade) { $script:StepsAtivos.Add('Sensibili
 if (-not $SkipBlc)        { $script:StepsAtivos.Add('BLC') }
 if (-not $SkipAnbima)     { $script:StepsAtivos.Add('ANBIMA') }
 if (-not $SkipOfertas)    { $script:StepsAtivos.Add('Ofertas') }
+if (-not $SkipRelatorios) { $script:StepsAtivos.Add('Emissores (cadastro Ana)') }
 if (-not $SkipRelatorios) { $script:StepsAtivos.Add('Relatorios') }
 if (-not $SkipAgenda)     { $script:StepsAtivos.Add('Agenda') }
 if (-not $SkipIda)        { $script:StepsAtivos.Add('IDA') }
@@ -422,6 +424,7 @@ function Write-ResumoPublicado($before, $after, $summary, [string]$captacaoModo,
       BLC        = $summary.BLC
       ANBIMA     = $summary.ANBIMA
       Ofertas    = $summary.Ofertas
+      Emissores  = $summary.Emissores
     }
     impacto = [ordered]@{
       fundos = Get-ResumoFonte $before.Fundos $after.Fundos @('Total', 'Gestores', 'SemGestor')
@@ -663,6 +666,28 @@ if ($SkipRelatorios) {
   $summary.Relatorios = 'PULADO por parametro -SkipRelatorios'
   Warn $summary.Relatorios
 } else {
+  # Cadastro de emissores (grupo economico) da Ana (fonte canonica). Passo PROPRIO
+  # e VISIVEL: um fallback silencioso (Ana offline) deixaria a curadoria pendente
+  # sem aviso no resumo. A meta (Emissores_meta.json) registra a fonte usada.
+  Progress 'Emissores (cadastro Ana)'
+  try {
+    & (Join-Path $PSScriptRoot 'preparar-emissores.ps1')
+    $emMeta = Read-MetaJson 'Emissores_meta.json'
+    if ($emMeta -and ([string]$emMeta.fonte).StartsWith('Ana')) {
+      $summary.Emissores = "OK (Ana; $($emMeta.manuais) curadoria(s) manual(is))"
+      Ok $summary.Emissores
+    } elseif ($emMeta) {
+      $summary.Emissores = "FALLBACK ($($emMeta.fonte)) -- curadorias novas da Ana PODEM estar pendentes"
+      Warn $summary.Emissores
+    } else {
+      $summary.Emissores = 'executado (fonte indeterminada -- sem meta)'
+      Warn $summary.Emissores
+    }
+  } catch {
+    $summary.Emissores = "FALHOU sem travar: $($_.Exception.Message)"
+    Warn "$($summary.Emissores) (seguindo com o snapshot anterior)"
+  }
+
   Progress 'Resumo do Dia (relatorios)'
   # Atributos de cadastro dos fundos curados (Forma_Condominio/tipo/datas/PL) da
   # CVM -> public/data/Fundos_Atributos.csv. O app/gerador rodam sem acesso a CVM,
@@ -672,14 +697,6 @@ if ($SkipRelatorios) {
     & (Join-Path $PSScriptRoot 'preparar-atributos-fundos.ps1')
   } catch {
     Warn "Atributos de fundos nao atualizados ($($_.Exception.Message)); seguindo com o snapshot anterior."
-  }
-  # Snapshot do cadastro de emissores (grupo economico) antes de gerar: o gerador
-  # e offline e usa public/Emissores.csv para a coluna Grupo e para detectar
-  # emissores novos ainda nao classificados. Best-effort: nao trava a geracao.
-  try {
-    & (Join-Path $PSScriptRoot 'preparar-emissores.ps1')
-  } catch {
-    Warn "Cadastro de emissores nao atualizado ($($_.Exception.Message)); seguindo com o snapshot anterior."
   }
   try {
     & node (Join-Path $PSScriptRoot 'gerar-relatorios.mjs')

@@ -135,8 +135,11 @@ if (-not $cadastro) {
   try {
     $cadastro = Get-CadastroDaPlanilha
   } catch {
+    $u8 = New-Object System.Text.UTF8Encoding($false)
     if (Test-Path $OutPath) {
       Aviso "AVISO: falha ao baixar o cadastro ($($_.Exception.Message)). PRESERVANDO o Emissores.csv anterior."
+      $m = [ordered]@{ fonte = 'snapshot anterior (preservado -- Ana e planilha indisponiveis)'; total = $null; manuais = $null; updatedAt = (Get-Date).ToString('s') }
+      [System.IO.File]::WriteAllText((Join-Path $Root 'public\Emissores_meta.json'), (($m | ConvertTo-Json) + "`r`n"), $u8)
     } else {
       Aviso "AVISO: falha ao baixar o cadastro e sem snapshot anterior ($($_.Exception.Message)). Grupo/faltantes ficarao indisponiveis."
     }
@@ -152,6 +155,11 @@ Write-Host ("  Fonte: {0}" -f $cadastro.Fonte) -ForegroundColor Green
 if ($null -ne $cadastro.Manuais) {
   Write-Host ("  Curados na Ana (origin=manual): {0}" -f $cadastro.Manuais) -ForegroundColor Green
 }
+
+# Meta p/ o orquestrador (atualizar-tudo) saber a FONTE usada e avisar no resumo
+# quando NAO veio da Ana (fallback = curadorias novas podem estar pendentes).
+$meta = [ordered]@{ fonte = $cadastro.Fonte; total = $cadastro.Total; manuais = $cadastro.Manuais; updatedAt = (Get-Date).ToString('s') }
+[System.IO.File]::WriteAllText((Join-Path $Root 'public\Emissores_meta.json'), (($meta | ConvertTo-Json) + "`r`n"), $utf8)
 
 $colunasAntes = Get-NomesDeColuna $cabecalhoAnterior
 $colunasAgora = Get-NomesDeColuna $cadastro.Linhas[0]
