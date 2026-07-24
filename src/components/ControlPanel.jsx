@@ -184,8 +184,7 @@ export default function ControlPanel() {
   return (
     <section className="control-panel" aria-label="Painel de controle da atualização">
       <header className="cp-header">
-        <h2 className="cp-title">Painel de controle — Atualização</h2>
-        <p className="cp-subtitle">Só funciona aqui, no `npm run dev` local. Nunca vai para produção.</p>
+        <h2 className="cp-title">Painel de controle</h2>
         <div className="cp-ana">
           <span className={`cp-ana-chip ${ana == null ? 'is-checking' : ana.up ? 'is-up' : 'is-down'}`}>
             {ana == null ? 'Ana: verificando…' : ana.up ? '● Ana no ar' : '● Ana offline'}
@@ -206,13 +205,12 @@ export default function ControlPanel() {
       {/* Rotina diária: só 2 cliques. */}
       <div className="cp-block cp-daily">
         <h3 className="cp-block-title">Atualização diária</h3>
-        <p className="cp-daily-hint">No dia a dia é só isto: <strong>1) Iniciar atualização</strong> e, quando terminar, <strong>2) Publicar agora</strong>.</p>
         <div className="cp-btn-row">
           <button type="button" className="cp-btn cp-btn-primary cp-btn-big" onClick={rodar} disabled={running}>
-            {running && actionLabel === 'atualizar-tudo' ? 'Rodando…' : '1 · Iniciar atualização'}
+            {running && actionLabel === 'atualizar-tudo' ? 'Atualizando…' : 'Atualizar'}
           </button>
           <button type="button" className="cp-btn cp-btn-danger cp-btn-big" onClick={publicar} disabled={running}>
-            {running && actionLabel === 'publicar' ? 'Publicando…' : '2 · Publicar'}
+            {running && actionLabel === 'publicar' ? 'Publicando…' : 'Publicar'}
           </button>
           {running && (
             <button type="button" className="cp-btn cp-btn-danger" onClick={cancelar}>Cancelar</button>
@@ -220,43 +218,43 @@ export default function ControlPanel() {
         </div>
       </div>
 
-      {/* Controles detalhados — só quando precisar mexer em algo. */}
-      <details className="cp-advanced">
-        <summary className="cp-advanced-summary">Opções avançadas — etapas, modo da captação, mês do BLC, fundos, conferência</summary>
-
-        <div className="cp-block">
-          <h3 className="cp-block-title">Etapas do "Iniciar atualização"</h3>
-          <div className="cp-steps">
-            <StepCheck k="debentures" label="Debêntures (cadastro)" hint="Regenera public/Debentures.csv" />
-            <StepCheck k="captacao" label="Captação" hint="Fluxo semanal/mensal, rentabilidade e fundos" />
-            <StepCheck k="blc" label="BLC / Alocação" hint="Carteira dos fundos (mensal)" />
-            <StepCheck k="anbima" label="ANBIMA" hint="Taxas indicativas" />
-            <StepCheck k="ofertas" label="Ofertas CVM" hint="Novas emissões registradas na CVM" />
-            <StepCheck k="relatorios" label="Resumo do Dia" hint="Gera os relatórios diários (public/reports)" />
-          </div>
-
-          {steps.captacao && (
-            <div className="cp-sub">
-              <span className="cp-sub-label">Modo da Captação:</span>
-              <div className="cp-modos">
-                {MODOS.map(m => (
-                  <button key={m.id} type="button" className={`cp-modo-btn${modo === m.id ? ' active' : ''}`}
-                    onClick={() => setModo(m.id)} disabled={running} title={m.hint}>{m.label}</button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {steps.blc && (
-            <div className="cp-sub">
-              <span className="cp-sub-label">Mês do BLC (sobrescreve o atual):</span>
-              <select className="cp-select" value={blcMes} onChange={e => setBlcMes(e.target.value)} disabled={running}>
-                {ultimosMeses(6).map(m => <option key={m} value={m}>{fmtMesAno(m)}</option>)}
-              </select>
-            </div>
-          )}
-          <p className="cp-note">As etapas marcadas aqui valem para o botão "Iniciar atualização" lá em cima.</p>
+      {/* Etapas: sempre visível (controle principal do botão Atualizar). */}
+      <div className="cp-block">
+        <h3 className="cp-block-title">Etapas da atualização</h3>
+        <div className="cp-steps">
+          <StepCheck k="debentures" label="Debêntures (cadastro)" hint="Regenera public/Debentures.csv" />
+          <StepCheck k="captacao" label="Captação" hint="Fluxo semanal/mensal, rentabilidade e fundos" />
+          <StepCheck k="blc" label="BLC / Alocação" hint="Carteira dos fundos (mensal)" />
+          <StepCheck k="anbima" label="ANBIMA" hint="Taxas indicativas" />
+          <StepCheck k="ofertas" label="Ofertas CVM" hint="Novas emissões registradas na CVM" />
+          <StepCheck k="relatorios" label="Resumo do Dia" hint="Gera os relatórios diários (public/reports)" />
         </div>
+
+        {steps.captacao && (
+          <div className="cp-sub">
+            <span className="cp-sub-label">Modo da Captação:</span>
+            <div className="cp-modos">
+              {MODOS.map(m => (
+                <button key={m.id} type="button" className={`cp-modo-btn${modo === m.id ? ' active' : ''}`}
+                  onClick={() => setModo(m.id)} disabled={running} title={m.hint}>{m.label}</button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {steps.blc && (
+          <div className="cp-sub">
+            <span className="cp-sub-label">Mês do BLC (sobrescreve o atual):</span>
+            <select className="cp-select" value={blcMes} onChange={e => setBlcMes(e.target.value)} disabled={running}>
+              {ultimosMeses(6).map(m => <option key={m} value={m}>{fmtMesAno(m)}</option>)}
+            </select>
+          </div>
+        )}
+      </div>
+
+      {/* Fundos e conferência: usados de vez em quando -> recolhidos. */}
+      <details className="cp-advanced">
+        <summary className="cp-advanced-summary">Fundos e conferência antes de publicar</summary>
 
         <div className="cp-block">
           <h3 className="cp-block-title">Lista de fundos 12.431 / CDI</h3>

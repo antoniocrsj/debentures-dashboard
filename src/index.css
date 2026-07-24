@@ -1521,7 +1521,7 @@ a { color: var(--primary); }
 /* Rotina diária: 2 botões grandes em destaque. */
 .cp-daily { border: 2px solid var(--primary-border); background: var(--primary-light); }
 .cp-daily-hint { font-size: 13px; color: var(--text); margin: 0 0 12px; }
-.cp-btn-big { padding: 14px 22px; font-size: 15px; flex: 1 1 220px; }
+.cp-btn-big { padding: 9px 18px; font-size: 14px; min-width: 160px; text-align: center; }
 .cp-btn-danger.cp-btn-big { background: var(--neg); border-color: var(--neg); color: #fff; }
 /* Controles detalhados recolhidos. */
 .cp-advanced { margin: 4px 0 8px; }
@@ -1529,16 +1529,16 @@ a { color: var(--primary); }
 .cp-note { font-size: 12px; color: var(--text-muted); margin: 10px 0 0; }
 .cp-error { color: var(--neg); font-size: 13px; font-weight: 600; }
 .cp-log {
-  background: #0f172a; color: #e8dfd2; border-radius: 8px; padding: 10px 12px;
+  background: var(--c-bege); color: var(--c-carvao); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px;
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-  font-size: 12px; line-height: 1.5; max-height: 360px; overflow-y: auto; white-space: pre-wrap;
+  font-size: 12px; line-height: 1.5; max-height: 560px; overflow-y: auto; white-space: pre-wrap;
 }
-.cp-log-stdout { color: #e8dfd2; }
-.cp-log-stderr { color: #fca5a5; }
-.cp-log-meta { color: #7dd3fc; }
-.cp-log-done { color: #86efac; font-weight: 700; margin-top: 6px; }
+.cp-log-stdout { color: var(--c-carvao); }
+.cp-log-stderr { color: var(--c-vermelho); }
+.cp-log-meta { color: var(--c-terracota); }
+.cp-log-done { color: var(--c-verde); font-weight: 700; margin-top: 6px; }
 .cp-resumo {
-  background: #f6f8fa; border-radius: 8px; padding: 10px 12px; font-size: 11.5px;
+  background: var(--c-bege); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; font-size: 11.5px;
   max-height: 360px; overflow: auto; white-space: pre-wrap;
 }
 
