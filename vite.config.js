@@ -9,6 +9,10 @@ import crypto from 'node:crypto'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const TOOLS_DIR = path.join(__dirname, 'tools')
 const REPO_ROOT = __dirname
+// Ana (credit-analyst) e' repo IRMAO. Antes de atualizar, o painel garante que o
+// servidor da Ana esteja no ar; senao o sync do cadastro de emissores cai no
+// fallback (curadoria pendente). Caminho configuravel via env ANA_ROOT.
+const ANA_ROOT = process.env.ANA_ROOT || path.resolve(REPO_ROOT, '..', 'credit-analyst')
 
 // Cookie store persists for the lifetime of the dev server.
 // The first request to a GAS URL gets the interstitial and sets cookies;
@@ -415,8 +419,18 @@ export default defineConfig({
             if (body.skipAnbima)     args.push('-SkipAnbima')
             if (body.skipOfertas)    args.push('-SkipOfertas')
             if (body.skipRelatorios) args.push('-SkipRelatorios')
+            const steps = []
+            // Pre-flight: se o cadastro de emissores vai rodar (nao -SkipRelatorios),
+            // garante a Ana no ar primeiro (sobe se preciso, via painel_ana -ServerOnly).
+            // allowFail: se nao subir, a atualizacao segue e o passo Emissores avisa
+            // FALLBACK -- nunca trava por causa da Ana.
+            if (!body.skipRelatorios) {
+              const ana = psCommand(path.join(ANA_ROOT, 'tools', 'painel_ana.ps1'), ['-ServerOnly'])
+              steps.push({ cmd: ana.cmd, args: ana.args, cwd: ANA_ROOT, allowFail: true })
+            }
             const { cmd, args: psArgs } = psCommand(path.join(TOOLS_DIR, 'atualizar-tudo.ps1'), args)
-            const run = await runSequence('atualizar-tudo', [{ cmd, args: psArgs }])
+            steps.push({ cmd, args: psArgs })
+            const run = await runSequence('atualizar-tudo', steps)
             return sendJson(res, 200, { id: run.id })
           }
 
