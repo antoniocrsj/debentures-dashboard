@@ -625,9 +625,15 @@ foreach ($tipo in @('12431', 'trad')) {
   foreach ($gestor in $retornoGestor.Keys) {
     $serie = $retornoGestor[$gestor]
     $fimRef = [datetime]::ParseExact($serie.dates[$serie.dates.Count - 1], 'yyyy-MM-dd', $null)
+    $serieMin = [datetime]::ParseExact($serie.dates[0], 'yyyy-MM-dd', $null)
+    $spanDias = ($fimRef - $serieMin).TotalDays
     $linha = @{}
     foreach ($jk in $ORDEM_JANELAS) {
       $inicio = if ($JANELAS_DIAS.ContainsKey($jk)) { $fimRef.AddDays(-$JANELAS_DIAS[$jk]) } else { $fimRef.AddMonths(-$JANELAS_MESES[$jk]) }
+      # Guard de cobertura: se a serie desta rodada nao cobre >=90% da janela,
+      # NAO computa (evita 3m/6m/12m truncado que colapsa o %CDI). Fica null e o
+      # writer preserva o ultimo valor bom (merge, so' na incremental).
+      if ($spanDias -lt (($fimRef - $inicio).TotalDays * 0.9)) { $linha["ret_$jk"] = $null; $linha["pctcdi_$jk"] = $null; continue }
       $retGestor = Get-RetornoJanela $serie.dates $serie.rets $inicio $fimRef
       $retCdi = Get-CdiRetornoJanela $cdiMap $inicio $fimRef
       $linha["ret_$jk"] = if ($null -ne $retGestor) { $retGestor * 100.0 } else { $null }
@@ -656,9 +662,13 @@ foreach ($tipo in @('12431', 'trad')) {
     }
     if ($retDatas.Count -lt 1) { continue }
     $fimRef = [datetime]::ParseExact($retDatas[$retDatas.Count - 1], 'yyyy-MM-dd', $null)
+    $fundoMin = [datetime]::ParseExact($retDatas[0], 'yyyy-MM-dd', $null)
+    $spanDiasF = ($fimRef - $fundoMin).TotalDays
     $linha = @{}
     foreach ($jk in $ORDEM_JANELAS) {
       $inicio = if ($JANELAS_DIAS.ContainsKey($jk)) { $fimRef.AddDays(-$JANELAS_DIAS[$jk]) } else { $fimRef.AddMonths(-$JANELAS_MESES[$jk]) }
+      # Mesmo guard de cobertura da rentabilidade por gestor (>=90% da janela).
+      if ($spanDiasF -lt (($fimRef - $inicio).TotalDays * 0.9)) { $linha["pctcdi_$jk"] = $null; continue }
       $retFundo = Get-RetornoJanela $retDatas $retVals $inicio $fimRef
       $retCdi = Get-CdiRetornoJanela $cdiMap $inicio $fimRef
       $linha["pctcdi_$jk"] = if ($null -ne $retFundo -and $null -ne $retCdi -and $retCdi -ne 0) { ($retFundo / $retCdi) * 100.0 } else { $null }
@@ -672,6 +682,9 @@ foreach ($tipo in @('12431', 'trad')) {
 # Inclui todo fundo da curadoria que apareceu no Informe Diario ($seen), mesmo
 # sem %CDI (janelas vazias = sem historico suficiente na rodada).
 function Write-BaseFundosRentabilidade($tipo, $outFile) {
+  # merge-preserva (SO' na incremental) -- mesma logica do por-gestor.
+  $old = @{}
+  if ($Incremental -and (Test-Path $outFile)) { foreach ($r in (Import-Csv -LiteralPath $outFile)) { $old[$r.CNPJ_Fundo] = $r } }
   $sb = New-Object System.Text.StringBuilder
   [void]$sb.AppendLine('CNPJ_Fundo,Nome_Fundo,Gestor_Apelido,PctCDI_1s,PctCDI_1m,PctCDI_3m,PctCDI_6m,PctCDI_12m')
   $ci = [System.Globalization.CultureInfo]::InvariantCulture
@@ -680,12 +693,17 @@ function Write-BaseFundosRentabilidade($tipo, $outFile) {
   foreach ($cnpj in ($seen[$tipo].Keys | Sort-Object)) {
     $nome = if ($nomeFundo[$tipo].ContainsKey($cnpj)) { $nomeFundo[$tipo][$cnpj] } else { '' }
     $gestor = if ($tipos[$tipo].ContainsKey($cnpj)) { $tipos[$tipo][$cnpj] } else { '' }
+    $og = if ($old.ContainsKey($cnpj)) { $old[$cnpj] } else { $null }
     $cols = New-Object System.Collections.Generic.List[string]
     $cols.Add($cnpj)
     $cols.Add('"' + $nome.Replace('"', '""') + '"')
     $cols.Add('"' + $gestor.Replace('"', '""') + '"')
     $l = if ($rent.ContainsKey($cnpj)) { $rent[$cnpj] } else { @{} }
-    foreach ($jk in $ORDEM_JANELAS) { $cols.Add((Fmt-PctOuVazio $l["pctcdi_$jk"] $ci)) }
+    foreach ($jk in $ORDEM_JANELAS) {
+      $v = Fmt-PctOuVazio $l["pctcdi_$jk"] $ci
+      if ($v -eq '' -and $og) { $o = [string]$og."PctCDI_$jk"; if ($o.Trim() -ne '') { $v = $o } }
+      $cols.Add($v)
+    }
     [void]$sb.AppendLine(($cols -join ','))
     $n++
   }
@@ -695,16 +713,31 @@ function Write-BaseFundosRentabilidade($tipo, $outFile) {
 }
 
 function Write-BaseRentabilidade($tipo, $outFile) {
+  # merge-preserva (SO' na incremental): janela longa que a serie desta rodada
+  # nao cobre (valor novo vazio) mantem o ultimo valor bom -- tipicamente da
+  # ultima Completa. Na Completa NAO preserva (escreve limpo, senao perpetuaria
+  # valores antigos truncados).
+  $old = @{}
+  if ($Incremental -and (Test-Path $outFile)) { foreach ($r in (Import-Csv -LiteralPath $outFile)) { $old[$r.Gestor_Apelido] = $r } }
   $sb = New-Object System.Text.StringBuilder
   [void]$sb.AppendLine('Gestor_Apelido,Retorno_1s,Retorno_1m,Retorno_3m,Retorno_6m,Retorno_12m,PctCDI_1s,PctCDI_1m,PctCDI_3m,PctCDI_6m,PctCDI_12m,DataBase')
   $ci = [System.Globalization.CultureInfo]::InvariantCulture
   $linhas = $rentPorTipo[$tipo]
   foreach ($gestor in ($linhas.Keys | Sort-Object)) {
     $l = $linhas[$gestor]
+    $og = if ($old.ContainsKey($gestor)) { $old[$gestor] } else { $null }
     $cols = New-Object System.Collections.Generic.List[string]
     $cols.Add('"' + $gestor.Replace('"', '""') + '"')
-    foreach ($jk in $ORDEM_JANELAS) { $cols.Add((Fmt-PctOuVazio $l["ret_$jk"] $ci)) }
-    foreach ($jk in $ORDEM_JANELAS) { $cols.Add((Fmt-PctOuVazio $l["pctcdi_$jk"] $ci)) }
+    foreach ($jk in $ORDEM_JANELAS) {
+      $v = Fmt-PctOuVazio $l["ret_$jk"] $ci
+      if ($v -eq '' -and $og) { $o = [string]$og."Retorno_$jk"; if ($o.Trim() -ne '') { $v = $o } }
+      $cols.Add($v)
+    }
+    foreach ($jk in $ORDEM_JANELAS) {
+      $v = Fmt-PctOuVazio $l["pctcdi_$jk"] $ci
+      if ($v -eq '' -and $og) { $o = [string]$og."PctCDI_$jk"; if ($o.Trim() -ne '') { $v = $o } }
+      $cols.Add($v)
+    }
     $cols.Add($l['dataBase'])
     [void]$sb.AppendLine(($cols -join ','))
   }
