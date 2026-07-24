@@ -481,6 +481,14 @@
           "dataRegistro": "2026-06-29",
           "indexador": "IPCA",
           "incentivada": true
+        },
+        {
+          "ticker": "VTEG24",
+          "empresa": "VITAL ENGENHARIA AMBIENTAL SA",
+          "grupo": "Orizon",
+          "dataRegistro": "2026-06-26",
+          "indexador": "DI",
+          "incentivada": false
         }
       ]
     },
@@ -751,10 +759,21 @@
           "segmento": "12431"
         },
         {
+          "cnpj": "60276080000134",
+          "nome": "DAYCOVAL INCENTIVADO DE…",
+          "gestor": "Daycoval",
+          "retorno": 10.0866,
+          "obs": 20,
+          "de": "2026-06-02",
+          "ate": "2026-06-30",
+          "pl": 88610374.27,
+          "segmento": "12431"
+        },
+        {
           "cnpj": "64089192000137",
           "nome": "TOP DEBÊNTURES 2025 INCENTIVADO…",
           "gestor": "IAM",
-          "retorno": 8.3491,
+          "retorno": 5.6374,
           "obs": 20,
           "de": "2026-06-02",
           "ate": "2026-06-30",
@@ -770,17 +789,6 @@
           "de": "2026-06-02",
           "ate": "2026-06-30",
           "pl": 22989516.09,
-          "segmento": "12431"
-        },
-        {
-          "cnpj": "60775750000167",
-          "nome": "G5 ALLOCATION II FUNDO…",
-          "gestor": "G5",
-          "retorno": 3.8105,
-          "obs": 19,
-          "de": "2026-06-02",
-          "ate": "2026-06-30",
-          "pl": 36716508.79,
           "segmento": "12431"
         }
       ],
@@ -1015,7 +1023,8 @@
         "STER12",
         "SWLS12",
         "VERTI3",
-        "VRDT13"
+        "VRDT13",
+        "VTEG24"
       ],
       "novosBlc": [],
       "saiuBlc": [],
@@ -1032,7 +1041,7 @@
       },
       {
         "tipo": "perf-cobertura",
-        "texto": "Performance 12.431: 20 fundo(s) fora por cobertura < 60% e 4 por dado inválido."
+        "texto": "Performance 12.431: 20 fundo(s) fora por cobertura < 60% e 5 por dado inválido."
       },
       {
         "tipo": "perf-cobertura",
@@ -1044,9 +1053,9 @@
         "diasUteis": 20,
         "excluidos": {
           "insuficiente": 20,
-          "glitch": 4
+          "glitch": 5
         },
-        "avaliados": 1688,
+        "avaliados": 1687,
         "minCobertura": 0.6
       },
       "trad": {
@@ -1079,7 +1088,7 @@
       "tom": "neg"
     },
     {
-      "texto": "58 nova(s) debênture(s) registrada(s) no mês."
+      "texto": "59 nova(s) debênture(s) registrada(s) no mês."
     }
   ]
 }

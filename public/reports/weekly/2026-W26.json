@@ -169,6 +169,14 @@
           "dataRegistro": "2026-06-25",
           "indexador": "IPCA",
           "incentivada": true
+        },
+        {
+          "ticker": "VTEG24",
+          "empresa": "VITAL ENGENHARIA AMBIENTAL SA",
+          "grupo": "Orizon",
+          "dataRegistro": "2026-06-26",
+          "indexador": "DI",
+          "incentivada": false
         }
       ]
     },
@@ -431,7 +439,7 @@
           "cnpj": "57075698000121",
           "nome": "VINLAND FUNDO INCENTIVADO EM…",
           "gestor": "Vinland",
-          "retorno": 10.4421,
+          "retorno": 10.442,
           "obs": 5,
           "de": "2026-06-22",
           "ate": "2026-06-26",
@@ -664,7 +672,8 @@
         "RBRAI8",
         "RBRAJ8",
         "RENTH7",
-        "RMGG12"
+        "RMGG12",
+        "VTEG24"
       ],
       "novosBlc": [],
       "saiuBlc": [],
@@ -728,7 +737,7 @@
       "tom": "pos"
     },
     {
-      "texto": "19 nova(s) debênture(s) registrada(s) na semana."
+      "texto": "20 nova(s) debênture(s) registrada(s) na semana."
     }
   ]
 }

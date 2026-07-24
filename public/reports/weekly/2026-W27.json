@@ -139,7 +139,7 @@
         "captacao": 14832468543.09,
         "resgate": 16216935379.699995,
         "liquido": -1384466836.609995,
-        "pl": 1576610409549.8801,
+        "pl": 1576610409549.83,
         "numFundos": 999,
         "dataPl": "2026-07-03",
         "de": "2026-06-29",
@@ -348,8 +348,8 @@
         "dataIni": "2026-06-26",
         "dataFim": "2026-07-03",
         "spreadIniBps": 101,
-        "spreadFimBps": 101,
-        "variacaoBps": 0,
+        "spreadFimBps": 100,
+        "variacaoBps": -1,
         "spreadConfiavel": true
       }
     },
@@ -622,7 +622,7 @@
       },
       {
         "tipo": "perf-cobertura",
-        "texto": "Performance Tradicional: 5 fundo(s) fora por cobertura < 60% e 1 por dado inválido."
+        "texto": "Performance Tradicional: 5 fundo(s) fora por cobertura < 60% e 0 por dado inválido."
       }
     ],
     "perfCobertura": {
@@ -639,9 +639,9 @@
         "diasUteis": 5,
         "excluidos": {
           "insuficiente": 5,
-          "glitch": 1
+          "glitch": 0
         },
-        "avaliados": 998,
+        "avaliados": 999,
         "minCobertura": 0.6
       }
     }
@@ -654,7 +654,7 @@
       "texto": "IDA-IPCA Infraestrutura rendeu +0,23% na semana."
     },
     {
-      "texto": "IDA-DI rendeu +0,29% na semana, spread estável."
+      "texto": "IDA-DI rendeu +0,29% na semana, spread fechou 1 bps."
     },
     {
       "texto": "Captação líquida 12.431 na semana: −R$ 1,4 bi (capt. R$ 1,6 bi − resg. R$ 3 bi, 5 dia(s) útil(eis)).",

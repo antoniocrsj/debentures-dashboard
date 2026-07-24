@@ -81,9 +81,9 @@
       },
       "trad": {
         "captacao": 13647532423.92,
-        "resgate": 14210878191.640003,
-        "liquido": -563345767.7200031,
-        "pl": 1579090381090.1902,
+        "resgate": 14202273068.830004,
+        "liquido": -554740644.9100037,
+        "pl": 1579090431756.09,
         "numFundos": 992,
         "dataPl": "2026-07-10",
         "de": "2026-07-06",
@@ -422,9 +422,9 @@
         "retornoPct": 0.3552,
         "dataIni": "2026-07-03",
         "dataFim": "2026-07-10",
-        "spreadIniBps": 101,
+        "spreadIniBps": 100,
         "spreadFimBps": 98,
-        "variacaoBps": -3,
+        "variacaoBps": -2,
         "spreadConfiavel": true
       }
     },
@@ -717,14 +717,14 @@
       "texto": "IDA-IPCA Infraestrutura rendeu +0,96% na semana."
     },
     {
-      "texto": "IDA-DI rendeu +0,36% na semana, spread fechou 3 bps."
+      "texto": "IDA-DI rendeu +0,36% na semana, spread fechou 2 bps."
     },
     {
       "texto": "Captação líquida 12.431 na semana: −R$ 1,2 bi (capt. R$ 543 mi − resg. R$ 1,8 bi, 5 dia(s) útil(eis)).",
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional na semana: −R$ 563 mi (capt. R$ 13,6 bi − resg. R$ 14,2 bi, 5 dia(s) útil(eis)).",
+      "texto": "Captação líquida Tradicional na semana: −R$ 555 mi (capt. R$ 13,6 bi − resg. R$ 14,2 bi, 5 dia(s) útil(eis)).",
       "tom": "neg"
     },
     {

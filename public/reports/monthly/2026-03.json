@@ -988,8 +988,8 @@
         "dataIni": "2026-02-27",
         "dataFim": "2026-03-31",
         "spreadIniBps": 94,
-        "spreadFimBps": 126,
-        "variacaoBps": 32,
+        "spreadFimBps": 125,
+        "variacaoBps": 31,
         "spreadConfiavel": true
       }
     },
@@ -1142,7 +1142,7 @@
       "texto": "IDA-IPCA Infraestrutura rendeu -1,37% no mês."
     },
     {
-      "texto": "IDA-DI rendeu +0,46% no mês, spread abriu 32 bps."
+      "texto": "IDA-DI rendeu +0,46% no mês, spread abriu 31 bps."
     },
     {
       "texto": "Captação líquida 12.431 no mês: R$ 2 bi (capt. R$ 11,8 bi − resg. R$ 9,8 bi, 22 dia(s) útil(eis)).",

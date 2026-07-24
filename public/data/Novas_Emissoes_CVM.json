@@ -1,26 +1,7 @@
 {
-    "asOf":  "2026-07-23",
-    "geradoEm":  "2026-07-23T08:54:46",
+    "asOf":  "2026-07-24",
+    "geradoEm":  "2026-07-24T09:33:09",
     "itens":  [
-                  {
-                      "dataRegistro":  "2026-07-15",
-                      "dataRequerimento":  "2026-06-24",
-                      "emissor":  "LOCALIZA RENT A CAR SA",
-                      "cnpj":  "16670085000155",
-                      "emissao":  48,
-                      "valor":  5643014000,
-                      "incentivada":  false,
-                      "lider":  "BTG PACTUAL INVESTMENT BANKING LTDA."
-                  },
-                  {
-                      "dataRegistro":  "2026-07-22",
-                      "dataRequerimento":  "2026-07-17",
-                      "emissor":  "CARBON HOLDING S.A.",
-                      "cnpj":  "29694063000177",
-                      "emissao":  6,
-                      "valor":  650000000,
-                      "incentivada":  false,
-                      "lider":  "BANCO BRADESCO BBI S.A."
-                  }
+
               ]
 }

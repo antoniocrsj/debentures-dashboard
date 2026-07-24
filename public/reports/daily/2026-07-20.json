@@ -25,7 +25,7 @@
       "tom": "pos"
     },
     {
-      "texto": "Captação líquida Incentivados: −R$ 134 mi",
+      "texto": "Captação líquida Incentivados: −R$ 132 mi",
       "tom": "neg"
     },
     {
@@ -106,12 +106,12 @@
       "12431": {
         "dia": "2026-07-16",
         "captacao": 98025810.58,
-        "resgate": 232098881.01000002,
-        "liquido": -134073070.43000002,
-        "pl": 264182651707.76007,
-        "numFundos": 1691,
+        "resgate": 230148881.01000002,
+        "liquido": -132123070.43000002,
+        "pl": 264182559886.0501,
+        "numFundos": 1692,
         "curados": 1720,
-        "fechados": 288,
+        "fechados": 287,
         "anterior": {
           "dia": "2026-07-15",
           "captacao": 546385562.39,
@@ -123,19 +123,19 @@
       },
       "trad": {
         "dia": "2026-07-16",
-        "captacao": 2960315640.8599987,
-        "resgate": 1921513623.23,
-        "liquido": 1038802017.6299987,
-        "pl": 1585919124401.3804,
+        "captacao": 2960318455.9999986,
+        "resgate": 1913699604.2900002,
+        "liquido": 1046618851.7099984,
+        "pl": 1585918072048.4204,
         "numFundos": 997,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
           "dia": "2026-07-15",
-          "captacao": 2042589330.7700002,
-          "resgate": 2657748503.2700005,
-          "liquido": -615159172.5000002,
-          "pl": 1583350828103.9998,
+          "captacao": 2042592145.9100003,
+          "resgate": 2649934484.3300004,
+          "liquido": -607342338.4200001,
+          "pl": 1583350052430.34,
           "numFundos": 999
         }
       }
@@ -1264,7 +1264,7 @@
               "ticker": "JSMLB5",
               "indexador": "IPCA + 7.9677%",
               "indexadorFamilia": "IPCA+",
-              "emissor": "JSL S.A",
+              "emissor": "SIMPAR S.A.",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "B30",
@@ -1416,14 +1416,6 @@
           "pl": 202796891.69
         },
         {
-          "cnpj": "53075427000115",
-          "nome": "KINEA INCENTIVADO RF CP LP FI FINANCEIRO FUNDO INCENT EM INV EM DEBÊN DE INFRAESTRUTURA - RESP LTDA",
-          "gestor": "Kinea",
-          "segmento": "12431",
-          "retorno": 20.1533,
-          "pl": 46164495.63
-        },
-        {
           "cnpj": "64089192000137",
           "nome": "TOP DEBÊNTURES 2025 FI INCENTIVADO EM DEBÊNTURES DE INFRA FIF RENDA FIXA CRED PRIV RESP LIMITADA",
           "gestor": "IAM",
@@ -1446,6 +1438,14 @@
           "segmento": "12431",
           "retorno": 6.4388,
           "pl": 9000153.6
+        },
+        {
+          "cnpj": "59123735000155",
+          "nome": "PORTO PAINEIRA CDI FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA RF CRÉD PRIV RESP LIMITADA",
+          "gestor": "Porto Asset",
+          "segmento": "12431",
+          "retorno": 4.2899,
+          "pl": 23145908.56
         }
       ],
       "top12431Neg": [
@@ -1566,12 +1566,12 @@
           "pl": 17498530.24
         },
         {
-          "cnpj": "52273351000170",
-          "nome": "PORTFOLIO RF II PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "cnpj": "36532178000120",
+          "nome": "CHRONOS FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO",
           "gestor": "XPG",
           "segmento": "trad",
-          "retorno": -0.6374,
-          "pl": 10978602.65
+          "retorno": -1.1645,
+          "pl": 16337013.16
         }
       ]
     },

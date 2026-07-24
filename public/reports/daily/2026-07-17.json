@@ -1,7 +1,7 @@
 {
   "date": "2026-07-17",
   "label": "17/07/2026",
-  "previousDate": "2026-07-16",
+  "previousDate": null,
   "sourceDates": {
     "debentures": "2026-07-17",
     "cap12431": "2026-07-15",
@@ -29,7 +29,7 @@
       "tom": "pos"
     },
     {
-      "texto": "Captação líquida Tradicional: −R$ 615 mi",
+      "texto": "Captação líquida Tradicional: −R$ 607 mi",
       "tom": "neg"
     },
     {
@@ -86,7 +86,7 @@
         "pl": 263083143877.33997,
         "numFundos": 1692,
         "curados": 1720,
-        "fechados": 288,
+        "fechados": 287,
         "anterior": {
           "dia": "2026-07-14",
           "captacao": 155784111.48000008,
@@ -98,19 +98,19 @@
       },
       "trad": {
         "dia": "2026-07-15",
-        "captacao": 2042589330.7700002,
-        "resgate": 2657748503.2700005,
-        "liquido": -615159172.5000002,
-        "pl": 1583350828103.9998,
+        "captacao": 2042592145.9100003,
+        "resgate": 2649934484.3300004,
+        "liquido": -607342338.4200001,
+        "pl": 1583350052430.34,
         "numFundos": 999,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
           "dia": "2026-07-14",
-          "captacao": 2787245377.93,
-          "resgate": 2187427833.7000003,
-          "liquido": 599817544.2299995,
-          "pl": 1583959330795.3398,
+          "captacao": 2787248193.0699997,
+          "resgate": 2179613814.76,
+          "liquido": 607634378.3099995,
+          "pl": 1583958669773.2297,
           "numFundos": 1002
         }
       }
@@ -224,7 +224,7 @@
           "captacao": 48485137.83,
           "resgate": 31471831.15,
           "liquido": 17013306.68,
-          "pl": 22890221435.28
+          "pl": 22890120466.07
         }
       ],
       "topTradResgate": [
@@ -1003,7 +1003,7 @@
               "ticker": "JSMLB5",
               "indexador": "IPCA + 7.9677%",
               "indexadorFamilia": "IPCA+",
-              "emissor": "JSL S.A",
+              "emissor": "SIMPAR S.A.",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "B30",
@@ -2782,12 +2782,12 @@
           "pl": 87870363.59
         },
         {
-          "cnpj": "58516864000140",
-          "nome": "SAFRA INFRA PREFIXADO CARTEIRA MASTER FIF INV EM INFRAESTRUTURA CI EM INFRA RF RESP LIMITADA",
-          "gestor": "Safra Asset",
+          "cnpj": "34793170000192",
+          "nome": "ICATU VANGUARDA FIF - CLASSE INCENTIVADA DE INVESTIMENTO EM INFRA RENDA FIXA LP - RESP LIMITADA",
+          "gestor": "Icatu",
           "segmento": "12431",
-          "retorno": 0.8923,
-          "pl": 512492374.58
+          "retorno": 0.9017,
+          "pl": 28689239.39
         }
       ],
       "top12431Neg": [
@@ -2892,6 +2892,14 @@
           "pl": 206267255.97
         },
         {
+          "cnpj": "36532178000120",
+          "nome": "CHRONOS FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO",
+          "gestor": "XPG",
+          "segmento": "trad",
+          "retorno": -0.6071,
+          "pl": 16529493.3
+        },
+        {
           "cnpj": "34657939000145",
           "nome": "SANTANDER PB CANGUARA MULTIMERCADO CRÉDITO PRIVADO - FIF",
           "gestor": "San WM",
@@ -2906,14 +2914,6 @@
           "segmento": "trad",
           "retorno": -0.4658,
           "pl": 196433902.43
-        },
-        {
-          "cnpj": "52273351000170",
-          "nome": "PORTFOLIO RF II PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
-          "gestor": "XPG",
-          "segmento": "trad",
-          "retorno": -0.437,
-          "pl": 11049034.39
         }
       ]
     },

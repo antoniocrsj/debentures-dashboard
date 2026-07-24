@@ -107,6 +107,14 @@
           "incentivada": false
         },
         {
+          "ticker": "RENTQ8",
+          "empresa": "LOCALIZA RENT A CAR S/A",
+          "grupo": "Localiza",
+          "dataRegistro": "2026-07-15",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
           "ticker": "SOCS12",
           "empresa": "SOCICAM ADMINISTRACAO PROJETOS E REPRESENTACOES S.A.",
           "grupo": "Socicam",
@@ -134,11 +142,11 @@
     },
     "captacao": {
       "12431": {
-        "captacao": 1065790178.37,
-        "resgate": 1829107903.3199987,
-        "liquido": -763317724.9499987,
-        "pl": 262507251591.6399,
-        "numFundos": 1688,
+        "captacao": 1065825178.37,
+        "resgate": 1830398619.2799988,
+        "liquido": -764573440.9099988,
+        "pl": 262807671739.5799,
+        "numFundos": 1690,
         "dataPl": "2026-07-17",
         "de": "2026-07-13",
         "ate": "2026-07-17",
@@ -152,19 +160,19 @@
         }
       },
       "trad": {
-        "captacao": 13551801944.970015,
-        "resgate": 11739516955.320011,
-        "liquido": 1812284989.6500034,
-        "pl": 1583082671592.7898,
-        "numFundos": 991,
+        "captacao": 13551816020.670012,
+        "resgate": 11700446860.62001,
+        "liquido": 1851369160.0500011,
+        "pl": 1583156687988.2798,
+        "numFundos": 993,
         "dataPl": "2026-07-17",
         "de": "2026-07-13",
         "ate": "2026-07-17",
         "diasUteis": 5,
         "anterior": {
-          "liquido": -563345767.7200031,
+          "liquido": -554740644.9100037,
           "captacao": 13647532423.92,
-          "resgate": 14210878191.640003,
+          "resgate": 14202273068.830004,
           "de": "2026-07-06",
           "ate": "2026-07-10"
         }
@@ -335,7 +343,7 @@
           "captacao": 174730331.91000003,
           "resgate": 294902147.74,
           "liquido": -120171815.82999998,
-          "pl": 22914833896.57,
+          "pl": 22914540447.22,
           "dias": 5
         }
       ]
@@ -1755,6 +1763,17 @@
           "segmento": "12431"
         },
         {
+          "cnpj": "62360992000115",
+          "nome": "BB MASTER II DEBÊNTURES…",
+          "gestor": "BB Asset",
+          "retorno": 2.6587,
+          "obs": 5,
+          "de": "2026-07-13",
+          "ate": "2026-07-17",
+          "pl": 1725438043.72,
+          "segmento": "12431"
+        },
+        {
           "cnpj": "58758334000109",
           "nome": "JOURNEY CAPITAL 60 FUNDO…",
           "gestor": "Journey",
@@ -1763,17 +1782,6 @@
           "de": "2026-07-13",
           "ate": "2026-07-17",
           "pl": 107772468.11,
-          "segmento": "12431"
-        },
-        {
-          "cnpj": "58903850000180",
-          "nome": "JOURNEY CAPITAL 70 FUNDO…",
-          "gestor": "Journey",
-          "retorno": 1.3592,
-          "obs": 5,
-          "de": "2026-07-13",
-          "ate": "2026-07-17",
-          "pl": 60479498.94,
           "segmento": "12431"
         }
       ],
@@ -1812,6 +1820,17 @@
           "segmento": "12431"
         },
         {
+          "cnpj": "60775750000167",
+          "nome": "G5 ALLOCATION II FUNDO…",
+          "gestor": "G5",
+          "retorno": -0.9514,
+          "obs": 3,
+          "de": "2026-07-13",
+          "ate": "2026-07-17",
+          "pl": 47245655.19,
+          "segmento": "12431"
+        },
+        {
           "cnpj": "54954879000130",
           "nome": "ITAÚ DEBÊNTURES INCENTIVADAS…",
           "gestor": "IAM",
@@ -1820,17 +1839,6 @@
           "de": "2026-07-13",
           "ate": "2026-07-17",
           "pl": 126416491.75,
-          "segmento": "12431"
-        },
-        {
-          "cnpj": "63286762000116",
-          "nome": "ITAÚ DEB INC PRÉ TARGET 2030…",
-          "gestor": "IAM",
-          "retorno": -0.8652,
-          "obs": 5,
-          "de": "2026-07-13",
-          "ate": "2026-07-17",
-          "pl": 14411579.1,
           "segmento": "12431"
         }
       ],
@@ -1937,14 +1945,14 @@
           "segmento": "trad"
         },
         {
-          "cnpj": "19770499000144",
-          "nome": "EXPLORITAS ALPHA AMERICA LATINA…",
-          "gestor": "Exploritas",
-          "retorno": -2.0109,
+          "cnpj": "36532178000120",
+          "nome": "CHRONOS CRÉDITO PRIVADO",
+          "gestor": "XPG",
+          "retorno": -2.3827,
           "obs": 5,
           "de": "2026-07-13",
           "ate": "2026-07-17",
-          "pl": 17046825.64,
+          "pl": 16337013.16,
           "segmento": "trad"
         }
       ]
@@ -1962,6 +1970,7 @@
         "ISAEB3",
         "PCHSG1",
         "RBRAL2",
+        "RENTQ8",
         "SOCS12",
         "TFLEE1",
         "VERTB6"
@@ -1987,7 +1996,7 @@
           "insuficiente": 14,
           "glitch": 1
         },
-        "avaliados": 1681,
+        "avaliados": 1682,
         "minCobertura": 0.6
       },
       "trad": {
@@ -2017,15 +2026,15 @@
       "texto": "IDA-DI rendeu +0,3% na semana, spread fechou 1 bps."
     },
     {
-      "texto": "Captação líquida 12.431 na semana: −R$ 763 mi (capt. R$ 1,1 bi − resg. R$ 1,8 bi, 5 dia(s) útil(eis)).",
+      "texto": "Captação líquida 12.431 na semana: −R$ 765 mi (capt. R$ 1,1 bi − resg. R$ 1,8 bi, 5 dia(s) útil(eis)).",
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional na semana: R$ 1,8 bi (capt. R$ 13,6 bi − resg. R$ 11,7 bi, 5 dia(s) útil(eis)).",
+      "texto": "Captação líquida Tradicional na semana: R$ 1,9 bi (capt. R$ 13,6 bi − resg. R$ 11,7 bi, 5 dia(s) útil(eis)).",
       "tom": "pos"
     },
     {
-      "texto": "14 nova(s) debênture(s) registrada(s) na semana."
+      "texto": "15 nova(s) debênture(s) registrada(s) na semana."
     }
   ]
 }

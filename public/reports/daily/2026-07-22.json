@@ -9,7 +9,7 @@
     "perf12431": "2026-07-20",
     "perfTrad": "2026-07-20",
     "anbima": "2026-07-22",
-    "blc": "2026-07-21",
+    "blc": "2026-07-22",
     "fundos": "2026-07-17"
   },
   "novoPorFonte": {
@@ -21,7 +21,7 @@
   },
   "summary": [
     {
-      "texto": "1 nova(s) debênture(s) cadastrada(s)",
+      "texto": "2 nova(s) debênture(s) cadastrada(s)",
       "tom": "pos"
     },
     {
@@ -57,6 +57,20 @@
     "debentures": {
       "novas": [
         {
+          "ticker": "CYHG16",
+          "empresa": "CARBON HOLDING S.A.",
+          "grupo": "",
+          "cnpj": "29694063000177",
+          "dataRegistro": "22/07/2026",
+          "dataEmissao": "17/07/2026",
+          "vencimento": "30/05/2029",
+          "indexador": "DI",
+          "taxa": "2,1",
+          "volumeEmitido": 650000000,
+          "incentivada": false,
+          "coordenador": "BANCO BRADESCO BBI S/A"
+        },
+        {
           "ticker": "LGAM13",
           "empresa": "LOGISTICA AMBIENTAL DE SAO PAULO S/A - LOGA",
           "grupo": "Logistica Ambiental de SAO Paulo S/a",
@@ -77,38 +91,38 @@
     "captacao": {
       "12431": {
         "dia": "2026-07-20",
-        "captacao": 98316429.39,
-        "resgate": 353714116.5000001,
-        "liquido": -255397687.11000013,
-        "pl": 263649105248.52002,
-        "numFundos": 1690,
+        "captacao": 98330318.14,
+        "resgate": 353811013.5500001,
+        "liquido": -255480695.4100001,
+        "pl": 264128618862.45,
+        "numFundos": 1693,
         "curados": 1720,
-        "fechados": 288,
+        "fechados": 287,
         "anterior": {
           "dia": "2026-07-17",
-          "captacao": 98588704.63000001,
-          "resgate": 301305914.69000006,
-          "liquido": -202717210.06000006,
-          "pl": 262507251591.6399,
-          "numFundos": 1688
+          "captacao": 98623704.63000001,
+          "resgate": 304546630.65000004,
+          "liquido": -205922926.02000004,
+          "pl": 262807671739.5799,
+          "numFundos": 1690
         }
       },
       "trad": {
         "dia": "2026-07-20",
-        "captacao": 2044271563.09,
-        "resgate": 5080279042.110002,
-        "liquido": -3036007479.0200014,
-        "pl": 1583298239526.1106,
-        "numFundos": 991,
+        "captacao": 2044663023.0299997,
+        "resgate": 5072860125.620001,
+        "liquido": -3028197102.590001,
+        "pl": 1584143908329.6602,
+        "numFundos": 995,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
           "dia": "2026-07-17",
-          "captacao": 2792126000.7100005,
-          "resgate": 2405187741.75,
-          "liquido": 386938258.9600005,
-          "pl": 1583082671592.7898,
-          "numFundos": 991
+          "captacao": 2792128815.850001,
+          "resgate": 2397373722.81,
+          "liquido": 394755093.0400009,
+          "pl": 1583156687988.2798,
+          "numFundos": 993
         }
       }
     },
@@ -182,9 +196,9 @@
         {
           "gestor": "IAM",
           "captacao": 27120214.74,
-          "resgate": 47980656.47,
-          "liquido": -20860441.73,
-          "pl": 55532960703.35
+          "resgate": 48012421.9,
+          "liquido": -20892207.16,
+          "pl": 55712124862.15
         }
       ],
       "topTradCaptacao": [
@@ -237,7 +251,7 @@
           "captacao": 386992179.28,
           "resgate": 987735743.36,
           "liquido": -600743564.08,
-          "pl": 191350879259.53
+          "pl": 191350879239.47
         },
         {
           "gestor": "SAM",
@@ -251,7 +265,7 @@
           "captacao": 28950399.66,
           "resgate": 258735533.65,
           "liquido": -229785133.99,
-          "pl": 22643292409.84
+          "pl": 22695759422.18
         },
         {
           "gestor": "Safra Asset",
@@ -856,7 +870,7 @@
               "ticker": "JSMLA5",
               "indexador": "DI + 3.5000%",
               "indexadorFamilia": "CDI+",
-              "emissor": "JSL S.A",
+              "emissor": "SIMPAR S.A.",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "CDI",
@@ -1092,7 +1106,7 @@
               "ticker": "JSMLB5",
               "indexador": "IPCA + 7.9677%",
               "indexadorFamilia": "IPCA+",
-              "emissor": "JSL S.A",
+              "emissor": "SIMPAR S.A.",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "B30",
@@ -1422,20 +1436,20 @@
       ],
       "top12431Neg": [
         {
-          "cnpj": "61141536000111",
-          "nome": "BB MASTER RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
-          "gestor": "BB Asset",
-          "segmento": "12431",
-          "retorno": -25.9498,
-          "pl": 571196271.37
-        },
-        {
           "cnpj": "63942021000146",
           "nome": "OCCAM BB INFRA LINEAR FI FINANCEIRO RENDA FIXA INVESTIMENTO EM INFRAESTRUTURA - RESP LIMITADA",
           "gestor": "Occam",
           "segmento": "12431",
           "retorno": -6.2552,
           "pl": 117955727.36
+        },
+        {
+          "cnpj": "62360992000115",
+          "nome": "BB MASTER II RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
+          "gestor": "BB Asset",
+          "segmento": "12431",
+          "retorno": -3.2648,
+          "pl": 342149361.77
         },
         {
           "cnpj": "55701008000177",
@@ -1446,23 +1460,31 @@
           "pl": 64922290.43
         },
         {
+          "cnpj": "59123735000155",
+          "nome": "PORTO PAINEIRA CDI FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA RF CRÉD PRIV RESP LIMITADA",
+          "gestor": "Porto Asset",
+          "segmento": "12431",
+          "retorno": -2.0078,
+          "pl": 18827268.81
+        },
+        {
           "cnpj": "54200289000111",
           "nome": "SK8 FIF - CLASSE DE INVESTIMENTO RENDA FIXA INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA",
           "gestor": "G5",
           "segmento": "12431",
           "retorno": -1.1688,
           "pl": 17395211.57
-        },
-        {
-          "cnpj": "53906748000114",
-          "nome": "PSO 2 FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
-          "gestor": "BTG WM",
-          "segmento": "12431",
-          "retorno": -0.651,
-          "pl": 153640008.19
         }
       ],
       "topTradPos": [
+        {
+          "cnpj": "52241587000124",
+          "nome": "KINEA NEPAL FIF MULT CRED PRIV - RESP LIMITADA",
+          "gestor": "Kinea",
+          "segmento": "trad",
+          "retorno": 25.1565,
+          "pl": 1546455.74
+        },
         {
           "cnpj": "64436974000103",
           "nome": "BB MASTER III RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
@@ -1470,14 +1492,6 @@
           "segmento": "trad",
           "retorno": 6.041,
           "pl": 209083839
-        },
-        {
-          "cnpj": "52241587000124",
-          "nome": "KINEA NEPAL FIF MULT CRED PRIV - RESP LIMITADA",
-          "gestor": "Kinea",
-          "segmento": "trad",
-          "retorno": 1.767,
-          "pl": 1546455.74
         },
         {
           "cnpj": "19770499000144",
@@ -1530,25 +1544,26 @@
           "pl": 43766308.12
         },
         {
-          "cnpj": "35916528000190",
-          "nome": "CORDILHEIRA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
-          "gestor": "Brainvest",
-          "segmento": "trad",
-          "retorno": -0.4276,
-          "pl": 46611637.49
-        },
-        {
           "cnpj": "17072641000154",
           "nome": "PORTO SEGURO INFLAÇÃO MASTER PREVIDENCIÁRIO FIF RENDA FIXA RESPONSABILIDADE LIMITADA",
           "gestor": "Porto Asset",
           "segmento": "trad",
           "retorno": -0.2846,
           "pl": 126055153.3
+        },
+        {
+          "cnpj": "35916528000190",
+          "nome": "CORDILHEIRA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "gestor": "Brainvest",
+          "segmento": "trad",
+          "retorno": -0.2797,
+          "pl": 46680891.24
         }
       ]
     },
     "inclusoes": {
       "novosDebentures": [
+        "CYHG16",
         "LGAM13"
       ],
       "novosBlc": [],
@@ -1560,41 +1575,7 @@
         "texto": "74 ativo(s) no BLC sem correspondencia em Debentures.csv"
       }
     ],
-    "emissoesCVM": {
-      "asOf": "2026-07-23",
-      "itens": [
-        {
-          "dataRegistro": "2026-07-22",
-          "dataRequerimento": "2026-07-17",
-          "emissor": "CARBON HOLDING S.A.",
-          "cnpj": "29694063000177",
-          "emissao": 6,
-          "valor": 650000000,
-          "incentivada": false,
-          "lider": "BANCO BRADESCO BBI S.A.",
-          "grupo": ""
-        },
-        {
-          "dataRegistro": "2026-07-15",
-          "dataRequerimento": "2026-06-24",
-          "emissor": "LOCALIZA RENT A CAR SA",
-          "cnpj": "16670085000155",
-          "emissao": 48,
-          "valor": 5643014000,
-          "incentivada": false,
-          "lider": "BTG PACTUAL INVESTMENT BANKING LTDA.",
-          "grupo": "Localiza"
-        }
-      ]
-    },
-    "emissoresFaltantes": {
-      "itens": [
-        {
-          "cnpj": "29694063000177",
-          "emissor": "CARBON HOLDING S.A."
-        }
-      ],
-      "asOf": "2026-07-23"
-    }
+    "emissoesCVM": null,
+    "emissoresFaltantes": null
   }
 }

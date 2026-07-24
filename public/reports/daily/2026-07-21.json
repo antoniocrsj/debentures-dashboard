@@ -25,11 +25,11 @@
       "tom": "pos"
     },
     {
-      "texto": "Captação líquida Incentivados: −R$ 203 mi",
+      "texto": "Captação líquida Incentivados: −R$ 206 mi",
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional: +R$ 387 mi",
+      "texto": "Captação líquida Tradicional: +R$ 395 mi",
       "tom": "pos"
     },
     {
@@ -105,37 +105,37 @@
     "captacao": {
       "12431": {
         "dia": "2026-07-17",
-        "captacao": 98588704.63000001,
-        "resgate": 301305914.69000006,
-        "liquido": -202717210.06000006,
-        "pl": 262507251591.6399,
-        "numFundos": 1688,
+        "captacao": 98623704.63000001,
+        "resgate": 304546630.65000004,
+        "liquido": -205922926.02000004,
+        "pl": 262807671739.5799,
+        "numFundos": 1690,
         "curados": 1720,
-        "fechados": 288,
+        "fechados": 287,
         "anterior": {
           "dia": "2026-07-16",
           "captacao": 98025810.58,
-          "resgate": 232098881.01000002,
-          "liquido": -134073070.43000002,
-          "pl": 264182651707.76007,
-          "numFundos": 1691
+          "resgate": 230148881.01000002,
+          "liquido": -132123070.43000002,
+          "pl": 264182559886.0501,
+          "numFundos": 1692
         }
       },
       "trad": {
         "dia": "2026-07-17",
-        "captacao": 2792126000.7100005,
-        "resgate": 2405187741.75,
-        "liquido": 386938258.9600005,
-        "pl": 1583082671592.7898,
-        "numFundos": 991,
+        "captacao": 2792128815.850001,
+        "resgate": 2397373722.81,
+        "liquido": 394755093.0400009,
+        "pl": 1583156687988.2798,
+        "numFundos": 993,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
           "dia": "2026-07-16",
-          "captacao": 2960315640.8599987,
-          "resgate": 1921513623.23,
-          "liquido": 1038802017.6299987,
-          "pl": 1585919124401.3804,
+          "captacao": 2960318455.9999986,
+          "resgate": 1913699604.2900002,
+          "liquido": 1046618851.7099984,
+          "pl": 1585918072048.4204,
           "numFundos": 997
         }
       }
@@ -265,7 +265,7 @@
           "captacao": 19769634.86,
           "resgate": 160438485.67,
           "liquido": -140668850.81,
-          "pl": 10903004352.41
+          "pl": 10978403713.72
         },
         {
           "gestor": "BRAM",
@@ -938,7 +938,7 @@
               "ticker": "JSMLB5",
               "indexador": "IPCA + 7.9677%",
               "indexadorFamilia": "IPCA+",
-              "emissor": "JSL S.A",
+              "emissor": "SIMPAR S.A.",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "B30",
@@ -1028,7 +1028,7 @@
               "ticker": "JSMLA5",
               "indexador": "DI + 3.5000%",
               "indexadorFamilia": "CDI+",
-              "emissor": "JSL S.A",
+              "emissor": "SIMPAR S.A.",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "CDI",
@@ -1458,14 +1458,6 @@
           "pl": 1128269.62
         },
         {
-          "cnpj": "53075427000115",
-          "nome": "KINEA INCENTIVADO RF CP LP FI FINANCEIRO FUNDO INCENT EM INV EM DEBÊN DE INFRAESTRUTURA - RESP LTDA",
-          "gestor": "Kinea",
-          "segmento": "12431",
-          "retorno": -16.6642,
-          "pl": 19383285.36
-        },
-        {
           "cnpj": "57075698000121",
           "nome": "VINLAND FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA IPCA RF CRED PRIV LP RESP LIMITADA",
           "gestor": "Vinland",
@@ -1474,20 +1466,28 @@
           "pl": 160413522.16
         },
         {
-          "cnpj": "62360992000115",
-          "nome": "BB MASTER II RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
-          "gestor": "BB Asset",
-          "segmento": "12431",
-          "retorno": -2.9419,
-          "pl": 343119635.96
-        },
-        {
           "cnpj": "54341666000132",
           "nome": "V7 FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
           "gestor": "BTG WM",
           "segmento": "12431",
           "retorno": -1.0944,
           "pl": 124792772.28
+        },
+        {
+          "cnpj": "58692067000114",
+          "nome": "PAGNAN TOP10 FIF INV EM INFRAESTRUTURA CI EM INFRA RENDA FIXA  RESPONSABILIDADE LIMITADA",
+          "gestor": "Safra Asset",
+          "segmento": "12431",
+          "retorno": -0.7361,
+          "pl": 25579979.16
+        },
+        {
+          "cnpj": "54384609000130",
+          "nome": "CS EVOLUTION LORENA FUNDO DE INVESTIMENTO EM INFRAESTRUTURA - RENDA FIXA CRED PRIV RESP LIMITADA",
+          "gestor": "UBS",
+          "segmento": "12431",
+          "retorno": -0.7296,
+          "pl": 15995800.66
         }
       ],
       "topTradPos": [
@@ -1534,6 +1534,14 @@
       ],
       "topTradNeg": [
         {
+          "cnpj": "52241587000124",
+          "nome": "KINEA NEPAL FIF MULT CRED PRIV - RESP LIMITADA",
+          "gestor": "Kinea",
+          "segmento": "trad",
+          "retorno": -20.0484,
+          "pl": 110155.23
+        },
+        {
           "cnpj": "41649957000140",
           "nome": "ITAÚ CRÉDITO ESTRUTURADO ALPES MASTER FIF MULTIMERCADO CRÉDITO PRIVADO RESP LIMITADA",
           "gestor": "IAM",
@@ -1564,14 +1572,6 @@
           "segmento": "trad",
           "retorno": -1.9158,
           "pl": 70893686.42
-        },
-        {
-          "cnpj": "52241587000124",
-          "nome": "KINEA NEPAL FIF MULT CRED PRIV - RESP LIMITADA",
-          "gestor": "Kinea",
-          "segmento": "trad",
-          "retorno": -1.6727,
-          "pl": 10016232.07
         }
       ]
     },
