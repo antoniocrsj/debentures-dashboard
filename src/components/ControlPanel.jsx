@@ -63,6 +63,7 @@ export default function ControlPanel() {
   const [resumo, setResumo] = useState(null)
   const [progress, setProgress] = useState(null)   // { n, total, title }
   const [stepElapsed, setStepElapsed] = useState(0) // segundos na etapa atual
+  const [ana, setAna] = useState(null)             // { up, url, sync } | null (verificando)
   const esRef = useRef(null)
   const stepStartRef = useRef(0)
 
@@ -80,6 +81,19 @@ export default function ControlPanel() {
     const t = setInterval(() => setStepElapsed(Math.floor((Date.now() - stepStartRef.current) / 1000)), 1000)
     return () => clearInterval(t)
   }, [running, progress])
+
+  // Status da Ana (saúde + última sincronização do cadastro). Re-checa a cada 20s
+  // e sempre que um run começa/termina (o pre-flight pode ter subido a Ana).
+  useEffect(() => {
+    let alive = true
+    const check = () => fetch('/api/atualizar/ana/status')
+      .then(r => r.json())
+      .then(d => { if (alive) setAna(d) })
+      .catch(() => { if (alive) setAna(s => s || { up: false }) })
+    check()
+    const t = setInterval(check, 20000)
+    return () => { alive = false; clearInterval(t) }
+  }, [running])
 
   const attachStream = useCallback((label) => {
     closeStream()
@@ -172,6 +186,21 @@ export default function ControlPanel() {
       <header className="cp-header">
         <h2 className="cp-title">Painel de controle — Atualização</h2>
         <p className="cp-subtitle">Só funciona aqui, no `npm run dev` local. Nunca vai para produção.</p>
+        <div className="cp-ana">
+          <span className={`cp-ana-chip ${ana == null ? 'is-checking' : ana.up ? 'is-up' : 'is-down'}`}>
+            {ana == null ? 'Ana: verificando…' : ana.up ? '● Ana no ar' : '● Ana offline'}
+          </span>
+          {ana && !ana.up && <span className="cp-ana-warn">cadastro de grupos não sincroniza enquanto a Ana estiver desligada</span>}
+          {ana?.sync && (
+            <span className="cp-ana-sync">
+              último cadastro:{' '}
+              {String(ana.sync.fonte || '').startsWith('Ana')
+                ? <b>Ana{ana.sync.manuais != null ? ` · ${ana.sync.manuais} curadorias` : ''}</b>
+                : <b className="cp-ana-fallback">⚠ {ana.sync.fonte}</b>}
+            </span>
+          )}
+          {ana?.up && ana?.url && <a className="cp-ana-link" href={ana.url} target="_blank" rel="noreferrer">abrir painel da Ana ↗</a>}
+        </div>
       </header>
 
       {/* Rotina diária: só 2 cliques. */}

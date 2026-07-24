@@ -5,6 +5,7 @@ import { spawn } from 'node:child_process'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import crypto from 'node:crypto'
+import fs from 'node:fs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const TOOLS_DIR = path.join(__dirname, 'tools')
@@ -479,6 +480,17 @@ export default defineConfig({
               { cmd: 'git', args: ['push', '-u', 'origin', 'main'] },
             ])
             return sendJson(res, 200, { id: run.id })
+          }
+
+          // GET /api/atualizar/ana/status — saude da Ana (live via /health) + a
+          // ultima sincronizacao do cadastro (Emissores_meta.json). Alimenta o chip
+          // de status no painel. Resposta direta (nao usa runSequence).
+          if (urlPath === '/api/atualizar/ana/status' && req.method === 'GET') {
+            let up = false
+            try { up = (await fetch('http://127.0.0.1:8000/health', { signal: AbortSignal.timeout(2500) })).ok } catch { up = false }
+            let sync = null
+            try { sync = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'public', 'Emissores_meta.json'), 'utf8')) } catch { sync = null }
+            return sendJson(res, 200, { up, url: 'http://127.0.0.1:8000/ana', sync })
           }
 
           next()
