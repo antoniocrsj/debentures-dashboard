@@ -334,4 +334,4 @@ DataBook,Grupo,EmissorRaw,Ticker,TickerEmissor,MatchVia,Instrumento,Regime,Ratin
 08/07/2026,ISA Energia,,ISAEB3,ISA ENERGIA BRASIL S.A.,alias~,DEB,CVM160,AAA,IBBA,"IBBA, UBS BB, BBI",unica,4y Bullet,CDI,0.49,,"CDI + 0,49%",,CDI,0.42,,"CDI + 0,42% Des(0,49%)",-7,,,,,,
 14/07/2026,Localiza,,TFLEE1,LOCALIZA FLEET S/A,grupo,DEB,CVM160,AAA,BTG,"BTG, IBBA, UBS BB, BBI",unica,7y (6/7),CDI,1.25,,"CDI + 1,25% <Mensagem editada>",,,,,,,,,,,,
 14/07/2026,Localiza,,TFLEE1,LOCALIZA FLEET S/A,grupo,DEB,CVM160,AAA,BTG,"BTG, IBBA, UBS BB, BBI",unica,7y (6/7),CDI,1.25,,"CDI + 1,25%",,,,,,,,,,,,
-15/07/2026,Energisa,,,,grupo,DEB,12.431,AAA,BTG,BTG,unica,10y (8/9/10),NTN-B,0.2,7.79,"NTN-B 2035 - 0,10% ou IPCA + 7,79% Des(B35 + 0,20%) (pendente fixing)",B35,,,,,,,,,,,
+15/07/2026,Energisa,,,,grupo,DEB,12.431,AAA,BTG,BTG,unica,10y (8/9/10),NTN-B,0.2,7.79,"NTN-B 2035 - 0,10% ou IPCA + 7,79% Des(B35 + 0,20%) (pendente fixing)",B35,,,,,,,700,,,,

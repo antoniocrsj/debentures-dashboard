@@ -11,7 +11,7 @@
 // solta -- campos ausentes ficam vazios. Reprocessavel a cada novo export.
 import fs from 'node:fs'
 import path from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
@@ -36,7 +36,7 @@ const csvCell = v => {
 }
 
 // "R$ 2.340MM" | "BRL 400MM" | "R$ 552,8mm" | "2,6 bi" | "R$ 1.418mm" -> MM (Number)
-function valorMM(str) {
+export function valorMM(str) {
   if (!str) return null
   const s = String(str).replace(/r\$|brl|\s/gi, '')
   const m = s.match(/([\d.,]+)\s*(bi|bilh|mm|mi|milh)?/i)
@@ -59,7 +59,7 @@ function valorMM(str) {
 // o "ou IPCA+x"/"(IPCA+x)" e' so' equivalente informativo (varia com a curva ao
 // longo do dia); a compressao teto->final so' fecha na MESMA base. O equivalente
 // IPCA fica em ipcaEquiv. Trata sinal +/- (desagio sobre a NTN-B).
-function parseTaxa(str) {
+export function parseTaxa(str) {
   const empty = { indexador: '', spread: null, ntnb: '', ipcaEquiv: null, raw: '' }
   if (!str) return empty
   const raw = String(str).replace(/\s+/g, ' ').trim()
@@ -292,7 +292,7 @@ function campo(corpo, re) {
 }
 
 // quebra o corpo em blocos de serie
-function blocosSerie(linhas) {
+export function blocosSerie(linhas) {
   const RE_SERIE = /^\s*\*?\s*(\d+)\s*[ªaºo]?\s*s[ée]rie/i
   const RE_UNICA = /s[ée]rie\s*[úu]nica|[úu]nica\s*s[ée]rie|serie unica/i
   const blocos = []
@@ -314,7 +314,7 @@ function blocosSerie(linhas) {
   return { header, blocos }
 }
 
-function extrairSerie(texto) {
+export function extrairSerie(texto) {
   const prazo = campo(texto, /prazo\s*:?\s*([^\n]+)/i)
     || (texto.match(/(\d+)\s*y\b/i)?.[0] ?? '')
   const tetoRaw = campo(texto, /taxa\s*(?:teto|inicial|m[aá]xima)\s*:?\s*([^\n]+)/i)
@@ -349,9 +349,53 @@ function extrairSerie(texto) {
   }
 }
 
-// ---------- main ----------
-// Acha o export .txt: argumento explicito, senao o mais recente em tools/books/.
-// Retorna null se nao houver nenhum (o passo do atualizar-tudo passa "batido").
+// Book de serie UNICA: campos de nivel de book que caem no cabecalho (Emissao,
+// Demanda...) — porque vem ANTES do marcador "Serie Unica" — sao herdados pela
+// serie. So' preenche o que a serie deixou vazio (nunca sobrescreve taxa/prazo
+// que a serie ja trouxe). Nao se aplica a books multi-serie (cada serie tem os
+// seus proprios volumes).
+export function herdarHeader(serie, header) {
+  if (!header) return serie
+  const vazio = v => v == null || v === ''
+  const out = { ...serie }
+  for (const k of Object.keys(header)) if (vazio(out[k])) out[k] = header[k]
+  return out
+}
+
+// ---------- fontes de books ----------
+const RATING_RE = /\b(AAA|AA\+|AA-|AA|A\+|A-|A|BBB\+|BBB-|BBB|BB\+|BB|brAAA|brAA|brA)\b/
+
+// Export da Ana (fonte canonica dos books de primario; ver AGENTS.md). Cada item
+// tem o texto cru em `raw`. Sobrescrito por ANA_BOOKS_URL no ambiente.
+const ANA_BOOKS_URL = process.env.ANA_BOOKS_URL || 'http://127.0.0.1:8000/api/v1/books/export'
+
+// Busca o export da Ana. Retorna o array de items ou null se ela estiver fora do
+// ar / responder algo inesperado (a atualizacao segue sem os deltas dela).
+async function buscarBooksDaAna(url) {
+  try {
+    const ctrl = new AbortController()
+    const t = setTimeout(() => ctrl.abort(), 15000)
+    const resp = await fetch(url, { signal: ctrl.signal })
+    clearTimeout(t)
+    if (!resp.ok) return null
+    const data = await resp.json()
+    return Array.isArray(data) ? data : null
+  } catch {
+    return null
+  }
+}
+
+// Converte o export da Ana em "mensagens" (sem cabecalho de WhatsApp): a 1a linha
+// do `raw` e' o titulo; a data do book sai do corpo. Alimenta o mesmo pipeline.
+export function mensagensDeExport(items) {
+  return (items || [])
+    .map(it => String(it && it.raw != null ? it.raw : '').trim())
+    .filter(Boolean)
+    .map(raw => ({ data: '', autor: 'ana', linhas: raw.split('\n') }))
+}
+
+// Acha o export .txt do WhatsApp: argumento explicito, senao o mais recente em
+// tools/books/. Retorna null se nao houver nenhum. Fonte de bootstrap/reconciliacao.
 function acharExport() {
   if (process.argv[2]) return process.argv[2]
   const dir = path.join(ROOT, 'tools', 'books')
@@ -362,97 +406,170 @@ function acharExport() {
   return null
 }
 
-function main() {
-  const arqTxt = acharExport()
-  if (!arqTxt) {
-    console.log('Sem export de books (nenhum .txt em tools/books/ e nenhum caminho informado).')
-    console.log('Coloque o export do grupo "CRM Books" em tools/books/ ou rode: node tools/parsear-books.mjs <arquivo.txt>')
-    console.log('Books_Primario.csv preservado (nada a fazer).')
-    return
-  }
-  const txt = fs.readFileSync(arqTxt, 'utf8')
-  const grp = carregarGrupos()
-  const debs = carregarDebentures(grp.gByCnpj)
-  const msgs = lerMensagens(txt)
+// ---------- parse de 1 mensagem -> linhas (uma por serie) ----------
+// Puro e testavel. Retorna null quando nao e' um book; senao { deb, grupo, via,
+// title, rows }. As metricas ficam a cargo do chamador (agrega os retornos).
+export function parsearMensagem(msg, grp, debs) {
+  const title = (msg.linhas[0] || '').replace(/\*/g, '').trim()
+  if (!ehBook(title)) return null
+  const instr = instrumento(title)
+  const corpo = msg.linhas.join('\n')
+  const dataBook = campo(corpo, /data do book(?:building|build)?\s*:?\s*(\d{2}\/\d{2}\/\d{4})/i) || msg.data
+  if (instr !== 'DEB') return { title, instr, deb: false, grupo: '', via: '', rows: [] }
+
+  const rating = campo(corpo, /rating\s*:?\s*([A-Za-z+\/.\- ]+?)(?:\n|$)/i).match?.(RATING_RE)?.[0]
+    || (corpo.match(RATING_RE)?.[0] ?? '')
+  const regime = /12\.?431/.test(corpo) || /12\.?431/i.test(title) ? '12.431'
+    : /(i?cvm) ?160/i.test(corpo) ? 'CVM160' : ''
+  const coord = extrairCoord(corpo)
+  // Emissor "limpo" do titulo do book (tira juridiques de prefixo, preserva aval).
+  const emissorRaw = title.split(/ - | – /)[0]
+    .replace(/^\*?\s*(deb\.?|debentures?|book(building|build)?)\s*/i, '').replace(/12\.?431/g, '').trim()
+
+  const cand = candidatoEmissor(title)
+  const { grupo, via } = casarGrupo(cand, grp)
+
+  const { header, blocos } = blocosSerie(msg.linhas.slice(1))
+  // Serie unica (1 bloco com marcador "Serie Unica"/"Na Serie"): herda os campos
+  // de book do cabecalho. Multi-serie NAO herda (cada serie tem os seus).
+  const headerFields = blocos.length === 1 ? extrairSerie(header.join('\n')) : null
+  const lista = blocos.length ? blocos : [{ serie: 'unica', linhas: msg.linhas.slice(1) }]
 
   const rows = []
-  const stats = { mensagens: msgs.length, books: 0, deb: 0, series: 0, casados: 0, naoCasados: [] }
-  const RATING_RE = /\b(AAA|AA\+|AA-|AA|A\+|A-|A|BBB\+|BBB-|BBB|BB\+|BB|brAAA|brAA|brA)\b/
+  for (const b of lista) {
+    const s = herdarHeader(extrairSerie(b.linhas.join('\n')), headerFields)
+    // ignora "serie" sem nenhuma taxa (ruido)
+    if (s.spreadFinal == null && s.spreadTeto == null && !s.prazo) continue
+    const prazoAnos = (s.prazo.match(/(\d+)\s*y/i) || [])[1]
+    const tk = acharTicker(debs, grupo, emissorRaw, s.spreadFinal, s.ipcaEquivFinal, prazoAnos ? +prazoAnos : null, dataBook)
+    rows.push({
+      DataBook: dataBook, Grupo: grupo, EmissorRaw: emissorRaw,
+      Ticker: tk ? tk.cod : '', TickerEmissor: tk ? tk.emissor : '',
+      MatchVia: via, Instrumento: instr, Regime: regime, Rating: rating,
+      CoordLider: coord.lider, Coordenadores: coord.lista,
+      Serie: b.serie, Prazo: s.prazo,
+      IndexadorFinal: s.indexadorFinal, SpreadFinalPct: s.spreadFinal ?? '',
+      IpcaEquivFinalPct: s.ipcaEquivFinal ?? '',
+      TaxaFinalRaw: s.taxaFinalRaw, NtnbFinal: s.ntnbFinal,
+      IndexadorTeto: s.indexadorTeto, SpreadTetoPct: s.spreadTeto ?? '', NtnbTeto: s.ntnbTeto, TaxaTetoRaw: s.taxaTetoRaw,
+      CompressaoBps: s.compBps ?? '',
+      DemandaMM: s.demandaMM ?? '', EmissaoMM: s.emissaoMM ?? '', OverX: s.overX ?? '',
+      BidsAloc: s.bidsAloc, AlocCortePct: s.alocCortePct, Amort: s.amort,
+    })
+  }
+  return { title, instr, deb: true, grupo, via, rows }
+}
 
+// Chave natural de uma linha (serie de um book): identifica o mesmo registro entre
+// o CSV existente e um re-parse, para o upsert nao duplicar nem perder historico.
+export function chaveNatural(row) {
+  return [row.DataBook, row.Grupo, row.EmissorRaw, row.Serie, row.Prazo].join('|')
+}
+
+// Le o Books_Primario.csv atual de volta em objetos (chave = nome da coluna).
+// E' a SEMENTE: preserva os books historicos; a Ana entrega so' os deltas.
+function lerCsvExistente(csvPath) {
+  if (!fs.existsSync(csvPath)) return { cols: null, rows: [] }
+  const linhas = fs.readFileSync(csvPath, 'utf8').split(/\r?\n/).filter(l => l.length)
+  if (!linhas.length) return { cols: null, rows: [] }
+  const cols = parseCsvLine(linhas[0])
+  const rows = linhas.slice(1).map(l => {
+    const c = parseCsvLine(l)
+    const o = {}
+    cols.forEach((k, i) => { o[k] = c[i] ?? '' })
+    return o
+  })
+  return { cols, rows }
+}
+
+// ---------- main ----------
+async function main() {
+  const grp = carregarGrupos()
+  const debs = carregarDebentures(grp.gByCnpj)
+  const outDir = path.join(ROOT, 'public', 'data')
+  const csvPath = path.join(outDir, 'Books_Primario.csv')
+
+  // 1) Semeia do CSV existente (preserva o historico; a Ana entrega deltas).
+  // ARRAY, nao Map: o CSV pode ter linhas que compartilham a chave natural
+  // (reposts teto/final do mesmo book) e colapsa-las perderia historico. O
+  // indice aponta para a ULTIMA ocorrencia de cada chave (alvo do upsert).
+  const base = lerCsvExistente(csvPath)
+  const baseRows = base.rows.slice()
+  const idxByKey = new Map()
+  baseRows.forEach((r, i) => idxByKey.set(chaveNatural(r), i))
+  const baseCount = baseRows.length
+
+  // 2) Coleta mensagens NOVAS: Ana (canonica) + .txt do WhatsApp (bootstrap).
+  const fontes = []
+  let msgs = []
+  let anaIndisponivel = false
+  if (!process.env.BOOKS_SKIP_ANA) {
+    const anaItems = await buscarBooksDaAna(ANA_BOOKS_URL)
+    if (anaItems && anaItems.length) {
+      msgs = msgs.concat(mensagensDeExport(anaItems))
+      fontes.push(`Ana (${anaItems.length})`)
+    } else if (anaItems == null) {
+      anaIndisponivel = true
+      console.log(`Ana indisponivel em ${ANA_BOOKS_URL} -- seguindo sem os deltas dela.`)
+    }
+  }
+  const arqTxt = acharExport()
+  if (arqTxt) {
+    msgs = msgs.concat(lerMensagens(fs.readFileSync(arqTxt, 'utf8')))
+    fontes.push(`arquivo (${path.basename(arqTxt)})`)
+  }
+
+  // 3) Parseia as mensagens novas e faz UPSERT por chave natural.
+  const stats = { mensagens: msgs.length, books: 0, deb: 0, series: 0, casados: 0, comTicker: 0, naoCasados: [], novos: 0, atualizados: 0 }
   for (const msg of msgs) {
-    const title = (msg.linhas[0] || '').replace(/\*/g, '').trim()
-    if (!ehBook(title)) continue
+    const p = parsearMensagem(msg, grp, debs)
+    if (!p) continue
     stats.books++
-    const instr = instrumento(title)
-    if (instr !== 'DEB') continue
+    if (!p.deb) continue
     stats.deb++
-
-    const corpo = msg.linhas.join('\n')
-    const dataBook = campo(corpo, /data do book(?:building|build)?\s*:?\s*(\d{2}\/\d{2}\/\d{4})/i) || msg.data
-    const rating = campo(corpo, /rating\s*:?\s*([A-Za-z+\/.\- ]+?)(?:\n|$)/i).match?.(RATING_RE)?.[0]
-      || (corpo.match(RATING_RE)?.[0] ?? '')
-    const regime = /12\.?431/.test(corpo) || /12\.?431/i.test(title) ? '12.431'
-      : /(i?cvm) ?160/i.test(corpo) ? 'CVM160' : ''
-    const coord = extrairCoord(corpo)
-    // Emissor "limpo" do titulo do book (tira juridiques de prefixo, preserva aval).
-    const emissorRaw = title.split(/ - | – /)[0]
-      .replace(/^\*?\s*(deb\.?|debentures?|book(building|build)?)\s*/i, '').replace(/12\.?431/g, '').trim()
-
-    const cand = candidatoEmissor(title)
-    const { grupo, via } = casarGrupo(cand, grp)
-    if (grupo) stats.casados++; else stats.naoCasados.push(title)
-
-    const { blocos } = blocosSerie(msg.linhas.slice(1))
-    const lista = blocos.length ? blocos
-      : [{ serie: 'unica', linhas: msg.linhas.slice(1) }]
-    for (const b of lista) {
-      const s = extrairSerie(b.linhas.join('\n'))
-      // ignora "serie" sem nenhuma taxa (ruido)
-      if (s.spreadFinal == null && s.spreadTeto == null && !s.prazo) continue
+    if (p.grupo) stats.casados++; else stats.naoCasados.push(p.title)
+    for (const row of p.rows) {
       stats.series++
-      const prazoAnos = (s.prazo.match(/(\d+)\s*y/i) || [])[1]
-      const tk = acharTicker(debs, grupo, emissorRaw, s.spreadFinal, s.ipcaEquivFinal, prazoAnos ? +prazoAnos : null, dataBook)
-      if (tk) stats.comTicker = (stats.comTicker || 0) + 1
-      rows.push({
-        DataBook: dataBook, Grupo: grupo, EmissorRaw: emissorRaw,
-        Ticker: tk ? tk.cod : '', TickerEmissor: tk ? tk.emissor : '',
-        MatchVia: via, Instrumento: instr, Regime: regime, Rating: rating,
-        CoordLider: coord.lider, Coordenadores: coord.lista,
-        Serie: b.serie, Prazo: s.prazo,
-        IndexadorFinal: s.indexadorFinal, SpreadFinalPct: s.spreadFinal ?? '',
-        IpcaEquivFinalPct: s.ipcaEquivFinal ?? '',
-        TaxaFinalRaw: s.taxaFinalRaw, NtnbFinal: s.ntnbFinal,
-        IndexadorTeto: s.indexadorTeto, SpreadTetoPct: s.spreadTeto ?? '', NtnbTeto: s.ntnbTeto, TaxaTetoRaw: s.taxaTetoRaw,
-        CompressaoBps: s.compBps ?? '',
-        DemandaMM: s.demandaMM ?? '', EmissaoMM: s.emissaoMM ?? '', OverX: s.overX ?? '',
-        BidsAloc: s.bidsAloc, AlocCortePct: s.alocCortePct, Amort: s.amort,
-      })
+      if (row.Ticker) stats.comTicker++
+      const k = chaveNatural(row)
+      if (idxByKey.has(k)) {           // atualiza a linha existente (nao duplica)
+        baseRows[idxByKey.get(k)] = row
+        stats.atualizados++
+      } else {                         // book/serie nova: acrescenta
+        idxByKey.set(k, baseRows.length)
+        baseRows.push(row)
+        stats.novos++
+      }
     }
   }
 
-  // ordena por data (AAAAMMDD)
-  const dnum = d => { const m = d.match(/(\d{2})\/(\d{2})\/(\d{4})/); return m ? m[3] + m[2] + m[1] : '' }
+  // 4) Escreve o CSV mesclado (ordenado por data).
+  const rows = baseRows
+  const dnum = d => { const m = String(d).match(/(\d{2})\/(\d{2})\/(\d{4})/); return m ? m[3] + m[2] + m[1] : '' }
   rows.sort((a, b) => dnum(a.DataBook).localeCompare(dnum(b.DataBook)))
-
-  const cols = Object.keys(rows[0] || { DataBook: 1 })
+  const cols = base.cols || Object.keys(rows[0] || { DataBook: 1 })
   const csv = [cols.join(',')].concat(rows.map(r => cols.map(c => csvCell(r[c])).join(','))).join('\n') + '\n'
-  const outDir = path.join(ROOT, 'public', 'data')
-  fs.writeFileSync(path.join(outDir, 'Books_Primario.csv'), csv)
+  fs.writeFileSync(csvPath, csv)
+
+  const fonte = fontes.length ? fontes.join(' + ') : (anaIndisponivel ? 'preservado (Ana indisponivel, sem arquivo)' : 'preservado (nenhuma fonte nova)')
   const meta = {
-    fonte: path.basename(arqTxt),
+    fonte,
+    ana_indisponivel: anaIndisponivel,
+    base: baseCount, novos: stats.novos, atualizados: stats.atualizados, total: rows.length,
     books_deb: stats.deb, series: stats.series,
     casados: stats.casados, pct_casado: stats.deb ? Math.round(100 * stats.casados / stats.deb) : 0,
-    series_com_ticker: stats.comTicker || 0,
+    series_com_ticker: stats.comTicker,
     periodo: { de: rows[0]?.DataBook || '', ate: rows[rows.length - 1]?.DataBook || '' },
     nao_casados: [...new Set(stats.naoCasados)],
   }
   fs.writeFileSync(path.join(outDir, 'Books_Meta.json'), JSON.stringify(meta, null, 2))
 
-  console.log(`Mensagens: ${stats.mensagens} | Books: ${stats.books} | DEB: ${stats.deb} | Series: ${stats.series}`)
-  console.log(`Casados ao Grupo: ${stats.casados}/${stats.deb} (${meta.pct_casado}%) | Series com ticker: ${meta.series_com_ticker}/${stats.series}`)
-  console.log(`Periodo: ${meta.periodo.de} -> ${meta.periodo.ate}`)
-  console.log(`Nao casados (${meta.nao_casados.length}): ${meta.nao_casados.join(' | ')}`)
+  console.log(`Fonte: ${fonte}`)
+  console.log(`Base: ${baseCount} | novos: ${stats.novos} | atualizados: ${stats.atualizados} | total: ${rows.length}`)
+  console.log(`Mensagens novas: ${stats.mensagens} | DEB: ${stats.deb} | Series: ${stats.series} | com ticker: ${stats.comTicker}`)
   console.log(`\n-> public/data/Books_Primario.csv (${rows.length} linhas)`)
 }
 
-main()
+// Roda so' quando executado direto (node tools/parsear-books.mjs); ao ser
+// importado nos testes, expoe as funcoes puras sem efeitos colaterais.
+if (import.meta.url === pathToFileURL(process.argv[1]).href) await main()

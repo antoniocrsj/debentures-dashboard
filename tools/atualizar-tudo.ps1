@@ -763,10 +763,11 @@ if ($SkipIda) {
   }
 }
 
-# 5f. Books (mercado primario) - parser Node do export do grupo "CRM Books"
-# (WhatsApp). Best-effort e "passa batido" quando nao ha export novo: le o .txt
-# mais recente de tools\books\ e grava public\data\Books_Primario.csv (spread de
-# saida por serie, casado ao Grupo do emissor). Sem export, preserva o CSV atual.
+# 5f. Books (mercado primario) - parser Node. FONTE canonica: export da Ana
+# (books do CRM arquivados la); o parser SEMEIA do Books_Primario.csv atual e faz
+# UPSERT dos deltas da Ana por chave natural (nada se perde). O .txt do WhatsApp
+# em tools\books\ segue valendo como bootstrap/reconciliacao. Ana fora do ar:
+# fallback barulhento -- preserva o CSV e segue (nao trava). Best-effort.
 if ($SkipBooks) {
   $summary.Books = 'PULADO por parametro -SkipBooks'
   Warn $summary.Books
@@ -775,8 +776,20 @@ if ($SkipBooks) {
   try {
     & node (Join-Path $PSScriptRoot 'parsear-books.mjs')
     if ($LASTEXITCODE -ne 0) { throw "node saiu com codigo $LASTEXITCODE" }
-    $summary.Books = 'OK'
-    Ok "Books atualizados (ou preservados) em public\data\Books_Primario.csv."
+    $bkMeta = Read-MetaJson 'data\Books_Meta.json'
+    if ($bkMeta -and ([string]$bkMeta.fonte).StartsWith('Ana')) {
+      $summary.Books = "OK ($($bkMeta.fonte); +$($bkMeta.novos) novo(s), $($bkMeta.atualizados) atualizado(s); total $($bkMeta.total))"
+      Ok $summary.Books
+    } elseif ($bkMeta -and $bkMeta.ana_indisponivel) {
+      $summary.Books = "FALLBACK (Ana indisponivel; CSV preservado com $($bkMeta.total)) -- books novos do CRM PODEM estar pendentes"
+      Warn $summary.Books
+    } elseif ($bkMeta) {
+      $summary.Books = "OK ($($bkMeta.fonte); total $($bkMeta.total))"
+      Ok $summary.Books
+    } else {
+      $summary.Books = 'executado (sem meta)'
+      Warn $summary.Books
+    }
   } catch {
     $summary.Books = "FALHOU sem travar: $($_.Exception.Message)"
     Warn $summary.Books

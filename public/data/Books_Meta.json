@@ -1,23 +1,18 @@
 {
-  "fonte": "Conversa do WhatsApp com CRM Books.txt",
-  "books_deb": 220,
-  "series": 336,
-  "casados": 211,
-  "pct_casado": 96,
-  "series_com_ticker": 161,
+  "fonte": "preservado (nenhuma fonte nova)",
+  "ana_indisponivel": false,
+  "base": 336,
+  "novos": 0,
+  "atualizados": 0,
+  "total": 336,
+  "books_deb": 0,
+  "series": 0,
+  "casados": 0,
+  "pct_casado": 0,
+  "series_com_ticker": 0,
   "periodo": {
     "de": "14/04/2025",
     "ate": "15/07/2026"
   },
-  "nao_casados": [
-    "DEB - TecBan",
-    "Debs 12.431",
-    "DEB Sec - Refrescos Bandeirantes",
-    "DEB LM Mobilidade",
-    "DEB 12.431 - Casa dos Ventos (TotalEnergies)",
-    "DEB Sec ER 2027",
-    "DEB 12.431 – Casa dos Ventos",
-    "DEB Sec – Multilog",
-    "DEB Sec - Dívida Ativa DF"
-  ]
+  "nao_casados": []
 }
