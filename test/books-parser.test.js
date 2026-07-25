@@ -1,7 +1,7 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 
-import { valorMM, blocosSerie, extrairSerie, herdarHeader, mensagensDeExport, parsearMensagem, chaveNatural } from '../tools/parsear-books.mjs'
+import { valorMM, blocosSerie, extrairSerie, herdarHeader, mensagensDeExport, parsearMensagem, extrairEmissorRaw, chaveNatural, chaveCoarse, mesclarBooks } from '../tools/parsear-books.mjs'
 
 const ENERGISA_RAW = `*DEB 12.431 – Energisa (EMT e EMS)*
 *ICVM 160 - IP*
@@ -98,18 +98,49 @@ test('parsearMensagem: book da Ana (serie unica) -> linha com Emissao herdada', 
   assert.equal(r.Prazo, '10y (8/9/10)')
   assert.equal(r.IpcaEquivFinalPct, 7.79)
   assert.equal(r.EmissaoMM, 700)                                // herdou do cabecalho (fix)
-  assert.equal(r.EmissorRaw, '')                               // Energisa: prefixo, sem nome
+  assert.equal(r.EmissorRaw, 'Energisa (EMT e EMS)')           // emissor pos-travessao, com detalhe
 })
 
 test('parsearMensagem: nao-book retorna null', () => {
   assert.equal(parsearMensagem({ data: '', autor: 'ana', linhas: ['Bom dia a todos'] }, GRP_ENERGISA, []), null)
 })
 
-// --- upsert: re-parse casa a linha do CSV existente (nao duplica) ------------
-test('chaveNatural: mesma serie do mesmo book gera a MESMA chave (upsert)', () => {
-  const [msg] = mensagensDeExport([{ raw: ENERGISA_RAW }])
-  const novo = parsearMensagem(msg, GRP_ENERGISA, []).rows[0]
-  // linha equivalente vinda do CSV historico (EmissaoMM vazio, mesma identidade)
-  const doCsv = { DataBook: '15/07/2026', Grupo: 'Energisa', EmissorRaw: '', Serie: 'unica', Prazo: '10y (8/9/10)', EmissaoMM: '' }
-  assert.equal(chaveNatural(novo), chaveNatural(doCsv))          // mesma chave -> update, nao duplica
+// --- extracao do emissor: distingue emissoras-irmas -------------------------
+test('extrairEmissorRaw: pega o pos-travessao com detalhe (RAC vs Fleet distintos)', () => {
+  assert.equal(extrairEmissorRaw('DEB – Localiza RAC (Exchange)'), 'Localiza RAC (Exchange)')
+  assert.equal(extrairEmissorRaw('DEB – Localiza Fleet (Exchange)'), 'Localiza Fleet (Exchange)')
+  assert.equal(extrairEmissorRaw('DEB 12.431 – Energisa (EMT e EMS)'), 'Energisa (EMT e EMS)')
+  assert.equal(extrairEmissorRaw('DEB – Copel D'), 'Copel D')
+  assert.equal(extrairEmissorRaw('DEB LM Mobilidade'), 'LM Mobilidade')  // sem travessao -> tira prefixo
+})
+
+// --- merge: supersede por chave grossa (nao duplica, distingue irmas) --------
+test('mesclarBooks: RAC e Fleet (mesma chave grossa) superseder a linha antiga vazia', () => {
+  // semente: 2 linhas historicas do mesmo slot, com EmissorRaw vazio (parse antigo)
+  const seed = [
+    { DataBook: '14/07/2026', Grupo: 'Localiza', EmissorRaw: '', Serie: 'unica', Prazo: '7y (6/7)', Ticker: 'TFLEE1' },
+    { DataBook: '14/07/2026', Grupo: 'Localiza', EmissorRaw: '', Serie: 'unica', Prazo: '7y (6/7)', Ticker: 'TFLEE1' },
+    { DataBook: '10/01/2026', Grupo: 'Outro', EmissorRaw: 'X', Serie: 'unica', Prazo: '5y', Ticker: '' }, // nao tocado
+  ]
+  const novas = [
+    { DataBook: '14/07/2026', Grupo: 'Localiza', EmissorRaw: 'Localiza RAC (Exchange)', Serie: 'unica', Prazo: '7y (6/7)' },
+    { DataBook: '14/07/2026', Grupo: 'Localiza', EmissorRaw: 'Localiza Fleet (Exchange)', Serie: 'unica', Prazo: '7y (6/7)' },
+  ]
+  const { rows, novos, atualizados } = mesclarBooks(seed, novas)
+  const localiza = rows.filter(r => r.Grupo === 'Localiza')
+  assert.equal(localiza.length, 2)                                            // 2 (RAC, Fleet), nao 4
+  assert.deepEqual(localiza.map(r => r.EmissorRaw).sort(), ['Localiza Fleet (Exchange)', 'Localiza RAC (Exchange)'])
+  assert.ok(rows.some(r => r.Grupo === 'Outro'))                             // historico intocado preservado
+  assert.equal(atualizados, 2)                                               // superseder o slot existente
+  assert.equal(novos, 0)
+})
+
+test('mesclarBooks: book novo (chave grossa inexistente) e acrescentado', () => {
+  const seed = [{ DataBook: '10/01/2026', Grupo: 'A', EmissorRaw: '', Serie: 'unica', Prazo: '5y' }]
+  const novas = [{ DataBook: '20/07/2026', Grupo: 'Copel', EmissorRaw: 'Copel D', Serie: 'unica', Prazo: '2y Bullet' }]
+  const { rows, novos, atualizados } = mesclarBooks(seed, novas)
+  assert.equal(rows.length, 2)
+  assert.equal(novos, 1)
+  assert.equal(atualizados, 0)
+  assert.equal(chaveCoarse(novas[0]), '20/07/2026|Copel|unica|2y Bullet')
 })

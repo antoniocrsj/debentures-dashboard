@@ -406,6 +406,20 @@ function acharExport() {
   return null
 }
 
+// Emissor "limpo" do titulo. Os titulos do CRM sao "INSTRUMENTO [regime] – EMISSOR
+// (detalhe)": o emissor vem DEPOIS do 1o travessao/hifen (com espacos). Sem
+// travessao, cai no titulo sem o prefixo de instrumento. PRESERVA o "(detalhe)" --
+// e' o que distingue emissoras-irmas de um mesmo grupo/book (Localiza RAC vs Fleet,
+// Energisa EMT vs EMS), essencial para nao colapsa-las na chave natural.
+export function extrairEmissorRaw(title) {
+  const partes = String(title || '').split(/\s[-–]\s/)
+  const apos = partes.length > 1 ? partes.slice(1).join(' - ') : partes[0]
+  return (apos || '')
+    .replace(/^\*?\s*(deb\.?|debentures?|debs?|cra|cri|lf|fidc|book(?:building|build)?)\b\s*/i, '')
+    .replace(/\b12\.?431\b/g, '')
+    .replace(/\s+/g, ' ').trim()
+}
+
 // ---------- parse de 1 mensagem -> linhas (uma por serie) ----------
 // Puro e testavel. Retorna null quando nao e' um book; senao { deb, grupo, via,
 // title, rows }. As metricas ficam a cargo do chamador (agrega os retornos).
@@ -422,9 +436,7 @@ export function parsearMensagem(msg, grp, debs) {
   const regime = /12\.?431/.test(corpo) || /12\.?431/i.test(title) ? '12.431'
     : /(i?cvm) ?160/i.test(corpo) ? 'CVM160' : ''
   const coord = extrairCoord(corpo)
-  // Emissor "limpo" do titulo do book (tira juridiques de prefixo, preserva aval).
-  const emissorRaw = title.split(/ - | – /)[0]
-    .replace(/^\*?\s*(deb\.?|debentures?|book(building|build)?)\s*/i, '').replace(/12\.?431/g, '').trim()
+  const emissorRaw = extrairEmissorRaw(title)
 
   const cand = candidatoEmissor(title)
   const { grupo, via } = casarGrupo(cand, grp)
@@ -460,10 +472,35 @@ export function parsearMensagem(msg, grp, debs) {
   return { title, instr, deb: true, grupo, via, rows }
 }
 
-// Chave natural de uma linha (serie de um book): identifica o mesmo registro entre
-// o CSV existente e um re-parse, para o upsert nao duplicar nem perder historico.
+// Chave natural (FINA) de uma linha (serie de um book): identifica exatamente o
+// mesmo registro. Inclui o EmissorRaw para nao colapsar emissoras-irmas.
 export function chaveNatural(row) {
   return [row.DataBook, row.Grupo, row.EmissorRaw, row.Serie, row.Prazo].join('|')
+}
+
+// Chave GROSSA (sem o emissor): identifica o "mesmo book/serie" independentemente
+// de qual emissora-irma. Um book re-parseado de uma fonte (Ana) SUPERSEDE as
+// linhas antigas do CSV com a mesma chave grossa -- assim, quando a extracao do
+// emissor melhora (vazio -> "Localiza RAC"/"Fleet"), a linha velha some e as novas
+// entram, sem duplicar. Fontes = verdade para o book que trazem.
+export function chaveCoarse(row) {
+  return [row.DataBook, row.Grupo, row.Serie, row.Prazo].join('|')
+}
+
+// Mescla linhas novas (parseadas das fontes) sobre a semente (CSV atual). Puro e
+// testavel. Dedup dos novos por chave fina (ultimo vence); a semente perde as
+// linhas cuja chave GROSSA foi tocada por algum novo (supersede); o resto e'
+// preservado. Retorna { rows, novos, atualizados }.
+export function mesclarBooks(seedRows, newRows) {
+  const finas = new Map()
+  for (const r of newRows) finas.set(chaveNatural(r), r)   // dedup fina (ultimo vence)
+  const novosRows = [...finas.values()]
+  const coarseNovas = new Set(novosRows.map(chaveCoarse))
+  const coarseSeed = new Set(seedRows.map(chaveCoarse))
+  const kept = seedRows.filter(r => !coarseNovas.has(chaveCoarse(r)))
+  let novos = 0, atualizados = 0
+  for (const r of novosRows) { if (coarseSeed.has(chaveCoarse(r))) atualizados++; else novos++ }
+  return { rows: kept.concat(novosRows), novos, atualizados }
 }
 
 // Le o Books_Primario.csv atual de volta em objetos (chave = nome da coluna).
@@ -489,14 +526,9 @@ async function main() {
   const outDir = path.join(ROOT, 'public', 'data')
   const csvPath = path.join(outDir, 'Books_Primario.csv')
 
-  // 1) Semeia do CSV existente (preserva o historico; a Ana entrega deltas).
-  // ARRAY, nao Map: o CSV pode ter linhas que compartilham a chave natural
-  // (reposts teto/final do mesmo book) e colapsa-las perderia historico. O
-  // indice aponta para a ULTIMA ocorrencia de cada chave (alvo do upsert).
+  // 1) Semeia do CSV existente (preserva o historico; as fontes entregam deltas).
   const base = lerCsvExistente(csvPath)
   const baseRows = base.rows.slice()
-  const idxByKey = new Map()
-  baseRows.forEach((r, i) => idxByKey.set(chaveNatural(r), i))
   const baseCount = baseRows.length
 
   // 2) Coleta mensagens NOVAS: Ana (canonica) + .txt do WhatsApp (bootstrap).
@@ -519,8 +551,9 @@ async function main() {
     fontes.push(`arquivo (${path.basename(arqTxt)})`)
   }
 
-  // 3) Parseia as mensagens novas e faz UPSERT por chave natural.
-  const stats = { mensagens: msgs.length, books: 0, deb: 0, series: 0, casados: 0, comTicker: 0, naoCasados: [], novos: 0, atualizados: 0 }
+  // 3) Parseia as mensagens novas em linhas.
+  const stats = { mensagens: msgs.length, books: 0, deb: 0, series: 0, casados: 0, comTicker: 0, naoCasados: [] }
+  const newRows = []
   for (const msg of msgs) {
     const p = parsearMensagem(msg, grp, debs)
     if (!p) continue
@@ -531,20 +564,14 @@ async function main() {
     for (const row of p.rows) {
       stats.series++
       if (row.Ticker) stats.comTicker++
-      const k = chaveNatural(row)
-      if (idxByKey.has(k)) {           // atualiza a linha existente (nao duplica)
-        baseRows[idxByKey.get(k)] = row
-        stats.atualizados++
-      } else {                         // book/serie nova: acrescenta
-        idxByKey.set(k, baseRows.length)
-        baseRows.push(row)
-        stats.novos++
-      }
+      newRows.push(row)
     }
   }
 
-  // 4) Escreve o CSV mesclado (ordenado por data).
-  const rows = baseRows
+  // 4) Mescla (supersede por chave grossa) e escreve o CSV ordenado por data.
+  const { rows, novos, atualizados } = mesclarBooks(baseRows, newRows)
+  stats.novos = novos
+  stats.atualizados = atualizados
   const dnum = d => { const m = String(d).match(/(\d{2})\/(\d{2})\/(\d{4})/); return m ? m[3] + m[2] + m[1] : '' }
   rows.sort((a, b) => dnum(a.DataBook).localeCompare(dnum(b.DataBook)))
   const cols = base.cols || Object.keys(rows[0] || { DataBook: 1 })

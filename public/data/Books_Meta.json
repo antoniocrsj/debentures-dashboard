@@ -1,18 +1,18 @@
 {
-  "fonte": "preservado (nenhuma fonte nova)",
+  "fonte": "Ana (6)",
   "ana_indisponivel": false,
   "base": 336,
-  "novos": 0,
-  "atualizados": 0,
-  "total": 336,
-  "books_deb": 0,
-  "series": 0,
-  "casados": 0,
-  "pct_casado": 0,
-  "series_com_ticker": 0,
+  "novos": 3,
+  "atualizados": 3,
+  "total": 339,
+  "books_deb": 6,
+  "series": 6,
+  "casados": 6,
+  "pct_casado": 100,
+  "series_com_ticker": 4,
   "periodo": {
     "de": "14/04/2025",
-    "ate": "15/07/2026"
+    "ate": "24/07/2026"
   },
   "nao_casados": []
 }
