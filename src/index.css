@@ -2239,6 +2239,31 @@ a { color: var(--primary); }
   flex: 1 1 auto; min-height: 0; max-height: none;
 }
 
+/* ── Compacto: filtros do secundario numa unica linha que rola horizontal ─────
+   Empilhados (label em cima + campo) eles comiam ~234px de altura. Aqui viram
+   uma faixa unica rolavel (padrao do chip-bar de Debentures): campos flex:0 0
+   auto, labels e alturas menores. Devolve ~180px de altura pra tabela. */
+.app:not(.desktop) .sec-filters { margin-bottom: 8px; }
+.app:not(.desktop) .sec-filters .fluxo-filters { gap: 0; margin-bottom: 0; }
+.app:not(.desktop) .sec-filters .fluxo-filters-row {
+  flex-wrap: nowrap; overflow-x: auto; gap: 8px; align-items: flex-end;
+  padding-bottom: 2px; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+}
+.app:not(.desktop) .sec-filters .fluxo-filters-row::-webkit-scrollbar { display: none; }
+.app:not(.desktop) .sec-filters .fluxo-field,
+.app:not(.desktop) .sec-filters .fluxo-field-grow { flex: 0 0 auto; min-width: 0; gap: 2px; }
+.app:not(.desktop) .sec-filters .fluxo-field-label {
+  font-size: 9.5px; letter-spacing: .02em;
+}
+.app:not(.desktop) .sec-filters .sec-input {
+  height: 32px; font-size: 12px; min-width: 122px; max-width: 150px;
+}
+.app:not(.desktop) .sec-filters .fluxo-field-grow .sec-input { min-width: 148px; max-width: 148px; }
+/* Segmentado de Volume: largura pelo conteudo (nao 100% do campo) p/ caber na faixa. */
+.app:not(.desktop) .sec-filters .segmented { width: auto; }
+.app:not(.desktop) .sec-filters .segmented-btn { padding: 0 9px; font-size: 11px; }
+.app:not(.desktop) .sec-filters .sec-clear { height: 32px; }
+
 /* Card do grafico de serie temporal (fixo ao lado da tabela). */
 .sec-chart-card { margin: 0; padding: 10px 12px 6px; }
 .sec-chart-tit { font-weight: 600; color: var(--primary); }
