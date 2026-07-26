@@ -32,6 +32,11 @@ const STATIC_PL_GESTORES_URL = '/PL_Gestores.csv'
 const STATIC_DEBENTURES_META_URL = '/Debentures_meta.json'
 const STATIC_BLC_META_URL = '/BLC_meta.json'
 const STATIC_BLC_MATURIDADE_URL = '/BLC_maturidade.json'
+// Historico de negociacao do REUNE (mercado secundario): formato LONG (uma
+// linha por ativo x dia), gerado/acumulado por tools/preparar-reune.ps1.
+// Alimenta a foto do ultimo dia (tabela) e os graficos de serie. OPCIONAL.
+const STATIC_REUNE_URL = '/REUNE_Historico.csv'
+const STATIC_REUNE_META_URL = '/REUNE_Historico_meta.json'
 
 async function fetchCSV(rawUrl) {
   const url = `/api/proxy?url=${encodeURIComponent(rawUrl)}`
@@ -57,7 +62,7 @@ async function fetchStaticJSON(path) {
 }
 
 function cacheKey() {
-  return 'deb-cache-v7'  // v7: inclui recompra/breakeven (Anbima_BE) no objeto enriquecido
+  return 'deb-cache-v9'  // v9: REUNE vira historico long (ativo x dia)
 }
 
 function readCache() {
@@ -122,9 +127,12 @@ export function useDebentures(blcUrl) {
       // Recompra antecipada / breakeven — opcional: se faltar, o app segue sem as colunas.
       fetchStaticCSV(STATIC_ANBIMA_BE_URL).catch(() => []),
       fetchStaticJSON(STATIC_ANBIMA_BE_META_URL).catch(() => null),
+      // REUNE (mercado secundario) — opcional: se faltar, a aba fica vazia.
+      fetchStaticCSV(STATIC_REUNE_URL).catch(() => []),
+      fetchStaticJSON(STATIC_REUNE_META_URL).catch(() => null),
     ])
-      .then(([emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta]) => {
-        const raw = { emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta }
+      .then(([emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta, reune, reuneMeta]) => {
+        const raw = { emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta, reune, reuneMeta }
         writeCache(raw)
         if (alive) setState({ loading: false, refreshing: false, error: null, raw, cachedAt: Date.now() })
       })

@@ -58,6 +58,7 @@ $summary = [ordered]@{
   Captacao = 'nao executado'
   BLC      = 'nao executado'
   ANBIMA   = 'nao executado'
+  REUNE    = 'nao executado'
   Ofertas  = 'nao executado'
   Emissores = 'nao executado'
   RecompraBE = 'nao executado'
@@ -76,6 +77,7 @@ if (-not $SkipCaptacao)   { $script:StepsAtivos.Add('Captacao') }
 if (-not $SkipCaptacao -and $Sensibilidade) { $script:StepsAtivos.Add('Sensibilidade de corte (%Deb)') }
 if (-not $SkipBlc)        { $script:StepsAtivos.Add('BLC') }
 if (-not $SkipAnbima)     { $script:StepsAtivos.Add('ANBIMA') }
+if (-not $SkipAnbima)     { $script:StepsAtivos.Add('REUNE') }
 if (-not $SkipOfertas)    { $script:StepsAtivos.Add('Ofertas') }
 if (-not $SkipRelatorios) { $script:StepsAtivos.Add('Emissores (cadastro Ana)') }
 if (-not $SkipRelatorios) { $script:StepsAtivos.Add('Relatorios') }
@@ -544,6 +546,18 @@ if ($SkipAnbima) {
   } catch {
     $summary.ANBIMA = "FALHOU sem travar: $($_.Exception.Message)"
     Warn $summary.ANBIMA
+  }
+
+  # REUNE: previas de negociacao de debentures (liquidez do secundario). Fonte
+  # separada da ANBIMA de precos; best-effort, nao trava a atualizacao.
+  Progress 'REUNE'
+  try {
+    & (Join-Path $PSScriptRoot 'preparar-reune.ps1')
+    $summary.REUNE = 'OK'
+    Ok "REUNE atualizado."
+  } catch {
+    $summary.REUNE = "FALHOU sem travar: $($_.Exception.Message)"
+    Warn $summary.REUNE
   }
 }
 

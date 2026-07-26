@@ -151,6 +151,37 @@ export function enrichDebenture(deb, { emissorMap, blcByAtivo, anbimaByTicker, a
   }
 }
 
+// Ordena as faixas de volume do REUNE por liquidez (para ordenacao/realce).
+const REUNE_VOL_RANK = { 'Até 1MM': 1, 'Entre 1MM e 5MM': 2, 'Superior a 5MM': 3 }
+
+// Enriquece as previas de negociacao do REUNE (mercado secundario) com o
+// emissor/grupo/setor que o app ja' conhece por ticker, marcando se o papel
+// esta' na carteira acompanhada (alocacao > 0). Uma linha = uma debenture
+// negociada no dia. tickerToAsset: Map(codigoAtivo MAIUSCULO -> asset enriquecido).
+export function enrichReune(reuneRows, tickerToAsset) {
+  const map = tickerToAsset || new Map()
+  return (reuneRows || []).map(r => {
+    const ticker = (r['Ativo'] || '').trim()
+    const asset = map.get(ticker.toUpperCase()) || {}
+    const faixa = (r['Faixa de Volume'] || '').trim()
+    return {
+      codigoAtivo: ticker,
+      data: (r['Data'] || '').trim(),   // yyyy-MM-dd (formato long: uma linha por ativo x dia)
+      taxaMin: r['Taxa Minima'], taxaMed: r['Taxa Media'], taxaMax: r['Taxa Maxima'],
+      puMed: r['PU Medio'],
+      faixaVolume: faixa,
+      volRank: REUNE_VOL_RANK[faixa] || 0,
+      taxaMedNum: parseNum(r['Taxa Media']),
+      puMedNum: parseNum(r['PU Medio']),
+      emissorNome: asset.emissorNome || '—',
+      grupo: asset.grupo || '',
+      setor: asset.setor || '',
+      alocacao: asset.alocacao || 0,
+      naCarteira: (asset.alocacao || 0) > 0,
+    }
+  })
+}
+
 export function computeManagers(blcRows, plByGestor) {
   // PL por gestor é passado pronto (vem do PL_Gestores.csv). Fixo, nao varia com filtro.
 

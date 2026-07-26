@@ -2137,3 +2137,54 @@ a { color: var(--primary); }
 .amort-card .recharts-wrapper :focus,
 .amort-card .recharts-surface,
 .amort-card svg:focus { outline: none; }
+
+/* ── Mercado secundário (REUNE) ──────────────────────────────────────────── */
+.sec-summary {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 8px 16px; margin: 2px 0 12px;
+}
+.sec-summary-main { font-size: 14px; color: var(--text); }
+.sec-summary-main strong { font-size: 18px; }
+.sec-ref { color: var(--text-muted); opacity: .8; }
+.sec-summary-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.sec-chip {
+  font-size: 11px; padding: 3px 9px; border-radius: 999px;
+  background: var(--card); border: 1px solid var(--border); color: var(--text-muted);
+}
+.sec-chip-liq { border-color: var(--primary); color: var(--primary); font-weight: 600; }
+
+.sec-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+.sec-search {
+  flex: 1 1 240px; min-width: 180px; padding: 8px 12px;
+  border: 1px solid var(--primary-border); border-radius: 8px; font-size: 13px; background: var(--card);
+}
+.sec-sel { padding: 8px 10px; border: 1px solid var(--primary-border); border-radius: 8px; font-size: 13px; background: var(--card); max-width: 200px; }
+.sec-check { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+.sec-check input { width: auto; }
+.sec-clear { padding: 6px 12px; border: 1px solid var(--primary-border); border-radius: 8px; background: var(--card); color: var(--primary); font-size: 12px; cursor: pointer; white-space: nowrap; }
+
+.asset-table col.c-tx3    { width: 64px; }
+.asset-table col.c-pu     { width: 84px; }
+.asset-table col.c-volume { width: 128px; }
+/* Tx mín/máx: mais discretas que a média (o range em torno do valor central). */
+.sec-table td.col-muted { color: var(--text-muted); opacity: .75; }
+
+/* Linha de papel que está na carteira acompanhada: barra terracota à esquerda. */
+.sec-table tbody tr.row-carteira td.col-sticky { box-shadow: inset 3px 0 0 var(--primary); }
+
+/* Linhas clicaveis (abrem o grafico de serie) + destaque do selecionado. */
+.sec-row { cursor: pointer; }
+.sec-table tbody tr.row-selected { background: var(--primary-light); }
+.sec-table tbody tr.row-selected td.col-sticky { box-shadow: inset 3px 0 0 var(--c-carvao); }
+
+/* Card do grafico de serie temporal (aparece ao clicar num ativo). */
+.sec-chart-card { margin: 0 0 12px; padding: 10px 12px 6px; }
+.sec-chart-grupo { color: var(--text-muted); font-weight: 400; }
+.sec-chart-pts { margin-left: 8px; font-size: 11px; color: var(--text-muted); font-weight: 400; }
+.sec-chart-plot { height: 200px; }
+
+/* Selo de faixa de volume (liquidez): quanto maior o volume, mais forte. */
+.vol-tag { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 10.5px; white-space: nowrap; }
+.vol-tag-1 { background: var(--c-bege); color: var(--text-muted); border: 1px solid var(--border); }  /* Até 1MM */
+.vol-tag-2 { background: #efe2d3; color: var(--primary); }                                            /* 1MM–5MM */
+.vol-tag-3 { background: var(--primary); color: #fff; font-weight: 600; }                             /* >5MM */

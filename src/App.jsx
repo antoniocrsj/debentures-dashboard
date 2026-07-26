@@ -4,7 +4,7 @@ import { usePeriodReports } from './hooks/usePeriodReports.js'
 import { useAgenda12m } from './hooks/useAgenda12m.js'
 import {
   buildIndexes, buildBlcIndex, buildAnbimaIndex, buildAnbimaBEIndex, buildPlByGestor,
-  enrichDebenture, computeManagers, computeGroups, recomputeAlocByGestor
+  enrichDebenture, enrichReune, computeManagers, computeGroups, recomputeAlocByGestor
 } from './utils/data.js'
 import { isYes, dateKey, fmtDateOnly, parseBRDateTime, parseISODate, fmtMesAno } from './utils/format.js'
 import { lazyWithRetry } from './utils/lazyWithRetry.js'
@@ -12,6 +12,7 @@ import Header from './components/Header.jsx'
 import BottomNav from './components/BottomNav.jsx'
 import Filters from './components/Filters.jsx'
 import AssetTable from './components/AssetTable.jsx'
+import SecondaryTable from './components/SecondaryTable.jsx'
 import BlcMaturitySelo from './components/BlcMaturitySelo.jsx'
 import AssetModal from './components/AssetModal.jsx'
 import ManagerRanking from './components/ManagerRanking.jsx'
@@ -99,6 +100,7 @@ export default function App() {
     : tab === 'vencimentos' ? 'vencimentos'
     : tab === 'caixa' ? 'caixa'
     : tab === 'tecnico' ? 'tecnico'
+    : tab === 'secundario' ? 'secundario'
     : tab === 'atualizacao' ? 'atualizacao'
     : 'debentures'
   const selectSection = useCallback(
@@ -193,6 +195,35 @@ export default function App() {
     if (!raw || !indexes) return []
     return raw.debentures.map(d => enrichDebenture(d, indexes))
   }, [raw, indexes])
+
+  // Mercado secundario (REUNE): historico LONG (ativo x dia), enriquecido com
+  // emissor/grupo que o app ja' conhece por ticker (via allAssets). Base para a
+  // foto do ultimo dia (tabela) e, adiante, os graficos de serie.
+  const secondaryHistory = useMemo(() => {
+    if (!raw?.reune?.length || !allAssets.length) return []
+    const tickerToAsset = new Map(allAssets.map(a => [a.codigoAtivo.toUpperCase(), a]))
+    return enrichReune(raw.reune, tickerToAsset)
+  }, [raw, allAssets])
+
+  // Ultimo pregao presente no historico (yyyy-MM-dd).
+  const reuneDataRecente = useMemo(() => {
+    if (raw?.reuneMeta?.data_recente) return raw.reuneMeta.data_recente
+    return secondaryHistory.reduce((mx, a) => (a.data > mx ? a.data : mx), '')
+  }, [raw, secondaryHistory])
+
+  // Foto do ultimo dia (o que a tabela mostra).
+  const secondaryAssets = useMemo(
+    () => secondaryHistory.filter(a => a.data === reuneDataRecente),
+    [secondaryHistory, reuneDataRecente]
+  )
+
+  // Data de referencia do REUNE para exibir. DD/MM/AAAA.
+  const reuneRef = useMemo(() => {
+    const d = reuneDataRecente
+    if (!d) return ''
+    const [y, m, dd] = d.split('-')
+    return (y && m && dd) ? `${dd}/${m}/${y}` : d
+  }, [reuneDataRecente])
 
   // Distinct filter options (from full dataset)
   const options = useMemo(() => ({
@@ -314,6 +345,7 @@ export default function App() {
       {(desktop
         ? [
             { id: 'debentures',  label: 'Debêntures' },
+            { id: 'secundario',  label: 'Secundário' },
             { id: 'captacao',    label: 'Captação' },
             { id: 'caixa',       label: 'Nível de Caixa' },
             { id: 'vencimentos', label: 'Vencimentos' },
@@ -324,6 +356,7 @@ export default function App() {
             { id: 'ativos',   label: `Ativos (${filteredAssets.length.toLocaleString('pt-BR')})` },
             { id: 'gestores', label: `Gestores (${managers.length.toLocaleString('pt-BR')})` },
             { id: 'grupos',   label: `Grupos (${groups.length.toLocaleString('pt-BR')})` },
+            { id: 'secundario', label: `Secundário (${secondaryAssets.length.toLocaleString('pt-BR')})` },
           ]
       ).map(t => (
         <button
@@ -585,6 +618,10 @@ export default function App() {
               </div>
             </div>
           </>
+        )}
+
+        {tab === 'secundario' && !loading && !error && raw && (
+          <SecondaryTable assets={secondaryAssets} history={secondaryHistory} reuneRef={reuneRef} desktop={desktop} />
         )}
       </main>
 
