@@ -252,7 +252,12 @@ a { color: var(--primary); }
    .btn-claro  (contorno bege, o grosso -- filtros/selects/acoes comuns; .is-active vira terracota)
    .btn-limpar (x, vermelho -- limpar/cancelar)
    Todos herdam de .btn: pilula, altura --btn-h, fonte --fz-corpo, mesma geometria. */
-.btn {
+/* Receita base compartilhada por TODOS os arredondados. chip-select e chip-toggle
+   sao "claro" nativos (select/toggle de filtro) -- herdam a mesma receita e so
+   guardam seus deltas (appearance/largura no select; flex-shrink no toggle). */
+.btn,
+.chip-select,
+.chip-toggle {
   display: inline-flex; align-items: center; justify-content: center; gap: 4px;
   height: var(--btn-h);
   padding: var(--sp-1) var(--sp-4);
@@ -264,66 +269,23 @@ a { color: var(--primary); }
   cursor: pointer;
   transition: border-color .15s, background .15s, color .15s;
 }
-.btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+.btn:focus-visible,
+.chip-select:focus,
+.chip-toggle:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
 .btn:disabled { opacity: .4; cursor: default; }
+.chip-toggle:disabled { opacity: .35; cursor: default; }
 .btn-cheio  { background: var(--primary);  border-color: var(--primary);   color: #fff; font-weight: 600; }
-.btn-claro  { background: var(--chip-bg);  border-color: var(--navy-light); color: var(--navy-light); }
-.btn-claro.is-active { border-color: var(--primary); background: var(--primary-light); color: var(--primary); font-weight: 600; }
+.btn-claro,
+.chip-select,
+.chip-toggle  { background: var(--chip-bg);  border-color: var(--navy-light); color: var(--navy-light); }
+.btn-claro.is-active,
+.chip-select-wrap.active .chip-select,
+.chip-toggle.is-active { border-color: var(--primary); background: var(--primary-light); color: var(--primary); font-weight: 600; }
 .btn-limpar { background: var(--neg-soft); border-color: var(--neg-line);   color: var(--danger); }
 
-.chip-select {
-  appearance: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: var(--btn-h);
-  background: var(--chip-bg);
-  border: 1px solid var(--navy-light);
-  border-radius: 99px;
-  padding: var(--sp-1) var(--sp-2);
-  font-size: var(--fz-corpo);
-  font-weight: 500;
-  color: var(--navy-light);
-  cursor: pointer;
-  white-space: nowrap;
-  width: 88px;
-  transition: border-color .15s, background .15s;
-}
-.chip-select-wrap.active .chip-select {
-  border-color: var(--primary);
-  background: var(--primary-light);
-  color: var(--primary);
-  font-weight: 600;
-}
-.chip-select:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
-
-
-/* Filtro rápido (toggle) — pílula que liga/desliga; ativo usa a cor primária */
-.chip-toggle {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: var(--btn-h);
-  background: var(--chip-bg);
-  border: 1px solid var(--navy-light);
-  border-radius: 99px;
-  padding: var(--sp-1) var(--sp-4);
-  font-size: var(--fz-corpo);
-  font-weight: 500;
-  color: var(--navy-light);
-  white-space: nowrap;
-  cursor: pointer;
-  transition: border-color .15s, background .15s, color .15s;
-}
-.chip-toggle.is-active {
-  border-color: var(--primary);
-  background: var(--primary-light);
-  color: var(--primary);
-  font-weight: 600;
-}
-.chip-toggle:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
-.chip-toggle:disabled { opacity: .35; cursor: default; }
+/* deltas do select de filtro (nativo) e do toggle */
+.chip-select { appearance: none; width: 88px; padding-left: var(--sp-2); padding-right: var(--sp-2); }
+.chip-toggle { flex-shrink: 0; }
 
 .search-wrap {
   display: flex;
@@ -837,7 +799,7 @@ a { color: var(--primary); }
   color: var(--primary-dark);
   background: var(--primary-light);
   border: 1px solid var(--primary-border);
-  border-radius: 10px;
+  border-radius: 99px;
   text-decoration: none;
   cursor: pointer;
   transition: background .15s ease, border-color .15s ease;
@@ -886,7 +848,7 @@ a { color: var(--primary); }
   display: inline-flex; align-items: center; justify-content: center;
   height: var(--btn-h);
   padding: 0 var(--sp-4);
-  border-radius: 10px;
+  border-radius: 99px;
   border: 1.5px dashed var(--border);
   font-size: var(--fz-corpo);
   font-weight: 600;
@@ -943,7 +905,7 @@ a { color: var(--primary); }
   color: var(--primary-dark);
   background: var(--primary-light);
   border: 1px solid var(--primary-border);
-  border-radius: 10px;
+  border-radius: 99px;
   cursor: pointer;
 }
 .show-all-btn:active { background: var(--blue-soft); }
@@ -1661,8 +1623,8 @@ a { color: var(--primary); }
 .venc-toggles .segmented { width: auto; flex: 0 0 auto; }
 /* Dropdown de gestor, ao lado dos toggles (mesma altura dos botoes). */
 .venc-select {
-  height: var(--btn-h); border-radius: 8px; border: 1px solid var(--primary-border);
-  background: var(--chip-bg); color: var(--text); font-size: var(--fz-corpo); font-weight: 500;
+  height: var(--btn-h); border-radius: 99px; border: 1px solid var(--navy-light);
+  background: var(--chip-bg); color: var(--navy-light); font-size: var(--fz-corpo); font-weight: 500;
   padding: 0 var(--sp-3); max-width: 190px; cursor: pointer;
 }
 .venc-select:hover { background: var(--blue-soft); }
@@ -1750,8 +1712,8 @@ a { color: var(--primary); }
 .venc-crumbs-lbl { font-size: var(--fz-corpo); color: var(--text-muted); font-weight: 600; }
 .venc-chip {
   height: var(--btn-h); padding: 0 var(--sp-4); border-radius: 99px;
-  border: 1px solid var(--primary-border); background: var(--primary-light);
-  color: var(--text-soft); font-size: var(--fz-corpo); cursor: pointer;
+  border: 1px solid var(--navy-light); background: var(--chip-bg);
+  color: var(--navy-light); font-size: var(--fz-corpo); cursor: pointer;
 }
 .venc-chip b { color: var(--text); }
 .venc-chip:hover { background: var(--blue-press); }
@@ -1851,13 +1813,13 @@ a { color: var(--primary); }
   border: 1px solid var(--border); border-radius: var(--radius); font-size: var(--fz-corpo); color: var(--text); background: var(--card);
 }
 .caixa-chip-active {
-  height: var(--btn-h); padding: 0 var(--sp-4); border: 1px solid var(--primary-border);
-  background: var(--primary-light); color: var(--primary); border-radius: var(--radius);
+  height: var(--btn-h); padding: 0 var(--sp-4); border: 1px solid var(--primary);
+  background: var(--primary-light); color: var(--primary); border-radius: 99px;
   font-size: var(--fz-corpo); font-weight: 600; cursor: pointer;
 }
 .caixa .btn-clear {
   height: var(--btn-h); padding: 0 var(--sp-4); border: 1px solid var(--neg-line); background: var(--neg-soft);
-  color: var(--neg); border-radius: var(--radius); font-size: var(--fz-corpo); font-weight: 600; cursor: pointer;
+  color: var(--neg); border-radius: 99px; font-size: var(--fz-corpo); font-weight: 600; cursor: pointer;
 }
 
 /* Tabelas: reforços numéricos e linha ativa */
@@ -1908,8 +1870,8 @@ a { color: var(--primary); }
 .caixa-periodo .segmented-btn { padding: 0 var(--sp-4); font-size: var(--fz-corpo); }
 /* Dropdown de gestor nos filtros do Nivel de Caixa. */
 .caixa-select {
-  height: var(--btn-h); border-radius: 8px; border: 1px solid var(--primary-border);
-  background: var(--chip-bg); color: var(--text); font-size: var(--fz-corpo); padding: 0 var(--sp-3);
+  height: var(--btn-h); border-radius: 99px; border: 1px solid var(--navy-light);
+  background: var(--chip-bg); color: var(--navy-light); font-size: var(--fz-corpo); padding: 0 var(--sp-3);
   max-width: 200px; cursor: pointer;
 }
 .caixa-select:hover { background: var(--blue-soft); }
