@@ -104,7 +104,7 @@ export default function App() {
     : tab === 'atualizacao' ? 'atualizacao'
     : 'debentures'
   const selectSection = useCallback(
-    s => setTab(s === 'captacao' || s === 'vencimentos' || s === 'caixa' || s === 'atualizacao' ? s : lastDebTab),
+    s => setTab(s === 'captacao' || s === 'vencimentos' || s === 'caixa' || s === 'secundario' || s === 'atualizacao' ? s : lastDebTab),
     [lastDebTab]
   )
   const { data: agenda12m } = useAgenda12m()
@@ -356,7 +356,6 @@ export default function App() {
             { id: 'ativos',   label: `Ativos (${filteredAssets.length.toLocaleString('pt-BR')})` },
             { id: 'gestores', label: `Gestores (${managers.length.toLocaleString('pt-BR')})` },
             { id: 'grupos',   label: `Grupos (${groups.length.toLocaleString('pt-BR')})` },
-            { id: 'secundario', label: `Secundário (${secondaryHistory.length.toLocaleString('pt-BR')})` },
           ]
       ).map(t => (
         <button
@@ -422,7 +421,7 @@ export default function App() {
 
         {/* Desktop: abas standalone só na Captação (nas demais vão ao lado da busca).
             Compacto: sub-abas só na seção Debêntures (Captação não tem sub-abas). */}
-        {(desktop ? (tab === 'secundario' || tab === 'captacao' || tab === 'vencimentos' || tab === 'caixa' || tab === 'tecnico') : (section === 'debentures' || section === 'secundario')) && tabsNav}
+        {(desktop ? (tab === 'secundario' || tab === 'captacao' || tab === 'vencimentos' || tab === 'caixa' || tab === 'tecnico') : (section === 'debentures')) && tabsNav}
 
         {/* Corte de %Deb: so' nas abas com universo de fundos p/ cortar.
             Debentures e' visao do ATIVO (emissor/serie/vencimento) -- nao ha'
@@ -621,7 +620,9 @@ export default function App() {
         )}
 
         {tab === 'secundario' && !loading && !error && raw && (
-          <SecondaryTable trades={secondaryHistory} reuneRef={reuneRef} dias={reuneDias} desktop={desktop} />
+          <section className="sec-page">
+            <SecondaryTable trades={secondaryHistory} reuneRef={reuneRef} dias={reuneDias} desktop={desktop} />
+          </section>
         )}
       </main>
 

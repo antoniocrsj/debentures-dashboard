@@ -11,6 +11,17 @@ function DebenturesIcon() {
     </svg>
   )
 }
+function SecundarioIcon() {
+  // Mercado secundario: serie de TAXA no tempo (o que a aba mostra). Grafico de
+  // linha com o ultimo ponto marcado -- distinto do "captacao" (setas trocando).
+  return (
+    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M15 15 V33 H34" />
+      <path d="M18 30 L23 24 L27 27 L33 19" />
+      <circle cx="33" cy="19" r="1.7" fill="currentColor" stroke="none" />
+    </svg>
+  )
+}
 function CaptacaoIcon() {
   return (
     <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -41,6 +52,7 @@ function VencimentosIcon() {
 
 const ITEMS = [
   { id: 'debentures',  label: 'Debêntures',  Icon: DebenturesIcon },
+  { id: 'secundario',  label: 'Secundário',  Icon: SecundarioIcon },
   { id: 'captacao',    label: 'Captação',    Icon: CaptacaoIcon },
   { id: 'caixa',       label: 'Caixa',       Icon: CaixaIcon },
   { id: 'vencimentos', label: 'Vencimentos', Icon: VencimentosIcon },

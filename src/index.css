@@ -155,16 +155,16 @@ a { color: var(--primary); }
   box-shadow: 0 -4px 20px rgba(38, 33, 29, .10);
 }
 .bottom-nav-btn {
-  flex: 1; background: none; cursor: pointer;
+  flex: 1; min-width: 0; background: none; cursor: pointer;
   display: flex; flex-direction: column; align-items: center; gap: 0;
-  padding: 5px 6px; color: rgba(42, 36, 32, .74);
+  padding: 5px 3px; color: rgba(42, 36, 32, .74);
   border: 1.5px solid transparent; border-radius: 14px;
   transition: color .12s, border-color .12s;
 }
 /* O margin negativo no svg corta o vazio interno do viewBox -> rótulo colado. */
 .bottom-nav-ico { display: flex; align-items: center; justify-content: center; }
-.bottom-nav-ico svg { width: 51px; height: 51px; margin: -12px 0; }   /* 2,3x o original (22px) */
-.bottom-nav-lbl { font-size: 12px; font-weight: 400; letter-spacing: .01em; margin-top: 3px; }
+.bottom-nav-ico svg { width: 47px; height: 47px; margin: -11px 0; }   /* 5 secoes: um tico menor p/ caber */
+.bottom-nav-lbl { font-size: 11px; font-weight: 400; letter-spacing: 0; margin-top: 3px; white-space: nowrap; }
 /* Aba ativa: só um contorno fino azul-marinho claro (sem fundo) ao redor de ícone+texto. */
 .bottom-nav-btn.active { color: var(--primary-dark); border-color: var(--primary); }
 .bottom-nav-btn.active .bottom-nav-lbl { font-weight: 600; }
@@ -2139,6 +2139,9 @@ a { color: var(--primary); }
 .amort-card svg:focus { outline: none; }
 
 /* ── Mercado secundário (REUNE) ──────────────────────────────────────────── */
+/* Respiro lateral (mesmo padrao da Captacao/.fluxo, um pouco mais folgado) para
+   os botoes/tabela/grafico nao colarem nas bordas da pagina. */
+.sec-page { padding: 12px 16px 24px; }
 /* Resumo: so' a data mais recente do pregao. */
 .sec-summary { margin: 0 0 10px; }
 .sec-summary-main { font-size: 13px; font-weight: 600; color: var(--text-muted); font-variant-numeric: tabular-nums; }
@@ -2179,14 +2182,21 @@ a { color: var(--primary); }
 /* Linha de papel que está na carteira acompanhada: barra terracota à esquerda. */
 .sec-table tbody tr.row-carteira td.col-sticky { box-shadow: inset 3px 0 0 var(--primary); }
 
-/* Layout: tabela a' esquerda (rola), grafico fixo a' direita, com respiro
-   confortavel entre os dois (pedido do usuario). */
+/* Layout: tabela a' esquerda (dominante, rola), grafico estreito a' direita, com
+   respiro confortavel entre os dois. O grafico NAO e' mais sticky: fica ao lado
+   com o topo sempre alinhado ao topo da tabela (pedido do usuario -- o sticky
+   fazia o grafico "subir" e descolar do topo ao rolar a tabela longa). */
 .sec-split { display: flex; gap: 20px; align-items: flex-start; }
 .sec-split-table { flex: 1 1 auto; min-width: 0; }   /* min-width:0 deixa a tabela rolar sem estourar */
-.sec-split-chart { flex: 0 0 336px; position: sticky; top: 8px; }
+/* Zera o margin-top do card da tabela no desktop (a regra global
+   `.app.desktop .table-wrap` aplica 17px para separar de um header; aqui nao ha'
+   header) para o topo do grid alinhar com o topo do card do grafico ao lado.
+   Especificidade 0,4,0 para vencer `.app.desktop .table-wrap` (0,3,0). */
+.app.desktop .sec-split-table .table-wrap { margin-top: 0; }
+.sec-split-chart { flex: 0 0 300px; }
 @media (max-width: 980px) {
   .sec-split { flex-direction: column; gap: 14px; }
-  .sec-split-chart { flex-basis: auto; width: 100%; position: static; }
+  .sec-split-chart { flex-basis: auto; width: 100%; }
 }
 
 /* Card do grafico de serie temporal (fixo ao lado da tabela). */
