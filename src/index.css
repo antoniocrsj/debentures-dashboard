@@ -90,7 +90,7 @@
   --fz-graf-titulo: var(--fz-corpo);
   --fz-graf-kpi:    var(--fz-corpo);
   --fz-graf-dado:   var(--fz-micro);
-  --btn-h:         20px;       /* altura padrao de TODO botao/controle fora de grafico (= altura da linha da tabela) */
+  --btn-h:         25px;       /* altura padrao de TODO controle interativo fora de grafico (pilulas, selects, busca, sweep, icones). Linhas de tabela ficam em 20px proprio. */
   /* ESPACAMENTO -- escala unica de padding. Estruturais (>28px: respiro de pagina,
      folga do bottom-nav via calc/env) ficam em px cru, fora da escala. */
   --sp-1:  2px;   /* interno de controle apertado   <- 1,2,3   */
