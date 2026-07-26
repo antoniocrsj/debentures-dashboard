@@ -39,8 +39,11 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
   const [ativo, setAtivo] = useState('')
   const [faixa, setFaixa] = useState('')
   const [sort, setSort] = useState({ col: 'data', dir: 'desc' })  // pregao mais recente primeiro
+  const [verTudo, setVerTudo] = useState(false)  // compacto: abre no ultimo pregao; expande p/ o historico
 
   const onSort = id => setSort(s => ({ col: id, dir: s.col === id && s.dir === 'desc' ? 'asc' : 'desc' }))
+  // Pregao mais recente do historico (compacto abre so' nele, por performance).
+  const dataRecente = useMemo(() => trades.reduce((mx, t) => (t.data > mx ? t.data : mx), ''), [trades])
 
   const opts = useMemo(() => ({
     grupos:    [...new Set(trades.map(a => a.grupo).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR')),
@@ -100,6 +103,12 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
   }, [filtrados, temFoco])
   const limpar = () => { setBusca(''); setGrupo(''); setEmissor(''); setAtivo(''); setFaixa('') }
   const temFiltro = busca || grupo || emissor || ativo || faixa
+
+  // Compacto: por padrao mostra so' o ultimo pregao (perf -- evita renderizar todo
+  // o historico em cards). Com filtro ou "ver tudo", mostra todos os filtrados.
+  const soUltimoPregao = !desktop && !temFiltro && !verTudo
+  const cardsList = soUltimoPregao ? filtrados.filter(t => t.data === dataRecente) : filtrados
+  const escondidos = filtrados.length - cardsList.length
 
   if (!trades.length) {
     return (
@@ -259,11 +268,18 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
             <SecondaryChart serie={serieGrafico} titulo={focoLabel} nAtivos={nAtivosFiltro} />
           </Suspense>
         )}
+        {!temFiltro && (verTudo || escondidos > 0) && (
+          <button type="button" className="sec-cards-toggle" onClick={() => setVerTudo(v => !v)}>
+            {verTudo
+              ? 'Mostrar só o último pregão'
+              : `Ver histórico completo · +${escondidos.toLocaleString('pt-BR')} negócios`}
+          </button>
+        )}
         <div className="sec-cards">
-          {filtrados.length === 0 && (
+          {cardsList.length === 0 && (
             <div className="sec-card sec-card-empty">Nenhum negócio com esses filtros.</div>
           )}
-          {filtrados.map((a, i) => {
+          {cardsList.map((a, i) => {
             const emi = a.grupo ? shortEmissor(a.emissorNome, a.grupo) : ''
             return (
               <div key={`${a.codigoAtivo}|${a.data}|${i}`} className="sec-card">

@@ -2225,6 +2225,13 @@ a { color: var(--primary); }
 .sec-card-sep { opacity: .45; }
 .sec-card-empty { text-align: center; color: var(--text-faint); font-size: 13px; padding: 24px 12px; }
 .sec-cards-wrap .sec-chart-empty { display: none; }   /* no card view, so' aparece grafico com foco */
+/* Botao expandir do ultimo pregao p/ o historico completo (compacto). */
+.sec-cards-toggle {
+  width: 100%; margin-bottom: 8px; padding: 9px 12px;
+  background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+  color: var(--primary); font-size: 12.5px; font-weight: 600; cursor: pointer;
+}
+.sec-cards-toggle:active { background: var(--primary-light); }
 
 /* ── Compacto: filtros do secundario numa unica linha que rola horizontal ─────
    Empilhados (label em cima + campo) eles comiam ~234px de altura. Aqui viram
