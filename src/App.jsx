@@ -23,6 +23,10 @@ import AmortChart from './components/AmortChart.jsx'
 import { useCronogramaAmort } from './hooks/useCronogramaAmort.js'
 import { amortizaNoAno } from './utils/amortizacao.js'
 import CorteSelector from './components/CorteSelector.jsx'
+import {
+  DebenturesIcon, SecundarioIcon, CaptacaoIcon, CaixaIcon, VencimentosIcon, TecnicoIcon,
+  AtivosIcon, GestoresIcon, GruposIcon,
+} from './components/SectionIcons.jsx'
 import { usePctDeb } from './hooks/usePctDeb.js'
 import { CORTE_OFICIAL } from './utils/corte.js'
 
@@ -346,18 +350,18 @@ export default function App() {
     <nav className={`tabs${desktop ? ' tabs-inline' : ''}`} role="tablist">
       {(desktop
         ? [
-            { id: 'debentures',  label: 'Debêntures' },
-            { id: 'secundario',  label: 'Secundário' },
-            { id: 'captacao',    label: 'Captação' },
-            { id: 'caixa',       label: 'Nível de Caixa' },
-            { id: 'vencimentos', label: 'Vencimentos' },
-            { id: 'tecnico',     label: 'Técnico' },
+            { id: 'debentures',  label: 'Debêntures',    Icon: DebenturesIcon },
+            { id: 'secundario',  label: 'Secundário',    Icon: SecundarioIcon },
+            { id: 'captacao',    label: 'Captação',      Icon: CaptacaoIcon },
+            { id: 'caixa',       label: 'Nível de Caixa', Icon: CaixaIcon },
+            { id: 'vencimentos', label: 'Vencimentos',   Icon: VencimentosIcon },
+            { id: 'tecnico',     label: 'Técnico',       Icon: TecnicoIcon },
           ]
         : [
             // Captação saiu daqui (virou ícone no header — GER-2); restam as sub-abas de Debêntures.
-            { id: 'ativos',   label: `Ativos (${filteredAssets.length.toLocaleString('pt-BR')})` },
-            { id: 'gestores', label: `Gestores (${managers.length.toLocaleString('pt-BR')})` },
-            { id: 'grupos',   label: `Grupos (${groups.length.toLocaleString('pt-BR')})` },
+            { id: 'ativos',   label: `Ativos (${filteredAssets.length.toLocaleString('pt-BR')})`,   Icon: AtivosIcon },
+            { id: 'gestores', label: `Gestores (${managers.length.toLocaleString('pt-BR')})`,       Icon: GestoresIcon },
+            { id: 'grupos',   label: `Grupos (${groups.length.toLocaleString('pt-BR')})`,           Icon: GruposIcon },
           ]
       ).map(t => (
         <button
@@ -370,7 +374,8 @@ export default function App() {
             if (t.id === 'ativos' || t.id === 'gestores' || t.id === 'grupos') setLastDebTab(t.id)
           }}
         >
-          {t.label}
+          {t.Icon && <span className="tab-ico" aria-hidden="true"><t.Icon /></span>}
+          <span className="tab-lbl">{t.label}</span>
         </button>
       ))}
     </nav>

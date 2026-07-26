@@ -385,13 +385,19 @@ a { color: var(--primary); }
   border-bottom: 2px solid var(--border);
   padding: 0 var(--sp-4);
 }
+/* Abas ICONE + TEXTO (tipo 3): icone em cima, rotulo embaixo, centralizado
+   (estilo barra do LinkedIn). Ativa = negrito + traco terracota na base.
+   Os icones tem viewBox 48 com o desenho no centro, entao renderizam grandes
+   com margem negativa p/ o "peso visual" bater com o rotulo -- mesmo truque do
+   bottom-nav. */
 .tab-btn {
   flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: var(--btn-h);
-  padding: 0 var(--sp-2);
+  justify-content: flex-end;
+  gap: 1px;
+  padding: var(--sp-2) var(--sp-2) var(--sp-1);
   font-size: var(--fz-corpo);
   font-weight: 500;
   color: var(--text-muted);
@@ -400,6 +406,9 @@ a { color: var(--primary); }
   transition: color .15s, border-color .15s;
   text-align: center;
 }
+.tab-ico { display: flex; align-items: center; justify-content: center; }
+.tab-ico svg { width: 40px; height: 40px; margin: -9px 0; }
+.tab-lbl { white-space: nowrap; }
 .tab-btn.active {
   color: var(--primary);
   border-bottom-color: var(--primary);
