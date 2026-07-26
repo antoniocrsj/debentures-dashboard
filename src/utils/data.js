@@ -188,7 +188,6 @@ export function enrichReune(reuneRows, tickerToAsset, curvasPorData) {
       grupo: asset.grupo || '',
       setor: asset.setor || '',
       alocacao: asset.alocacao || 0,
-      naCarteira: (asset.alocacao || 0) > 0,
       // Caracteristicas da emissao (do cadastro que o app ja' conhece por ticker).
       vencimento: asset.vencimento || '',
       duration: asset.durationAnbima || '',

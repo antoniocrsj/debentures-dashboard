@@ -201,10 +201,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
               <tr><td colSpan={12} className="col-sticky">Nenhum negócio com esses filtros.</td></tr>
             )}
             {filtrados.map((a, i) => (
-              <tr
-                key={`${a.codigoAtivo}|${a.data}|${i}`}
-                className={a.naCarteira ? 'row-carteira' : ''}
-              >
+              <tr key={`${a.codigoAtivo}|${a.data}|${i}`}>
                 <td className="col-sticky col-num col-data">{fmtDateDDMMYY(a.data)}</td>
                 <td className="col-ativo">
                   <div className="ativo-cell">
@@ -269,7 +266,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
           {filtrados.map((a, i) => {
             const emi = a.grupo ? shortEmissor(a.emissorNome, a.grupo) : ''
             return (
-              <div key={`${a.codigoAtivo}|${a.data}|${i}`} className={`sec-card${a.naCarteira ? ' sec-card-carteira' : ''}`}>
+              <div key={`${a.codigoAtivo}|${a.data}|${i}`} className="sec-card">
                 <div className="sec-card-top">
                   <div className="sec-card-ativo">
                     <span className="ativo-code">{a.codigoAtivo || '-'}</span>

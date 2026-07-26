@@ -2182,9 +2182,6 @@ a { color: var(--primary); }
 /* Tx mín/máx: mais discretas que a média (o range em torno do valor central). */
 .sec-table td.col-muted { color: var(--text-muted); opacity: .75; }
 
-/* Linha de papel que está na carteira acompanhada: barra terracota à esquerda. */
-.sec-table tbody tr.row-carteira td.col-sticky { box-shadow: inset 3px 0 0 var(--primary); }
-
 /* Layout: tabela a' esquerda (dominante, rola), grafico estreito a' direita, com
    respiro confortavel entre os dois. O grafico NAO e' mais sticky: fica ao lado
    com o topo sempre alinhado ao topo da tabela (pedido do usuario -- o sticky
@@ -2215,7 +2212,6 @@ a { color: var(--primary); }
   border-radius: 12px;
   padding: 9px 12px;
 }
-.sec-card-carteira { border-left: 3px solid var(--primary); border-radius: 0 12px 12px 0; }
 .sec-card-top { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
 .sec-card-ativo { min-width: 0; overflow: hidden; }
 .sec-card-ativo .ativo-code { font-weight: 600; font-size: 14px; }
