@@ -29,6 +29,8 @@ const COLS = [
 const FAIXAS = ['Superior a 5MM', 'Entre 1MM e 5MM', 'Até 1MM']
 
 function fmtTx(v) { return (v && v !== '--') ? `${v}%` : '-' }
+// Rotulo curto da faixa de volume (p/ os cards do compacto).
+const FAIXA_CURTA = { 'Superior a 5MM': '> 5 MM', 'Entre 1MM e 5MM': '1–5 MM', 'Até 1MM': 'Até 1 MM' }
 
 export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
   const [busca, setBusca] = useState('')
@@ -160,6 +162,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
         </div>
       </div>
 
+      {desktop ? (
       <div className="sec-split">
        <div className="sec-split-table">
         <TableWrap title="Mercado secundário (REUNE)">
@@ -252,6 +255,51 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
           )}
        </aside>
       </div>
+      ) : (
+      <div className="sec-cards-wrap">
+        {serieGrafico && (
+          <Suspense fallback={<div className="sec-chart-empty">Carregando gráfico…</div>}>
+            <SecondaryChart serie={serieGrafico} titulo={focoLabel} nAtivos={nAtivosFiltro} />
+          </Suspense>
+        )}
+        <div className="sec-cards">
+          {filtrados.length === 0 && (
+            <div className="sec-card sec-card-empty">Nenhum negócio com esses filtros.</div>
+          )}
+          {filtrados.map((a, i) => {
+            const emi = a.grupo ? shortEmissor(a.emissorNome, a.grupo) : ''
+            return (
+              <div key={`${a.codigoAtivo}|${a.data}|${i}`} className={`sec-card${a.naCarteira ? ' sec-card-carteira' : ''}`}>
+                <div className="sec-card-top">
+                  <div className="sec-card-ativo">
+                    <span className="ativo-code">{a.codigoAtivo || '-'}</span>
+                    {a.grupo && (
+                      <span className="ativo-grupo" title={a.emissorNome !== '—' ? a.emissorNome : undefined}>
+                        {a.grupo}{emi && <span className="ativo-emissor"> ({emi})</span>}
+                      </span>
+                    )}
+                  </div>
+                  <span className="sec-card-data">{fmtDateDDMMYY(a.data)}</span>
+                </div>
+                <div className="sec-card-mid">
+                  <span className="sec-card-taxa">{fmtTx(a.taxaMed)}</span>
+                  {a.spreadRef && (
+                    <span className={`sec-card-spread${a.spreadRef.spreadNum < 0 ? ' neg' : ''}`} title={a.spreadRef.ref || undefined}>
+                      {a.spreadRef.formatada}
+                    </span>
+                  )}
+                </div>
+                <div className="sec-card-meta">
+                  <span>{a.indexador || '-'}</span>
+                  {a.vencimento && <><span className="sec-card-sep">·</span><span>venc {fmtDateDDMMYY(a.vencimento)}</span></>}
+                  <span className="sec-card-sep">·</span><span>{FAIXA_CURTA[a.faixaVolume] || a.faixaVolume || '-'}</span>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+      )}
     </>
   )
 }
