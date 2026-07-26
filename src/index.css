@@ -2199,6 +2199,46 @@ a { color: var(--primary); }
   .sec-split-chart { flex-basis: auto; width: 100%; }
 }
 
+/* ── Compacto: cabecalho da tabela SEMPRE visivel ao rolar ───────────────────
+   A tabela do secundario e' larga e usa overflow-x, o que prende o position:
+   sticky do <th> a' CAIXA de scroll (nao a' viewport). Para o header ficar sempre
+   visivel, a pagina NAO pode rolar -- so' a caixa da tabela.
+
+   SEM foco (grafico e' so' o placeholder "Selecione..."): esconde o grafico e a
+   .sec-page PREENCHE a viewport como flex column -- a TABELA cresce e rola sozinha,
+   thead grudado no topo. Esse e' o caso comum (lista longa de trades).
+
+   COM foco (grafico visivel): nao cabe filtros + grafico + tabela numa tela so',
+   entao NAO forca o preenchimento -- volta ao fluxo natural (caixa 72vh com header
+   sticky na caixa; a pagina rola ate' o grafico). Deteccao por :has, sem tocar no
+   componente. Se header/bottom-nav mudarem de altura, ajustar os offsets. */
+.app:not(.desktop) .sec-split-chart:has(.sec-chart-empty) { display: none; }
+
+.app:not(.desktop) .sec-page:not(:has(.sec-chart-card)) {
+  display: flex;
+  flex-direction: column;
+  /* 100dvh menos o header sticky (70) e o que fica ABAIXO do sec-page:
+     padding-bottom do .app (76, p/ o bottom-nav) + do <main> (24). */
+  height: calc(100dvh - 70px - 76px - 24px);
+  min-height: 0;
+  overflow: hidden;
+}
+.app:not(.desktop) .sec-page:not(:has(.sec-chart-card)) .sec-split {
+  flex: 1 1 auto; min-height: 0;
+}
+/* Cadeia flex ate' a caixa de scroll: sec-split-table > table-wrap-x (wrapper do
+   TableWrap) > table-wrap. Cada elo precisa flexar e ter min-height:0, senao a
+   caixa cresce ate' a altura do conteudo (a tabela toda) e nada rola dentro. */
+.app:not(.desktop) .sec-page:not(:has(.sec-chart-card)) .sec-split-table {
+  flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column;
+}
+.app:not(.desktop) .sec-page:not(:has(.sec-chart-card)) .sec-split-table .table-wrap-x {
+  flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column;
+}
+.app:not(.desktop) .sec-page:not(:has(.sec-chart-card)) .sec-split-table .table-wrap {
+  flex: 1 1 auto; min-height: 0; max-height: none;
+}
+
 /* Card do grafico de serie temporal (fixo ao lado da tabela). */
 .sec-chart-card { margin: 0; padding: 10px 12px 6px; }
 .sec-chart-tit { font-weight: 600; color: var(--primary); }
