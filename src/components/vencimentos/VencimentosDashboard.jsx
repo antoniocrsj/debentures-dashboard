@@ -323,7 +323,7 @@ export default function VencimentosDashboard({ data, blc, plByGestor, compact })
               Mês: <b>{mesLabelSel}</b> ✕
             </button>
           )}
-          <button className="venc-chip venc-chip-clear" onClick={limparTudo} title="Limpar todos os filtros">Limpar tudo</button>
+          <button className="btn btn-limpar" onClick={limparTudo} title="Limpar todos os filtros">Limpar tudo</button>
         </div>
       )}
 

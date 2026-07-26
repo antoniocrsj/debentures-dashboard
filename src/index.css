@@ -247,6 +247,30 @@ a { color: var(--primary); }
   position: relative;
   width: 88px;
 }
+/* ── BOTOES: 4 tipos no sistema. ARREDONDADO (pilula) = 3 variantes: ──────────
+   .btn-cheio  (terracota cheio, acao primaria)
+   .btn-claro  (contorno bege, o grosso -- filtros/selects/acoes comuns; .is-active vira terracota)
+   .btn-limpar (x, vermelho -- limpar/cancelar)
+   Todos herdam de .btn: pilula, altura --btn-h, fonte --fz-corpo, mesma geometria. */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+  height: var(--btn-h);
+  padding: var(--sp-1) var(--sp-4);
+  border-radius: 99px;
+  border: 1px solid transparent;
+  font-size: var(--fz-corpo);
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color .15s, background .15s, color .15s;
+}
+.btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+.btn:disabled { opacity: .4; cursor: default; }
+.btn-cheio  { background: var(--primary);  border-color: var(--primary);   color: #fff; font-weight: 600; }
+.btn-claro  { background: var(--chip-bg);  border-color: var(--navy-light); color: var(--navy-light); }
+.btn-claro.is-active { border-color: var(--primary); background: var(--primary-light); color: var(--primary); font-weight: 600; }
+.btn-limpar { background: var(--neg-soft); border-color: var(--neg-line);   color: var(--danger); }
+
 .chip-select {
   appearance: none;
   display: flex;
@@ -273,21 +297,6 @@ a { color: var(--primary); }
 }
 .chip-select:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
 
-.chip-clear {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: var(--btn-h);
-  background: var(--neg-soft);
-  border: 1.5px solid var(--neg-line);
-  border-radius: 99px;
-  padding: var(--sp-1) var(--sp-4);
-  font-size: var(--fz-corpo);
-  font-weight: 500;
-  color: var(--danger);
-  white-space: nowrap;
-}
 
 /* Filtro rápido (toggle) — pílula que liga/desliga; ativo usa a cor primária */
 .chip-toggle {
@@ -1739,8 +1748,6 @@ a { color: var(--primary); }
 /* Drill-down: filtros ativos (chips) e linhas navegaveis */
 .venc-crumbs { display: flex; gap: 8px; margin: 10px 0 0; flex-wrap: wrap; align-items: center; }
 .venc-crumbs-lbl { font-size: var(--fz-corpo); color: var(--text-muted); font-weight: 600; }
-.venc-chip-clear { background: var(--neg-soft); border-color: var(--neg-line); color: var(--neg); }
-.venc-chip-clear:hover { background: var(--neg-line); }
 .venc-chip {
   height: var(--btn-h); padding: 0 var(--sp-4); border-radius: 99px;
   border: 1px solid var(--primary-border); background: var(--primary-light);
@@ -2168,12 +2175,6 @@ a { color: var(--primary); }
   font-size: var(--fz-corpo); background: var(--chip-bg); color: var(--text);
 }
 .sec-filters .fluxo-field-grow .sec-input { max-width: none; min-width: 200px; }
-.sec-clear {
-  height: var(--btn-h); border: 1px solid var(--navy-light); border-radius: 99px;
-  background: var(--chip-bg); color: var(--primary); font-size: var(--fz-corpo); font-weight: 500;
-  padding: 0 var(--sp-4); cursor: pointer; white-space: nowrap;
-}
-.sec-clear:hover { background: var(--blue-press); }
 
 .asset-table col.c-data   { width: 60px; }
 .asset-table col.c-tx3    { width: 60px; }
@@ -2269,7 +2270,6 @@ a { color: var(--primary); }
 /* Segmentado de Volume: largura pelo conteudo (nao 100% do campo) p/ caber na faixa. */
 .app:not(.desktop) .sec-filters .segmented { width: auto; }
 .app:not(.desktop) .sec-filters .segmented-btn { padding: 0 var(--sp-3); font-size: var(--fz-corpo); }
-.app:not(.desktop) .sec-filters .sec-clear { height: 32px; }
 
 /* Card do grafico de serie temporal (fixo ao lado da tabela). */
 .sec-chart-card { margin: 0; padding: var(--sp-4) var(--sp-4) var(--sp-2); }

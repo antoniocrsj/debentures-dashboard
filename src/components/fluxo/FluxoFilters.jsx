@@ -115,7 +115,7 @@ export default function FluxoFilters({
           quando se quer trocar de gestora e comparar. */}
       <div className="fluxo-period-info">
         {periodLabel && <span className="period-effective">{periodLabel}</span>}
-        <button className="chip-clear" onClick={onClear} disabled={!hasFilter} aria-label="Limpar filtros">
+        <button className="btn btn-limpar" onClick={onClear} disabled={!hasFilter} aria-label="Limpar filtros">
           ✕ Limpar
         </button>
       </div>

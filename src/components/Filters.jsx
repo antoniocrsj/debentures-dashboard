@@ -25,7 +25,7 @@ export default function Filters({ filters, options, disabled, onChange, tabsSlot
         >Só com recompra</button>
 
         {Object.values(filters).some(v => v !== '') && (
-          <button className="chip-clear" onClick={() => onChange(EMPTY)}>✕ Limpar</button>
+          <button className="btn btn-limpar" onClick={() => onChange(EMPTY)}>✕ Limpar</button>
         )}
       </div>
 

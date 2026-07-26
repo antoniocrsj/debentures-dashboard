@@ -165,7 +165,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
           {temFiltro && (
             <div className="fluxo-field">
               <span className="fluxo-field-label">&nbsp;</span>
-              <button type="button" className="sec-clear" onClick={limpar}>Limpar</button>
+              <button type="button" className="btn btn-limpar" onClick={limpar}>Limpar</button>
             </div>
           )}
         </div>
