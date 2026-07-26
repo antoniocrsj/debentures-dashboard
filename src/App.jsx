@@ -413,22 +413,25 @@ export default function App() {
 
       {/* Filters + tabs scroll together as one sticky block */}
       <div className="sticky-area">
-        {section === 'debentures' && (
+        {/* Compacto: os filtros da Debêntures ficam no topo (a única faixa de
+            filtro do mobile). No desktop eles desceram para o corpo (abaixo). */}
+        {section === 'debentures' && !desktop && (
           <Filters
             filters={filters}
             options={options}
             disabled={loading}
             onChange={setFilters}
-            tabsSlot={desktop ? tabsNav : null}
+            tabsSlot={null}
             updatedLabel={dataFreshness?.label}
             updatedTooltip={dataFreshness?.tooltip}
-            compact={!desktop}
+            compact
           />
         )}
 
-        {/* Desktop: abas standalone só na Captação (nas demais vão ao lado da busca).
-            Compacto: sub-abas só na seção Debêntures (Captação não tem sub-abas). */}
-        {(desktop ? (tab === 'secundario' || tab === 'captacao' || tab === 'vencimentos' || tab === 'caixa' || tab === 'tecnico') : (section === 'debentures')) && tabsNav}
+        {/* Barra de abas SEMPRE standalone no topo. No desktop vale p/ TODAS as
+            abas (topo uniforme — os filtros da Debêntures moram no corpo). No
+            compacto, são as sub-abas da seção Debêntures. */}
+        {(desktop || section === 'debentures') && tabsNav}
 
         {/* Corte de %Deb: so' nas abas com universo de fundos p/ cortar.
             Debentures e' visao do ATIVO (emissor/serie/vencimento) -- nao ha'
@@ -461,6 +464,21 @@ export default function App() {
           <div className="corte-bar">
             <CorteSelector corte={corte} onChange={setCorte} disponivel={corteDisponivel} />
           </div>
+        )}
+
+        {/* Desktop: filtros da Debêntures vivem no CORPO (área bege), deixando o
+            topo só com a barra de abas — uniforme com as demais seções. */}
+        {desktop && section === 'debentures' && (
+          <Filters
+            filters={filters}
+            options={options}
+            disabled={loading}
+            onChange={setFilters}
+            tabsSlot={null}
+            updatedLabel={dataFreshness?.label}
+            updatedTooltip={dataFreshness?.tooltip}
+            compact={false}
+          />
         )}
         {/* Aba Captação: independente do carregamento do BLC/debêntures.
             ErrorBoundary garante que uma falha no import do chunk NUNCA deixe
