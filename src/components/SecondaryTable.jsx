@@ -1,5 +1,5 @@
 import { useMemo, useState, Suspense } from 'react'
-import { parseNum, shortEmissor } from '../utils/format.js'
+import { parseNum, shortEmissor, fmtDateDDMMYY, fmtTaxa, isYes } from '../utils/format.js'
 import { lazyWithRetry } from '../utils/lazyWithRetry.js'
 import TableWrap from './TableWrap.jsx'
 
@@ -8,30 +8,26 @@ import TableWrap from './TableWrap.jsx'
 const SecondaryChart = lazyWithRetry(() => import('./SecondaryChart.jsx'))
 
 // Colunas do mercado secundario (REUNE). Uma linha = um TRADE (ativo negociado
-// num dia). Data primeiro (o pregao do trade); taxa em 3 pontos (o range do
-// dia); PU medio; e a faixa de volume (o selo de liquidez).
+// num dia). Data (short date) + a taxa negociada no dia (min/med/max) e o volume;
+// depois as caracteristicas da emissao (vencimento, duration, taxa de emissao,
+// indexador, 12.431), cruzadas do cadastro por ticker.
 const COLS = [
-  { id: 'data',    label: 'Data',        sticky: true,  sortable: true  },
-  { id: 'ativo',   label: 'Ativo',       sticky: false, sortable: true  },
-  { id: 'taxaMin', label: 'Tx mín.',     sticky: false, sortable: false },
-  { id: 'taxa',    label: 'Tx méd.',     sticky: false, sortable: true  },
-  { id: 'taxaMax', label: 'Tx máx.',     sticky: false, sortable: false },
-  { id: 'pu',      label: 'PU méd.',     sticky: false, sortable: true  },
-  { id: 'volume',  label: 'Volume neg.', sticky: false, sortable: true  },
+  { id: 'data',      label: 'Data',       sticky: true,  sortable: true  },
+  { id: 'ativo',     label: 'Ativo',      sticky: false, sortable: true  },
+  { id: 'taxaMin',   label: 'Tx mín.',    sticky: false, sortable: false },
+  { id: 'taxa',      label: 'Tx méd.',    sticky: false, sortable: true  },
+  { id: 'taxaMax',   label: 'Tx máx.',    sticky: false, sortable: false },
+  { id: 'volume',    label: 'Volume',     sticky: false, sortable: true  },
+  { id: 'vencimento',label: 'Venc.',      sticky: false, sortable: true  },
+  { id: 'duration',  label: 'Duration',   sticky: false, sortable: false },
+  { id: 'txEmissao', label: 'Tx emissão', sticky: false, sortable: false },
+  { id: 'indexador', label: 'Indexador',  sticky: false, sortable: false },
+  { id: 'lei12431',  label: '12.431',     sticky: false, sortable: false },
 ]
 
 const FAIXAS = ['Superior a 5MM', 'Entre 1MM e 5MM', 'Até 1MM']
 
-function fmtPU(v) {
-  const n = parseNum(v)
-  if (!n) return '-'
-  return n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-}
 function fmtTx(v) { return (v && v !== '--') ? `${v}%` : '-' }
-function fmtData(iso) {
-  const [y, m, d] = (iso || '').split('-')
-  return (d && m) ? `${d}/${m}` : (iso || '-')
-}
 
 export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
   const [busca, setBusca] = useState('')
@@ -39,9 +35,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
   const [emissor, setEmissor] = useState('')
   const [ativo, setAtivo] = useState('')
   const [faixa, setFaixa] = useState('')
-  const [soCarteira, setSoCarteira] = useState(false)
   const [sort, setSort] = useState({ col: 'data', dir: 'desc' })  // pregao mais recente primeiro
-  const [sel, setSel] = useState('')  // ativo selecionado para o grafico de serie
 
   const onSort = id => setSort(s => ({ col: id, dir: s.col === id && s.dir === 'desc' ? 'asc' : 'desc' }))
 
@@ -62,14 +56,13 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
     if (emissor) rows = rows.filter(a => a.emissorNome === emissor)
     if (ativo)   rows = rows.filter(a => a.codigoAtivo === ativo)
     if (faixa)   rows = rows.filter(a => a.faixaVolume === faixa)
-    if (soCarteira) rows = rows.filter(a => a.naCarteira)
     const dir = sort.dir === 'asc' ? 1 : -1
     const key = {
-      data:   a => a.data,
-      ativo:  a => a.codigoAtivo,
-      taxa:   a => a.taxaMedNum || 0,
-      pu:     a => a.puMedNum || 0,
-      volume: a => a.volRank,
+      data:       a => a.data,
+      ativo:      a => a.codigoAtivo,
+      taxa:       a => a.taxaMedNum || 0,
+      volume:     a => a.volRank,
+      vencimento: a => a.vencimento || '',
     }[sort.col]
     // desempate estavel: dentro da mesma chave, data desc e depois ticker
     return [...rows].sort((a, b) => {
@@ -79,13 +72,31 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
       if (a.data !== b.data) return a.data < b.data ? 1 : -1
       return a.codigoAtivo < b.codigoAtivo ? -1 : 1
     })
-  }, [trades, busca, grupo, emissor, ativo, faixa, soCarteira, sort])
+  }, [trades, busca, grupo, emissor, ativo, faixa, sort])
 
-  const nCarteira = useMemo(() => new Set(trades.filter(a => a.naCarteira).map(a => a.codigoAtivo)).size, [trades])
-  const serieSel = useMemo(() => sel ? trades.filter(h => h.codigoAtivo === sel) : [], [trades, sel])
-  const selInfo = useMemo(() => trades.find(a => a.codigoAtivo === sel) || {}, [trades, sel])
-  const limpar = () => { setBusca(''); setGrupo(''); setEmissor(''); setAtivo(''); setFaixa(''); setSoCarteira(false) }
-  const temFiltro = busca || grupo || emissor || ativo || faixa || soCarteira
+  // Grafico dirigido pelo FILTRO: serie de taxa do conjunto filtrado -- media
+  // por pregao quando ha' varios ativos (grupo/emissor). Sem foco -> aviso.
+  const temFoco = !!(grupo || emissor || ativo || busca.trim())
+  const focoLabel = ativo || emissor || grupo || (busca.trim() ? `"${busca.trim()}"` : '')
+  const nAtivosFiltro = useMemo(() => new Set(filtrados.map(f => f.codigoAtivo)).size, [filtrados])
+  const serieGrafico = useMemo(() => {
+    if (!temFoco || !filtrados.length) return null
+    const porData = new Map()
+    for (const t of filtrados) {
+      if (!porData.has(t.data)) porData.set(t.data, [])
+      porData.get(t.data).push(t)
+    }
+    const avg = xs => xs.length ? xs.reduce((s, x) => s + x, 0) / xs.length : 0
+    return [...porData.entries()].map(([data, rows]) => ({
+      data,
+      txMin: avg(rows.map(r => parseNum(r.taxaMin)).filter(Boolean)),
+      txMed: avg(rows.map(r => r.taxaMedNum).filter(Boolean)),
+      txMax: avg(rows.map(r => parseNum(r.taxaMax)).filter(Boolean)),
+      n: new Set(rows.map(r => r.codigoAtivo)).size,
+    })).sort((a, b) => a.data.localeCompare(b.data))
+  }, [filtrados, temFoco])
+  const limpar = () => { setBusca(''); setGrupo(''); setEmissor(''); setAtivo(''); setFaixa('') }
+  const temFiltro = busca || grupo || emissor || ativo || faixa
 
   if (!trades.length) {
     return (
@@ -99,15 +110,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
   return (
     <>
       <div className="sec-summary">
-        <div className="sec-summary-main">
-          <strong>{filtrados.length.toLocaleString('pt-BR')}</strong>
-          {temFiltro ? ` de ${trades.length.toLocaleString('pt-BR')}` : ''} negócios
-          {dias ? <span className="sec-ref"> · {dias} pregões</span> : null}
-          {reuneRef && <span className="sec-ref"> · até {reuneRef}</span>}
-        </div>
-        <div className="sec-summary-chips">
-          <span className="sec-chip">{nCarteira} papéis da carteira negociados</span>
-        </div>
+        <div className="sec-summary-main">{reuneRef}</div>
       </div>
 
       <div className="sec-controls">
@@ -129,20 +132,12 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
           <option value="">Volume: todos</option>
           {FAIXAS.map(f => <option key={f} value={f}>{f}</option>)}
         </select>
-        <label className="sec-check">
-          <input type="checkbox" checked={soCarteira} onChange={e => setSoCarteira(e.target.checked)} />
-          Só a carteira
-        </label>
         {temFiltro && <button type="button" className="sec-clear" onClick={limpar}>Limpar</button>}
       </div>
 
-      {sel && serieSel.length > 0 && (
-        <Suspense fallback={<div className="caixa-line-empty">Carregando gráfico…</div>}>
-          <SecondaryChart serie={serieSel} ativo={sel} grupo={selInfo.grupo} />
-        </Suspense>
-      )}
-
-      <TableWrap title="Mercado secundário (REUNE)">
+      <div className="sec-split">
+       <div className="sec-split-table">
+        <TableWrap title="Mercado secundário (REUNE)">
         <table className="asset-table sec-table">
           <colgroup>
             <col className="c-data" />
@@ -150,8 +145,12 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
             <col className="c-tx3" />
             <col className="c-tx3" />
             <col className="c-tx3" />
-            <col className="c-pu" />
             <col className="c-volume" />
+            <col className="c-venc" />
+            <col className="c-dur" />
+            <col className="c-txemi" />
+            <col className="c-idx" />
+            <col className="c-lei" />
           </colgroup>
           <thead>
             <tr>
@@ -170,17 +169,14 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
           </thead>
           <tbody>
             {filtrados.length === 0 && (
-              <tr><td colSpan={7} className="col-sticky">Nenhum negócio com esses filtros.</td></tr>
+              <tr><td colSpan={11} className="col-sticky">Nenhum negócio com esses filtros.</td></tr>
             )}
             {filtrados.map((a, i) => (
               <tr
                 key={`${a.codigoAtivo}|${a.data}|${i}`}
-                className={`sec-row${a.naCarteira ? ' row-carteira' : ''}${sel === a.codigoAtivo ? ' row-selected' : ''}`}
-                onClick={() => setSel(s => s === a.codigoAtivo ? '' : a.codigoAtivo)}
-                tabIndex={0}
-                onKeyDown={e => e.key === 'Enter' && setSel(s => s === a.codigoAtivo ? '' : a.codigoAtivo)}
+                className={a.naCarteira ? 'row-carteira' : ''}
               >
-                <td className="col-sticky col-num col-data">{fmtData(a.data)}</td>
+                <td className="col-sticky col-num col-data">{fmtDateDDMMYY(a.data)}</td>
                 <td className="col-ativo">
                   <div className="ativo-cell">
                     <div>
@@ -199,13 +195,34 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
                 <td className="col-num col-muted">{fmtTx(a.taxaMin)}</td>
                 <td className="col-num">{fmtTx(a.taxaMed)}</td>
                 <td className="col-num col-muted">{fmtTx(a.taxaMax)}</td>
-                <td className="col-num">{fmtPU(a.puMed)}</td>
                 <td className="col-num"><span className={`vol-tag vol-tag-${a.volRank}`}>{a.faixaVolume || '-'}</span></td>
+                <td className="col-num">{a.vencimento ? fmtDateDDMMYY(a.vencimento) : '-'}</td>
+                <td className="col-num">{(a.duration && a.duration !== '—') ? a.duration : '-'}</td>
+                <td className="col-num">{a.txEmissao ? fmtTaxa(a.txEmissao) : '-'}</td>
+                <td className="col-idx">{a.indexador || '-'}</td>
+                <td className="col-num">{isYes(a.lei12431) ? 'Sim' : '-'}</td>
               </tr>
             ))}
           </tbody>
         </table>
-      </TableWrap>
+        </TableWrap>
+       </div>
+
+       <aside className="sec-split-chart">
+        {serieGrafico
+          ? (
+            <Suspense fallback={<div className="sec-chart-empty">Carregando gráfico…</div>}>
+              <SecondaryChart serie={serieGrafico} titulo={focoLabel} nAtivos={nAtivosFiltro} />
+            </Suspense>
+          )
+          : (
+            <div className="sec-chart-empty">
+              <span className="sec-chart-empty-ic">📈</span>
+              Selecione um ativo, emissor ou grupo para ver a evolução da taxa.
+            </div>
+          )}
+       </aside>
+      </div>
     </>
   )
 }

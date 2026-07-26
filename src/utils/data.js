@@ -178,6 +178,12 @@ export function enrichReune(reuneRows, tickerToAsset) {
       setor: asset.setor || '',
       alocacao: asset.alocacao || 0,
       naCarteira: (asset.alocacao || 0) > 0,
+      // Caracteristicas da emissao (do cadastro que o app ja' conhece por ticker).
+      vencimento: asset.vencimento || '',
+      duration: asset.durationAnbima || '',
+      txEmissao: asset.taxa || '',
+      indexador: asset.indexador || '',
+      lei12431: asset.lei12431Str || '',
     }
   })
 }

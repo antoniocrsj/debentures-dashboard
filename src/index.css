@@ -2163,27 +2163,47 @@ a { color: var(--primary); }
 .sec-check input { width: auto; }
 .sec-clear { padding: 6px 12px; border: 1px solid var(--primary-border); border-radius: 8px; background: var(--card); color: var(--primary); font-size: 12px; cursor: pointer; white-space: nowrap; }
 
-.asset-table col.c-data   { width: 58px; }
-.asset-table col.c-tx3    { width: 64px; }
-.asset-table col.c-pu     { width: 84px; }
-.asset-table col.c-volume { width: 128px; }
+.asset-table col.c-data   { width: 60px; }
+.asset-table col.c-tx3    { width: 60px; }
+.asset-table col.c-volume { width: 118px; }
+.asset-table col.c-venc   { width: 66px; }
+.asset-table col.c-dur    { width: 62px; }
+.asset-table col.c-txemi  { width: 96px; }
+.asset-table col.c-idx    { width: 78px; }
+.asset-table col.c-lei    { width: 52px; }
 .sec-table td.col-data { font-variant-numeric: tabular-nums; color: var(--text-muted); }
+.sec-table td.col-idx { color: var(--text-muted); font-size: 10.5px; }
+/* Cabecalho da tabela do secundario centralizado (pedido do usuario) -- inclui
+   a coluna sticky (Data), que por padrao vinha alinhada a' esquerda. */
+.sec-table thead th,
+.sec-table thead th.col-sticky { text-align: center; }
 /* Tx mín/máx: mais discretas que a média (o range em torno do valor central). */
 .sec-table td.col-muted { color: var(--text-muted); opacity: .75; }
 
 /* Linha de papel que está na carteira acompanhada: barra terracota à esquerda. */
 .sec-table tbody tr.row-carteira td.col-sticky { box-shadow: inset 3px 0 0 var(--primary); }
 
-/* Linhas clicaveis (abrem o grafico de serie) + destaque do selecionado. */
-.sec-row { cursor: pointer; }
-.sec-table tbody tr.row-selected { background: var(--primary-light); }
-.sec-table tbody tr.row-selected td.col-sticky { box-shadow: inset 3px 0 0 var(--c-carvao); }
+/* Layout: tabela a' esquerda (rola), grafico fixo a' direita. */
+.sec-split { display: flex; gap: 12px; align-items: flex-start; }
+.sec-split-table { flex: 1 1 auto; min-width: 0; }   /* min-width:0 deixa a tabela rolar sem estourar */
+.sec-split-chart { flex: 0 0 340px; position: sticky; top: 8px; }
+@media (max-width: 980px) {
+  .sec-split { flex-direction: column; }
+  .sec-split-chart { flex-basis: auto; width: 100%; position: static; }
+}
 
-/* Card do grafico de serie temporal (aparece ao clicar num ativo). */
-.sec-chart-card { margin: 0 0 12px; padding: 10px 12px 6px; }
-.sec-chart-grupo { color: var(--text-muted); font-weight: 400; }
+/* Card do grafico de serie temporal (fixo ao lado da tabela). */
+.sec-chart-card { margin: 0; padding: 10px 12px 6px; }
+.sec-chart-tit { font-weight: 600; color: var(--primary); }
 .sec-chart-pts { margin-left: 8px; font-size: 11px; color: var(--text-muted); font-weight: 400; }
-.sec-chart-plot { height: 200px; }
+.sec-chart-plot { height: 220px; }
+/* Aviso quando nao ha' ativo/emissor/grupo filtrado. */
+.sec-chart-empty {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+  min-height: 220px; padding: 20px; text-align: center; font-size: 12.5px; color: var(--text-muted);
+  background: var(--card); border: 1px dashed var(--blue-line); border-radius: 8px;
+}
+.sec-chart-empty-ic { font-size: 22px; opacity: .7; }
 
 /* Selo de faixa de volume (liquidez): quanto maior o volume, mais forte. */
 .vol-tag { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 10.5px; white-space: nowrap; }
