@@ -4,7 +4,7 @@ import { usePeriodReports } from './hooks/usePeriodReports.js'
 import { useAgenda12m } from './hooks/useAgenda12m.js'
 import {
   buildIndexes, buildBlcIndex, buildAnbimaIndex, buildAnbimaBEIndex, buildPlByGestor,
-  enrichDebenture, enrichReune, computeManagers, computeGroups, recomputeAlocByGestor
+  buildCurvasPorData, enrichDebenture, enrichReune, computeManagers, computeGroups, recomputeAlocByGestor
 } from './utils/data.js'
 import { isYes, dateKey, fmtDateOnly, parseBRDateTime, parseISODate, fmtMesAno } from './utils/format.js'
 import { lazyWithRetry } from './utils/lazyWithRetry.js'
@@ -199,11 +199,13 @@ export default function App() {
   // Mercado secundario (REUNE): historico LONG (ativo x dia), enriquecido com
   // emissor/grupo que o app ja' conhece por ticker (via allAssets). Base para a
   // foto do ultimo dia (tabela) e, adiante, os graficos de serie.
+  // Curvas de TPF por dia (NTN-B/LTN) p/ o "Spread ref." do secundario.
+  const curvasPorData = useMemo(() => buildCurvasPorData(raw?.reuneCurvas), [raw])
   const secondaryHistory = useMemo(() => {
     if (!raw?.reune?.length || !allAssets.length) return []
     const tickerToAsset = new Map(allAssets.map(a => [a.codigoAtivo.toUpperCase(), a]))
-    return enrichReune(raw.reune, tickerToAsset)
-  }, [raw, allAssets])
+    return enrichReune(raw.reune, tickerToAsset, curvasPorData)
+  }, [raw, allAssets, curvasPorData])
 
   // Ultimo pregao presente no historico (yyyy-MM-dd).
   const reuneDataRecente = useMemo(() => {

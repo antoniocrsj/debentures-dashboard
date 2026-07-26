@@ -17,6 +17,7 @@ const COLS = [
   { id: 'taxaMin',   label: 'Tx mín.',    sticky: false, sortable: false },
   { id: 'taxa',      label: 'Tx méd.',    sticky: false, sortable: true  },
   { id: 'taxaMax',   label: 'Tx máx.',    sticky: false, sortable: false },
+  { id: 'spreadRef', label: 'Spread ref.', sticky: false, sortable: false },
   { id: 'volume',    label: 'Volume',     sticky: false, sortable: true  },
   { id: 'vencimento',label: 'Venc.',      sticky: false, sortable: true  },
   { id: 'duration',  label: 'Duration',   sticky: false, sortable: false },
@@ -169,6 +170,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
             <col className="c-tx3" />
             <col className="c-tx3" />
             <col className="c-tx3" />
+            <col className="c-spread" />
             <col className="c-volume" />
             <col className="c-venc" />
             <col className="c-dur" />
@@ -193,7 +195,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
           </thead>
           <tbody>
             {filtrados.length === 0 && (
-              <tr><td colSpan={11} className="col-sticky">Nenhum negócio com esses filtros.</td></tr>
+              <tr><td colSpan={12} className="col-sticky">Nenhum negócio com esses filtros.</td></tr>
             )}
             {filtrados.map((a, i) => (
               <tr
@@ -219,6 +221,9 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
                 <td className="col-num col-muted">{fmtTx(a.taxaMin)}</td>
                 <td className="col-num">{fmtTx(a.taxaMed)}</td>
                 <td className="col-num col-muted">{fmtTx(a.taxaMax)}</td>
+                <td className="col-num col-spread" title={a.spreadRef?.ref || undefined}>
+                  {a.spreadRef ? a.spreadRef.formatada : '-'}
+                </td>
                 <td className="col-num"><span className={`vol-tag vol-tag-${a.volRank}`}>{a.faixaVolume || '-'}</span></td>
                 <td className="col-num">{a.vencimento ? fmtDateDDMMYY(a.vencimento) : '-'}</td>
                 <td className="col-num">{(a.duration && a.duration !== '—') ? a.duration : '-'}</td>

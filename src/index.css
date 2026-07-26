@@ -2164,7 +2164,10 @@ a { color: var(--primary); }
 
 .asset-table col.c-data   { width: 60px; }
 .asset-table col.c-tx3    { width: 60px; }
+.asset-table col.c-spread { width: 86px; }
 .asset-table col.c-volume { width: 118px; }
+/* Spread de referencia (B35 +N bps / CDI +X%): numerico, destaque leve. */
+.sec-table td.col-spread { font-variant-numeric: tabular-nums; font-weight: 600; }
 .asset-table col.c-venc   { width: 66px; }
 .asset-table col.c-dur    { width: 62px; }
 .asset-table col.c-txemi  { width: 96px; }

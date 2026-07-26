@@ -37,6 +37,8 @@ const STATIC_BLC_MATURIDADE_URL = '/BLC_maturidade.json'
 // Alimenta a foto do ultimo dia (tabela) e os graficos de serie. OPCIONAL.
 const STATIC_REUNE_URL = '/REUNE_Historico.csv'
 const STATIC_REUNE_META_URL = '/REUNE_Historico_meta.json'
+// Curvas de TPF (NTN-B/LTN) por dia — gerado por tools/preparar-reune-curvas.ps1.
+const STATIC_REUNE_CURVAS_URL = '/REUNE_Curvas.csv'
 
 async function fetchCSV(rawUrl) {
   const url = `/api/proxy?url=${encodeURIComponent(rawUrl)}`
@@ -62,7 +64,7 @@ async function fetchStaticJSON(path) {
 }
 
 function cacheKey() {
-  return 'deb-cache-v9'  // v9: REUNE vira historico long (ativo x dia)
+  return 'deb-cache-v10'  // v10: + REUNE_Curvas (curva TPF/dia p/ spread do secundario)
 }
 
 function readCache() {
@@ -130,9 +132,11 @@ export function useDebentures(blcUrl) {
       // REUNE (mercado secundario) — opcional: se faltar, a aba fica vazia.
       fetchStaticCSV(STATIC_REUNE_URL).catch(() => []),
       fetchStaticJSON(STATIC_REUNE_META_URL).catch(() => null),
+      // Curvas de TPF por dia (NTN-B/LTN) — base p/ o "Spread ref." do secundario.
+      fetchStaticCSV(STATIC_REUNE_CURVAS_URL).catch(() => []),
     ])
-      .then(([emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta, reune, reuneMeta]) => {
-        const raw = { emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta, reune, reuneMeta }
+      .then(([emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta, reune, reuneMeta, reuneCurvas]) => {
+        const raw = { emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta, reune, reuneMeta, reuneCurvas }
         writeCache(raw)
         if (alive) setState({ loading: false, refreshing: false, error: null, raw, cachedAt: Date.now() })
       })

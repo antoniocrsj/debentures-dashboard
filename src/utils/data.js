@@ -1,4 +1,5 @@
 import { parseNum, normCNPJ } from './format.js'
+import { converterSpreadSec } from './spreadRef.js'
 
 const FIELDS = {
   codigoAtivo:    ['Codigo do Ativo', 'Código do Ativo', 'Codigo Ativo', 'CODIGO_ATIVO'],
@@ -158,15 +159,25 @@ const REUNE_VOL_RANK = { 'Até 1MM': 1, 'Entre 1MM e 5MM': 2, 'Superior a 5MM': 
 // emissor/grupo/setor que o app ja' conhece por ticker, marcando se o papel
 // esta' na carteira acompanhada (alocacao > 0). Uma linha = uma debenture
 // negociada no dia. tickerToAsset: Map(codigoAtivo MAIUSCULO -> asset enriquecido).
-export function enrichReune(reuneRows, tickerToAsset) {
+export function enrichReune(reuneRows, tickerToAsset, curvasPorData) {
   const map = tickerToAsset || new Map()
   return (reuneRows || []).map(r => {
     const ticker = (r['Ativo'] || '').trim()
     const asset = map.get(ticker.toUpperCase()) || {}
     const faixa = (r['Faixa de Volume'] || '').trim()
+    const data = (r['Data'] || '').trim()
+    // Spread sobre a referencia (metodologia do Tx Anbima), com a curva TPF da
+    // PROPRIA data do trade. null quando falta curva do dia ou indexador nao coberto.
+    const spreadRef = converterSpreadSec({
+      taxa: r['Taxa Media'],
+      indexador: asset.indexador,
+      tipoTaxaAnbima: asset.anbimaInfo && asset.anbimaInfo.tipoTaxaAnbima,
+      vencimento: asset.vencimento,
+      data,
+    }, curvasPorData)
     return {
       codigoAtivo: ticker,
-      data: (r['Data'] || '').trim(),   // yyyy-MM-dd (formato long: uma linha por ativo x dia)
+      data,   // yyyy-MM-dd (formato long: uma linha por ativo x dia)
       taxaMin: r['Taxa Minima'], taxaMed: r['Taxa Media'], taxaMax: r['Taxa Maxima'],
       puMed: r['PU Medio'],
       faixaVolume: faixa,
@@ -184,8 +195,29 @@ export function enrichReune(reuneRows, tickerToAsset) {
       txEmissao: asset.taxa || '',
       indexador: asset.indexador || '',
       lei12431: asset.lei12431Str || '',
+      spreadRef,   // { tipo, formatada, spreadNum, ref } ou null
     }
   })
+}
+
+// Indexa as curvas de TPF (REUNE_Curvas.csv) por data:
+//   dataISO -> { ntnb: [{venc, taxa}], ltn: [{venc, taxa}] }
+// Consumido por converterSpreadSec (via enrichReune) p/ o "Spread ref." do
+// secundario. Curva por dia -> conversao precisa em cada data historica.
+export function buildCurvasPorData(rows) {
+  const map = new Map()
+  ;(rows || []).forEach(r => {
+    const data = (r['data'] || '').trim()
+    const tipo = (r['tipo'] || '').trim().toUpperCase()
+    const venc = (r['vencimento'] || '').trim()
+    const taxa = parseNum(r['taxa'])
+    if (!data || !venc || taxa == null || isNaN(taxa)) return
+    if (!map.has(data)) map.set(data, { ntnb: [], ltn: [] })
+    const c = map.get(data)
+    if (tipo === 'NTN-B') c.ntnb.push({ venc, taxa })
+    else if (tipo === 'LTN') c.ltn.push({ venc, taxa })
+  })
+  return map
 }
 
 export function computeManagers(blcRows, plByGestor) {
