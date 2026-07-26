@@ -113,26 +113,50 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
         <div className="sec-summary-main">{reuneRef}</div>
       </div>
 
-      <div className="sec-controls">
-        <input className="sec-search" placeholder="Buscar ativo, emissor ou grupo…"
-          value={busca} onChange={e => setBusca(e.target.value)} aria-label="Buscar no mercado secundário" />
-        <select className="sec-sel" value={grupo} onChange={e => setGrupo(e.target.value)} aria-label="Filtrar por grupo">
-          <option value="">Grupo: todos</option>
-          {opts.grupos.map(g => <option key={g} value={g}>{g}</option>)}
-        </select>
-        <select className="sec-sel" value={emissor} onChange={e => setEmissor(e.target.value)} aria-label="Filtrar por emissor">
-          <option value="">Emissor: todos</option>
-          {opts.emissores.map(e => <option key={e} value={e}>{e}</option>)}
-        </select>
-        <select className="sec-sel" value={ativo} onChange={e => setAtivo(e.target.value)} aria-label="Filtrar por ativo">
-          <option value="">Ativo: todos</option>
-          {opts.ativos.map(a => <option key={a} value={a}>{a}</option>)}
-        </select>
-        <select className="sec-sel" value={faixa} onChange={e => setFaixa(e.target.value)} aria-label="Filtrar por faixa de volume">
-          <option value="">Volume: todos</option>
-          {FAIXAS.map(f => <option key={f} value={f}>{f}</option>)}
-        </select>
-        {temFiltro && <button type="button" className="sec-clear" onClick={limpar}>Limpar</button>}
+      <div className="fluxo-filters sec-filters">
+        <div className="fluxo-filters-row">
+          <div className="fluxo-field fluxo-field-grow">
+            <span className="fluxo-field-label">Buscar</span>
+            <input className="sec-input" placeholder="Ativo, emissor ou grupo…"
+              value={busca} onChange={e => setBusca(e.target.value)} aria-label="Buscar no mercado secundário" />
+          </div>
+          <div className="fluxo-field">
+            <span className="fluxo-field-label">Grupo</span>
+            <select className="sec-input" value={grupo} onChange={e => setGrupo(e.target.value)}>
+              <option value="">Todos</option>
+              {opts.grupos.map(g => <option key={g} value={g}>{g}</option>)}
+            </select>
+          </div>
+          <div className="fluxo-field">
+            <span className="fluxo-field-label">Emissor</span>
+            <select className="sec-input" value={emissor} onChange={e => setEmissor(e.target.value)}>
+              <option value="">Todos</option>
+              {opts.emissores.map(e => <option key={e} value={e}>{e}</option>)}
+            </select>
+          </div>
+          <div className="fluxo-field">
+            <span className="fluxo-field-label">Ativo</span>
+            <select className="sec-input" value={ativo} onChange={e => setAtivo(e.target.value)}>
+              <option value="">Todos</option>
+              {opts.ativos.map(a => <option key={a} value={a}>{a}</option>)}
+            </select>
+          </div>
+          <div className="fluxo-field">
+            <span className="fluxo-field-label">Volume</span>
+            <div className="segmented" role="tablist" aria-label="Faixa de volume">
+              {[['', 'Todos'], ['Superior a 5MM', '>5MM'], ['Entre 1MM e 5MM', '1–5MM'], ['Até 1MM', 'Até 1MM']].map(([v, lab]) => (
+                <button key={v || 'todos'} type="button" role="tab" aria-selected={faixa === v}
+                  className={`segmented-btn${faixa === v ? ' active' : ''}`} onClick={() => setFaixa(v)}>{lab}</button>
+              ))}
+            </div>
+          </div>
+          {temFiltro && (
+            <div className="fluxo-field">
+              <span className="fluxo-field-label">&nbsp;</span>
+              <button type="button" className="sec-clear" onClick={limpar}>Limpar</button>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="sec-split">

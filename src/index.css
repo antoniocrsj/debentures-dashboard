@@ -2139,29 +2139,25 @@ a { color: var(--primary); }
 .amort-card svg:focus { outline: none; }
 
 /* ── Mercado secundário (REUNE) ──────────────────────────────────────────── */
-.sec-summary {
-  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
-  gap: 8px 16px; margin: 2px 0 12px;
-}
-.sec-summary-main { font-size: 14px; color: var(--text); }
-.sec-summary-main strong { font-size: 18px; }
-.sec-ref { color: var(--text-muted); opacity: .8; }
-.sec-summary-chips { display: flex; gap: 8px; flex-wrap: wrap; }
-.sec-chip {
-  font-size: 11px; padding: 3px 9px; border-radius: 999px;
-  background: var(--card); border: 1px solid var(--border); color: var(--text-muted);
-}
-.sec-chip-liq { border-color: var(--primary); color: var(--primary); font-weight: 600; }
+/* Resumo: so' a data mais recente do pregao. */
+.sec-summary { margin: 0 0 10px; }
+.sec-summary-main { font-size: 13px; font-weight: 600; color: var(--text-muted); font-variant-numeric: tabular-nums; }
 
-.sec-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
-.sec-search {
-  flex: 1 1 240px; min-width: 180px; padding: 8px 12px;
-  border: 1px solid var(--primary-border); border-radius: 8px; font-size: 13px; background: var(--card);
+/* Filtros no padrao da Captacao (fluxo-field + label maiuscula). Os campos de
+   busca/select herdam a cara pill do segmented (borda carvao, cantos 99px). */
+.sec-filters { margin-bottom: 12px; }
+.sec-input {
+  width: 100%; height: var(--btn-h); min-width: 118px; max-width: 200px;
+  border: 1px solid var(--navy-light); border-radius: 99px; padding: 0 12px;
+  font-size: 13px; background: var(--chip-bg); color: var(--text);
 }
-.sec-sel { padding: 8px 10px; border: 1px solid var(--primary-border); border-radius: 8px; font-size: 13px; background: var(--card); max-width: 200px; }
-.sec-check { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); white-space: nowrap; }
-.sec-check input { width: auto; }
-.sec-clear { padding: 6px 12px; border: 1px solid var(--primary-border); border-radius: 8px; background: var(--card); color: var(--primary); font-size: 12px; cursor: pointer; white-space: nowrap; }
+.sec-filters .fluxo-field-grow .sec-input { max-width: none; min-width: 200px; }
+.sec-clear {
+  height: var(--btn-h); border: 1px solid var(--navy-light); border-radius: 99px;
+  background: var(--chip-bg); color: var(--primary); font-size: 12.5px; font-weight: 500;
+  padding: 0 14px; cursor: pointer; white-space: nowrap;
+}
+.sec-clear:hover { background: var(--blue-press); }
 
 .asset-table col.c-data   { width: 60px; }
 .asset-table col.c-tx3    { width: 60px; }
@@ -2183,12 +2179,13 @@ a { color: var(--primary); }
 /* Linha de papel que está na carteira acompanhada: barra terracota à esquerda. */
 .sec-table tbody tr.row-carteira td.col-sticky { box-shadow: inset 3px 0 0 var(--primary); }
 
-/* Layout: tabela a' esquerda (rola), grafico fixo a' direita. */
-.sec-split { display: flex; gap: 12px; align-items: flex-start; }
+/* Layout: tabela a' esquerda (rola), grafico fixo a' direita, com respiro
+   confortavel entre os dois (pedido do usuario). */
+.sec-split { display: flex; gap: 20px; align-items: flex-start; }
 .sec-split-table { flex: 1 1 auto; min-width: 0; }   /* min-width:0 deixa a tabela rolar sem estourar */
-.sec-split-chart { flex: 0 0 340px; position: sticky; top: 8px; }
+.sec-split-chart { flex: 0 0 336px; position: sticky; top: 8px; }
 @media (max-width: 980px) {
-  .sec-split { flex-direction: column; }
+  .sec-split { flex-direction: column; gap: 14px; }
   .sec-split-chart { flex-basis: auto; width: 100%; position: static; }
 }
 
@@ -2208,5 +2205,5 @@ a { color: var(--primary); }
 /* Selo de faixa de volume (liquidez): quanto maior o volume, mais forte. */
 .vol-tag { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 10.5px; white-space: nowrap; }
 .vol-tag-1 { background: var(--c-bege); color: var(--text-muted); border: 1px solid var(--border); }  /* Até 1MM */
-.vol-tag-2 { background: #efe2d3; color: var(--primary); }                                            /* 1MM–5MM */
-.vol-tag-3 { background: var(--primary); color: #fff; font-weight: 600; }                             /* >5MM */
+.vol-tag-2 { background: var(--blue-press); color: var(--primary); }                                  /* 1MM–5MM */
+.vol-tag-3 { background: var(--primary); color: var(--c-branco); font-weight: 600; }                  /* >5MM */

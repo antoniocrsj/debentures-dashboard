@@ -422,7 +422,7 @@ export default function App() {
 
         {/* Desktop: abas standalone só na Captação (nas demais vão ao lado da busca).
             Compacto: sub-abas só na seção Debêntures (Captação não tem sub-abas). */}
-        {(desktop ? (tab === 'captacao' || tab === 'vencimentos' || tab === 'caixa' || tab === 'tecnico') : section === 'debentures') && tabsNav}
+        {(desktop ? (tab === 'secundario' || tab === 'captacao' || tab === 'vencimentos' || tab === 'caixa' || tab === 'tecnico') : (section === 'debentures' || section === 'secundario')) && tabsNav}
 
         {/* Corte de %Deb: so' nas abas com universo de fundos p/ cortar.
             Debentures e' visao do ATIVO (emissor/serie/vencimento) -- nao ha'
