@@ -492,7 +492,7 @@ a { color: var(--primary); }
   position: absolute; top: 3px; right: 3px; z-index: 4;
   width: 22px; height: 22px; display: none;
   align-items: center; justify-content: center;
-  border-radius: 6px; color: var(--text-muted);
+  border-radius: 50%; color: var(--text-muted);
   background: var(--card); border: 1px solid var(--border);
   opacity: 0; transition: opacity .15s, color .15s, border-color .15s;
   cursor: pointer;
@@ -521,9 +521,9 @@ a { color: var(--primary); }
 .table-modal-title { font-size: var(--fz-titulo); font-weight: 700; color: var(--text); }
 .table-modal-close {
   width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center;
-  border-radius: 6px; color: var(--text-muted); font-size: var(--fz-titulo); cursor: pointer;
+  border-radius: 50%; color: var(--text-muted); font-size: var(--fz-titulo); cursor: pointer;
 }
-.table-modal-close:hover { background: var(--bg); color: var(--text); }
+.table-modal-close:hover { background: var(--primary-light); color: var(--primary); }
 /* corpo: ocupa a janela toda e rola nos dois eixos (a tabela fica maior).
    NÃO usa .table-wrap de propósito (evita o max-height do .app.desktop). */
 .table-modal-body {
@@ -723,7 +723,9 @@ a { color: var(--primary); }
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
   margin-left: 8px;
+  transition: color .15s, background .15s;
 }
+.modal-close:hover { background: var(--primary-light); color: var(--primary); }
 
 .modal-body {
   overflow-y: auto;
