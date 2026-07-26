@@ -87,19 +87,60 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
   const nAtivosFiltro = useMemo(() => new Set(filtrados.map(f => f.codigoAtivo)).size, [filtrados])
   const serieGrafico = useMemo(() => {
     if (!temFoco || !filtrados.length) return null
+    const avg = xs => xs.length ? xs.reduce((s, x) => s + x, 0) / xs.length : null
     const porData = new Map()
     for (const t of filtrados) {
       if (!porData.has(t.data)) porData.set(t.data, [])
       porData.get(t.data).push(t)
     }
-    const avg = xs => xs.length ? xs.reduce((s, x) => s + x, 0) / xs.length : 0
-    return [...porData.entries()].map(([data, rows]) => ({
+
+    // O grafico mostra o SPREAD sobre a referencia (metodologia do "Spread ref.",
+    // ja' pre-calculado em cada trade). IPCA -> bps sobre NTN-B; DI+/%DI/Pre -> %
+    // sobre CDI (ou DI). Como as unidades diferem, um grafico usa UMA referencia:
+    // a familia com mais ativos no foco. Foco de um ativo so' -> sempre homogeneo.
+    const famDe = r => r.spreadRef ? (r.spreadRef.tipo === 'IPCA' ? 'bps' : 'pct') : null
+    const ativosBps = new Set(), ativosPct = new Set()
+    for (const t of filtrados) {
+      const f = famDe(t)
+      if (f === 'bps') ativosBps.add(t.codigoAtivo)
+      else if (f === 'pct') ativosPct.add(t.codigoAtivo)
+    }
+    const fam = (!ativosBps.size && !ativosPct.size) ? null
+      : (ativosBps.size >= ativosPct.size ? 'bps' : 'pct')
+
+    if (fam) {
+      const pontos = [...porData.entries()].map(([data, rows]) => {
+        const mesmos = rows.filter(r => famDe(r) === fam)
+        const sps = mesmos.map(r => r.spreadRef.spreadNum).filter(v => v != null && !isNaN(v))
+        if (!sps.length) return null
+        return {
+          data,
+          spMin: Math.min(...sps),
+          spMed: avg(sps),
+          spMax: Math.max(...sps),
+          n: new Set(mesmos.map(r => r.codigoAtivo)).size,
+        }
+      }).filter(Boolean).sort((a, b) => a.data.localeCompare(b.data))
+
+      if (pontos.length) {
+        let refLabel = 'NTN-B'
+        if (fam === 'pct') {
+          const tipos = new Set(filtrados.filter(r => famDe(r) === 'pct').map(r => r.spreadRef.tipo))
+          refLabel = (tipos.has('DI+') || tipos.has('%DI')) ? 'CDI' : 'DI'
+        }
+        return { pontos, modo: 'spread', unidade: fam, refLabel }
+      }
+    }
+
+    // Sem spread calculavel (IGP-M, sem curva do dia...) -> cai na taxa crua.
+    const pontos = [...porData.entries()].map(([data, rows]) => ({
       data,
       txMin: avg(rows.map(r => parseNum(r.taxaMin)).filter(Boolean)),
       txMed: avg(rows.map(r => r.taxaMedNum).filter(Boolean)),
       txMax: avg(rows.map(r => parseNum(r.taxaMax)).filter(Boolean)),
       n: new Set(rows.map(r => r.codigoAtivo)).size,
     })).sort((a, b) => a.data.localeCompare(b.data))
+    return { pontos, modo: 'taxa' }
   }, [filtrados, temFoco])
   const limpar = () => { setBusca(''); setGrupo(''); setEmissor(''); setAtivo(''); setFaixa('') }
   const temFiltro = busca || grupo || emissor || ativo || faixa
@@ -250,7 +291,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
         {serieGrafico
           ? (
             <Suspense fallback={<div className="sec-chart-empty">Carregando gráfico…</div>}>
-              <SecondaryChart serie={serieGrafico} titulo={focoLabel} nAtivos={nAtivosFiltro} />
+              <SecondaryChart serie={serieGrafico.pontos} modo={serieGrafico.modo} unidade={serieGrafico.unidade} refLabel={serieGrafico.refLabel} titulo={focoLabel} nAtivos={nAtivosFiltro} />
             </Suspense>
           )
           : (
@@ -265,7 +306,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
       <div className="sec-cards-wrap">
         {serieGrafico && (
           <Suspense fallback={<div className="sec-chart-empty">Carregando gráfico…</div>}>
-            <SecondaryChart serie={serieGrafico} titulo={focoLabel} nAtivos={nAtivosFiltro} />
+            <SecondaryChart serie={serieGrafico.pontos} modo={serieGrafico.modo} unidade={serieGrafico.unidade} refLabel={serieGrafico.refLabel} titulo={focoLabel} nAtivos={nAtivosFiltro} />
           </Suspense>
         )}
         {!temFiltro && (verTudo || escondidos > 0) && (
