@@ -1230,13 +1230,13 @@ a { color: var(--primary); }
 .app:not(.desktop) .liq-arrow { font-size: var(--fz-corpo); margin-right: 2px; }
 
 /* ─── Visão desktop: alarga o app e espalha melhor o conteúdo ── */
-.app.desktop { max-width: 1120px; }
-/* A Tecnico e' a unica aba com 4 graficos + tabela na mesma tela: no teto de
-   1120 cada celula ficava com 334px de largura util, o que empurrava o eixo do
-   grafico p/ 2 rotulos e apertava as barras. min() p/ nao encostar na borda em
-   tela menor. As demais abas ficam em 1120 de proposito -- la' o teto existe
-   p/ nao esticar linha de tabela alem do confortavel de ler. */
-.app.desktop.tecnico-wide { max-width: min(1440px, 100vw - 24px); }
+/* Desktop preenche a LARGURA DA TELA disponivel (menos uma folga de 16px por
+   lado). Os elementos internos (tabela, splits, cards) ja trazem sua propria
+   margem lateral, entao o conteudo nao encosta na borda. Antes havia teto de
+   1120 (+ um caso especial de 1440 so' p/ a Tecnico); com a tela cheia TODAS as
+   abas ficam na mesma largura -- e a diferenca de largura do topo da Tecnico
+   deixa de existir. */
+.app.desktop { max-width: min(1920px, 100vw - 32px); }
 @media (min-width: 700px) {
   /* 1. Margens padronizadas com a aba Debêntures (24px lateral) */
   .app.desktop .fluxo { padding: var(--sp-4) var(--sp-6) var(--sp-6); }

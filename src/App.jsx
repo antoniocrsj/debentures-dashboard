@@ -381,11 +381,6 @@ export default function App() {
     </nav>
   )
 
-  // 'tecnico-wide': a aba Tecnico e' a unica que poe 4 graficos + tabela na
-  // mesma tela. No teto global de 1120px cada celula ficava com 334px -- larga
-  // demais p/ um card e estreita demais p/ um grafico com eixo. As demais abas
-  // seguem em 1120 de proposito: la' o teto existe p/ nao esticar linha de
-  // tabela alem do confortavel de ler.
   // Onde o corte de %Deb aparece. Debentures fica de fora (visao do ATIVO, sem
   // universo de fundos p/ cortar) e Vencimentos tambem, ate' a divergencia
   // entre porFundo e aggMeses ser reconciliada -- filtro inerte e' pior que
@@ -393,7 +388,7 @@ export default function App() {
   const mostraCorte = ['captacao', 'caixa', 'tecnico'].includes(tab)
   const corteDisponivel = !!pctPorCnpj && pctPorCnpj.size > 0
 
-  const appCls = `app${desktop ? ' desktop' : ''}${desktop && tab === 'tecnico' ? ' tecnico-wide' : ''}`
+  const appCls = `app${desktop ? ' desktop' : ''}`
 
   return (
     <div className={appCls}>
