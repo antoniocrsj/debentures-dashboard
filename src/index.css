@@ -1384,7 +1384,7 @@ a { color: var(--primary); }
   }
   /* separate+spacing:0 faz a borda de 1px caber DENTRO da altura (23px exatos) */
   .app.desktop .asset-table { font-size: var(--fz-2); border-collapse: separate; border-spacing: 0; }
-  .app.desktop .asset-table th { font-size: var(--fz-1); padding: var(--sp-2) var(--sp-2) var(--sp-2) var(--sp-3); }
+  .app.desktop .asset-table th { font-size: var(--fz-2); padding: var(--sp-2) var(--sp-2) var(--sp-2) var(--sp-3); }
   /* Linhas padronizadas em TODAS as tabelas: 23px, fonte 11px, padding vertical 3px */
   .app.desktop .asset-table td { height: 20px; padding: var(--sp-1) var(--sp-2) var(--sp-1) var(--sp-3); font-size: var(--fz-2); line-height: 14px; }
   .app.desktop .asset-table .info-btn { width: 14px; height: 14px; font-size: var(--fz-2); }
@@ -2088,12 +2088,12 @@ a { color: var(--primary); }
   height: 20px;
   line-height: 1.15;
   white-space: nowrap;
-  font-size: var(--fz-1);
+  font-size: var(--fz-2);
 }
 /* th na MESMA altura do td: o padding vertical do cabecalho global era maior e
    a seta de ordenacao esticava a linha. */
 .app.desktop .tecnico-gestor-table table.asset-table th {
-  font-size: var(--fz-1);
+  font-size: var(--fz-2);
   letter-spacing: 0;
   vertical-align: middle;
 }
