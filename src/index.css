@@ -85,7 +85,7 @@
   --fz-graf-titulo: 12px;   /* nome do card: Captacao / Caixa / Vencimentos     */
   --fz-graf-kpi:    12px;   /* numero em destaque do KPI                        */
   --fz-graf-dado:    9px;   /* tudo o mais: eixo, legenda, rotulo, valor, botao */
-  --btn-h:         30px;       /* altura padrao de TODO botao (chips, abas, acoes) */
+  --btn-h:         20px;       /* altura padrao de TODO botao/controle fora de grafico (= altura da linha da tabela) */
   --selected:      var(--c-terracota);   /* fundo de botao/chip SELECIONADO. Era carvao: com o solido cheio o botao ativo virava o objeto mais escuro da tela e puxava o olho p/ o controle em vez do dado. Terracota marca o estado sem pesar. */
   --header-h:      52px;
   --filter-h:      48px;
@@ -243,7 +243,7 @@ a { color: var(--primary); }
   background: var(--chip-bg);
   border: 1px solid var(--navy-light);
   border-radius: 99px;
-  padding: 5px 6px;
+  padding: 2px 6px;
   font-size: 11px;
   font-weight: 500;
   color: var(--navy-light);
@@ -269,7 +269,7 @@ a { color: var(--primary); }
   background: var(--neg-soft);
   border: 1.5px solid var(--neg-line);
   border-radius: 99px;
-  padding: 5px 12px;
+  padding: 2px 12px;
   font-size: 12px;
   font-weight: 500;
   color: var(--danger);
@@ -286,7 +286,7 @@ a { color: var(--primary); }
   background: var(--chip-bg);
   border: 1px solid var(--navy-light);
   border-radius: 99px;
-  padding: 5px 12px;
+  padding: 2px 12px;
   font-size: 11px;
   font-weight: 500;
   color: var(--navy-light);
@@ -306,7 +306,7 @@ a { color: var(--primary); }
 .search-wrap {
   display: flex;
   align-items: center;
-  height: 30px;
+  height: var(--btn-h);
   margin: 6px 12px 0;
   background: var(--chip-bg);
   border: 1px solid var(--navy-light);
@@ -1136,7 +1136,7 @@ a { color: var(--primary); }
 /* ─── Botão de visão Desktop / Compacto (header) ─────────────── */
 .view-toggle {
   display: inline-flex; align-items: center; justify-content: center; gap: 5px;
-  height: 30px;
+  height: var(--btn-h);
   background: rgba(255,255,255,.14); color: #fff;
   border-radius: 8px; padding: 0 10px;
   font-size: 12px; font-weight: 600; white-space: nowrap; flex-shrink: 0;
@@ -1149,7 +1149,7 @@ a { color: var(--primary); }
 /* ─── Navegação por ícones entre seções (compacto — GER-2) ─── */
 .section-nav { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 .section-btn {
-  width: 30px; height: 30px;
+  width: var(--btn-h); height: var(--btn-h);
   display: flex; align-items: center; justify-content: center;
   border-radius: 50%;
   border: 1.5px solid rgba(255,255,255,.4);
@@ -1158,7 +1158,7 @@ a { color: var(--primary); }
   flex-shrink: 0;
   transition: background .15s, color .15s, border-color .15s, transform .1s;
 }
-.section-btn svg { width: 18px; height: 18px; }
+.section-btn svg { width: 14px; height: 14px; }
 .section-btn:hover  { background: rgba(255,255,255,.16); }
 .section-btn:active { transform: scale(.95); }
 .cp-header-btn { border-style: dashed; }
@@ -1373,7 +1373,7 @@ a { color: var(--primary); }
   .app.desktop .asset-table { font-size: 11px; border-collapse: separate; border-spacing: 0; }
   .app.desktop .asset-table th { font-size: 10px; padding: 7px 6px 7px 8px; }
   /* Linhas padronizadas em TODAS as tabelas: 23px, fonte 11px, padding vertical 3px */
-  .app.desktop .asset-table td { height: 23px; padding: 3px 6px 3px 8px; font-size: 11px; line-height: 15px; }
+  .app.desktop .asset-table td { height: 20px; padding: 2px 6px 2px 8px; font-size: 11px; line-height: 14px; }
   .app.desktop .asset-table .info-btn { width: 14px; height: 14px; font-size: 11px; }
   .app.desktop .asset-table col.c-ativo { width: 232px; }
   .app.desktop .ativo-cell > div { flex-direction: row; align-items: baseline; gap: 6px; }
