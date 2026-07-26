@@ -2163,9 +2163,11 @@ a { color: var(--primary); }
 .sec-check input { width: auto; }
 .sec-clear { padding: 6px 12px; border: 1px solid var(--primary-border); border-radius: 8px; background: var(--card); color: var(--primary); font-size: 12px; cursor: pointer; white-space: nowrap; }
 
+.asset-table col.c-data   { width: 58px; }
 .asset-table col.c-tx3    { width: 64px; }
 .asset-table col.c-pu     { width: 84px; }
 .asset-table col.c-volume { width: 128px; }
+.sec-table td.col-data { font-variant-numeric: tabular-nums; color: var(--text-muted); }
 /* Tx mín/máx: mais discretas que a média (o range em torno do valor central). */
 .sec-table td.col-muted { color: var(--text-muted); opacity: .75; }
 

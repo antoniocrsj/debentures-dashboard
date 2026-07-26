@@ -7,11 +7,12 @@ import TableWrap from './TableWrap.jsx'
 // o usuario clica num ativo para ver a evolucao.
 const SecondaryChart = lazyWithRetry(() => import('./SecondaryChart.jsx'))
 
-// Colunas do mercado secundario (REUNE). Uma linha = uma debenture negociada no
-// dia. Taxa vem em 3 pontos (min/med/max = o range negociado no pregao); PU
-// medio; e a faixa de volume declarada pelo REUNE (o selo de liquidez).
+// Colunas do mercado secundario (REUNE). Uma linha = um TRADE (ativo negociado
+// num dia). Data primeiro (o pregao do trade); taxa em 3 pontos (o range do
+// dia); PU medio; e a faixa de volume (o selo de liquidez).
 const COLS = [
-  { id: 'ativo',   label: 'Ativo',       sticky: true,  sortable: true  },
+  { id: 'data',    label: 'Data',        sticky: true,  sortable: true  },
+  { id: 'ativo',   label: 'Ativo',       sticky: false, sortable: true  },
   { id: 'taxaMin', label: 'Tx mín.',     sticky: false, sortable: false },
   { id: 'taxa',    label: 'Tx méd.',     sticky: false, sortable: true  },
   { id: 'taxaMax', label: 'Tx máx.',     sticky: false, sortable: false },
@@ -27,29 +28,32 @@ function fmtPU(v) {
   return n.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 }
 function fmtTx(v) { return (v && v !== '--') ? `${v}%` : '-' }
+function fmtData(iso) {
+  const [y, m, d] = (iso || '').split('-')
+  return (d && m) ? `${d}/${m}` : (iso || '-')
+}
 
-export default function SecondaryTable({ assets, history, reuneRef, desktop }) {
+export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
   const [busca, setBusca] = useState('')
   const [grupo, setGrupo] = useState('')
   const [emissor, setEmissor] = useState('')
   const [ativo, setAtivo] = useState('')
   const [faixa, setFaixa] = useState('')
   const [soCarteira, setSoCarteira] = useState(false)
-  const [sort, setSort] = useState({ col: 'volume', dir: 'desc' })  // mais liquidos primeiro
+  const [sort, setSort] = useState({ col: 'data', dir: 'desc' })  // pregao mais recente primeiro
   const [sel, setSel] = useState('')  // ativo selecionado para o grafico de serie
 
   const onSort = id => setSort(s => ({ col: id, dir: s.col === id && s.dir === 'desc' ? 'asc' : 'desc' }))
 
-  // Opcoes dos selects (do dataset inteiro, ordenadas).
   const opts = useMemo(() => ({
-    grupos:    [...new Set(assets.map(a => a.grupo).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR')),
-    emissores: [...new Set(assets.map(a => a.emissorNome).filter(e => e && e !== '—'))].sort((a, b) => a.localeCompare(b, 'pt-BR')),
-    ativos:    [...new Set(assets.map(a => a.codigoAtivo).filter(Boolean))].sort(),
-  }), [assets])
+    grupos:    [...new Set(trades.map(a => a.grupo).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR')),
+    emissores: [...new Set(trades.map(a => a.emissorNome).filter(e => e && e !== '—'))].sort((a, b) => a.localeCompare(b, 'pt-BR')),
+    ativos:    [...new Set(trades.map(a => a.codigoAtivo).filter(Boolean))].sort(),
+  }), [trades])
 
   const filtrados = useMemo(() => {
     const q = busca.trim().toLowerCase()
-    let rows = assets
+    let rows = trades
     if (q) rows = rows.filter(a =>
       a.codigoAtivo.toLowerCase().includes(q) ||
       (a.grupo || '').toLowerCase().includes(q) ||
@@ -61,29 +65,29 @@ export default function SecondaryTable({ assets, history, reuneRef, desktop }) {
     if (soCarteira) rows = rows.filter(a => a.naCarteira)
     const dir = sort.dir === 'asc' ? 1 : -1
     const key = {
+      data:   a => a.data,
       ativo:  a => a.codigoAtivo,
       taxa:   a => a.taxaMedNum || 0,
       pu:     a => a.puMedNum || 0,
       volume: a => a.volRank,
     }[sort.col]
+    // desempate estavel: dentro da mesma chave, data desc e depois ticker
     return [...rows].sort((a, b) => {
       const va = key(a), vb = key(b)
       if (va < vb) return -1 * dir
       if (va > vb) return 1 * dir
-      return 0
+      if (a.data !== b.data) return a.data < b.data ? 1 : -1
+      return a.codigoAtivo < b.codigoAtivo ? -1 : 1
     })
-  }, [assets, busca, grupo, emissor, ativo, faixa, soCarteira, sort])
+  }, [trades, busca, grupo, emissor, ativo, faixa, soCarteira, sort])
 
-  const nCarteira = useMemo(() => assets.filter(a => a.naCarteira).length, [assets])
-  const nLiquidas = useMemo(() => assets.filter(a => a.volRank === 3).length, [assets])
-
-  // Serie temporal do ativo selecionado (para o grafico).
-  const serieSel = useMemo(() => sel ? (history || []).filter(h => h.codigoAtivo === sel) : [], [history, sel])
-  const selInfo = useMemo(() => assets.find(a => a.codigoAtivo === sel) || {}, [assets, sel])
+  const nCarteira = useMemo(() => new Set(trades.filter(a => a.naCarteira).map(a => a.codigoAtivo)).size, [trades])
+  const serieSel = useMemo(() => sel ? trades.filter(h => h.codigoAtivo === sel) : [], [trades, sel])
+  const selInfo = useMemo(() => trades.find(a => a.codigoAtivo === sel) || {}, [trades, sel])
   const limpar = () => { setBusca(''); setGrupo(''); setEmissor(''); setAtivo(''); setFaixa(''); setSoCarteira(false) }
   const temFiltro = busca || grupo || emissor || ativo || faixa || soCarteira
 
-  if (!assets.length) {
+  if (!trades.length) {
     return (
       <div className="empty-state">
         <span>Sem prévias de negociação</span>
@@ -97,23 +101,18 @@ export default function SecondaryTable({ assets, history, reuneRef, desktop }) {
       <div className="sec-summary">
         <div className="sec-summary-main">
           <strong>{filtrados.length.toLocaleString('pt-BR')}</strong>
-          {temFiltro ? ` de ${assets.length.toLocaleString('pt-BR')}` : ''} debêntures negociadas
-          {reuneRef && <span className="sec-ref"> · pregão de {reuneRef}</span>}
+          {temFiltro ? ` de ${trades.length.toLocaleString('pt-BR')}` : ''} negócios
+          {dias ? <span className="sec-ref"> · {dias} pregões</span> : null}
+          {reuneRef && <span className="sec-ref"> · até {reuneRef}</span>}
         </div>
         <div className="sec-summary-chips">
-          <span className="sec-chip sec-chip-liq">{nLiquidas} acima de R$ 5MM</span>
-          <span className="sec-chip">{nCarteira} na carteira acompanhada</span>
+          <span className="sec-chip">{nCarteira} papéis da carteira negociados</span>
         </div>
       </div>
 
       <div className="sec-controls">
-        <input
-          className="sec-search"
-          placeholder="Buscar ativo, emissor ou grupo…"
-          value={busca}
-          onChange={e => setBusca(e.target.value)}
-          aria-label="Buscar no mercado secundário"
-        />
+        <input className="sec-search" placeholder="Buscar ativo, emissor ou grupo…"
+          value={busca} onChange={e => setBusca(e.target.value)} aria-label="Buscar no mercado secundário" />
         <select className="sec-sel" value={grupo} onChange={e => setGrupo(e.target.value)} aria-label="Filtrar por grupo">
           <option value="">Grupo: todos</option>
           {opts.grupos.map(g => <option key={g} value={g}>{g}</option>)}
@@ -146,6 +145,7 @@ export default function SecondaryTable({ assets, history, reuneRef, desktop }) {
       <TableWrap title="Mercado secundário (REUNE)">
         <table className="asset-table sec-table">
           <colgroup>
+            <col className="c-data" />
             <col className="c-ativo" />
             <col className="c-tx3" />
             <col className="c-tx3" />
@@ -170,7 +170,7 @@ export default function SecondaryTable({ assets, history, reuneRef, desktop }) {
           </thead>
           <tbody>
             {filtrados.length === 0 && (
-              <tr><td colSpan={6} className="col-sticky">Nenhum ativo com esses filtros.</td></tr>
+              <tr><td colSpan={7} className="col-sticky">Nenhum negócio com esses filtros.</td></tr>
             )}
             {filtrados.map((a, i) => (
               <tr
@@ -180,7 +180,8 @@ export default function SecondaryTable({ assets, history, reuneRef, desktop }) {
                 tabIndex={0}
                 onKeyDown={e => e.key === 'Enter' && setSel(s => s === a.codigoAtivo ? '' : a.codigoAtivo)}
               >
-                <td className="col-sticky col-ativo">
+                <td className="col-sticky col-num col-data">{fmtData(a.data)}</td>
+                <td className="col-ativo">
                   <div className="ativo-cell">
                     <div>
                       <span className="ativo-code">{a.codigoAtivo || '-'}</span>
@@ -199,9 +200,7 @@ export default function SecondaryTable({ assets, history, reuneRef, desktop }) {
                 <td className="col-num">{fmtTx(a.taxaMed)}</td>
                 <td className="col-num col-muted">{fmtTx(a.taxaMax)}</td>
                 <td className="col-num">{fmtPU(a.puMed)}</td>
-                <td className="col-num">
-                  <span className={`vol-tag vol-tag-${a.volRank}`}>{a.faixaVolume || '-'}</span>
-                </td>
+                <td className="col-num"><span className={`vol-tag vol-tag-${a.volRank}`}>{a.faixaVolume || '-'}</span></td>
               </tr>
             ))}
           </tbody>

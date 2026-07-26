@@ -211,10 +211,10 @@ export default function App() {
     return secondaryHistory.reduce((mx, a) => (a.data > mx ? a.data : mx), '')
   }, [raw, secondaryHistory])
 
-  // Foto do ultimo dia (o que a tabela mostra).
-  const secondaryAssets = useMemo(
-    () => secondaryHistory.filter(a => a.data === reuneDataRecente),
-    [secondaryHistory, reuneDataRecente]
+  // Numero de pregoes distintos no historico (para o resumo da aba).
+  const reuneDias = useMemo(
+    () => raw?.reuneMeta?.dias || new Set(secondaryHistory.map(a => a.data)).size,
+    [raw, secondaryHistory]
   )
 
   // Data de referencia do REUNE para exibir. DD/MM/AAAA.
@@ -356,7 +356,7 @@ export default function App() {
             { id: 'ativos',   label: `Ativos (${filteredAssets.length.toLocaleString('pt-BR')})` },
             { id: 'gestores', label: `Gestores (${managers.length.toLocaleString('pt-BR')})` },
             { id: 'grupos',   label: `Grupos (${groups.length.toLocaleString('pt-BR')})` },
-            { id: 'secundario', label: `Secundário (${secondaryAssets.length.toLocaleString('pt-BR')})` },
+            { id: 'secundario', label: `Secundário (${secondaryHistory.length.toLocaleString('pt-BR')})` },
           ]
       ).map(t => (
         <button
@@ -621,7 +621,7 @@ export default function App() {
         )}
 
         {tab === 'secundario' && !loading && !error && raw && (
-          <SecondaryTable assets={secondaryAssets} history={secondaryHistory} reuneRef={reuneRef} desktop={desktop} />
+          <SecondaryTable trades={secondaryHistory} reuneRef={reuneRef} dias={reuneDias} desktop={desktop} />
         )}
       </main>
 
