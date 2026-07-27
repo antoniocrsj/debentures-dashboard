@@ -106,6 +106,15 @@
   --top-offset:    calc(var(--header-h) + var(--filter-h) + var(--tabs-h));
 }
 
+/* Desktop: "corpo" cai de 11,5 -> 11px (tudo que usa --fz-corpo herda). Os aliases
+   de grafico (que apontam p/ corpo) sao redeclarados como literal p/ acompanharem.
+   O compacto segue em 11,5px (:root), por densidade no celular. */
+.app.desktop {
+  --fz-corpo: 11px;
+  --fz-graf-titulo: 11px;
+  --fz-graf-kpi: 11px;
+}
+
 /* ─── Reset ──────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { font-size: var(--fz-titulo); -webkit-text-size-adjust: 100%; }
