@@ -1,7 +1,7 @@
 {
   "date": "2026-07-20",
   "label": "20/07/2026",
-  "previousDate": "2026-07-17",
+  "previousDate": null,
   "sourceDates": {
     "debentures": "2026-07-20",
     "cap12431": "2026-07-16",
@@ -16,7 +16,7 @@
     "debentures": true,
     "cap": true,
     "anbima": true,
-    "fundos": false,
+    "fundos": true,
     "blc": false
   },
   "summary": [
@@ -73,7 +73,7 @@
         {
           "ticker": "OREN11",
           "empresa": "ORIGEM ENERGIA PILAR S.A.",
-          "grupo": "",
+          "grupo": "Origem Energia",
           "cnpj": "43094886000192",
           "dataRegistro": "20/07/2026",
           "dataEmissao": "20/07/2026",
@@ -87,7 +87,7 @@
         {
           "ticker": "OREN31",
           "empresa": "ORIGEM ENERGIA PILAR S.A.",
-          "grupo": "",
+          "grupo": "Origem Energia",
           "cnpj": "43094886000192",
           "dataRegistro": "20/07/2026",
           "dataEmissao": "20/07/2026",
@@ -108,8 +108,8 @@
         "captacao": 98025810.58,
         "resgate": 230148881.01000002,
         "liquido": -132123070.43000002,
-        "pl": 264182559886.0501,
-        "numFundos": 1692,
+        "pl": 264192415050.0001,
+        "numFundos": 1693,
         "curados": 1720,
         "fechados": 287,
         "anterior": {
@@ -117,25 +117,25 @@
           "captacao": 546385562.39,
           "resgate": 363737985.2899998,
           "liquido": 182647577.1000002,
-          "pl": 263083143877.33997,
+          "pl": 263085895486.90997,
           "numFundos": 1692
         }
       },
       "trad": {
         "dia": "2026-07-16",
-        "captacao": 2960318455.9999986,
-        "resgate": 1913699604.2900002,
-        "liquido": 1046618851.7099984,
-        "pl": 1585918072048.4204,
+        "captacao": 2960710743.2099986,
+        "resgate": 1913558293.3100002,
+        "liquido": 1047152449.8999984,
+        "pl": 1585917455537.4905,
         "numFundos": 997,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
           "dia": "2026-07-15",
-          "captacao": 2042592145.9100003,
-          "resgate": 2649934484.3300004,
-          "liquido": -607342338.4200001,
-          "pl": 1583350052430.34,
+          "captacao": 2042984433.1200004,
+          "resgate": 2649778413.7500005,
+          "liquido": -606793980.6300001,
+          "pl": 1583349435924.92,
           "numFundos": 999
         }
       }
@@ -161,7 +161,7 @@
           "captacao": 5668000,
           "resgate": 28000,
           "liquido": 5640000,
-          "pl": 7404054898.08
+          "pl": 7411039087.25
         },
         {
           "gestor": "Rafter",
@@ -184,7 +184,7 @@
           "captacao": 3951893.07,
           "resgate": 22062274.1,
           "liquido": -18110381.03,
-          "pl": 11258013406.71
+          "pl": 11261807490.46
         },
         {
           "gestor": "IAM",
@@ -228,7 +228,7 @@
           "captacao": 749786000.2,
           "resgate": 531999371.81,
           "liquido": 217786628.39000005,
-          "pl": 454818087604.7
+          "pl": 454818087598.24
         },
         {
           "gestor": "SAM",
@@ -1264,7 +1264,7 @@
               "ticker": "JSMLB5",
               "indexador": "IPCA + 7.9677%",
               "indexadorFamilia": "IPCA+",
-              "emissor": "SIMPAR S.A.",
+              "emissor": "JSL S.A",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "B30",
@@ -1458,14 +1458,6 @@
           "pl": 44329705.11
         },
         {
-          "cnpj": "61843171000177",
-          "nome": "G5 FLAMINGO FIF - CLASSE DE INVESTIMENTO RF INCENTIVADO DE INVESTIMENTO EM INFRA - RESP LIMITADA",
-          "gestor": "G5",
-          "segmento": "12431",
-          "retorno": -0.4123,
-          "pl": 27529995.62
-        },
-        {
           "cnpj": "23631350000151",
           "nome": "ÁGUIA FIF INV EM INFRAESTRUTURA  CLASSE DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA RESP LIMITADA",
           "gestor": "Safra Asset",
@@ -1488,6 +1480,14 @@
           "segmento": "12431",
           "retorno": -0.3346,
           "pl": 12942644.43
+        },
+        {
+          "cnpj": "37750682000160",
+          "nome": "G5 MONTREAL FIF - CLASSE DE INVESTIMENTO RF INCENTIVADO DE INVESTIMENTO EM INFRA - RESP LIMITADA",
+          "gestor": "G5",
+          "segmento": "12431",
+          "retorno": -0.3191,
+          "pl": 54829392.74
         }
       ],
       "topTradPos": [
@@ -1534,6 +1534,14 @@
       ],
       "topTradNeg": [
         {
+          "cnpj": "57154741000144",
+          "nome": "QUANTITAS FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA FIJI CRÉDITO PRIVADO LONGO PRAZO RESP LIMITADA",
+          "gestor": "Quantitas",
+          "segmento": "trad",
+          "retorno": -14.4229,
+          "pl": 6423791.4
+        },
+        {
           "cnpj": "64436974000103",
           "nome": "BB MASTER III RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
           "gestor": "BB Asset",
@@ -1564,14 +1572,6 @@
           "segmento": "trad",
           "retorno": -1.345,
           "pl": 17498530.24
-        },
-        {
-          "cnpj": "36532178000120",
-          "nome": "CHRONOS FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO",
-          "gestor": "XPG",
-          "segmento": "trad",
-          "retorno": -1.1645,
-          "pl": 16337013.16
         }
       ]
     },

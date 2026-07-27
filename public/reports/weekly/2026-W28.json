@@ -20,8 +20,8 @@
       "novas": [
         {
           "ticker": "ACCQ11",
-          "empresa": "CONC. ACCIONA AGUA LOTE 2 PR SPE S/A",
-          "grupo": "",
+          "empresa": "Concessionaria ACCIONA Agua - Lote 2 Parana - SPE S.A.",
+          "grupo": "Acciona",
           "dataRegistro": "2026-07-08",
           "indexador": "DI",
           "incentivada": false
@@ -29,7 +29,7 @@
         {
           "ticker": "ARSD11",
           "empresa": "ARENA SERRA DOURADA SA.",
-          "grupo": "",
+          "grupo": "Construcap",
           "dataRegistro": "2026-07-10",
           "indexador": "DI",
           "incentivada": false
@@ -53,7 +53,7 @@
         {
           "ticker": "VTIJ18",
           "empresa": "VALE DO TIJUCO ACUCAR E ALCOOL S/A",
-          "grupo": "",
+          "grupo": "CMAA",
           "dataRegistro": "2026-07-07",
           "indexador": "IPCA",
           "incentivada": true
@@ -65,7 +65,7 @@
         "captacao": 542940284.4800001,
         "resgate": 1758926267.5000002,
         "liquido": -1215985983.02,
-        "pl": 260225073541.80997,
+        "pl": 260224152911.59,
         "numFundos": 1690,
         "dataPl": "2026-07-10",
         "de": "2026-07-06",
@@ -83,7 +83,7 @@
         "captacao": 13647532423.92,
         "resgate": 14202273068.830004,
         "liquido": -554740644.9100037,
-        "pl": 1579090431756.09,
+        "pl": 1579090443000.6501,
         "numFundos": 992,
         "dataPl": "2026-07-10",
         "de": "2026-07-06",
@@ -239,7 +239,7 @@
           "captacao": 3076870046.13,
           "resgate": 3510795663.9400005,
           "liquido": -433925617.8100004,
-          "pl": 452614519878.45,
+          "pl": 452614531123.01,
           "dias": 5
         },
         {
@@ -423,8 +423,8 @@
         "dataIni": "2026-07-03",
         "dataFim": "2026-07-10",
         "spreadIniBps": 100,
-        "spreadFimBps": 98,
-        "variacaoBps": -2,
+        "spreadFimBps": 97,
+        "variacaoBps": -3,
         "spreadConfiavel": true
       }
     },
@@ -444,17 +444,6 @@
           "de": "2026-07-06",
           "ate": "2026-07-10",
           "pl": 37790629.96,
-          "segmento": "12431"
-        },
-        {
-          "cnpj": "55089131000189",
-          "nome": "ASTERI INCENTIVADO EM…",
-          "gestor": "BTG WM",
-          "retorno": 2.5441,
-          "obs": 5,
-          "de": "2026-07-06",
-          "ate": "2026-07-10",
-          "pl": 63982367.69,
           "segmento": "12431"
         },
         {
@@ -488,6 +477,17 @@
           "de": "2026-07-06",
           "ate": "2026-07-10",
           "pl": 16010954.53,
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "42378579000170",
+          "nome": "ITAÚ ACTION DEBÊNTURES…",
+          "gestor": "IAM",
+          "retorno": 1.5264,
+          "obs": 5,
+          "de": "2026-07-06",
+          "ate": "2026-07-10",
+          "pl": 738605346,
           "segmento": "12431"
         }
       ],
@@ -717,7 +717,7 @@
       "texto": "IDA-IPCA Infraestrutura rendeu +0,96% na semana."
     },
     {
-      "texto": "IDA-DI rendeu +0,36% na semana, spread fechou 2 bps."
+      "texto": "IDA-DI rendeu +0,36% na semana, spread fechou 3 bps."
     },
     {
       "texto": "Captação líquida 12.431 na semana: −R$ 1,2 bi (capt. R$ 543 mi − resg. R$ 1,8 bi, 5 dia(s) útil(eis)).",

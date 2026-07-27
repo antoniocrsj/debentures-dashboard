@@ -210,9 +210,9 @@
         "ate": "2026-06-26",
         "diasUteis": 5,
         "anterior": {
-          "liquido": -1880071534.4800014,
-          "captacao": 14294007188.199993,
-          "resgate": 16174078722.679995,
+          "liquido": -1880271297.6400013,
+          "captacao": 14293986188.199993,
+          "resgate": 16174257485.839994,
           "de": "2026-06-15",
           "ate": "2026-06-19"
         }
@@ -411,8 +411,8 @@
         "retornoPct": 0.3095,
         "dataIni": "2026-06-19",
         "dataFim": "2026-06-26",
-        "spreadIniBps": 102,
-        "spreadFimBps": 101,
+        "spreadIniBps": 101,
+        "spreadFimBps": 100,
         "variacaoBps": -1,
         "spreadConfiavel": true
       }
@@ -482,6 +482,17 @@
       ],
       "top12431Neg": [
         {
+          "cnpj": "63942021000146",
+          "nome": "OCCAM BB INFRA LINEAR…",
+          "gestor": "Occam",
+          "retorno": -6.9298,
+          "obs": 5,
+          "de": "2026-06-22",
+          "ate": "2026-06-26",
+          "pl": 115963647.41,
+          "segmento": "12431"
+        },
+        {
           "cnpj": "52879059000103",
           "nome": "BOCAINA INFRA MASTER IV FUNDO…",
           "gestor": "Bocaina",
@@ -512,17 +523,6 @@
           "de": "2026-06-22",
           "ate": "2026-06-26",
           "pl": 69413189.02,
-          "segmento": "12431"
-        },
-        {
-          "cnpj": "63942021000146",
-          "nome": "OCCAM BB INFRA LINEAR…",
-          "gestor": "Occam",
-          "retorno": -1.7378,
-          "obs": 5,
-          "de": "2026-06-22",
-          "ate": "2026-06-26",
-          "pl": 115963647.41,
           "segmento": "12431"
         },
         {

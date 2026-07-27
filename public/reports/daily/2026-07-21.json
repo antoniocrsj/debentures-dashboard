@@ -108,8 +108,8 @@
         "captacao": 98623704.63000001,
         "resgate": 304546630.65000004,
         "liquido": -205922926.02000004,
-        "pl": 262807671739.5799,
-        "numFundos": 1690,
+        "pl": 262817513632.92987,
+        "numFundos": 1691,
         "curados": 1720,
         "fechados": 287,
         "anterior": {
@@ -117,25 +117,25 @@
           "captacao": 98025810.58,
           "resgate": 230148881.01000002,
           "liquido": -132123070.43000002,
-          "pl": 264182559886.0501,
-          "numFundos": 1692
+          "pl": 264192415050.0001,
+          "numFundos": 1693
         }
       },
       "trad": {
         "dia": "2026-07-17",
-        "captacao": 2792128815.850001,
-        "resgate": 2397373722.81,
-        "liquido": 394755093.0400009,
-        "pl": 1583156687988.2798,
-        "numFundos": 993,
+        "captacao": 2792521103.06,
+        "resgate": 2397217652.23,
+        "liquido": 395303450.8299999,
+        "pl": 1583699981931.86,
+        "numFundos": 994,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
           "dia": "2026-07-16",
-          "captacao": 2960318455.9999986,
-          "resgate": 1913699604.2900002,
-          "liquido": 1046618851.7099984,
-          "pl": 1585918072048.4204,
+          "captacao": 2960710743.2099986,
+          "resgate": 1913558293.3100002,
+          "liquido": 1047152449.8999984,
+          "pl": 1585917455537.4905,
           "numFundos": 997
         }
       }
@@ -154,7 +154,7 @@
           "captacao": 3777099.29,
           "resgate": 1653054.54,
           "liquido": 2124044.75,
-          "pl": 15349742270.1
+          "pl": 15348827821.98
         },
         {
           "gestor": "Bocaina",
@@ -205,7 +205,7 @@
           "captacao": 5192358.16,
           "resgate": 20914862.54,
           "liquido": -15722504.379999999,
-          "pl": 11262965122.41
+          "pl": 11266762954.93
         },
         {
           "gestor": "BRAM",
@@ -221,7 +221,7 @@
           "captacao": 729953535.84,
           "resgate": 395679008.87,
           "liquido": 334274526.97,
-          "pl": 455410309123.63
+          "pl": 455410308872.99
         },
         {
           "gestor": "BB Asset",
@@ -938,7 +938,7 @@
               "ticker": "JSMLB5",
               "indexador": "IPCA + 7.9677%",
               "indexadorFamilia": "IPCA+",
-              "emissor": "SIMPAR S.A.",
+              "emissor": "JSL S.A",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "B30",
@@ -1028,7 +1028,7 @@
               "ticker": "JSMLA5",
               "indexador": "DI + 3.5000%",
               "indexadorFamilia": "CDI+",
-              "emissor": "SIMPAR S.A.",
+              "emissor": "JSL S.A",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "CDI",

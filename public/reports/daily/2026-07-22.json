@@ -59,7 +59,7 @@
         {
           "ticker": "CYHG16",
           "empresa": "CARBON HOLDING S.A.",
-          "grupo": "",
+          "grupo": "Carbon",
           "cnpj": "29694063000177",
           "dataRegistro": "22/07/2026",
           "dataEmissao": "17/07/2026",
@@ -94,8 +94,8 @@
         "captacao": 98330318.14,
         "resgate": 353811013.5500001,
         "liquido": -255480695.4100001,
-        "pl": 264128618862.45,
-        "numFundos": 1693,
+        "pl": 264229698764.31,
+        "numFundos": 1695,
         "curados": 1720,
         "fechados": 287,
         "anterior": {
@@ -103,26 +103,26 @@
           "captacao": 98623704.63000001,
           "resgate": 304546630.65000004,
           "liquido": -205922926.02000004,
-          "pl": 262807671739.5799,
-          "numFundos": 1690
+          "pl": 262817513632.92987,
+          "numFundos": 1691
         }
       },
       "trad": {
         "dia": "2026-07-20",
-        "captacao": 2044663023.0299997,
-        "resgate": 5072860125.620001,
-        "liquido": -3028197102.590001,
-        "pl": 1584143908329.6602,
-        "numFundos": 995,
+        "captacao": 2045515470.4099998,
+        "resgate": 5074090157.6900015,
+        "liquido": -3028574687.2800016,
+        "pl": 1586246332072.54,
+        "numFundos": 999,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
           "dia": "2026-07-17",
-          "captacao": 2792128815.850001,
-          "resgate": 2397373722.81,
-          "liquido": 394755093.0400009,
-          "pl": 1583156687988.2798,
-          "numFundos": 993
+          "captacao": 2792521103.06,
+          "resgate": 2397217652.23,
+          "liquido": 395303450.8299999,
+          "pl": 1583699981931.86,
+          "numFundos": 994
         }
       }
     },
@@ -154,7 +154,7 @@
           "captacao": 2798199.02,
           "resgate": 2427740.62,
           "liquido": 370458.3999999999,
-          "pl": 15350608725.09
+          "pl": 15349693397.86
         },
         {
           "gestor": "Journey",
@@ -198,7 +198,7 @@
           "captacao": 27120214.74,
           "resgate": 48012421.9,
           "liquido": -20892207.16,
-          "pl": 55712124862.15
+          "pl": 55738994674.45
         }
       ],
       "topTradCaptacao": [
@@ -241,10 +241,10 @@
       "topTradResgate": [
         {
           "gestor": "IAM",
-          "captacao": 370441111.4,
-          "resgate": 1456839028.8,
-          "liquido": -1086397917.4,
-          "pl": 453160990871.96
+          "captacao": 370891745.24,
+          "resgate": 1457078969.98,
+          "liquido": -1086187224.74,
+          "pl": 454607230117.58
         },
         {
           "gestor": "BRAM",
@@ -265,7 +265,7 @@
           "captacao": 28950399.66,
           "resgate": 258735533.65,
           "liquido": -229785133.99,
-          "pl": 22695759422.18
+          "pl": 22695665311.19
         },
         {
           "gestor": "Safra Asset",
@@ -870,7 +870,7 @@
               "ticker": "JSMLA5",
               "indexador": "DI + 3.5000%",
               "indexadorFamilia": "CDI+",
-              "emissor": "SIMPAR S.A.",
+              "emissor": "JSL S.A",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "CDI",
@@ -1106,7 +1106,7 @@
               "ticker": "JSMLB5",
               "indexador": "IPCA + 7.9677%",
               "indexadorFamilia": "IPCA+",
-              "emissor": "SIMPAR S.A.",
+              "emissor": "JSL S.A",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "B30",

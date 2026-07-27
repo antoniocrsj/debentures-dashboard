@@ -93,7 +93,7 @@
         {
           "ticker": "DUXC12",
           "empresa": "DUX COMPANY LTDA.",
-          "grupo": "",
+          "grupo": "Dux",
           "dataRegistro": "2026-06-29",
           "indexador": "DI",
           "incentivada": false
@@ -292,8 +292,8 @@
         },
         {
           "ticker": "IVIS11",
-          "empresa": "IVI ENERGIA SH III S.A",
-          "grupo": "IVI Energia SH III",
+          "empresa": "IVI Energia SH III S.A.",
+          "grupo": "Brookfield - Geracao Distribuida",
           "dataRegistro": "2026-06-11",
           "indexador": "IPCA",
           "incentivada": true
@@ -445,7 +445,7 @@
         {
           "ticker": "SRFC11",
           "empresa": "SERRA DO FACAO ENERGIA S.A.",
-          "grupo": "",
+          "grupo": "Axia",
           "dataRegistro": "2026-06-29",
           "indexador": "DI",
           "incentivada": false
@@ -512,9 +512,9 @@
         }
       },
       "trad": {
-        "captacao": 62982094864.83997,
-        "resgate": 66061311136.72001,
-        "liquido": -3079216271.8800354,
+        "captacao": 62982073864.83997,
+        "resgate": 66061489899.88001,
+        "liquido": -3079416035.040039,
         "pl": 1574404938760.9482,
         "numFundos": 998,
         "dataPl": "2026-06-30",
@@ -677,8 +677,8 @@
         {
           "gestor": "Safra Asset",
           "captacao": 1836161562.9599998,
-          "resgate": 2688692761.8299994,
-          "liquido": -852531198.8699996,
+          "resgate": 2688871524.9900002,
+          "liquido": -852709962.0300004,
           "pl": 58169939876.42,
           "dias": 21
         },
@@ -724,8 +724,8 @@
         "dataIni": "2026-05-29",
         "dataFim": "2026-06-30",
         "spreadIniBps": 101,
-        "spreadFimBps": 101,
-        "variacaoBps": 0,
+        "spreadFimBps": 100,
+        "variacaoBps": -1,
         "spreadConfiavel": true
       }
     },
@@ -773,7 +773,7 @@
           "cnpj": "64089192000137",
           "nome": "TOP DEBÊNTURES 2025 INCENTIVADO…",
           "gestor": "IAM",
-          "retorno": 5.6374,
+          "retorno": 8.3492,
           "obs": 20,
           "de": "2026-06-02",
           "ate": "2026-06-30",
@@ -819,7 +819,7 @@
           "cnpj": "63942021000146",
           "nome": "OCCAM BB INFRA LINEAR…",
           "gestor": "Occam",
-          "retorno": -6.3311,
+          "retorno": -6.331,
           "obs": 20,
           "de": "2026-06-02",
           "ate": "2026-06-30",
@@ -854,7 +854,7 @@
           "cnpj": "64436974000103",
           "nome": "BB MASTER III DEBÊNTURES…",
           "gestor": "BB Asset",
-          "retorno": 6.8429,
+          "retorno": 6.8428,
           "obs": 20,
           "de": "2026-06-02",
           "ate": "2026-06-30",
@@ -1077,7 +1077,7 @@
       "texto": "IDA-IPCA Infraestrutura rendeu -0,06% no mês."
     },
     {
-      "texto": "IDA-DI rendeu +1,23% no mês, spread estável."
+      "texto": "IDA-DI rendeu +1,23% no mês, spread fechou 1 bps."
     },
     {
       "texto": "Captação líquida 12.431 no mês: −R$ 9,7 bi (capt. R$ 7,7 bi − resg. R$ 17,4 bi, 21 dia(s) útil(eis)).",
