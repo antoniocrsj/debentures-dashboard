@@ -1,9 +1,9 @@
 {
     "fonte":  "REUNE ANBIMA (previas publicas de negociacao) -- historico long",
     "periodo":  "24H00",
-    "dias":  40,
+    "dias":  90,
     "data_recente":  "2026-07-24",
-    "data_antiga":  "2026-05-29",
-    "linhas":  15364,
-    "gerado_em":  "2026-07-27T08:58:14"
+    "data_antiga":  "2026-03-17",
+    "linhas":  32839,
+    "gerado_em":  "2026-07-27T10:30:53"
 }

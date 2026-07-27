@@ -1,9 +1,9 @@
 {
-    "fonte":  "MISTA: ANBIMA Data API (5 dias recentes, curva interpolada) + Tesouro Transparente / Tesouro Direto (backfill historico, taxa media compra/venda por vencimento negociado)",
-    "totalPontos":  905,
-    "datasCobertas":  40,
-    "datasHistorico":  40,
-    "datasSemCurva":  [],
-    "obs":  "Backfill historico via PrecoTaxaTesouroDireto.csv (NTN-B = Tesouro IPCA+; LTN = Tesouro Prefixado). O Tesouro traz so' os vencimentos NEGOCIADOS (mais esparso que a ETTJ interpolada da ANBIMA); o pipeline diario segue crescendo pela ANBIMA.",
-    "updatedAt":  "2026-07-27"
+    "fonte": "MISTA: ANBIMA Data API (dias recentes, ETTJ interpolada) + Tesouro Transparente / Tesouro Direto (backfill historico, media compra/venda por vencimento negociado)",
+    "totalPontos": 2005,
+    "datasCobertas": 90,
+    "datasHistorico": 90,
+    "datasSemCurva": [],
+    "obs": "NTN-B = Tesouro IPCA+; LTN = Tesouro Prefixado. Tesouro traz so os vencimentos negociados (mais esparso que a ETTJ da ANBIMA).",
+    "updatedAt": "2026-07-27"
 }
