@@ -208,19 +208,26 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
       <p className="sec-grupo-ativos-tit">
         {grupo} <span className="sec-grupo-ativos-sub">· {grupoAtivos.length} ativos · por liquidez (40d)</span>
       </p>
-      <div className="rd-tablewrap">
-        <table className="rd-table sec-grupo-table">
-          <thead><tr><th>Ativo</th><th>Venc.</th><th className="rd-num">Dur.</th><th>Spread</th></tr></thead>
+      <div className="table-wrap sec-grupo-wrap">
+        <table className="asset-table sec-table sec-grupo-table">
+          <thead>
+            <tr>
+              <th className="th-nosort">Ativo</th>
+              <th className="th-nosort">Venc.</th>
+              <th className="th-nosort">Duration</th>
+              <th className="th-nosort">Spread ref.</th>
+            </tr>
+          </thead>
           <tbody>
             {grupoAtivos.map(a => (
               <tr key={a.ticker}
-                className={`sec-grupo-row${ativo === a.ticker ? ' sec-row-active' : ''}`}
+                className={`sec-row-click${ativo === a.ticker ? ' sec-row-active' : ''}`}
                 onClick={() => setAtivo(v => (v === a.ticker ? '' : a.ticker))}
                 title={`Filtrar ${a.ticker} na tabela e no gráfico`}>
-                <td className="rd-strong">{a.ticker}</td>
-                <td>{a.vencimento ? fmtDateDDMMYY(a.vencimento) : '-'}</td>
-                <td className="rd-num">{(a.duration && a.duration !== '—') ? a.duration : '-'}</td>
-                <td>{a.spread ? a.spread.formatada : '-'}</td>
+                <td className="col-ativo"><span className="ativo-code">{a.ticker}</span></td>
+                <td className="col-num">{a.vencimento ? fmtDateDDMMYY(a.vencimento) : '-'}</td>
+                <td className="col-num">{(a.duration && a.duration !== '—') ? a.duration : '-'}</td>
+                <td className="col-num col-spread">{a.spread ? a.spread.formatada : '-'}</td>
               </tr>
             ))}
           </tbody>

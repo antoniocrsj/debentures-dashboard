@@ -2257,16 +2257,13 @@ a { color: var(--primary); }
 .sec-cards-toggle:active { background: var(--primary-light); }
 .sec-cap-nota { font-size: var(--fz-corpo); color: var(--text-muted); text-align: center; margin: 8px 0 0; }
 
-/* Tabela dos ativos do grupo (abaixo do grafico): clicavel, filtra a esquerda +
-   foca o grafico. Ativa = fundo bege + barra terracota. */
+/* Tabela dos ativos do grupo (abaixo do grafico): MESMO padrao da tabela da
+   esquerda (asset-table sec-table) -- fonte, alturas, cabecalho, hover e realce
+   ja' vem de la'. So' reusa o card .table-wrap sem a margem, com altura propria. */
 .sec-grupo-ativos { margin-top: 12px; }
 .sec-grupo-ativos-tit { font-size: var(--fz-corpo); font-weight: 600; color: var(--primary); margin: 0 0 6px; }
 .sec-grupo-ativos-sub { font-weight: 400; color: var(--text-muted); }
-.sec-grupo-ativos .rd-tablewrap { max-height: 320px; overflow-y: auto; }
-.sec-grupo-table tbody tr { cursor: pointer; }
-.sec-grupo-table tbody tr:hover td { background: var(--primary-light); }
-.sec-grupo-table tbody tr.sec-row-active td { background: var(--primary-light); }
-.sec-grupo-table tbody tr.sec-row-active td:first-child { box-shadow: inset 3px 0 0 var(--primary); color: var(--primary); font-weight: 700; }
+.app.desktop .sec-grupo-ativos .table-wrap { margin: 0; max-height: 300px; }
 .app.desktop .sec-split-table .sec-cards-toggle { margin: 10px 0 0; }
 
 /* ── Compacto: filtros do secundario numa unica linha que rola horizontal ─────
