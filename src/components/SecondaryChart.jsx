@@ -17,6 +17,21 @@ function dataCurta(iso) {
   return (d && m) ? `${d}/${m}` : iso
 }
 
+// Ticks do eixo Y (= gridlines) a cada 10 bps (0,10% no CDI). Se a janela for
+// larga demais (>~15 linhas), sobe p/ o proximo passo "redondo" (20/50/100 bps)
+// p/ nao virar um paliteiro.
+function gridTicks(lo, hi, unidade) {
+  const nice = unidade === 'bps' ? [10, 20, 50, 100, 200, 500] : [0.10, 0.20, 0.50, 1.00, 2.00, 5.00]
+  const step = nice.find(s => (hi - lo) / s <= 15) || nice[nice.length - 1]
+  const dec = unidade === 'bps' ? 0 : 2
+  const f = 10 ** dec
+  const ticks = []
+  for (let i = Math.ceil((lo - 1e-9) / step); i * step <= hi + 1e-9; i++) {
+    ticks.push(Math.round(i * step * f) / f)
+  }
+  return ticks
+}
+
 // Spread formatado conforme a unidade: bps -> inteiro; % -> 2 casas. Com sinal.
 function fmtSpread(v, unidade) {
   if (v == null || isNaN(v)) return '-'
@@ -90,6 +105,8 @@ export default function SecondaryChart({ serie, titulo, nAtivos, modo = 'taxa', 
       yDomain = [lo, hi]
     }
   }
+  // Gridlines/ticks do eixo Y a cada 10 bps (segue o dominio travado).
+  const yTicks = (spread && yDomain[0] !== 'auto') ? gridTicks(yDomain[0], yDomain[1], unidade) : undefined
 
   return (
     <div className="grafico-card sec-chart-card">
@@ -106,7 +123,8 @@ export default function SecondaryChart({ serie, titulo, nAtivos, modo = 'taxa', 
             <XAxis dataKey="data" tickFormatter={dataCurta} tick={{ fontSize: FZ, fill: COL_EIXO }}
                    tickMargin={4} axisLine={false} tickLine={false} interval="preserveStartEnd" minTickGap={16} />
             <YAxis tick={{ fontSize: FZ, fill: COL_EIXO, textAnchor: 'start' }} dx={-26} width={36}
-                   domain={yDomain} allowDataOverflow axisLine={false} tickLine={false} tickFormatter={yFmt} />
+                   domain={yDomain} ticks={yTicks} interval={0} allowDataOverflow
+                   axisLine={false} tickLine={false} tickFormatter={yFmt} />
             <Tooltip content={<ChartTooltip modo={modo} unidade={unidade} refLabel={refLabel} />} cursor={{ stroke: COL_RANGE, strokeDasharray: '3 3' }} />
             <Line type="monotone" dataKey={kMax} stroke={COL_RANGE} strokeWidth={1} strokeDasharray="4 3" dot={false} isAnimationActive={false} />
             <Line type="monotone" dataKey={kMed} stroke={COL_MED} strokeWidth={2} dot={{ r: 2.5, fill: COL_MED }} isAnimationActive={false} />
