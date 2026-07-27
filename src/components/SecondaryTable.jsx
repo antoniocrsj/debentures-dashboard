@@ -38,6 +38,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
   const [emissor, setEmissor] = useState('')
   const [ativo, setAtivo] = useState('')
   const [faixa, setFaixa] = useState('')
+  const [lei, setLei] = useState('')   // '' todos · 'sim' 12.431 · 'nao' tradicional
   const [sort, setSort] = useState({ col: 'data', dir: 'desc' })  // pregao mais recente primeiro
   const [verTudo, setVerTudo] = useState(false)  // compacto: abre no ultimo pregao; expande p/ o historico
 
@@ -62,6 +63,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
     if (emissor) rows = rows.filter(a => a.emissorNome === emissor)
     if (ativo)   rows = rows.filter(a => a.codigoAtivo === ativo)
     if (faixa)   rows = rows.filter(a => a.faixaVolume === faixa)
+    if (lei)     rows = rows.filter(a => lei === 'sim' ? isYes(a.lei12431) : !isYes(a.lei12431))
     const dir = sort.dir === 'asc' ? 1 : -1
     const key = {
       data:       a => a.data,
@@ -78,7 +80,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
       if (a.data !== b.data) return a.data < b.data ? 1 : -1
       return a.codigoAtivo < b.codigoAtivo ? -1 : 1
     })
-  }, [trades, busca, grupo, emissor, ativo, faixa, sort])
+  }, [trades, busca, grupo, emissor, ativo, faixa, lei, sort])
 
   // Grafico dirigido pelo FILTRO: serie de taxa do conjunto filtrado -- media
   // por pregao quando ha' varios ativos (grupo/emissor). Sem foco -> aviso.
@@ -142,8 +144,8 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
     })).sort((a, b) => a.data.localeCompare(b.data))
     return { pontos, modo: 'taxa' }
   }, [filtrados, temFoco])
-  const limpar = () => { setBusca(''); setGrupo(''); setEmissor(''); setAtivo(''); setFaixa('') }
-  const temFiltro = busca || grupo || emissor || ativo || faixa
+  const limpar = () => { setBusca(''); setGrupo(''); setEmissor(''); setAtivo(''); setFaixa(''); setLei('') }
+  const temFiltro = busca || grupo || emissor || ativo || faixa || lei
 
   // Compacto: por padrao mostra so' o ultimo pregao (perf -- evita renderizar todo
   // o historico em cards). Com filtro ou "ver tudo", mostra todos os filtrados.
@@ -196,10 +198,30 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
           </div>
           <div className="fluxo-field">
             <span className="fluxo-field-label">Volume</span>
-            <div className="segmented" role="tablist" aria-label="Faixa de volume">
-              {[['', 'Todos'], ['Superior a 5MM', '>5MM'], ['Entre 1MM e 5MM', '1–5MM'], ['Até 1MM', 'Até 1MM']].map(([v, lab]) => (
-                <button key={v || 'todos'} type="button" role="tab" aria-selected={faixa === v}
-                  className={`segmented-btn${faixa === v ? ' active' : ''}`} onClick={() => setFaixa(v)}>{lab}</button>
+            {(() => {
+              // Sweep (‹ valor ›) em vez do segmentado: percorre as faixas em ordem
+              // decrescente de tamanho. Todos → >5MM → 1–5MM → Até 1MM.
+              const VOLS = [['', 'Todos'], ['Superior a 5MM', '> 5MM'], ['Entre 1MM e 5MM', '1–5MM'], ['Até 1MM', 'Até 1MM']]
+              const vi = Math.max(0, VOLS.findIndex(([v]) => v === faixa))
+              return (
+                <div className="corte-step corte-step-vol">
+                  <div className="corte-step-box">
+                    <button type="button" className="corte-step-btn" aria-label="Faixa de volume maior"
+                      disabled={vi <= 0} onClick={() => vi > 0 && setFaixa(VOLS[vi - 1][0])}>‹</button>
+                    <span className="corte-step-val" aria-live="polite">{VOLS[vi][1]}</span>
+                    <button type="button" className="corte-step-btn" aria-label="Faixa de volume menor"
+                      disabled={vi >= VOLS.length - 1} onClick={() => vi < VOLS.length - 1 && setFaixa(VOLS[vi + 1][0])}>›</button>
+                  </div>
+                </div>
+              )
+            })()}
+          </div>
+          <div className="fluxo-field">
+            <span className="fluxo-field-label">12.431</span>
+            <div className="segmented" role="tablist" aria-label="Incentivada (Lei 12.431)">
+              {[['', 'Todos'], ['sim', '12.431'], ['nao', 'Tradicional']].map(([v, lab]) => (
+                <button key={v || 'todos'} type="button" role="tab" aria-selected={lei === v}
+                  className={`segmented-btn${lei === v ? ' active' : ''}`} onClick={() => setLei(v)}>{lab}</button>
               ))}
             </div>
           </div>
