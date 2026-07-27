@@ -9,8 +9,9 @@
     "perf12431": "2026-07-22",
     "perfTrad": "2026-07-22",
     "anbima": "2026-07-24",
-    "blc": "2026-07-23",
-    "fundos": "2026-07-22"
+    "blc": "2026-07-24",
+    "fundos": "2026-07-22",
+    "reune": "2026-07-24"
   },
   "novoPorFonte": {
     "debentures": false,
@@ -1352,6 +1353,257 @@
       "atual": "2026-07-24",
       "anterior": "2026-07-23",
       "semAnterior": false
+    },
+    "reune": {
+      "12431": {
+        "itens": [
+          {
+            "ticker": "EKTRA5",
+            "emissor": "ELEKTRO REDES S.A.",
+            "grupo": "Neoenergia",
+            "incentivada": true,
+            "indexadorFamilia": "Pré",
+            "spread": "DI +0,10%",
+            "unidade": "cdi",
+            "anbimaAnterior": "CDI − 0,72%",
+            "variacaoBps": 76.42000000000007,
+            "taxaMedia": "14,89"
+          },
+          {
+            "ticker": "HARG11",
+            "emissor": "HOLDING DO ARAGUAIA S.A.",
+            "grupo": "Holding do Araguaia",
+            "incentivada": true,
+            "indexadorFamilia": "IPCA+",
+            "spread": "B37 +108 bps",
+            "unidade": "bps",
+            "anbimaAnterior": "B32+51",
+            "variacaoBps": 13.649999999999984,
+            "taxaMedia": "9,08"
+          },
+          {
+            "ticker": "RUMOA2",
+            "emissor": "RUMO S.A.",
+            "grupo": "Rumo",
+            "incentivada": true,
+            "indexadorFamilia": "IPCA+",
+            "spread": "B29 +50 bps",
+            "unidade": "bps",
+            "anbimaAnterior": "B28+11",
+            "variacaoBps": 7.559999999999967,
+            "taxaMedia": "8,82"
+          },
+          {
+            "ticker": "CEEBD1",
+            "emissor": "CIA. DE ELETRIC. DO EST. DA BAHIA-COELBA",
+            "grupo": "Neoenergia",
+            "incentivada": true,
+            "indexadorFamilia": "Pré",
+            "spread": "DI −0,31%",
+            "unidade": "cdi",
+            "anbimaAnterior": "CDI − 0,47%",
+            "variacaoBps": 6.610000000000049,
+            "taxaMedia": "14,48"
+          },
+          {
+            "ticker": "QUAT13",
+            "emissor": "ACUCAREIRA QUATA S/A",
+            "grupo": "Acucareira Quata",
+            "incentivada": true,
+            "indexadorFamilia": "IPCA+",
+            "spread": "B35 +131 bps",
+            "unidade": "bps",
+            "anbimaAnterior": "B30+92",
+            "variacaoBps": 2.609999999999957,
+            "taxaMedia": "9,48"
+          },
+          {
+            "ticker": "VALEB1",
+            "emissor": "VALE S/A",
+            "grupo": "Vale",
+            "incentivada": true,
+            "indexadorFamilia": "IPCA+",
+            "spread": "B32 −91 bps",
+            "unidade": "bps",
+            "anbimaAnterior": "B32−91",
+            "variacaoBps": 0.44000000000004036,
+            "taxaMedia": "7,40"
+          },
+          {
+            "ticker": "EGIEA6",
+            "emissor": "ENGIE BRASIL ENERGIA SA",
+            "grupo": "Engie",
+            "incentivada": true,
+            "indexadorFamilia": "IPCA+",
+            "spread": "B37 −25 bps",
+            "unidade": "bps",
+            "anbimaAnterior": "B37−27",
+            "variacaoBps": -2.069999999999972,
+            "taxaMedia": "7,75"
+          },
+          {
+            "ticker": "ELET14",
+            "emissor": "AXIA ENERGIA S.A.",
+            "grupo": "Axia",
+            "incentivada": true,
+            "indexadorFamilia": "IPCA+",
+            "spread": "B31 −41 bps",
+            "unidade": "bps",
+            "anbimaAnterior": "B30−49",
+            "variacaoBps": -3.620000000000001,
+            "taxaMedia": "7,89"
+          },
+          {
+            "ticker": "MRSAA3",
+            "emissor": "MRS LOGISTICA S/A",
+            "grupo": "MRS",
+            "incentivada": true,
+            "indexadorFamilia": "IPCA+",
+            "spread": "B32 −49 bps",
+            "unidade": "bps",
+            "anbimaAnterior": "B32−42",
+            "variacaoBps": -10.529999999999973,
+            "taxaMedia": "7,82"
+          },
+          {
+            "ticker": "SBSPI8",
+            "emissor": "CIA SANEAMENTO BASICO EST. SP - SABESP",
+            "grupo": "Sabesp",
+            "incentivada": true,
+            "indexadorFamilia": "IPCA+",
+            "spread": "B35 −59 bps",
+            "unidade": "bps",
+            "anbimaAnterior": "B35−40",
+            "variacaoBps": -22.689999999999966,
+            "taxaMedia": "7,58"
+          },
+          {
+            "ticker": "NEOE16",
+            "emissor": "NEOENERGIA S/A",
+            "grupo": "Neoenergia",
+            "incentivada": true,
+            "indexadorFamilia": "IPCA+",
+            "spread": "B29 −24 bps",
+            "unidade": "bps",
+            "anbimaAnterior": "B28−28",
+            "variacaoBps": -24.399999999999977,
+            "taxaMedia": "8,08"
+          },
+          {
+            "ticker": "AXIA18",
+            "emissor": "AXIA ENERGIA S.A.",
+            "grupo": "Axia",
+            "incentivada": true,
+            "indexadorFamilia": "IPCA+",
+            "spread": "B33 −60 bps",
+            "unidade": "bps",
+            "anbimaAnterior": "B32−37",
+            "variacaoBps": -31.00000000000005,
+            "taxaMedia": "7,67"
+          },
+          {
+            "ticker": "AXIA28",
+            "emissor": "AXIA ENERGIA S.A.",
+            "grupo": "Axia",
+            "incentivada": true,
+            "indexadorFamilia": "IPCA+",
+            "spread": "B35 −61 bps",
+            "unidade": "bps",
+            "anbimaAnterior": "B35−29",
+            "variacaoBps": -36.390000000000015,
+            "taxaMedia": "7,56"
+          }
+        ],
+        "total": 13,
+        "totalAberturas": 6,
+        "totalFechamentos": 7,
+        "totalComparados": 13,
+        "variacaoMediaBps": -1.8007692307692222
+      },
+      "trad": {
+        "itens": [
+          {
+            "ticker": "TFLEA3",
+            "emissor": "LOCALIZA FLEET S/A",
+            "grupo": "Localiza",
+            "incentivada": false,
+            "indexadorFamilia": "CDI+",
+            "spread": "CDI +1,83%",
+            "unidade": "cdi",
+            "anbimaAnterior": "CDI + 1,31%",
+            "variacaoBps": 51.53000000000001,
+            "taxaMedia": "1,83"
+          },
+          {
+            "ticker": "GSHC17",
+            "emissor": "GSH CORP PARTICIPACOES S.A.",
+            "grupo": "GSH Corp",
+            "incentivada": false,
+            "indexadorFamilia": "CDI+",
+            "spread": "CDI +2,80%",
+            "unidade": "cdi",
+            "anbimaAnterior": "CDI + 2,29%",
+            "variacaoBps": 50.97999999999998,
+            "taxaMedia": "2,80"
+          },
+          {
+            "ticker": "JSMLA5",
+            "emissor": "JSL S.A",
+            "grupo": "Simpar",
+            "incentivada": false,
+            "indexadorFamilia": "CDI+",
+            "spread": "CDI +4,25%",
+            "unidade": "cdi",
+            "anbimaAnterior": "CDI + 3,98%",
+            "variacaoBps": 26.549999999999983,
+            "taxaMedia": "4,25"
+          },
+          {
+            "ticker": "SIMH16",
+            "emissor": "SIMPAR S.A.",
+            "grupo": "Simpar",
+            "incentivada": false,
+            "indexadorFamilia": "CDI+",
+            "spread": "CDI +4,22%",
+            "unidade": "cdi",
+            "anbimaAnterior": "CDI + 4,00%",
+            "variacaoBps": 22.019999999999975,
+            "taxaMedia": "4,22"
+          },
+          {
+            "ticker": "CVCB14",
+            "emissor": "CVC BRASIL OPERADORA E AGENCIA DE VIAGENS S.A.",
+            "grupo": "CVC",
+            "incentivada": false,
+            "indexadorFamilia": "CDI+",
+            "spread": "CDI +4,55%",
+            "unidade": "cdi",
+            "anbimaAnterior": "CDI + 4,48%",
+            "variacaoBps": 6.979999999999986,
+            "taxaMedia": "4,55"
+          },
+          {
+            "ticker": "ELET24",
+            "emissor": "AXIA ENERGIA S.A.",
+            "grupo": "Axia",
+            "incentivada": false,
+            "indexadorFamilia": "CDI+",
+            "spread": "CDI +0,96%",
+            "unidade": "cdi",
+            "anbimaAnterior": "CDI + 0,97%",
+            "variacaoBps": -0.9500000000000064,
+            "taxaMedia": "0,96"
+          }
+        ],
+        "total": 6,
+        "totalAberturas": 5,
+        "totalFechamentos": 1,
+        "totalComparados": 6,
+        "variacaoMediaBps": 26.184999999999988
+      },
+      "dataReune": "2026-07-24",
+      "anbimaAnterior": "2026-07-23",
+      "semReune": false
     },
     "fundos": {
       "novos": [],

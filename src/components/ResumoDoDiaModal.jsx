@@ -281,6 +281,50 @@ function Anbima({ sec }) {
   return <>{mercado(pm['12431'], '12.431')}{mercado(pm.trad, 'Tradicional')}</>
 }
 
+// Mercado secundário (REUNE) — trades > 5MM do pregão, em spread (CDI+/NTN-B+),
+// com Δ da TAXA do papel vs a Tx ANBIMA do dia anterior. Δ>0 = abriu (vermelho),
+// Δ<0 = fechou (verde) — mesma convenção da Seção 5.
+function Reune({ sec }) {
+  if (!sec || sec.semReune) return <Empty>Sem trades acima de 5MM neste pregão.</Empty>
+  const bloco = (g, nome) => {
+    if (!g || !g.total) return <div className="rd-top"><h4>{nome}</h4><Empty>Sem trades acima de 5MM.</Empty></div>
+    const vm = Math.round(g.variacaoMediaBps || 0)
+    return (
+      <div className="rd-top">
+        <h4>{nome}</h4>
+        <p className="rd-note">
+          <b className="rd-neg">{g.totalAberturas}</b> abertura(s) e <b className="rd-pos">{g.totalFechamentos}</b> fechamento(s) de taxa — de {g.total} trade(s) acima de 5MM
+          {g.totalComparados > 0 && <> · média <b className={vm > 0 ? 'rd-neg' : vm < 0 ? 'rd-pos' : ''}>{vm > 0 ? '+' : ''}{vm} bps</b></>}
+        </p>
+        <div className="rd-tablewrap">
+          <table className="rd-table">
+            <thead><tr><th>Ativo</th><th>Grupo</th><th>Emissor</th><th>Indexador</th><th>Spread (hoje)</th><th className="rd-num">Δ taxa vs ANBIMA (bps)</th></tr></thead>
+            <tbody>
+              {g.itens.map((a, i) => (
+                <tr key={a.ticker || i} title={a.anbimaAnterior ? `Tx ANBIMA dia anterior: ${a.anbimaAnterior}` : undefined}>
+                  <td className="rd-strong">{a.ticker}</td>
+                  <td className="rd-empresa" title={a.grupo}>{a.grupo || '—'}</td>
+                  <td className="rd-empresa" title={a.emissor}>{a.emissor || '—'}</td>
+                  <td>{a.indexadorFamilia}</td>
+                  <td>{a.spread}</td>
+                  <td className={'rd-num ' + (a.variacaoBps > 0 ? 'rd-neg' : a.variacaoBps < 0 ? 'rd-pos' : '')}>{a.variacaoBps == null ? '—' : sinalBps(a.variacaoBps)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    )
+  }
+  return (
+    <>
+      <p className="rd-note">Prévias de negociação do REUNE acima de 5MM neste pregão, em spread (CDI+ / NTN-B+). "Δ taxa" = variação da taxa do papel vs a Tx ANBIMA do dia anterior.</p>
+      {bloco(sec['12431'], '12.431')}
+      {bloco(sec.trad, 'Tradicional')}
+    </>
+  )
+}
+
 function Perf({ sec }) {
   const bloco = (pos, neg, nome) => {
     if (!pos?.length && !neg?.length) return <div className="rd-top"><h4>{nome}</h4><Empty>Sem performance diária neste dia.</Empty></div>
@@ -390,15 +434,16 @@ export default function ResumoDoDiaModal({ mode, setMode, index, available, sele
               <Section title={periodo ? '3. Captação do período' : '3. Captação líquida do dia'}><Captacao sec={s.captacao} periodo={periodo} /></Section>
               <Section title="4. Destaques por gestor (captação líquida)"><GestoresLado gestores={s.gestores} /></Section>
               <Section title="5. Variação ANBIMA (spread)"><Anbima sec={s.anbima} />{periodo && <Ida sec={s.ida} />}</Section>
-              <Section title="6. Fundos incluídos/excluídos"><Fundos sec={s.fundos} /></Section>
+              {!periodo && <Section title="6. Mercado secundário (REUNE · acima de 5MM)"><Reune sec={s.reune} /></Section>}
+              <Section title={periodo ? '6. Fundos incluídos/excluídos' : '7. Fundos incluídos/excluídos'}><Fundos sec={s.fundos} /></Section>
               {periodo && (
                 <Section title="7. Ativos incluídos nas tabelas">
                   {inc?.semAnterior ? <Empty>Sem snapshot de fronteira BLC neste período.</Empty>
                     : <p className="rd-note">Novos no cadastro: <b>{(inc?.novosDebentures || []).length}</b> · Passaram a aparecer nas carteiras: <b>{(inc?.novosBlc || []).length}</b> · Saíram: <b>{(inc?.saiuBlc || []).length}</b></p>}
                 </Section>
               )}
-              <Section title={periodo ? '8. Performance de fundos (composto)' : '7. Performance de fundos'}><Perf sec={s.perf} /></Section>
-              <Section title={periodo ? '9. Alertas de qualidade' : '8. Alertas de qualidade'}><Alertas arr={s.alertas} /></Section>
+              <Section title={periodo ? '8. Performance de fundos (composto)' : '8. Performance de fundos'}><Perf sec={s.perf} /></Section>
+              <Section title="9. Alertas de qualidade"><Alertas arr={s.alertas} /></Section>
             </>
           )}
         </div>
