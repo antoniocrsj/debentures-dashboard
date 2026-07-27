@@ -85,7 +85,9 @@ export default function SearchSelect({ label, value, options, disabled, onChange
             )}
           </div>
         </div>,
-        document.body
+        // Portal para dentro do .app (herda os tokens .app.desktop -- ex.: --fz-corpo
+        // 11px no desktop). O dropdown e' position:fixed, entao a posicao nao muda.
+        document.querySelector('.app') || document.body
       )}
     </div>
   )
