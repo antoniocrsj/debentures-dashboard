@@ -2179,6 +2179,14 @@ a { color: var(--primary); }
 /* Tx mín/máx: mais discretas que a média (o range em torno do valor central). */
 .sec-table td.col-muted { color: var(--text-muted); opacity: .75; }
 
+/* Clicar numa linha foca o grafico no ativo (master-detail). Hover sinaliza que
+   e' clicavel; a linha do ativo focado ganha fundo bege + barra terracota. */
+.sec-table tbody tr.sec-row-click { cursor: pointer; }
+.app.desktop .sec-table tbody tr.sec-row-click:hover > td { background: var(--primary-light); }
+.app.desktop .sec-table tbody tr.sec-row-active > td { background: var(--primary-light); }
+.app.desktop .sec-table tbody tr.sec-row-active > td:first-child { box-shadow: inset 3px 0 0 var(--primary); }
+.app.desktop .sec-table tbody tr.sec-row-active .ativo-code { color: var(--primary); font-weight: 700; }
+
 /* Layout: tabela a' esquerda (dominante, rola), grafico estreito a' direita, com
    respiro confortavel entre os dois. O grafico NAO e' mais sticky: fica ao lado
    com o topo sempre alinhado ao topo da tabela (pedido do usuario -- o sticky
@@ -2211,6 +2219,9 @@ a { color: var(--primary); }
   border-radius: 12px;
   padding: var(--sp-3) var(--sp-4);
 }
+.sec-card-click { cursor: pointer; transition: border-color .15s, background .15s; }
+.sec-card-active { border-color: var(--primary); background: var(--primary-light); }
+.sec-card-active .ativo-code { color: var(--primary); }
 .sec-card-top { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
 .sec-card-ativo { min-width: 0; overflow: hidden; }
 .sec-card-ativo .ativo-code { font-weight: 600; font-size: var(--fz-titulo); }
@@ -2231,6 +2242,8 @@ a { color: var(--primary); }
   color: var(--primary); font-size: var(--fz-corpo); font-weight: 600; cursor: pointer;
 }
 .sec-cards-toggle:active { background: var(--primary-light); }
+.sec-cap-nota { font-size: var(--fz-corpo); color: var(--text-muted); text-align: center; margin: 8px 0 0; }
+.app.desktop .sec-split-table .sec-cards-toggle { margin: 10px 0 0; }
 
 /* ── Compacto: filtros do secundario numa unica linha que rola horizontal ─────
    Empilhados (label em cima + campo) eles comiam ~234px de altura. Aqui viram

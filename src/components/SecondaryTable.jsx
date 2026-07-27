@@ -39,6 +39,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
   const [ativo, setAtivo] = useState('')
   const [faixa, setFaixa] = useState('')
   const [lei, setLei] = useState('')   // '' todos · 'sim' 12.431 · 'nao' tradicional
+  const [selAtivo, setSelAtivo] = useState('')   // ativo clicado -> foca o grafico (master-detail)
   const [sort, setSort] = useState({ col: 'data', dir: 'desc' })  // pregao mais recente primeiro
   const [verTudo, setVerTudo] = useState(false)  // compacto: abre no ultimo pregao; expande p/ o historico
 
@@ -82,16 +83,24 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
     })
   }, [trades, busca, grupo, emissor, ativo, faixa, lei, sort])
 
-  // Grafico dirigido pelo FILTRO: serie de taxa do conjunto filtrado -- media
-  // por pregao quando ha' varios ativos (grupo/emissor). Sem foco -> aviso.
-  const temFoco = !!(grupo || emissor || ativo || busca.trim())
-  const focoLabel = ativo || emissor || grupo || (busca.trim() ? `"${busca.trim()}"` : '')
-  const nAtivosFiltro = useMemo(() => new Set(filtrados.map(f => f.codigoAtivo)).size, [filtrados])
+  // Grafico: CLICAR num ativo na tabela/card (selAtivo) foca o grafico no
+  // historico completo daquele papel; na falta, cai no conjunto FILTRADO
+  // (grupo/emissor/ativo/busca). Sem nada -> aviso.
+  const temFoco = !!(selAtivo || grupo || emissor || ativo || busca.trim())
+  const focoLabel = selAtivo || ativo || emissor || grupo || (busca.trim() ? `"${busca.trim()}"` : '')
+  // Linhas que alimentam o grafico: o ativo clicado (todos os pregoes dele) tem
+  // prioridade; senao, o conjunto filtrado da tabela.
+  const chartRows = useMemo(() => {
+    if (selAtivo) return trades.filter(t => t.codigoAtivo === selAtivo)
+    if (grupo || emissor || ativo || busca.trim()) return filtrados
+    return null
+  }, [selAtivo, trades, filtrados, grupo, emissor, ativo, busca])
+  const nAtivosFiltro = useMemo(() => chartRows ? new Set(chartRows.map(f => f.codigoAtivo)).size : 0, [chartRows])
   const serieGrafico = useMemo(() => {
-    if (!temFoco || !filtrados.length) return null
+    if (!chartRows || !chartRows.length) return null
     const avg = xs => xs.length ? xs.reduce((s, x) => s + x, 0) / xs.length : null
     const porData = new Map()
-    for (const t of filtrados) {
+    for (const t of chartRows) {
       if (!porData.has(t.data)) porData.set(t.data, [])
       porData.get(t.data).push(t)
     }
@@ -102,7 +111,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
     // a familia com mais ativos no foco. Foco de um ativo so' -> sempre homogeneo.
     const famDe = r => r.spreadRef ? (r.spreadRef.tipo === 'IPCA' ? 'bps' : 'pct') : null
     const ativosBps = new Set(), ativosPct = new Set()
-    for (const t of filtrados) {
+    for (const t of chartRows) {
       const f = famDe(t)
       if (f === 'bps') ativosBps.add(t.codigoAtivo)
       else if (f === 'pct') ativosPct.add(t.codigoAtivo)
@@ -127,7 +136,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
       if (pontos.length) {
         let refLabel = 'NTN-B'
         if (fam === 'pct') {
-          const tipos = new Set(filtrados.filter(r => famDe(r) === 'pct').map(r => r.spreadRef.tipo))
+          const tipos = new Set(chartRows.filter(r => famDe(r) === 'pct').map(r => r.spreadRef.tipo))
           refLabel = (tipos.has('DI+') || tipos.has('%DI')) ? 'CDI' : 'DI'
         }
         return { pontos, modo: 'spread', unidade: fam, refLabel }
@@ -143,15 +152,25 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
       n: new Set(rows.map(r => r.codigoAtivo)).size,
     })).sort((a, b) => a.data.localeCompare(b.data))
     return { pontos, modo: 'taxa' }
-  }, [filtrados, temFoco])
-  const limpar = () => { setBusca(''); setGrupo(''); setEmissor(''); setAtivo(''); setFaixa(''); setLei('') }
+  }, [chartRows])
+  // Clicar num ativo foca o grafico (toggle: clicar de novo solta). Independe dos
+  // filtros da tabela (master-detail).
+  const onClickAtivo = cod => setSelAtivo(s => (s === cod ? '' : cod))
+  const limpar = () => { setBusca(''); setGrupo(''); setEmissor(''); setAtivo(''); setFaixa(''); setLei(''); setSelAtivo('') }
   const temFiltro = busca || grupo || emissor || ativo || faixa || lei
 
   // Compacto: por padrao mostra so' o ultimo pregao (perf -- evita renderizar todo
   // o historico em cards). Com filtro ou "ver tudo", mostra todos os filtrados.
-  const soUltimoPregao = !desktop && !temFiltro && !verTudo
-  const cardsList = soUltimoPregao ? filtrados.filter(t => t.data === dataRecente) : filtrados
-  const escondidos = filtrados.length - cardsList.length
+  // A tabela abre no pregao MAIS RECENTE (desktop E compacto). Com 40 dias de
+  // historico, renderizar tudo (15k+ linhas) travava o desktop; o historico por
+  // ATIVO vive no GRAFICO (clique). Filtro / "ver historico" expandem, sempre com
+  // um TETO de render p/ nunca travar.
+  const MAX_LINHAS = 1500
+  const soUltimoPregao = !temFiltro && !verTudo
+  const baseLinhas = soUltimoPregao ? filtrados.filter(t => t.data === dataRecente) : filtrados
+  const linhasVisiveis = baseLinhas.length > MAX_LINHAS ? baseLinhas.slice(0, MAX_LINHAS) : baseLinhas
+  const escondidos = filtrados.length - baseLinhas.length
+  const capExcedido = baseLinhas.length - linhasVisiveis.length
 
   if (!trades.length) {
     return (
@@ -225,7 +244,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
               ))}
             </div>
           </div>
-          {temFiltro && (
+          {(temFiltro || selAtivo) && (
             <div className="fluxo-field">
               <span className="fluxo-field-label">&nbsp;</span>
               <button type="button" className="btn btn-limpar" onClick={limpar}>Limpar</button>
@@ -272,8 +291,11 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
             {filtrados.length === 0 && (
               <tr><td colSpan={12} className="col-sticky">Nenhum negócio com esses filtros.</td></tr>
             )}
-            {filtrados.map((a, i) => (
-              <tr key={`${a.codigoAtivo}|${a.data}|${i}`}>
+            {linhasVisiveis.map((a, i) => (
+              <tr key={`${a.codigoAtivo}|${a.data}|${i}`}
+                className={`sec-row-click${selAtivo === a.codigoAtivo ? ' sec-row-active' : ''}`}
+                onClick={() => onClickAtivo(a.codigoAtivo)}
+                title={`Ver a evolução de ${a.codigoAtivo} no gráfico`}>
                 <td className="col-sticky col-num col-data">{fmtDateDDMMYY(a.data)}</td>
                 <td className="col-ativo">
                   <div className="ativo-cell">
@@ -307,6 +329,16 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
           </tbody>
         </table>
         </TableWrap>
+        {!temFiltro && (verTudo || escondidos > 0) && (
+          <button type="button" className="sec-cards-toggle" onClick={() => setVerTudo(v => !v)}>
+            {verTudo
+              ? `Mostrar só o pregão de ${fmtDateDDMMYY(dataRecente)}`
+              : `Pregão de ${fmtDateDDMMYY(dataRecente)} · clique num ativo p/ ver o histórico no gráfico — ou ver todos os pregões (+${escondidos.toLocaleString('pt-BR')})`}
+          </button>
+        )}
+        {capExcedido > 0 && (
+          <p className="sec-cap-nota">Mostrando {MAX_LINHAS.toLocaleString('pt-BR')} de {baseLinhas.length.toLocaleString('pt-BR')} negócios — refine os filtros p/ ver o resto.</p>
+        )}
        </div>
 
        <aside className="sec-split-chart">
@@ -338,14 +370,19 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
               : `Ver histórico completo · +${escondidos.toLocaleString('pt-BR')} negócios`}
           </button>
         )}
+        {capExcedido > 0 && (
+          <p className="sec-cap-nota">Mostrando {MAX_LINHAS.toLocaleString('pt-BR')} de {baseLinhas.length.toLocaleString('pt-BR')} — refine os filtros.</p>
+        )}
         <div className="sec-cards">
-          {cardsList.length === 0 && (
+          {linhasVisiveis.length === 0 && (
             <div className="sec-card sec-card-empty">Nenhum negócio com esses filtros.</div>
           )}
-          {cardsList.map((a, i) => {
+          {linhasVisiveis.map((a, i) => {
             const emi = a.grupo ? shortEmissor(a.emissorNome, a.grupo) : ''
             return (
-              <div key={`${a.codigoAtivo}|${a.data}|${i}`} className="sec-card">
+              <div key={`${a.codigoAtivo}|${a.data}|${i}`}
+                className={`sec-card sec-card-click${selAtivo === a.codigoAtivo ? ' sec-card-active' : ''}`}
+                onClick={() => onClickAtivo(a.codigoAtivo)}>
                 <div className="sec-card-top">
                   <div className="sec-card-ativo">
                     <span className="ativo-code">{a.codigoAtivo || '-'}</span>
