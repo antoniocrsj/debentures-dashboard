@@ -90,10 +90,12 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
   // Linhas que alimentam o grafico: o ativo clicado (todos os pregoes dele) tem
   // prioridade; senao, o conjunto filtrado da tabela.
   const chartRows = useMemo(() => {
-    if (selAtivo) return trades.filter(t => t.codigoAtivo === selAtivo)
+    // Ativo focado: seu historico completo, mas RESPEITANDO o filtro de Volume
+    // (o >5MM tem que valer tambem no grafico).
+    if (selAtivo) return trades.filter(t => t.codigoAtivo === selAtivo && (!faixa || t.faixaVolume === faixa))
     if (grupo || emissor || ativo || busca.trim()) return filtrados
     return null
-  }, [selAtivo, trades, filtrados, grupo, emissor, ativo, busca])
+  }, [selAtivo, trades, filtrados, grupo, emissor, ativo, busca, faixa])
   const nAtivosFiltro = useMemo(() => chartRows ? new Set(chartRows.map(f => f.codigoAtivo)).size : 0, [chartRows])
   const serieGrafico = useMemo(() => {
     if (!chartRows || !chartRows.length) return null
