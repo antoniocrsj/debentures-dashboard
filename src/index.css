@@ -2260,9 +2260,7 @@ a { color: var(--primary); }
 /* Tabela dos ativos do grupo (abaixo do grafico): MESMO padrao da tabela da
    esquerda (asset-table sec-table) -- fonte, alturas, cabecalho, hover e realce
    ja' vem de la'. So' reusa o card .table-wrap sem a margem, com altura propria. */
-.sec-grupo-ativos { margin-top: 12px; }
-.sec-grupo-ativos-tit { font-size: var(--fz-corpo); font-weight: 600; color: var(--primary); margin: 0 0 6px; }
-.sec-grupo-ativos-sub { font-weight: 400; color: var(--text-muted); }
+.sec-grupo-ativos { margin-top: 8px; }
 .app.desktop .sec-grupo-ativos .table-wrap { margin: 0; max-height: 300px; }
 .app.desktop .sec-split-table .sec-cards-toggle { margin: 10px 0 0; }
 

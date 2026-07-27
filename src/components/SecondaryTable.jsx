@@ -205,9 +205,6 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
   // o grafico (seta o filtro 'ativo'); clicar de novo solta.
   const grupoTabela = grupoAtivos && grupoAtivos.length > 0 && (
     <div className="sec-grupo-ativos">
-      <p className="sec-grupo-ativos-tit">
-        {grupo} <span className="sec-grupo-ativos-sub">· {grupoAtivos.length} ativos · por liquidez (40d)</span>
-      </p>
       <div className="table-wrap sec-grupo-wrap">
         <table className="asset-table sec-table sec-grupo-table">
           <thead>
