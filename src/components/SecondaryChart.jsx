@@ -64,6 +64,29 @@ export default function SecondaryChart({ serie, titulo, nAtivos, modo = 'taxa', 
     : (v => v.toLocaleString('pt-BR', { maximumFractionDigits: 1 }))
   const refTxt = spread ? `spread s/ ${refLabel}${unidade === 'bps' ? ' (bps)' : ''}` : null
 
+  // Eixo Y (modo spread): TRAVA uma janela de +/-70 bps (140 no total) centrada
+  // nos dados, p/ a escala nao variar entre ativos. Se a amplitude passar de 140,
+  // expande p/ nao cortar. CDI (spread nao-negativo) trava o piso em 0; IPCA/
+  // NTN-B pode ir a negativo (NTN-B-). bps -> +/-70; CDI (%) -> +/-0,70.
+  let yDomain = ['auto', 'auto']
+  if (spread) {
+    const vals = []
+    for (const p of serie) {
+      if (p[kMin] != null) vals.push(p[kMin])
+      if (p[kMax] != null) vals.push(p[kMax])
+      if (p[kMed] != null) vals.push(p[kMed])
+    }
+    if (vals.length) {
+      const HALF = unidade === 'bps' ? 70 : 0.70
+      const lo0 = Math.min(...vals), hi0 = Math.max(...vals)
+      const centro = (lo0 + hi0) / 2
+      let lo = Math.min(centro - HALF, lo0)
+      const hi = Math.max(centro + HALF, hi0)
+      if (unidade !== 'bps') lo = Math.max(0, lo)   // CDI/DI: nao existe spread negativo
+      yDomain = [lo, hi]
+    }
+  }
+
   return (
     <div className="grafico-card sec-chart-card">
       <p className="tecnico-chart-label">
@@ -79,7 +102,7 @@ export default function SecondaryChart({ serie, titulo, nAtivos, modo = 'taxa', 
             <XAxis dataKey="data" tickFormatter={dataCurta} tick={{ fontSize: FZ, fill: COL_EIXO }}
                    tickMargin={4} axisLine={false} tickLine={false} interval="preserveStartEnd" minTickGap={16} />
             <YAxis tick={{ fontSize: FZ, fill: COL_EIXO, textAnchor: 'start' }} dx={-26} width={36}
-                   domain={['auto', 'auto']} axisLine={false} tickLine={false} tickFormatter={yFmt} />
+                   domain={yDomain} allowDataOverflow axisLine={false} tickLine={false} tickFormatter={yFmt} />
             <Tooltip content={<ChartTooltip modo={modo} unidade={unidade} refLabel={refLabel} />} cursor={{ stroke: COL_RANGE, strokeDasharray: '3 3' }} />
             <Line type="monotone" dataKey={kMax} stroke={COL_RANGE} strokeWidth={1} strokeDasharray="4 3" dot={false} isAnimationActive={false} />
             <Line type="monotone" dataKey={kMed} stroke={COL_MED} strokeWidth={2} dot={{ r: 2.5, fill: COL_MED }} isAnimationActive={false} />
