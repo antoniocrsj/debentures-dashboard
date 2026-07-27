@@ -373,13 +373,6 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
           </tbody>
         </table>
         </TableWrap>
-        {!temFiltro && (verTudo || escondidos > 0) && (
-          <button type="button" className="sec-cards-toggle" onClick={() => setVerTudo(v => !v)}>
-            {verTudo
-              ? `Mostrar só o pregão de ${fmtDateDDMMYY(dataRecente)}`
-              : `Pregão de ${fmtDateDDMMYY(dataRecente)} · clique num ativo p/ ver o histórico no gráfico — ou ver todos os pregões (+${escondidos.toLocaleString('pt-BR')})`}
-          </button>
-        )}
         {capExcedido > 0 && (
           <p className="sec-cap-nota">Mostrando {MAX_LINHAS.toLocaleString('pt-BR')} de {baseLinhas.length.toLocaleString('pt-BR')} negócios — refine os filtros p/ ver o resto.</p>
         )}
