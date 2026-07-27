@@ -77,11 +77,15 @@ export default function SecondaryChart({ serie, titulo, nAtivos, modo = 'taxa', 
       if (p[kMed] != null) vals.push(p[kMed])
     }
     if (vals.length) {
-      const HALF = unidade === 'bps' ? 70 : 0.70
+      const HALF = unidade === 'bps' ? 70 : 0.70   // meia-janela base: +/-70 bps
+      const PAD = unidade === 'bps' ? 20 : 0.20     // folga do dado ao eixo qdo expande
       const lo0 = Math.min(...vals), hi0 = Math.max(...vals)
       const centro = (lo0 + hi0) / 2
-      let lo = Math.min(centro - HALF, lo0)
-      const hi = Math.max(centro + HALF, hi0)
+      // Janela base +/-70. Se o dado extrapola (volatilidade > 140), expande DO
+      // lado que estoura deixando PAD (20 bps) de folga -- o extremo nunca cola
+      // no eixo/teto.
+      let lo = lo0 < centro - HALF ? lo0 - PAD : centro - HALF
+      const hi = hi0 > centro + HALF ? hi0 + PAD : centro + HALF
       if (unidade !== 'bps') lo = Math.max(0, lo)   // CDI/DI: nao existe spread negativo
       yDomain = [lo, hi]
     }
