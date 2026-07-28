@@ -2306,8 +2306,23 @@ a { color: var(--primary); }
    esquerda (asset-table sec-table) -- fonte, alturas, cabecalho, hover e realce
    ja' vem de la'. So' reusa o card .table-wrap sem a margem, com altura propria. */
 .sec-grupo-ativos { margin-top: 8px; }
-.app.desktop .sec-grupo-ativos .table-wrap { margin: 0; max-height: 300px; }
 .app.desktop .sec-split-table .sec-cards-toggle { margin: 10px 0 0; }
+
+/* ═══ Secundario desktop: as DUAS tabelas (esquerda + grupo) descem ate' 20px do
+   fim da pagina, alinhadas. sec-page vira coluna flex do tamanho da viewport
+   (menos o carvao, 97px); o split preenche o resto e cada tabela rola por dentro. */
+.app.desktop .content:has(.sec-page) { padding-bottom: 0; }   /* mata o scroll residual (24px) */
+.app.desktop .sec-page {
+  height: calc(100vh - 97px); box-sizing: border-box;
+  display: flex; flex-direction: column; padding-bottom: 20px; overflow: hidden;
+}
+.app.desktop .sec-split { flex: 1 1 auto; min-height: 0; align-items: stretch; }
+.app.desktop .sec-split-table { display: flex; flex-direction: column; min-height: 0; }
+.app.desktop .sec-split-table > .table-wrap-x { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+.app.desktop .sec-split-table > .table-wrap-x > .table-wrap { flex: 1 1 auto; min-height: 0; max-height: none; overflow: auto; }
+.app.desktop .sec-split-chart { display: flex; flex-direction: column; min-height: 0; }
+.app.desktop .sec-grupo-ativos { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+.app.desktop .sec-grupo-ativos .table-wrap { margin: 0; flex: 1 1 auto; min-height: 0; max-height: none; overflow: auto; }
 
 /* ── Compacto: filtros do secundario numa unica linha que rola horizontal ─────
    Empilhados (label em cima + campo) eles comiam ~234px de altura. Aqui viram
