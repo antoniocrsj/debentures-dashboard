@@ -2187,6 +2187,17 @@ a { color: var(--primary); }
 .app.desktop .fluxo-filters-row { flex-wrap: wrap; align-items: flex-start; gap: 10px; }
 .app.desktop .sec-page { padding-top: 20px; }                          /* item 5: 20px do carvao */
 /* item 7: icones do topo carvao sobem 5px -> feito em .tabs-inline .tab-btn (padding-bottom) */
+
+/* "Atualizado em" no canto inferior direito do carvao (a .sticky-area e' sticky =
+   containing block dos filhos absolutos; nao mexer na position dela). */
+.sticky-updated {
+  position: absolute; right: var(--sp-4); bottom: 4px; margin: 0;
+  font-size: var(--fz-micro); color: rgba(255, 255, 255, .55); white-space: nowrap; z-index: 2;
+}
+/* Debentures desktop: sem a linha "Atualizado em" no corpo, a tabela sobe p/
+   10px abaixo dos filtros (padding do filtro 10 + margin da tabela 0). */
+.app.desktop .content .filter-bar { padding-bottom: 10px; }
+.app.desktop .content .filter-bar + .table-wrap-x > .table-wrap { margin-top: 0; }
 /* Volume vira sweep (‹ valor ›): rotulo com folga p/ "1–5MM"/"Até 1MM". */
 .corte-step-vol .corte-step-val { min-width: 66px; }
 

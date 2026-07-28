@@ -425,6 +425,11 @@ export default function App() {
             compacto, são as sub-abas da seção Debêntures. */}
         {(desktop || section === 'debentures') && tabsNav}
 
+        {/* "Atualizado em" no canto inferior direito do carvao (desktop, Debentures). */}
+        {desktop && section === 'debentures' && dataFreshness?.label && (
+          <p className="sticky-updated" title={dataFreshness.tooltip}>Atualizado em {dataFreshness.label}</p>
+        )}
+
         {/* Corte de %Deb: so' nas abas com universo de fundos p/ cortar.
             Debentures e' visao do ATIVO (emissor/serie/vencimento) -- nao ha'
             fundo p/ filtrar la', entao o seletor nem aparece. */}
@@ -467,8 +472,6 @@ export default function App() {
             disabled={loading}
             onChange={setFilters}
             tabsSlot={null}
-            updatedLabel={dataFreshness?.label}
-            updatedTooltip={dataFreshness?.tooltip}
             compact={false}
           />
         )}
