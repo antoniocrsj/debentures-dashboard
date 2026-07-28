@@ -95,35 +95,35 @@
         "captacao": 98330318.14,
         "resgate": 353811013.5500001,
         "liquido": -255480695.4100001,
-        "pl": 264229698764.31,
-        "numFundos": 1695,
+        "pl": 264229925962.63,
+        "numFundos": 1698,
         "curados": 1720,
-        "fechados": 287,
+        "fechados": 286,
         "anterior": {
           "dia": "2026-07-17",
           "captacao": 98623704.63000001,
           "resgate": 304546630.65000004,
           "liquido": -205922926.02000004,
-          "pl": 262817513632.92987,
+          "pl": 262817717602.2699,
           "numFundos": 1691
         }
       },
       "trad": {
         "dia": "2026-07-20",
-        "captacao": 2045515470.4099998,
-        "resgate": 5074090157.6900015,
-        "liquido": -3028574687.2800016,
-        "pl": 1586246332072.54,
-        "numFundos": 999,
+        "captacao": 2045120511.4099998,
+        "resgate": 5075212236.820002,
+        "liquido": -3030091725.4100018,
+        "pl": 1586279250749.8503,
+        "numFundos": 1001,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
           "dia": "2026-07-17",
-          "captacao": 2792521103.06,
-          "resgate": 2397217652.23,
-          "liquido": 395303450.8299999,
-          "pl": 1583699981931.86,
-          "numFundos": 994
+          "captacao": 2793632034.9,
+          "resgate": 2398587910.4,
+          "liquido": 395044124.5,
+          "pl": 1587504929832.8801,
+          "numFundos": 996
         }
       }
     },
@@ -871,7 +871,7 @@
               "ticker": "JSMLA5",
               "indexador": "DI + 3.5000%",
               "indexadorFamilia": "CDI+",
-              "emissor": "JSL S.A",
+              "emissor": "SIMPAR S.A.",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "CDI",
@@ -1107,7 +1107,7 @@
               "ticker": "JSMLB5",
               "indexador": "IPCA + 7.9677%",
               "indexadorFamilia": "IPCA+",
-              "emissor": "JSL S.A",
+              "emissor": "SIMPAR S.A.",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "B30",
@@ -1713,7 +1713,7 @@
           },
           {
             "ticker": "JSMLA5",
-            "emissor": "JSL S.A",
+            "emissor": "SIMPAR S.A.",
             "grupo": "Simpar",
             "incentivada": false,
             "indexadorFamilia": "CDI+",
@@ -1850,7 +1850,7 @@
           "nome": "SAFRA INFRA EXCLUSIVO PRÉ RF FIF INVESTIMENTO EM INFRA CI EM INFRAESTRUTURA EM RF RESP LIMITADA",
           "gestor": "Safra Asset",
           "segmento": "12431",
-          "retorno": 2.78,
+          "retorno": 12.7258,
           "pl": 9250355.17
         },
         {

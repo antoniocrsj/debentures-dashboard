@@ -59,38 +59,38 @@
     "captacao": {
       "12431": {
         "dia": "2026-07-21",
-        "captacao": 157957720.88999996,
+        "captacao": 158269311.65999997,
         "resgate": 201903579.07000002,
-        "liquido": -43945858.18000007,
-        "pl": 264924716834.6,
-        "numFundos": 1694,
+        "liquido": -43634267.410000056,
+        "pl": 264925266886.21002,
+        "numFundos": 1697,
         "curados": 1720,
-        "fechados": 287,
+        "fechados": 286,
         "anterior": {
           "dia": "2026-07-20",
           "captacao": 98330318.14,
           "resgate": 353811013.5500001,
           "liquido": -255480695.4100001,
-          "pl": 264229698764.31,
-          "numFundos": 1695
+          "pl": 264229925962.63,
+          "numFundos": 1698
         }
       },
       "trad": {
         "dia": "2026-07-21",
-        "captacao": 2891413262.8399997,
-        "resgate": 1651135282.1799996,
-        "liquido": 1240277980.66,
-        "pl": 1586488753634.1907,
-        "numFundos": 998,
+        "captacao": 2891018303.8399997,
+        "resgate": 1653247068.6899998,
+        "liquido": 1237771235.1499999,
+        "pl": 1587025350146.5608,
+        "numFundos": 999,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
           "dia": "2026-07-20",
-          "captacao": 2045515470.4099998,
-          "resgate": 5074090157.6900015,
-          "liquido": -3028574687.2800016,
-          "pl": 1586246332072.54,
-          "numFundos": 999
+          "captacao": 2045120511.4099998,
+          "resgate": 5075212236.820002,
+          "liquido": -3030091725.4100018,
+          "pl": 1586279250749.8503,
+          "numFundos": 1001
         }
       }
     },
@@ -152,7 +152,7 @@
           "captacao": 19673504.12,
           "resgate": 31741853.53,
           "liquido": -12068349.41,
-          "pl": 28417683656.35
+          "pl": 28417944099.48
         },
         {
           "gestor": "SAM",
@@ -240,7 +240,7 @@
           "captacao": 24539609.4,
           "resgate": 33155125.34,
           "liquido": -8615515.940000001,
-          "pl": 22700363495.02
+          "pl": 22700208449.09
         }
       ]
     },
@@ -928,7 +928,7 @@
               "ticker": "JSMLA5",
               "indexador": "DI + 3.5000%",
               "indexadorFamilia": "CDI+",
-              "emissor": "JSL S.A",
+              "emissor": "SIMPAR S.A.",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "CDI",
@@ -1656,7 +1656,7 @@
           },
           {
             "ticker": "JSMLA5",
-            "emissor": "JSL S.A",
+            "emissor": "SIMPAR S.A.",
             "grupo": "Simpar",
             "incentivada": false,
             "indexadorFamilia": "CDI+",
@@ -1871,14 +1871,6 @@
       ],
       "top12431Neg": [
         {
-          "cnpj": "61141536000111",
-          "nome": "BB MASTER RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
-          "gestor": "BB Asset",
-          "segmento": "12431",
-          "retorno": -25.3034,
-          "pl": 576491912.11
-        },
-        {
           "cnpj": "55344166000117",
           "nome": "RIO BRAVO ESG IS MASTER III  FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
           "gestor": "Rio Bravo",
@@ -1909,6 +1901,14 @@
           "segmento": "12431",
           "retorno": -0.6993,
           "pl": 46690906.64
+        },
+        {
+          "cnpj": "63385783000199",
+          "nome": "CLOSED FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "gestor": "BTG WM",
+          "segmento": "12431",
+          "retorno": -0.5559,
+          "pl": 50900931.4
         }
       ],
       "topTradPos": [
@@ -1963,14 +1963,6 @@
           "pl": 39322742.24
         },
         {
-          "cnpj": "64436974000103",
-          "nome": "BB MASTER III RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
-          "gestor": "BB Asset",
-          "segmento": "trad",
-          "retorno": -5.6023,
-          "pl": 1048598916.65
-        },
-        {
           "cnpj": "19770499000144",
           "nome": "EXPLORITAS ALPHA AMERICA LATINA MASTER FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
           "gestor": "Exploritas",
@@ -1993,6 +1985,14 @@
           "segmento": "trad",
           "retorno": -2.0042,
           "pl": 70358440.19
+        },
+        {
+          "cnpj": "57030535000122",
+          "nome": "G5 FEJUCA III FUNDO DE INVESTIMENTO MULTIMERCADO",
+          "gestor": "G5",
+          "segmento": "trad",
+          "retorno": -1.2234,
+          "pl": 87033356.08
         }
       ]
     },

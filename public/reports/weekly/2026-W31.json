@@ -1,0 +1,266 @@
+{
+  "periodo": "weekly",
+  "id": "2026-W31",
+  "label": "Semana 31/2026 · Parcial até 27/07",
+  "status": "partial",
+  "de": "2026-07-27",
+  "ate": "2026-07-27",
+  "sourceDates": {
+    "cap12431": "2026-07-27",
+    "capTrad": null,
+    "anbima": "2026-07-27",
+    "fundos": "2026-07-27",
+    "blc": "2026-07-27",
+    "ida": "2026-07-23",
+    "perf12431": null,
+    "perfTrad": null
+  },
+  "sections": {
+    "debentures": {
+      "novas": []
+    },
+    "captacao": {
+      "12431": {
+        "captacao": 0,
+        "resgate": 0,
+        "liquido": 0,
+        "pl": 0,
+        "numFundos": 3,
+        "dataPl": "2026-07-27",
+        "de": "2026-07-27",
+        "ate": "2026-07-27",
+        "diasUteis": 1,
+        "anterior": {
+          "liquido": -664877056.6600004,
+          "captacao": 553183236.1999999,
+          "resgate": 1218060292.8600004,
+          "de": "2026-07-20",
+          "ate": "2026-07-24"
+        }
+      },
+      "trad": {
+        "captacao": 0,
+        "resgate": 0,
+        "liquido": 0,
+        "pl": 0,
+        "numFundos": 0,
+        "dataPl": null,
+        "de": null,
+        "ate": null,
+        "diasUteis": 0,
+        "anterior": {
+          "liquido": -1757851232.950014,
+          "captacao": 11867263356.549988,
+          "resgate": 13625114589.500002,
+          "de": "2026-07-20",
+          "ate": "2026-07-24"
+        }
+      }
+    },
+    "gestores": {
+      "top12431Captacao": [],
+      "top12431Resgate": [],
+      "topTradCaptacao": [],
+      "topTradResgate": []
+    },
+    "anbima": {
+      "semAnterior": false,
+      "porMercado": {
+        "12431": {
+          "aberturas": [
+            {
+              "ticker": "TEPA11",
+              "emissor": "BRASIL TECNOLOGIA E PARTICIPACAO S.A.",
+              "grupo": "Brasil Tecnologia e Participacao",
+              "indexadorFamilia": "IPCA/NTN-B",
+              "spreadAnteriorBps": 856,
+              "spreadAtualBps": 887,
+              "variacaoBps": 31,
+              "spreadAtual": "887 bps",
+              "durationAnos": 1.76
+            },
+            {
+              "ticker": "CSNAA5",
+              "emissor": "COMPANHIA SIDERURGICA NACIONAL",
+              "grupo": "CSN",
+              "indexadorFamilia": "IPCA/NTN-B",
+              "spreadAnteriorBps": 1142,
+              "spreadAtualBps": 1170,
+              "variacaoBps": 28,
+              "spreadAtual": "1170 bps",
+              "durationAnos": 4.72
+            },
+            {
+              "ticker": "MVLV26",
+              "emissor": "MOVIDA PARTICIPACOES S/A",
+              "grupo": "Simpar",
+              "indexadorFamilia": "IPCA/NTN-B",
+              "spreadAnteriorBps": 658,
+              "spreadAtualBps": 678,
+              "variacaoBps": 20,
+              "spreadAtual": "678 bps",
+              "durationAnos": 1.77
+            },
+            {
+              "ticker": "RSAN34",
+              "emissor": "COMPANHIA RIOGRANDENSE DE SANEAMENTO - CORSAN",
+              "grupo": "Aegea",
+              "indexadorFamilia": "IPCA/NTN-B",
+              "spreadAnteriorBps": 118,
+              "spreadAtualBps": 137,
+              "variacaoBps": 19,
+              "spreadAtual": "137 bps",
+              "durationAnos": 1
+            },
+            {
+              "ticker": "PLSB1A",
+              "emissor": "AUTOPISTA LITORAL SUL S/A.",
+              "grupo": "Arteris",
+              "indexadorFamilia": "IPCA/NTN-B",
+              "spreadAnteriorBps": 122,
+              "spreadAtualBps": 135,
+              "variacaoBps": 13,
+              "spreadAtual": "135 bps",
+              "durationAnos": 2.82
+            }
+          ],
+          "fechamentos": [
+            {
+              "ticker": "CSNAB6",
+              "emissor": "COMPANHIA SIDERURGICA NACIONAL",
+              "grupo": "CSN",
+              "indexadorFamilia": "IPCA/NTN-B",
+              "spreadAnteriorBps": 1134,
+              "spreadAtualBps": 987,
+              "variacaoBps": -147,
+              "spreadAtual": "987 bps",
+              "durationAnos": 6.1
+            },
+            {
+              "ticker": "CSNAB5",
+              "emissor": "COMPANHIA SIDERURGICA NACIONAL",
+              "grupo": "CSN",
+              "indexadorFamilia": "IPCA/NTN-B",
+              "spreadAnteriorBps": 891,
+              "spreadAtualBps": 838,
+              "variacaoBps": -53,
+              "spreadAtual": "838 bps",
+              "durationAnos": 6.37
+            },
+            {
+              "ticker": "JSMLB5",
+              "emissor": "SIMPAR S.A.",
+              "grupo": "Simpar",
+              "indexadorFamilia": "IPCA/NTN-B",
+              "spreadAnteriorBps": 577,
+              "spreadAtualBps": 539,
+              "variacaoBps": -38,
+              "spreadAtual": "539 bps",
+              "durationAnos": 3.37
+            },
+            {
+              "ticker": "SUMI18",
+              "emissor": "GIGA MAIS FIBRA TELECOMUNICACOES S.A.",
+              "grupo": "Giga+",
+              "indexadorFamilia": "IPCA/NTN-B",
+              "spreadAnteriorBps": 636,
+              "spreadAtualBps": 617,
+              "variacaoBps": -19,
+              "spreadAtual": "617 bps",
+              "durationAnos": 3.75
+            },
+            {
+              "ticker": "RSAN26",
+              "emissor": "COMPANHIA RIOGRANDENSE DE SANEAMENTO - CORSAN",
+              "grupo": "Aegea",
+              "indexadorFamilia": "IPCA/NTN-B",
+              "spreadAnteriorBps": 166,
+              "spreadAtualBps": 151,
+              "variacaoBps": -15,
+              "spreadAtual": "151 bps",
+              "durationAnos": 7.61
+            }
+          ],
+          "totalAberturas": 238,
+          "totalFechamentos": 239,
+          "totalComparados": 621,
+          "variacaoMediaBps": 0,
+          "variacaoMedianaBps": 0
+        },
+        "trad": {
+          "aberturas": [],
+          "fechamentos": [],
+          "totalAberturas": 0,
+          "totalFechamentos": 0,
+          "totalComparados": 21,
+          "variacaoMediaBps": 0,
+          "variacaoMedianaBps": 0
+        }
+      },
+      "totalComparados": 642,
+      "dataIni": "2026-07-24",
+      "dataFim": "2026-07-27"
+    },
+    "ida": {
+      "12431": null,
+      "trad": null
+    },
+    "fundos": {
+      "semAnterior": false,
+      "novos": [],
+      "removidos": []
+    },
+    "perf": {
+      "top12431Pos": [],
+      "top12431Neg": [],
+      "topTradPos": [],
+      "topTradNeg": []
+    },
+    "inclusoes": {
+      "novosDebentures": [],
+      "novosBlc": [],
+      "saiuBlc": [],
+      "semAnterior": false
+    },
+    "alertas": [
+      {
+        "tipo": "parcial",
+        "texto": "Período em andamento — dados até 2026-07-27."
+      }
+    ],
+    "perfCobertura": {
+      "12431": {
+        "diasUteis": 0,
+        "excluidos": {
+          "insuficiente": 0,
+          "glitch": 0
+        },
+        "avaliados": 0,
+        "minCobertura": 0.6
+      },
+      "trad": {
+        "diasUteis": 0,
+        "excluidos": {
+          "insuficiente": 0,
+          "glitch": 0
+        },
+        "avaliados": 0,
+        "minCobertura": 0.6
+      }
+    }
+  },
+  "summary": [
+    {
+      "texto": "Spread ANBIMA 12.431 estável na semana (24/07→27/07): média +0.0 bps — 239 fechamentos, 238 aberturas e 144 sem mudança (621 papéis).",
+      "tom": ""
+    },
+    {
+      "texto": "Spread ANBIMA Tradicional estável na semana (24/07→27/07): média +0.0 bps — 0 fechamentos, 0 aberturas e 21 sem mudança (21 papéis).",
+      "tom": ""
+    },
+    {
+      "texto": "Captação líquida 12.431 na semana: R$ 0 (capt. R$ 0 − resg. R$ 0, 1 dia(s) útil(eis)).",
+      "tom": "pos"
+    }
+  ]
+}

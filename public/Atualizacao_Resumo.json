@@ -1,5 +1,5 @@
 {
-    "timestamp":  "2026-07-27T07:09:47",
+    "timestamp":  "2026-07-28T07:58:37",
     "captacaoModo":  "Auto",
     "etapas":  {
                    "Debentures":  "OK",
@@ -7,7 +7,7 @@
                    "Captacao":  "OK (incremental)",
                    "BLC":  "PULADO",
                    "ANBIMA":  "OK",
-                   "Ofertas":  "OK (0 emissao(oes) registrada(s) na CVM ainda nao no cadastro)",
+                   "Ofertas":  "OK (4 emissao(oes) registrada(s) na CVM ainda nao no cadastro)",
                    "Emissores":  "OK (Ana; 25 curadoria(s) manual(is))",
                    "RecompraBE":  "OK (ref 2026-07-17; em exercicio 272, futuro 667; 938 no cadastro, 1 nao encontrado(s), 18 incompleto(s))"
                },
@@ -40,20 +40,20 @@
                                                                "depois":  "2026-07-20"
                                                            },
                                           "LiquidoRecente":  {
-                                                                 "antes":  -297414988.40000004,
-                                                                 "depois":  -354192445.06999975
+                                                                 "antes":  -354192445.06999975,
+                                                                 "depois":  -532812029.56000006
                                                              },
                                           "CaptacaoRecente":  {
-                                                                  "antes":  256288039.03000003,
-                                                                  "depois":  405811484.62999994
+                                                                  "antes":  405811484.62999994,
+                                                                  "depois":  475775426.44999993
                                                               },
                                           "ResgateRecente":  {
-                                                                 "antes":  553703027.43000007,
-                                                                 "depois":  760003929.69999969
+                                                                 "antes":  760003929.69999969,
+                                                                 "depois":  1008587456.01
                                                              },
                                           "PLRecente":  {
-                                                            "antes":  264477228472.2901,
-                                                            "depois":  258379989876.57993
+                                                            "antes":  258379989876.57993,
+                                                            "depois":  259107895907.43005
                                                         }
                                       },
                     "captacaoTrad":  {
@@ -70,20 +70,20 @@
                                                               "depois":  "2026-07-20"
                                                           },
                                          "LiquidoRecente":  {
-                                                                "antes":  -1788675096.6999998,
-                                                                "depois":  -1700426663.8199987
+                                                                "antes":  -1700426663.8199987,
+                                                                "depois":  -805482828.59999847
                                                             },
                                          "CaptacaoRecente":  {
-                                                                 "antes":  4935284293.6500006,
-                                                                 "depois":  7245565404.79
+                                                                 "antes":  7245565404.79,
+                                                                 "depois":  9783808507.75
                                                              },
                                          "ResgateRecente":  {
-                                                                "antes":  6723959390.35,
-                                                                "depois":  8945992068.6099987
+                                                                "antes":  8945992068.6099987,
+                                                                "depois":  10589291336.349998
                                                             },
                                          "PLRecente":  {
-                                                           "antes":  1584360512915.4302,
-                                                           "depois":  1575595224143.12
+                                                           "antes":  1575595224143.12,
+                                                           "depois":  1579860717655.5398
                                                        }
                                      },
                     "debentures":  {
@@ -124,20 +124,51 @@
                             },
                     "anbima":  {
                                    "DataRef":  {
-                                                   "antes":  "2026-07-23",
-                                                   "depois":  "2026-07-24"
+                                                   "antes":  "2026-07-24",
+                                                   "depois":  "2026-07-27"
                                                },
                                    "Tickers":  {
-                                                   "antes":  1271,
+                                                   "antes":  1278,
                                                    "depois":  1278
                                                },
                                    "ComTaxa":  {
-                                                   "antes":  1218,
-                                                   "depois":  1219
+                                                   "antes":  1219,
+                                                   "depois":  1225
                                                }
                                }
                 },
     "novasEmissoes":  [
-
+                          {
+                              "dataRegistro":  "2026-07-27",
+                              "emissor":  "JBS SA",
+                              "emissao":  12,
+                              "valor":  400000000,
+                              "incentivada":  false,
+                              "lider":  "ITAU BBA ASSESSORIA FINANCEIRA S.A"
+                          },
+                          {
+                              "dataRegistro":  "2026-07-27",
+                              "emissor":  "AXIA ENERGIA S.A.",
+                              "emissao":  11,
+                              "valor":  500000000,
+                              "incentivada":  false,
+                              "lider":  "BTG PACTUAL INVESTMENT BANKING LTDA."
+                          },
+                          {
+                              "dataRegistro":  "2026-07-27",
+                              "emissor":  "FORTBRAS AUTOPECAS S.A.",
+                              "emissao":  8,
+                              "valor":  40000000,
+                              "incentivada":  false,
+                              "lider":  "BANCO BRADESCO BBI S.A."
+                          },
+                          {
+                              "dataRegistro":  "2026-07-27",
+                              "emissor":  "BTG PACTUAL COMMODITIES SERTRADING S.A.",
+                              "emissao":  2,
+                              "valor":  1400000000,
+                              "incentivada":  false,
+                              "lider":  "BTG PACTUAL INVESTMENT BANKING LTDA."
+                          }
                       ]
 }

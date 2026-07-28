@@ -1,7 +1,7 @@
 {
   "date": "2026-07-21",
   "label": "21/07/2026",
-  "previousDate": "2026-07-20",
+  "previousDate": null,
   "sourceDates": {
     "debentures": "2026-07-21",
     "cap12431": "2026-07-17",
@@ -109,34 +109,34 @@
         "captacao": 98623704.63000001,
         "resgate": 304546630.65000004,
         "liquido": -205922926.02000004,
-        "pl": 262817513632.92987,
+        "pl": 262817717602.2699,
         "numFundos": 1691,
         "curados": 1720,
-        "fechados": 287,
+        "fechados": 286,
         "anterior": {
           "dia": "2026-07-16",
           "captacao": 98025810.58,
           "resgate": 230148881.01000002,
           "liquido": -132123070.43000002,
-          "pl": 264192415050.0001,
+          "pl": 264192612719.0301,
           "numFundos": 1693
         }
       },
       "trad": {
         "dia": "2026-07-17",
-        "captacao": 2792521103.06,
-        "resgate": 2397217652.23,
-        "liquido": 395303450.8299999,
-        "pl": 1583699981931.86,
-        "numFundos": 994,
+        "captacao": 2793632034.9,
+        "resgate": 2398587910.4,
+        "liquido": 395044124.5,
+        "pl": 1587504929832.8801,
+        "numFundos": 996,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
           "dia": "2026-07-16",
-          "captacao": 2960710743.2099986,
-          "resgate": 1913558293.3100002,
-          "liquido": 1047152449.8999984,
-          "pl": 1585917455537.4905,
+          "captacao": 2960591468.4999986,
+          "resgate": 1914411813.6800003,
+          "liquido": 1046179654.8199983,
+          "pl": 1585915290900.5505,
           "numFundos": 997
         }
       }
@@ -213,7 +213,7 @@
           "captacao": 1159015.62,
           "resgate": 15351839.8,
           "liquido": -14192824.18,
-          "pl": 28411385723.73
+          "pl": 28411604190.02
         }
       ],
       "topTradCaptacao": [
@@ -939,7 +939,7 @@
               "ticker": "JSMLB5",
               "indexador": "IPCA + 7.9677%",
               "indexadorFamilia": "IPCA+",
-              "emissor": "JSL S.A",
+              "emissor": "SIMPAR S.A.",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "B30",
@@ -1029,7 +1029,7 @@
               "ticker": "JSMLA5",
               "indexador": "DI + 3.5000%",
               "indexadorFamilia": "CDI+",
-              "emissor": "JSL S.A",
+              "emissor": "SIMPAR S.A.",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "CDI",
@@ -1883,7 +1883,7 @@
           },
           {
             "ticker": "JSMLA5",
-            "emissor": "JSL S.A",
+            "emissor": "SIMPAR S.A.",
             "grupo": "Simpar",
             "incentivada": false,
             "indexadorFamilia": "CDI+",

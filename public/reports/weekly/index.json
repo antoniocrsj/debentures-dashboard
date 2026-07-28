@@ -1,6 +1,25 @@
 {
   "reports": [
     {
+      "id": "2026-W31",
+      "label": "Semana 31/2026 · Parcial até 27/07",
+      "de": "2026-07-27",
+      "ate": "2026-07-27",
+      "status": "partial",
+      "json": "/reports/weekly/2026-W31.json",
+      "html": "/reports/weekly/2026-W31.html",
+      "sourceDates": {
+        "cap12431": "2026-07-27",
+        "capTrad": null,
+        "anbima": "2026-07-27",
+        "fundos": "2026-07-27",
+        "blc": "2026-07-27",
+        "ida": "2026-07-23",
+        "perf12431": null,
+        "perfTrad": null
+      }
+    },
+    {
       "id": "2026-W30",
       "label": "Semana 30/2026 · 20/07–24/07",
       "de": "2026-07-20",
@@ -74,25 +93,6 @@
         "ida": "2026-07-03",
         "perf12431": "2026-07-03",
         "perfTrad": "2026-07-03"
-      }
-    },
-    {
-      "id": "2026-W26",
-      "label": "Semana 26/2026 · 22/06–26/06",
-      "de": "2026-06-22",
-      "ate": "2026-06-26",
-      "status": "closed",
-      "json": "/reports/weekly/2026-W26.json",
-      "html": "/reports/weekly/2026-W26.html",
-      "sourceDates": {
-        "cap12431": "2026-06-26",
-        "capTrad": "2026-06-26",
-        "anbima": null,
-        "fundos": null,
-        "blc": null,
-        "ida": "2026-06-26",
-        "perf12431": "2026-06-26",
-        "perfTrad": "2026-06-26"
       }
     }
   ]

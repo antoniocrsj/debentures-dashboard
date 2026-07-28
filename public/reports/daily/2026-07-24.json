@@ -22,11 +22,11 @@
   },
   "summary": [
     {
-      "texto": "Captação líquida Incentivados: −R$ 55 mi",
+      "texto": "Captação líquida Incentivados: −R$ 80 mi",
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional: +R$ 88 mi",
+      "texto": "Captação líquida Tradicional: +R$ 87 mi",
       "tom": "pos"
     },
     {
@@ -34,7 +34,7 @@
       "tom": "pos"
     },
     {
-      "texto": "Maior resgate: IAM (−R$ 22 mi)",
+      "texto": "Maior resgate: Safra Asset (−R$ 32 mi)",
       "tom": "neg"
     },
     {
@@ -59,38 +59,38 @@
     "captacao": {
       "12431": {
         "dia": "2026-07-22",
-        "captacao": 149523445.60000002,
-        "resgate": 204289337.07999998,
-        "liquido": -54765891.47999996,
-        "pl": 245985554030.87,
-        "numFundos": 1653,
+        "captacao": 149951746.14000005,
+        "resgate": 229689647.81999996,
+        "liquido": -79737901.67999992,
+        "pl": 252568920071.84998,
+        "numFundos": 1677,
         "curados": 1720,
-        "fechados": 287,
+        "fechados": 286,
         "anterior": {
           "dia": "2026-07-21",
-          "captacao": 157957720.88999996,
+          "captacao": 158269311.65999997,
           "resgate": 201903579.07000002,
-          "liquido": -43945858.18000007,
-          "pl": 264924716834.6,
-          "numFundos": 1694
+          "liquido": -43634267.410000056,
+          "pl": 264925266886.21002,
+          "numFundos": 1697
         }
       },
       "trad": {
         "dia": "2026-07-22",
-        "captacao": 2308636671.5399995,
-        "resgate": 2220766628.74,
-        "liquido": 87870042.79999971,
-        "pl": 1553181312893.4197,
-        "numFundos": 976,
+        "captacao": 2325461747.899999,
+        "resgate": 2238248693.6999993,
+        "liquido": 87213054.19999981,
+        "pl": 1571164450405.72,
+        "numFundos": 987,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
           "dia": "2026-07-21",
-          "captacao": 2891413262.8399997,
-          "resgate": 1651135282.1799996,
-          "liquido": 1240277980.66,
-          "pl": 1586488753634.1907,
-          "numFundos": 998
+          "captacao": 2891018303.8399997,
+          "resgate": 1653247068.6899998,
+          "liquido": 1237771235.1499999,
+          "pl": 1587025350146.5608,
+          "numFundos": 999
         }
       }
     },
@@ -98,10 +98,10 @@
       "top12431Captacao": [
         {
           "gestor": "BRAM",
-          "captacao": 83293473.66,
+          "captacao": 83300206.58,
           "resgate": 12926141.28,
-          "liquido": 70367332.38,
-          "pl": 28487572347.57
+          "liquido": 70374065.3,
+          "pl": 28476423102.45
         },
         {
           "gestor": "BTG Asset",
@@ -134,11 +134,18 @@
       ],
       "top12431Resgate": [
         {
+          "gestor": "Safra Asset",
+          "captacao": 432727.53,
+          "resgate": 32424486.36,
+          "liquido": -31991758.83,
+          "pl": 11438915823.71
+        },
+        {
           "gestor": "IAM",
           "captacao": 18263817.53,
           "resgate": 40452911.61,
           "liquido": -22189094.08,
-          "pl": 55609486542.95
+          "pl": 55636348407.14
         },
         {
           "gestor": "Rubik",
@@ -160,13 +167,6 @@
           "resgate": 12724938.94,
           "liquido": -12486439.639999999,
           "pl": 11783613833.16
-        },
-        {
-          "gestor": "XPG",
-          "captacao": 2052759.82,
-          "resgate": 12111818.5,
-          "liquido": -10059058.68,
-          "pl": 5202153728.19
         }
       ],
       "topTradCaptacao": [
@@ -199,11 +199,11 @@
           "pl": 17515200031.24
         },
         {
-          "gestor": "SAM",
-          "captacao": 112683565.33,
-          "resgate": 81729368.68,
-          "liquido": 30954196.64999999,
-          "pl": 135820467867.92
+          "gestor": "Safra Asset",
+          "captacao": 99147043.54,
+          "resgate": 66860351.82,
+          "liquido": 32286691.720000006,
+          "pl": 48715130081.26
         }
       ],
       "topTradResgate": [
@@ -212,7 +212,7 @@
           "captacao": 3102506.23,
           "resgate": 83128193.74,
           "liquido": -80025687.50999999,
-          "pl": 3749664409.41
+          "pl": 3749664409.37
         },
         {
           "gestor": "BTG Asset",
@@ -1548,7 +1548,7 @@
           },
           {
             "ticker": "JSMLA5",
-            "emissor": "JSL S.A",
+            "emissor": "SIMPAR S.A.",
             "grupo": "Simpar",
             "incentivada": false,
             "indexadorFamilia": "CDI+",
@@ -1655,6 +1655,14 @@
       ],
       "top12431Neg": [
         {
+          "cnpj": "61141536000111",
+          "nome": "BB MASTER RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
+          "gestor": "BB Asset",
+          "segmento": "12431",
+          "retorno": -25.2052,
+          "pl": 577561006.16
+        },
+        {
           "cnpj": "63572496000198",
           "nome": "VINLAND DEBÊNTURE INCENTIVADO 3 FIF INC EM INV EM DEB DE INFRA RF ATIVO CRED PRIV LP RESP LIMITADA",
           "gestor": "Vinland",
@@ -1685,14 +1693,6 @@
           "segmento": "12431",
           "retorno": -1.767,
           "pl": 45865899.81
-        },
-        {
-          "cnpj": "54005088000163",
-          "nome": "FX FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
-          "gestor": "BTG WM",
-          "segmento": "12431",
-          "retorno": -0.8068,
-          "pl": 81087131.13
         }
       ],
       "topTradPos": [
@@ -1703,14 +1703,6 @@
           "segmento": "trad",
           "retorno": 100.4207,
           "pl": 533743733.42
-        },
-        {
-          "cnpj": "64436974000103",
-          "nome": "BB MASTER III RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
-          "gestor": "BB Asset",
-          "segmento": "trad",
-          "retorno": 6.2893,
-          "pl": 209783550.82
         },
         {
           "cnpj": "34172479000165",
@@ -1735,6 +1727,14 @@
           "segmento": "trad",
           "retorno": 0.9145,
           "pl": 194814521.4
+        },
+        {
+          "cnpj": "42827176000161",
+          "nome": "CAPITÂNIA REIT PREV ITAÚ FIFE FIF MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "gestor": "Capitânia",
+          "segmento": "trad",
+          "retorno": 0.913,
+          "pl": 108981750.51
         }
       ],
       "topTradNeg": [
@@ -1791,13 +1791,7 @@
         "texto": "74 ativo(s) no BLC sem correspondencia em Debentures.csv"
       }
     ],
-    "emissoesCVM": {
-      "asOf": "2026-07-27",
-      "itens": []
-    },
-    "emissoresFaltantes": {
-      "itens": [],
-      "asOf": "2026-07-27"
-    }
+    "emissoesCVM": null,
+    "emissoresFaltantes": null
   }
 }

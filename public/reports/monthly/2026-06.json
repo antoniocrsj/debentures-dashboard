@@ -494,9 +494,9 @@
     },
     "captacao": {
       "12431": {
-        "captacao": 7681198853.080002,
-        "resgate": 17404873540.250015,
-        "liquido": -9723674687.170013,
+        "captacao": 7714824737.000002,
+        "resgate": 17405028098.580013,
+        "liquido": -9690203361.580011,
         "pl": 260985950361.33002,
         "numFundos": 1691,
         "dataPl": "2026-06-30",
@@ -534,9 +534,9 @@
       "top12431Captacao": [
         {
           "gestor": "Safra Asset",
-          "captacao": 2263624129.4500003,
-          "resgate": 1469020981.61,
-          "liquido": 794603147.8400004,
+          "captacao": 2297250013.3700004,
+          "resgate": 1469175539.9399998,
+          "liquido": 828074473.4300005,
           "pl": 8971955527.02,
           "dias": 21
         },
@@ -723,8 +723,8 @@
         "retornoPct": 1.2262,
         "dataIni": "2026-05-29",
         "dataFim": "2026-06-30",
-        "spreadIniBps": 101,
-        "spreadFimBps": 100,
+        "spreadIniBps": 100,
+        "spreadFimBps": 99,
         "variacaoBps": -1,
         "spreadConfiavel": true
       }
@@ -751,7 +751,7 @@
           "cnpj": "62360992000115",
           "nome": "BB MASTER II DEBÊNTURES…",
           "gestor": "BB Asset",
-          "retorno": 11.8407,
+          "retorno": 11.8408,
           "obs": 20,
           "de": "2026-06-02",
           "ate": "2026-06-30",
@@ -805,6 +805,17 @@
           "segmento": "12431"
         },
         {
+          "cnpj": "60775750000167",
+          "nome": "G5 ALLOCATION II FUNDO…",
+          "gestor": "G5",
+          "retorno": -14.391,
+          "obs": 19,
+          "de": "2026-06-02",
+          "ate": "2026-06-30",
+          "pl": 36716508.79,
+          "segmento": "12431"
+        },
+        {
           "cnpj": "60936335000148",
           "nome": "TITANIUM FUNDO INCENTIVADO EM…",
           "gestor": "IAM",
@@ -819,7 +830,7 @@
           "cnpj": "63942021000146",
           "nome": "OCCAM BB INFRA LINEAR…",
           "gestor": "Occam",
-          "retorno": -6.331,
+          "retorno": -6.3312,
           "obs": 20,
           "de": "2026-06-02",
           "ate": "2026-06-30",
@@ -836,17 +847,6 @@
           "ate": "2026-06-30",
           "pl": 69605703.85,
           "segmento": "12431"
-        },
-        {
-          "cnpj": "53906981000105",
-          "nome": "PSO 3 FUNDO INCENTIVADO DE…",
-          "gestor": "BTG WM",
-          "retorno": -5.1824,
-          "obs": 20,
-          "de": "2026-06-02",
-          "ate": "2026-06-30",
-          "pl": 30502630.96,
-          "segmento": "12431"
         }
       ],
       "topTradPos": [
@@ -854,7 +854,7 @@
           "cnpj": "64436974000103",
           "nome": "BB MASTER III DEBÊNTURES…",
           "gestor": "BB Asset",
-          "retorno": 6.8428,
+          "retorno": 6.8429,
           "obs": 20,
           "de": "2026-06-02",
           "ate": "2026-06-30",
@@ -884,6 +884,17 @@
           "segmento": "trad"
         },
         {
+          "cnpj": "42736995000101",
+          "nome": "ITAÚ DIFERENCIADO CRÉDITO…",
+          "gestor": "IAM",
+          "retorno": 5.0614,
+          "obs": 12,
+          "de": "2026-06-02",
+          "ate": "2026-06-18",
+          "pl": 98588966.02,
+          "segmento": "trad"
+        },
+        {
           "cnpj": "14473842000175",
           "nome": "UBS ROKA CRÉDITO PRIVADO",
           "gestor": "UBS",
@@ -892,17 +903,6 @@
           "de": "2026-06-02",
           "ate": "2026-06-30",
           "pl": 47219083.37,
-          "segmento": "trad"
-        },
-        {
-          "cnpj": "26498249000162",
-          "nome": "CAPITÂNIA PREVIDENCE ADVISORY…",
-          "gestor": "Capitânia",
-          "retorno": 2.3254,
-          "obs": 20,
-          "de": "2026-06-02",
-          "ate": "2026-06-30",
-          "pl": 59127352.1,
           "segmento": "trad"
         }
       ],
