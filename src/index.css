@@ -2218,6 +2218,11 @@ a { color: var(--primary); }
 .app.desktop .content:has(> .filter-bar) > .desktop-split-3 {
   flex: 1 1 0; min-height: 0; grid-template-rows: minmax(0, 1fr);
 }
+/* os rankings (Gestor/Grupo) PREENCHEM a celula do grid (senao o max-height:52vh
+   os deixa em 374 e o overflow do content corta o rodape). O ranking-list rola. */
+.app.desktop .content:has(> .filter-bar) .desktop-split-3 .ranking-panel {
+  max-height: none; height: 100%; min-height: 0;
+}
 /* Volume vira sweep (‹ valor ›): rotulo com folga p/ "1–5MM"/"Até 1MM". */
 .corte-step-vol .corte-step-val { min-width: 66px; }
 
