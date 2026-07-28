@@ -1361,7 +1361,7 @@ a { color: var(--primary); }
   }
   .app.desktop .tabs.tabs-inline .tab-btn {
     flex: 0 0 auto;
-    padding: 0 var(--sp-5);
+    padding: 0 var(--sp-5) 5px;   /* +5px embaixo: sobe icone+rotulo do fim do carvao */
     margin-bottom: 0;
     font-size: var(--fz-corpo);
   }
@@ -2164,11 +2164,29 @@ a { color: var(--primary); }
 }
 /* #2: Buscar, Grupo e Emissor com a MESMA largura (150px). Ativo/Volume/12.431
    ficam como estao. Grupo/Emissor agora sao SearchSelect (busca) -> .chip-select. */
-.sec-filters .fluxo-field-grow .sec-input { max-width: 150px; min-width: 150px; }
+.sec-filters .fluxo-field-grow .sec-input { max-width: 170px; min-width: 170px; }
 .app.desktop .sec-filters .fluxo-field-grow { flex: 0 0 auto; }
 .sec-filters .sec-field-sel .chip-select-wrap,
-.sec-filters .sec-field-sel .chip-select { width: 150px; }
+.sec-filters .sec-field-sel .chip-select { width: 120px; }
 .sec-filters .sec-field-sel .chip-select { justify-content: space-between; padding-left: var(--sp-4); }
+
+/* ═══ PADRONIZACAO DOS FILTROS — DESKTOP (jul/2026) ═════════════════════════
+   Buscar 170x25 · Grupo/Ativo/Emissor 120x25 (altura ja' e' --btn-h) · sem
+   rotulo em cima · Buscar no canto sup. esq. · 20px abaixo do carvao · 10px
+   entre botoes · lado a lado, quebra so' se faltar espaco. Escopado no desktop:
+   o compacto tem layout proprio. */
+.app.desktop .fluxo-field-label { display: none; }                              /* item 3 */
+/* larguras dos dropdowns (Grupo/Ativo/Emissor/Setor/Gestor...) */
+.app.desktop .chip-select-wrap, .app.desktop .chip-select { width: 120px; }
+.app.desktop .sec-filters .fluxo-field .sec-input { width: 120px; }             /* Ativo (select) */
+/* busca 170: Mercado (search-wrap agora dentro da linha de chips) */
+.app.desktop .filter-scroll .search-wrap { width: 170px; flex: 0 0 170px; margin: 0; }
+/* linha de chips do Mercado: lado a lado + quebra + 10px + 20px do topo */
+.app.desktop .filter-scroll { flex-wrap: wrap; overflow-x: visible; gap: 10px; padding: 20px var(--sp-4) 0; }
+/* linha de filtros das abas fluxo (Secundario etc.): idem */
+.app.desktop .fluxo-filters-row { flex-wrap: wrap; align-items: flex-start; gap: 10px; }
+.app.desktop .sec-page { padding-top: 20px; }                          /* item 5: 20px do carvao */
+/* item 7: icones do topo carvao sobem 5px -> feito em .tabs-inline .tab-btn (padding-bottom) */
 /* Volume vira sweep (‹ valor ›): rotulo com folga p/ "1–5MM"/"Até 1MM". */
 .corte-step-vol .corte-step-val { min-width: 66px; }
 
