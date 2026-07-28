@@ -14,7 +14,7 @@ const SecondaryChart = lazyWithRetry(() => import('./SecondaryChart.jsx'))
 // indexador, 12.431), cruzadas do cadastro por ticker.
 const COLS = [
   { id: 'data',      label: 'Data',       sticky: true,  sortable: true  },
-  { id: 'ativo',     label: 'Ativo',      sticky: false, sortable: true  },
+  { id: 'ativo',     label: 'Ativo',      sticky: true,  sortable: true  },
   { id: 'taxa',      label: 'Tx méd.',    sticky: false, sortable: true  },
   { id: 'spreadRef', label: 'Spread ref.', sticky: false, sortable: false },
   { id: 'volume',    label: 'Volume',     sticky: false, sortable: true  },
@@ -241,9 +241,6 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
 
   return (
     <>
-      <div className="sec-summary">
-        <div className="sec-summary-main">{reuneRef}</div>
-      </div>
 
       <div className="fluxo-filters sec-filters">
         <div className="fluxo-filters-row">
@@ -347,7 +344,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
                 onClick={() => onClickAtivo(a.codigoAtivo)}
                 title={`Ver a evolução de ${a.codigoAtivo} no gráfico`}>
                 <td className="col-sticky col-num col-data">{fmtDateDDMMYY(a.data)}</td>
-                <td className="col-ativo">
+                <td className="col-sticky col-ativo">
                   <div className="ativo-cell">
                     <div>
                       <span className="ativo-code">{a.codigoAtivo || '-'}</span>

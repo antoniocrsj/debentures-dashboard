@@ -2176,6 +2176,22 @@ a { color: var(--primary); }
 .asset-table col.c-tx3    { width: 60px; }
 .asset-table col.c-spread { width: 86px; }
 .asset-table col.c-volume { width: 118px; }
+
+/* Secundario: DATA e ATIVO CONGELADAS (sticky) e estreitas. O .col-sticky forca
+   min-width 96px -> aqui zeramos p/ caber a largura real; a 2a coluna (Ativo)
+   encosta na largura da 1a (Data) e leva a sombra divisoria. */
+.app.desktop .asset-table.sec-table col.c-data  { width: 56px; }
+.app.desktop .asset-table.sec-table col.c-ativo { width: 146px; }
+.sec-table thead th.col-sticky, .sec-table tbody td.col-sticky { min-width: 0; }
+.app.desktop .sec-table thead th:nth-child(1), .app.desktop .sec-table tbody td:nth-child(1),
+.app.desktop .sec-table thead th:nth-child(2), .app.desktop .sec-table tbody td:nth-child(2) {
+  padding-left: var(--sp-2); padding-right: var(--sp-1);
+}
+.sec-table thead th:nth-child(1), .sec-table tbody td:nth-child(1) { box-shadow: none; }
+.sec-table thead th:nth-child(2), .sec-table tbody td:nth-child(2) {
+  left: 56px; box-shadow: 2px 0 4px rgba(0, 0, 0, .05);
+}
+.app.desktop .sec-table .ativo-grupo { max-width: 88px; }
 /* Spread de referencia (B35 +N bps / CDI +X%): numerico, destaque leve. */
 .sec-table td.col-spread { font-variant-numeric: tabular-nums; font-weight: 600; }
 .asset-table col.c-venc   { width: 66px; }
