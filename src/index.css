@@ -2216,7 +2216,8 @@ a { color: var(--primary); }
 /* bloco de graficos ~42%: a linha do grid preenche a altura reduzida; o plot do
    grafico (flex:1) e os rankings (ranking-list overflow) se adaptam por dentro. */
 .app.desktop .content:has(> .filter-bar) > .desktop-split-3 {
-  flex: 1 1 0; min-height: 0; margin-top: 8px; grid-template-rows: minmax(0, 1fr);   /* 8px da tabela de cima */
+  flex: 1 1 0; min-height: 0; margin-top: 8px; padding-top: 0;   /* 8px reais: zera o padding-top (sp-5) que somava 16px */
+  grid-template-rows: minmax(0, 1fr);
 }
 /* os rankings (Gestor/Grupo) PREENCHEM a celula do grid (senao o max-height:52vh
    os deixa em 374 e o overflow do content corta o rodape). O ranking-list rola. */
