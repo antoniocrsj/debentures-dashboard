@@ -47,8 +47,9 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
   const [verTudo, setVerTudo] = useState(false)  // compacto: abre no ultimo pregao; expande p/ o historico
 
   const onSort = id => setSort(s => ({ col: id, dir: s.col === id && s.dir === 'desc' ? 'asc' : 'desc' }))
-  // Pregao mais recente do historico (compacto abre so' nele, por performance).
-  const dataRecente = useMemo(() => trades.reduce((mx, t) => (t.data > mx ? t.data : mx), ''), [trades])
+  // Os 5 pregoes mais recentes: a tabela abre neles (sem filtro). Com qualquer
+  // filtro ou "ver tudo", mostra todo o historico.
+  const dias5Recentes = useMemo(() => new Set([...new Set(trades.map(t => t.data))].sort().slice(-5)), [trades])
 
   const opts = useMemo(() => ({
     grupos:    [...new Set(trades.map(a => a.grupo).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR')),
@@ -193,7 +194,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
   // um TETO de render p/ nunca travar.
   const MAX_LINHAS = 1500
   const soUltimoPregao = !temFiltro && !verTudo
-  const baseLinhas = soUltimoPregao ? filtrados.filter(t => t.data === dataRecente) : filtrados
+  const baseLinhas = soUltimoPregao ? filtrados.filter(t => dias5Recentes.has(t.data)) : filtrados
   const linhasVisiveis = baseLinhas.length > MAX_LINHAS ? baseLinhas.slice(0, MAX_LINHAS) : baseLinhas
   const escondidos = filtrados.length - baseLinhas.length
   const capExcedido = baseLinhas.length - linhasVisiveis.length

@@ -1403,8 +1403,8 @@ a { color: var(--primary); }
     position: sticky;
     bottom: 0;
     z-index: 3;
-    background: var(--primary-light);
-    border-top: 1px solid var(--primary-border);
+    background: #fff;
+    border-top: 1px solid var(--c-carvao);
     border-bottom: 0;
     font-weight: 600;
     color: var(--text);
@@ -1412,7 +1412,7 @@ a { color: var(--primary); }
   .app.desktop .asset-table tfoot .col-sticky {
     bottom: 0;
     z-index: 4;
-    background: var(--primary-light);
+    background: #fff;
   }
   .app.desktop .asset-table tfoot .col-aloc { color: var(--success); }
 
@@ -1468,8 +1468,8 @@ a { color: var(--primary); }
      com a largura inteira do painel, sem disputar espaço com o scroll. */
   .app.desktop .desktop-split-col .ranking-total {
     flex: 0 0 auto;
-    background: var(--primary-light);
-    border-top: 1px solid var(--primary-border);
+    background: #fff;
+    border-top: 1px solid var(--c-carvao);
     border-bottom: 0;
   }
   .app.desktop .desktop-split-col .ranking-total .rank-name,
@@ -1773,7 +1773,7 @@ a { color: var(--primary); }
 .venc-th-sort.active { color: var(--primary-dark); }
 .venc-th-sort:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; border-radius: 4px; }
 .venc-sort-arrow { font-size: var(--fz-micro); color: var(--primary); }
-.venc-table tfoot td { border-top: 2px solid var(--border); border-bottom: 0; background: var(--chip-bg); }
+.venc-table tfoot td { border-top: 1px solid var(--c-carvao); border-bottom: 0; background: #fff; }
 /* Tabela de debentures: larguras fixas para a coluna Vol. outstanding NUNCA
    sumir (emissor/grupo truncam com reticencias sob table-layout:fixed). */
 .venc-deb-table { table-layout: fixed; }
@@ -2117,8 +2117,8 @@ a { color: var(--primary); }
 .tecnico-gestor-table tfoot .tecnico-foot-row td {
   font-weight: 600;
   color: var(--text);
-  background: var(--primary-light);
-  border-top: 1px solid var(--primary-border);
+  background: #fff;
+  border-top: 1px solid var(--c-carvao);
   font-variant-numeric: tabular-nums;
 }
 .app.desktop .tecnico-gestor-table tfoot .tecnico-foot-row td {
@@ -2208,7 +2208,7 @@ a { color: var(--primary); }
   display: flex; flex-direction: column; padding-bottom: 20px; overflow: hidden;
 }
 .app.desktop .content:has(> .filter-bar) > .table-wrap-x {
-  flex: 1.4 1 0; min-height: 0; display: flex; flex-direction: column;   /* tabela ~58% */
+  flex: 1 1 0; min-height: 0; display: flex; flex-direction: column;
 }
 .app.desktop .content:has(> .filter-bar) > .table-wrap-x > .table-wrap {
   flex: 1 1 auto; min-height: 0; max-height: none; overflow: auto;
@@ -2216,7 +2216,7 @@ a { color: var(--primary); }
 /* bloco de graficos ~42%: a linha do grid preenche a altura reduzida; o plot do
    grafico (flex:1) e os rankings (ranking-list overflow) se adaptam por dentro. */
 .app.desktop .content:has(> .filter-bar) > .desktop-split-3 {
-  flex: 1 1 0; min-height: 0; grid-template-rows: minmax(0, 1fr);
+  flex: 1 1 0; min-height: 0; margin-top: 8px; grid-template-rows: minmax(0, 1fr);   /* 8px da tabela de cima */
 }
 /* os rankings (Gestor/Grupo) PREENCHEM a celula do grid (senao o max-height:52vh
    os deixa em 374 e o overflow do content corta o rodape). O ranking-list rola. */
