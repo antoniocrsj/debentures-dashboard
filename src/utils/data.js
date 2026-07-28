@@ -199,6 +199,70 @@ export function enrichReune(reuneRows, tickerToAsset, curvasPorData) {
   })
 }
 
+// Mapeia o tipoTaxaAnbima (Indexador da base) -> tipo do spreadRef que o
+// SecondaryTable/Chart entendem (dirige a familia bps/pct do grafico).
+const TIPO_SPREAD_MERCADO = { DI_SPREAD: 'DI+', IPCA_SPREAD: 'IPCA', DI_PERCENTUAL: '%DI', PREFIXADO: 'PRE' }
+// Faixa de volume derivada do R$ REAL de mercado (mantem o filtro/ordenacao/
+// liquidez que a aba ja' usa; a celula exibe o R$ puro).
+function faixaDeVolMercado(v) {
+  if (v == null) return { faixa: '', rank: 0 }
+  if (v > 5e6) return { faixa: 'Superior a 5MM', rank: 3 }
+  if (v > 1e6) return { faixa: 'Entre 1MM e 5MM', rank: 2 }
+  return { faixa: 'Até 1MM', rank: 1 }
+}
+
+// Enriquece a base MERCADO VERDADEIRO (public/Mercado_Verdadeiro.csv) com o
+// cadastro que o app conhece por ticker. Uma linha = uma debenture com negocio
+// DE MERCADO no dia (direta/orfao ja' foi removido pela varredura). Substitui o
+// enrichReune como fonte da aba Secundario: volume = R$ real; taxa/PU/spread = os
+// valores LIMPOS (meio das pontas, sem fee do broker). Spread ja' vem calculado
+// na base (com a NTN-B de referencia da ANBIMA) -> nao reusa converterSpreadSec.
+export function enrichMercado(mercadoRows, tickerToAsset) {
+  const map = tickerToAsset || new Map()
+  const out = []
+  for (const r of mercadoRows || []) {
+    const vol = parseNum(r['VolMercado'])
+    if (vol == null || vol <= 0) continue   // so' negocio de mercado
+    const ticker = (r['Ativo'] || '').trim()
+    const asset = map.get(ticker.toUpperCase()) || {}
+    const data = (r['Data'] || '').trim()
+    // Taxa_mid vem com ponto/4 casas na base; exibe em pt-BR com 2 casas (padrao do app).
+    const taxaRaw = (r['Taxa_mid'] || '').trim()
+    const taxaNum = taxaRaw ? parseNum(taxaRaw) : null
+    const taxaMed = taxaNum != null ? taxaNum.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : ''
+    const spreadFmt = (r['SpreadFmt'] || '').trim()
+    const spreadRef = spreadFmt ? {
+      tipo: TIPO_SPREAD_MERCADO[(r['Indexador'] || '').trim()] || null,
+      formatada: spreadFmt,
+      spreadNum: parseNum(r['Spread']),
+      ref: (r['RefSpread'] || '').trim(),
+    } : null
+    const { faixa, rank } = faixaDeVolMercado(vol)
+    out.push({
+      codigoAtivo: ticker,
+      data,
+      taxaMin: taxaMed, taxaMed, taxaMax: taxaMed,
+      puMed: r['PU_mid'],
+      volumeRs: vol,
+      faixaVolume: faixa,
+      volRank: rank,
+      taxaMedNum: taxaNum,
+      puMedNum: parseNum(r['PU_mid']),
+      emissorNome: asset.emissorNome || '—',
+      grupo: asset.grupo || '',
+      setor: asset.setor || '',
+      alocacao: asset.alocacao || 0,
+      vencimento: asset.vencimento || '',
+      duration: asset.durationAnbima || (r['DurationAnos'] || ''),
+      txEmissao: asset.taxa || '',
+      indexador: asset.indexador || '',
+      lei12431: asset.lei12431Str || '',
+      spreadRef,
+    })
+  }
+  return out
+}
+
 // Indexa as curvas de TPF (REUNE_Curvas.csv) por data:
 //   dataISO -> { ntnb: [{venc, taxa}], ltn: [{venc, taxa}] }
 // Consumido por converterSpreadSec (via enrichReune) p/ o "Spread ref." do

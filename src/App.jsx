@@ -4,7 +4,7 @@ import { usePeriodReports } from './hooks/usePeriodReports.js'
 import { useAgenda12m } from './hooks/useAgenda12m.js'
 import {
   buildIndexes, buildBlcIndex, buildAnbimaIndex, buildAnbimaBEIndex, buildPlByGestor,
-  buildCurvasPorData, enrichDebenture, enrichReune, computeManagers, computeGroups, recomputeAlocByGestor
+  enrichDebenture, enrichMercado, computeManagers, computeGroups, recomputeAlocByGestor
 } from './utils/data.js'
 import { isYes, dateKey, fmtDateOnly, parseBRDateTime, parseISODate, fmtMesAno } from './utils/format.js'
 import { lazyWithRetry } from './utils/lazyWithRetry.js'
@@ -200,27 +200,24 @@ export default function App() {
     return raw.debentures.map(d => enrichDebenture(d, indexes))
   }, [raw, indexes])
 
-  // Mercado secundario (REUNE): historico LONG (ativo x dia), enriquecido com
-  // emissor/grupo que o app ja' conhece por ticker (via allAssets). Base para a
-  // foto do ultimo dia (tabela) e, adiante, os graficos de serie.
-  // Curvas de TPF por dia (NTN-B/LTN) p/ o "Spread ref." do secundario.
-  const curvasPorData = useMemo(() => buildCurvasPorData(raw?.reuneCurvas), [raw])
+  // Mercado secundario: base MERCADO VERDADEIRO (trade a mercado, sem direta/
+  // double-count), enriquecida com emissor/grupo que o app conhece por ticker.
+  // Uma linha = uma debenture com negocio de mercado no dia. Volume = R$ real;
+  // taxa/PU/spread = valores limpos (meio das pontas). Ver enrichMercado.
   const secondaryHistory = useMemo(() => {
-    if (!raw?.reune?.length || !allAssets.length) return []
+    if (!raw?.mercado?.length || !allAssets.length) return []
     const tickerToAsset = new Map(allAssets.map(a => [a.codigoAtivo.toUpperCase(), a]))
-    return enrichReune(raw.reune, tickerToAsset, curvasPorData)
-  }, [raw, allAssets, curvasPorData])
+    return enrichMercado(raw.mercado, tickerToAsset)
+  }, [raw, allAssets])
 
-  // Ultimo pregao presente no historico (yyyy-MM-dd).
-  const reuneDataRecente = useMemo(() => {
-    if (raw?.reuneMeta?.data_recente) return raw.reuneMeta.data_recente
-    return secondaryHistory.reduce((mx, a) => (a.data > mx ? a.data : mx), '')
-  }, [raw, secondaryHistory])
-
-  // Numero de pregoes distintos no historico (para o resumo da aba).
+  // Ultimo pregao presente na base (yyyy-MM-dd) e no de pregoes -- da propria base.
+  const reuneDataRecente = useMemo(
+    () => secondaryHistory.reduce((mx, a) => (a.data > mx ? a.data : mx), ''),
+    [secondaryHistory]
+  )
   const reuneDias = useMemo(
-    () => raw?.reuneMeta?.dias || new Set(secondaryHistory.map(a => a.data)).size,
-    [raw, secondaryHistory]
+    () => new Set(secondaryHistory.map(a => a.data)).size,
+    [secondaryHistory]
   )
 
   // Data de referencia do REUNE para exibir. DD/MM/AAAA.

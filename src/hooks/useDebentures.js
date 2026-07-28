@@ -39,6 +39,10 @@ const STATIC_REUNE_URL = '/REUNE_Historico.csv'
 const STATIC_REUNE_META_URL = '/REUNE_Historico_meta.json'
 // Curvas de TPF (NTN-B/LTN) por dia — gerado por tools/preparar-reune-curvas.ps1.
 const STATIC_REUNE_CURVAS_URL = '/REUNE_Curvas.csv'
+// Base MERCADO VERDADEIRO (trade a mercado, sem direta/double-count) — gerada por
+// tools/varredura-mercado.mjs sobre o tape B3. Alimenta a aba Secundario (volume
+// real + preco/taxa/spread limpos). Ver METODOLOGIA_Mercado_Verdadeiro.md. OPCIONAL.
+const STATIC_MERCADO_URL = '/Mercado_Verdadeiro.csv'
 
 async function fetchCSV(rawUrl) {
   const url = `/api/proxy?url=${encodeURIComponent(rawUrl)}`
@@ -64,7 +68,7 @@ async function fetchStaticJSON(path) {
 }
 
 function cacheKey() {
-  return 'deb-cache-v10'  // v10: + REUNE_Curvas (curva TPF/dia p/ spread do secundario)
+  return 'deb-cache-v11'  // v11: + Mercado_Verdadeiro (base do secundario: trade a mercado)
 }
 
 function readCache() {
@@ -134,9 +138,11 @@ export function useDebentures(blcUrl) {
       fetchStaticJSON(STATIC_REUNE_META_URL).catch(() => null),
       // Curvas de TPF por dia (NTN-B/LTN) — base p/ o "Spread ref." do secundario.
       fetchStaticCSV(STATIC_REUNE_CURVAS_URL).catch(() => []),
+      // Base Mercado Verdadeiro (trade a mercado) — fonte da aba Secundario. OPCIONAL.
+      fetchStaticCSV(STATIC_MERCADO_URL).catch(() => []),
     ])
-      .then(([emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta, reune, reuneMeta, reuneCurvas]) => {
-        const raw = { emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta, reune, reuneMeta, reuneCurvas }
+      .then(([emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta, reune, reuneMeta, reuneCurvas, mercado]) => {
+        const raw = { emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta, reune, reuneMeta, reuneCurvas, mercado }
         writeCache(raw)
         if (alive) setState({ loading: false, refreshing: false, error: null, raw, cachedAt: Date.now() })
       })

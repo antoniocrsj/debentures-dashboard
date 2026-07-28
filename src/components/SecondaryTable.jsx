@@ -25,11 +25,15 @@ const COLS = [
   { id: 'lei12431',  label: '12.431',     sticky: false, sortable: false },
 ]
 
-const FAIXAS = ['Superior a 5MM', 'Entre 1MM e 5MM', 'Até 1MM']
+const FAIXAS = ['Superior a 5MM', 'Entre 1MM e 5MM', 'Até 1MM']   // filtro de volume (derivado do R$ real)
 
 function fmtTx(v) { return (v && v !== '--') ? `${v}%` : '-' }
-// Rotulo curto da faixa de volume (p/ os cards do compacto).
-const FAIXA_CURTA = { 'Superior a 5MM': '> 5 MM', 'Entre 1MM e 5MM': '1–5 MM', 'Até 1MM': 'Até 1 MM' }
+// Volume de mercado em R$ real (base Mercado Verdadeiro): MM com 1 casa; "mil" abaixo de 1MM.
+function fmtVolRs(v) {
+  if (v == null || !(v > 0)) return '-'
+  if (v >= 1e6) return `R$ ${(v / 1e6).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} MM`
+  return `R$ ${Math.round(v / 1e3).toLocaleString('pt-BR')} mil`
+}
 
 export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
   const [busca, setBusca] = useState('')
@@ -69,7 +73,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
       data:       a => a.data,
       ativo:      a => a.codigoAtivo,
       taxa:       a => a.taxaMedNum || 0,
-      volume:     a => a.volRank,
+      volume:     a => a.volumeRs || 0,
       vencimento: a => a.vencimento || '',
     }[sort.col]
     // desempate estavel: dentro da mesma chave, data desc e depois ticker
@@ -169,7 +173,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
       if (t.grupo !== grupo) continue
       let a = porAtivo.get(t.codigoAtivo)
       if (!a) { a = { ticker: t.codigoAtivo, vencimento: t.vencimento, duration: t.duration, ultima: '', spread: null, liq: 0 }; porAtivo.set(t.codigoAtivo, a) }
-      if (dias40.has(t.data)) a.liq += (t.volRank || 0)
+      if (dias40.has(t.data)) a.liq += (t.volumeRs || 0)
       if (t.data > a.ultima) { a.ultima = t.data; a.spread = t.spreadRef; a.vencimento = t.vencimento; a.duration = t.duration }
     }
     return [...porAtivo.values()].sort((x, y) => y.liq - x.liq || (x.ticker < y.ticker ? -1 : 1))
@@ -197,8 +201,8 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
   if (!trades.length) {
     return (
       <div className="empty-state">
-        <span>Sem prévias de negociação</span>
-        <small>O REUNE publica em dias úteis (11h/13h/16h/18h). Rode a atualização.</small>
+        <span>Sem negócios de mercado</span>
+        <small>Base de trade a mercado (≥ R$ 5 MM/dia). Rode a varredura (varredura-mercado).</small>
       </div>
     )
   }
@@ -362,7 +366,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
                 <td className="col-num col-spread" title={a.spreadRef?.ref || undefined}>
                   {a.spreadRef ? a.spreadRef.formatada : '-'}
                 </td>
-                <td className="col-num"><span className={`vol-tag vol-tag-${a.volRank}`}>{a.faixaVolume || '-'}</span></td>
+                <td className="col-num">{fmtVolRs(a.volumeRs)}</td>
                 <td className="col-num">{a.vencimento ? fmtDateDDMMYY(a.vencimento) : '-'}</td>
                 <td className="col-num">{(a.duration && a.duration !== '—') ? a.duration : '-'}</td>
                 <td className="col-num">{a.txEmissao ? fmtTaxa(a.txEmissao) : '-'}</td>
@@ -444,7 +448,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
                 <div className="sec-card-meta">
                   <span>{a.indexador || '-'}</span>
                   {a.vencimento && <><span className="sec-card-sep">·</span><span>venc {fmtDateDDMMYY(a.vencimento)}</span></>}
-                  <span className="sec-card-sep">·</span><span>{FAIXA_CURTA[a.faixaVolume] || a.faixaVolume || '-'}</span>
+                  <span className="sec-card-sep">·</span><span>{fmtVolRs(a.volumeRs)}</span>
                 </div>
               </div>
             )

@@ -66,9 +66,11 @@ export function curvaDoDia(curvas, dia) { if (curvas.has(dia)) return { c: curva
 // spread). IPCA_SPREAD -> NTN-B+ bps sobre a NTN-B que a ANBIMA DESIGNA
 // (codigoNtnbExibicao/ntnbReferencia -- pela duration, nao pelo vencimento), com
 // o yield desse ponto na curva do dia. Fallback: NTN-B de vencimento do papel.
+const fmtPct = (rot, v) => `${rot} ${v < 0 ? '−' : '+'}${Math.abs(v).toFixed(2)}%`
 export function spreadDe(ativo, dia, taxaMid, idx, anbima, vencDeb, curvas) {
   if (taxaMid == null) return null
-  if (idx === 'DI_SPREAD') return { fmt: `CDI +${taxaMid.toFixed(2)}%`, num: +taxaMid.toFixed(4), unid: '%', rot: 'CDI' }
+  // DI+ (DI_SPREAD): a taxa negociada JA e' o spread sobre o CDI.
+  if (idx === 'DI_SPREAD') return { fmt: fmtPct('CDI', taxaMid), num: +taxaMid.toFixed(4), unid: '%', rot: 'CDI' }
   if (idx === 'IPCA_SPREAD') {
     const cv = curvaDoDia(curvas, dia); if (!cv) return null
     const a = anbima.get(ativo)
@@ -77,6 +79,20 @@ export function spreadDe(ativo, dia, taxaMid, idx, anbima, vencDeb, curvas) {
     const bps = Math.round((taxaMid - r.taxa) * 100)
     const cod = a?.codNtnb || ('B' + String((anoDe(r.venc) || 0) % 100).padStart(2, '0'))
     return { fmt: `${cod} ${bps < 0 ? '−' : '+'}${Math.abs(bps)}bps`, num: bps, unid: 'bps', rot: cod, ref: r.taxa, fb: cv.usada !== dia ? cv.usada : null }
+  }
+  // %DI (DI_PERCENTUAL): taxaMid = % do CDI; converte via LTN de venc. proximo.
+  if (idx === 'DI_PERCENTUAL') {
+    const cv = curvaDoDia(curvas, dia); if (!cv) return null
+    const r = refProx(cv.c.ltn, vencDe(ativo, anbima, vencDeb)); if (!r) return null
+    const sp = r.taxa * (taxaMid / 100 - 1)
+    return { fmt: fmtPct('CDI', sp), num: +sp.toFixed(4), unid: '%', rot: 'CDI', ref: r.taxa, fb: cv.usada !== dia ? cv.usada : null }
+  }
+  // PREFIXADO: taxaMid = taxa pre absoluta; spread sobre a LTN de venc. proximo.
+  if (idx === 'PREFIXADO') {
+    const cv = curvaDoDia(curvas, dia); if (!cv) return null
+    const r = refProx(cv.c.ltn, vencDe(ativo, anbima, vencDeb)); if (!r) return null
+    const sp = taxaMid - r.taxa
+    return { fmt: fmtPct('DI', sp), num: +sp.toFixed(4), unid: '%', rot: 'DI', ref: r.taxa, fb: cv.usada !== dia ? cv.usada : null }
   }
   return null
 }

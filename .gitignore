@@ -32,3 +32,9 @@ public/data/Fluxo_Diario_Candidatos.csv
 
 # Universo candidato do sweep (regenerado por selecionar-fundos.ps1)
 tools/Universo_Candidatos.csv
+
+# Tape trade-a-trade da B3 (~20 MB, 90 arquivos .gz): insumo OFFLINE da
+# varredura-mercado.mjs. O app NAO le estes -- consome apenas o
+# public/Mercado_Verdadeiro.csv (versionado, 666 KB). Regenerado por
+# preparar-bdi-negocios.mjs. Ver METODOLOGIA_Mercado_Verdadeiro.md.
+public/bdi/
