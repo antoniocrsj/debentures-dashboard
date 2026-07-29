@@ -167,11 +167,10 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, on
     () => aggMeses(agenda12m, eventos, gpt, { gestorSel, seg: tipo, persp: 'carteira', base: 'view' }),
     [agenda12m, eventos, gpt, gestorSel, tipo]
   )
-  // 10 meses em vez dos 12 da agenda: com 12 colunas em 330px o valor em cima
-  // da barra nao cabia. Cortando 2 meses cada coluna ganha ~20% de largura e o
-  // numero volta a caber. A agenda segue gerando 12 -- o recorte e' so' desta
-  // aba (a aba Vencimentos, larga, continua com os 12).
-  const MESES_TECNICO = 10
+  // Os 6 meses mais proximos concentram a pressao de reinvestimento relevante
+  // para esta visao. A agenda segue gerando 12 meses; o recorte e' apenas deste
+  // card (a aba Vencimentos, mais detalhada, continua com os 12).
+  const MESES_TECNICO = 6
   const mesesViewCurto = useMemo(() => mesesView.slice(0, MESES_TECNICO), [mesesView])
   const maxVenc = Math.max(1, ...mesesViewCurto.map(m => m.total))
   // % do PL: mesma base 'carteira' do VencimentosDashboard (sempre valor de

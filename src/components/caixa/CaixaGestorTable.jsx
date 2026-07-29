@@ -51,8 +51,9 @@ export default function CaixaGestorTable({ gestores, activeGestor, onSelect }) {
               return (
                 <tr
                   key={g.gestor}
-                  className={active ? 'row-active' : ''}
+                  className={`filter-row${active ? ' row-active is-filter-active' : ''}`}
                   onClick={() => onSelect?.(g.gestor)}
+                  aria-selected={active}
                   tabIndex={0}
                   onKeyDown={e => e.key === 'Enter' && onSelect?.(g.gestor)}
                   title={`Ver fundos de ${g.gestor}`}

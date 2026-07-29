@@ -51,7 +51,8 @@ export default function TecnicoGestorTable({ rows, activeGestor, onSelect }) {
               const pos = g.liquido > 0, neg = g.liquido < 0
               const active = g.gestor === activeGestor
               return (
-                <tr key={g.gestor} className={active ? 'row-active' : ''} onClick={() => onSelect?.(g.gestor)}
+                <tr key={g.gestor} className={`filter-row${active ? ' row-active is-filter-active' : ''}`} onClick={() => onSelect?.(g.gestor)}
+                  aria-selected={active}
                   tabIndex={0} onKeyDown={e => e.key === 'Enter' && onSelect?.(g.gestor)}
                   title={active ? `Limpar o filtro de ${g.gestor}` : `Filtrar por ${g.gestor}`}>
                   <td className="col-sticky col-gestor"><span className="ativo-code">{g.gestor}</span></td>

@@ -114,8 +114,9 @@ export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter
             return (
               <tr
                 key={a.codigoAtivo || i}
-                className={selected ? 'row-selected' : ''}
+                className={`filter-row${selected ? ' row-selected is-filter-active' : ''}`}
                 onClick={() => onFilter('ativo', a.codigoAtivo)}
+                aria-selected={selected}
                 tabIndex={0}
                 onKeyDown={e => e.key === 'Enter' && onFilter('ativo', a.codigoAtivo)}
               >

@@ -37,6 +37,7 @@ function fmtVolRs(v) {
 
 export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
   const [busca, setBusca] = useState('')
+  const [data, setData] = useState('')
   const [grupo, setGrupo] = useState('')
   const [emissor, setEmissor] = useState('')
   const [ativo, setAtivo] = useState('')
@@ -52,6 +53,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
   const dias5Recentes = useMemo(() => new Set([...new Set(trades.map(t => t.data))].sort().slice(-5)), [trades])
 
   const opts = useMemo(() => ({
+    datas:     [...new Set(trades.map(a => a.data).filter(Boolean))].sort().reverse(),
     grupos:    [...new Set(trades.map(a => a.grupo).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR')),
     emissores: [...new Set(trades.map(a => a.emissorNome).filter(e => e && e !== '—'))].sort((a, b) => a.localeCompare(b, 'pt-BR')),
     ativos:    [...new Set(trades.map(a => a.codigoAtivo).filter(Boolean))].sort(),
@@ -64,6 +66,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
       a.codigoAtivo.toLowerCase().includes(q) ||
       (a.grupo || '').toLowerCase().includes(q) ||
       (a.emissorNome || '').toLowerCase().includes(q))
+    if (data)    rows = rows.filter(a => a.data === data)
     if (grupo)   rows = rows.filter(a => a.grupo === grupo)
     if (emissor) rows = rows.filter(a => a.emissorNome === emissor)
     if (ativo)   rows = rows.filter(a => a.codigoAtivo === ativo)
@@ -85,22 +88,25 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
       if (a.data !== b.data) return a.data < b.data ? 1 : -1
       return a.codigoAtivo < b.codigoAtivo ? -1 : 1
     })
-  }, [trades, busca, grupo, emissor, ativo, faixa, lei, sort])
+  }, [trades, busca, data, grupo, emissor, ativo, faixa, lei, sort])
 
   // Grafico: CLICAR num ativo na tabela/card (selAtivo) foca o grafico no
   // historico completo daquele papel; na falta, cai no conjunto FILTRADO
   // (grupo/emissor/ativo/busca). Sem nada -> aviso.
-  const temFoco = !!(selAtivo || grupo || emissor || ativo || busca.trim())
-  const focoLabel = selAtivo || ativo || emissor || grupo || (busca.trim() ? `"${busca.trim()}"` : '')
+  const temFoco = !!(selAtivo || data || grupo || emissor || ativo || busca.trim())
+  const focoLabel = selAtivo || ativo || emissor || grupo || (busca.trim() ? `"${busca.trim()}"` : '') || (data ? fmtDateDDMMYY(data) : '')
   // Linhas que alimentam o grafico: o ativo clicado (todos os pregoes dele) tem
   // prioridade; senao, o conjunto filtrado da tabela.
   const chartRows = useMemo(() => {
     // Ativo focado: seu historico completo, mas RESPEITANDO o filtro de Volume
     // (o >5MM tem que valer tambem no grafico).
-    if (selAtivo) return trades.filter(t => t.codigoAtivo === selAtivo && (!faixa || t.faixaVolume === faixa))
-    if (grupo || emissor || ativo || busca.trim()) return filtrados
+    if (selAtivo) return trades.filter(t =>
+      t.codigoAtivo === selAtivo &&
+      (!data || t.data === data) &&
+      (!faixa || t.faixaVolume === faixa))
+    if (data || grupo || emissor || ativo || busca.trim()) return filtrados
     return null
-  }, [selAtivo, trades, filtrados, grupo, emissor, ativo, busca, faixa])
+  }, [selAtivo, trades, filtrados, data, grupo, emissor, ativo, busca, faixa])
   const nAtivosFiltro = useMemo(() => chartRows ? new Set(chartRows.map(f => f.codigoAtivo)).size : 0, [chartRows])
   const serieGrafico = useMemo(() => {
     if (!chartRows || !chartRows.length) return null
@@ -183,8 +189,8 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
   // Clicar num ativo foca o grafico (toggle: clicar de novo solta). Independe dos
   // filtros da tabela (master-detail).
   const onClickAtivo = cod => setSelAtivo(s => (s === cod ? '' : cod))
-  const limpar = () => { setBusca(''); setGrupo(''); setEmissor(''); setAtivo(''); setFaixa(''); setLei(''); setSelAtivo('') }
-  const temFiltro = busca || grupo || emissor || ativo || faixa || lei
+  const limpar = () => { setBusca(''); setData(''); setGrupo(''); setEmissor(''); setAtivo(''); setFaixa(''); setLei(''); setSelAtivo('') }
+  const temFiltro = busca || data || grupo || emissor || ativo || faixa || lei
 
   // Compacto: por padrao mostra so' o ultimo pregao (perf -- evita renderizar todo
   // o historico em cards). Com filtro ou "ver tudo", mostra todos os filtrados.
@@ -225,8 +231,9 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
           <tbody>
             {grupoAtivos.map(a => (
               <tr key={a.ticker}
-                className={`sec-row-click${ativo === a.ticker ? ' sec-row-active' : ''}`}
+                className={`sec-row-click filter-row${ativo === a.ticker ? ' sec-row-active is-filter-active' : ''}`}
                 onClick={() => setAtivo(v => (v === a.ticker ? '' : a.ticker))}
+                aria-selected={ativo === a.ticker}
                 title={`Filtrar ${a.ticker} na tabela e no gráfico`}>
                 <td className="col-ativo"><span className="ativo-code">{a.ticker}</span></td>
                 <td className="col-num">{a.vencimento ? fmtDateDDMMYY(a.vencimento) : '-'}</td>
@@ -249,6 +256,14 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
             <span className="fluxo-field-label">Buscar</span>
             <input className="sec-input" placeholder="Ativo, emissor ou grupo…"
               value={busca} onChange={e => setBusca(e.target.value)} aria-label="Buscar no mercado secundário" />
+          </div>
+          <div className="fluxo-field sec-field-data">
+            <span className="fluxo-field-label">Data</span>
+            <select className="sec-input sec-date-input" value={data} onChange={e => setData(e.target.value)}
+              aria-label="Filtrar mercado secundario por data">
+              <option value="">Data: todas</option>
+              {opts.datas.map(d => <option key={d} value={d}>Data: {fmtDateDDMMYY(d)}</option>)}
+            </select>
           </div>
           <div className="fluxo-field sec-field-sel">
             <span className="fluxo-field-label">Grupo</span>
@@ -341,8 +356,9 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
             )}
             {linhasVisiveis.map((a, i) => (
               <tr key={`${a.codigoAtivo}|${a.data}|${i}`}
-                className={`sec-row-click${selAtivo === a.codigoAtivo ? ' sec-row-active' : ''}`}
+                className={`sec-row-click filter-row${selAtivo === a.codigoAtivo ? ' sec-row-active is-filter-active' : ''}`}
                 onClick={() => onClickAtivo(a.codigoAtivo)}
+                aria-selected={selAtivo === a.codigoAtivo}
                 title={`Ver a evolução de ${a.codigoAtivo} no gráfico`}>
                 <td className="col-sticky col-num col-data">{fmtDateDDMMYY(a.data)}</td>
                 <td className="col-sticky col-ativo">

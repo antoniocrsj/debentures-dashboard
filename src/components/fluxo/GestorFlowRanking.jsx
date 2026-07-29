@@ -72,8 +72,9 @@ export default function GestorFlowRanking({ ranking, activeGestor, onSelect }) {
               return (
                 <tr
                   key={g.gestor}
-                  className={active ? 'row-active' : ''}
+                  className={`filter-row${active ? ' row-active is-filter-active' : ''}`}
                   onClick={() => onSelect?.(g.gestor)}
+                  aria-selected={active}
                   tabIndex={0}
                   onKeyDown={e => e.key === 'Enter' && onSelect?.(g.gestor)}
                   title={active ? `Limpar o filtro de ${g.gestor}` : `Filtrar Captação por ${g.gestor}`}

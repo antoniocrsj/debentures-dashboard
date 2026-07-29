@@ -613,6 +613,23 @@ a { color: var(--primary); }
 .asset-table tbody tr:hover { background: var(--primary-light); }
 .asset-table tbody tr:active { background: var(--blue-press); }
 
+/* Estado comum das linhas que funcionam como filtro em qualquer tabela do app.
+   A classe semantica evita que cada aba tenha um realce diferente e tambem
+   cobre o modo compacto, inclusive quando a primeira coluna e' sticky. */
+table tbody tr.filter-row { cursor: pointer; }
+table tbody tr.filter-row.is-filter-active > td {
+  background: var(--primary-light) !important;
+}
+table tbody tr.filter-row.is-filter-active > td:first-child {
+  box-shadow: inset 3px 0 0 var(--primary);
+}
+table tbody tr.filter-row.is-filter-active .ativo-code,
+table tbody tr.filter-row.is-filter-active .venc-ell,
+table tbody tr.filter-row.is-filter-active .venc-tk {
+  color: var(--primary);
+  font-weight: 700;
+}
+
 /* Sticky first column */
 .col-sticky {
   position: sticky !important;

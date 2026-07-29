@@ -153,8 +153,9 @@ export default function VencimentosDashboard({ data, blc, plByGestor, compact })
       </thead>
       <tbody>
         {gestorSorted.map(g => (
-          <tr key={g.nome} className={`venc-row-click${g.nome === gestorSel ? ' row-active' : ''}`}
+          <tr key={g.nome} className={`venc-row-click filter-row${g.nome === gestorSel ? ' row-active is-filter-active' : ''}`}
               onClick={() => pickGestor(g.nome)} tabIndex={0}
+              aria-selected={g.nome === gestorSel}
               onKeyDown={e => e.key === 'Enter' && pickGestor(g.nome)}
               title={g.nome === gestorSel ? 'Clique para limpar a seleção' : `Selecionar ${g.nome}`}>
             <td className="venc-nome"><span className="venc-ell">{g.nome}</span></td>
