@@ -2212,6 +2212,17 @@ a { color: var(--primary); }
 }
 .app.desktop .content:has(> .filter-bar) > .table-wrap-x > .table-wrap {
   flex: 1 1 auto; min-height: 0; max-height: calc(100% - 5px); overflow: auto;
+  /* Trava em linhas inteiras: a banda visivel do tbody nao e' multiplo exato da
+     altura de linha (20px), entao o Total sticky deixaria sobrar meia-linha. Com
+     snap por linha (align:end + scroll-padding = altura do tfoot) a ultima linha
+     encaixa exatamente no topo do Total ao parar de rolar. NAO muda a altura das
+     linhas -- so' o ponto de repouso da rolagem. */
+  scroll-snap-type: y mandatory;
+  scroll-padding-bottom: 20px;   /* altura do tfoot (Total) sticky */
+  scroll-padding-top: 30px;      /* altura do thead sticky */
+}
+.app.desktop .content:has(> .filter-bar) > .table-wrap-x > .table-wrap .asset-table tbody tr {
+  scroll-snap-align: end;        /* alinha a BASE da linha ao topo do Total */
 }
 /* bloco de graficos ~42%: a linha do grid preenche a altura reduzida; o plot do
    grafico (flex:1) e os rankings (ranking-list overflow) se adaptam por dentro. */
