@@ -34,6 +34,7 @@ param(
   [switch]$SkipIda,
   [switch]$SkipBooks,
   [switch]$SkipBE,
+  [switch]$SkipSecundario,                 # pula a base do Secundario (Mercado Verdadeiro / BDI trade-a-trade)
   [switch]$Sensibilidade,                  # opt-in: + captacao do universo candidato (10%-80%) p/ analise de sensibilidade de corte
   [switch]$NoPublishPrompt,
   [ValidateSet('Auto', 'Incremental', 'Completa')]
@@ -60,6 +61,7 @@ $summary = [ordered]@{
   ANBIMA   = 'nao executado'
   REUNE    = 'nao executado'
   CurvasTPF = 'nao executado'
+  Secundario = 'nao executado'
   Ofertas  = 'nao executado'
   Emissores = 'nao executado'
   RecompraBE = 'nao executado'
@@ -80,6 +82,7 @@ if (-not $SkipBlc)        { $script:StepsAtivos.Add('BLC') }
 if (-not $SkipAnbima)     { $script:StepsAtivos.Add('ANBIMA') }
 if (-not $SkipAnbima)     { $script:StepsAtivos.Add('REUNE') }
 if (-not $SkipAnbima)     { $script:StepsAtivos.Add('Curvas TPF (secundario)') }
+if (-not $SkipSecundario) { $script:StepsAtivos.Add('Secundario (mercado verdadeiro)') }
 if (-not $SkipOfertas)    { $script:StepsAtivos.Add('Ofertas') }
 if (-not $SkipRelatorios) { $script:StepsAtivos.Add('Emissores (cadastro Ana)') }
 if (-not $SkipRelatorios) { $script:StepsAtivos.Add('Relatorios') }
@@ -581,6 +584,42 @@ if ($SkipAnbima) {
   } catch {
     $summary.CurvasTPF = "FALHOU sem travar: $($_.Exception.Message)"
     Warn $summary.CurvasTPF
+  }
+}
+
+# 3b. Secundario: base MERCADO VERDADEIRO (trade a mercado, sem direta/double-count).
+# Puxa o tape trade-a-trade da B3 (BDI) do(s) pregao(oes) novo(s) e regenera a
+# varredura -> public/Mercado_Verdadeiro.csv (fonte da aba Secundario). Depende de
+# Debentures.csv (passo 1), Anbima_Tx.csv (ANBIMA) e REUNE_Curvas.csv (Curvas TPF),
+# todos ja' frescos aqui. Best-effort: nunca trava a atualizacao. Os .gz do tape
+# (public/bdi/) sao gitignored -- so' o CSV vai pra publicacao. O puxador BDI as
+# vezes estoura um assert interno do undici (fetch do Node) -> ate 3 tentativas.
+if ($SkipSecundario) {
+  $summary.Secundario = 'PULADO por parametro -SkipSecundario'
+  Warn $summary.Secundario
+} else {
+  Progress 'Secundario (mercado verdadeiro)'
+  try {
+    $bdiOk = $false
+    for ($i = 1; $i -le 3 -and -not $bdiOk; $i++) {
+      & node (Join-Path $PSScriptRoot 'preparar-bdi-negocios.mjs')
+      if ($LASTEXITCODE -eq 0) { $bdiOk = $true }
+      else { Warn "puxador BDI tentativa $i falhou (undici?); repetindo..."; Start-Sleep -Seconds 2 }
+    }
+    if (-not $bdiOk) { throw "puxador BDI falhou apos 3 tentativas" }
+    & node (Join-Path $PSScriptRoot 'varredura-mercado.mjs')
+    if ($LASTEXITCODE -ne 0) { throw "varredura-mercado saiu com codigo $LASTEXITCODE" }
+    $mvMeta = Read-MetaJson 'Mercado_Verdadeiro_meta.json'
+    if ($mvMeta -and $mvMeta.data_recente) {
+      $summary.Secundario = "OK (ate $($mvMeta.data_recente); $($mvMeta.linhas) linhas)"
+      Ok $summary.Secundario
+    } else {
+      $summary.Secundario = 'executado (sem meta)'
+      Warn $summary.Secundario
+    }
+  } catch {
+    $summary.Secundario = "FALHOU sem travar: $($_.Exception.Message)"
+    Warn "$($summary.Secundario) (Secundario fica com a base anterior)"
   }
 }
 

@@ -45,9 +45,11 @@ for (const dia of dias) {
 
 fs.writeFileSync(OUT, linhas.join('\n') + '\n', 'utf8')
 const econGlobal = gDobrado / 2
+const datasBase = [...new Set(linhas.slice(1).map(l => l.slice(0, 10)))].filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d)).sort()
 const meta = {
   fonte: 'Varredura MERCADO x DIRETA sobre BDI Negocio a Negocio (DEB). Guloso por PU, fee [1bp,2bps] x duration. Spread CDI+/NTN-B+ (ref ANBIMA).',
   min_vol_dobrado: MIN_VOL_DOBRADO, fee_banda: '1bp..2bps x duration',
+  dias: datasBase.length, data_recente: datasBase[datasBase.length - 1] || null, data_antiga: datasBase[0] || null,
   linhas: linhas.length - 1, ativos_dia_relevantes: gAtivosDia, com_spread: gComSpread, sem_duration: gSemDur,
   vol_mercado_total: Math.round(gMercado), vol_econ_total_relevante: Math.round(econGlobal),
   pct_mercado_do_econ: econGlobal > 0 ? +(gMercado / econGlobal * 100).toFixed(1) : null,

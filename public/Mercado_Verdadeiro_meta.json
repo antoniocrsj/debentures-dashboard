@@ -2,6 +2,9 @@
   "fonte": "Varredura MERCADO x DIRETA sobre BDI Negocio a Negocio (DEB). Guloso por PU, fee [1bp,2bps] x duration. Spread CDI+/NTN-B+ (ref ANBIMA).",
   "min_vol_dobrado": 10000000,
   "fee_banda": "1bp..2bps x duration",
+  "dias": 91,
+  "data_recente": "2026-07-28",
+  "data_antiga": "2026-03-18",
   "linhas": 7773,
   "ativos_dia_relevantes": 7773,
   "com_spread": 2918,
@@ -9,5 +12,5 @@
   "vol_mercado_total": 34634980732,
   "vol_econ_total_relevante": 171785765583,
   "pct_mercado_do_econ": 20.2,
-  "gerado_em": "2026-07-29T11:07:25.186Z"
+  "gerado_em": "2026-07-29T11:15:59.244Z"
 }
