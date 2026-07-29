@@ -634,7 +634,7 @@ a { color: var(--primary); }
 .ativo-code { font-weight: 600; font-size: var(--fz-corpo); color: var(--text); }
 .ativo-grupo { font-size: var(--fz-micro); color: var(--text-muted); line-height: 1.15; max-width: 100px; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 .ativo-emissor { color: var(--text-muted); opacity: 0.85; }
-.semana-cobertura { display: block; font-size: var(--fz-micro); color: var(--text-muted); font-weight: 400; white-space: nowrap; margin-top: 1px; }
+.semana-cobertura { display: inline; font-size: var(--fz-micro); color: var(--text-muted); font-weight: 400; white-space: nowrap; margin-left: 6px; }
 .semana-cobertura.parcial { color: var(--flag-ink); font-weight: 600; }
 
 .info-btn {
@@ -1381,8 +1381,11 @@ a { color: var(--primary); }
   }
   /* separate+spacing:0 faz a borda de 1px caber DENTRO da altura (23px exatos) */
   .app.desktop .asset-table { font-size: var(--fz-corpo); border-collapse: separate; border-spacing: 0; }
-  .app.desktop .asset-table th { font-size: var(--fz-corpo); padding: var(--sp-2) var(--sp-2) var(--sp-2) var(--sp-3); }
-  /* Linhas padronizadas em TODAS as tabelas: 23px, fonte 11px, padding vertical 3px */
+  /* Cabecalho unificado: 26px em TODA asset-table das abas Debentures/Tecnico
+     (Ativos, gestoras, Fluxo semanal/mensal). nowrap p/ o th nunca virar 2 linhas
+     (era o que inflava o Fluxo p/ 45px). */
+  .app.desktop .asset-table th { height: 26px; font-size: var(--fz-corpo); padding: 0 var(--sp-2) 0 var(--sp-3); white-space: nowrap; }
+  /* Linhas padronizadas em TODAS as tabelas: 20px, fonte 11px, padding vertical 3px */
   .app.desktop .asset-table td { height: 20px; padding: var(--sp-1) var(--sp-2) var(--sp-1) var(--sp-3); font-size: var(--fz-corpo); line-height: 14px; }
   .app.desktop .asset-table .info-btn { width: 14px; height: 14px; font-size: var(--fz-corpo); }
   .app.desktop .asset-table col.c-ativo { width: 232px; }
@@ -1442,7 +1445,9 @@ a { color: var(--primary); }
     z-index: 1;
     background: var(--card);
     border-bottom: 2px solid var(--border);
-    padding: var(--sp-2) var(--sp-4);
+    flex: none;               /* nao encolher: e' item de flex-column que transborda */
+    height: 26px;
+    padding: 0 var(--sp-4);
     margin: 0;
     font-size: var(--fz-micro);
   }
@@ -1456,8 +1461,8 @@ a { color: var(--primary); }
   }
   .app.desktop .desktop-split-col .ranking-card:hover { background: var(--primary-light); }
   .app.desktop .desktop-split-col .ranking-card.card-selected { background: var(--primary-light); }
-  /* borda na própria linha (dentro dos 23px) → pitch idêntico à tabela Ativos */
-  .app.desktop .desktop-split-col .ranking-row { height: 23px; padding: var(--sp-1) var(--sp-4); line-height: 15px; border-bottom: 1px solid var(--blue-line); }
+  /* borda na própria linha (dentro dos 20px) → pitch idêntico à tabela Ativos */
+  .app.desktop .desktop-split-col .ranking-row { height: 20px; padding: var(--sp-1) var(--sp-4); line-height: 14px; border-bottom: 1px solid var(--blue-line); }
   .app.desktop .desktop-split-col .ranking-card:last-child .ranking-row { border-bottom: 0; }
   .app.desktop .desktop-split-col .rank-num,
   .app.desktop .desktop-split-col .rank-name,
@@ -2015,7 +2020,21 @@ a { color: var(--primary); }
   .app.desktop .tecnico-chart-cell .venc-chart { height: auto; min-height: 0; }
   .app.desktop .tecnico-gestor-table { position: sticky; top: 14px; }
   .app.desktop .tecnico-gestor-table .fluxo-ranking-head { margin-bottom: 8px; }
-  .app.desktop .tecnico-gestor-table .table-wrap { max-height: none; height: 416px; margin: 0; }
+  /* Gestoras: altura travada em linhas inteiras (thead 26 + tfoot 20 = chrome 46)
+     + snap por linha, igual a Ativos -- o Total encaixa na ultima linha. */
+  .app.desktop .tecnico-gestor-table .table-wrap {
+    max-height: none; margin: 0; --chrome: 46px;
+    height: calc(var(--chrome) + round(down, 416px - var(--chrome), 20px));
+    scroll-snap-type: y mandatory; scroll-padding-bottom: 20px; scroll-padding-top: 26px;
+  }
+  /* Fluxo (semanal/mensal): mesmo travamento; so' rola quando "ver todas". */
+  .app.desktop .tecnico .fluxo-table-block .table-wrap {
+    --chrome: 46px;
+    max-height: calc(var(--chrome) + round(down, 46vh - var(--chrome), 20px));
+    scroll-snap-type: y mandatory; scroll-padding-bottom: 20px; scroll-padding-top: 26px;
+  }
+  .app.desktop .tecnico-gestor-table .asset-table tbody tr,
+  .app.desktop .tecnico .fluxo-table-block .asset-table tbody tr { scroll-snap-align: end; }
 
   .app.desktop .tecnico-tables-row { margin-bottom: 0; }
 }
@@ -2077,7 +2096,7 @@ a { color: var(--primary); }
    Cabecalho com a MESMA altura das linhas: o th nao e' mais importante que o
    dado, e a linha extra so' empurrava a lista p/ baixo. */
 .app.desktop .tecnico-gestor-table .fluxo-table { font-size: var(--fz-corpo); }
-.app.desktop .tecnico-gestor-table table.asset-table th,
+/* td 20px; o th segue o padrao global (26px) -- cabecalho unificado nas 2 abas. */
 .app.desktop .tecnico-gestor-table table.asset-table td {
   padding: var(--sp-1) var(--sp-2) !important;
   height: 20px;
@@ -2085,14 +2104,17 @@ a { color: var(--primary); }
   white-space: nowrap;
   font-size: var(--fz-corpo);
 }
-/* th na MESMA altura do td: o padding vertical do cabecalho global era maior e
-   a seta de ordenacao esticava a linha. */
-.app.desktop .tecnico-gestor-table table.asset-table th {
+/* th: mantem alinhamento vertical/letter-spacing; altura 26 vem do global.
+   Vale p/ gestoras E p/ as tabelas de Fluxo (semanal/mensal) -- senao o elemento
+   interno do SortableTh (com padding/seta proprios) empurra o th p/ ~33px. */
+.app.desktop .tecnico-gestor-table table.asset-table th,
+.app.desktop .tecnico .fluxo-table-block table.asset-table th {
   font-size: var(--fz-corpo);
   letter-spacing: 0;
   vertical-align: middle;
 }
-.app.desktop .tecnico-gestor-table table.asset-table th > * {
+.app.desktop .tecnico-gestor-table table.asset-table th > *,
+.app.desktop .tecnico .fluxo-table-block table.asset-table th > * {
   padding: 0 !important;
   min-height: 0;
   line-height: 1.15;
@@ -2218,16 +2240,16 @@ a { color: var(--primary); }
         e o Total encaixa na ultima linha ATE' no topo da lista (scrollTop 0).
      2) Snap por linha (align:end + scroll-padding = tfoot) mantem o encaixe em
         qualquer ponto de repouso da rolagem, nao so' nos extremos.
-     --chrome = thead (29.4) + tfoot/Total (20). round() cai fora em navegador antigo
+     --chrome = thead (26) + tfoot/Total (20). round() cai fora em navegador antigo
      -> declaracao ignorada, volta ao max-height:calc(100% - 5px) (degrada p/ so' o snap). */
   --row-h: 20px;
-  --chrome: 49.4px;
+  --chrome: 46px;
   flex: 0 0 auto;
   height: calc(var(--chrome) + round(down, (100% - 5px - var(--chrome)), var(--row-h)));
   max-height: calc(var(--chrome) + round(down, (100% - 5px - var(--chrome)), var(--row-h)));
   scroll-snap-type: y mandatory;
   scroll-padding-bottom: 20px;   /* altura do tfoot (Total) sticky */
-  scroll-padding-top: 30px;      /* altura do thead sticky */
+  scroll-padding-top: 26px;      /* altura do thead sticky */
 }
 .app.desktop .content:has(> .filter-bar) > .table-wrap-x > .table-wrap .asset-table tbody tr {
   scroll-snap-align: end;        /* alinha a BASE da linha ao topo do Total */
@@ -2235,10 +2257,10 @@ a { color: var(--primary); }
 /* bloco de graficos ~42%: a linha do grid preenche a altura reduzida; o plot do
    grafico (flex:1) e os rankings (ranking-list overflow) se adaptam por dentro. */
 .app.desktop .content:has(> .filter-bar) > .desktop-split-3 {
-  /* Altura FIXA = 10 linhas (cabecalho 28 + 8 linhas de dados x23 + total 23 = 235px):
+  /* Altura FIXA = cabecalho 26 + 8 linhas de dados x20 + total 20 = 206px:
      as 3 colunas (grafico | Gestor | Grupo) ficam alinhadas e cabem exatamente 8
      linhas de dados, em qualquer tela. A tabela de cima preenche o resto. */
-  flex: 0 0 auto; height: calc(28px + 8 * 23px + 23px);
+  flex: 0 0 auto; height: calc(26px + 8 * 20px + 20px);
   min-height: 0; margin-top: 8px; padding-top: 0;   /* 8px reais: zera o padding-top (sp-5) */
   grid-template-rows: minmax(0, 1fr);
 }

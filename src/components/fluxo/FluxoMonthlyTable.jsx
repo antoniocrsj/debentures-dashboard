@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { fmtFluxo, fmtFluxoSigned, fmtMonthYY, sortRows } from '../../utils/fluxo.js'
+import { fmtFluxo, fmtFluxoSigned, fmtMonthYY, fmtInt, sortRows } from '../../utils/fluxo.js'
 import SortableTh, { cycleSort } from './SortableTh.jsx'
 import TableWrap from '../TableWrap.jsx'
 
@@ -23,6 +23,12 @@ export default function FluxoMonthlyTable({ months, hideFechados = false }) {
     () => sortRows(months, KEYS[sort.col] || KEYS.mes, sort.dir),
     [months, sort]
   )
+  const totais = useMemo(() => {
+    let liquido = 0, captacao = 0, resgate = 0
+    for (const m of months) { liquido += m.liquido || 0; captacao += m.captacao || 0; resgate += m.resgate || 0 }
+    return { liquido, captacao, resgate }
+  }, [months])
+
   if (!months || !months.length) return null
 
   const onSort = col => setSort(s => cycleSort(s, col, DEFAULT_SORT))
@@ -38,7 +44,7 @@ export default function FluxoMonthlyTable({ months, hideFechados = false }) {
           <thead>
             <tr>
               <SortableTh col="mes"      label="Mês"          sort={sort} onSort={onSort} align="left" sticky />
-              <SortableTh col="liquido"  label="Cap. líquida" sort={sort} onSort={onSort} />
+              <SortableTh col="liquido"  label="Cap. líq."    sort={sort} onSort={onSort} />
               <SortableTh col="captacao" label="Captação"     sort={sort} onSort={onSort} />
               <SortableTh col="resgate"  label="Resgate"      sort={sort} onSort={onSort} />
             </tr>
@@ -56,6 +62,14 @@ export default function FluxoMonthlyTable({ months, hideFechados = false }) {
               )
             })}
           </tbody>
+          <tfoot>
+            <tr>
+              <td className="col-sticky col-ativo">Total · {fmtInt(months.length)}</td>
+              <td className={`col-num liq-cell${totais.liquido > 0 ? ' pos' : totais.liquido < 0 ? ' neg' : ''}`}>{fmtFluxoSigned(totais.liquido)}</td>
+              <td className="col-num">{fmtFluxo(totais.captacao)}</td>
+              <td className="col-num">{fmtFluxo(totais.resgate)}</td>
+            </tr>
+          </tfoot>
         </table>
       </TableWrap>
     </div>
