@@ -2211,7 +2211,7 @@ a { color: var(--primary); }
   flex: 1 1 0; min-height: 0; display: flex; flex-direction: column;
 }
 .app.desktop .content:has(> .filter-bar) > .table-wrap-x > .table-wrap {
-  flex: 1 1 auto; min-height: 0; max-height: none; overflow: auto;
+  flex: 1 1 auto; min-height: 0; max-height: calc(100% - 5px); overflow: auto;
 }
 /* bloco de graficos ~42%: a linha do grid preenche a altura reduzida; o plot do
    grafico (flex:1) e os rankings (ranking-list overflow) se adaptam por dentro. */
