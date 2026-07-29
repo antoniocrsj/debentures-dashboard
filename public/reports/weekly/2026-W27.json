@@ -347,9 +347,9 @@
         "retornoPct": 0.2918,
         "dataIni": "2026-06-26",
         "dataFim": "2026-07-03",
-        "spreadIniBps": 101,
+        "spreadIniBps": 100,
         "spreadFimBps": 100,
-        "variacaoBps": -1,
+        "variacaoBps": 0,
         "spreadConfiavel": true
       }
     },
@@ -654,7 +654,7 @@
       "texto": "IDA-IPCA Infraestrutura rendeu +0,23% na semana."
     },
     {
-      "texto": "IDA-DI rendeu +0,29% na semana, spread fechou 1 bps."
+      "texto": "IDA-DI rendeu +0,29% na semana, spread estável."
     },
     {
       "texto": "Captação líquida 12.431 na semana: −R$ 1,4 bi (capt. R$ 1,6 bi − resg. R$ 3 bi, 5 dia(s) útil(eis)).",

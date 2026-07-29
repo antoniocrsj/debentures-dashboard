@@ -11,7 +11,7 @@
     "anbima": "2026-07-28",
     "fundos": "2026-07-28",
     "blc": "2026-07-28",
-    "ida": "2026-07-24",
+    "ida": "2026-07-27",
     "perf12431": "2026-07-27",
     "perfTrad": "2026-07-27"
   },
@@ -439,8 +439,26 @@
       "dataFim": "2026-07-28"
     },
     "ida": {
-      "12431": null,
-      "trad": null
+      "12431": {
+        "indice": "IDA-IPCA Infraestrutura",
+        "retornoPct": 0.102,
+        "dataIni": "2026-07-24",
+        "dataFim": "2026-07-27",
+        "spreadIniBps": null,
+        "spreadFimBps": null,
+        "variacaoBps": null,
+        "spreadConfiavel": false
+      },
+      "trad": {
+        "indice": "IDA-DI",
+        "retornoPct": 0.0539,
+        "dataIni": "2026-07-24",
+        "dataFim": "2026-07-27",
+        "spreadIniBps": 97,
+        "spreadFimBps": 97,
+        "variacaoBps": 0,
+        "spreadConfiavel": true
+      }
     },
     "fundos": {
       "semAnterior": false,
@@ -512,6 +530,12 @@
     {
       "texto": "Spread ANBIMA Tradicional estável na semana (24/07→28/07): média +0.0 bps — 0 fechamentos, 0 aberturas e 21 sem mudança (21 papéis).",
       "tom": ""
+    },
+    {
+      "texto": "IDA-IPCA Infraestrutura rendeu +0,1% na semana."
+    },
+    {
+      "texto": "IDA-DI rendeu +0,05% na semana, spread estável."
     },
     {
       "texto": "Captação líquida 12.431 na semana: −R$ 262 mi (capt. R$ 88 mi − resg. R$ 350 mi, 2 dia(s) útil(eis)).",

@@ -5,12 +5,12 @@
   "dias": 91,
   "data_recente": "2026-07-28",
   "data_antiga": "2026-03-18",
-  "linhas": 7773,
-  "ativos_dia_relevantes": 7773,
-  "com_spread": 2918,
+  "linhas": 7784,
+  "ativos_dia_relevantes": 7784,
+  "com_spread": 2923,
   "sem_duration": 11,
-  "vol_mercado_total": 34634980732,
-  "vol_econ_total_relevante": 171785765583,
+  "vol_mercado_total": 34678239759,
+  "vol_econ_total_relevante": 171884310078,
   "pct_mercado_do_econ": 20.2,
-  "gerado_em": "2026-07-29T11:15:59.244Z"
+  "gerado_em": "2026-07-29T12:16:46.252Z"
 }
