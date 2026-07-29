@@ -659,6 +659,7 @@ a { color: var(--primary); }
 
 .ranking-header {
   display: flex;
+  align-items: center;
   gap: 8px;
   padding: var(--sp-2) var(--sp-4);
   font-size: var(--fz-micro);
@@ -1384,7 +1385,7 @@ a { color: var(--primary); }
   /* Cabecalho unificado: 26px em TODA asset-table das abas Debentures/Tecnico
      (Ativos, gestoras, Fluxo semanal/mensal). nowrap p/ o th nunca virar 2 linhas
      (era o que inflava o Fluxo p/ 45px). */
-  .app.desktop .asset-table th { height: 26px; font-size: var(--fz-corpo); padding: 0 var(--sp-2) 0 var(--sp-3); white-space: nowrap; }
+  .app.desktop .asset-table th { height: 26px; font-size: var(--fz-corpo); padding: 0 var(--sp-2) 0 var(--sp-3); white-space: nowrap; vertical-align: middle; }
   /* Linhas padronizadas em TODAS as tabelas: 20px, fonte 11px, padding vertical 3px */
   .app.desktop .asset-table td { height: 20px; padding: var(--sp-1) var(--sp-2) var(--sp-1) var(--sp-3); font-size: var(--fz-corpo); line-height: 14px; }
   .app.desktop .asset-table .info-btn { width: 14px; height: 14px; font-size: var(--fz-corpo); }

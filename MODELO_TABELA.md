@@ -23,6 +23,8 @@ volta da tabela — foi exatamente essa moldura que criava a "margem" na Técnic
 ## 2. Cabeçalho — `thead th`
 - Altura **26px**; `white-space: nowrap` (nunca quebra em 2 linhas).
 - Fonte 11px (--fz-corpo); `padding: 0 var(--sp-2) 0 var(--sp-3)`.
+- **Texto centralizado verticalmente**: `vertical-align: middle` (com padding
+  vertical 0 e a célula alta, o padrão `baseline` cola o texto no topo).
 - Fundo branco (--card); `position: sticky; top: 0`.
 - Borda inferior 2px (--border).
 - Se houver elemento interno (ex.: `SortableTh` com seta), achatar:
@@ -62,7 +64,7 @@ volta da tabela — foi exatamente essa moldura que criava a "margem" na Técnic
 ## 7. Variante "ranking" (div, não `<table>`)
 Os rankings (Gestor/Grupo) replicam o modelo com divs em vez de `<table>`:
 - `.ranking-header` **26px**, `flex: none` (é item de flex-column que transborda;
-  sem isso ele colapsa p/ ~16px).
+  sem isso ele colapsa p/ ~16px), `align-items: center` (centra o texto na vertical).
 - `.ranking-row` **20px**; `.ranking-total` **20px**, branco + borda carvão,
   **fora** do `.ranking-list` que rola (sempre visível).
 - Painel de 8 linhas: altura fixa `= 26 + 8×20 + 20 = 206px`.
