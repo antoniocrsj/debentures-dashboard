@@ -56,13 +56,14 @@ volta da tabela — foi exatamente essa moldura que criava a "margem" na Técnic
   rolagem (gap ≈ 0), sem meia-linha flutuando.
 - `round()` degrada bem: em navegador sem suporte a declaração cai e volta ao
   `max-height` anterior (fica só o snap).
-- **⚠️ Barra de rolagem horizontal:** se a tabela é mais larga que o card (rola
-  no eixo X — ex.: gestoras da Técnico, com nomes longos numa coluna estreita), a
-  barra horizontal come ~10px da altura útil: `clientHeight = height − barra`.
-  Nesse caso o **chrome tem que incluir a barra**: `chrome = thead 26 + tfoot 20
-  + barra 10 = 56`, e fixe a barra (`::-webkit-scrollbar { height: 10px }`) p/ o
-  valor ser determinístico. Sem isso a banda dá meia-linha e a última fica
-  cortada. Tabelas que preenchem o card (não rolam no X) não precisam disso.
+- **⚠️ Barra de rolagem horizontal:** se a tabela rola no eixo X, a barra
+  horizontal come ~10px da altura útil (`clientHeight = height − barra`) e a banda
+  dá meia-linha → última linha cortada. **Solução preferida: fazer a tabela caber
+  no card** (sem scroll X) — `table-layout: fixed`, colunas numéricas com largura
+  fixa e estreita, 1ª coluna com o resto e reticências (`text-overflow: ellipsis`).
+  Foi o que se fez na tabela de gestoras da Técnico (removida a coluna % Caixa e
+  distribuídas as 4 restantes). *Fallback* (quando o scroll X é inevitável):
+  incluir a barra no chrome (`26+20+10=56`) e fixá-la (`::-webkit-scrollbar { height: 10px }`).
 
 ## 6. Cores
 - Cabeçalho branco; Total branco + borda carvão; **sem faixas de fundo**.

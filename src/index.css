@@ -2021,17 +2021,14 @@ a { color: var(--primary); }
   .app.desktop .tecnico-chart-cell .venc-chart { height: auto; min-height: 0; }
   .app.desktop .tecnico-gestor-table { position: sticky; top: 14px; }
   .app.desktop .tecnico-gestor-table .fluxo-ranking-head { margin-bottom: 8px; }
-  /* Gestoras: altura travada em linhas inteiras. ATENCAO: esta tabela e' mais
-     larga que a coluna (nomes longos) e SEMPRE tem barra de rolagem horizontal,
-     que come ~10px da altura util (clientHeight = height - sbar). Sem contar isso,
-     a banda dava 17,5 linhas e a ultima ficava cortada. chrome = thead 26 +
-     tfoot 20 + barra-h 10 = 56; a barra e' fixada em 10px p/ ser deterministica. */
+  /* Gestoras: altura travada em linhas inteiras (modelo puro -- sem barra
+     horizontal: a tabela tem 4 colunas e preenche o card, ver regra de larguras
+     abaixo). chrome = thead 26 + tfoot 20 = 46. */
   .app.desktop .tecnico-gestor-table .table-wrap {
-    max-height: none; margin: 0; --chrome: 46px; --sbar: 10px;
-    height: calc(var(--chrome) + var(--sbar) + round(down, (416px - var(--chrome) - var(--sbar)), 20px));
+    max-height: none; margin: 0; --chrome: 46px;
+    height: calc(var(--chrome) + round(down, (416px - var(--chrome)), 20px));
     scroll-snap-type: y mandatory; scroll-padding-bottom: 20px; scroll-padding-top: 26px;
   }
-  .app.desktop .tecnico-gestor-table .table-wrap::-webkit-scrollbar { height: 10px; }
   /* Fluxo (semanal/mensal): mesmo travamento; so' rola quando "ver todas".
      margin:0 -> a tabela preenche o card (o default do .table-wrap era 17px 24px,
      a "margem" que sobrava dos lados). */
@@ -2137,6 +2134,13 @@ a { color: var(--primary); }
 }
 /* numero fino: tabular p/ as casas alinharem em coluna estreita */
 .app.desktop .tecnico-gestor-table .fluxo-table .col-num { font-variant-numeric: tabular-nums; }
+/* 4 colunas distribuidas SEM scroll horizontal: as 3 numericas fixas e estreitas;
+   a 1a (Gestor) fica com o resto e trunca com reticencias (table-layout:fixed). */
+.app.desktop .tecnico-gestor-table table.asset-table th:nth-child(n+2),
+.app.desktop .tecnico-gestor-table table.asset-table td:nth-child(n+2) { width: 76px; }
+.app.desktop .tecnico-gestor-table .col-gestor .ativo-code {
+  display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
 
 /* KPI dentro do card do grafico: valor-resumo alinhado a' direita do titulo, na
    mesma faixa. Le antes de olhar a curva -- "quanto" antes de "como variou". */

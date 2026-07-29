@@ -11,9 +11,7 @@ import TableWrap from '../TableWrap.jsx'
 // debenture a vencer em 12m etc.) em vez de mostrar um falso zero.
 const LIMIT = 20
 const DEFAULT_SORT = { col: 'pl', dir: 'desc' }   // abre pelo maior PL (porte do gestor)
-const KEYS = { gestor: g => g.gestor, pl: g => g.pl ?? -Infinity, liquido: g => g.liquido, pctCaixa: g => g.pctCaixa ?? -Infinity, venc3m: g => g.venc3m ?? -Infinity }
-
-function fmtPct(v) { return v == null ? '—' : `${v.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%` }
+const KEYS = { gestor: g => g.gestor, pl: g => g.pl ?? -Infinity, liquido: g => g.liquido, venc3m: g => g.venc3m ?? -Infinity }
 
 export default function TecnicoGestorTable({ rows, activeGestor, onSelect, refDate }) {
   const [sort, setSort] = useState(DEFAULT_SORT)
@@ -23,20 +21,16 @@ export default function TecnicoGestorTable({ rows, activeGestor, onSelect, refDa
   const onSort = col => setSort(s => cycleSort(s, col, DEFAULT_SORT))
   const shown = showAll ? sorted : sorted.slice(0, LIMIT)
 
-  // Total sobre TODAS as gestoras do filtro (nao so' as 20 visiveis). PL, cap.
-  // liquida e venc. somam; % Caixa NAO -- somar percentual nao significa nada.
-  // Vai a media ponderada pelo PL: sum(pct*PL)/sum(PL), que e' o caixa total
-  // sobre o PL total = o nivel de caixa real do conjunto. Ponderada so' sobre
-  // quem TEM %Caixa (gestor sem dado de caixa nao dilui o denominador com 0).
+  // Total sobre TODAS as gestoras do filtro (nao so' as 20 visiveis): PL, cap.
+  // liquida e venc. 3M somam.
   const totais = useMemo(() => {
-    let pl = 0, liquido = 0, venc = 0, pctNum = 0, pctDen = 0
+    let pl = 0, liquido = 0, venc = 0
     for (const g of rows || []) {
       if (g.pl != null) pl += g.pl
       liquido += g.liquido || 0
       if (g.venc3m != null) venc += g.venc3m
-      if (g.pctCaixa != null && g.pl != null && g.pl > 0) { pctNum += g.pctCaixa * g.pl; pctDen += g.pl }
     }
-    return { pl, liquido, venc, pctCaixa: pctDen > 0 ? pctNum / pctDen : null }
+    return { pl, liquido, venc }
   }, [rows])
 
   if (!rows || !rows.length) return null
@@ -53,7 +47,6 @@ export default function TecnicoGestorTable({ rows, activeGestor, onSelect, refDa
               <SortableTh col="gestor" label="Gestor" sort={sort} onSort={onSort} align="left" sticky />
               <SortableTh col="pl" label="PL" sort={sort} onSort={onSort} />
               <SortableTh col="liquido" label="Cap. líq." sort={sort} onSort={onSort} />
-              <SortableTh col="pctCaixa" label="% Caixa" sort={sort} onSort={onSort} />
               <SortableTh col="venc3m" label="Venc. 3M" sort={sort} onSort={onSort} />
             </tr>
           </thead>
@@ -68,7 +61,6 @@ export default function TecnicoGestorTable({ rows, activeGestor, onSelect, refDa
                   <td className="col-sticky col-gestor"><span className="ativo-code">{g.gestor}</span></td>
                   <td className="col-num">{g.pl == null ? '—' : fmtFluxo(g.pl)}</td>
                   <td className={`col-num liq-cell${pos ? ' pos' : neg ? ' neg' : ''}`}>{fmtFluxoSigned(g.liquido)}</td>
-                  <td className="col-num">{fmtPct(g.pctCaixa)}</td>
                   <td className="col-num">{g.venc3m == null ? '—' : fmtFluxo(g.venc3m)}</td>
                 </tr>
               )
@@ -79,7 +71,6 @@ export default function TecnicoGestorTable({ rows, activeGestor, onSelect, refDa
               <td className="col-sticky col-gestor">Total · {fmtInt(sorted.length)}</td>
               <td className="col-num">{fmtFluxo(totais.pl)}</td>
               <td className={`col-num liq-cell${totais.liquido > 0 ? ' pos' : totais.liquido < 0 ? ' neg' : ''}`}>{fmtFluxoSigned(totais.liquido)}</td>
-              <td className="col-num" title="Média ponderada pelo PL (caixa total ÷ PL total)">{fmtPct(totais.pctCaixa)}</td>
               <td className="col-num">{fmtFluxo(totais.venc)}</td>
             </tr>
           </tfoot>
