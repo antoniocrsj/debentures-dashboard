@@ -2208,10 +2208,15 @@ a { color: var(--primary); }
   display: flex; flex-direction: column; padding-bottom: 20px; overflow: hidden;
 }
 .app.desktop .content:has(> .filter-bar) > .table-wrap-x {
-  flex: 1 1 0; min-height: 0; display: flex; flex-direction: column;
+  /* Altura FIXA = 10 linhas padronizadas: cabecalho 26 + 8 ativos x24 + total 24 =
+     242px. Mostra exatamente 8 ativos (cabecalho e total sticky). Como encolhe, o
+     espaco livre vira gap ate o bloco de baixo (colado a 20px do fim). */
+  /* o SCROLL fica no container externo (table-wrap-x), nao no interno -- assim o
+     thead/tfoot sticky do <table> funcionam. 242px = 26 + 8x24 + 24. */
+  flex: 0 0 auto; min-height: 0; max-height: calc(26px + 8 * 24px + 24px); overflow: auto;
 }
 .app.desktop .content:has(> .filter-bar) > .table-wrap-x > .table-wrap {
-  flex: 1 1 auto; min-height: 0; max-height: none; overflow: auto;
+  max-height: none; overflow: visible;
 }
 /* bloco de graficos ~42%: a linha do grid preenche a altura reduzida; o plot do
    grafico (flex:1) e os rankings (ranking-list overflow) se adaptam por dentro. */
@@ -2219,8 +2224,8 @@ a { color: var(--primary); }
   /* Altura FIXA = 10 linhas (cabecalho 28 + 8 linhas de dados x23 + total 23 = 235px):
      as 3 colunas (grafico | Gestor | Grupo) ficam alinhadas e cabem exatamente 8
      linhas de dados, em qualquer tela. A tabela de cima preenche o resto. */
-  flex: 0 0 auto; height: calc(28px + 8 * 23px + 23px);
-  min-height: 0; margin-top: 8px; padding-top: 0;   /* 8px reais: zera o padding-top (sp-5) */
+  flex: 0 0 auto; height: calc(28px + 8 * 24px + 24px);   /* cabecalho 28 + 8x24 + total 24 = 244px */
+  min-height: 0; margin-top: auto; padding-top: 0;   /* auto: cola no fim; o gap p/ a tabela de cima absorve o espaco livre */
   grid-template-rows: minmax(0, 1fr);
 }
 /* os rankings (Gestor/Grupo) PREENCHEM a celula do grid (senao o max-height:52vh
@@ -2228,6 +2233,12 @@ a { color: var(--primary); }
 .app.desktop .content:has(> .filter-bar) .desktop-split-3 .ranking-panel {
   max-height: none; height: 100%; min-height: 0;
 }
+/* Linhas PADRONIZADAS nas duas tabelas da Debentures: cabecalho 26px, linha de
+   dados 24px, total 24px -> cabem exatamente 8 linhas de dados (bloco = 242px). */
+.app.desktop .content:has(> .filter-bar) .asset-table thead th { height: 26px; padding-top: 2px; padding-bottom: 2px; }
+.app.desktop .content:has(> .filter-bar) .asset-table tbody td { height: 24px; }
+.app.desktop .content:has(> .filter-bar) .asset-table tfoot td { height: 24px; position: sticky; bottom: 0; z-index: 3; background: #fff; }
+.app.desktop .desktop-split-col .ranking-row { height: 24px; }   /* dados 24 (cabecalho fica no natural ~28, total 24) */
 /* Volume vira sweep (‹ valor ›): rotulo com folga p/ "1–5MM"/"Até 1MM". */
 .corte-step-vol .corte-step-val { min-width: 66px; }
 
