@@ -1,18 +1,35 @@
 {
   "reports": [
     {
+      "date": "2026-07-28",
+      "label": "28/07/2026",
+      "json": "/reports/daily/2026-07-28.json",
+      "html": "/reports/daily/2026-07-28.html",
+      "sourceDates": {
+        "debentures": "2026-07-27",
+        "cap12431": "2026-07-24",
+        "capTrad": "2026-07-24",
+        "perf12431": "2026-07-24",
+        "perfTrad": "2026-07-24",
+        "anbima": "2026-07-28",
+        "blc": "2026-07-27",
+        "fundos": "2026-07-24",
+        "reune": "2026-07-28"
+      }
+    },
+    {
       "date": "2026-07-27",
       "label": "27/07/2026",
       "json": "/reports/daily/2026-07-27.json",
       "html": "/reports/daily/2026-07-27.html",
       "sourceDates": {
-        "debentures": "2026-07-22",
+        "debentures": "2026-07-27",
         "cap12431": "2026-07-23",
         "capTrad": "2026-07-23",
         "perf12431": "2026-07-23",
         "perfTrad": "2026-07-23",
         "anbima": "2026-07-27",
-        "blc": "2026-07-24",
+        "blc": "2026-07-27",
         "fundos": "2026-07-23",
         "reune": "2026-07-27"
       }
@@ -23,7 +40,7 @@
       "json": "/reports/daily/2026-07-24.json",
       "html": "/reports/daily/2026-07-24.html",
       "sourceDates": {
-        "debentures": "2026-07-22",
+        "debentures": "2026-07-23",
         "cap12431": "2026-07-22",
         "capTrad": "2026-07-22",
         "perf12431": "2026-07-22",
@@ -40,7 +57,7 @@
       "json": "/reports/daily/2026-07-23.json",
       "html": "/reports/daily/2026-07-23.html",
       "sourceDates": {
-        "debentures": "2026-07-22",
+        "debentures": "2026-07-23",
         "cap12431": "2026-07-21",
         "capTrad": "2026-07-21",
         "perf12431": "2026-07-21",
@@ -66,23 +83,6 @@
         "blc": "2026-07-22",
         "fundos": "2026-07-17",
         "reune": "2026-07-22"
-      }
-    },
-    {
-      "date": "2026-07-21",
-      "label": "21/07/2026",
-      "json": "/reports/daily/2026-07-21.json",
-      "html": "/reports/daily/2026-07-21.html",
-      "sourceDates": {
-        "debentures": "2026-07-21",
-        "cap12431": "2026-07-17",
-        "capTrad": "2026-07-17",
-        "perf12431": "2026-07-17",
-        "perfTrad": "2026-07-17",
-        "anbima": "2026-07-21",
-        "blc": "2026-07-21",
-        "fundos": "2026-07-17",
-        "reune": "2026-07-21"
       }
     }
   ]

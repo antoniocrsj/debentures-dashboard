@@ -1,46 +1,7 @@
 {
-    "asOf":  "2026-07-28",
-    "geradoEm":  "2026-07-28T07:56:26",
+    "asOf":  "2026-07-29",
+    "geradoEm":  "2026-07-29T07:45:01",
     "itens":  [
-                  {
-                      "dataRegistro":  "2026-07-27",
-                      "dataRequerimento":  "2026-07-16",
-                      "emissor":  "JBS SA",
-                      "cnpj":  "02916265000160",
-                      "emissao":  12,
-                      "valor":  400000000,
-                      "incentivada":  false,
-                      "lider":  "ITAU BBA ASSESSORIA FINANCEIRA S.A"
-                  },
-                  {
-                      "dataRegistro":  "2026-07-27",
-                      "dataRequerimento":  "2026-07-17",
-                      "emissor":  "AXIA ENERGIA S.A.",
-                      "cnpj":  "00001180000126",
-                      "emissao":  11,
-                      "valor":  500000000,
-                      "incentivada":  false,
-                      "lider":  "BTG PACTUAL INVESTMENT BANKING LTDA."
-                  },
-                  {
-                      "dataRegistro":  "2026-07-27",
-                      "dataRequerimento":  "2026-07-20",
-                      "emissor":  "FORTBRAS AUTOPECAS S.A.",
-                      "cnpj":  "22761584000150",
-                      "emissao":  8,
-                      "valor":  40000000,
-                      "incentivada":  false,
-                      "lider":  "BANCO BRADESCO BBI S.A."
-                  },
-                  {
-                      "dataRegistro":  "2026-07-27",
-                      "dataRequerimento":  "2026-07-02",
-                      "emissor":  "BTG PACTUAL COMMODITIES SERTRADING S.A.",
-                      "cnpj":  "04626426000106",
-                      "emissao":  2,
-                      "valor":  1400000000,
-                      "incentivada":  false,
-                      "lider":  "BTG PACTUAL INVESTMENT BANKING LTDA."
-                  }
+
               ]
 }

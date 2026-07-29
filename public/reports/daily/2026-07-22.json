@@ -1,7 +1,7 @@
 {
   "date": "2026-07-22",
   "label": "22/07/2026",
-  "previousDate": "2026-07-21",
+  "previousDate": null,
   "sourceDates": {
     "debentures": "2026-07-22",
     "cap12431": "2026-07-20",
@@ -17,7 +17,7 @@
     "debentures": true,
     "cap": true,
     "anbima": true,
-    "fundos": false,
+    "fundos": true,
     "blc": false
   },
   "summary": [
@@ -113,17 +113,17 @@
         "captacao": 2045120511.4099998,
         "resgate": 5075212236.820002,
         "liquido": -3030091725.4100018,
-        "pl": 1586279250749.8503,
-        "numFundos": 1001,
+        "pl": 1586291543801.8203,
+        "numFundos": 1002,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
           "dia": "2026-07-17",
-          "captacao": 2793632034.9,
-          "resgate": 2398587910.4,
-          "liquido": 395044124.5,
-          "pl": 1587504929832.8801,
-          "numFundos": 996
+          "captacao": 2793684970.4700003,
+          "resgate": 2398630650.7400002,
+          "liquido": 395054319.73,
+          "pl": 1587603475323.3503,
+          "numFundos": 998
         }
       }
     },
@@ -245,7 +245,7 @@
           "captacao": 370891745.24,
           "resgate": 1457078969.98,
           "liquido": -1086187224.74,
-          "pl": 454607230117.58
+          "pl": 454607231192.18
         },
         {
           "gestor": "BRAM",
@@ -1838,19 +1838,11 @@
     "perf": {
       "top12431Pos": [
         {
-          "cnpj": "53075427000115",
-          "nome": "KINEA INCENTIVADO RF CP LP FI FINANCEIRO FUNDO INCENT EM INV EM DEBÊN DE INFRAESTRUTURA - RESP LTDA",
-          "gestor": "Kinea",
-          "segmento": "12431",
-          "retorno": 20.0207,
-          "pl": 278678279.83
-        },
-        {
           "cnpj": "59878473000139",
           "nome": "SAFRA INFRA EXCLUSIVO PRÉ RF FIF INVESTIMENTO EM INFRA CI EM INFRAESTRUTURA EM RF RESP LIMITADA",
           "gestor": "Safra Asset",
           "segmento": "12431",
-          "retorno": 12.7258,
+          "retorno": 2.78,
           "pl": 9250355.17
         },
         {
@@ -1860,6 +1852,14 @@
           "segmento": "12431",
           "retorno": 2.5254,
           "pl": 10461902.37
+        },
+        {
+          "cnpj": "59123735000155",
+          "nome": "PORTO PAINEIRA CDI FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA RF CRÉD PRIV RESP LIMITADA",
+          "gestor": "Porto Asset",
+          "segmento": "12431",
+          "retorno": 2.1652,
+          "pl": 18827268.81
         },
         {
           "cnpj": "55382748000198",
@@ -1904,20 +1904,20 @@
           "pl": 64922290.43
         },
         {
-          "cnpj": "59123735000155",
-          "nome": "PORTO PAINEIRA CDI FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA RF CRÉD PRIV RESP LIMITADA",
-          "gestor": "Porto Asset",
-          "segmento": "12431",
-          "retorno": -2.0078,
-          "pl": 18827268.81
-        },
-        {
           "cnpj": "54200289000111",
           "nome": "SK8 FIF - CLASSE DE INVESTIMENTO RENDA FIXA INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA",
           "gestor": "G5",
           "segmento": "12431",
           "retorno": -1.1688,
           "pl": 17395211.57
+        },
+        {
+          "cnpj": "53906748000114",
+          "nome": "PSO 2 FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
+          "gestor": "BTG WM",
+          "segmento": "12431",
+          "retorno": -0.651,
+          "pl": 153640008.19
         }
       ],
       "topTradPos": [
@@ -1980,14 +1980,6 @@
           "pl": 202726708.06
         },
         {
-          "cnpj": "44459125000150",
-          "nome": "REAL FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO",
-          "gestor": "AF Invest",
-          "segmento": "trad",
-          "retorno": -0.4774,
-          "pl": 43766308.12
-        },
-        {
           "cnpj": "17072641000154",
           "nome": "PORTO SEGURO INFLAÇÃO MASTER PREVIDENCIÁRIO FIF RENDA FIXA RESPONSABILIDADE LIMITADA",
           "gestor": "Porto Asset",
@@ -2002,6 +1994,14 @@
           "segmento": "trad",
           "retorno": -0.2797,
           "pl": 46680891.24
+        },
+        {
+          "cnpj": "39511694000167",
+          "nome": "TULIPA 18 CLASSE DE INVESTIMENTO  MULTIMERCADO CRÉDITO PRIVADO",
+          "gestor": "Brainvest",
+          "segmento": "trad",
+          "retorno": -0.2729,
+          "pl": 14205978.17
         }
       ]
     },

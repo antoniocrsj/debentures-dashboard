@@ -160,11 +160,11 @@
         }
       },
       "trad": {
-        "captacao": 13554034262.820011,
-        "resgate": 11701538949.310009,
-        "liquido": 1852495313.5100021,
-        "pl": 1587504929832.8801,
-        "numFundos": 996,
+        "captacao": 13554090350.97001,
+        "resgate": 11701700556.43001,
+        "liquido": 1852389794.540001,
+        "pl": 1587603475323.3503,
+        "numFundos": 998,
         "dataPl": "2026-07-17",
         "de": "2026-07-13",
         "ate": "2026-07-17",
@@ -285,7 +285,7 @@
           "captacao": 3028035806.75,
           "resgate": 2501340353.17,
           "liquido": 526695453.5799999,
-          "pl": 455410308872.99,
+          "pl": 455410308771.28,
           "dias": 5
         },
         {
@@ -301,7 +301,7 @@
           "captacao": 215294405.99,
           "resgate": 65277251.64000001,
           "liquido": 150017154.35,
-          "pl": 26425369120.38,
+          "pl": 26425369119.87,
           "dias": 5
         }
       ],
@@ -502,9 +502,9 @@
         "retornoPct": 0.302,
         "dataIni": "2026-07-10",
         "dataFim": "2026-07-17",
-        "spreadIniBps": 96,
-        "spreadFimBps": 96,
-        "variacaoBps": 0,
+        "spreadIniBps": 98,
+        "spreadFimBps": 97,
+        "variacaoBps": -1,
         "spreadConfiavel": true
       }
     },
@@ -1730,6 +1730,17 @@
     "perf": {
       "top12431Pos": [
         {
+          "cnpj": "63706652000166",
+          "nome": "VINLAND INC XP FUNDO…",
+          "gestor": "Vinland",
+          "retorno": 16.6992,
+          "obs": 5,
+          "de": "2026-07-13",
+          "ate": "2026-07-17",
+          "pl": 283183494.45,
+          "segmento": "12431"
+        },
+        {
           "cnpj": "64089192000137",
           "nome": "TOP DEBÊNTURES 2025 INCENTIVADO…",
           "gestor": "IAM",
@@ -1772,17 +1783,6 @@
           "ate": "2026-07-17",
           "pl": 1725438043.72,
           "segmento": "12431"
-        },
-        {
-          "cnpj": "58758334000109",
-          "nome": "JOURNEY CAPITAL 60 FUNDO…",
-          "gestor": "Journey",
-          "retorno": 2.027,
-          "obs": 5,
-          "de": "2026-07-13",
-          "ate": "2026-07-17",
-          "pl": 107772468.11,
-          "segmento": "12431"
         }
       ],
       "top12431Neg": [
@@ -1795,6 +1795,17 @@
           "de": "2026-07-13",
           "ate": "2026-07-17",
           "pl": 160413522.16,
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "59123735000155",
+          "nome": "PORTO PAINEIRA CDI FUNDO…",
+          "gestor": "Porto Asset",
+          "retorno": -3.9792,
+          "obs": 5,
+          "de": "2026-07-13",
+          "ate": "2026-07-17",
+          "pl": 2453858.78,
           "segmento": "12431"
         },
         {
@@ -1828,17 +1839,6 @@
           "de": "2026-07-13",
           "ate": "2026-07-17",
           "pl": 26834538.89,
-          "segmento": "12431"
-        },
-        {
-          "cnpj": "60775750000167",
-          "nome": "G5 ALLOCATION II FUNDO…",
-          "gestor": "G5",
-          "retorno": -0.9514,
-          "obs": 3,
-          "de": "2026-07-13",
-          "ate": "2026-07-17",
-          "pl": 47245655.19,
           "segmento": "12431"
         }
       ],
@@ -2005,7 +2005,7 @@
           "insuficiente": 7,
           "glitch": 2
         },
-        "avaliados": 995,
+        "avaliados": 996,
         "minCobertura": 0.6
       }
     }
@@ -2023,7 +2023,7 @@
       "texto": "IDA-IPCA Infraestrutura rendeu -0,15% na semana."
     },
     {
-      "texto": "IDA-DI rendeu +0,3% na semana, spread estável."
+      "texto": "IDA-DI rendeu +0,3% na semana, spread fechou 1 bps."
     },
     {
       "texto": "Captação líquida 12.431 na semana: −R$ 765 mi (capt. R$ 1,1 bi − resg. R$ 1,8 bi, 5 dia(s) útil(eis)).",

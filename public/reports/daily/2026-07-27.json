@@ -3,18 +3,18 @@
   "label": "27/07/2026",
   "previousDate": "2026-07-24",
   "sourceDates": {
-    "debentures": "2026-07-22",
+    "debentures": "2026-07-27",
     "cap12431": "2026-07-23",
     "capTrad": "2026-07-23",
     "perf12431": "2026-07-23",
     "perfTrad": "2026-07-23",
     "anbima": "2026-07-27",
-    "blc": "2026-07-24",
+    "blc": "2026-07-27",
     "fundos": "2026-07-23",
     "reune": "2026-07-27"
   },
   "novoPorFonte": {
-    "debentures": false,
+    "debentures": true,
     "cap": true,
     "anbima": true,
     "fundos": true,
@@ -22,11 +22,15 @@
   },
   "summary": [
     {
-      "texto": "Captação líquida Incentivados: −R$ 154 mi",
+      "texto": "9 nova(s) debênture(s) cadastrada(s)",
+      "tom": "pos"
+    },
+    {
+      "texto": "Captação líquida Incentivados: −R$ 156 mi",
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional: +R$ 900 mi",
+      "texto": "Captação líquida Tradicional: +R$ 906 mi",
       "tom": "pos"
     },
     {
@@ -52,45 +56,172 @@
   ],
   "sections": {
     "debentures": {
-      "novas": [],
+      "novas": [
+        {
+          "ticker": "AXIAA1",
+          "empresa": "AXIA ENERGIA S.A.",
+          "grupo": "Axia",
+          "cnpj": "00001180000126",
+          "dataRegistro": "27/07/2026",
+          "dataEmissao": "15/07/2026",
+          "vencimento": "15/07/2036",
+          "indexador": "IPCA",
+          "taxa": "7,9537",
+          "volumeEmitido": 500000000,
+          "incentivada": true,
+          "coordenador": "BTG PACTUAL INVESTMENT BANKING LTDA."
+        },
+        {
+          "ticker": "BTGL12",
+          "empresa": "BTG PACTUAL COMMODITIES SERTRADING SA",
+          "grupo": "BTG Pactual",
+          "cnpj": "04626426000106",
+          "dataRegistro": "27/07/2026",
+          "dataEmissao": "15/07/2026",
+          "vencimento": "15/07/2033",
+          "indexador": "PRÉ",
+          "taxa": "13,7149",
+          "volumeEmitido": 373449000,
+          "incentivada": true,
+          "coordenador": "BTG PACTUAL INVESTMENT BANKING LTDA."
+        },
+        {
+          "ticker": "BTGL22",
+          "empresa": "BTG PACTUAL COMMODITIES SERTRADING SA",
+          "grupo": "BTG Pactual",
+          "cnpj": "04626426000106",
+          "dataRegistro": "27/07/2026",
+          "dataEmissao": "15/07/2026",
+          "vencimento": "15/07/2033",
+          "indexador": "IPCA",
+          "taxa": "7,5128",
+          "volumeEmitido": 218885000,
+          "incentivada": true,
+          "coordenador": "BTG PACTUAL INVESTMENT BANKING LTDA."
+        },
+        {
+          "ticker": "BTGL32",
+          "empresa": "BTG PACTUAL COMMODITIES SERTRADING SA",
+          "grupo": "BTG Pactual",
+          "cnpj": "04626426000106",
+          "dataRegistro": "27/07/2026",
+          "dataEmissao": "15/07/2026",
+          "vencimento": "15/07/2036",
+          "indexador": "PRÉ",
+          "taxa": "13,9959",
+          "volumeEmitido": 136476000,
+          "incentivada": true,
+          "coordenador": "BTG PACTUAL INVESTMENT BANKING LTDA."
+        },
+        {
+          "ticker": "BTGL42",
+          "empresa": "BTG PACTUAL COMMODITIES SERTRADING SA",
+          "grupo": "BTG Pactual",
+          "cnpj": "04626426000106",
+          "dataRegistro": "27/07/2026",
+          "dataEmissao": "15/07/2026",
+          "vencimento": "15/07/2036",
+          "indexador": "IPCA",
+          "taxa": "7,521",
+          "volumeEmitido": 346086000,
+          "incentivada": true,
+          "coordenador": "BTG PACTUAL INVESTMENT BANKING LTDA."
+        },
+        {
+          "ticker": "BTGL52",
+          "empresa": "BTG PACTUAL COMMODITIES SERTRADING SA",
+          "grupo": "BTG Pactual",
+          "cnpj": "04626426000106",
+          "dataRegistro": "27/07/2026",
+          "dataEmissao": "15/07/2026",
+          "vencimento": "15/07/2041",
+          "indexador": "PRÉ",
+          "taxa": "14,3549",
+          "volumeEmitido": 132857000,
+          "incentivada": true,
+          "coordenador": "BTG PACTUAL INVESTMENT BANKING LTDA."
+        },
+        {
+          "ticker": "BTGL62",
+          "empresa": "BTG PACTUAL COMMODITIES SERTRADING SA",
+          "grupo": "BTG Pactual",
+          "cnpj": "04626426000106",
+          "dataRegistro": "27/07/2026",
+          "dataEmissao": "15/07/2026",
+          "vencimento": "15/07/2041",
+          "indexador": "IPCA",
+          "taxa": "7,5293",
+          "volumeEmitido": 192247000,
+          "incentivada": true,
+          "coordenador": "BTG PACTUAL INVESTMENT BANKING LTDA."
+        },
+        {
+          "ticker": "FOAU18",
+          "empresa": "FORTBRAS AUTOPECAS S/A",
+          "grupo": "Fortbras",
+          "cnpj": "22761584000150",
+          "dataRegistro": "27/07/2026",
+          "dataEmissao": "10/07/2026",
+          "vencimento": "15/07/2031",
+          "indexador": "DI",
+          "taxa": "1,94",
+          "volumeEmitido": 40000000,
+          "incentivada": false,
+          "coordenador": "BANCO BRADESCO BBI S/A"
+        },
+        {
+          "ticker": "JYSSA2",
+          "empresa": "JBS  S/A",
+          "grupo": "",
+          "cnpj": "02916265000160",
+          "dataRegistro": "27/07/2026",
+          "dataEmissao": "15/07/2026",
+          "vencimento": "15/07/2036",
+          "indexador": "IPCA",
+          "taxa": "8,3323",
+          "volumeEmitido": 400000000,
+          "incentivada": true,
+          "coordenador": "ITAU UNIBANCO HOLDING S.A"
+        }
+      ],
       "saidas": [],
       "temSnapshotAnterior": false
     },
     "captacao": {
       "12431": {
         "dia": "2026-07-23",
-        "captacao": 69224050.50999998,
-        "resgate": 223183215.57000002,
-        "liquido": -153959165.06000006,
-        "pl": 254632454293.18,
-        "numFundos": 1665,
+        "captacao": 69706529.63,
+        "resgate": 225229403.55000004,
+        "liquido": -155522873.92000005,
+        "pl": 255823377699.65,
+        "numFundos": 1670,
         "curados": 1720,
         "fechados": 286,
         "anterior": {
           "dia": "2026-07-22",
-          "captacao": 149951746.14000005,
-          "resgate": 229689647.81999996,
-          "liquido": -79737901.67999992,
-          "pl": 252568920071.84998,
-          "numFundos": 1677
+          "captacao": 159298942.52000004,
+          "resgate": 236613405.68999997,
+          "liquido": -77314463.16999993,
+          "pl": 262466503501.20996,
+          "numFundos": 1684
         }
       },
       "trad": {
         "dia": "2026-07-23",
-        "captacao": 2522207944.6000004,
-        "resgate": 1622583337.1400003,
-        "liquido": 899624607.46,
-        "pl": 1573617755979.6306,
-        "numFundos": 984,
+        "captacao": 2526290274.5600004,
+        "resgate": 1620228572.9000003,
+        "liquido": 906061701.6600001,
+        "pl": 1574233001250.451,
+        "numFundos": 991,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
           "dia": "2026-07-22",
-          "captacao": 2325461747.899999,
-          "resgate": 2238248693.6999993,
-          "liquido": 87213054.19999981,
-          "pl": 1571164450405.72,
-          "numFundos": 987
+          "captacao": 2342239112.8899994,
+          "resgate": 2260167669.189999,
+          "liquido": 82071443.70000029,
+          "pl": 1579228554623.3298,
+          "numFundos": 994
         }
       }
     },
@@ -163,10 +294,10 @@
         },
         {
           "gestor": "ARX",
-          "captacao": 2236000,
-          "resgate": 12225000,
-          "liquido": -9989000,
-          "pl": 6545907549.66
+          "captacao": 2400632.89,
+          "resgate": 12672076.22,
+          "liquido": -10271443.33,
+          "pl": 6816534581.31
         }
       ],
       "topTradCaptacao": [
@@ -175,7 +306,7 @@
           "captacao": 839649251.58,
           "resgate": 414866545.87,
           "liquido": 424782705.71000004,
-          "pl": 456516562643.91
+          "pl": 456516562544.63
         },
         {
           "gestor": "BRAM",
@@ -212,14 +343,14 @@
           "captacao": 45039609.77,
           "resgate": 106232326.03,
           "liquido": -61192716.26,
-          "pl": 135825455311.35
+          "pl": 135825455311.33
         },
         {
           "gestor": "Tivio",
           "captacao": 3202051.03,
           "resgate": 43344115.05,
           "liquido": -40142064.019999996,
-          "pl": 6950896737.99
+          "pl": 6977632770.16
         },
         {
           "gestor": "Sulamérica",
@@ -1753,36 +1884,36 @@
           "pl": 3234789461.63
         },
         {
-          "cnpj": "63386988000199",
-          "nome": "LEGACY CAPITAL ARKAN FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA CDI RF RESP LIMITADA",
-          "gestor": "Legacy",
-          "segmento": "12431",
-          "retorno": 2.743,
-          "pl": 50340465.34
-        },
-        {
-          "cnpj": "61543507000186",
-          "nome": "VINLAND 2 FI INCENTIVADO EM DEB DE INFRA ATIVO FIF RF CRED PRIV LP RESPONSABILIDADE LIMITADA",
-          "gestor": "Vinland",
-          "segmento": "12431",
-          "retorno": 0.9016,
-          "pl": 147340395.66
-        },
-        {
-          "cnpj": "64089192000137",
-          "nome": "TOP DEBÊNTURES 2025 FI INCENTIVADO EM DEBÊNTURES DE INFRA FIF RENDA FIXA CRED PRIV RESP LIMITADA",
-          "gestor": "IAM",
-          "segmento": "12431",
-          "retorno": 0.6522,
-          "pl": 11619211.28
-        },
-        {
           "cnpj": "55230301000101",
           "nome": "SAFRA INFRA LIQUIDEZ PROGRESSIVO FIF INV EM INFRA CLASSE DE INV EM INFRAESTRUTURA RF RESP LIMITADA",
           "gestor": "Safra Asset",
           "segmento": "12431",
           "retorno": 0.5003,
           "pl": 110939989.54
+        },
+        {
+          "cnpj": "50891130000130",
+          "nome": "LEGACY CAPITAL COMPOUND FIF INVESTIMENTO EM DEB DE INFRA CDI ATIVO RF CRED PRIV LP RESP LIMITADA",
+          "gestor": "Legacy",
+          "segmento": "12431",
+          "retorno": 0.4976,
+          "pl": 527981788.92
+        },
+        {
+          "cnpj": "55477809000109",
+          "nome": "JGP CRÉDITO INFRA MASTER II FUNDO INCENTIVADO DE INVEST INFRA RENDA FIXA RESPONSABILIDADE LIMITADA",
+          "gestor": "JGP",
+          "segmento": "12431",
+          "retorno": 0.4072,
+          "pl": 306091997.53
+        },
+        {
+          "cnpj": "58578837000100",
+          "nome": "JGP CRÉDITO INFRA MASTER III FUNDO INCENTIVADO DE INVEST EM INFRA RENDA FIXA RESP LIMITADA",
+          "gestor": "JGP",
+          "segmento": "12431",
+          "retorno": 0.3776,
+          "pl": 75167013.14
         }
       ],
       "top12431Neg": [
@@ -1795,14 +1926,6 @@
           "pl": 6761094.33
         },
         {
-          "cnpj": "63706652000166",
-          "nome": "VINLAND INC XP FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA FIF RF CRED PRIV RESP LIMITADA",
-          "gestor": "Vinland",
-          "segmento": "12431",
-          "retorno": -13.014,
-          "pl": 37225282.83
-        },
-        {
           "cnpj": "62234770000156",
           "nome": "AVA FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INRA RENDA FIXA CRÉDITO PRIVADO RESP LIMITADA",
           "gestor": "IAM",
@@ -1811,38 +1934,38 @@
           "pl": 39553772
         },
         {
+          "cnpj": "57075698000121",
+          "nome": "VINLAND FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA IPCA RF CRED PRIV LP RESP LIMITADA",
+          "gestor": "Vinland",
+          "segmento": "12431",
+          "retorno": -8.7365,
+          "pl": 158557373.12
+        },
+        {
+          "cnpj": "64089192000137",
+          "nome": "TOP DEBÊNTURES 2025 FI INCENTIVADO EM DEBÊNTURES DE INFRA FIF RENDA FIXA CRED PRIV RESP LIMITADA",
+          "gestor": "IAM",
+          "segmento": "12431",
+          "retorno": -7.5473,
+          "pl": 96012519.25
+        },
+        {
           "cnpj": "63942021000146",
           "nome": "OCCAM BB INFRA LINEAR FI FINANCEIRO RENDA FIXA INVESTIMENTO EM INFRAESTRUTURA - RESP LIMITADA",
           "gestor": "Occam",
           "segmento": "12431",
           "retorno": -5.9448,
           "pl": 118520497.77
-        },
-        {
-          "cnpj": "55911650000180",
-          "nome": "JLS INFRA FIF - CLASSE DE INVESTIMENTO INCENTIVADO DE INVESTIMENTO EM INFRA RF CRÉDITO PRIVADO",
-          "gestor": "Oriz",
-          "segmento": "12431",
-          "retorno": -1.4179,
-          "pl": 35860701.43
         }
       ],
       "topTradPos": [
         {
-          "cnpj": "52241587000124",
-          "nome": "KINEA NEPAL FIF MULT CRED PRIV - RESP LIMITADA",
-          "gestor": "Kinea",
+          "cnpj": "42736995000101",
+          "nome": "ITAÚ DIFERENCIADO FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA CRÉDITO PRIVADO RESP LIMITADA",
+          "gestor": "IAM",
           "segmento": "trad",
-          "retorno": 26.1355,
-          "pl": 13907837.38
-        },
-        {
-          "cnpj": "57154741000144",
-          "nome": "QUANTITAS FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA FIJI CRÉDITO PRIVADO LONGO PRAZO RESP LIMITADA",
-          "gestor": "Quantitas",
-          "segmento": "trad",
-          "retorno": 16.9983,
-          "pl": 23812142.27
+          "retorno": 4.6934,
+          "pl": 100207695.88
         },
         {
           "cnpj": "51977823000102",
@@ -1867,9 +1990,25 @@
           "segmento": "trad",
           "retorno": 0.774,
           "pl": 16714393.7
+        },
+        {
+          "cnpj": "44672489000113",
+          "nome": "ATSU II PREVIDÊNCIA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "gestor": "Vinci",
+          "segmento": "trad",
+          "retorno": 0.5148,
+          "pl": 29010861.81
         }
       ],
       "topTradNeg": [
+        {
+          "cnpj": "32990051000102",
+          "nome": "KINEA OPORTUNIDADE FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA CRÉDITO PRIVADO RESP LIMITADA",
+          "gestor": "Kinea",
+          "segmento": "trad",
+          "retorno": -50.0318,
+          "pl": 125004440.48
+        },
         {
           "cnpj": "50765209000114",
           "nome": "RA CLASSE DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO - RESP LIMITADA",
@@ -1901,19 +2040,21 @@
           "segmento": "trad",
           "retorno": -1.0389,
           "pl": 16111080.25
-        },
-        {
-          "cnpj": "34657939000145",
-          "nome": "SANTANDER PB CANGUARA MULTIMERCADO CRÉDITO PRIVADO - FIF",
-          "gestor": "San WM",
-          "segmento": "trad",
-          "retorno": -0.8679,
-          "pl": 21275604.9
         }
       ]
     },
     "inclusoes": {
-      "novosDebentures": [],
+      "novosDebentures": [
+        "AXIAA1",
+        "BTGL12",
+        "BTGL22",
+        "BTGL32",
+        "BTGL42",
+        "BTGL52",
+        "BTGL62",
+        "FOAU18",
+        "JYSSA2"
+      ],
       "novosBlc": [],
       "temSnapshotBlc": true
     },
@@ -1923,63 +2064,7 @@
         "texto": "74 ativo(s) no BLC sem correspondencia em Debentures.csv"
       }
     ],
-    "emissoesCVM": {
-      "asOf": "2026-07-28",
-      "itens": [
-        {
-          "dataRegistro": "2026-07-27",
-          "dataRequerimento": "2026-07-20",
-          "emissor": "FORTBRAS AUTOPECAS S.A.",
-          "cnpj": "22761584000150",
-          "emissao": 8,
-          "valor": 40000000,
-          "incentivada": false,
-          "lider": "BANCO BRADESCO BBI S.A.",
-          "grupo": "Fortbras"
-        },
-        {
-          "dataRegistro": "2026-07-27",
-          "dataRequerimento": "2026-07-17",
-          "emissor": "AXIA ENERGIA S.A.",
-          "cnpj": "00001180000126",
-          "emissao": 11,
-          "valor": 500000000,
-          "incentivada": false,
-          "lider": "BTG PACTUAL INVESTMENT BANKING LTDA.",
-          "grupo": "Axia"
-        },
-        {
-          "dataRegistro": "2026-07-27",
-          "dataRequerimento": "2026-07-16",
-          "emissor": "JBS SA",
-          "cnpj": "02916265000160",
-          "emissao": 12,
-          "valor": 400000000,
-          "incentivada": false,
-          "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-          "grupo": ""
-        },
-        {
-          "dataRegistro": "2026-07-27",
-          "dataRequerimento": "2026-07-02",
-          "emissor": "BTG PACTUAL COMMODITIES SERTRADING S.A.",
-          "cnpj": "04626426000106",
-          "emissao": 2,
-          "valor": 1400000000,
-          "incentivada": false,
-          "lider": "BTG PACTUAL INVESTMENT BANKING LTDA.",
-          "grupo": "BTG Pactual"
-        }
-      ]
-    },
-    "emissoresFaltantes": {
-      "itens": [
-        {
-          "cnpj": "02916265000160",
-          "emissor": "JBS SA"
-        }
-      ],
-      "asOf": "2026-07-28"
-    }
+    "emissoesCVM": null,
+    "emissoresFaltantes": null
   }
 }

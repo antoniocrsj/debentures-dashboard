@@ -137,18 +137,18 @@
       },
       "trad": {
         "captacao": 14832468543.09,
-        "resgate": 16216935379.699995,
-        "liquido": -1384466836.609995,
-        "pl": 1576610399047.6301,
+        "resgate": 16217587452.179996,
+        "liquido": -1385118909.0899963,
+        "pl": 1576610399042.0203,
         "numFundos": 999,
         "dataPl": "2026-07-03",
         "de": "2026-06-29",
         "ate": "2026-07-03",
         "diasUteis": 5,
         "anterior": {
-          "liquido": 1247332631.2900124,
+          "liquido": 1246034704.020012,
           "captacao": 14842796218.510004,
-          "resgate": 13595463587.219992,
+          "resgate": 13596761514.489992,
           "de": "2026-06-22",
           "ate": "2026-06-26"
         }
@@ -347,9 +347,9 @@
         "retornoPct": 0.2918,
         "dataIni": "2026-06-26",
         "dataFim": "2026-07-03",
-        "spreadIniBps": 99,
-        "spreadFimBps": 99,
-        "variacaoBps": 0,
+        "spreadIniBps": 101,
+        "spreadFimBps": 100,
+        "variacaoBps": -1,
         "spreadConfiavel": true
       }
     },
@@ -360,6 +360,17 @@
     },
     "perf": {
       "top12431Pos": [
+        {
+          "cnpj": "57075698000121",
+          "nome": "VINLAND FUNDO INCENTIVADO EM…",
+          "gestor": "Vinland",
+          "retorno": 10.1813,
+          "obs": 5,
+          "de": "2026-06-29",
+          "ate": "2026-07-03",
+          "pl": 6675158.34,
+          "segmento": "12431"
+        },
         {
           "cnpj": "60775750000167",
           "nome": "G5 ALLOCATION II FUNDO…",
@@ -380,17 +391,6 @@
           "de": "2026-06-29",
           "ate": "2026-07-03",
           "pl": 4333558.34,
-          "segmento": "12431"
-        },
-        {
-          "cnpj": "63572496000198",
-          "nome": "VINLAND DEBÊNTURE INCENTIVADO 3…",
-          "gestor": "Vinland",
-          "retorno": 4.0281,
-          "obs": 5,
-          "de": "2026-06-29",
-          "ate": "2026-07-03",
-          "pl": 4677808.6,
           "segmento": "12431"
         },
         {
@@ -622,7 +622,7 @@
       },
       {
         "tipo": "perf-cobertura",
-        "texto": "Performance Tradicional: 5 fundo(s) fora por cobertura < 60% e 0 por dado inválido."
+        "texto": "Performance Tradicional: 6 fundo(s) fora por cobertura < 60% e 0 por dado inválido."
       }
     ],
     "perfCobertura": {
@@ -638,7 +638,7 @@
       "trad": {
         "diasUteis": 5,
         "excluidos": {
-          "insuficiente": 5,
+          "insuficiente": 6,
           "glitch": 0
         },
         "avaliados": 999,
@@ -654,7 +654,7 @@
       "texto": "IDA-IPCA Infraestrutura rendeu +0,23% na semana."
     },
     {
-      "texto": "IDA-DI rendeu +0,29% na semana, spread estável."
+      "texto": "IDA-DI rendeu +0,29% na semana, spread fechou 1 bps."
     },
     {
       "texto": "Captação líquida 12.431 na semana: −R$ 1,4 bi (capt. R$ 1,6 bi − resg. R$ 3 bi, 5 dia(s) útil(eis)).",

@@ -3,7 +3,7 @@
   "label": "24/07/2026",
   "previousDate": "2026-07-23",
   "sourceDates": {
-    "debentures": "2026-07-22",
+    "debentures": "2026-07-23",
     "cap12431": "2026-07-22",
     "capTrad": "2026-07-22",
     "perf12431": "2026-07-22",
@@ -22,11 +22,11 @@
   },
   "summary": [
     {
-      "texto": "Captação líquida Incentivados: −R$ 80 mi",
+      "texto": "Captação líquida Incentivados: −R$ 77 mi",
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional: +R$ 87 mi",
+      "texto": "Captação líquida Tradicional: +R$ 82 mi",
       "tom": "pos"
     },
     {
@@ -59,11 +59,11 @@
     "captacao": {
       "12431": {
         "dia": "2026-07-22",
-        "captacao": 149951746.14000005,
-        "resgate": 229689647.81999996,
-        "liquido": -79737901.67999992,
-        "pl": 252568920071.84998,
-        "numFundos": 1677,
+        "captacao": 159298942.52000004,
+        "resgate": 236613405.68999997,
+        "liquido": -77314463.16999993,
+        "pl": 262466503501.20996,
+        "numFundos": 1684,
         "curados": 1720,
         "fechados": 286,
         "anterior": {
@@ -77,20 +77,20 @@
       },
       "trad": {
         "dia": "2026-07-22",
-        "captacao": 2325461747.899999,
-        "resgate": 2238248693.6999993,
-        "liquido": 87213054.19999981,
-        "pl": 1571164450405.72,
-        "numFundos": 987,
+        "captacao": 2342239112.8899994,
+        "resgate": 2260167669.189999,
+        "liquido": 82071443.70000029,
+        "pl": 1579228554623.3298,
+        "numFundos": 994,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
           "dia": "2026-07-21",
-          "captacao": 2891018303.8399997,
-          "resgate": 1653247068.6899998,
-          "liquido": 1237771235.1499999,
-          "pl": 1587025350146.5608,
-          "numFundos": 999
+          "captacao": 2891018724.77,
+          "resgate": 1650912107.0499997,
+          "liquido": 1240106617.7200003,
+          "pl": 1587051001600.0308,
+          "numFundos": 1000
         }
       }
     },
@@ -175,7 +175,7 @@
           "captacao": 533753734.03,
           "resgate": 405954760.32,
           "liquido": 127798973.70999998,
-          "pl": 455842985181.24
+          "pl": 455842985082.32
         },
         {
           "gestor": "CEF Asset",
@@ -1621,12 +1621,12 @@
           "pl": 6434500.38
         },
         {
-          "cnpj": "55911650000180",
-          "nome": "JLS INFRA FIF - CLASSE DE INVESTIMENTO INCENTIVADO DE INVESTIMENTO EM INFRA RF CRÉDITO PRIVADO",
-          "gestor": "Oriz",
+          "cnpj": "61543507000186",
+          "nome": "VINLAND 2 FI INCENTIVADO EM DEB DE INFRA ATIVO FIF RF CRED PRIV LP RESPONSABILIDADE LIMITADA",
+          "gestor": "Vinland",
           "segmento": "12431",
-          "retorno": 1.1389,
-          "pl": 36376490.67
+          "retorno": 0.9925,
+          "pl": 148373817.15
         },
         {
           "cnpj": "49624023000166",

@@ -513,10 +513,10 @@
       },
       "trad": {
         "captacao": 62982073864.83997,
-        "resgate": 66061489899.88001,
-        "liquido": -3079416035.040039,
-        "pl": 1574404938760.9482,
-        "numFundos": 998,
+        "resgate": 66063439899.630005,
+        "liquido": -3081366034.7900314,
+        "pl": 1575461229509.2383,
+        "numFundos": 999,
         "dataPl": "2026-06-30",
         "de": "2026-06-01",
         "ate": "2026-06-30",
@@ -661,9 +661,9 @@
         {
           "gestor": "IAM",
           "captacao": 16581658167.519995,
-          "resgate": 17912058657.45,
-          "liquido": -1330400489.930006,
-          "pl": 450343915445.45,
+          "resgate": 17914008657.199997,
+          "liquido": -1332350489.6800022,
+          "pl": 451400206193.74,
           "dias": 21
         },
         {
@@ -723,9 +723,9 @@
         "retornoPct": 1.2262,
         "dataIni": "2026-05-29",
         "dataFim": "2026-06-30",
-        "spreadIniBps": 100,
-        "spreadFimBps": 99,
-        "variacaoBps": -1,
+        "spreadIniBps": 101,
+        "spreadFimBps": 101,
+        "variacaoBps": 0,
         "spreadConfiavel": true
       }
     },
@@ -751,7 +751,7 @@
           "cnpj": "62360992000115",
           "nome": "BB MASTER II DEBÊNTURES…",
           "gestor": "BB Asset",
-          "retorno": 11.8408,
+          "retorno": 11.8407,
           "obs": 20,
           "de": "2026-06-02",
           "ate": "2026-06-30",
@@ -773,7 +773,7 @@
           "cnpj": "64089192000137",
           "nome": "TOP DEBÊNTURES 2025 INCENTIVADO…",
           "gestor": "IAM",
-          "retorno": 8.3492,
+          "retorno": 8.3491,
           "obs": 20,
           "de": "2026-06-02",
           "ate": "2026-06-30",
@@ -802,17 +802,6 @@
           "de": "2026-06-02",
           "ate": "2026-06-30",
           "pl": 23939357.28,
-          "segmento": "12431"
-        },
-        {
-          "cnpj": "60775750000167",
-          "nome": "G5 ALLOCATION II FUNDO…",
-          "gestor": "G5",
-          "retorno": -14.391,
-          "obs": 19,
-          "de": "2026-06-02",
-          "ate": "2026-06-30",
-          "pl": 36716508.79,
           "segmento": "12431"
         },
         {
@@ -847,6 +836,17 @@
           "ate": "2026-06-30",
           "pl": 69605703.85,
           "segmento": "12431"
+        },
+        {
+          "cnpj": "53906981000105",
+          "nome": "PSO 3 FUNDO INCENTIVADO DE…",
+          "gestor": "BTG WM",
+          "retorno": -5.1824,
+          "obs": 20,
+          "de": "2026-06-02",
+          "ate": "2026-06-30",
+          "pl": 30502630.96,
+          "segmento": "12431"
         }
       ],
       "topTradPos": [
@@ -854,7 +854,7 @@
           "cnpj": "64436974000103",
           "nome": "BB MASTER III DEBÊNTURES…",
           "gestor": "BB Asset",
-          "retorno": 6.8429,
+          "retorno": 6.843,
           "obs": 20,
           "de": "2026-06-02",
           "ate": "2026-06-30",
@@ -884,17 +884,6 @@
           "segmento": "trad"
         },
         {
-          "cnpj": "42736995000101",
-          "nome": "ITAÚ DIFERENCIADO CRÉDITO…",
-          "gestor": "IAM",
-          "retorno": 5.0614,
-          "obs": 12,
-          "de": "2026-06-02",
-          "ate": "2026-06-18",
-          "pl": 98588966.02,
-          "segmento": "trad"
-        },
-        {
           "cnpj": "14473842000175",
           "nome": "UBS ROKA CRÉDITO PRIVADO",
           "gestor": "UBS",
@@ -903,6 +892,17 @@
           "de": "2026-06-02",
           "ate": "2026-06-30",
           "pl": 47219083.37,
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "26498249000162",
+          "nome": "CAPITÂNIA PREVIDENCE ADVISORY…",
+          "gestor": "Capitânia",
+          "retorno": 2.3254,
+          "obs": 20,
+          "de": "2026-06-02",
+          "ate": "2026-06-30",
+          "pl": 59127352.1,
           "segmento": "trad"
         }
       ],
@@ -1045,7 +1045,7 @@
       },
       {
         "tipo": "perf-cobertura",
-        "texto": "Performance Tradicional: 9 fundo(s) fora por cobertura < 60% e 3 por dado inválido."
+        "texto": "Performance Tradicional: 9 fundo(s) fora por cobertura < 60% e 4 por dado inválido."
       }
     ],
     "perfCobertura": {
@@ -1062,9 +1062,9 @@
         "diasUteis": 20,
         "excluidos": {
           "insuficiente": 9,
-          "glitch": 3
+          "glitch": 4
         },
-        "avaliados": 995,
+        "avaliados": 994,
         "minCobertura": 0.6
       }
     }
@@ -1077,7 +1077,7 @@
       "texto": "IDA-IPCA Infraestrutura rendeu -0,06% no mês."
     },
     {
-      "texto": "IDA-DI rendeu +1,23% no mês, spread fechou 1 bps."
+      "texto": "IDA-DI rendeu +1,23% no mês, spread estável."
     },
     {
       "texto": "Captação líquida 12.431 no mês: −R$ 9,7 bi (capt. R$ 7,7 bi − resg. R$ 17,4 bi, 21 dia(s) útil(eis)).",

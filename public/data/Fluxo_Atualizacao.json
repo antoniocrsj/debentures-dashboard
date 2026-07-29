@@ -1,5 +1,5 @@
 {
-    "timestamp":  "2026-07-28T07:54:31",
+    "timestamp":  "2026-07-29T07:43:16",
     "modo":  "incremental",
     "mesesProcessados":  [
                              "202607",
@@ -10,7 +10,7 @@
                    ],
     "periodoCoberto":  {
                            "inicio":  "2026-06-01",
-                           "fim":  "2026-07-27"
+                           "fim":  "2026-07-28"
                        },
     "linhasInvalidas":  0,
     "12431":  {
@@ -23,7 +23,7 @@
     "trad":  {
                  "gestoras":  1007,
                  "naoEncontrados":  1,
-                 "linhasSemanais":  1182,
+                 "linhasSemanais":  1184,
                  "linhasMensais":  296,
                  "gestorasRentabilidade":  148
              },

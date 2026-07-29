@@ -3,7 +3,7 @@
   "label": "23/07/2026",
   "previousDate": "2026-07-22",
   "sourceDates": {
-    "debentures": "2026-07-22",
+    "debentures": "2026-07-23",
     "cap12431": "2026-07-21",
     "capTrad": "2026-07-21",
     "perf12431": "2026-07-21",
@@ -14,13 +14,17 @@
     "reune": "2026-07-23"
   },
   "novoPorFonte": {
-    "debentures": false,
+    "debentures": true,
     "cap": true,
     "anbima": true,
     "fundos": true,
     "blc": false
   },
   "summary": [
+    {
+      "texto": "7 nova(s) debênture(s) cadastrada(s)",
+      "tom": "pos"
+    },
     {
       "texto": "Captação líquida Incentivados: −R$ 44 mi",
       "tom": "neg"
@@ -52,7 +56,106 @@
   ],
   "sections": {
     "debentures": {
-      "novas": [],
+      "novas": [
+        {
+          "ticker": "PCHSH6",
+          "empresa": "TRAVESSIA SECURITIZADORA DE CREDITOS FINANCEIROS S.A",
+          "grupo": "Travessia Securitizadora de Creditos Financeiros",
+          "cnpj": "38042694000100",
+          "dataRegistro": "23/07/2026",
+          "dataEmissao": "17/07/2026",
+          "vencimento": "31/05/2034",
+          "indexador": "DI",
+          "taxa": "0,45",
+          "volumeEmitido": 708000000,
+          "incentivada": false,
+          "coordenador": "OSLO CAPITAL DTVM S.A."
+        },
+        {
+          "ticker": "PCHSI6",
+          "empresa": "TRAVESSIA SECURITIZADORA DE CREDITOS FINANCEIROS S.A",
+          "grupo": "Travessia Securitizadora de Creditos Financeiros",
+          "cnpj": "38042694000100",
+          "dataRegistro": "23/07/2026",
+          "dataEmissao": "17/07/2026",
+          "vencimento": "31/05/2034",
+          "indexador": "DI",
+          "taxa": "0,65",
+          "volumeEmitido": 708000000,
+          "incentivada": false,
+          "coordenador": "OSLO CAPITAL DTVM S.A."
+        },
+        {
+          "ticker": "PCHSJ6",
+          "empresa": "TRAVESSIA SECURITIZADORA DE CREDITOS FINANCEIROS S.A",
+          "grupo": "Travessia Securitizadora de Creditos Financeiros",
+          "cnpj": "38042694000100",
+          "dataRegistro": "23/07/2026",
+          "dataEmissao": "17/07/2026",
+          "vencimento": "31/05/2034",
+          "indexador": "DI",
+          "taxa": "0,75",
+          "volumeEmitido": 708000000,
+          "incentivada": false,
+          "coordenador": "OSLO CAPITAL DTVM S.A."
+        },
+        {
+          "ticker": "PCHSK6",
+          "empresa": "TRAVESSIA SECURITIZADORA DE CREDITOS FINANCEIROS S.A",
+          "grupo": "Travessia Securitizadora de Creditos Financeiros",
+          "cnpj": "38042694000100",
+          "dataRegistro": "23/07/2026",
+          "dataEmissao": "17/07/2026",
+          "vencimento": "31/05/2034",
+          "indexador": "DI",
+          "taxa": "0,85",
+          "volumeEmitido": 708000000,
+          "incentivada": false,
+          "coordenador": "OSLO CAPITAL DTVM S.A."
+        },
+        {
+          "ticker": "PCHSL6",
+          "empresa": "TRAVESSIA SECURITIZADORA DE CREDITOS FINANCEIROS S.A",
+          "grupo": "Travessia Securitizadora de Creditos Financeiros",
+          "cnpj": "38042694000100",
+          "dataRegistro": "23/07/2026",
+          "dataEmissao": "17/07/2026",
+          "vencimento": "31/05/2034",
+          "indexador": "DI",
+          "taxa": "1",
+          "volumeEmitido": 708000000,
+          "incentivada": false,
+          "coordenador": "OSLO CAPITAL DTVM S.A."
+        },
+        {
+          "ticker": "PCHSM6",
+          "empresa": "TRAVESSIA SECURITIZADORA DE CREDITOS FINANCEIROS S.A",
+          "grupo": "Travessia Securitizadora de Creditos Financeiros",
+          "cnpj": "38042694000100",
+          "dataRegistro": "23/07/2026",
+          "dataEmissao": "17/07/2026",
+          "vencimento": "31/05/2034",
+          "indexador": "DI",
+          "taxa": "1,1",
+          "volumeEmitido": 710000000,
+          "incentivada": false,
+          "coordenador": "OSLO CAPITAL DTVM S.A."
+        },
+        {
+          "ticker": "PCHSN6",
+          "empresa": "TRAVESSIA SECURITIZADORA DE CREDITOS FINANCEIROS S.A",
+          "grupo": "Travessia Securitizadora de Creditos Financeiros",
+          "cnpj": "38042694000100",
+          "dataRegistro": "23/07/2026",
+          "dataEmissao": "17/07/2026",
+          "vencimento": "31/05/2034",
+          "indexador": "SEM-ÍNDICE",
+          "taxa": "0",
+          "volumeEmitido": 750000000,
+          "incentivada": false,
+          "coordenador": "OSLO CAPITAL DTVM S.A."
+        }
+      ],
       "saidas": [],
       "temSnapshotAnterior": false
     },
@@ -77,11 +180,11 @@
       },
       "trad": {
         "dia": "2026-07-21",
-        "captacao": 2891018303.8399997,
-        "resgate": 1653247068.6899998,
-        "liquido": 1237771235.1499999,
-        "pl": 1587025350146.5608,
-        "numFundos": 999,
+        "captacao": 2891018724.77,
+        "resgate": 1650912107.0499997,
+        "liquido": 1240106617.7200003,
+        "pl": 1587051001600.0308,
+        "numFundos": 1000,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
@@ -89,8 +192,8 @@
           "captacao": 2045120511.4099998,
           "resgate": 5075212236.820002,
           "liquido": -3030091725.4100018,
-          "pl": 1586279250749.8503,
-          "numFundos": 1001
+          "pl": 1586291543801.8203,
+          "numFundos": 1002
         }
       }
     },
@@ -175,7 +278,7 @@
           "captacao": 1002400280.21,
           "resgate": 378879030.29,
           "liquido": 623521249.9200001,
-          "pl": 455471821153.06
+          "pl": 455471821180.9
         },
         {
           "gestor": "SAM",
@@ -1861,15 +1964,23 @@
           "pl": 8675263.89
         },
         {
+          "cnpj": "55539196000189",
+          "nome": "FUNDO DE INVESTIMENTO FINANCEIRO CI RENDA FIXA INCENTIVADO INVESTIMENTO EM INFRAESTRUTURA G5 CAMBUCÁ",
+          "gestor": "G5",
+          "segmento": "12431",
+          "retorno": 1.6293,
+          "pl": 30001380.96
+        }
+      ],
+      "top12431Neg": [
+        {
           "cnpj": "59123735000155",
           "nome": "PORTO PAINEIRA CDI FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA RF CRÉD PRIV RESP LIMITADA",
           "gestor": "Porto Asset",
           "segmento": "12431",
-          "retorno": 2.2702,
-          "pl": 23194174.38
-        }
-      ],
-      "top12431Neg": [
+          "retorno": -1.9102,
+          "pl": 2461102.41
+        },
         {
           "cnpj": "55344166000117",
           "nome": "RIO BRAVO ESG IS MASTER III  FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
@@ -1901,14 +2012,6 @@
           "segmento": "12431",
           "retorno": -0.6993,
           "pl": 46690906.64
-        },
-        {
-          "cnpj": "63385783000199",
-          "nome": "CLOSED FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
-          "gestor": "BTG WM",
-          "segmento": "12431",
-          "retorno": -0.5559,
-          "pl": 50900931.4
         }
       ],
       "topTradPos": [
@@ -1997,7 +2100,15 @@
       ]
     },
     "inclusoes": {
-      "novosDebentures": [],
+      "novosDebentures": [
+        "PCHSH6",
+        "PCHSI6",
+        "PCHSJ6",
+        "PCHSK6",
+        "PCHSL6",
+        "PCHSM6",
+        "PCHSN6"
+      ],
       "novosBlc": [],
       "temSnapshotBlc": true
     },
