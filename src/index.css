@@ -2211,12 +2211,20 @@ a { color: var(--primary); }
   flex: 1 1 0; min-height: 0; display: flex; flex-direction: column;
 }
 .app.desktop .content:has(> .filter-bar) > .table-wrap-x > .table-wrap {
-  flex: 1 1 auto; min-height: 0; max-height: calc(100% - 5px); overflow: auto;
-  /* Trava em linhas inteiras: a banda visivel do tbody nao e' multiplo exato da
-     altura de linha (20px), entao o Total sticky deixaria sobrar meia-linha. Com
-     snap por linha (align:end + scroll-padding = altura do tfoot) a ultima linha
-     encaixa exatamente no topo do Total ao parar de rolar. NAO muda a altura das
-     linhas -- so' o ponto de repouso da rolagem. */
+  min-height: 0; overflow: auto;
+  /* Trava em linhas inteiras SEM mudar a altura das linhas (20px). Dois passos:
+     1) Altura do scroller = thead + tfoot + N linhas inteiras: round(down,...) tira
+        a fracao de linha, entao a banda visivel do tbody vira multiplo exato de 20px
+        e o Total encaixa na ultima linha ATE' no topo da lista (scrollTop 0).
+     2) Snap por linha (align:end + scroll-padding = tfoot) mantem o encaixe em
+        qualquer ponto de repouso da rolagem, nao so' nos extremos.
+     --chrome = thead (29.4) + tfoot/Total (20). round() cai fora em navegador antigo
+     -> declaracao ignorada, volta ao max-height:calc(100% - 5px) (degrada p/ so' o snap). */
+  --row-h: 20px;
+  --chrome: 49.4px;
+  flex: 0 0 auto;
+  height: calc(var(--chrome) + round(down, (100% - 5px - var(--chrome)), var(--row-h)));
+  max-height: calc(var(--chrome) + round(down, (100% - 5px - var(--chrome)), var(--row-h)));
   scroll-snap-type: y mandatory;
   scroll-padding-bottom: 20px;   /* altura do tfoot (Total) sticky */
   scroll-padding-top: 30px;      /* altura do thead sticky */
