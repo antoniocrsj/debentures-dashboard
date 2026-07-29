@@ -1240,13 +1240,10 @@ a { color: var(--primary); }
 .app:not(.desktop) .liq-arrow { font-size: var(--fz-corpo); margin-right: 2px; }
 
 /* ─── Visão desktop: alarga o app e espalha melhor o conteúdo ── */
-/* Desktop preenche a LARGURA DA TELA disponivel (menos uma folga de 16px por
-   lado). Os elementos internos (tabela, splits, cards) ja trazem sua propria
-   margem lateral, entao o conteudo nao encosta na borda. Antes havia teto de
-   1120 (+ um caso especial de 1440 so' p/ a Tecnico); com a tela cheia TODAS as
-   abas ficam na mesma largura -- e a diferenca de largura do topo da Tecnico
-   deixa de existir. */
-.app.desktop { max-width: min(1920px, 100vw - 32px); }
+/* Desktop preenche toda a largura: o carvao do cabecalho e o bege do conteudo
+   chegam ate as bordas da janela. O respiro fica por conta do padding interno
+   de cada aba, sem criar uma faixa externa interrompendo o fundo do app. */
+.app.desktop { width: 100%; max-width: none; margin: 0; }
 @media (min-width: 700px) {
   /* 1. Margens padronizadas com a aba Debêntures (24px lateral) */
   .app.desktop .fluxo { padding: var(--sp-4) var(--sp-6) var(--sp-6); }
@@ -1975,8 +1972,8 @@ a { color: var(--primary); }
 
 /* ─── Aba Tecnico (desktop apenas) ──────────────────────────────
    Junta Captacao + Nivel de Caixa + Vencimentos sob o mesmo filtro de
-   gestora: 3 graficos empilhados a esquerda, tabela de gestoras (filtro
-   principal) a direita, 2 tabelas de captacao (semanas/meses) abaixo. */
+   gestora: 3 graficos no alto e as tabelas semanal/mensal abaixo, na coluna
+   esquerda; tabela de gestoras (filtro principal) ocupa toda a coluna direita. */
 .tecnico { padding: var(--sp-4) var(--sp-5) var(--sp-6); }
 .tecnico-header { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 10px; }
 .tecnico-header .controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; width: 100%; }
@@ -1996,13 +1993,29 @@ a { color: var(--primary); }
 .tecnico-chart-label { font-size: var(--fz-graf-titulo); font-weight: 600; color: var(--text); margin: 0 0 6px; }  /* fz duplicado removido: 12,5 -> token; text-soft -> text (carvao unico) */
 
 @media (min-width: 700px) {
-  .app.desktop .tecnico-grid { display: grid; grid-template-columns: minmax(0, 1fr) 362px; gap: 8px; align-items: start; margin-bottom: 14px; }
-  .app.desktop .tecnico-charts-col { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .app.desktop .tecnico-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 362px;
+    gap: 8px;
+    align-items: stretch;
+    height: var(--tecnico-grid-height, auto);
+    min-height: 0;
+    margin-bottom: 0;
+  }
+  .app.desktop .tecnico-charts-col {
+    display: grid;
+    grid-template-rows: 270px minmax(0, 1fr);
+    /* 270 + 10 = 280: multiplo da linha de 20px. Assim as tabelas da esquerda
+       e a de gestores fecham juntas, sem sobra branca dentro dos cards. */
+    gap: 10px;
+    min-width: 0;
+    min-height: 0;
+  }
   /* Linha 1 (Captacao + Caixa) e linha 2 (Vencimentos R$ + %PL): 2 graficos
      lado a lado, mesma largura cada. */
     /* gap 8 e tabela 362px: com 1376px de grid, sobram 1006 p/ os graficos ->
      (1006 - 2x8) / 3 = 330px por card, a medida pedida. */
-  .app.desktop .tecnico-chart-row { display: flex; gap: 8px; align-items: stretch; }
+  .app.desktop .tecnico-chart-row { display: flex; gap: 8px; align-items: stretch; min-height: 0; }
   .app.desktop .tecnico-chart-cell { flex: 1 1 0; min-width: 0; }
   /* Os 3 graficos com largura e altura IDENTICAS, numa linha so'. */
   .app.desktop .tecnico-chart-cell .fluxo-chart,
@@ -2019,14 +2032,24 @@ a { color: var(--primary); }
   .app.desktop .tecnico-chart-cell .fluxo-chart,
   .app.desktop .tecnico-chart-cell .caixa-trend,
   .app.desktop .tecnico-chart-cell .venc-chart { height: auto; min-height: 0; }
-  .app.desktop .tecnico-gestor-table { position: sticky; top: 14px; }
+  .app.desktop .tecnico-gestor-table {
+    position: sticky;
+    top: 14px;
+    height: 100%;
+    min-height: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
   .app.desktop .tecnico-gestor-table .fluxo-ranking-head { margin-bottom: 8px; }
   /* Gestoras: altura travada em linhas inteiras (modelo puro -- sem barra
      horizontal: a tabela tem 4 colunas e preenche o card, ver regra de larguras
      abaixo). chrome = thead 26 + tfoot 20 = 46. */
   .app.desktop .tecnico-gestor-table .table-wrap {
     max-height: none; margin: 0; --chrome: 46px;
-    height: calc(var(--chrome) + round(down, (416px - var(--chrome)), 20px));
+    height: calc(var(--chrome) + round(down, (100% - var(--chrome)), 20px));
+    flex: 0 0 auto;
+    min-height: 0;
     scroll-snap-type: y mandatory; scroll-padding-bottom: 20px; scroll-padding-top: 26px;
   }
   /* Fluxo (semanal/mensal): mesmo travamento; so' rola quando "ver todas".
@@ -2034,13 +2057,55 @@ a { color: var(--primary); }
      a "margem" que sobrava dos lados). */
   .app.desktop .tecnico .fluxo-table-block .table-wrap {
     --chrome: 46px; margin: 0;
-    max-height: calc(var(--chrome) + round(down, 46vh - var(--chrome), 20px));
+    max-height: none;
+    height: calc(var(--chrome) + round(down, (100% - var(--chrome)), 20px));
+    flex: 0 0 auto;
+    min-height: 0;
     scroll-snap-type: y mandatory; scroll-padding-bottom: 20px; scroll-padding-top: 26px;
   }
   .app.desktop .tecnico-gestor-table .asset-table tbody tr,
   .app.desktop .tecnico .fluxo-table-block .asset-table tbody tr { scroll-snap-align: end; }
 
-  .app.desktop .tecnico-tables-row { margin-bottom: 0; }
+  .app.desktop .tecnico-tables-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    height: 100%;
+    min-height: 0;
+    margin: 0;
+  }
+  .app.desktop .tecnico-tables-row > .fluxo-table-block {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+    margin: 0;
+  }
+  .app.desktop .tecnico-tables-row > .fluxo-table-block > .fluxo-section-title {
+    display: none;
+  }
+  .app.desktop .tecnico-gestor-table > .table-wrap-x,
+  .app.desktop .tecnico-tables-row > .fluxo-table-block > .table-wrap-x {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .app.desktop .tecnico-tables-row table.asset-table {
+    width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+  }
+  .app.desktop .tecnico-tables-row table.asset-table th:first-child,
+  .app.desktop .tecnico-tables-row table.asset-table td:first-child { width: 31%; }
+  .app.desktop .tecnico-tables-row table.asset-table th:not(:first-child),
+  .app.desktop .tecnico-tables-row table.asset-table td:not(:first-child) { width: 23%; }
+  .app.desktop .tecnico-tables-row table.asset-table th,
+  .app.desktop .tecnico-tables-row table.asset-table td {
+    padding-left: var(--sp-2) !important;
+    padding-right: var(--sp-2) !important;
+  }
 }
 
 /* Dentro do .grafico-card as superficies internas somem: uma so' borda por

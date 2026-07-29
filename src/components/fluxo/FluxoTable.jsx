@@ -13,7 +13,7 @@ const KEYS = {
   resgate:  w => w.resgate,
 }
 
-export default function FluxoTable({ weekly }) {
+export default function FluxoTable({ weekly, allowExpand = true }) {
   const [sort, setSort] = useState(DEFAULT_SORT)
   const [showAll, setShowAll] = useState(false)
 
@@ -36,7 +36,7 @@ export default function FluxoTable({ weekly }) {
   if (!weekly || !weekly.length) return null
 
   const onSort = col => setSort(s => cycleSort(s, col, DEFAULT_SORT))
-  const shown = showAll ? sorted : sorted.slice(0, PAGE)
+  const shown = allowExpand && showAll ? sorted : sorted.slice(0, PAGE)
   const ddmm = key => parseSemana(key)?.label || ''
 
   return (
@@ -88,7 +88,7 @@ export default function FluxoTable({ weekly }) {
           </tfoot>
         </table>
       </TableWrap>
-      {!showAll && sorted.length > PAGE && (
+      {allowExpand && !showAll && sorted.length > PAGE && (
         <button className="show-all-btn" onClick={() => setShowAll(true)}>
           Mostrando {PAGE} de {fmtInt(sorted.length)} semanas — ver todas
         </button>

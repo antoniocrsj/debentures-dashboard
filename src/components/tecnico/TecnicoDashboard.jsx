@@ -1,10 +1,10 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useLayoutEffect, useRef } from 'react'
 import { useFluxo } from '../../hooks/useFluxo.js'
 import { useCaixa } from '../../hooks/useCaixa.js'
 import {
   filterFluxo, aggregateByWeek, aggregateByMonth, aggregateByGestor, mergeRentabilidade,
   agregarFundosPorGestor, computeCards, fmtFluxoSigned,
-  filterMensal, periodBounds, startForMonths, fmtWeekFull, latestBaseDate,
+  filterMensal, periodBounds, startForMonths,
 } from '../../utils/fluxo.js'
 import { buildGestoresPorTicker, flattenEventos, aggMeses, aggGestores, fmtBar, pctFmt } from '../../utils/vencimentos.js'
 import { fmtPct } from '../../utils/format.js'
@@ -43,6 +43,10 @@ const PERIODOS = [
   { id: '12m', label: '12m', n: 12 },
 ]
 const PERIODO_PADRAO = '6m'
+const BOTTOM_GAP = 16
+const TABLE_CHROME = 46
+const TABLE_ROW = 20
+const TABLE_FRAME = 2
 // O grafico de %PL em caixa e' MENSAL: janela abaixo de 3 meses nao forma linha
 // (1s = 1 semana, 1m = 1 ponto). 1s/1m/3m viram 3 meses -- o piso que ainda
 // desenha tendencia --, 6m/12m passam direto. Modulo (nao dentro do componente)
@@ -60,6 +64,7 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, on
   const [gestorSel, setGestorSel] = useState('')
   const [periodo, setPeriodo] = useState(PERIODO_PADRAO)
   const [unidade, setUnidade] = useState('rs')
+  const gridRef = useRef(null)
 
   const { loading, error, rows: rowsBase, monthly, rentabilidade, fundosSemana } = useFluxo(tipo)
 
@@ -90,7 +95,6 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, on
   const bounds = useMemo(() => periodBounds(rows), [rows])
   const effStart = useMemo(() => startForMonths(rows, months), [rows, months])
   const effEnd = bounds.max
-  const refDate = rows.length ? fmtWeekFull(latestBaseDate(rows)) : null
 
   const filtered = useMemo(
     () => filterFluxo(rows, { gestor: gestorSel, start: effStart, end: effEnd }),
@@ -229,6 +233,33 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, on
   const semSelecao = gestorSel ? '' : 'Todos os gestores'
   const escopo = `${gestorSel || semSelecao} · ${tipo === '12431' ? '12.431' : 'Tradicional'}`
 
+  // A grade usa o espaco restante da viewport, arredondado para linhas inteiras.
+  // A sobra fica fora dos cards: o rodape ganha alguns pixels alem dos 16px
+  // minimos, em vez de deixar uma faixa branca sob a ultima linha das tabelas.
+  useLayoutEffect(() => {
+    const grid = gridRef.current
+    if (!grid || typeof window === 'undefined') return undefined
+
+    const updateHeight = () => {
+      const top = grid.getBoundingClientRect().top
+      const available = Math.max(0, Math.floor(window.innerHeight - top - BOTTOM_GAP))
+      const cardBase = TABLE_CHROME + TABLE_FRAME
+      const snapped = available < cardBase
+        ? available
+        : cardBase + Math.floor((available - cardBase) / TABLE_ROW) * TABLE_ROW
+      grid.style.setProperty('--tecnico-grid-height', `${snapped}px`)
+    }
+
+    updateHeight()
+    window.addEventListener('resize', updateHeight)
+    window.visualViewport?.addEventListener('resize', updateHeight)
+
+    return () => {
+      window.removeEventListener('resize', updateHeight)
+      window.visualViewport?.removeEventListener('resize', updateHeight)
+    }
+  }, [rows.length])
+
   return (
     <section className="tecnico" aria-label="Visão técnica — oferta e demanda">
       <header className="tecnico-header">
@@ -271,7 +302,7 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, on
       )}
 
       {!error && rows.length > 0 && (
-        <div className="tecnico-grid">
+        <div className="tecnico-grid" ref={gridRef}>
           <div className="tecnico-charts-col">
             {/* Linha 1: Captacao (fluxo) ao lado de Caixa (estoque). Titulo de UMA
                 palavra + a natureza temporal na legenda: lendo de cima a baixo o
@@ -332,18 +363,17 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, on
                 </div>
               </div>
             </div>
+
+            <div className="fluxo-tables-row tecnico-tables-row">
+              <FluxoTable weekly={weekly} allowExpand={false} />
+              <FluxoMonthlyTable months={monthlyAgg} />
+            </div>
           </div>
 
-          <TecnicoGestorTable rows={gestorRows} activeGestor={gestorSel} onSelect={onSelectGestor} refDate={refDate} />
+          <TecnicoGestorTable rows={gestorRows} activeGestor={gestorSel} onSelect={onSelectGestor} />
         </div>
       )}
 
-      {!error && rows.length > 0 && (
-        <div className="fluxo-tables-row tecnico-tables-row">
-          <FluxoTable weekly={weekly} />
-          <FluxoMonthlyTable months={monthlyAgg} />
-        </div>
-      )}
     </section>
   )
 }

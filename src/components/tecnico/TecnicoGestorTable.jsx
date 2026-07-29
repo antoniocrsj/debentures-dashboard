@@ -9,20 +9,16 @@ import TableWrap from '../TableWrap.jsx'
 // gestor (mesmo Apelido Gestor em todo o app); %Caixa/Vencimento ficam "—"
 // quando o gestor nao aparece naquela fonte (fundo sem caixa estimado, sem
 // debenture a vencer em 12m etc.) em vez de mostrar um falso zero.
-const LIMIT = 20
 const DEFAULT_SORT = { col: 'pl', dir: 'desc' }   // abre pelo maior PL (porte do gestor)
 const KEYS = { gestor: g => g.gestor, pl: g => g.pl ?? -Infinity, liquido: g => g.liquido, venc3m: g => g.venc3m ?? -Infinity }
 
-export default function TecnicoGestorTable({ rows, activeGestor, onSelect, refDate }) {
+export default function TecnicoGestorTable({ rows, activeGestor, onSelect }) {
   const [sort, setSort] = useState(DEFAULT_SORT)
-  const [showAll, setShowAll] = useState(false)
 
   const sorted = useMemo(() => sortRows(rows, KEYS[sort.col] || KEYS.liquido, sort.dir), [rows, sort])
   const onSort = col => setSort(s => cycleSort(s, col, DEFAULT_SORT))
-  const shown = showAll ? sorted : sorted.slice(0, LIMIT)
 
-  // Total sobre TODAS as gestoras do filtro (nao so' as 20 visiveis): PL, cap.
-  // liquida e venc. 3M somam.
+  // Total sobre todas as gestoras do filtro: PL, cap. liquida e venc. 3M somam.
   const totais = useMemo(() => {
     let pl = 0, liquido = 0, venc = 0
     for (const g of rows || []) {
@@ -51,7 +47,7 @@ export default function TecnicoGestorTable({ rows, activeGestor, onSelect, refDa
             </tr>
           </thead>
           <tbody>
-            {shown.map(g => {
+            {sorted.map(g => {
               const pos = g.liquido > 0, neg = g.liquido < 0
               const active = g.gestor === activeGestor
               return (
@@ -76,13 +72,6 @@ export default function TecnicoGestorTable({ rows, activeGestor, onSelect, refDa
           </tfoot>
         </table>
       </TableWrap>
-      {!showAll && sorted.length > LIMIT
-        ? (
-          <button className="show-all-btn" onClick={() => setShowAll(true)}>
-            Mostrando {LIMIT} de {fmtInt(sorted.length)} gestores — ver todos
-          </button>
-        )
-        : <p className="fluxo-note">{fmtInt(sorted.length)} gestores no filtro{refDate ? ` · base ${refDate}` : ''}.</p>}
     </div>
   )
 }

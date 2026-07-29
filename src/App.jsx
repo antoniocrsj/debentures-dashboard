@@ -64,14 +64,34 @@ const INIT_FILTERS = { grupo: '', setor: '', gestor: '', lei12431: '', ativo: ''
 const INIT_SORT    = { col: 'emissao', dir: 'desc' }
 const PAGE_SIZE    = 100  // mostra os 100 mais recentes ao abrir
 
+const DESKTOP_TABS = new Set(['debentures', 'secundario', 'captacao', 'caixa', 'vencimentos', 'tecnico'])
+
+function loadDesktopMode() {
+  if (window.innerWidth < 700) return false
+  try {
+    const requested = new URLSearchParams(window.location.search).get('view')
+    if (requested === 'desktop') return true
+    if (requested === 'compact') return false
+    return localStorage.getItem('view-desktop') === '1'
+  } catch { return false }
+}
+
+function loadInitialTab() {
+  // Atalho da area de trabalho: abre direto no painel (so em dev, onde ele existe).
+  if (import.meta.env.DEV && window.location.hash === '#atualizacao') return 'atualizacao'
+
+  const desktop = loadDesktopMode()
+  try {
+    const requested = new URLSearchParams(window.location.search).get('tab')
+    if (desktop && DESKTOP_TABS.has(requested)) return requested
+  } catch {}
+  return desktop ? 'debentures' : 'ativos'
+}
+
 export default function App() {
   const [months, setMonths]           = useState(loadMonths)
   const [monthIdx, setMonthIdx]       = useState(0)
-  const [tab, setTab]                 = useState(() => {
-    // Atalho da area de trabalho: abre direto no painel (só em dev, onde ele existe).
-    if (import.meta.env.DEV && window.location.hash === '#atualizacao') return 'atualizacao'
-    return localStorage.getItem('view-desktop') === '1' && window.innerWidth >= 700 ? 'debentures' : 'ativos'
-  })
+  const [tab, setTab]                 = useState(loadInitialTab)
   const [filters, setFilters]         = useState(INIT_FILTERS)
   const [sort, setSort]               = useState(INIT_SORT)
   const [selectedAsset, setSelected]  = useState(null)
@@ -79,9 +99,7 @@ export default function App() {
   const [showResumo, setShowResumo]   = useState(false)
   const periodReports = usePeriodReports()
   const [showAll, setShowAll]         = useState(false)
-  const [desktop, setDesktop]         = useState(() => {
-    try { return localStorage.getItem('view-desktop') === '1' && window.innerWidth >= 700 } catch { return false }
-  })
+  const [desktop, setDesktop]         = useState(loadDesktopMode)
 
   const toggleDesktop = useCallback(() => setDesktop(d => !d), [])
 
