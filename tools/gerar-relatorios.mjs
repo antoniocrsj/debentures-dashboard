@@ -19,7 +19,6 @@ import {
   parseDia, fmtDia, diffKeyed, topMovers,
   pickReportDates, previousDate, sourceDateFor, summarize, repairText, stepBackTradingDays,
 } from '../src/utils/reports.js'
-import { converterSpreadSec } from '../src/utils/spreadRef.js'
 import { pruneDir } from './relatorios/retencao.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -46,8 +45,6 @@ function loadSources() {
   const debentures = readCsv(path.join(PUBLIC, 'Debentures.csv'))
   const anbima = readCsv(path.join(PUBLIC, 'Anbima_Tx.csv'))
   const blc = readCsv(path.join(PUBLIC, 'BLC_tratado.csv'))
-  const reune = readCsv(path.join(PUBLIC, 'REUNE_Historico.csv'))   // trades do secundario (prévias)
-  const curvas = readCsv(path.join(PUBLIC, 'REUNE_Curvas.csv'))     // curva TPF por dia (p/ spread)
   const fundos12431 = readCsv(path.join(TOOLS, 'Fundos_12431.csv'))
   const fundosCdi = readCsv(path.join(TOOLS, 'Fundos_CDI.csv'))
   const dia = {
@@ -59,7 +56,7 @@ function loadSources() {
     trad: readCsv(path.join(DATA, 'Perf_Diario_Trad.csv')),
   }
   const atributos = loadAtributos()
-  return { debentures, anbima, blc, reune, curvas, fundos12431, fundosCdi, dia, perf, atributos }
+  return { debentures, anbima, blc, fundos12431, fundosCdi, dia, perf, atributos }
 }
 
 // Atributos de cadastro (CVM) por fundo curado — persistidos em
@@ -120,12 +117,11 @@ function perSourceDates(src) {
   const anbima = [...new Set([...anbimaAtual, ...snapshotDates('anbima')])].sort()
   const blc = [...new Set([...snapshotDates('blc')])].sort()
   const fundos = [...new Set([...snapshotDates('fundos')])].sort()
-  const reune = distinctDates(src.reune, 'Data')   // REUNE_Historico ja' e' historico (sem snapshot)
   return {
     debentures: debReg,
     cap12431, capTrad,
     perf12431, perfTrad,
-    anbima, blc, fundos, reune,
+    anbima, blc, fundos,
   }
 }
 
@@ -421,124 +417,6 @@ function buildAnbima(src, sourceDates, tickerInfo) {
   }
 }
 
-// §9 REUNE (mercado secundario, > 5MM) — trades acima de 5MM no pregao, sempre em
-// SPREAD (CDI+/NTN-B+, mesma metodologia do "Spread ref." do app), comparado com a
-// Tx ANBIMA do MESMO ticker no dia ANTERIOR: variacaoBps > 0 = abriu (taxa subiu),
-// < 0 = fechou. Separado por 12.431 (incentivada) x Tradicional.
-function buildCurvasReune(rows) {   // indexa REUNE_Curvas.csv por data (p/ converterSpreadSec)
-  const map = new Map()
-  for (const r of rows || []) {
-    const data = (r.data || '').trim()
-    const tipo = (r.tipo || '').trim().toUpperCase()
-    const venc = (r.vencimento || '').trim()
-    const taxa = parseNum(r.taxa)
-    if (!data || !venc || taxa == null || isNaN(taxa)) continue
-    if (!map.has(data)) map.set(data, { ntnb: [], ltn: [] })
-    const c = map.get(data)
-    if (tipo === 'NTN-B') c.ntnb.push({ venc, taxa })
-    else if (tipo === 'LTN') c.ltn.push({ venc, taxa })
-  }
-  return map
-}
-
-// Spread ANBIMA (ontem) formatado na base rica, p/ exibir ao lado do REUNE.
-function fmtSpreadAnbima(sp) {
-  if (!sp) return null
-  if (sp.tipo === 'ipca') return `${sp.base}${sp.bps >= 0 ? '+' : '−'}${Math.abs(Math.round(sp.bps))}`
-  if (sp.tipo === 'cdi') return `CDI ${sp.bps >= 0 ? '+' : '−'} ${Math.abs(sp.bps / 100).toFixed(2).replace('.', ',')}%`
-  return null
-}
-
-function grpStatsReune(itens) {
-  const comp = itens.filter(m => m.variacaoBps != null)
-  const soma = comp.reduce((s, m) => s + m.variacaoBps, 0)
-  return {
-    // todos os > 5MM do grupo, do maior movimento de abertura ao de fechamento
-    itens: itens.slice().sort((a, b) => (b.variacaoBps ?? -Infinity) - (a.variacaoBps ?? -Infinity)),
-    total: itens.length,
-    totalAberturas: comp.filter(m => m.variacaoBps > 0).length,
-    totalFechamentos: comp.filter(m => m.variacaoBps < 0).length,
-    totalComparados: comp.length,
-    variacaoMediaBps: comp.length ? soma / comp.length : 0,
-  }
-}
-
-function buildReune(src, sourceDates, tickerInfo) {
-  const D = sourceDates.reune
-  const atualAnbima = sourceDates.anbima
-  const anteriorAnbima = previousDate(perSourceDates(src).anbima, atualAnbima)
-  if (!D) return { '12431': grpStatsReune([]), trad: grpStatsReune([]), dataReune: D, anbimaAnterior: anteriorAnbima, semReune: true }
-
-  const curvasPorData = buildCurvasReune(src.curvas)
-  const anbDatesAsc = distinctDates(src.anbima, 'dataReferenciaAnbima')
-  const liveAnbima = anbDatesAsc[anbDatesAsc.length - 1]
-  const anbAtual = (atualAnbima === liveAnbima) ? src.anbima : (readSnapshot('anbima', atualAnbima) || src.anbima)
-  const anbPrevRows = anteriorAnbima
-    ? (readSnapshot('anbima', anteriorAnbima) || (anteriorAnbima === anbDatesAsc[0] ? src.anbima : null))
-    : null
-  const infoAtual = new Map(anbAtual.map(r => [(r.ticker || '').trim(), r]))
-  const anbPrevMap = new Map((anbPrevRows || []).map(r => [(r.ticker || '').trim(), r]))
-
-  const trades = src.reune.filter(r => {
-    const p = parseDia(r['Data'])
-    return p && p.key === D && (r['Faixa de Volume'] || '').trim() === 'Superior a 5MM'
-  })
-
-  const itens = []
-  for (const t of trades) {
-    const ticker = (t['Ativo'] || '').trim()
-    if (!ticker) continue
-    const info = infoAtual.get(ticker) || {}
-    const sr = converterSpreadSec({
-      taxa: t['Taxa Media'],
-      indexador: info.indexadorAnbima,
-      tipoTaxaAnbima: info.tipoTaxaAnbima,
-      vencimento: info.dataVencimento,
-      data: D,
-    }, curvasPorData)
-    if (!sr) continue   // sem spread calculavel (sem curva do dia / indexador nao coberto)
-    const ehIpca = sr.tipo === 'IPCA'
-    const ti = tickerInfo.get(ticker) || {}
-    const tipo = (info.tipoTaxaAnbima || '').trim()
-    // Abriu/fechou = movimento da TAXA PROPRIA do papel (REUNE hoje vs ANBIMA
-    // ontem, MESMO tipo), sem o ruido do tenor de NTN-B. %DI nao e' linear em bps
-    // -> ai sim usa o CDI-equivalente. O DISPLAY do nivel segue em spread.
-    const prevRow = anbPrevMap.get(ticker)
-    let variacaoBps = null, anbimaAnterior = null
-    if (prevRow && tipo && tipo === (prevRow.tipoTaxaAnbima || '').trim()) {
-      const prevSp = spreadInfo(prevRow)
-      if (tipo === 'DI_PERCENTUAL') {
-        if (prevSp && prevSp.tipo === 'cdi') { variacaoBps = sr.spreadNum * 100 - prevSp.bps; anbimaAnterior = fmtSpreadAnbima(prevSp) }
-      } else {
-        const yHoje = parseNum(t['Taxa Media'])
-        const yOntem = numOrNull(prevRow.taxaAnbimaOriginal)
-        if (yHoje != null && !isNaN(yHoje) && yOntem != null) {
-          variacaoBps = (yHoje - yOntem) * 100
-          anbimaAnterior = fmtSpreadAnbima(prevSp)   // spread ANBIMA de ONTEM (contexto)
-        }
-      }
-    }
-    itens.push({
-      ticker,
-      emissor: ti.empresa || '', grupo: ti.grupo || '',
-      incentivada: !!ti.incentivada,
-      indexadorFamilia: indexadorFamilia(info.tipoTaxaAnbima),
-      spread: sr.formatada,          // spread REUNE de HOJE (display CDI+/NTN-B+/DI+)
-      unidade: ehIpca ? 'bps' : 'cdi',
-      anbimaAnterior,                // spread ANBIMA de ONTEM (contexto)
-      variacaoBps,                   // movimento da TAXA: + abriu / − fechou
-      taxaMedia: (t['Taxa Media'] || '').trim(),
-    })
-  }
-  return {
-    '12431': grpStatsReune(itens.filter(i => i.incentivada)),
-    trad: grpStatsReune(itens.filter(i => !i.incentivada)),
-    dataReune: D,
-    anbimaAnterior: anteriorAnbima,
-    semReune: itens.length === 0,
-  }
-}
-
 // §7 Fundos incluidos/excluidos (vs snapshot anterior de Fundos_*).
 function buildFundos(src, D) {
   const dates = snapshotDates('fundos')
@@ -718,7 +596,6 @@ function resolveDatas(src, sd, anbimaAsc, D) {
     anbima: sourceDateFor(sd.anbima, D),
     blc: sourceDateFor(sd.blc, D),
     fundos: sourceDateFor(sd.fundos, capAlvo),
-    reune: sourceDateFor(sd.reune, D),   // pregao do secundario <= D (mesmo dia da ANBIMA)
   }
 }
 
@@ -731,7 +608,7 @@ function buildReport(src, D, allDates, anbimaAsc, prevD = null, emissoesCVM = nu
     debentures: cur.debentures,
     cap12431: cur.cap12431, capTrad: cur.capTrad,
     perf12431: cur.perf12431, perfTrad: cur.perfTrad,
-    anbima: cur.anbima, blc: cur.blc, fundos: cur.fundos, reune: cur.reune,
+    anbima: cur.anbima, blc: cur.blc, fundos: cur.fundos,
   }
   // novo = a fonte AVANCOU vs o relatorio anterior (nao repete dado ja mostrado).
   // BLC e cadastro de debentures sao NAO-DIARIOS -> nunca "novidade do dia".
@@ -747,11 +624,10 @@ function buildReport(src, D, allDates, anbimaAsc, prevD = null, emissoesCVM = nu
   const captacao = buildCaptacao(src, flow)
   const gestores = buildGestores(src, sourceDates)
   const anbima = buildAnbima(src, sourceDates, buildTickerInfo(src, emissoresMap))
-  const reune = buildReune(src, sourceDates, buildTickerInfo(src, emissoresMap))
   const fundos = buildFundos(src, D)
   const perf = buildPerf(src, sourceDates)
   const inclusoes = buildInclusoes(src, D, debentures)
-  const sections = { debentures, captacao, gestores, anbima, reune, fundos, perf, inclusoes }
+  const sections = { debentures, captacao, gestores, anbima, fundos, perf, inclusoes }
   const alertas = buildAlertas(src, D, sections, flow)
   const summaryInput = {
     debentures, captacao,
@@ -894,23 +770,6 @@ function renderHtml(rep) {
     : `${anbimaMercado(s.anbima.porMercado['12431'], 'Incentivadas (12.431)')}
        ${anbimaMercado(s.anbima.porMercado.trad, 'Tradicional')}`
 
-  // §6 REUNE > 5MM: spread (CDI+/NTN-B+) + Δ da TAXA do papel vs a Tx ANBIMA de
-  // ontem. abriu(+)=vermelho, fechou(−)=verde. Separado 12.431 x Tradicional.
-  const reuneVar = v => v == null ? '<span class="val">—</span>' : `<span class="${v > 0 ? 'val neg' : v < 0 ? 'val pos' : 'val'}">${fmtBps(v)}</span>`
-  const reuneTable = itens => `<div class="tw"><table><thead><tr><th>Ativo</th><th>Grupo</th><th>Emissor</th><th>Indexador</th><th>Spread (hoje)</th><th class="num">Δ taxa vs ANBIMA (bps)</th></tr></thead><tbody>${
-    itens.map(a => `<tr><td>${esc(a.ticker)}</td><td>${esc(a.grupo || '—')}</td><td>${esc(a.emissor || '—')}</td><td>${esc(a.indexadorFamilia)}</td><td>${esc(a.spread || '—')}</td><td class="num">${reuneVar(a.variacaoBps)}</td></tr>`).join('')
-  }</tbody></table></div>`
-  const reuneMercado = (g, nome) => {
-    if (!g || !g.total) return `<h4>${nome}</h4>${empty('Sem trades acima de 5MM.')}`
-    const vm = Math.round(g.variacaoMediaBps || 0)
-    const tom = vm > 0 ? 'neg' : vm < 0 ? 'pos' : 'val'
-    const placar = `<p class="tally">${nome}: <span class="val neg">${g.totalAberturas}</span> abertura(s) e <span class="val pos">${g.totalFechamentos}</span> fechamento(s) de taxa — de ${g.total} trade(s) acima de 5MM${g.totalComparados ? ` · média <span class="${tom}">${vm > 0 ? '+' : ''}${vm} bps</span>` : ''}</p>`
-    return `<h4>${nome}</h4>${placar}${reuneTable(g.itens)}`
-  }
-  const reuneBlock = (!s.reune || s.reune.semReune)
-    ? empty('Sem trades acima de 5MM neste pregão.')
-    : `<p class="tally">Prévias do REUNE acima de 5MM, em spread (CDI+ / NTN-B+). Δ taxa = variação da taxa do papel vs a Tx ANBIMA do dia anterior.</p>${reuneMercado(s.reune['12431'], 'Incentivadas (12.431)')}${reuneMercado(s.reune.trad, 'Tradicional')}`
-
   const perfBlock = `<p class="tally">Retorno nominal da cota no dia (não é %CDI).</p>` + ['12431', 'Trad'].map(seg => {
     const pos = s.perf[`top${seg}Pos`] || [], neg = s.perf[`top${seg}Neg`] || []
     const nome = seg === '12431' ? 'Incentivados' : 'Tradicional'
@@ -1011,10 +870,9 @@ function renderHtml(rep) {
 <section><h2><span class="n">3.</span> Captação líquida do dia</h2>${capBlock}</section>
 <section><h2><span class="n">4.</span> Destaques por gestor (captação líquida)</h2>${gestBlock}</section>
 <section><h2><span class="n">5.</span> Variação ANBIMA (spread)</h2>${anbimaBlock}</section>
-<section><h2><span class="n">6.</span> Mercado secundário (REUNE · acima de 5MM)</h2>${reuneBlock}</section>
-<section><h2><span class="n">7.</span> Fundos incluídos/excluídos</h2>${fundosBlock}</section>
-<section><h2><span class="n">8.</span> Performance de fundos</h2>${perfBlock}</section>
-<section><h2><span class="n">9.</span> Alertas de qualidade</h2>${alertasBlock}</section>
+<section><h2><span class="n">6.</span> Fundos incluídos/excluídos</h2>${fundosBlock}</section>
+<section><h2><span class="n">7.</span> Performance de fundos</h2>${perfBlock}</section>
+<section><h2><span class="n">8.</span> Alertas de qualidade</h2>${alertasBlock}</section>
 </body></html>`
 }
 

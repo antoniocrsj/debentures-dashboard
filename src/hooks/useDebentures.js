@@ -32,13 +32,6 @@ const STATIC_PL_GESTORES_URL = '/PL_Gestores.csv'
 const STATIC_DEBENTURES_META_URL = '/Debentures_meta.json'
 const STATIC_BLC_META_URL = '/BLC_meta.json'
 const STATIC_BLC_MATURIDADE_URL = '/BLC_maturidade.json'
-// Historico de negociacao do REUNE (mercado secundario): formato LONG (uma
-// linha por ativo x dia), gerado/acumulado por tools/preparar-reune.ps1.
-// Alimenta a foto do ultimo dia (tabela) e os graficos de serie. OPCIONAL.
-const STATIC_REUNE_URL = '/REUNE_Historico.csv'
-const STATIC_REUNE_META_URL = '/REUNE_Historico_meta.json'
-// Curvas de TPF (NTN-B/LTN) por dia — gerado por tools/preparar-reune-curvas.ps1.
-const STATIC_REUNE_CURVAS_URL = '/REUNE_Curvas.csv'
 // Base MERCADO VERDADEIRO (trade a mercado, sem direta/double-count) — gerada por
 // tools/varredura-mercado.mjs sobre o tape B3. Alimenta a aba Secundario (volume
 // real + preco/taxa/spread limpos). Ver METODOLOGIA_Mercado_Verdadeiro.md. OPCIONAL.
@@ -133,16 +126,11 @@ export function useDebentures(blcUrl) {
       // Recompra antecipada / breakeven — opcional: se faltar, o app segue sem as colunas.
       fetchStaticCSV(STATIC_ANBIMA_BE_URL).catch(() => []),
       fetchStaticJSON(STATIC_ANBIMA_BE_META_URL).catch(() => null),
-      // REUNE (mercado secundario) — opcional: se faltar, a aba fica vazia.
-      fetchStaticCSV(STATIC_REUNE_URL).catch(() => []),
-      fetchStaticJSON(STATIC_REUNE_META_URL).catch(() => null),
-      // Curvas de TPF por dia (NTN-B/LTN) — base p/ o "Spread ref." do secundario.
-      fetchStaticCSV(STATIC_REUNE_CURVAS_URL).catch(() => []),
       // Base Mercado Verdadeiro (trade a mercado) — fonte da aba Secundario. OPCIONAL.
       fetchStaticCSV(STATIC_MERCADO_URL).catch(() => []),
     ])
-      .then(([emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta, reune, reuneMeta, reuneCurvas, mercado]) => {
-        const raw = { emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta, reune, reuneMeta, reuneCurvas, mercado }
+      .then(([emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta, mercado]) => {
+        const raw = { emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta, mercado }
         writeCache(raw)
         if (alive) setState({ loading: false, refreshing: false, error: null, raw, cachedAt: Date.now() })
       })

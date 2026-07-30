@@ -1,5 +1,4 @@
 import { parseNum, normCNPJ, dateKey } from './format.js'
-import { converterSpreadSec } from './spreadRef.js'
 
 // Chave de hoje (yyyymmdd) para invalidar datas de registro vindas com erro da
 // fonte (o Debentures.com.br traz 1-2 registros com data no futuro, ex.: 2028).
@@ -166,53 +165,6 @@ export function enrichDebenture(deb, { emissorMap, blcByAtivo, anbimaByTicker, a
   }
 }
 
-// Ordena as faixas de volume do REUNE por liquidez (para ordenacao/realce).
-const REUNE_VOL_RANK = { 'Até 1MM': 1, 'Entre 1MM e 5MM': 2, 'Superior a 5MM': 3 }
-
-// Enriquece as previas de negociacao do REUNE (mercado secundario) com o
-// emissor/grupo/setor que o app ja' conhece por ticker, marcando se o papel
-// esta' na carteira acompanhada (alocacao > 0). Uma linha = uma debenture
-// negociada no dia. tickerToAsset: Map(codigoAtivo MAIUSCULO -> asset enriquecido).
-export function enrichReune(reuneRows, tickerToAsset, curvasPorData) {
-  const map = tickerToAsset || new Map()
-  return (reuneRows || []).map(r => {
-    const ticker = (r['Ativo'] || '').trim()
-    const asset = map.get(ticker.toUpperCase()) || {}
-    const faixa = (r['Faixa de Volume'] || '').trim()
-    const data = (r['Data'] || '').trim()
-    // Spread sobre a referencia (metodologia do Tx Anbima), com a curva TPF da
-    // PROPRIA data do trade. null quando falta curva do dia ou indexador nao coberto.
-    const spreadRef = converterSpreadSec({
-      taxa: r['Taxa Media'],
-      indexador: asset.indexador,
-      tipoTaxaAnbima: asset.anbimaInfo && asset.anbimaInfo.tipoTaxaAnbima,
-      vencimento: asset.vencimento,
-      data,
-    }, curvasPorData)
-    return {
-      codigoAtivo: ticker,
-      data,   // yyyy-MM-dd (formato long: uma linha por ativo x dia)
-      taxaMin: r['Taxa Minima'], taxaMed: r['Taxa Media'], taxaMax: r['Taxa Maxima'],
-      puMed: r['PU Medio'],
-      faixaVolume: faixa,
-      volRank: REUNE_VOL_RANK[faixa] || 0,
-      taxaMedNum: parseNum(r['Taxa Media']),
-      puMedNum: parseNum(r['PU Medio']),
-      emissorNome: asset.emissorNome || '—',
-      grupo: asset.grupo || '',
-      setor: asset.setor || '',
-      alocacao: asset.alocacao || 0,
-      // Caracteristicas da emissao (do cadastro que o app ja' conhece por ticker).
-      vencimento: asset.vencimento || '',
-      duration: asset.durationAnbima || '',
-      txEmissao: asset.taxa || '',
-      indexador: asset.indexador || '',
-      lei12431: asset.lei12431Str || '',
-      spreadRef,   // { tipo, formatada, spreadNum, ref } ou null
-    }
-  })
-}
-
 // Mapeia o tipoTaxaAnbima (Indexador da base) -> tipo do spreadRef que o
 // SecondaryTable/Chart entendem (dirige a familia bps/pct do grafico).
 const TIPO_SPREAD_MERCADO = { DI_SPREAD: 'DI+', IPCA_SPREAD: 'IPCA', DI_PERCENTUAL: '%DI', PREFIXADO: 'PRE' }
@@ -227,10 +179,10 @@ function faixaDeVolMercado(v) {
 
 // Enriquece a base MERCADO VERDADEIRO (public/Mercado_Verdadeiro.csv) com o
 // cadastro que o app conhece por ticker. Uma linha = uma debenture com negocio
-// DE MERCADO no dia (direta/orfao ja' foi removido pela varredura). Substitui o
-// enrichReune como fonte da aba Secundario: volume = R$ real; taxa/PU/spread = os
-// valores LIMPOS (meio das pontas, sem fee do broker). Spread ja' vem calculado
-// na base (com a NTN-B de referencia da ANBIMA) -> nao reusa converterSpreadSec.
+// DE MERCADO no dia (direta/orfao ja' foi removido pela varredura). Fonte UNICA
+// da aba Secundario: volume = R$ real; taxa/PU/spread = os valores LIMPOS (meio
+// das pontas, sem fee do broker). Spread ja' vem calculado na base (com a NTN-B
+// de referencia da ANBIMA).
 export function enrichMercado(mercadoRows, tickerToAsset) {
   const map = tickerToAsset || new Map()
   const out = []
@@ -275,26 +227,6 @@ export function enrichMercado(mercadoRows, tickerToAsset) {
     })
   }
   return out
-}
-
-// Indexa as curvas de TPF (REUNE_Curvas.csv) por data:
-//   dataISO -> { ntnb: [{venc, taxa}], ltn: [{venc, taxa}] }
-// Consumido por converterSpreadSec (via enrichReune) p/ o "Spread ref." do
-// secundario. Curva por dia -> conversao precisa em cada data historica.
-export function buildCurvasPorData(rows) {
-  const map = new Map()
-  ;(rows || []).forEach(r => {
-    const data = (r['data'] || '').trim()
-    const tipo = (r['tipo'] || '').trim().toUpperCase()
-    const venc = (r['vencimento'] || '').trim()
-    const taxa = parseNum(r['taxa'])
-    if (!data || !venc || taxa == null || isNaN(taxa)) return
-    if (!map.has(data)) map.set(data, { ntnb: [], ltn: [] })
-    const c = map.get(data)
-    if (tipo === 'NTN-B') c.ntnb.push({ venc, taxa })
-    else if (tipo === 'LTN') c.ltn.push({ venc, taxa })
-  })
-  return map
 }
 
 export function computeManagers(blcRows, plByGestor) {

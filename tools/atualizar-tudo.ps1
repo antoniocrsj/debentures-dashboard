@@ -59,7 +59,6 @@ $summary = [ordered]@{
   Captacao = 'nao executado'
   BLC      = 'nao executado'
   ANBIMA   = 'nao executado'
-  REUNE    = 'nao executado'
   CurvasTPF = 'nao executado'
   Secundario = 'nao executado'
   Ofertas  = 'nao executado'
@@ -80,7 +79,6 @@ if (-not $SkipCaptacao)   { $script:StepsAtivos.Add('Captacao') }
 if (-not $SkipCaptacao -and $Sensibilidade) { $script:StepsAtivos.Add('Sensibilidade de corte (%Deb)') }
 if (-not $SkipBlc)        { $script:StepsAtivos.Add('BLC') }
 if (-not $SkipAnbima)     { $script:StepsAtivos.Add('ANBIMA') }
-if (-not $SkipAnbima)     { $script:StepsAtivos.Add('REUNE') }
 if (-not $SkipAnbima)     { $script:StepsAtivos.Add('Curvas TPF (secundario)') }
 if (-not $SkipSecundario) { $script:StepsAtivos.Add('Secundario (mercado verdadeiro)') }
 if (-not $SkipOfertas)    { $script:StepsAtivos.Add('Ofertas') }
@@ -553,22 +551,10 @@ if ($SkipAnbima) {
     Warn $summary.ANBIMA
   }
 
-  # REUNE: previas de negociacao de debentures (liquidez do secundario). Fonte
-  # separada da ANBIMA de precos; best-effort, nao trava a atualizacao.
-  Progress 'REUNE'
-  try {
-    & (Join-Path $PSScriptRoot 'preparar-reune.ps1')
-    $summary.REUNE = 'OK'
-    Ok "REUNE atualizado."
-  } catch {
-    $summary.REUNE = "FALHOU sem travar: $($_.Exception.Message)"
-    Warn $summary.REUNE
-  }
-
-  # Curvas de TPF (NTN-B/LTN) por dia, casadas as datas do REUNE -- base do
-  # "Spread ref." do secundario. Best-effort; datas fora do alcance da API ficam
-  # sem curva (o front mantem a taxa crua naquele dia). Roda DEPOIS do REUNE
-  # (precisa das datas do historico ja' atualizado).
+  # Curvas de TPF (NTN-B/LTN) por dia -- materia-prima do SPREAD (CDI+/NTN-B+) da
+  # base Mercado Verdadeiro. As datas vem do Anbima_Tx.csv (atualizado no passo
+  # anterior); best-effort, datas fora do alcance da API ficam sem curva (o front
+  # mantem a taxa crua naquele dia).
   Progress 'Curvas TPF (secundario)'
   try {
     & (Join-Path $PSScriptRoot 'preparar-reune-curvas.ps1')

@@ -229,23 +229,23 @@ export default function App() {
     return enrichMercado(raw.mercado, tickerToAsset)
   }, [raw, allAssets])
 
-  // Ultimo pregao presente na base (yyyy-MM-dd) e no de pregoes -- da propria base.
-  const reuneDataRecente = useMemo(
+  // Ultimo pregao presente na base do Secundario (yyyy-MM-dd) e no de pregoes.
+  const secDataRecente = useMemo(
     () => secondaryHistory.reduce((mx, a) => (a.data > mx ? a.data : mx), ''),
     [secondaryHistory]
   )
-  const reuneDias = useMemo(
+  const secDias = useMemo(
     () => new Set(secondaryHistory.map(a => a.data)).size,
     [secondaryHistory]
   )
 
-  // Data de referencia do REUNE para exibir. DD/MM/AAAA.
-  const reuneRef = useMemo(() => {
-    const d = reuneDataRecente
+  // Data de referencia do Secundario para exibir. DD/MM/AAAA.
+  const secRef = useMemo(() => {
+    const d = secDataRecente
     if (!d) return ''
     const [y, m, dd] = d.split('-')
     return (y && m && dd) ? `${dd}/${m}/${y}` : d
-  }, [reuneDataRecente])
+  }, [secDataRecente])
 
   // Distinct filter options (from full dataset)
   const options = useMemo(() => ({
@@ -660,7 +660,7 @@ export default function App() {
 
         {tab === 'secundario' && !loading && !error && raw && (
           <section className="sec-page">
-            <SecondaryTable trades={secondaryHistory} reuneRef={reuneRef} dias={reuneDias} desktop={desktop} />
+            <SecondaryTable trades={secondaryHistory} secRef={secRef} dias={secDias} desktop={desktop} />
           </section>
         )}
       </main>

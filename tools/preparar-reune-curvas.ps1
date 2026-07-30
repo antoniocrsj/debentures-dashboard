@@ -1,18 +1,19 @@
 <#
   preparar-reune-curvas.ps1
   --------------------------------------------------------------------------
-  Mantem o HISTORICO de curvas de titulos publicos (NTN-B e LTN) por dia, casado
-  as datas do REUNE (public/REUNE_Curvas.csv). E' a materia-prima para converter
-  a taxa negociada do secundario em SPREAD sobre a referencia (metodologia do
-  Tx Anbima), usando a curva da PROPRIA data de cada trade -- ver
-  src/utils/spreadRef.js e enrichReune.
+  Mantem o HISTORICO de curvas de titulos publicos (NTN-B e LTN) por dia
+  (public/REUNE_Curvas.csv). E' a materia-prima do SPREAD (CDI+/NTN-B+) da base
+  Mercado Verdadeiro -- a varredura (tools/varredura-mercado.mjs, lerCurvas) usa a
+  curva da PROPRIA data de cada pregao. As datas a cobrir vem do Anbima_Tx.csv
+  (dataReferenciaAnbima, fresco no pipeline); o historico e' completado pelo
+  Tesouro em preparar-reune-curvas-historico.mjs. (O nome REUNE_Curvas e' legado.)
 
   Fonte: ANBIMA Data API (/web-bff/v1/titulos-publicos, view=precos) -- MESMA auth
   (JWT anonimo, New-AnbimaDataJwt) ja' em producao em preparar-anbima.ps1, com
   autorizacao explicita do usuario. Cada titulo traz o HISTORICO de precos
-  (.precos, por data_referencia), entao UMA busca da a curva de TODAS as datas do
-  REUNE que a API ainda cobre. Datas fora do alcance do historico da API ficam
-  sem curva (conversao pendente; o front mantem a taxa crua).
+  (.precos, por data_referencia), entao UMA busca da a curva das datas de
+  referencia que a API ainda cobre. Datas fora do alcance ficam sem curva
+  (conversao pendente; o front mantem a taxa crua).
 
   ACUMULA por (data,tipo,venc): so' adiciona o que falta; nunca poda.
 
@@ -24,16 +25,16 @@
 #>
 
 param(
-  [string]$HistPath = '',
+  [string]$AnbimaPath = '',
   [string]$OutPath  = '',
-  [int]$MaxDatas = 0,          # 0 = todas as datas do historico
+  [int]$MaxDatas = 0,          # 0 = todas as datas de referencia
   [int]$MaxSegundos = 180
 )
 
 $ErrorActionPreference = 'Stop'
 $ci = [System.Globalization.CultureInfo]::InvariantCulture
 $Root = Split-Path $PSScriptRoot -Parent
-if (-not $HistPath) { $HistPath = Join-Path $Root 'public\REUNE_Historico.csv' }
+if (-not $AnbimaPath) { $AnbimaPath = Join-Path $Root 'public\Anbima_Tx.csv' }
 if (-not $OutPath)  { $OutPath  = Join-Path $Root 'public\REUNE_Curvas.csv' }
 $MetaPath = ($OutPath -replace '\.csv$', '') + '_meta.json'
 $Deadline = (Get-Date).AddSeconds($MaxSegundos)
@@ -112,9 +113,9 @@ function Fetch-TitulosPublicos {
 Write-Host ""
 Write-Host "=== Preparar curvas TPF por dia (secundario) ===" -ForegroundColor Green
 
-if (-not (Test-Path $HistPath)) { throw "REUNE_Historico.csv nao encontrado: $HistPath" }
-$datas = @(Import-Csv -Path $HistPath | ForEach-Object { $_.Data } | Where-Object { $_ } | Sort-Object -Unique)
-Log ("Datas no historico do REUNE: {0}" -f $datas.Count)
+if (-not (Test-Path $AnbimaPath)) { throw "Anbima_Tx.csv nao encontrado: $AnbimaPath" }
+$datas = @(Import-Csv -Path $AnbimaPath | ForEach-Object { $_.dataReferenciaAnbima } | Where-Object { $_ } | Sort-Object -Unique)
+Log ("Datas de referencia (ANBIMA): {0}" -f $datas.Count)
 
 # Curvas ja' no arquivo (dedup por linha; datas ja' cobertas)
 $linhas = New-Object System.Collections.Generic.List[string]

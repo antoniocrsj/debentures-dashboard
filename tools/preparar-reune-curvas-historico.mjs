@@ -12,7 +12,7 @@
 //
 // INCREMENTAL e NAO-DESTRUTIVO: mantem as datas ja' presentes em REUNE_Curvas
 // (tipicamente os dias recentes vindos da ANBIMA, com a ETTJ interpolada, mais
-// densa) e so' adiciona as datas do REUNE_Historico que ainda faltam. O Tesouro
+// densa) e so' adiciona as datas dos pregoes do Mercado que ainda faltam. O Tesouro
 // traz so' os vencimentos NEGOCIADOS (curva mais esparsa que a da ANBIMA), entao
 // o "vencimento de referencia mais proximo" pode ser um pouco mais grosso -- ok
 // p/ historico. Autorizado pelo usuario (fonte publica).
@@ -26,18 +26,20 @@ import { fileURLToPath } from 'node:url'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.join(__dirname, '..')
 const PUBLIC = path.join(ROOT, 'public')
-const HIST = path.join(PUBLIC, 'REUNE_Historico.csv')
+const MERCADO = path.join(PUBLIC, 'Mercado_Verdadeiro.csv')
 const CURVAS = path.join(PUBLIC, 'REUNE_Curvas.csv')
 const META = path.join(PUBLIC, 'REUNE_Curvas_meta.json')
 const URL_TD = 'https://www.tesourotransparente.gov.br/ckan/dataset/df56aa42-484a-4a59-8184-7676580c81e3/resource/796d2059-14e9-44e3-80c9-2d9e30b405c1/download/PrecoTaxaTesouroDireto.csv'
 
 const isoToBR = iso => { const [y, m, d] = iso.split('-'); return `${d}/${m}/${y}` }
 const brToIso = br => { const [d, m, y] = br.split('/'); return `${y}-${m}-${d}` }
-// col Data e' o 2o campo do CSV quoted do REUNE_Historico: "TICKER","YYYY-MM-DD",...
-function datasDoHistorico() {
-  const linhas = fs.readFileSync(HIST, 'utf8').split(/\r?\n/).slice(1).filter(Boolean)
+// Data e' o 1o campo (sem aspas) do Mercado_Verdadeiro.csv: YYYY-MM-DD,ATIVO,...
+// As datas que a curva precisa cobrir sao as dos pregoes da base do Secundario.
+function datasDoMercado() {
+  if (!fs.existsSync(MERCADO)) return []
+  const linhas = fs.readFileSync(MERCADO, 'utf8').split(/\r?\n/).slice(1).filter(Boolean)
   const s = new Set()
-  for (const l of linhas) { const m = l.match(/^"[^"]*","(\d{4}-\d{2}-\d{2})"/); if (m) s.add(m[1]) }
+  for (const l of linhas) { const m = l.match(/^(\d{4}-\d{2}-\d{2}),/); if (m) s.add(m[1]) }
   return [...s].sort()
 }
 function curvasExistentes() {
@@ -50,10 +52,10 @@ function curvasExistentes() {
 
 async function main() {
   console.log('\n=== Backfill historico da curva TPF (Tesouro Direto) ===')
-  const datasHist = datasDoHistorico()
+  const datasHist = datasDoMercado()
   const { linhas: linhasExist, datas: datasExist } = curvasExistentes()
   const faltantes = datasHist.filter(d => !datasExist.has(d))
-  console.log(`  REUNE: ${datasHist.length} data(s) | ja' na curva: ${datasExist.size} | faltando: ${faltantes.length}`)
+  console.log(`  Mercado: ${datasHist.length} data(s) | ja' na curva: ${datasExist.size} | faltando: ${faltantes.length}`)
   if (!faltantes.length) { console.log('  Nada a fazer (curva ja cobre todo o historico).'); return }
 
   const alvoBR = new Set(faltantes.map(isoToBR))   // Data Base (DD/MM/YYYY) a capturar

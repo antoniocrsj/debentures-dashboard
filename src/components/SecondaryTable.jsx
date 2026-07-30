@@ -11,7 +11,7 @@ import SearchField from './SearchField.jsx'
 const SecondaryChart = lazyWithRetry(() => import('./SecondaryChart.jsx'))
 const SecondaryWeeklyChart = lazyWithRetry(() => import('./SecondaryWeeklyChart.jsx'))
 
-// Colunas do mercado secundario (REUNE). Uma linha = um TRADE (ativo negociado
+// Colunas do mercado secundario. Uma linha = um TRADE (ativo negociado
 // num dia). Data (short date) + a taxa negociada no dia (min/med/max) e o volume;
 // depois as caracteristicas da emissao (vencimento, duration, taxa de emissao,
 // indexador, 12.431), cruzadas do cadastro por ticker.
@@ -44,7 +44,7 @@ function fmtVolKpi(v) {
   return `R$ ${Math.round(v / 1e3).toLocaleString('pt-BR')} mil`
 }
 
-export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
+export default function SecondaryTable({ trades, secRef, dias, desktop }) {
   const [busca, setBusca] = useState('')
   const [data, setData] = useState('')
   const [grupo, setGrupo] = useState('')
@@ -366,7 +366,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
       {desktop ? (
       <div className="sec-split">
        <div className="sec-split-table">
-        <TableWrap title="Mercado secundário (REUNE)">
+        <TableWrap title="Mercado secundário">
         <table className="asset-table sec-table">
           <colgroup>
             <col className="c-data" />

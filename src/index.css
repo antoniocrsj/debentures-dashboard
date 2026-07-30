@@ -2265,7 +2265,7 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 .amort-card .recharts-surface,
 .amort-card svg:focus { outline: none; }
 
-/* ── Mercado secundário (REUNE) ──────────────────────────────────────────── */
+/* ── Mercado secundário ──────────────────────────────────────────────────── */
 /* Respiro lateral (mesmo padrao da Captacao/.fluxo, um pouco mais folgado) para
    os botoes/tabela/grafico nao colarem nas bordas da pagina. */
 .sec-page { padding: var(--sp-4) var(--sp-5) var(--sp-6); }
