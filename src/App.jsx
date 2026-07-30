@@ -10,7 +10,7 @@ import { isYes, dateKey, fmtDateOnly, parseBRDateTime, parseISODate, fmtMesAno }
 import { lazyWithRetry } from './utils/lazyWithRetry.js'
 import Header from './components/Header.jsx'
 import BottomNav from './components/BottomNav.jsx'
-import { ABAS_OCULTAS } from './config/abas.js'
+import { ABAS_OCULTAS_DESKTOP } from './config/abas.js'
 import Filters from './components/Filters.jsx'
 import AssetTable from './components/AssetTable.jsx'
 import SecondaryTable from './components/SecondaryTable.jsx'
@@ -84,7 +84,7 @@ function loadInitialTab() {
   const desktop = loadDesktopMode()
   try {
     const requested = new URLSearchParams(window.location.search).get('tab')
-    if (desktop && DESKTOP_TABS.has(requested) && !ABAS_OCULTAS.has(requested)) return requested
+    if (desktop && DESKTOP_TABS.has(requested) && !ABAS_OCULTAS_DESKTOP.has(requested)) return requested
   } catch {}
   return desktop ? 'debentures' : 'ativos'
 }
@@ -379,7 +379,7 @@ export default function App() {
             { id: 'gestores', label: `Gestores (${managers.length.toLocaleString('pt-BR')})`,       Icon: GestoresIcon },
             { id: 'grupos',   label: `Grupos (${groups.length.toLocaleString('pt-BR')})`,           Icon: GruposIcon },
           ]
-      ).filter(t => !ABAS_OCULTAS.has(t.id)).map(t => (
+      ).filter(t => !ABAS_OCULTAS_DESKTOP.has(t.id)).map(t => (
         <button
           key={t.id}
           role="tab"

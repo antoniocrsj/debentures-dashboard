@@ -6,7 +6,7 @@
 import {
   DebenturesIcon, SecundarioIcon, CaptacaoIcon, CaixaIcon, VencimentosIcon,
 } from './SectionIcons.jsx'
-import { ABAS_OCULTAS } from '../config/abas.js'
+import { ABAS_OCULTAS_COMPACTO } from '../config/abas.js'
 
 const ITEMS = [
   { id: 'debentures',  label: 'Debêntures',  Icon: DebenturesIcon },
@@ -14,7 +14,7 @@ const ITEMS = [
   { id: 'captacao',    label: 'Captação',    Icon: CaptacaoIcon },
   { id: 'caixa',       label: 'Caixa',       Icon: CaixaIcon },
   { id: 'vencimentos', label: 'Vencimentos', Icon: VencimentosIcon },
-].filter(t => !ABAS_OCULTAS.has(t.id))
+].filter(t => !ABAS_OCULTAS_COMPACTO.has(t.id))
 
 export default function BottomNav({ section, onSection }) {
   return (

@@ -1,14 +1,16 @@
-// Abas ESCONDIDAS da navegacao.
+// Abas ESCONDIDAS da navegacao, POR MODO de visualizacao.
 // --------------------------------------------------------------------------
 // O codigo e os dados dessas abas continuam INTACTOS -- some apenas o ponto de
-// entrada na barra de abas (desktop) e no BottomNav (mobile). Os componentes,
-// os CSVs em public/ e os passos do pipeline (atualizar-tudo.ps1) seguem como
-// estao, entao a atualizacao diaria mantem os dados frescos.
+// entrada na navegacao. Componentes, CSVs em public/ e os passos do pipeline
+// (atualizar-tudo.ps1) seguem como estao, entao os dados ficam frescos.
 //
-// PARA REEXIBIR uma aba: remova o id deste Set e faca o rebuild/deploy. E' so'
-// isso -- nenhuma cirurgia. (Como e' versionado, um `git revert` do commit que
-// escondeu tambem funciona.)
+// Hoje:
+//   - DESKTOP  esconde Captacao, Nivel de Caixa e Vencimentos (fica Debentures,
+//     Secundario e Tecnico -- esta ultima ja' consolida as tres).
+//   - COMPACTO (mobile) mantem Captacao e Vencimentos no BottomNav; esconde so'
+//     o Nivel de Caixa.
 //
-// Fonte UNICA: desktop (App.jsx) e mobile (BottomNav.jsx) filtram por este mesmo
-// Set, e o loadInitialTab ignora ?tab=<escondida> na URL. Ver HANDOFF.md.
-export const ABAS_OCULTAS = new Set(['captacao', 'caixa', 'vencimentos'])
+// PARA REEXIBIR uma aba: remova o id do Set do modo correspondente e rebuild.
+// (Como e' versionado, um `git revert` do commit tambem funciona.) Ver HANDOFF.md.
+export const ABAS_OCULTAS_DESKTOP  = new Set(['captacao', 'caixa', 'vencimentos'])
+export const ABAS_OCULTAS_COMPACTO = new Set(['caixa'])
