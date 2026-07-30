@@ -5,10 +5,46 @@ Contexto para quem assumir o trabalho a seguir.
 ## Estado atual
 - Branch `main`, sincronizado com `origin/main`. Deploy automático na Vercel a
   cada push (~1 min): https://debentures-dashboard-three.vercel.app
-- Base antes dos refinamentos finais desta entrega: `5312b0e`.
-- App: React 18 + Vite 5. Dev server: `npm run dev` (porta 5173).
+- Último commit: `d1565b5`. App: React 18 + Vite 5. Dev server: `npm run dev` (5173).
 
-## Entrega atual: aba Secundário
+## Entrega desta sessão: Mercado Verdadeiro (metodologia) + REUNE + 12 meses
+Frente de **dados/metodologia** do Secundário (paralela ao layout descrito abaixo).
+
+**1. REUNE removido de tudo** (`3499e21`). O REUNE (trades) era fetch morto no app +
+seção 6 do Resumo do Dia + passo do pipeline. Removido: app, `ResumoDoDiaModal`,
+`gerar-relatorios.mjs`, `preparar-reune.ps1`; deletados `REUNE_Historico.csv`,
+`spreadRef.js`, `cruzar-reune-bdi.mjs`. **A curva TPF (`REUNE_Curvas.csv`, nome legado)
+FICOU** — é load-bearing pro spread. Fonte de datas repontada: diário via `Anbima_Tx.csv`,
+backfill via `Mercado_Verdadeiro.csv`. Ver memória [[reune-historico-tpf-tesouro]].
+
+**2. Secundário estendido p/ 12 meses** (`9515355`): tape BDI de 92 → **252 pregões**
+(31/07/2025 → 30/07/2026). Ordem que importa: **varredura roda DEPOIS do backfill da
+curva** (senão spreads das datas antigas saem vazios).
+
+**3. Recalibração da metodologia Mercado Verdadeiro** (`f71d5d3`) — calibrada com o
+usuário p/ reconciliar o mercado tradicional com a referência de **150–500 MM/dia**:
+- **chave por DATA DE LIQUIDAÇÃO** (era trade): `gruposPorLiquidacao` em `lib-mercado.mjs`.
+- **banda de fee [0,7; 2,3] bps × duration** (era [1; 2]).
+- **relevância >10MM REMOVIDA**.
+- Resultado: mercado **16,4% → 31,8%** do econômico; tradicional **~277 MM/dia** (na faixa).
+- CSV: só `VolMercado>0` + 10 colunas (era 15) → **4,0 MB**. Aba guiada por liquidação
+  (coluna "Liq.", filtro "Liquidação").
+- Doc `METODOLOGIA_Mercado_Verdadeiro.md` + memórias [[bdi-b3-negocio-a-negocio]] atualizados.
+
+**4. Lupa alinhada** (`d1565b5`): `node tools/lupa-mercado.mjs [N] [TICKER]` agora usa a
+mesma metodologia (liquidação + banda nova) — inspeção bate com a produção.
+
+**Como regenerar a base:** `atualizar-tudo.ps1` (passos BDI → Curvas TPF → Secundário/
+varredura). Manual: `node tools/preparar-bdi-negocios.mjs 252` → `node tools/preparar-reune-curvas-historico.mjs` → `node tools/varredura-mercado.mjs`.
+
+**Avisos honestos:**
+- A **data de liquidação mais recente é parcial** (T+1 do último pregão; falta o T+0 do
+  dia seguinte, ainda não puxado). O dia mais novo sempre fica incompleto.
+- **CSV 4 MB** (era 1,5): fetch OK, mas o cache do localStorage pode estourar → recarrega
+  toda vez (o app funciona, só perde o cache instantâneo).
+- Os `.gz` do tape (`public/bdi/`) são gitignored; só o `Mercado_Verdadeiro.csv` versiona.
+
+## Entrega paralela: layout da aba Secundário
 A aba Secundário agora funciona como um painel master-detail, com a tabela de
 negócios à esquerda e o resumo visual à direita no desktop.
 
