@@ -1,12 +1,12 @@
 # Handoff — debentures-dashboard
 
-Contexto para quem assumir o trabalho a seguir. Atualizado no fim da sessão que
-padronizou as tabelas das abas **Debêntures** e **Técnico**.
+Contexto para quem assumir o trabalho a seguir.
 
 ## Estado atual
 - Branch `main`, sincronizado com `origin/main`. Deploy automático na Vercel a
   cada push (~1 min): https://debentures-dashboard-three.vercel.app
-- Último trabalho: **padronização de tabelas** (commits `d053ce6` → `f09d8a7`).
+- Último commit desta frente: `68ea2b3`. A sessão fez: padronização de tabelas,
+  coluna de **Registro CVM** na aba Ativos, e **abas escondidas por modo**.
 - App: React 18 + Vite 5. Dev server: `npm run dev` (porta 5173).
 
 ## O que foi feito nesta sessão
@@ -23,6 +23,9 @@ tendo a tabela de **Ativos** (Debêntures) como referência canônica:
   reticências).
 
 Commits (mais recente primeiro):
+- `68ea2b3` mantém Captação e Vencimentos no compacto (flag por modo)
+- `546e78b` esconde Captação/Caixa/Vencimentos (feature-flag; refinado por `68ea2b3`)
+- `154bb2b` Ativos: coluna/ordenação por Data de Registro CVM (não Emissão)
 - `f09d8a7` remove %Caixa das gestoras + elimina scroll horizontal
 - `79a91a9` conserta corte da última linha da tabela de gestoras
 - `e1ffe60` centraliza o texto do cabeçalho na vertical
@@ -35,6 +38,16 @@ Commits (mais recente primeiro):
 É o contrato para qualquer tabela nova ou alterada nessas abas: alturas, Total,
 trava em linhas inteiras, variante "ranking" (div), e o caveat da barra de
 rolagem horizontal.
+
+## Aba Ativos: ordenação por Data de Registro CVM
+A coluna que era "Emis." (Data de Emissão) virou **"Reg. CVM"** (Data de Registro
+CVM da Emissão) e é o default sort (desc). Motivo: a Data de Emissão é retroativa,
+então debêntures registradas depois apareciam mais embaixo — "ordenar pela mais
+nova" não mostrava as recém-publicadas. O campo `asset.emissao` foi **mantido
+intacto** (alimenta o cronograma de fluxo/`parseAgenda` e o match dos books); a
+coluna usa um campo NOVO `asset.registroCvm` (`src/utils/data.js`), com guarda
+contra data futura (a fonte traz 1-2 registros com data errada, ex.: 2028).
+Commit `154bb2b`.
 
 ## Abas escondidas (feature-flag, POR MODO)
 Escondidas da navegação via `src/config/abas.js`, com Set separado por modo:
@@ -74,5 +87,5 @@ Código, componentes, CSVs em `public/` e o pipeline (`atualizar-tudo.ps1`) fica
 - Tabelas da aba **Caixa** ainda usam cabeçalho ~33px (`SortableTh` não achatado) —
   estão fora do escopo formal, mas poderiam entrar no mesmo modelo para
   consistência total do app.
-- Confirmar visualmente o build publicado na Vercel do `f09d8a7` (código verificado
-  limpo por medição; falta só o olho no deploy).
+- Confirmar visualmente o build publicado na Vercel do `68ea2b3` (código verificado
+  limpo por medição/DOM; falta só o olho no deploy).
