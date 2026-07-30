@@ -16,7 +16,7 @@ const SecondaryWeeklyChart = lazyWithRetry(() => import('./SecondaryWeeklyChart.
 // depois as caracteristicas da emissao (vencimento, duration, taxa de emissao,
 // indexador, 12.431), cruzadas do cadastro por ticker.
 const COLS = [
-  { id: 'data',      label: 'Data',       sticky: true,  sortable: true  },
+  { id: 'data',      label: 'Liq.',       sticky: true,  sortable: true  },
   { id: 'ativo',     label: 'Ativo',      sticky: true,  sortable: true  },
   { id: 'taxa',      label: 'Tx méd.',    sticky: false, sortable: true  },
   { id: 'spreadRef', label: 'Spread ref.', sticky: false, sortable: false },
@@ -318,11 +318,11 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
               value={busca} onChange={e => setBusca(e.target.value)} aria-label="Buscar no mercado secundário" />
           </div>
           <div className="fluxo-field sec-field-data">
-            <span className="fluxo-field-label">Data</span>
+            <span className="fluxo-field-label">Liquidação</span>
             <select className="sec-input sec-date-input" value={data} onChange={e => setData(e.target.value)}
-              aria-label="Filtrar mercado secundario por data">
-              <option value="">Data: todas</option>
-              {opts.datas.map(d => <option key={d} value={d}>Data: {fmtDateDDMMYY(d)}</option>)}
+              aria-label="Filtrar mercado secundario por data de liquidacao">
+              <option value="">Liquidação: todas</option>
+              {opts.datas.map(d => <option key={d} value={d}>Liq. {fmtDateDDMMYY(d)}</option>)}
             </select>
           </div>
           <div className="fluxo-field sec-field-sel">

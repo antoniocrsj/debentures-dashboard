@@ -5,6 +5,17 @@
 > **double-count** estrutural do balcão — e daí extrair **volume real, taxa e spread
 > (CDI+ / NTN-B+)** por ativo/dia. Construído em jul/2026.
 
+> **⚠️ RECALIBRAÇÃO (jul/2026) — parâmetros atuais** (substituem o texto histórico abaixo):
+> - **Chave = data de LIQUIDAÇÃO** (era data do trade): pernas T+1 e T+0 que liquidam
+>   no mesmo dia entram no mesmo bucket (`gruposPorLiquidacao`).
+> - **Banda de fee = [0,7 bps, 2,3 bps] × duration** (era [1, 2]): o fee real de ~2bps
+>   na taxa vira ~3,08bps de variação de PU e escapava por arredondamento; a folga
+>   captura esses pares.
+> - **Sem relevância mínima** (o filtro de ≥10 MM saiu): todo ativo-dia entra.
+> - Motivo: reconciliar o mercado tradicional com a referência de **R$ 150–500 MM/dia**
+>   (a régua antiga dava ~126 MM; a nova ~277 MM). O CSV grava só linhas com
+>   `VolMercado>0` e só as 10 colunas que o app usa.
+
 ---
 
 ## 1. Motivação
@@ -117,8 +128,9 @@ VolDobradoTotal, VolSobraDobrada, PctMercadoEcon.
 
 | Parâmetro | Valor | Decisão |
 |---|---|---|
-| Relevância | soma dobrada ≥ **R$ 10 MM**/ativo/dia | usuário |
-| Banda de fee | **[1 bp, 2 bps] × duration** | usuário |
+| Chave (bucket) | **data de LIQUIDAÇÃO** (jul/2026; era trade) | usuário |
+| Relevância | **removida** (jul/2026; era ≥ R$ 10 MM/ativo/dia) | usuário |
+| Banda de fee | **[0,7 bps, 2,3 bps] × duration** (jul/2026; era [1, 2]) | usuário |
 | Duration | ANBIMA; fallback **0,70 × prazo** | usuário |
 | Agrupamento de PU | 4 casas decimais | — |
 | Pareamento | por PU+duration+qtd; **horário ignorado** | usuário |

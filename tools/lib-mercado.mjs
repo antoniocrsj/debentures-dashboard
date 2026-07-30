@@ -10,9 +10,12 @@ import path from 'node:path'
 import zlib from 'node:zlib'
 
 // -------- parametros da logica (calibrados com o usuario, jul/2026) --------
-export const MIN_VOL_DOBRADO = 10e6   // relevancia: soma dobrada por ativo/dia < 10MM -> descarta
-export const FEE_LO = 0.0001          // fee minimo = 1 bp  x duration (fracao de PU)
-export const FEE_HI = 0.0002          // fee maximo = 2 bps x duration
+// Recalibrado jul/2026: banda 0,7-2,3 bps (era 1-2), chave por LIQUIDACAO (era
+// trade) e relevancia >10MM REMOVIDA -- reconcilia o volume de mercado tradicional
+// com a referencia de 150-500MM/dia (ver METODOLOGIA_Mercado_Verdadeiro.md).
+export const MIN_VOL_DOBRADO = 10e6   // (legado) relevancia; a varredura NAO aplica mais
+export const FEE_LO = 0.00007         // fee minimo = 0,7 bps x duration (fracao de PU)
+export const FEE_HI = 0.00023         // fee maximo = 2,3 bps x duration
 export const PU_DP = 4                // casas decimais p/ agrupar PU
 
 // -------- helpers --------
@@ -114,6 +117,31 @@ export function gruposDoDia(BDIDIR, dia) {
   }
   const out = new Map()
   for (const [ativo, mp] of porAtivo) out.set(ativo, [...mp.values()])
+  return out
+}
+
+// -------- carrega TODOS os pregoes e agrupa por PU, por ativo x DATA DE LIQUIDACAO --------
+// A chave passou de data-do-trade p/ data-de-liquidacao (jul/2026): pernas T+1 e T+0
+// que liquidam no mesmo dia caem no mesmo bucket. Le o Liquidacao (col 11) do tape.
+// Retorna Map(liqISO -> Map(ativo -> grupos[])), grupo = {pu, qtd, vol, txSum, txN}.
+export function gruposPorLiquidacao(BDIDIR, dias) {
+  const porLiq = new Map()   // liqISO -> ativo -> puKey -> grupo
+  for (const dia of dias) {
+    const txt = zlib.gunzipSync(fs.readFileSync(path.join(BDIDIR, `DEB_${dia}.csv.gz`))).toString('utf8')
+    for (const l of txt.split(/\r?\n/).slice(1).filter(Boolean)) {
+      const f = splitQ(l); if (f.length < 12) continue
+      const ativo = f[1], qtd = num(f[3]), preco = num(f[4]), vol = num(f[5]), taxa = num(f[6])
+      if (qtd == null || preco == null || vol == null) continue
+      const liq = (f[11] || dia).slice(0, 10)
+      const pu = Math.round(preco * 10 ** PU_DP) / 10 ** PU_DP, k = pu.toFixed(PU_DP)
+      let ma = porLiq.get(liq); if (!ma) { ma = new Map(); porLiq.set(liq, ma) }
+      let mp = ma.get(ativo); if (!mp) { mp = new Map(); ma.set(ativo, mp) }
+      let g = mp.get(k); if (!g) { g = { pu, qtd: 0, vol: 0, txSum: 0, txN: 0 }; mp.set(k, g) }
+      g.qtd += qtd; g.vol += vol; if (taxa != null) { g.txSum += taxa * qtd; g.txN += qtd }
+    }
+  }
+  const out = new Map()
+  for (const [liq, ma] of porLiq) { const o = new Map(); for (const [ativo, mp] of ma) o.set(ativo, [...mp.values()]); out.set(liq, o) }
   return out
 }
 
