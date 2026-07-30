@@ -61,7 +61,7 @@ function saveMonths(m) {
 }
 
 const INIT_FILTERS = { grupo: '', setor: '', gestor: '', lei12431: '', ativo: '', search: '', anoVenc: '', comRecompra: '' }
-const INIT_SORT    = { col: 'emissao', dir: 'desc' }
+const INIT_SORT    = { col: 'registroCvm', dir: 'desc' }
 const PAGE_SIZE    = 100  // mostra os 100 mais recentes ao abrir
 
 const DESKTOP_TABS = new Set(['debentures', 'secundario', 'captacao', 'caixa', 'vencimentos', 'tecnico'])
@@ -287,7 +287,7 @@ export default function App() {
     if (!col) return arr
     const key = a => {
       if (col === 'ativo')      return (a.codigoAtivo || '').toLowerCase()
-      if (col === 'emissao')    return dateKey(a.emissao)
+      if (col === 'registroCvm') return dateKey(a.registroCvm)
       if (col === 'vencimento') return dateKey(a.vencimento)
       if (col === 'taxa')       return parseFloat((a.taxa || '').replace(',', '.')) || 0
       if (col === 'vol')        return a.volumeEmitido

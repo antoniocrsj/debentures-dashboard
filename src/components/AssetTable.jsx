@@ -3,7 +3,7 @@ import TableWrap from './TableWrap.jsx'
 
 const COLS = [
   { id: 'ativo',        label: 'Ativo',          sticky: true,  sortable: true  },
-  { id: 'emissao',      label: 'Emis.',          sticky: false, sortable: true  },
+  { id: 'registroCvm',  label: 'Reg. CVM',       sticky: false, sortable: true  },
   { id: 'vencimento',   label: 'Venc.',          sticky: false, sortable: true  },
   { id: 'taxa',         label: 'Taxa',           sticky: false, sortable: true  },
   { id: 'txanbima',     label: 'Tx Anbima',      sticky: false, sortable: false },
@@ -140,7 +140,7 @@ export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter
                     >ℹ</button>
                   </div>
                 </td>
-                <td className="col-num">{fmtData(a.emissao)}</td>
+                <td className="col-num">{fmtData(a.registroCvm)}</td>
                 <td className="col-num">{fmtData(a.vencimento)}</td>
                 <td className="col-num">{fmtTaxa(a.taxa)}</td>
                 <td className="col-num col-anbima" title={anbimaTooltip(a, anbimaRef)}>{(a.txAnbima && a.txAnbima !== '—') ? a.txAnbima : '-'}</td>

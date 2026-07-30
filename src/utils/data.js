@@ -1,5 +1,9 @@
-import { parseNum, normCNPJ } from './format.js'
+import { parseNum, normCNPJ, dateKey } from './format.js'
 import { converterSpreadSec } from './spreadRef.js'
+
+// Chave de hoje (yyyymmdd) para invalidar datas de registro vindas com erro da
+// fonte (o Debentures.com.br traz 1-2 registros com data no futuro, ex.: 2028).
+const HOJE_KEY = dateKey(new Date().toISOString().slice(0, 10))
 
 const FIELDS = {
   codigoAtivo:    ['Codigo do Ativo', 'Código do Ativo', 'Codigo Ativo', 'CODIGO_ATIVO'],
@@ -9,6 +13,9 @@ const FIELDS = {
   taxa:           ['Juros Criterio Novo - Taxa', 'Taxa', 'Juros - Taxa', 'Taxa de Juros'],
   vencimento:     ['Data de Vencimento', 'Vencimento', 'Dt Vencimento', 'DT_VENC'],
   emissao:        ['Data de Emissao', 'Data de Emissão', 'Emissao', 'Dt Emissao'],
+  // Data de REGISTRO CVM da emissao (nao confundir com [7] "Registro CVM da
+  // Emissao", que e' o NUMERO). Reflete quando a debenture foi publicada/registrada.
+  registroCvm:    ['Data de Registro CVM da Emissao', 'Data de Registro CVM da Emissão'],
   indexador:      ['Indexador', 'Indice', 'Índice', 'indice'],
   coordenador:    ['Coordenador Lider', 'Coordenador Líder', 'Coordenador', 'Lead Manager'],
   garantia:       ['Garantia', 'Tipo de Garantia', 'Garantia/Especie'],
@@ -125,12 +132,19 @@ export function enrichDebenture(deb, { emissorMap, blcByAtivo, anbimaByTicker, a
   const qtd = parseNum(pick(deb, FIELDS.qtdMercado))
   const vna = parseNum(pick(deb, FIELDS.vna))
 
+  // Data de registro CVM: guarda contra erro da fonte (data futura -> invalida).
+  // 'emissao' e' mantido intacto: alimenta o cronograma de fluxo (parseAgenda) e
+  // o casamento dos books de primario -- nao pode virar a data de registro.
+  const regRaw = pick(deb, FIELDS.registroCvm)
+  const registroCvm = regRaw && dateKey(regRaw) > HOJE_KEY ? '' : regRaw
+
   return {
     ...deb,
     codigoAtivo,
     taxa:          pick(deb, FIELDS.taxa),
     vencimento:    pick(deb, FIELDS.vencimento),
     emissao:       pick(deb, FIELDS.emissao),
+    registroCvm,
     indexador:     pick(deb, FIELDS.indexador),
     coordenador:   pick(deb, FIELDS.coordenador),
     garantia:      pick(deb, FIELDS.garantia),
