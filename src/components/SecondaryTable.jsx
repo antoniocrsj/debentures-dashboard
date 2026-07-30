@@ -1,6 +1,7 @@
 import { useMemo, useState, Suspense } from 'react'
 import { parseNum, shortEmissor, fmtDateDDMMYY, fmtTaxa, isYes } from '../utils/format.js'
 import { lazyWithRetry } from '../utils/lazyWithRetry.js'
+import { agregaNegociosPorSemana, resumoNegociosSecundario } from '../utils/secondary.js'
 import TableWrap from './TableWrap.jsx'
 import SearchSelect from './SearchSelect.jsx'
 import SearchField from './SearchField.jsx'
@@ -8,6 +9,7 @@ import SearchField from './SearchField.jsx'
 // Grafico de serie (Recharts) carregado sob demanda: so' entra no bundle quando
 // o usuario clica num ativo para ver a evolucao.
 const SecondaryChart = lazyWithRetry(() => import('./SecondaryChart.jsx'))
+const SecondaryWeeklyChart = lazyWithRetry(() => import('./SecondaryWeeklyChart.jsx'))
 
 // Colunas do mercado secundario (REUNE). Uma linha = um TRADE (ativo negociado
 // num dia). Data (short date) + a taxa negociada no dia (min/med/max) e o volume;
@@ -33,6 +35,12 @@ function fmtTx(v) { return (v && v !== '--') ? `${v}%` : '-' }
 function fmtVolRs(v) {
   if (v == null || !(v > 0)) return '-'
   if (v >= 1e6) return `R$ ${(v / 1e6).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} MM`
+  return `R$ ${Math.round(v / 1e3).toLocaleString('pt-BR')} mil`
+}
+function fmtVolKpi(v) {
+  if (v == null || !(v > 0)) return 'R$ 0'
+  if (v >= 1e9) return `R$ ${(v / 1e9).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} bi`
+  if (v >= 1e6) return `R$ ${(v / 1e6).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} mi`
   return `R$ ${Math.round(v / 1e3).toLocaleString('pt-BR')} mil`
 }
 
@@ -201,7 +209,20 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
   // um TETO de render p/ nunca travar.
   const MAX_LINHAS = 1500
   const soUltimoPregao = !temFiltro && !verTudo
-  const baseLinhas = soUltimoPregao ? filtrados.filter(t => dias5Recentes.has(t.data)) : filtrados
+  const baseLinhas = useMemo(
+    () => soUltimoPregao ? filtrados.filter(t => dias5Recentes.has(t.data)) : filtrados,
+    [soUltimoPregao, filtrados, dias5Recentes],
+  )
+  const linhasDosIndicadores = useMemo(
+    () => selAtivo ? baseLinhas.filter(t => t.codigoAtivo === selAtivo) : baseLinhas,
+    [baseLinhas, selAtivo],
+  )
+  const linhasDoGraficoSemanal = useMemo(
+    () => selAtivo ? filtrados.filter(t => t.codigoAtivo === selAtivo) : filtrados,
+    [filtrados, selAtivo],
+  )
+  const resumoNegocios = useMemo(() => resumoNegociosSecundario(linhasDosIndicadores), [linhasDosIndicadores])
+  const serieSemanal = useMemo(() => agregaNegociosPorSemana(linhasDoGraficoSemanal), [linhasDoGraficoSemanal])
   const linhasVisiveis = baseLinhas.length > MAX_LINHAS ? baseLinhas.slice(0, MAX_LINHAS) : baseLinhas
   const escondidos = filtrados.length - baseLinhas.length
   const capExcedido = baseLinhas.length - linhasVisiveis.length
@@ -246,6 +267,29 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
         </table>
       </div>
     </div>
+  )
+
+  const cardsResumo = (
+    <div className="fluxo-cards sec-kpis" aria-label="Resumo dos negócios filtrados">
+      <div className="fluxo-card">
+        <span className="fluxo-card-label">Volume 12.431</span>
+        <span className="fluxo-card-value">{fmtVolKpi(resumoNegocios.volume12431)}</span>
+      </div>
+      <div className="fluxo-card">
+        <span className="fluxo-card-label">Volume tradicional</span>
+        <span className="fluxo-card-value">{fmtVolKpi(resumoNegocios.volumeTradicional)}</span>
+      </div>
+      <div className="fluxo-card">
+        <span className="fluxo-card-label">Número de trades</span>
+        <span className="fluxo-card-value">{resumoNegocios.numeroTrades.toLocaleString('pt-BR')}</span>
+      </div>
+    </div>
+  )
+
+  const graficoSemanal = serieSemanal.length > 0 && (
+    <Suspense fallback={<div className="sec-chart-empty">Carregando gráfico semanal…</div>}>
+      <SecondaryWeeklyChart serie={serieSemanal} />
+    </Suspense>
   )
 
   return (
@@ -397,7 +441,8 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
         )}
        </div>
 
-       <aside className="sec-split-chart">
+       <aside className={`sec-split-chart${grupoTabela ? ' has-group-table' : ''}`}>
+        {cardsResumo}
         {serieGrafico
           ? (
             <Suspense fallback={<div className="sec-chart-empty">Carregando gráfico…</div>}>
@@ -410,16 +455,20 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
               Selecione um ativo, emissor ou grupo para ver a evolução da taxa.
             </div>
           )}
+        {graficoSemanal}
         {grupoTabela}
        </aside>
       </div>
       ) : (
+      <>
+      {cardsResumo}
       <div className="sec-cards-wrap">
         {serieGrafico && (
           <Suspense fallback={<div className="sec-chart-empty">Carregando gráfico…</div>}>
             <SecondaryChart serie={serieGrafico.pontos} modo={serieGrafico.modo} unidade={serieGrafico.unidade} refLabel={serieGrafico.refLabel} titulo={focoLabel} nAtivos={nAtivosFiltro} />
           </Suspense>
         )}
+        {graficoSemanal}
         {grupoTabela}
         {!temFiltro && (verTudo || escondidos > 0) && (
           <button type="button" className="sec-cards-toggle" onClick={() => setVerTudo(v => !v)}>
@@ -470,6 +519,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
           })}
         </div>
       </div>
+      </>
       )}
     </>
   )

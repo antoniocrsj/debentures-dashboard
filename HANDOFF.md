@@ -5,11 +5,47 @@ Contexto para quem assumir o trabalho a seguir.
 ## Estado atual
 - Branch `main`, sincronizado com `origin/main`. Deploy automático na Vercel a
   cada push (~1 min): https://debentures-dashboard-three.vercel.app
-- Último commit desta frente: `68ea2b3`. A sessão fez: padronização de tabelas,
-  coluna de **Registro CVM** na aba Ativos, e **abas escondidas por modo**.
+- Base antes desta entrega: `5562691`. A frente anterior fez: padronização de
+  tabelas, coluna de **Registro CVM** na aba Ativos e **abas escondidas por modo**.
 - App: React 18 + Vite 5. Dev server: `npm run dev` (porta 5173).
 
-## O que foi feito nesta sessão
+## Entrega atual: aba Secundário
+A aba Secundário agora funciona como um painel master-detail, com a tabela de
+negócios à esquerda e o resumo visual à direita no desktop.
+
+- Três cards respondem aos filtros ativos: **Volume 12.431**, **Volume
+  tradicional** e **Número de trades**.
+- O novo gráfico semanal agrega **volume total** e **quantidade de trades** por
+  semana ISO. Ele responde à busca, data, tipo de fundo e seleção de uma linha.
+- A escala do volume é flexível, busca aproximadamente oito divisões e nunca usa
+  intervalo superior a R$ 500 milhões. O volume sempre mostra uma casa decimal;
+  trades permanecem inteiros.
+- As grades horizontais são tracejadas, finas e ficam atrás das colunas. Volume
+  usa terracota (`#8c5e3a`); trades e a linha do eixo X usam taupe (`#9a8c7a`).
+- Os dois gráficos têm a mesma altura no desktop, ocupam o espaço disponível e
+  terminam alinhados com a tabela, mantendo respiro no rodapé da tela.
+- No gráfico evolutivo, a janela inicial é de +/-30 bps ou +/-0,30 pp, expandida
+  quando os dados exigem. Há no máximo sete linhas; os passos são múltiplos de
+  10 bps ou 0,10 pp e o eixo Y sempre exibe uma casa decimal.
+- O título do gráfico evolutivo mostra apenas o ativo. O texto auxiliar com tipo
+  de spread e número de pregões foi removido para reduzir ruído visual.
+- O modo compacto foi mantido e conferido separadamente.
+
+Arquivos principais desta entrega:
+- `src/components/SecondaryTable.jsx`: filtros, seleção e composição da aba.
+- `src/components/SecondaryChart.jsx`: gráfico evolutivo e escala dinâmica.
+- `src/components/SecondaryWeeklyChart.jsx`: gráfico semanal novo.
+- `src/utils/secondary.js`: agregações e métricas compartilhadas.
+- `src/index.css`: layout responsivo, cards e acabamento visual.
+- `test/secondary-summary.test.js`: testes das métricas e agregações.
+
+Verificação ao fechar a implementação:
+- `npm test`: 142 testes, 140 aprovados e 2 ignorados.
+- `npm run build`: concluído com sucesso; permanece apenas o aviso conhecido de
+  tamanho do bundle.
+- `git diff --check`: sem erros de whitespace.
+
+## Frente anterior: tabelas e navegação
 Padronizou todas as tabelas das abas Debêntures e Técnico num único modelo,
 tendo a tabela de **Ativos** (Debêntures) como referência canônica:
 - Cabeçalho **26px** (nowrap, texto centrado na vertical); linha de dados **20px**;

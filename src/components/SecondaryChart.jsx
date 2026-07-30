@@ -17,19 +17,23 @@ function dataCurta(iso) {
   return (d && m) ? `${d}/${m}` : iso
 }
 
-// Ticks do eixo Y (= gridlines) a cada 10 bps (0,10% no CDI). Se a janela for
-// larga demais (>~15 linhas), sobe p/ o proximo passo "redondo" (20/50/100 bps)
-// p/ nao virar um paliteiro.
+// Ticks do eixo Y (= gridlines) em multiplos de 10 bps (0,10% no CDI), com no
+// maximo 7 linhas. Em amplitudes maiores, sobe para 20/30/40/50 bps etc.
 function gridTicks(lo, hi, unidade) {
-  const nice = unidade === 'bps' ? [10, 20, 50, 100, 200, 500] : [0.10, 0.20, 0.50, 1.00, 2.00, 5.00]
-  const step = nice.find(s => (hi - lo) / s <= 15) || nice[nice.length - 1]
+  const nice = unidade === 'bps'
+    ? [10, 20, 30, 40, 50, 100, 200, 500, 1000, 2000, 5000]
+    : [0.10, 0.20, 0.30, 0.40, 0.50, 1.00, 2.00, 5.00, 10.00, 20.00, 50.00]
   const dec = unidade === 'bps' ? 0 : 2
   const f = 10 ** dec
-  const ticks = []
-  for (let i = Math.ceil((lo - 1e-9) / step); i * step <= hi + 1e-9; i++) {
-    ticks.push(Math.round(i * step * f) / f)
+
+  for (const step of nice) {
+    const ticks = []
+    for (let i = Math.ceil((lo - 1e-9) / step); i * step <= hi + 1e-9; i++) {
+      ticks.push(Math.round(i * step * f) / f)
+    }
+    if (ticks.length <= 7) return ticks
   }
-  return ticks
+  return []
 }
 
 // Spread formatado conforme a unidade: bps -> inteiro; % -> 2 casas. Com sinal.
@@ -67,22 +71,20 @@ function ChartTooltip({ active, payload, modo, unidade, refLabel }) {
   )
 }
 
-export default function SecondaryChart({ serie, titulo, nAtivos, modo = 'taxa', unidade, refLabel }) {
+export default function SecondaryChart({ serie, titulo, modo = 'taxa', unidade, refLabel }) {
   if (!serie || !serie.length) return null
-  const media = nAtivos > 1
   const spread = modo === 'spread'
   const kMed = spread ? 'spMed' : 'txMed'
   const kMin = spread ? 'spMin' : 'txMin'
   const kMax = spread ? 'spMax' : 'txMax'
   const yFmt = spread && unidade === 'bps'
-    ? (v => (v < 0 ? MINUS : '') + Math.abs(Math.round(v)))
-    : (v => v.toLocaleString('pt-BR', { maximumFractionDigits: 1 }))
-  const refTxt = spread ? `spread s/ ${refLabel}${unidade === 'bps' ? ' (bps)' : ''}` : null
+    ? (v => (v < 0 ? MINUS : '') + Math.abs(v).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }))
+    : (v => v.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }))
 
-  // Eixo Y (modo spread): TRAVA uma janela de +/-70 bps (140 no total) centrada
-  // nos dados, p/ a escala nao variar entre ativos. Se a amplitude passar de 140,
+  // Eixo Y (modo spread): TRAVA uma janela de +/-30 bps (60 no total) centrada
+  // nos dados, p/ a escala nao variar entre ativos. Se a amplitude passar de 60,
   // expande p/ nao cortar. CDI (spread nao-negativo) trava o piso em 0; IPCA/
-  // NTN-B pode ir a negativo (NTN-B-). bps -> +/-70; CDI (%) -> +/-0,70.
+  // NTN-B pode ir a negativo (NTN-B-). bps -> +/-30; CDI (%) -> +/-0,30.
   let yDomain = ['auto', 'auto']
   if (spread) {
     const vals = []
@@ -92,11 +94,11 @@ export default function SecondaryChart({ serie, titulo, nAtivos, modo = 'taxa', 
       if (p[kMed] != null) vals.push(p[kMed])
     }
     if (vals.length) {
-      const HALF = unidade === 'bps' ? 70 : 0.70   // meia-janela base: +/-70 bps
+      const HALF = unidade === 'bps' ? 30 : 0.30   // meia-janela base: +/-30 bps
       const PAD = unidade === 'bps' ? 20 : 0.20     // folga do dado ao eixo qdo expande
       const lo0 = Math.min(...vals), hi0 = Math.max(...vals)
       const centro = (lo0 + hi0) / 2
-      // Janela base +/-70. Se o dado extrapola (volatilidade > 140), expande DO
+      // Janela base +/-30. Se o dado extrapola (volatilidade > 60), expande DO
       // lado que estoura deixando PAD (20 bps) de folga -- o extremo nunca cola
       // no eixo/teto.
       let lo = lo0 < centro - HALF ? lo0 - PAD : centro - HALF
@@ -105,21 +107,18 @@ export default function SecondaryChart({ serie, titulo, nAtivos, modo = 'taxa', 
       yDomain = [lo, hi]
     }
   }
-  // Gridlines/ticks do eixo Y a cada 10 bps (segue o dominio travado).
+  // Gridlines/ticks em multiplos de 10 bps/0,10 p.p., limitadas a 7 linhas.
   const yTicks = (spread && yDomain[0] !== 'auto') ? gridTicks(yDomain[0], yDomain[1], unidade) : undefined
 
   return (
     <div className="grafico-card sec-chart-card">
       <p className="tecnico-chart-label">
         <span className="sec-chart-tit">{titulo}</span>
-        <span className="sec-chart-pts">
-          {refTxt ? `${refTxt} · ` : ''}{media ? `média de ${nAtivos} ativos · ` : ''}{serie.length} {serie.length === 1 ? 'pregão' : 'pregões'}
-        </span>
       </p>
       <div className="sec-chart-plot">
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={serie} margin={{ top: 6, right: 10, bottom: 0, left: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke={COL_GRID} vertical={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke={COL_GRID} vertical={false} syncWithTicks />
             <XAxis dataKey="data" tickFormatter={dataCurta} tick={{ fontSize: FZ, fill: COL_EIXO }}
                    tickMargin={4} axisLine={false} tickLine={false} interval="preserveStartEnd" minTickGap={16} />
             <YAxis tick={{ fontSize: FZ, fill: COL_EIXO, textAnchor: 'start' }} dx={-26} width={36}
