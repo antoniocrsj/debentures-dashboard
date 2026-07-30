@@ -62,18 +62,18 @@
     },
     "captacao": {
       "12431": {
-        "captacao": 542940284.4800001,
-        "resgate": 1846293139.58,
-        "liquido": -1303352855.1,
-        "pl": 260224262543.75998,
-        "numFundos": 1690,
+        "captacao": 719468039.2200001,
+        "resgate": 1846295811.83,
+        "liquido": -1126827772.6099997,
+        "pl": 260441385099.3,
+        "numFundos": 1698,
         "dataPl": "2026-07-10",
         "de": "2026-07-06",
         "ate": "2026-07-10",
         "diasUteis": 5,
         "anterior": {
-          "liquido": -1431217769.4099987,
-          "captacao": 1591958705.3700001,
+          "liquido": -1390869696.9799986,
+          "captacao": 1632306777.8000002,
           "resgate": 3023176474.779999,
           "de": "2026-06-29",
           "ate": "2026-07-03"
@@ -83,8 +83,8 @@
         "captacao": 13647532423.92,
         "resgate": 14228891198.790003,
         "liquido": -581358774.8700027,
-        "pl": 1579090442898.2402,
-        "numFundos": 992,
+        "pl": 1579143144254.9702,
+        "numFundos": 993,
         "dataPl": "2026-07-10",
         "de": "2026-07-06",
         "ate": "2026-07-10",
@@ -100,6 +100,14 @@
     },
     "gestores": {
       "top12431Captacao": [
+        {
+          "gestor": "Portofino",
+          "captacao": 37000000,
+          "resgate": 0,
+          "liquido": 37000000,
+          "pl": 394127371.67,
+          "dias": 5
+        },
         {
           "gestor": "JGP",
           "captacao": 51783041.080000006,
@@ -131,31 +139,23 @@
           "liquido": 3200053.57,
           "pl": 152515964.8,
           "dias": 5
-        },
-        {
-          "gestor": "Oriz",
-          "captacao": 3500000,
-          "resgate": 474000,
-          "liquido": 3026000,
-          "pl": 355041320.04,
-          "dias": 5
         }
       ],
       "top12431Resgate": [
-        {
-          "gestor": "Safra Asset",
-          "captacao": 4328369.7,
-          "resgate": 245381694.11,
-          "liquido": -241053324.41000003,
-          "pl": 10171046111.69,
-          "dias": 5
-        },
         {
           "gestor": "IAM",
           "captacao": 107460288.41,
           "resgate": 282596065.87,
           "liquido": -175135777.46,
           "pl": 55867661829.51,
+          "dias": 5
+        },
+        {
+          "gestor": "Safra Asset",
+          "captacao": 100478369.7,
+          "resgate": 245381694.11,
+          "liquido": -144903324.41000003,
+          "pl": 10267196111.69,
           "dias": 5
         },
         {
@@ -168,18 +168,18 @@
         },
         {
           "gestor": "BB Asset",
-          "captacao": 21479083.060000002,
+          "captacao": 31479083.06,
           "resgate": 150301684.63000003,
-          "liquido": -128822601.57000002,
-          "pl": 20161225875.1,
+          "liquido": -118822601.57000002,
+          "pl": 20171241121.03,
           "dias": 5
         },
         {
           "gestor": "BRAM",
-          "captacao": 107830938.23,
+          "captacao": 122830938.23,
           "resgate": 235150560,
-          "liquido": -127319621.77,
-          "pl": 28441689130.19,
+          "liquido": -112319621.77,
+          "pl": 28456704951.39,
           "dias": 5
         }
       ],
@@ -231,7 +231,7 @@
           "captacao": 178964234.23000002,
           "resgate": 770041854.6100001,
           "liquido": -591077620.3800001,
-          "pl": 22660053481.95,
+          "pl": 22712754838.68,
           "dias": 5
         },
         {
@@ -423,8 +423,8 @@
         "dataIni": "2026-07-03",
         "dataFim": "2026-07-10",
         "spreadIniBps": 100,
-        "spreadFimBps": 98,
-        "variacaoBps": -2,
+        "spreadFimBps": 97,
+        "variacaoBps": -3,
         "spreadConfiavel": true
       }
     },
@@ -680,7 +680,7 @@
     "alertas": [
       {
         "tipo": "perf-cobertura",
-        "texto": "Performance 12.431: 11 fundo(s) fora por cobertura < 60% e 1 por dado inválido."
+        "texto": "Performance 12.431: 12 fundo(s) fora por cobertura < 60% e 1 por dado inválido."
       },
       {
         "tipo": "perf-cobertura",
@@ -691,10 +691,10 @@
       "12431": {
         "diasUteis": 5,
         "excluidos": {
-          "insuficiente": 11,
+          "insuficiente": 12,
           "glitch": 1
         },
-        "avaliados": 1681,
+        "avaliados": 1687,
         "minCobertura": 0.6
       },
       "trad": {
@@ -703,7 +703,7 @@
           "insuficiente": 1,
           "glitch": 0
         },
-        "avaliados": 999,
+        "avaliados": 1000,
         "minCobertura": 0.6
       }
     }
@@ -717,10 +717,10 @@
       "texto": "IDA-IPCA Infraestrutura rendeu +0,96% na semana."
     },
     {
-      "texto": "IDA-DI rendeu +0,36% na semana, spread fechou 2 bps."
+      "texto": "IDA-DI rendeu +0,36% na semana, spread fechou 3 bps."
     },
     {
-      "texto": "Captação líquida 12.431 na semana: −R$ 1,3 bi (capt. R$ 543 mi − resg. R$ 1,8 bi, 5 dia(s) útil(eis)).",
+      "texto": "Captação líquida 12.431 na semana: −R$ 1,1 bi (capt. R$ 719 mi − resg. R$ 1,8 bi, 5 dia(s) útil(eis)).",
       "tom": "neg"
     },
     {

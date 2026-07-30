@@ -118,11 +118,11 @@
     },
     "captacao": {
       "12431": {
-        "captacao": 1591958705.3700001,
+        "captacao": 1632306777.8000002,
         "resgate": 3023176474.779999,
-        "liquido": -1431217769.4099987,
-        "pl": 261894108430.21,
-        "numFundos": 1687,
+        "liquido": -1390869696.9799986,
+        "pl": 261934485485.03,
+        "numFundos": 1691,
         "dataPl": "2026-07-03",
         "de": "2026-06-29",
         "ate": "2026-07-03",
@@ -139,8 +139,8 @@
         "captacao": 14832468543.09,
         "resgate": 16217587452.179996,
         "liquido": -1385118909.0899963,
-        "pl": 1576610399042.0203,
-        "numFundos": 999,
+        "pl": 1576662943450.87,
+        "numFundos": 1000,
         "dataPl": "2026-07-03",
         "de": "2026-06-29",
         "ate": "2026-07-03",
@@ -181,19 +181,19 @@
           "dias": 5
         },
         {
+          "gestor": "ASA",
+          "captacao": 8657250.13,
+          "resgate": 127341.24,
+          "liquido": 8529908.89,
+          "pl": 103456913.43,
+          "dias": 5
+        },
+        {
           "gestor": "Sulamérica",
           "captacao": 5946852.45,
           "resgate": 1736138.5699999998,
           "liquido": 4210713.880000001,
           "pl": 1505341000.72,
-          "dias": 5
-        },
-        {
-          "gestor": "Sten",
-          "captacao": 2301987.65,
-          "resgate": 0,
-          "liquido": 2301987.65,
-          "pl": 148902028.64,
           "dias": 5
         }
       ],
@@ -287,7 +287,7 @@
           "captacao": 179197033.21,
           "resgate": 1181080795.07,
           "liquido": -1001883761.8599999,
-          "pl": 23018511943.56,
+          "pl": 23071056352.41,
           "dias": 5
         },
         {
@@ -618,18 +618,18 @@
       },
       {
         "tipo": "perf-cobertura",
-        "texto": "Performance 12.431: 9 fundo(s) fora por cobertura < 60% e 3 por dado inválido."
+        "texto": "Performance 12.431: 13 fundo(s) fora por cobertura < 60% e 3 por dado inválido."
       },
       {
         "tipo": "perf-cobertura",
-        "texto": "Performance Tradicional: 6 fundo(s) fora por cobertura < 60% e 0 por dado inválido."
+        "texto": "Performance Tradicional: 6 fundo(s) fora por cobertura < 60% e 1 por dado inválido."
       }
     ],
     "perfCobertura": {
       "12431": {
         "diasUteis": 5,
         "excluidos": {
-          "insuficiente": 9,
+          "insuficiente": 13,
           "glitch": 3
         },
         "avaliados": 1684,
@@ -639,7 +639,7 @@
         "diasUteis": 5,
         "excluidos": {
           "insuficiente": 6,
-          "glitch": 0
+          "glitch": 1
         },
         "avaliados": 999,
         "minCobertura": 0.6

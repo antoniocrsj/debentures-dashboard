@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-29T12:22:04.006Z",
+  "updatedAt": "2026-07-30T10:07:36.708Z",
   "fonte": "ANBIMA - Indice de Debentures (IDA) + familia IMA, arquivos historicos S3 (indices-historico)",
   "indices": [
     {
@@ -57,7 +57,7 @@
     "ancorasBps": {
       "cdi": 97,
       "ipca": -1,
-      "ipcaInfra": -3
+      "ipcaInfra": -4
     },
     "pares": [
       {
@@ -82,7 +82,7 @@
         "govt": "IMAB",
         "nivel": false,
         "dias": 2901,
-        "ancoraBps": -3
+        "ancoraBps": -4
       }
     ]
   }

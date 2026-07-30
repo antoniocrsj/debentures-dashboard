@@ -515,8 +515,8 @@
         "captacao": 62982073864.83997,
         "resgate": 66063439899.630005,
         "liquido": -3081366034.7900314,
-        "pl": 1575461229509.2383,
-        "numFundos": 999,
+        "pl": 1575513746034.4285,
+        "numFundos": 1000,
         "dataPl": "2026-06-30",
         "de": "2026-06-01",
         "ate": "2026-06-30",
@@ -637,7 +637,7 @@
           "captacao": 1909073352.0200005,
           "resgate": 1546019913.73,
           "liquido": 363053438.29000044,
-          "pl": 23597933551.38,
+          "pl": 23650450076.57,
           "dias": 21
         },
         {
@@ -724,8 +724,8 @@
         "dataIni": "2026-05-29",
         "dataFim": "2026-06-30",
         "spreadIniBps": 101,
-        "spreadFimBps": 101,
-        "variacaoBps": 0,
+        "spreadFimBps": 100,
+        "variacaoBps": -1,
         "spreadConfiavel": true
       }
     },
@@ -759,21 +759,10 @@
           "segmento": "12431"
         },
         {
-          "cnpj": "60276080000134",
-          "nome": "DAYCOVAL INCENTIVADO DE…",
-          "gestor": "Daycoval",
-          "retorno": 10.0866,
-          "obs": 20,
-          "de": "2026-06-02",
-          "ate": "2026-06-30",
-          "pl": 88610374.27,
-          "segmento": "12431"
-        },
-        {
           "cnpj": "64089192000137",
           "nome": "TOP DEBÊNTURES 2025 INCENTIVADO…",
           "gestor": "IAM",
-          "retorno": 8.3491,
+          "retorno": 8.3489,
           "obs": 20,
           "de": "2026-06-02",
           "ate": "2026-06-30",
@@ -789,6 +778,17 @@
           "de": "2026-06-02",
           "ate": "2026-06-30",
           "pl": 22989516.09,
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "60775750000167",
+          "nome": "G5 ALLOCATION II FUNDO…",
+          "gestor": "G5",
+          "retorno": 3.8105,
+          "obs": 19,
+          "de": "2026-06-02",
+          "ate": "2026-06-30",
+          "pl": 36716508.79,
           "segmento": "12431"
         }
       ],
@@ -819,7 +819,7 @@
           "cnpj": "63942021000146",
           "nome": "OCCAM BB INFRA LINEAR…",
           "gestor": "Occam",
-          "retorno": -6.3312,
+          "retorno": -6.331,
           "obs": 20,
           "de": "2026-06-02",
           "ate": "2026-06-30",
@@ -854,7 +854,7 @@
           "cnpj": "64436974000103",
           "nome": "BB MASTER III DEBÊNTURES…",
           "gestor": "BB Asset",
-          "retorno": 6.843,
+          "retorno": 6.8428,
           "obs": 20,
           "de": "2026-06-02",
           "ate": "2026-06-30",
@@ -1041,11 +1041,11 @@
       },
       {
         "tipo": "perf-cobertura",
-        "texto": "Performance 12.431: 20 fundo(s) fora por cobertura < 60% e 5 por dado inválido."
+        "texto": "Performance 12.431: 20 fundo(s) fora por cobertura < 60% e 4 por dado inválido."
       },
       {
         "tipo": "perf-cobertura",
-        "texto": "Performance Tradicional: 9 fundo(s) fora por cobertura < 60% e 4 por dado inválido."
+        "texto": "Performance Tradicional: 8 fundo(s) fora por cobertura < 60% e 4 por dado inválido."
       }
     ],
     "perfCobertura": {
@@ -1053,18 +1053,18 @@
         "diasUteis": 20,
         "excluidos": {
           "insuficiente": 20,
-          "glitch": 5
+          "glitch": 4
         },
-        "avaliados": 1687,
+        "avaliados": 1688,
         "minCobertura": 0.6
       },
       "trad": {
         "diasUteis": 20,
         "excluidos": {
-          "insuficiente": 9,
+          "insuficiente": 8,
           "glitch": 4
         },
-        "avaliados": 994,
+        "avaliados": 995,
         "minCobertura": 0.6
       }
     }
@@ -1077,7 +1077,7 @@
       "texto": "IDA-IPCA Infraestrutura rendeu -0,06% no mês."
     },
     {
-      "texto": "IDA-DI rendeu +1,23% no mês, spread estável."
+      "texto": "IDA-DI rendeu +1,23% no mês, spread fechou 1 bps."
     },
     {
       "texto": "Captação líquida 12.431 no mês: −R$ 9,7 bi (capt. R$ 7,7 bi − resg. R$ 17,4 bi, 21 dia(s) útil(eis)).",

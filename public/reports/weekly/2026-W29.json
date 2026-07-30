@@ -142,29 +142,29 @@
     },
     "captacao": {
       "12431": {
-        "captacao": 1065825178.37,
-        "resgate": 1830398619.2799988,
-        "liquido": -764573440.9099988,
-        "pl": 262817717602.2699,
-        "numFundos": 1691,
+        "captacao": 1212567567.6299994,
+        "resgate": 2074270096.109999,
+        "liquido": -861702528.4799995,
+        "pl": 263178592850.18988,
+        "numFundos": 1705,
         "dataPl": "2026-07-17",
         "de": "2026-07-13",
         "ate": "2026-07-17",
         "diasUteis": 5,
         "anterior": {
-          "liquido": -1303352855.1,
-          "captacao": 542940284.4800001,
-          "resgate": 1846293139.58,
+          "liquido": -1126827772.6099997,
+          "captacao": 719468039.2200001,
+          "resgate": 1846295811.83,
           "de": "2026-07-06",
           "ate": "2026-07-10"
         }
       },
       "trad": {
-        "captacao": 13554090350.97001,
-        "resgate": 11701700556.43001,
-        "liquido": 1852389794.540001,
-        "pl": 1587603475323.3503,
-        "numFundos": 998,
+        "captacao": 13554200250.05001,
+        "resgate": 11725095900.82001,
+        "liquido": 1829104349.2300014,
+        "pl": 1587615368931.7402,
+        "numFundos": 999,
         "dataPl": "2026-07-17",
         "de": "2026-07-13",
         "ate": "2026-07-17",
@@ -181,14 +181,6 @@
     "gestores": {
       "top12431Captacao": [
         {
-          "gestor": "Sparta",
-          "captacao": 263581811.32999998,
-          "resgate": 67089000.17999999,
-          "liquido": 196492811.14999998,
-          "pl": 10381733179.43,
-          "dias": 5
-        },
-        {
           "gestor": "Journey",
           "captacao": 158323784.41000003,
           "resgate": 251115.25,
@@ -202,6 +194,14 @@
           "resgate": 21538500.419999998,
           "liquido": 47703730.02000001,
           "pl": 3813441418.8,
+          "dias": 5
+        },
+        {
+          "gestor": "Portofino",
+          "captacao": 44495187.419999994,
+          "resgate": 0,
+          "liquido": 44495187.419999994,
+          "pl": 438260672.24,
           "dias": 5
         },
         {
@@ -224,10 +224,10 @@
       "top12431Resgate": [
         {
           "gestor": "Safra Asset",
-          "captacao": 3943080.19,
+          "captacao": 12192080.190000001,
           "resgate": 292799567.71,
-          "liquido": -288856487.52,
-          "pl": 11808396654.72,
+          "liquido": -280607487.52,
+          "pl": 11913048148.4,
           "dias": 5
         },
         {
@@ -255,11 +255,11 @@
           "dias": 5
         },
         {
-          "gestor": "BRAM",
-          "captacao": 116895216.36,
-          "resgate": 185455535.82,
-          "liquido": -68560319.46,
-          "pl": 28411604190.02,
+          "gestor": "ARX",
+          "captacao": 31011765.039999995,
+          "resgate": 86844542.74000001,
+          "liquido": -55832777.70000002,
+          "pl": 6829784841.26,
           "dias": 5
         }
       ],
@@ -502,9 +502,9 @@
         "retornoPct": 0.302,
         "dataIni": "2026-07-10",
         "dataFim": "2026-07-17",
-        "spreadIniBps": 98,
+        "spreadIniBps": 97,
         "spreadFimBps": 97,
-        "variacaoBps": -1,
+        "variacaoBps": 0,
         "spreadConfiavel": true
       }
     },
@@ -1820,17 +1820,6 @@
           "segmento": "12431"
         },
         {
-          "cnpj": "61543507000186",
-          "nome": "VINLAND 2 INCENTIVADO EM DEB DE…",
-          "gestor": "Vinland",
-          "retorno": -1.3183,
-          "obs": 5,
-          "de": "2026-07-13",
-          "ate": "2026-07-17",
-          "pl": 117553859.48,
-          "segmento": "12431"
-        },
-        {
           "cnpj": "54952575000133",
           "nome": "BTG PACTUAL CRÉDITO CORPORATIVO…",
           "gestor": "BTG Asset",
@@ -1839,6 +1828,17 @@
           "de": "2026-07-13",
           "ate": "2026-07-17",
           "pl": 26834538.89,
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "60775750000167",
+          "nome": "G5 ALLOCATION II FUNDO…",
+          "gestor": "G5",
+          "retorno": -0.9514,
+          "obs": 3,
+          "de": "2026-07-13",
+          "ate": "2026-07-17",
+          "pl": 47245655.19,
           "segmento": "12431"
         }
       ],
@@ -1986,7 +1986,7 @@
       },
       {
         "tipo": "perf-cobertura",
-        "texto": "Performance Tradicional: 7 fundo(s) fora por cobertura < 60% e 2 por dado inválido."
+        "texto": "Performance Tradicional: 5 fundo(s) fora por cobertura < 60% e 2 por dado inválido."
       }
     ],
     "perfCobertura": {
@@ -1996,16 +1996,16 @@
           "insuficiente": 12,
           "glitch": 1
         },
-        "avaliados": 1684,
+        "avaliados": 1696,
         "minCobertura": 0.6
       },
       "trad": {
         "diasUteis": 5,
         "excluidos": {
-          "insuficiente": 7,
+          "insuficiente": 5,
           "glitch": 2
         },
-        "avaliados": 996,
+        "avaliados": 998,
         "minCobertura": 0.6
       }
     }
@@ -2023,14 +2023,14 @@
       "texto": "IDA-IPCA Infraestrutura rendeu -0,15% na semana."
     },
     {
-      "texto": "IDA-DI rendeu +0,3% na semana, spread fechou 1 bps."
+      "texto": "IDA-DI rendeu +0,3% na semana, spread estável."
     },
     {
-      "texto": "Captação líquida 12.431 na semana: −R$ 765 mi (capt. R$ 1,1 bi − resg. R$ 1,8 bi, 5 dia(s) útil(eis)).",
+      "texto": "Captação líquida 12.431 na semana: −R$ 862 mi (capt. R$ 1,2 bi − resg. R$ 2,1 bi, 5 dia(s) útil(eis)).",
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional na semana: R$ 1,9 bi (capt. R$ 13,6 bi − resg. R$ 11,7 bi, 5 dia(s) útil(eis)).",
+      "texto": "Captação líquida Tradicional na semana: R$ 1,8 bi (capt. R$ 13,6 bi − resg. R$ 11,7 bi, 5 dia(s) útil(eis)).",
       "tom": "pos"
     },
     {

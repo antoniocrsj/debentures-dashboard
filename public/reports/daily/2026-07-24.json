@@ -22,7 +22,7 @@
   },
   "summary": [
     {
-      "texto": "Captação líquida Incentivados: −R$ 77 mi",
+      "texto": "Captação líquida Incentivados: −R$ 71 mi",
       "tom": "neg"
     },
     {
@@ -46,6 +46,9 @@
       "tom": ""
     },
     {
+      "texto": "Fundos: +17 / -0 no universo"
+    },
+    {
       "texto": "1 alerta(s) de qualidade",
       "tom": "warn"
     }
@@ -59,20 +62,20 @@
     "captacao": {
       "12431": {
         "dia": "2026-07-22",
-        "captacao": 159298942.52000004,
-        "resgate": 236613405.68999997,
-        "liquido": -77314463.16999993,
-        "pl": 262466503501.20996,
-        "numFundos": 1684,
-        "curados": 1720,
-        "fechados": 286,
+        "captacao": 165879319.16000006,
+        "resgate": 236635813.01999998,
+        "liquido": -70756493.85999992,
+        "pl": 262880077058.56,
+        "numFundos": 1700,
+        "curados": 1737,
+        "fechados": 289,
         "anterior": {
           "dia": "2026-07-21",
-          "captacao": 158269311.65999997,
-          "resgate": 201903579.07000002,
-          "liquido": -43634267.410000056,
-          "pl": 264925266886.21002,
-          "numFundos": 1697
+          "captacao": 221949276.08999994,
+          "resgate": 202076234.51000002,
+          "liquido": 19873041.579999924,
+          "pl": 265652365151.86002,
+          "numFundos": 1714
         }
       },
       "trad": {
@@ -80,8 +83,8 @@
         "captacao": 2342239112.8899994,
         "resgate": 2260167669.189999,
         "liquido": 82071443.70000029,
-        "pl": 1579228554623.3298,
-        "numFundos": 994,
+        "pl": 1579830092727.89,
+        "numFundos": 998,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
@@ -89,8 +92,8 @@
           "captacao": 2891018724.77,
           "resgate": 1650912107.0499997,
           "liquido": 1240106617.7200003,
-          "pl": 1587051001600.0308,
-          "numFundos": 1000
+          "pl": 1587088003901.3206,
+          "numFundos": 1002
         }
       }
     },
@@ -101,7 +104,7 @@
           "captacao": 83300206.58,
           "resgate": 12926141.28,
           "liquido": 70374065.3,
-          "pl": 28476423102.45
+          "pl": 28513272443.87
         },
         {
           "gestor": "BTG Asset",
@@ -138,7 +141,7 @@
           "captacao": 432727.53,
           "resgate": 32424486.36,
           "liquido": -31991758.83,
-          "pl": 11438915823.71
+          "pl": 11543727873.82
         },
         {
           "gestor": "IAM",
@@ -1548,7 +1551,7 @@
           },
           {
             "ticker": "JSMLA5",
-            "emissor": "SIMPAR S.A.",
+            "emissor": "JSL S.A",
             "grupo": "Simpar",
             "incentivada": false,
             "indexadorFamilia": "CDI+",
@@ -1606,7 +1609,93 @@
       "semReune": false
     },
     "fundos": {
-      "novos": [],
+      "novos": [
+        {
+          "cnpj": "67702207000189",
+          "nome": "AURA FIF INV EM INFRAESTRUTURA CLASSE DE INV EM INFRA RENDA FIXA RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "67622863000171",
+          "nome": "LECCINO FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRAESTRUTURA RF CRED PRIV RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "66984679000109",
+          "nome": "XP EXCLUSIVE DEBENTURES INCENTIVADAS CDI FIF RENDA FIXA CRÉD PRIV INVEST EM INFRA - RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "67929549000136",
+          "nome": "FLB FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "67909195000168",
+          "nome": "TIVIO ZENIT FIF - CI RF INCENTIVADO DE INVESTIMENTO EM INFRA LONGO PRAZO CRED PRIV - RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65842810000130",
+          "nome": "SANTANDER PB STRONG INVESTIMENTO EM INFRA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "66584573000118",
+          "nome": "INFINIS II FIF - CI RF INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA - RESPONSABILIDADE LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "67347770000186",
+          "nome": "INFRARIO FIF - CLASSE DE INVESTIMENTO RF INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65837807000129",
+          "nome": "BB KEYSTONE INFRA RENDA FIXA FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RESP LIM",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "67807671000130",
+          "nome": "SAFIRA FIF FI INCENTIVADO EM DEBÊNTURES DE INFRAESTRUTURA RENDA FIXA CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "67940788000197",
+          "nome": "ABAETE KINEA FIF FI INCENTIVADO EM DEBÊNTURES DE INFRA RENDA FIXA CRED PRIV RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "67948087000102",
+          "nome": "FAL KINEA FIF FI INCENTIVADO EM DEBÊNTURES DE INFRA RENDA FIXA CRED PRIV RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "66413163000104",
+          "nome": "RLLX FIF - CLASSE DE INVESTIMENTO RF INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "67136723000193",
+          "nome": "NJS FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA INVESTIMENTO EM INFRAESTRUTURA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "67570147000198",
+          "nome": "LVS CLASSE DE INVESTIMENTO RENDA FIXA INCENTIVADO EM INFRAESTRUTURA - RESPONSABILIDADE LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65838342000120",
+          "nome": "BB KNOT INFRA RENDA FIXA FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RESP LIM",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "67086910000100",
+          "nome": "MABRA FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA INVESTIMENTO EM INFRAESTRUTURA - RESP LIMITADA",
+          "segmento": "12431"
+        }
+      ],
       "removidos": [],
       "semAnterior": false
     },
@@ -1619,14 +1708,6 @@
           "segmento": "12431",
           "retorno": 9.5483,
           "pl": 6434500.38
-        },
-        {
-          "cnpj": "61543507000186",
-          "nome": "VINLAND 2 FI INCENTIVADO EM DEB DE INFRA ATIVO FIF RF CRED PRIV LP RESPONSABILIDADE LIMITADA",
-          "gestor": "Vinland",
-          "segmento": "12431",
-          "retorno": 0.9925,
-          "pl": 148373817.15
         },
         {
           "cnpj": "49624023000166",
@@ -1651,6 +1732,14 @@
           "segmento": "12431",
           "retorno": 0.4399,
           "pl": 2526268.7
+        },
+        {
+          "cnpj": "62805867000171",
+          "nome": "SANTANDER PB JFA INVESTIMENTO EM INFRA RENDA FIXA - FIF RESP LIMITADA",
+          "gestor": "San WM",
+          "segmento": "12431",
+          "retorno": 0.2587,
+          "pl": 23218355.81
         }
       ],
       "top12431Neg": [
@@ -1755,6 +1844,14 @@
           "pl": 16303477.98
         },
         {
+          "cnpj": "27883656000156",
+          "nome": "DHF FUNDO DE INVESTIMENTO FINANCEIRO",
+          "gestor": "Dynamo",
+          "segmento": "trad",
+          "retorno": -0.7052,
+          "pl": 536993838.91
+        },
+        {
           "cnpj": "53726108000122",
           "nome": "CL VI FUNDO DE INVESTIMENTO MULTIMERCADO",
           "gestor": "Springs",
@@ -1769,14 +1866,6 @@
           "segmento": "trad",
           "retorno": -0.6154,
           "pl": 55272324.72
-        },
-        {
-          "cnpj": "52333139000150",
-          "nome": "CARBYNE FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
-          "gestor": "BRM",
-          "segmento": "trad",
-          "retorno": -0.4168,
-          "pl": 90056156.81
         }
       ]
     },

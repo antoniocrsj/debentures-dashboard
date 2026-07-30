@@ -1,7 +1,7 @@
 {
   "date": "2026-07-23",
   "label": "23/07/2026",
-  "previousDate": "2026-07-22",
+  "previousDate": null,
   "sourceDates": {
     "debentures": "2026-07-23",
     "cap12431": "2026-07-21",
@@ -26,15 +26,15 @@
       "tom": "pos"
     },
     {
-      "texto": "Captação líquida Incentivados: −R$ 44 mi",
-      "tom": "neg"
+      "texto": "Captação líquida Incentivados: +R$ 20 mi",
+      "tom": "pos"
     },
     {
       "texto": "Captação líquida Tradicional: +R$ 1.2 bi",
       "tom": "pos"
     },
     {
-      "texto": "Maior captação: JGP (+R$ 12 mi)",
+      "texto": "Maior captação: Tivio (+R$ 30 mi)",
       "tom": "pos"
     },
     {
@@ -48,6 +48,9 @@
     {
       "texto": "ANBIMA Tradicional: 367 abertura(s) e 188 fechamento(s) de spread (de 555 ativos; média 0 bps)",
       "tom": ""
+    },
+    {
+      "texto": "Fundos: +17 / -0 no universo"
     },
     {
       "texto": "1 alerta(s) de qualidade",
@@ -162,20 +165,20 @@
     "captacao": {
       "12431": {
         "dia": "2026-07-21",
-        "captacao": 158269311.65999997,
-        "resgate": 201903579.07000002,
-        "liquido": -43634267.410000056,
-        "pl": 264925266886.21002,
-        "numFundos": 1697,
-        "curados": 1720,
-        "fechados": 286,
+        "captacao": 221949276.08999994,
+        "resgate": 202076234.51000002,
+        "liquido": 19873041.579999924,
+        "pl": 265652365151.86002,
+        "numFundos": 1714,
+        "curados": 1737,
+        "fechados": 289,
         "anterior": {
           "dia": "2026-07-20",
-          "captacao": 98330318.14,
-          "resgate": 353811013.5500001,
-          "liquido": -255480695.4100001,
-          "pl": 264229925962.63,
-          "numFundos": 1698
+          "captacao": 111181142.82000001,
+          "resgate": 353814196.75000006,
+          "liquido": -242633053.93000007,
+          "pl": 264573564869.92004,
+          "numFundos": 1712
         }
       },
       "trad": {
@@ -183,8 +186,8 @@
         "captacao": 2891018724.77,
         "resgate": 1650912107.0499997,
         "liquido": 1240106617.7200003,
-        "pl": 1587051001600.0308,
-        "numFundos": 1000,
+        "pl": 1587088003901.3206,
+        "numFundos": 1002,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
@@ -192,13 +195,27 @@
           "captacao": 2045120511.4099998,
           "resgate": 5075212236.820002,
           "liquido": -3030091725.4100018,
-          "pl": 1586291543801.8203,
+          "pl": 1586291542628.4302,
           "numFundos": 1002
         }
       }
     },
     "gestores": {
       "top12431Captacao": [
+        {
+          "gestor": "Tivio",
+          "captacao": 30000000,
+          "resgate": 0,
+          "liquido": 30000000,
+          "pl": 386157265.68
+        },
+        {
+          "gestor": "San WM",
+          "captacao": 32100000,
+          "resgate": 2264500,
+          "liquido": 29835500,
+          "pl": 7540090983.12
+        },
         {
           "gestor": "JGP",
           "captacao": 12029028.54,
@@ -214,25 +231,11 @@
           "pl": 7101814415.84
         },
         {
-          "gestor": "Sparta",
-          "captacao": 6854123.92,
-          "resgate": 700088.82,
-          "liquido": 6154035.1,
-          "pl": 10376032475.18
-        },
-        {
-          "gestor": "ARX",
-          "captacao": 4788037.72,
-          "resgate": 0,
-          "liquido": 4788037.72,
-          "pl": 6833501002.56
-        },
-        {
-          "gestor": "UBS",
-          "captacao": 6211143.79,
-          "resgate": 2011565.19,
-          "liquido": 4199578.6,
-          "pl": 7394819119.75
+          "gestor": "XPG",
+          "captacao": 6609581.45,
+          "resgate": 172655.44,
+          "liquido": 6436926.01,
+          "pl": 5269065587.15
         }
       ],
       "top12431Resgate": [
@@ -248,14 +251,14 @@
           "captacao": 4251044.24,
           "resgate": 20069909.11,
           "liquido": -15818864.87,
-          "pl": 14033482434.66
+          "pl": 14138240800.84
         },
         {
           "gestor": "BRAM",
           "captacao": 19673504.12,
           "resgate": 31741853.53,
           "liquido": -12068349.41,
-          "pl": 28417944099.48
+          "pl": 28454780688.68
         },
         {
           "gestor": "SAM",
@@ -269,7 +272,7 @@
           "captacao": 3248057.71,
           "resgate": 12412439.18,
           "liquido": -9164381.469999999,
-          "pl": 20114150357.65
+          "pl": 20136361201.15
         }
       ],
       "topTradCaptacao": [
@@ -278,7 +281,7 @@
           "captacao": 1002400280.21,
           "resgate": 378879030.29,
           "liquido": 623521249.9200001,
-          "pl": 455471821180.9
+          "pl": 455471821150.12
         },
         {
           "gestor": "SAM",
@@ -1031,7 +1034,7 @@
               "ticker": "JSMLA5",
               "indexador": "DI + 3.5000%",
               "indexadorFamilia": "CDI+",
-              "emissor": "SIMPAR S.A.",
+              "emissor": "JSL S.A",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "CDI",
@@ -1759,7 +1762,7 @@
           },
           {
             "ticker": "JSMLA5",
-            "emissor": "SIMPAR S.A.",
+            "emissor": "JSL S.A",
             "grupo": "Simpar",
             "incentivada": false,
             "indexadorFamilia": "CDI+",
@@ -1925,7 +1928,93 @@
       "semReune": false
     },
     "fundos": {
-      "novos": [],
+      "novos": [
+        {
+          "cnpj": "67702207000189",
+          "nome": "AURA FIF INV EM INFRAESTRUTURA CLASSE DE INV EM INFRA RENDA FIXA RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "67622863000171",
+          "nome": "LECCINO FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRAESTRUTURA RF CRED PRIV RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "66984679000109",
+          "nome": "XP EXCLUSIVE DEBENTURES INCENTIVADAS CDI FIF RENDA FIXA CRÉD PRIV INVEST EM INFRA - RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "67929549000136",
+          "nome": "FLB FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "67909195000168",
+          "nome": "TIVIO ZENIT FIF - CI RF INCENTIVADO DE INVESTIMENTO EM INFRA LONGO PRAZO CRED PRIV - RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65842810000130",
+          "nome": "SANTANDER PB STRONG INVESTIMENTO EM INFRA RENDA FIXA - FIF RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "66584573000118",
+          "nome": "INFINIS II FIF - CI RF INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA - RESPONSABILIDADE LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "67347770000186",
+          "nome": "INFRARIO FIF - CLASSE DE INVESTIMENTO RF INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65837807000129",
+          "nome": "BB KEYSTONE INFRA RENDA FIXA FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RESP LIM",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "67807671000130",
+          "nome": "SAFIRA FIF FI INCENTIVADO EM DEBÊNTURES DE INFRAESTRUTURA RENDA FIXA CRÉDITO PRIVADO RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "67940788000197",
+          "nome": "ABAETE KINEA FIF FI INCENTIVADO EM DEBÊNTURES DE INFRA RENDA FIXA CRED PRIV RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "67948087000102",
+          "nome": "FAL KINEA FIF FI INCENTIVADO EM DEBÊNTURES DE INFRA RENDA FIXA CRED PRIV RESP LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "66413163000104",
+          "nome": "RLLX FIF - CLASSE DE INVESTIMENTO RF INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "67136723000193",
+          "nome": "NJS FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA INVESTIMENTO EM INFRAESTRUTURA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "67570147000198",
+          "nome": "LVS CLASSE DE INVESTIMENTO RENDA FIXA INCENTIVADO EM INFRAESTRUTURA - RESPONSABILIDADE LIMITADA",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "65838342000120",
+          "nome": "BB KNOT INFRA RENDA FIXA FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RESP LIM",
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "67086910000100",
+          "nome": "MABRA FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA INVESTIMENTO EM INFRAESTRUTURA - RESP LIMITADA",
+          "segmento": "12431"
+        }
+      ],
       "removidos": [],
       "semAnterior": false
     },
