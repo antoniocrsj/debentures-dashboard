@@ -1,7 +1,7 @@
 import { useMemo, useState, Suspense } from 'react'
 import { parseNum, shortEmissor, fmtDateDDMMYY, fmtTaxa, isYes } from '../utils/format.js'
 import { lazyWithRetry } from '../utils/lazyWithRetry.js'
-import { agregaNegociosPorSemana, resumoNegociosSecundario } from '../utils/secondary.js'
+import { agregaNegociosPorSemana, recortaNegociosPorPeriodo, resumoNegociosSecundario } from '../utils/secondary.js'
 import TableWrap from './TableWrap.jsx'
 import SearchSelect from './SearchSelect.jsx'
 import SearchField from './SearchField.jsx'
@@ -30,6 +30,12 @@ const COLS = [
 
 const FAIXAS = ['Superior a 5MM', 'Entre 1MM e 5MM', 'Até 1MM']   // filtro de volume (derivado do R$ real)
 
+const PERIODOS = [
+  { id: '3m', label: '3m', months: 3 },
+  { id: '6m', label: '6m', months: 6 },
+  { id: '12m', label: '12m', months: 12 },
+]
+
 function fmtTx(v) { return (v && v !== '--') ? `${v}%` : '-' }
 // Volume de mercado em R$ real (base Mercado Verdadeiro): MM com 1 casa; "mil" abaixo de 1MM.
 function fmtVolRs(v) {
@@ -51,6 +57,7 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
   const [emissor, setEmissor] = useState('')
   const [ativo, setAtivo] = useState('')
   const [faixa, setFaixa] = useState('')
+  const [periodo, setPeriodo] = useState('6m')
   const [lei, setLei] = useState('')   // '' todos · 'sim' 12.431 · 'nao' tradicional
   const [selAtivo, setSelAtivo] = useState('')   // ativo clicado -> foca o grafico (master-detail)
   const [sort, setSort] = useState({ col: 'data', dir: 'desc' })  // pregao mais recente primeiro
@@ -59,18 +66,20 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
   const onSort = id => setSort(s => ({ col: id, dir: s.col === id && s.dir === 'desc' ? 'asc' : 'desc' }))
   // Os 5 pregoes mais recentes: a tabela abre neles (sem filtro). Com qualquer
   // filtro ou "ver tudo", mostra todo o historico.
-  const dias5Recentes = useMemo(() => new Set([...new Set(trades.map(t => t.data))].sort().slice(-5)), [trades])
+  const periodoMeses = PERIODOS.find(p => p.id === periodo)?.months ?? 6
+  const tradesPeriodo = useMemo(() => recortaNegociosPorPeriodo(trades, periodoMeses), [trades, periodoMeses])
+  const dias5Recentes = useMemo(() => new Set([...new Set(tradesPeriodo.map(t => t.data))].sort().slice(-5)), [tradesPeriodo])
 
   const opts = useMemo(() => ({
-    datas:     [...new Set(trades.map(a => a.data).filter(Boolean))].sort().reverse(),
-    grupos:    [...new Set(trades.map(a => a.grupo).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR')),
-    emissores: [...new Set(trades.map(a => a.emissorNome).filter(e => e && e !== '—'))].sort((a, b) => a.localeCompare(b, 'pt-BR')),
-    ativos:    [...new Set(trades.map(a => a.codigoAtivo).filter(Boolean))].sort(),
-  }), [trades])
+    datas:     [...new Set(tradesPeriodo.map(a => a.data).filter(Boolean))].sort().reverse(),
+    grupos:    [...new Set(tradesPeriodo.map(a => a.grupo).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR')),
+    emissores: [...new Set(tradesPeriodo.map(a => a.emissorNome).filter(e => e && e !== '—'))].sort((a, b) => a.localeCompare(b, 'pt-BR')),
+    ativos:    [...new Set(tradesPeriodo.map(a => a.codigoAtivo).filter(Boolean))].sort(),
+  }), [tradesPeriodo])
 
   const filtrados = useMemo(() => {
     const q = busca.trim().toLowerCase()
-    let rows = trades
+    let rows = tradesPeriodo
     if (q) rows = rows.filter(a =>
       a.codigoAtivo.toLowerCase().includes(q) ||
       (a.grupo || '').toLowerCase().includes(q) ||
@@ -97,7 +106,7 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
       if (a.data !== b.data) return a.data < b.data ? 1 : -1
       return a.codigoAtivo < b.codigoAtivo ? -1 : 1
     })
-  }, [trades, busca, data, grupo, emissor, ativo, faixa, lei, sort])
+  }, [tradesPeriodo, busca, data, grupo, emissor, ativo, faixa, lei, sort])
 
   // Grafico: CLICAR num ativo na tabela/card (selAtivo) foca o grafico no
   // historico completo daquele papel; na falta, cai no conjunto FILTRADO
@@ -109,13 +118,13 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
   const chartRows = useMemo(() => {
     // Ativo focado: seu historico completo, mas RESPEITANDO o filtro de Volume
     // (o >5MM tem que valer tambem no grafico).
-    if (selAtivo) return trades.filter(t =>
+    if (selAtivo) return tradesPeriodo.filter(t =>
       t.codigoAtivo === selAtivo &&
       (!data || t.data === data) &&
       (!faixa || t.faixaVolume === faixa))
     if (data || grupo || emissor || ativo || busca.trim()) return filtrados
     return null
-  }, [selAtivo, trades, filtrados, data, grupo, emissor, ativo, busca, faixa])
+  }, [selAtivo, tradesPeriodo, filtrados, data, grupo, emissor, ativo, busca, faixa])
   const nAtivosFiltro = useMemo(() => chartRows ? new Set(chartRows.map(f => f.codigoAtivo)).size : 0, [chartRows])
   const serieGrafico = useMemo(() => {
     if (!chartRows || !chartRows.length) return null
@@ -175,17 +184,17 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
     return { pontos, modo: 'taxa' }
   }, [chartRows])
 
-  // Tabela de ativos do GRUPO selecionado (abaixo do grafico): 1 linha por ativo,
+  // Tabela de ativos do GRUPO selecionado (abaixo da tabela de trades): 1 linha por ativo,
   // ordenada por LIQUIDEZ nos ultimos 40 pregoes (soma da faixa de volume). Clicar
   // filtra a tabela da esquerda + foca o grafico (serve de atalho).
   const dias40 = useMemo(
-    () => new Set([...new Set(trades.map(t => t.data))].sort().slice(-40)),
-    [trades],
+    () => new Set([...new Set(tradesPeriodo.map(t => t.data))].sort().slice(-40)),
+    [tradesPeriodo],
   )
   const grupoAtivos = useMemo(() => {
     if (!grupo) return null
     const porAtivo = new Map()
-    for (const t of trades) {
+    for (const t of tradesPeriodo) {
       if (t.grupo !== grupo) continue
       let a = porAtivo.get(t.codigoAtivo)
       if (!a) { a = { ticker: t.codigoAtivo, vencimento: t.vencimento, duration: t.duration, ultima: '', spread: null, liq: 0 }; porAtivo.set(t.codigoAtivo, a) }
@@ -193,12 +202,13 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
       if (t.data > a.ultima) { a.ultima = t.data; a.spread = t.spreadRef; a.vencimento = t.vencimento; a.duration = t.duration }
     }
     return [...porAtivo.values()].sort((x, y) => y.liq - x.liq || (x.ticker < y.ticker ? -1 : 1))
-  }, [grupo, trades, dias40])
+  }, [grupo, tradesPeriodo, dias40])
 
   // Clicar num ativo foca o grafico (toggle: clicar de novo solta). Independe dos
   // filtros da tabela (master-detail).
   const onClickAtivo = cod => setSelAtivo(s => (s === cod ? '' : cod))
   const limpar = () => { setBusca(''); setData(''); setGrupo(''); setEmissor(''); setAtivo(''); setFaixa(''); setLei(''); setSelAtivo('') }
+  const mudarPeriodo = id => { setPeriodo(id); setData('') }
   const temFiltro = busca || data || grupo || emissor || ativo || faixa || lei
 
   // Compacto: por padrao mostra so' o ultimo pregao (perf -- evita renderizar todo
@@ -214,8 +224,8 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
     [soUltimoPregao, filtrados, dias5Recentes],
   )
   const linhasDosIndicadores = useMemo(
-    () => selAtivo ? baseLinhas.filter(t => t.codigoAtivo === selAtivo) : baseLinhas,
-    [baseLinhas, selAtivo],
+    () => selAtivo ? filtrados.filter(t => t.codigoAtivo === selAtivo) : filtrados,
+    [filtrados, selAtivo],
   )
   const linhasDoGraficoSemanal = useMemo(
     () => selAtivo ? filtrados.filter(t => t.codigoAtivo === selAtivo) : filtrados,
@@ -236,7 +246,7 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
     )
   }
 
-  // Tabela dos ativos do grupo (abaixo do grafico). Clicar filtra a esquerda + foca
+  // Tabela dos ativos do grupo (abaixo dos trades). Clicar filtra a principal + foca
   // o grafico (seta o filtro 'ativo'); clicar de novo solta.
   const grupoTabela = grupoAtivos && grupoAtivos.length > 0 && (
     <div className="sec-grupo-ativos">
@@ -270,19 +280,24 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
   )
 
   const cardsResumo = (
-    <div className="fluxo-cards sec-kpis" aria-label="Resumo dos negócios filtrados">
-      <div className="fluxo-card">
-        <span className="fluxo-card-label">Volume 12.431</span>
-        <span className="fluxo-card-value">{fmtVolKpi(resumoNegocios.volume12431)}</span>
+    <div className="sec-kpis-toolbar">
+      <div className="fluxo-cards sec-kpis" aria-label="Resumo dos negócios filtrados">
+        <div className="fluxo-card">
+          <span className="fluxo-card-label">Volume 12.431</span>
+          <span className="fluxo-card-value">{fmtVolKpi(resumoNegocios.volume12431)}</span>
+        </div>
+        <div className="fluxo-card">
+          <span className="fluxo-card-label">Volume tradicional</span>
+          <span className="fluxo-card-value">{fmtVolKpi(resumoNegocios.volumeTradicional)}</span>
+        </div>
+        <div className="fluxo-card">
+          <span className="fluxo-card-label">Número de trades</span>
+          <span className="fluxo-card-value">{resumoNegocios.numeroTrades.toLocaleString('pt-BR')}</span>
+        </div>
       </div>
-      <div className="fluxo-card">
-        <span className="fluxo-card-label">Volume tradicional</span>
-        <span className="fluxo-card-value">{fmtVolKpi(resumoNegocios.volumeTradicional)}</span>
-      </div>
-      <div className="fluxo-card">
-        <span className="fluxo-card-label">Número de trades</span>
-        <span className="fluxo-card-value">{resumoNegocios.numeroTrades.toLocaleString('pt-BR')}</span>
-      </div>
+      {desktop && (temFiltro || selAtivo) && (
+        <button type="button" className="btn btn-limpar sec-kpis-clear" onClick={limpar}>Limpar</button>
+      )}
     </div>
   )
 
@@ -348,13 +363,24 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
           <div className="fluxo-field">
             <span className="fluxo-field-label">12.431</span>
             <div className="segmented" role="tablist" aria-label="Incentivada (Lei 12.431)">
-              {[['', 'Todos'], ['sim', '12.431'], ['nao', 'Tradicional']].map(([v, lab]) => (
-                <button key={v || 'todos'} type="button" role="tab" aria-selected={lei === v}
-                  className={`segmented-btn${lei === v ? ' active' : ''}`} onClick={() => setLei(v)}>{lab}</button>
+              {[['sim', '12.431'], ['nao', 'Tradicional']].map(([v, lab]) => (
+                <button key={v} type="button" role="tab" aria-selected={lei === v}
+                  className={`segmented-btn${lei === v ? ' active' : ''}`}
+                  onClick={() => setLei(cur => cur === v ? '' : v)}>{lab}</button>
               ))}
             </div>
           </div>
-          {(temFiltro || selAtivo) && (
+          <div className="fluxo-field">
+            <span className="fluxo-field-label">Período</span>
+            <div className="segmented sec-periodo" role="tablist" aria-label="Período dos negócios">
+              {PERIODOS.map(p => (
+                <button key={p.id} type="button" role="tab" aria-selected={periodo === p.id}
+                  className={`segmented-btn${periodo === p.id ? ' active' : ''}`}
+                  onClick={() => mudarPeriodo(p.id)}>{p.label}</button>
+              ))}
+            </div>
+          </div>
+          {!desktop && (temFiltro || selAtivo) && (
             <div className="fluxo-field">
               <span className="fluxo-field-label">&nbsp;</span>
               <button type="button" className="btn btn-limpar" onClick={limpar}>Limpar</button>
@@ -436,12 +462,13 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
           </tbody>
         </table>
         </TableWrap>
-        {capExcedido > 0 && (
-          <p className="sec-cap-nota">Mostrando {MAX_LINHAS.toLocaleString('pt-BR')} de {baseLinhas.length.toLocaleString('pt-BR')} negócios — refine os filtros p/ ver o resto.</p>
-        )}
-       </div>
+         {capExcedido > 0 && (
+           <p className="sec-cap-nota">Mostrando {MAX_LINHAS.toLocaleString('pt-BR')} de {baseLinhas.length.toLocaleString('pt-BR')} negócios — refine os filtros p/ ver o resto.</p>
+         )}
+         {grupoTabela}
+        </div>
 
-       <aside className={`sec-split-chart${grupoTabela ? ' has-group-table' : ''}`}>
+       <aside className="sec-split-chart">
         {cardsResumo}
         {serieGrafico
           ? (
@@ -456,7 +483,6 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
             </div>
           )}
         {graficoSemanal}
-        {grupoTabela}
        </aside>
       </div>
       ) : (
@@ -469,7 +495,6 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
           </Suspense>
         )}
         {graficoSemanal}
-        {grupoTabela}
         {!temFiltro && (verTudo || escondidos > 0) && (
           <button type="button" className="sec-cards-toggle" onClick={() => setVerTudo(v => !v)}>
             {verTudo
@@ -518,6 +543,7 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
             )
           })}
         </div>
+        {grupoTabela}
       </div>
       </>
       )}

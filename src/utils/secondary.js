@@ -1,6 +1,29 @@
 import { isYes } from './format.js'
 import { isoWeekId, weekRange } from './periods.js'
 
+function subtractCalendarMonths(dateKey, months) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateKey || '')
+  if (!match) return null
+
+  const [, year, month, day] = match.map(Number)
+  const date = new Date(Date.UTC(year, month - 1, 1))
+  date.setUTCMonth(date.getUTCMonth() - months)
+  const lastDay = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + 1, 0)).getUTCDate()
+  date.setUTCDate(Math.min(day, lastDay))
+  return date.toISOString().slice(0, 10)
+}
+
+export function recortaNegociosPorPeriodo(rows = [], months = null) {
+  if (!rows.length || !Number.isFinite(months) || months <= 0) return rows
+
+  const datas = rows.map(row => row.data).filter(data => /^\d{4}-\d{2}-\d{2}$/.test(data || ''))
+  if (!datas.length) return []
+
+  const fim = datas.reduce((max, data) => data > max ? data : max, '')
+  const inicio = subtractCalendarMonths(fim, months)
+  return rows.filter(row => row.data >= inicio && row.data <= fim)
+}
+
 export function resumoNegociosSecundario(rows = []) {
   let volume12431 = 0
   let volumeTradicional = 0

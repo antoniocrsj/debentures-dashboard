@@ -2288,8 +2288,15 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 .sec-filters .sec-field-sel .chip-select-wrap,
 .sec-filters .sec-field-sel .chip-select { width: 120px; }
 .sec-filters .sec-field-sel .chip-select { justify-content: space-between; padding-left: var(--sp-4); }
+.sec-periodo { width: auto; }
+.sec-periodo .segmented-btn { padding: 0 var(--sp-3); }
 
 /* KPIs do recorte visivel: compactos para preservar a altura util da tabela. */
+.sec-kpis-toolbar { display: flex; align-items: stretch; gap: 8px; min-width: 0; }
+.sec-kpis-toolbar .sec-kpis { flex: 1 1 auto; min-width: 0; margin-bottom: 0; }
+.sec-kpis-clear { flex: 0 0 auto; align-self: stretch; min-width: 54px; border-radius: 8px; padding: 0 var(--sp-3); }
+.app.desktop .sec-kpis-toolbar .sec-kpis { margin-bottom: 0; }
+.app.desktop .sec-kpis-clear { height: auto; }
 .sec-kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0 0 8px; }
 .sec-kpis .fluxo-card {
   min-width: 0; min-height: 40px; flex-direction: row; justify-content: space-between;
@@ -2297,14 +2304,16 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 }
 .sec-kpis .fluxo-card-value { font-size: var(--fz-titulo); }
 .app.desktop .sec-kpis { width: 100%; grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.app.desktop .sec-split-chart > .sec-kpis .fluxo-card {
+.app.desktop .sec-split-chart > .sec-kpis-toolbar .sec-kpis .fluxo-card {
   min-height: 48px; flex-direction: column; justify-content: center;
   text-align: center; padding: var(--sp-2);
 }
-.app.desktop .sec-split-chart > .sec-kpis .fluxo-card-label { line-height: 1.15; }
-.app.desktop .sec-split-chart > .sec-kpis .fluxo-card-value { font-size: var(--fz-corpo); }
+.app.desktop .sec-split-chart > .sec-kpis-toolbar .sec-kpis .fluxo-card-label { line-height: 1.15; }
+.app.desktop .sec-split-chart > .sec-kpis-toolbar .sec-kpis .fluxo-card-value { font-size: var(--fz-corpo); }
 
 .app:not(.desktop) .sec-kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-bottom: 8px; }
+.app:not(.desktop) .sec-kpis-toolbar { margin-bottom: 8px; }
+.app:not(.desktop) .sec-kpis-toolbar .sec-kpis { margin-bottom: 0; }
 .app:not(.desktop) .sec-kpis .fluxo-card {
   min-height: 48px; flex-direction: column; justify-content: center; text-align: center;
   padding: var(--sp-2); border-radius: 8px;
@@ -2494,9 +2503,8 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 .sec-cards-toggle:active { background: var(--primary-light); }
 .sec-cap-nota { font-size: var(--fz-corpo); color: var(--text-muted); text-align: center; margin: 8px 0 0; }
 
-/* Tabela dos ativos do grupo (abaixo do grafico): MESMO padrao da tabela da
-   esquerda (asset-table sec-table) -- fonte, alturas, cabecalho, hover e realce
-   ja' vem de la'. So' reusa o card .table-wrap sem a margem, com altura propria. */
+/* Tabela dos ativos do grupo: mesmo padrao da tabela principal. No desktop ela
+   fica abaixo dos trades para preservar integralmente a altura dos graficos. */
 .sec-grupo-ativos { margin-top: 8px; }
 .app.desktop .sec-split-table .sec-cards-toggle { margin: 10px 0 0; }
 
@@ -2516,9 +2524,6 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
   display: grid; grid-template-rows: auto repeat(2, minmax(0, 1fr));
   gap: 8px; min-height: 0;
 }
-.app.desktop .sec-split-chart.has-group-table {
-  grid-template-rows: auto repeat(3, minmax(0, 1fr));
-}
 /* Depois dos KPIs, os dois graficos ocupam linhas exatamente iguais. Isso vale
    tambem para o aviso inicial, antes de um ativo ser selecionado. */
 .app.desktop .sec-split-chart > .sec-chart-card,
@@ -2526,11 +2531,17 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 .app.desktop .sec-split-chart > .sec-chart-empty {
   height: 100%; min-height: 0; box-sizing: border-box;
 }
-.app.desktop .sec-split-chart > .sec-kpis,
-.app.desktop .sec-split-chart > .sec-weekly-card,
-.app.desktop .sec-split-chart > .sec-grupo-ativos { margin: 0; }
-.app.desktop .sec-grupo-ativos { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
-.app.desktop .sec-grupo-ativos .table-wrap { margin: 0; flex: 1 1 auto; min-height: 0; max-height: none; overflow: auto; }
+.app.desktop .sec-split-chart > .sec-kpis-toolbar,
+.app.desktop .sec-split-chart > .sec-weekly-card { margin: 0; }
+.app.desktop .sec-split-table > .sec-grupo-ativos {
+  /* Espelha a 3a faixa da coluna direita: toolbar de 48px + dois gaps de 8px,
+     depois dois blocos iguais para os graficos. */
+  flex: 0 0 calc((100% - 64px) / 2);
+  min-height: 0; display: flex; flex-direction: column;
+}
+.app.desktop .sec-split-table > .sec-grupo-ativos .table-wrap {
+  margin: 0; flex: 1 1 auto; height: 100%; min-height: 0; max-height: none; overflow: auto;
+}
 
 /* ── Compacto: filtros do secundario numa unica linha que rola horizontal ─────
    Empilhados (label em cima + campo) eles comiam ~234px de altura. Aqui viram

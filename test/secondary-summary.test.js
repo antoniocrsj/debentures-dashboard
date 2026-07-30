@@ -1,6 +1,34 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { agregaNegociosPorSemana, resumoNegociosSecundario } from '../src/utils/secondary.js'
+import {
+  agregaNegociosPorSemana,
+  recortaNegociosPorPeriodo,
+  resumoNegociosSecundario,
+} from '../src/utils/secondary.js'
+
+test('recorta o secundario em meses a partir da data mais recente da base', () => {
+  const rows = [
+    { data: '2025-06-29', id: 'fora-12m' },
+    { data: '2025-06-30', id: 'inicio-12m' },
+    { data: '2025-12-30', id: 'inicio-6m' },
+    { data: '2026-03-30', id: 'inicio-3m' },
+    { data: '2026-06-30', id: 'ancora' },
+  ]
+
+  assert.deepEqual(recortaNegociosPorPeriodo(rows, 3).map(row => row.id), ['inicio-3m', 'ancora'])
+  assert.deepEqual(recortaNegociosPorPeriodo(rows, 6).map(row => row.id), ['inicio-6m', 'inicio-3m', 'ancora'])
+  assert.deepEqual(recortaNegociosPorPeriodo(rows, 12).map(row => row.id), ['inicio-12m', 'inicio-6m', 'inicio-3m', 'ancora'])
+})
+
+test('ajusta o inicio da janela para o ultimo dia de meses mais curtos', () => {
+  const rows = [
+    { data: '2026-02-27' },
+    { data: '2026-02-28' },
+    { data: '2026-03-31' },
+  ]
+
+  assert.deepEqual(recortaNegociosPorPeriodo(rows, 1).map(row => row.data), ['2026-02-28', '2026-03-31'])
+})
 
 test('resumo secundario separa volumes 12.431 e tradicional e conta trades', () => {
   const resumo = resumoNegociosSecundario([

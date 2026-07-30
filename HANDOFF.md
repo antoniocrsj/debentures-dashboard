@@ -5,8 +5,7 @@ Contexto para quem assumir o trabalho a seguir.
 ## Estado atual
 - Branch `main`, sincronizado com `origin/main`. Deploy automático na Vercel a
   cada push (~1 min): https://debentures-dashboard-three.vercel.app
-- Base antes desta entrega: `5562691`. A frente anterior fez: padronização de
-  tabelas, coluna de **Registro CVM** na aba Ativos e **abas escondidas por modo**.
+- Base antes dos refinamentos finais desta entrega: `5312b0e`.
 - App: React 18 + Vite 5. Dev server: `npm run dev` (porta 5173).
 
 ## Entrega atual: aba Secundário
@@ -15,6 +14,13 @@ negócios à esquerda e o resumo visual à direita no desktop.
 
 - Três cards respondem aos filtros ativos: **Volume 12.431**, **Volume
   tradicional** e **Número de trades**.
+- O seletor único **3m / 6m / 12m** recorta toda a aba pela data mais recente da
+  própria base, com **6m** como padrão. Busca, tabelas, cards e gráficos usam a
+  mesma janela.
+- O filtro 12.431 mostra apenas **12.431** e **Tradicional**. Nenhum selecionado
+  significa todos; clicar novamente na opção ativa remove o filtro.
+- O botão **Limpar** fica ao lado dos cards no desktop, sem criar uma segunda
+  linha de filtros. No compacto ele permanece na faixa rolável de filtros.
 - O novo gráfico semanal agrega **volume total** e **quantidade de trades** por
   semana ISO. Ele responde à busca, data, tipo de fundo e seleção de uma linha.
 - A escala do volume é flexível, busca aproximadamente oito divisões e nunca usa
@@ -24,6 +30,9 @@ negócios à esquerda e o resumo visual à direita no desktop.
   usa terracota (`#8c5e3a`); trades e a linha do eixo X usam taupe (`#9a8c7a`).
 - Os dois gráficos têm a mesma altura no desktop, ocupam o espaço disponível e
   terminam alinhados com a tabela, mantendo respiro no rodapé da tela.
+- Ao selecionar um grupo, sua tabela de ativos aparece abaixo dos trades. Ela
+  ocupa exatamente a mesma faixa do gráfico semanal: mesmo topo, altura de
+  242px e rodapé. A tabela principal usa todo o espaço restante acima.
 - No gráfico evolutivo, a janela inicial é de +/-30 bps ou +/-0,30 pp, expandida
   quando os dados exigem. Há no máximo sete linhas; os passos são múltiplos de
   10 bps ou 0,10 pp e o eixo Y sempre exibe uma casa decimal.
@@ -40,7 +49,7 @@ Arquivos principais desta entrega:
 - `test/secondary-summary.test.js`: testes das métricas e agregações.
 
 Verificação ao fechar a implementação:
-- `npm test`: 142 testes, 140 aprovados e 2 ignorados.
+- `npm test`: 135 testes, 133 aprovados e 2 ignorados.
 - `npm run build`: concluído com sucesso; permanece apenas o aviso conhecido de
   tamanho do bundle.
 - `git diff --check`: sem erros de whitespace.
