@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 import SearchSelect from './SearchSelect.jsx'
+import SearchField from './SearchField.jsx'
 
 const EMPTY = { grupo: '', setor: '', gestor: '', lei12431: '', ativo: '', search: '', comRecompra: '' }
 
@@ -10,17 +11,13 @@ export default function Filters({ filters, options, disabled, onChange, tabsSlot
     <div className="filter-bar" aria-label="Filtros">
       <div className="filter-scroll">
         {!compact && (
-          <div className="search-wrap">
-            <span className="search-icon">🔍</span>
-            <input
-              type="search"
-              className="search-input"
-              placeholder="Buscar…"
-              value={filters.search}
-              disabled={disabled}
-              onChange={e => set('search', e.target.value)}
-            />
-          </div>
+          <SearchField
+            placeholder="Buscar…"
+            aria-label="Buscar debêntures"
+            value={filters.search}
+            disabled={disabled}
+            onChange={e => set('search', e.target.value)}
+          />
         )}
         <SearchSelect label="Grupo"      value={filters.grupo}    options={options.grupos}   disabled={disabled} onChange={v => set('grupo', v)} />
         <SearchSelect label="Setor"      value={filters.setor}    options={options.setores}  disabled={disabled} onChange={v => set('setor', v)} />

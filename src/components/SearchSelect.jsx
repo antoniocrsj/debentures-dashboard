@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
+import SearchField from './SearchField.jsx'
 
 // Dropdown com busca, renderizado em portal (evita corte por overflow).
 // Reutilizado pela barra de filtros do Mercado e pela aba Captação.
@@ -55,9 +56,11 @@ export default function SearchSelect({ label, value, options, disabled, onChange
           style={{ top: pos.top, left: pos.left, minWidth: pos.width }}
         >
           <div className="dropdown-search">
-            <input
+            <SearchField
+              wrapClassName="dropdown-search-wrap"
               autoFocus
               placeholder="Buscar…"
+              aria-label={`Buscar ${label.toLowerCase()}`}
               value={query}
               onChange={e => setQuery(e.target.value)}
             />

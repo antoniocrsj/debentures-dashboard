@@ -3,6 +3,7 @@ import { parseNum, shortEmissor, fmtDateDDMMYY, fmtTaxa, isYes } from '../utils/
 import { lazyWithRetry } from '../utils/lazyWithRetry.js'
 import TableWrap from './TableWrap.jsx'
 import SearchSelect from './SearchSelect.jsx'
+import SearchField from './SearchField.jsx'
 
 // Grafico de serie (Recharts) carregado sob demanda: so' entra no bundle quando
 // o usuario clica num ativo para ver a evolucao.
@@ -254,7 +255,7 @@ export default function SecondaryTable({ trades, reuneRef, dias, desktop }) {
         <div className="fluxo-filters-row">
           <div className="fluxo-field fluxo-field-grow">
             <span className="fluxo-field-label">Buscar</span>
-            <input className="sec-input" placeholder="Ativo, emissor ou grupo…"
+            <SearchField wrapClassName="sec-search-wrap" placeholder="Buscar…"
               value={busca} onChange={e => setBusca(e.target.value)} aria-label="Buscar no mercado secundário" />
           </div>
           <div className="fluxo-field sec-field-data">

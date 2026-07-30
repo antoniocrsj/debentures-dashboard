@@ -310,6 +310,7 @@ a { color: var(--primary); }
 .search-icon { font-size: var(--fz-corpo); color: var(--navy-light); }
 .search-input {
   flex: 1;
+  min-width: 0;
   border: none;
   background: none;
   padding: var(--sp-2) 0;
@@ -360,17 +361,11 @@ a { color: var(--primary); }
   padding: var(--sp-3);
   border-bottom: 1px solid var(--border);
 }
-.dropdown-search input {
-  width: 100%;
-  border: 1.5px solid var(--border);
-  border-radius: 6px;
-  padding: var(--sp-2) var(--sp-4);
-  font-size: var(--fz-corpo);
-  background: var(--bg);
-  color: var(--text);
-  outline: none;
+.dropdown-search-wrap {
+  width: 100%; height: 32px; margin: 0; padding: 0 var(--sp-3);
+  background: var(--bg); border-color: var(--navy-light);
 }
-.dropdown-search input:focus { border-color: var(--primary); }
+.dropdown-search-wrap:focus-within { border-color: var(--primary); }
 .dropdown-list {
   max-height: 200px;
   overflow-y: auto;
@@ -2288,7 +2283,7 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 }
 /* #2: Buscar, Grupo e Emissor com a MESMA largura (150px). Ativo/Volume/12.431
    ficam como estao. Grupo/Emissor agora sao SearchSelect (busca) -> .chip-select. */
-.sec-filters .fluxo-field-grow .sec-input { max-width: 170px; min-width: 170px; }
+.sec-filters .fluxo-field-grow .sec-search-wrap { width: 170px; margin: 0; }
 .app.desktop .sec-filters .fluxo-field-grow { flex: 0 0 auto; }
 .sec-filters .sec-field-sel .chip-select-wrap,
 .sec-filters .sec-field-sel .chip-select { width: 120px; }
@@ -2519,7 +2514,7 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 .app:not(.desktop) .sec-filters .sec-input {
   height: 32px; font-size: var(--fz-corpo); min-width: 122px; max-width: 150px;
 }
-.app:not(.desktop) .sec-filters .fluxo-field-grow .sec-input { min-width: 148px; max-width: 148px; }
+.app:not(.desktop) .sec-filters .fluxo-field-grow .sec-search-wrap { width: 148px; height: 32px; margin: 0; }
 /* Segmentado de Volume: largura pelo conteudo (nao 100% do campo) p/ caber na faixa. */
 .app:not(.desktop) .sec-filters .segmented { width: auto; }
 .app:not(.desktop) .sec-filters .segmented-btn { padding: 0 var(--sp-3); font-size: var(--fz-corpo); }
