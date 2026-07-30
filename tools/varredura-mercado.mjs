@@ -15,7 +15,7 @@ const OUT = path.join(PUB, 'Mercado_Verdadeiro.csv'), META = path.join(PUB, 'Mer
 const anbima = lerAnbima(PUB), vencDeb = lerVenc(PUB), curvas = lerCurvas(PUB)
 const dias = fs.readdirSync(BDIDIR).filter(f => /^DEB_\d{4}-\d{2}-\d{2}\.csv\.gz$/.test(f)).map(f => f.slice(4, 14)).sort()
 
-console.log('\n=== Varredura MERCADO x DIRETA + spread (BDI DEB, 90 pregoes) ===')
+console.log(`\n=== Varredura MERCADO x DIRETA + spread (BDI DEB, ${dias.length} pregoes) ===`)
 const COLS = ['Data', 'Ativo', 'Indexador', 'DurationAnos', 'FonteDur', 'VolMercado', 'nNegMercado',
   'PU_mid', 'Taxa_mid', 'RefSpread', 'Spread', 'SpreadFmt', 'VolDobradoTotal', 'VolSobraDobrada', 'PctMercadoEcon']
 const linhas = [COLS.join(',')]

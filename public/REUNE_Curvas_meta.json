@@ -1,11 +1,12 @@
 {
-    "fonte":  "ANBIMA Data API (titulos-publicos, view=precos)",
-    "totalPontos":  2001,
-    "datasCobertas":  93,
-    "datasHistorico":  93,
-    "datasNovas":  1,
-    "datasSemCurva":  [
-
-                      ],
-    "updatedAt":  "2026-07-30T06:54:13"
+    "fonte": "MISTA: ANBIMA Data API (dias recentes, ETTJ interpolada) + Tesouro Transparente / Tesouro Direto (backfill historico, media compra/venda por vencimento negociado)",
+    "totalPontos": 5285,
+    "datasCobertas": 249,
+    "datasHistorico": 251,
+    "datasSemCurva": [
+        "2025-12-24",
+        "2026-07-30"
+    ],
+    "obs": "NTN-B = Tesouro IPCA+; LTN = Tesouro Prefixado. Tesouro traz so os vencimentos negociados (mais esparso que a ETTJ da ANBIMA).",
+    "updatedAt": "2026-07-30"
 }
