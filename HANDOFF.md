@@ -36,6 +36,15 @@ Commits (mais recente primeiro):
 trava em linhas inteiras, variante "ranking" (div), e o caveat da barra de
 rolagem horizontal.
 
+## Abas escondidas (feature-flag)
+As abas **Captação, Nível de Caixa e Vencimentos** estão escondidas da navegação
+via `src/config/abas.js` (`ABAS_OCULTAS`). O código, os componentes, os CSVs em
+`public/` e o pipeline (`atualizar-tudo.ps1`) continuam **intactos** — os dados
+seguem sendo atualizados. A aba **Técnico** (que consolida essas três) segue
+visível. Desktop (`App.jsx`) e mobile (`BottomNav.jsx`) filtram pelo mesmo Set, e
+`loadInitialTab` ignora `?tab=<escondida>`.
+- **Reexibir uma aba:** remova o id de `ABAS_OCULTAS` e rebuild. Só isso.
+
 ## Convenções do repositório (IMPORTANTE)
 - **Árvore de trabalho compartilhada** com outro agente + rotina automática.
   Antes de commitar: `git fetch` e cheque ahead/behind. **Nunca `git add -A`** —
