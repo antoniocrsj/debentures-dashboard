@@ -431,6 +431,8 @@ function Write-ResumoPublicado($before, $after, $summary, [string]$captacaoModo,
       Captacao   = $summary.Captacao
       BLC        = $summary.BLC
       ANBIMA     = $summary.ANBIMA
+      CurvasTPF  = $summary.CurvasTPF
+      Secundario = $summary.Secundario
       Ofertas    = $summary.Ofertas
       Emissores  = $summary.Emissores
       RecompraBE = $summary.RecompraBE
