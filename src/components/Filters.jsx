@@ -23,7 +23,14 @@ export default function Filters({ filters, options, disabled, onChange, tabsSlot
         <SearchSelect label="Setor"      value={filters.setor}    options={options.setores}  disabled={disabled} onChange={v => set('setor', v)} />
         <SearchSelect label="Gestor"     value={filters.gestor}   options={options.gestores} disabled={disabled} onChange={v => set('gestor', v)} />
         <SearchSelect label="Ativo"      value={filters.ativo}    options={options.ativos}   disabled={disabled} onChange={v => set('ativo', v)} />
-        <SearchSelect label="12.431" value={filters.lei12431} options={['Sim', 'Não']}   disabled={disabled} onChange={v => set('lei12431', v)} />
+        <div className="segmented seg-lei" role="tablist" aria-label="Incentivada (Lei 12.431)">
+          {[['Sim', '12.431'], ['Não', 'Tradicional']].map(([v, lab]) => (
+            <button key={v} type="button" role="tab" aria-selected={filters.lei12431 === v}
+              className={`segmented-btn${filters.lei12431 === v ? ' active' : ''}`}
+              disabled={disabled}
+              onClick={() => set('lei12431', filters.lei12431 === v ? '' : v)}>{lab}</button>
+          ))}
+        </div>
 
         <button
           type="button"
