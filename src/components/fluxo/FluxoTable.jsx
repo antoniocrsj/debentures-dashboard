@@ -1,7 +1,12 @@
 import { useState, useMemo } from 'react'
-import { fmtFluxo, fmtFluxoSigned, sortRows, fmtWeekFull, fmtInt, parseSemana } from '../../utils/fluxo.js'
+import { fmtFluxoTab, fmtFluxoTabSigned, sortRows, fmtWeekFull, fmtInt, parseSemana } from '../../utils/fluxo.js'
 import SortableTh, { cycleSort } from './SortableTh.jsx'
 import TableWrap from '../TableWrap.jsx'
+
+// Cabeçalhos das colunas de fluxo: verbo curto + seta colorida (entrada verde ↑,
+// saída vermelha ↓). Reutilizado por Semanas e Meses.
+const H_CAP = <>Cap.<span className="fluxo-hdr-ico up" aria-hidden="true">↑</span></>
+const H_RES = <>Res.<span className="fluxo-hdr-ico down" aria-hidden="true">↓</span></>
 
 const PAGE = 16
 const DEFAULT_SORT = { col: 'semana', dir: 'desc' }
@@ -48,8 +53,8 @@ export default function FluxoTable({ weekly, allowExpand = true }) {
             <tr>
               <SortableTh col="semana"   label="Semana"      sort={sort} onSort={onSort} align="left" sticky />
               <SortableTh col="liquido"  label="Cap. líq."    sort={sort} onSort={onSort} />
-              <SortableTh col="captacao" label="Captação"    sort={sort} onSort={onSort} />
-              <SortableTh col="resgate"  label="Resgate"     sort={sort} onSort={onSort} />
+              <SortableTh col="captacao" label={H_CAP}        sort={sort} onSort={onSort} />
+              <SortableTh col="resgate"  label={H_RES}        sort={sort} onSort={onSort} />
             </tr>
           </thead>
           <tbody>
@@ -71,9 +76,9 @@ export default function FluxoTable({ weekly, allowExpand = true }) {
                       </span>
                     )}
                   </td>
-                  <td className={`col-num liq-cell${pos ? ' pos' : neg ? ' neg' : ''}`}>{fmtFluxoSigned(w.liquido)}</td>
-                  <td className="col-num">{fmtFluxo(w.captacao)}</td>
-                  <td className="col-num">{fmtFluxo(w.resgate)}</td>
+                  <td className={`col-num liq-cell${pos ? ' pos' : neg ? ' neg' : ''}`}>{fmtFluxoTabSigned(w.liquido)}</td>
+                  <td className="col-num">{fmtFluxoTab(w.captacao)}</td>
+                  <td className="col-num">{fmtFluxoTab(w.resgate)}</td>
                 </tr>
               )
             })}
@@ -81,9 +86,9 @@ export default function FluxoTable({ weekly, allowExpand = true }) {
           <tfoot>
             <tr>
               <td className="col-sticky col-ativo">Total · {fmtInt(weekly.length)}</td>
-              <td className={`col-num liq-cell${totais.liquido > 0 ? ' pos' : totais.liquido < 0 ? ' neg' : ''}`}>{fmtFluxoSigned(totais.liquido)}</td>
-              <td className="col-num">{fmtFluxo(totais.captacao)}</td>
-              <td className="col-num">{fmtFluxo(totais.resgate)}</td>
+              <td className={`col-num liq-cell${totais.liquido > 0 ? ' pos' : totais.liquido < 0 ? ' neg' : ''}`}>{fmtFluxoTabSigned(totais.liquido)}</td>
+              <td className="col-num">{fmtFluxoTab(totais.captacao)}</td>
+              <td className="col-num">{fmtFluxoTab(totais.resgate)}</td>
             </tr>
           </tfoot>
         </table>

@@ -630,6 +630,29 @@ export function fmtFluxoSigned(n) {
   return sign + fmtFluxo(Math.abs(n))
 }
 
+/** Versão ENXUTA p/ as tabelas apertadas da Técnica: sem "R$" e com casa
+ *  decimal só quando o número (na unidade) é < 1 (ex.: "0,8 bi"); a partir de 1
+ *  arredonda pra inteiro ("1 bi", "243 mi"). Espaço não-separável valor↔unidade. */
+export function fmtFluxoTab(n) {
+  if (n == null || isNaN(n)) return '—'
+  const abs = Math.abs(n)
+  const f = v => {
+    const d = Math.abs(v) < 1 ? 1 : 0
+    return v.toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d })
+  }
+  if (abs >= 1e9) return `${f(n / 1e9)}${NBSP}bi`
+  if (abs >= 1e6) return `${f(n / 1e6)}${NBSP}mi`
+  if (abs >= 1e3) return `${f(n / 1e3)}${NBSP}mil`
+  return n.toLocaleString('pt-BR', { maximumFractionDigits: 0 })
+}
+
+/** fmtFluxoTab com sinal explícito (+/−); Zero = "0". */
+export function fmtFluxoTabSigned(n) {
+  if (n == null || isNaN(n)) return '—'
+  const sign = n > 0 ? '+' : n < 0 ? '−' : ''
+  return sign + fmtFluxoTab(Math.abs(n))
+}
+
 /** Inteiro com separador de milhares pt-BR (ex.: 1.578). */
 export function fmtInt(n) {
   if (n == null || isNaN(n)) return '—'

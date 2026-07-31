@@ -1,7 +1,11 @@
 import { useState, useMemo } from 'react'
-import { fmtFluxo, fmtFluxoSigned, fmtMonthYY, fmtInt, sortRows } from '../../utils/fluxo.js'
+import { fmtFluxoTab, fmtFluxoTabSigned, fmtMonthYY, fmtInt, sortRows } from '../../utils/fluxo.js'
 import SortableTh, { cycleSort } from './SortableTh.jsx'
 import TableWrap from '../TableWrap.jsx'
+
+// Mesmos cabeçalhos curtos da tabela de Semanas (entrada verde ↑, saída vermelha ↓).
+const H_CAP = <>Cap.<span className="fluxo-hdr-ico up" aria-hidden="true">↑</span></>
+const H_RES = <>Res.<span className="fluxo-hdr-ico down" aria-hidden="true">↓</span></>
 
 /**
  * Tabela "Meses": captação/resgate/cap. líquida consolidados por mês (agregação
@@ -45,8 +49,8 @@ export default function FluxoMonthlyTable({ months, hideFechados = false }) {
             <tr>
               <SortableTh col="mes"      label="Mês"          sort={sort} onSort={onSort} align="left" sticky />
               <SortableTh col="liquido"  label="Cap. líq."    sort={sort} onSort={onSort} />
-              <SortableTh col="captacao" label="Captação"     sort={sort} onSort={onSort} />
-              <SortableTh col="resgate"  label="Resgate"      sort={sort} onSort={onSort} />
+              <SortableTh col="captacao" label={H_CAP}        sort={sort} onSort={onSort} />
+              <SortableTh col="resgate"  label={H_RES}        sort={sort} onSort={onSort} />
             </tr>
           </thead>
           <tbody>
@@ -55,9 +59,9 @@ export default function FluxoMonthlyTable({ months, hideFechados = false }) {
               return (
                 <tr key={m.mesKey}>
                   <td className="col-sticky col-ativo"><span className="ativo-code">{fmtMonthYY(m.mesKey)}</span></td>
-                  <td className={`col-num liq-cell${pos ? ' pos' : neg ? ' neg' : ''}`}>{fmtFluxoSigned(m.liquido)}</td>
-                  <td className="col-num">{fmtFluxo(m.captacao)}</td>
-                  <td className="col-num">{fmtFluxo(m.resgate)}</td>
+                  <td className={`col-num liq-cell${pos ? ' pos' : neg ? ' neg' : ''}`}>{fmtFluxoTabSigned(m.liquido)}</td>
+                  <td className="col-num">{fmtFluxoTab(m.captacao)}</td>
+                  <td className="col-num">{fmtFluxoTab(m.resgate)}</td>
                 </tr>
               )
             })}
@@ -65,9 +69,9 @@ export default function FluxoMonthlyTable({ months, hideFechados = false }) {
           <tfoot>
             <tr>
               <td className="col-sticky col-ativo">Total · {fmtInt(months.length)}</td>
-              <td className={`col-num liq-cell${totais.liquido > 0 ? ' pos' : totais.liquido < 0 ? ' neg' : ''}`}>{fmtFluxoSigned(totais.liquido)}</td>
-              <td className="col-num">{fmtFluxo(totais.captacao)}</td>
-              <td className="col-num">{fmtFluxo(totais.resgate)}</td>
+              <td className={`col-num liq-cell${totais.liquido > 0 ? ' pos' : totais.liquido < 0 ? ' neg' : ''}`}>{fmtFluxoTabSigned(totais.liquido)}</td>
+              <td className="col-num">{fmtFluxoTab(totais.captacao)}</td>
+              <td className="col-num">{fmtFluxoTab(totais.resgate)}</td>
             </tr>
           </tfoot>
         </table>

@@ -2133,16 +2133,24 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
     min-width: 0;
     table-layout: fixed;
   }
+  /* Semana/Mês mais estreita (22%) e as 3 colunas de valor iguais (26% cada) —
+     antes 31 / 23·23·23, com a primeira comendo espaço das apertadas. */
   .app.desktop .tecnico-tables-row table.asset-table th:first-child,
-  .app.desktop .tecnico-tables-row table.asset-table td:first-child { width: 31%; }
+  .app.desktop .tecnico-tables-row table.asset-table td:first-child { width: 22%; }
   .app.desktop .tecnico-tables-row table.asset-table th:not(:first-child),
-  .app.desktop .tecnico-tables-row table.asset-table td:not(:first-child) { width: 23%; }
+  .app.desktop .tecnico-tables-row table.asset-table td:not(:first-child) { width: 26%; }
   .app.desktop .tecnico-tables-row table.asset-table th,
   .app.desktop .tecnico-tables-row table.asset-table td {
     padding-left: var(--sp-2) !important;
     padding-right: var(--sp-2) !important;
   }
 }
+
+/* Seta de direção no cabeçalho de Cap. (entrada, verde ↑) e Res. (saída,
+   vermelho ↓). Colada ao rótulo, um tico maior que o texto p/ leitura rápida. */
+.fluxo-hdr-ico { margin-left: 1px; font-weight: 700; line-height: 1; }
+.fluxo-hdr-ico.up   { color: var(--c-verde); }
+.fluxo-hdr-ico.down { color: var(--c-vermelho); }
 
 /* Dentro do .grafico-card as superficies internas somem: uma so' borda por
    grafico, senao vira card dentro de card. */
