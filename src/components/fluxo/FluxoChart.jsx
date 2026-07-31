@@ -2,7 +2,7 @@ import {
   ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid,
   Tooltip, Legend, ReferenceLine, ResponsiveContainer,
 } from 'recharts'
-import { toChartSeries, fmtDayMonthYY, fmtWeekFull, fmtFluxo, fmtFluxoSigned } from '../../utils/fluxo.js'
+import { toChartSeries, toChartSeriesMensal, fmtDayMonthYY, fmtMonthYY, fmtWeekFull, fmtFluxo, fmtFluxoSigned } from '../../utils/fluxo.js'
 
 // Paleta quente (identidade Luc), legível sobre o card claro
 // CATALOGO DE 6 CORES (ver :root do index.css). O Recharts nao aceita var()
@@ -33,17 +33,18 @@ const axisFmt = v => {
   return String(v)
 }
 
-function FluxoTooltip({ active, payload, label }) {
+function FluxoTooltip({ active, payload, label, isMes }) {
   if (!active || !payload || !payload.length) return null
   const row = payload[0]?.payload
   if (!row) return null
   return (
     <div className="fluxo-tooltip">
-      <div className="fluxo-tooltip-title">Semana de {fmtWeekFull(label)}</div>
+      <div className="fluxo-tooltip-title">{isMes ? fmtMonthYY(label) : `Semana de ${fmtWeekFull(label)}`}</div>
       <div className="fluxo-tooltip-row"><span className="dot" style={{ background: COL_CAP }} />Captação: {fmtFluxoSigned(row.captacao)}</div>
       <div className="fluxo-tooltip-row"><span className="dot" style={{ background: COL_RES }} />Resgate: {fmtFluxoSigned(-row.resgate)}</div>
       <div className="fluxo-tooltip-row"><span className="dot" style={{ background: COL_LIQ }} />Cap. líquida: {fmtFluxoSigned(row.liquido)}</div>
-      <div className="fluxo-tooltip-row fluxo-tooltip-pl">PL total: {fmtFluxo(row.plTotal)}</div>
+      {/* Base mensal agregada nao carrega PL por mes -> so' no semanal. */}
+      {!isMes && <div className="fluxo-tooltip-row fluxo-tooltip-pl">PL total: {fmtFluxo(row.plTotal)}</div>}
     </div>
   )
 }
@@ -63,14 +64,30 @@ function barSizeFor(n) {
   return 4.5              // 12 meses / tudo (~51 semanas)
 }
 
-export default function FluxoChart({ weekly }) {
-  if (!weekly || !weekly.length) return null
+// Poucas categorias no mensal (1 a 12 pontos): barras largas, sem afinar como
+// no semanal.
+function barSizeForMes(n) {
+  if (n <= 3) return 26
+  if (n <= 6) return 22
+  if (n <= 12) return 14
+  return 8
+}
 
-  const data = toChartSeries(weekly)
-  const barSize = barSizeFor(data.length)
+// mode: 'semanas' (padrao) plota a serie semanal; 'meses' plota a mensal
+// (mesma forma de dado, so' muda a chave do eixo X e o formatador). Usado pela
+// aba Tecnico, onde o alternador Semanas|Meses guia grafico E tabela juntos.
+export default function FluxoChart({ weekly, monthly, mode = 'semanas' }) {
+  const isMes = mode === 'meses'
+  const rows = isMes ? monthly : weekly
+  if (!rows || !rows.length) return null
+
+  const data = isMes ? toChartSeriesMensal(rows) : toChartSeries(rows)
+  const barSize = isMes ? barSizeForMes(data.length) : barSizeFor(data.length)
+  const xKey = isMes ? 'mesKey' : 'weekKey'
+  const xFmt = isMes ? fmtMonthYY : fmtDayMonthYY
 
   return (
-    <div className="fluxo-chart" role="img" aria-label="Gráfico semanal de captação (acima de zero), resgate (abaixo de zero) e captação líquida">
+    <div className="fluxo-chart" role="img" aria-label={`Gráfico ${isMes ? 'mensal' : 'semanal'} de captação (acima de zero), resgate (abaixo de zero) e captação líquida`}>
       <ResponsiveContainer width="100%" height="100%">
         {/* stackOffset="sign" + stackId comum nas duas barras: captacao e resgate
             ocupam a MESMA coluna da semana (uma p/ cima, outra p/ baixo a partir
@@ -92,8 +109,8 @@ export default function FluxoChart({ weekly }) {
               stroke, entao o hex e' repetido -- mas e' o do catalogo. */}
           <CartesianGrid strokeDasharray="3 3" stroke="#f2ede5" vertical={false} />
           <XAxis
-            dataKey="weekKey"
-            tickFormatter={fmtDayMonthYY}
+            dataKey={xKey}
+            tickFormatter={xFmt}
             minTickGap={20}
             tick={{ fontSize: FZ_DADO, fill: COL_EIXO }}
             tickMargin={3}
@@ -109,7 +126,7 @@ export default function FluxoChart({ weekly }) {
           <YAxis tickFormatter={axisFmt} tick={{ fontSize: FZ_DADO, fill: COL_EIXO, textAnchor: 'start' }} dx={-22}
                  width={32} axisLine={false} tickLine={false} />
           <ReferenceLine y={0} stroke={COL_ZERO} strokeWidth={1.25} />
-          <Tooltip content={<FluxoTooltip />} />
+          <Tooltip content={props => <FluxoTooltip {...props} isMes={isMes} />} />
           <Legend wrapperStyle={{ fontSize: FZ_DADO }} iconType="square" iconSize={7} />
           <Bar dataKey="captacao" name="Captação" fill={COL_CAP} stackId="fluxo" radius={[2, 2, 0, 0]} barSize={barSize} />
           <Bar dataKey="resgateNeg" name="Resgate" fill={COL_RES} stackId="fluxo" radius={[0, 0, 2, 2]} barSize={barSize} />

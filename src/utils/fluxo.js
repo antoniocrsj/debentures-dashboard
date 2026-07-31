@@ -559,6 +559,21 @@ export function toChartSeries(weekly) {
   }))
 }
 
+/** Série MENSAL do gráfico: mesma forma da semanal (resgateNeg p/ a barra
+ *  abaixo do zero), ordenada do mais antigo p/ o mais novo (eixo cronológico).
+ *  Sem plTotal — a base mensal agregada não carrega PL por mês. */
+export function toChartSeriesMensal(months) {
+  return [...(months || [])]
+    .sort((a, b) => (a.mesKey < b.mesKey ? -1 : a.mesKey > b.mesKey ? 1 : 0))
+    .map(m => ({
+      mesKey: m.mesKey,
+      captacao: m.captacao,
+      resgate: m.resgate,
+      resgateNeg: -Math.abs(m.resgate),
+      liquido: m.liquido,
+    }))
+}
+
 /** 'AAAA-MM-DD' → 'jun/25' (sem Date, sem UTC). */
 export function fmtMonthYY(ymd) {
   if (!ymd) return ''

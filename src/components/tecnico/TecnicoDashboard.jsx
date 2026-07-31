@@ -339,7 +339,7 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, on
                     ))}
                   </span>
                 </p>
-                <FluxoChart weekly={weekly} />
+                <FluxoChart weekly={weekly} monthly={monthlyAgg} mode={vista} />
                 </div>
               </div>
               <div className="tecnico-chart-cell">
