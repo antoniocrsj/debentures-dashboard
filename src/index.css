@@ -2354,8 +2354,8 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 .app.desktop .sec-filters .fluxo-field .sec-input { width: 120px; }             /* Ativo (select) */
 /* busca 170: Mercado (search-wrap agora dentro da linha de chips) */
 .app.desktop .filter-scroll .search-wrap { width: 170px; flex: 0 0 170px; margin: 0; }
-/* linha de chips do Mercado: lado a lado + quebra + 10px + 20px do topo */
-.app.desktop .filter-scroll { flex-wrap: wrap; overflow-x: visible; gap: 10px; padding: 20px var(--sp-4) 0; }
+/* linha de chips do Mercado: 24px a esquerda, alinhada ao card da tabela */
+.app.desktop .filter-scroll { flex-wrap: wrap; overflow-x: visible; gap: 10px; padding: 20px var(--sp-4) 0 var(--sp-6); }
 /* linha de filtros das abas fluxo (Secundario etc.): idem */
 .app.desktop .fluxo-filters-row { flex-wrap: wrap; align-items: flex-start; gap: 10px; }
 .app.desktop .sec-page { padding-top: 20px; }                          /* item 5: 20px do carvao */
