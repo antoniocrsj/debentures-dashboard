@@ -2373,11 +2373,10 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 .app.desktop .content .filter-bar + .table-wrap-x > .table-wrap { margin-top: 0; }
 
 /* Debentures desktop: tabela + bloco inferior cabem na viewport. A tabela usa o
-   maximo de linhas completas e a sobra vertical e dividida igualmente acima e
-   abaixo dos cards. */
+   maximo de linhas completas; os cards mantem 16px fixos ate o fim da tela. */
 .app.desktop .content:has(> .filter-bar) {
   flex: none; height: calc(100vh - 97px); min-height: 0; box-sizing: border-box;
-  display: flex; flex-direction: column; padding-bottom: 0; overflow: hidden;
+  display: flex; flex-direction: column; padding-bottom: var(--sp-5); overflow: hidden;
   --deb-filter-h: 61px;
   --deb-lower-h: 206px;
   --deb-table-chrome: 46px;
@@ -2411,7 +2410,7 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
      as 3 colunas (grafico | Gestor | Grupo) ficam alinhadas e cabem exatamente 8
      linhas de dados, em qualquer tela. A tabela de cima preenche o resto. */
   flex: 0 0 auto; height: calc(26px + 8 * 20px + 20px);
-  min-height: 0; margin-top: auto; margin-bottom: auto; padding-top: 0;
+  min-height: 0; margin-top: auto; margin-bottom: 0; padding-top: 0;
   grid-template-rows: minmax(0, 1fr);
 }
 /* os rankings (Gestor/Grupo) PREENCHEM a celula do grid (senao o max-height:52vh
