@@ -58,12 +58,20 @@ const UNIDADES = [
   { id: 'rs', label: 'R$' },
   { id: 'pct', label: '%PL' },   /* era '% do PL': o botao competia em largura com o titulo */
 ]
+// Captacao (tabela): a MESMA serie em duas agregacoes. Uma tabela so', com o
+// alternador no canto do grafico de Captacao (ver JSX) -- em vez de duas tabelas
+// lado a lado. Ela mora logo abaixo do grafico, na largura de UM grafico.
+const VISTAS = [
+  { id: 'semanas', label: 'Semanas' },
+  { id: 'meses',   label: 'Meses' },
+]
 
 export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, onCorte, corteDisponivel, pctPorCnpj }) {
   const [tipo, setTipo] = useState('trad')   // Tradicional: padrao unico do app
   const [gestorSel, setGestorSel] = useState('')
   const [periodo, setPeriodo] = useState(PERIODO_PADRAO)
   const [unidade, setUnidade] = useState('rs')
+  const [vista, setVista] = useState('semanas')   // tabela de captacao: Semanas | Meses
   const gridRef = useRef(null)
 
   const { loading, error, rows: rowsBase, monthly, rentabilidade, fundosSemana } = useFluxo(tipo)
@@ -320,6 +328,16 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, on
                       {capKpi.pctPL != null && <em>{fmtPct(capKpi.pctPL)} do PL</em>}
                     </span>
                   )}
+                  {/* Alternador da tabela LOGO ABAIXO (Semanas | Meses). Fica no
+                      canto do grafico de Captacao porque a tabela e' a mesma
+                      serie do grafico, so' que agregada. */}
+                  <span className="segmented tecnico-unidade tecnico-vista" role="tablist" aria-label="Agregação da tabela de captação">
+                    {VISTAS.map(v => (
+                      <button key={v.id} type="button" role="tab" aria-selected={vista === v.id}
+                        className={`segmented-btn${vista === v.id ? ' active' : ''}`}
+                        onClick={() => setVista(v.id)}>{v.label}</button>
+                    ))}
+                  </span>
                 </p>
                 <FluxoChart weekly={weekly} />
                 </div>
@@ -363,9 +381,13 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, on
               </div>
             </div>
 
+            {/* UMA tabela (Semanas ou Meses), na coluna 1 -> largura de um
+                grafico, alinhada sob a Captacao. O alternador vive no card da
+                Captacao (acima). Colunas 2 e 3 ficam vazias de proposito. */}
             <div className="fluxo-tables-row tecnico-tables-row">
-              <FluxoTable weekly={weekly} allowExpand={false} />
-              <FluxoMonthlyTable months={monthlyAgg} />
+              {vista === 'semanas'
+                ? <FluxoTable weekly={weekly} allowExpand={false} />
+                : <FluxoMonthlyTable months={monthlyAgg} />}
             </div>
           </div>
 

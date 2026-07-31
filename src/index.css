@@ -2099,9 +2099,12 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
   .app.desktop .tecnico-gestor-table .asset-table tbody tr,
   .app.desktop .tecnico .fluxo-table-block .asset-table tbody tr { scroll-snap-align: end; }
 
+  /* 3 colunas espelhando a linha dos graficos (flex 3x + gap 8): a tabela unica
+     cai na coluna 1 e fica exatamente na largura do grafico de Captacao, logo
+     abaixo dele. Colunas 2 e 3 ficam vazias. */
   .app.desktop .tecnico-tables-row {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
     height: 100%;
     min-height: 0;
