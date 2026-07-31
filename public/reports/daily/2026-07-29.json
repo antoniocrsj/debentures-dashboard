@@ -9,9 +9,8 @@
     "perf12431": "2026-07-27",
     "perfTrad": "2026-07-27",
     "anbima": "2026-07-29",
-    "blc": "2026-07-28",
-    "fundos": "2026-07-27",
-    "reune": "2026-07-29"
+    "blc": "2026-07-29",
+    "fundos": "2026-07-27"
   },
   "novoPorFonte": {
     "debentures": false,
@@ -22,11 +21,11 @@
   },
   "summary": [
     {
-      "texto": "Captação líquida Incentivados: −R$ 372 mi",
+      "texto": "Captação líquida Incentivados: −R$ 379 mi",
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional: −R$ 697 mi",
+      "texto": "Captação líquida Tradicional: −R$ 700 mi",
       "tom": "neg"
     },
     {
@@ -62,38 +61,38 @@
     "captacao": {
       "12431": {
         "dia": "2026-07-27",
-        "captacao": 119291864.19,
-        "resgate": 491248709.0199999,
-        "liquido": -371956844.8299999,
-        "pl": 263658080865.9301,
-        "numFundos": 1708,
+        "captacao": 119376039.33000001,
+        "resgate": 498127763.90999997,
+        "liquido": -378751724.5799999,
+        "pl": 264767965006.79013,
+        "numFundos": 1713,
         "curados": 1737,
-        "fechados": 289,
+        "fechados": 288,
         "anterior": {
           "dia": "2026-07-24",
           "captacao": 95918827.97999999,
-          "resgate": 231884232.79000002,
-          "liquido": -135965404.81000003,
-          "pl": 264819222831.46005,
-          "numFundos": 1707
+          "resgate": 266466227.66000003,
+          "liquido": -170547399.68000004,
+          "pl": 264820141255.26004,
+          "numFundos": 1708
         }
       },
       "trad": {
         "dia": "2026-07-27",
-        "captacao": 2231849466.129999,
-        "resgate": 2929251002.2699986,
-        "liquido": -697401536.1399994,
-        "pl": 1589952946442.022,
-        "numFundos": 987,
+        "captacao": 2231842193.7099996,
+        "resgate": 2931527922.7699986,
+        "liquido": -699685729.059999,
+        "pl": 1591148649735.3313,
+        "numFundos": 998,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
           "dia": "2026-07-24",
           "captacao": 2092471401.1100006,
-          "resgate": 3014710557.599998,
-          "liquido": -922239156.4899974,
-          "pl": 1580800323662.5396,
-          "numFundos": 993
+          "resgate": 3014921681.689998,
+          "liquido": -922450280.5799975,
+          "pl": 1581374313518.4497,
+          "numFundos": 996
         }
       }
     },
@@ -109,16 +108,9 @@
         {
           "gestor": "SPX",
           "captacao": 6764500,
-          "resgate": 3825208.49,
-          "liquido": 2939291.51,
-          "pl": 1153343802.91
-        },
-        {
-          "gestor": "G5",
-          "captacao": 1400000,
-          "resgate": 600000,
-          "liquido": 800000,
-          "pl": 2301441437.44
+          "resgate": 4522219.24,
+          "liquido": 2242280.76,
+          "pl": 1152646792.16
         },
         {
           "gestor": "Bocaina",
@@ -133,6 +125,13 @@
           "resgate": 10531400,
           "liquido": 326348.4399999995,
           "pl": 7533088429.01
+        },
+        {
+          "gestor": "Track",
+          "captacao": 250656.72,
+          "resgate": 103826.83,
+          "liquido": 146829.89,
+          "pl": 120647387.18
         }
       ],
       "top12431Resgate": [
@@ -148,7 +147,7 @@
           "captacao": 20267393.12,
           "resgate": 71813860.26,
           "liquido": -51546467.14,
-          "pl": 55739699747.77
+          "pl": 55739699198.14
         },
         {
           "gestor": "Absolute",
@@ -220,9 +219,9 @@
         {
           "gestor": "IAM",
           "captacao": 509647027.35,
-          "resgate": 668889039.31,
-          "liquido": -159242011.95999992,
-          "pl": 456498524147.24
+          "resgate": 670112353.58,
+          "liquido": -160465326.23000002,
+          "pl": 456497301105.58
         },
         {
           "gestor": "CEF Asset",
@@ -1357,797 +1356,6 @@
       "anterior": "2026-07-28",
       "semAnterior": false
     },
-    "reune": {
-      "12431": {
-        "itens": [
-          {
-            "ticker": "PLSB1A",
-            "emissor": "AUTOPISTA LITORAL SUL S/A.",
-            "grupo": "Arteris",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B31 +176 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B29+140",
-            "variacaoBps": 33.62999999999996,
-            "taxaMedia": "10,11"
-          },
-          {
-            "ticker": "RIPR22",
-            "emissor": "RIO PARANA ENERGIA S/A",
-            "grupo": "Auren",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B31 −22 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B30−37",
-            "variacaoBps": 20.800000000000107,
-            "taxaMedia": "8,13"
-          },
-          {
-            "ticker": "CCROB6",
-            "emissor": "MOTIVA INFRAESTRUTURA DE MOBILIDADE S.A.",
-            "grupo": "Motiva",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B35 −12 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B33−28",
-            "variacaoBps": 20.310000000000006,
-            "taxaMedia": "8,17"
-          },
-          {
-            "ticker": "ALIG13",
-            "emissor": "ALIANCA GERACAO DE ENERGIA S/A",
-            "grupo": "Aliança Energia",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B35 −25 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B30−44",
-            "variacaoBps": 19.459999999999944,
-            "taxaMedia": "8,04"
-          },
-          {
-            "ticker": "RMSA12",
-            "emissor": "BRK AMBIENTAL - REGIAO METROPOLITANA DE MACEIO S.A.",
-            "grupo": "BRK",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B40 +214 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B35+163",
-            "variacaoBps": 17.22999999999999,
-            "taxaMedia": "10,14"
-          },
-          {
-            "ticker": "AESLD2",
-            "emissor": "RGE SUL DISTRIBUIDORA DE ENERGIA S/A",
-            "grupo": "CPFL",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B35 −16 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B35−22",
-            "variacaoBps": 15.940000000000065,
-            "taxaMedia": "8,13"
-          },
-          {
-            "ticker": "CEEBE3",
-            "emissor": "CIA. DE ELETRIC. DO EST. DA BAHIA-COELBA",
-            "grupo": "Neoenergia",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B31 −12 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B31−17",
-            "variacaoBps": 13.150000000000084,
-            "taxaMedia": "8,23"
-          },
-          {
-            "ticker": "IVIAA0",
-            "emissor": "CONCESSIONARIA DE RODOVIAS DO INTERIOR PAULISTA S/A",
-            "grupo": "Arteris",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B37 +143 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B33+109",
-            "variacaoBps": 9.660000000000046,
-            "taxaMedia": "9,55"
-          },
-          {
-            "ticker": "ARTR19",
-            "emissor": "ARTERIS S.A.",
-            "grupo": "Arteris",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B27 +296 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B27+268",
-            "variacaoBps": 6.069999999999887,
-            "taxaMedia": "11,10"
-          },
-          {
-            "ticker": "COCEB2",
-            "emissor": "COMPANHIA ENERGETICA DO CEARA-COELCE",
-            "grupo": "Enel Brasil",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B30 +93 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B30+86",
-            "variacaoBps": 5.370000000000097,
-            "taxaMedia": "9,31"
-          },
-          {
-            "ticker": "EKTRA8",
-            "emissor": "ELEKTRO REDES S.A.",
-            "grupo": "Neoenergia",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B31 −16 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B31−13",
-            "variacaoBps": 5.359999999999943,
-            "taxaMedia": "8,19"
-          },
-          {
-            "ticker": "HGLB23",
-            "emissor": "HIGHLINE DO BRASIL II INFRAESTRUTURA DE TELECOMUNICACOES S.A",
-            "grupo": "Highline",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B35 +277 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B31+252",
-            "variacaoBps": 5.339999999999989,
-            "taxaMedia": "11,06"
-          },
-          {
-            "ticker": "IGSN15",
-            "emissor": "IGUA SANEAMENTO S.A",
-            "grupo": "Iguá",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B35 +313 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B30+281",
-            "variacaoBps": 5.3300000000000125,
-            "taxaMedia": "11,42"
-          },
-          {
-            "ticker": "CEPEA7",
-            "emissor": "COMPANHIA ENERGETICA DE PERNAMBUCO-CELPE",
-            "grupo": "Neoenergia",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B35 −24 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B40+8",
-            "variacaoBps": 5.2100000000001145,
-            "taxaMedia": "8,05"
-          },
-          {
-            "ticker": "AXIA19",
-            "emissor": "AXIA ENERGIA S.A.",
-            "grupo": "Axia",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B37 −6 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B35−18",
-            "variacaoBps": 5.109999999999992,
-            "taxaMedia": "8,06"
-          },
-          {
-            "ticker": "CGOS13",
-            "emissor": "EQUATORIAL GOIAS DISTRIBUIDORA DE ENERGIA S.A.",
-            "grupo": "Equatorial",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B31 −4 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B30−5",
-            "variacaoBps": 4.809999999999981,
-            "taxaMedia": "8,31"
-          },
-          {
-            "ticker": "PEJA22",
-            "emissor": "PRIO FORTE S.A.",
-            "grupo": "Prio Forte",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B33 +2 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B32+4",
-            "variacaoBps": 4.559999999999853,
-            "taxaMedia": "8,37"
-          },
-          {
-            "ticker": "ELET14",
-            "emissor": "AXIA ENERGIA S.A.",
-            "grupo": "Axia",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B31 −45 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B30−43",
-            "variacaoBps": 4.190000000000005,
-            "taxaMedia": "7,90"
-          },
-          {
-            "ticker": "AGIZ11",
-            "emissor": "AGUAS DA IMPERATRIZ S.A.",
-            "grupo": "Águas do Brasil",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B45 +77 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B37+47",
-            "variacaoBps": 3.9199999999999235,
-            "taxaMedia": "8,60"
-          },
-          {
-            "ticker": "BHSA11",
-            "emissor": "BARREIRAS HOLDING S.A.",
-            "grupo": "Barreiras",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B45 +63 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B35+20",
-            "variacaoBps": 3.780000000000072,
-            "taxaMedia": "8,46"
-          },
-          {
-            "ticker": "QMCT14",
-            "emissor": "QMC TELECOM DO BRASIL CESSAO DE INFRAESTRUTURA S/A",
-            "grupo": "QMC Telecom",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B35 +96 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B32+86",
-            "variacaoBps": 3.449999999999953,
-            "taxaMedia": "9,25"
-          },
-          {
-            "ticker": "PETR26",
-            "emissor": "PETROLEO BRASILEIRO S/A - PETROBRAS",
-            "grupo": "Petrobras",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B29 −114 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B29−100",
-            "variacaoBps": 2.010000000000023,
-            "taxaMedia": "7,20"
-          },
-          {
-            "ticker": "BION17",
-            "emissor": "BIOENERGETICA VALE DO PARACATU S/A.",
-            "grupo": "Bevap",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B32 +261 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B30+243",
-            "variacaoBps": 0.3200000000001424,
-            "taxaMedia": "10,96"
-          },
-          {
-            "ticker": "CPLD29",
-            "emissor": "COPEL  DISTRIBUICAO S/A",
-            "grupo": "Copel",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B37 −20 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B33−32",
-            "variacaoBps": -0.9500000000000064,
-            "taxaMedia": "7,92"
-          },
-          {
-            "ticker": "WNTY12",
-            "emissor": "WINITY S.A.",
-            "grupo": "Winity",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B35 +153 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B31+143",
-            "variacaoBps": -1.2800000000000367,
-            "taxaMedia": "9,82"
-          },
-          {
-            "ticker": "VLIM14",
-            "emissor": "VLI MULTIMODAL S.A.",
-            "grupo": "VLI",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B30 −44 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B29−27",
-            "variacaoBps": -2.719999999999967,
-            "taxaMedia": "7,94"
-          },
-          {
-            "ticker": "CEEBD2",
-            "emissor": "CIA. DE ELETRIC. DO EST. DA BAHIA-COELBA",
-            "grupo": "Neoenergia",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B35 −12 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B35+0",
-            "variacaoBps": -3.6699999999999733,
-            "taxaMedia": "8,17"
-          },
-          {
-            "ticker": "VBBRA0",
-            "emissor": "VIBRA ENERGIA S.A",
-            "grupo": "Vibra",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B35 +8 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B33+13",
-            "variacaoBps": -3.9700000000001623,
-            "taxaMedia": "8,37"
-          },
-          {
-            "ticker": "ALGTA4",
-            "emissor": "ALGAR TELECOM S.A.",
-            "grupo": "Algar",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B33 +71 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B32+76",
-            "variacaoBps": -4.169999999999874,
-            "taxaMedia": "9,06"
-          },
-          {
-            "ticker": "AXIA18",
-            "emissor": "AXIA ENERGIA S.A.",
-            "grupo": "Axia",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B33 −50 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B32−34",
-            "variacaoBps": -6.020000000000003,
-            "taxaMedia": "7,85"
-          },
-          {
-            "ticker": "EGIEA6",
-            "emissor": "ENGIE BRASIL ENERGIA SA",
-            "grupo": "Engie",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B37 −42 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B37−26",
-            "variacaoBps": -6.38999999999994,
-            "taxaMedia": "7,70"
-          },
-          {
-            "ticker": "ENAT23",
-            "emissor": "BRAVA ENERGIA S.A.",
-            "grupo": "Brava Energia",
-            "incentivada": true,
-            "indexadorFamilia": "Pré",
-            "spread": "DI +0,73%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 0,72%",
-            "variacaoBps": -11.730000000000018,
-            "taxaMedia": "15,18"
-          },
-          {
-            "ticker": "SBSPJ8",
-            "emissor": "CIA SANEAMENTO BASICO EST. SP - SABESP",
-            "grupo": "Sabesp",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B37 −62 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B37−34",
-            "variacaoBps": -18.440000000000012,
-            "taxaMedia": "7,50"
-          },
-          {
-            "ticker": "AXIA28",
-            "emissor": "AXIA ENERGIA S.A.",
-            "grupo": "Axia",
-            "incentivada": true,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B35 −70 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B35−36",
-            "variacaoBps": -22.829999999999995,
-            "taxaMedia": "7,59"
-          },
-          {
-            "ticker": "CEEBD1",
-            "emissor": "CIA. DE ELETRIC. DO EST. DA BAHIA-COELBA",
-            "grupo": "Neoenergia",
-            "incentivada": true,
-            "indexadorFamilia": "Pré",
-            "spread": "DI −0,59%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI − 0,19%",
-            "variacaoBps": -39.2199999999999,
-            "taxaMedia": "14,05"
-          }
-        ],
-        "total": 35,
-        "totalAberturas": 23,
-        "totalFechamentos": 12,
-        "totalComparados": 35,
-        "variacaoMediaBps": 2.6748571428571517
-      },
-      "trad": {
-        "itens": [
-          {
-            "ticker": "DASAC5",
-            "emissor": "DIAGNOSTICOS DA AMERICA S/A",
-            "grupo": "Dasa",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +3,44%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 2,90%",
-            "variacaoBps": 53.67999999999999,
-            "taxaMedia": "3,44"
-          },
-          {
-            "ticker": "INEL12",
-            "emissor": "INSPIRALI EDUCACAO S/A",
-            "grupo": "Ânima",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +1,42%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 1,27%",
-            "variacaoBps": 15.379999999999994,
-            "taxaMedia": "1,42"
-          },
-          {
-            "ticker": "TRES11",
-            "emissor": "TRES TENTOS AGROINDUSTRIAL S.A",
-            "grupo": "3 Tentos",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +1,53%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 1,45%",
-            "variacaoBps": 8.010000000000005,
-            "taxaMedia": "1,53"
-          },
-          {
-            "ticker": "ARTRA1",
-            "emissor": "ARTERIS S.A.",
-            "grupo": "Arteris",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +1,66%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 1,58%",
-            "variacaoBps": 7.869999999999999,
-            "taxaMedia": "1,66"
-          },
-          {
-            "ticker": "CGOS19",
-            "emissor": "EQUATORIAL GOIAS DISTRIBUIDORA DE ENERGIA S.A.",
-            "grupo": "Equatorial",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +0,77%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 0,69%",
-            "variacaoBps": 7.850000000000001,
-            "taxaMedia": "0,77"
-          },
-          {
-            "ticker": "LMTPA0",
-            "emissor": "LM TRANSPORTES INTERESTADUAIS SERVICOS E COMERCIO S.A.",
-            "grupo": "LM Transportes Interestaduais Servicos e Comercio",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +1,79%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 1,75%",
-            "variacaoBps": 4.23,
-            "taxaMedia": "1,79"
-          },
-          {
-            "ticker": "CVCB14",
-            "emissor": "CVC BRASIL OPERADORA E AGENCIA DE VIAGENS S.A.",
-            "grupo": "CVC",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +4,21%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 4,18%",
-            "variacaoBps": 3.249999999999975,
-            "taxaMedia": "4,21"
-          },
-          {
-            "ticker": "OVSAB0",
-            "emissor": "UNIDAS LOCACOES E SERVICOS S/A",
-            "grupo": "Unidas",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +2,11%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 2,10%",
-            "variacaoBps": 1.4399999999999746,
-            "taxaMedia": "2,11"
-          },
-          {
-            "ticker": "MRFGA1",
-            "emissor": "MARFRIG GLOBAL FOODS S.A.",
-            "grupo": "Marfrig",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +1,05%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 1,04%",
-            "variacaoBps": 1.3900000000000023,
-            "taxaMedia": "1,05"
-          },
-          {
-            "ticker": "RDORI6",
-            "emissor": "REDE DOR SAO LUIZ S/A",
-            "grupo": "Rede D'Or",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +1,27%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 1,26%",
-            "variacaoBps": 0.5900000000000016,
-            "taxaMedia": "1,27"
-          },
-          {
-            "ticker": "BSA318",
-            "emissor": "B3 S.A. - BRASIL BOLSA BALCAO",
-            "grupo": "B3",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +0,34%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 0,34%",
-            "variacaoBps": 0.2500000000000002,
-            "taxaMedia": "0,34"
-          },
-          {
-            "ticker": "PFOR16",
-            "emissor": "PRIO FORTE S.A.",
-            "grupo": "Prio Forte",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +1,37%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 1,37%",
-            "variacaoBps": 0.14000000000000679,
-            "taxaMedia": "1,37"
-          },
-          {
-            "ticker": "USIMA0",
-            "emissor": "USINAS SIDERURGICAS DE MG S/A - USIMINAS",
-            "grupo": "Usiminas",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +1,30%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 1,30%",
-            "variacaoBps": -0.41999999999999815,
-            "taxaMedia": "1,30"
-          },
-          {
-            "ticker": "ABSP12",
-            "emissor": "AGUAS DE BOMBINHAS SANEAMENTO SPE S.A.",
-            "grupo": "Aegea",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +1,47%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 1,48%",
-            "variacaoBps": -0.7000000000000117,
-            "taxaMedia": "1,47"
-          },
-          {
-            "ticker": "SBSPM8",
-            "emissor": "CIA SANEAMENTO BASICO EST. SP - SABESP",
-            "grupo": "Sabesp",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +0,64%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 0,65%",
-            "variacaoBps": -1.3900000000000023,
-            "taxaMedia": "0,64"
-          },
-          {
-            "ticker": "IOCHA3",
-            "emissor": "IOCHPE-MAXION S/A",
-            "grupo": "Iochpe-Maxion",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +1,32%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 1,34%",
-            "variacaoBps": -2.1199999999999886,
-            "taxaMedia": "1,32"
-          },
-          {
-            "ticker": "EUFA17",
-            "emissor": "EUROFARMA LABORATORIOS S.A",
-            "grupo": "Eurofarma",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +1,21%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 1,23%",
-            "variacaoBps": -2.3800000000000043,
-            "taxaMedia": "1,21"
-          },
-          {
-            "ticker": "BRKPA2",
-            "emissor": "BRK AMBIENTAL PARTICIPACOES S/A",
-            "grupo": "BRK",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +2,53%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 2,56%",
-            "variacaoBps": -2.9600000000000293,
-            "taxaMedia": "2,53"
-          },
-          {
-            "ticker": "CGOS15",
-            "emissor": "EQUATORIAL GOIAS DISTRIBUIDORA DE ENERGIA S.A.",
-            "grupo": "Equatorial",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +0,64%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 0,67%",
-            "variacaoBps": -2.9900000000000038,
-            "taxaMedia": "0,64"
-          },
-          {
-            "ticker": "RDORE4",
-            "emissor": "REDE DOR SAO LUIZ S/A",
-            "grupo": "Rede D'Or",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +1,06%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 1,09%",
-            "variacaoBps": -3.2200000000000006,
-            "taxaMedia": "1,06"
-          },
-          {
-            "ticker": "ENGIC4",
-            "emissor": "ENERGISA SA",
-            "grupo": "Energisa",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +0,65%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 0,70%",
-            "variacaoBps": -4.8799999999999955,
-            "taxaMedia": "0,65"
-          },
-          {
-            "ticker": "RSAN25",
-            "emissor": "COMPANHIA RIOGRANDENSE DE SANEAMENTO - CORSAN",
-            "grupo": "Aegea",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +2,62%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 2,71%",
-            "variacaoBps": -8.599999999999985,
-            "taxaMedia": "2,62"
-          },
-          {
-            "ticker": "VBBR26",
-            "emissor": "VIBRA ENERGIA S.A",
-            "grupo": "Vibra",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +0,95%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 1,04%",
-            "variacaoBps": -8.909999999999997,
-            "taxaMedia": "0,95"
-          },
-          {
-            "ticker": "MOVI27",
-            "emissor": "MOVIDA PARTICIPACOES S/A",
-            "grupo": "Simpar",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +2,73%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 2,89%",
-            "variacaoBps": -15.64000000000001,
-            "taxaMedia": "2,73"
-          },
-          {
-            "ticker": "JSMLA5",
-            "emissor": "JSL S.A",
-            "grupo": "Simpar",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +3,65%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 3,81%",
-            "variacaoBps": -15.739999999999998,
-            "taxaMedia": "3,65"
-          },
-          {
-            "ticker": "CGBP14",
-            "emissor": "ESSENTIA PCHS S.A",
-            "grupo": "Pátria",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +0,70%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 0,87%",
-            "variacaoBps": -16.960000000000008,
-            "taxaMedia": "0,70"
-          },
-          {
-            "ticker": "SIMH16",
-            "emissor": "SIMPAR S.A.",
-            "grupo": "Simpar",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +3,51%",
-            "unidade": "cdi",
-            "anbimaAnterior": "CDI + 3,83%",
-            "variacaoBps": -31.980000000000032,
-            "taxaMedia": "3,51"
-          },
-          {
-            "ticker": "VAMO33",
-            "emissor": "VAMOS LOCACAO DE CAMINHOES MAQUINAS E EQUIPAMENTOS S.A.",
-            "grupo": "Simpar",
-            "incentivada": false,
-            "indexadorFamilia": "IPCA+",
-            "spread": "B31 +581 bps",
-            "unidade": "bps",
-            "anbimaAnterior": "B30+569",
-            "variacaoBps": -32.24999999999998,
-            "taxaMedia": "14,16"
-          },
-          {
-            "ticker": "VERO14",
-            "emissor": "VERO S.A.",
-            "grupo": "Vero",
-            "incentivada": false,
-            "indexadorFamilia": "CDI+",
-            "spread": "CDI +9,67%",
-            "unidade": "cdi",
-            "anbimaAnterior": null,
-            "variacaoBps": null,
-            "taxaMedia": "9,67"
-          }
-        ],
-        "total": 29,
-        "totalAberturas": 12,
-        "totalFechamentos": 16,
-        "totalComparados": 28,
-        "variacaoMediaBps": -1.6807142857142883
-      },
-      "dataReune": "2026-07-29",
-      "anbimaAnterior": "2026-07-28",
-      "semReune": false
-    },
     "fundos": {
       "novos": [
         {
@@ -2326,14 +1534,6 @@
       ],
       "topTradPos": [
         {
-          "cnpj": "42736995000101",
-          "nome": "ITAÚ DIFERENCIADO FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA CRÉDITO PRIVADO RESP LIMITADA",
-          "gestor": "IAM",
-          "segmento": "trad",
-          "retorno": 4.6885,
-          "pl": 100312672.04
-        },
-        {
           "cnpj": "35120235000100",
           "nome": "SANTANDER PB HOLLY III MULTIMERCADO CRÉDITO PRIVADO - FUNDO DE INVESTIMENTO FINANCEIRO RESP LIMITADA",
           "gestor": "San WM",
@@ -2364,17 +1564,17 @@
           "segmento": "trad",
           "retorno": 0.7454,
           "pl": 16809976.99
+        },
+        {
+          "cnpj": "17913386000125",
+          "nome": "FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO GIDU INVEST NO EXTERIOR CRÉD PRIV - RESP LIMITADA",
+          "gestor": "BTG WM",
+          "segmento": "trad",
+          "retorno": 0.6509,
+          "pl": 27579334.94
         }
       ],
       "topTradNeg": [
-        {
-          "cnpj": "51885543000174",
-          "nome": "GLPG HAMBURGO FUNDO DE INVESTIMENTO FINANCEIRO - CLASSE DE INVESTIMENTO RF CRED PRIV - RESP LIMITADA",
-          "gestor": "Galapagos",
-          "segmento": "trad",
-          "retorno": -1.0616,
-          "pl": 84821708.24
-        },
         {
           "cnpj": "52273351000170",
           "nome": "PORTFOLIO RF II PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
@@ -2406,6 +1606,14 @@
           "segmento": "trad",
           "retorno": -0.0849,
           "pl": 25760151.38
+        },
+        {
+          "cnpj": "63806809000125",
+          "nome": "HERITAGE RUBY MASTER II FUNDO DE INVESTIMENTO RENDA FIXA INFRA CRÉDITO PRIVADO - RESP LIMT",
+          "gestor": "Heritage",
+          "segmento": "trad",
+          "retorno": -0.0807,
+          "pl": 88461347.43
         }
       ]
     },
@@ -2420,13 +1628,7 @@
         "texto": "74 ativo(s) no BLC sem correspondencia em Debentures.csv"
       }
     ],
-    "emissoesCVM": {
-      "asOf": "2026-07-30",
-      "itens": []
-    },
-    "emissoresFaltantes": {
-      "itens": [],
-      "asOf": "2026-07-30"
-    }
+    "emissoesCVM": null,
+    "emissoresFaltantes": null
   }
 }

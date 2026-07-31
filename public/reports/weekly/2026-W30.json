@@ -143,10 +143,10 @@
     "captacao": {
       "12431": {
         "captacao": 670275391.0099996,
-        "resgate": 1249671076.8600006,
-        "liquido": -579395685.850001,
-        "pl": 264819222831.46005,
-        "numFundos": 1707,
+        "resgate": 1284253071.7300005,
+        "liquido": -613977680.7200009,
+        "pl": 264820141255.26004,
+        "numFundos": 1708,
         "dataPl": "2026-07-24",
         "de": "2026-07-20",
         "ate": "2026-07-24",
@@ -160,19 +160,19 @@
         }
       },
       "trad": {
-        "captacao": 11897569024.739985,
-        "resgate": 13623741143.560001,
-        "liquido": -1726172118.8200169,
-        "pl": 1580800323662.5396,
-        "numFundos": 993,
+        "captacao": 11898776957.799986,
+        "resgate": 13624602196.250002,
+        "liquido": -1725825238.450016,
+        "pl": 1581374313518.4497,
+        "numFundos": 996,
         "dataPl": "2026-07-24",
         "de": "2026-07-20",
         "ate": "2026-07-24",
         "diasUteis": 5,
         "anterior": {
-          "liquido": 1829104349.2300014,
+          "liquido": 1827719199.880001,
           "captacao": 13554200250.05001,
-          "resgate": 11725095900.82001,
+          "resgate": 11726481050.17001,
           "de": "2026-07-13",
           "ate": "2026-07-17"
         }
@@ -213,11 +213,11 @@
           "dias": 5
         },
         {
-          "gestor": "Kinea",
-          "captacao": 10687256.27,
-          "resgate": 6844351.409999999,
-          "liquido": 3842904.8600000003,
-          "pl": 14533828738.93,
+          "gestor": "Sten",
+          "captacao": 2651973.06,
+          "resgate": 0,
+          "liquido": 2651973.06,
+          "pl": 157975902.24,
           "dias": 5
         }
       ],
@@ -327,7 +327,7 @@
           "captacao": 150257062.49,
           "resgate": 516774608.22,
           "liquido": -366517545.73,
-          "pl": 22609355968.72,
+          "pl": 22609376160.95,
           "dias": 5
         },
         {
@@ -335,7 +335,7 @@
           "captacao": 3155927820.38,
           "resgate": 3422743409.66,
           "liquido": -266815589.27999973,
-          "pl": 456403861991.11,
+          "pl": 456403861990.7,
           "dias": 5
         },
         {
@@ -543,7 +543,7 @@
           "cnpj": "65612787000198",
           "nome": "SAFRA INFRA CDI MASTER VI INV…",
           "gestor": "Safra Asset",
-          "retorno": 1.7357,
+          "retorno": 1.7269,
           "obs": 3,
           "de": "2026-07-20",
           "ate": "2026-07-24",
@@ -657,7 +657,7 @@
           "cnpj": "64436974000103",
           "nome": "BB MASTER III DEBÊNTURES…",
           "gestor": "BB Asset",
-          "retorno": 6.5415,
+          "retorno": 6.5416,
           "obs": 5,
           "de": "2026-07-20",
           "ate": "2026-07-24",
@@ -733,17 +733,6 @@
           "segmento": "trad"
         },
         {
-          "cnpj": "42736995000101",
-          "nome": "ITAÚ DIFERENCIADO CRÉDITO…",
-          "gestor": "IAM",
-          "retorno": -3.9778,
-          "obs": 5,
-          "de": "2026-07-20",
-          "ate": "2026-07-24",
-          "pl": 955344490.47,
-          "segmento": "trad"
-        },
-        {
           "cnpj": "53726108000122",
           "nome": "CL VI",
           "gestor": "Springs",
@@ -763,6 +752,17 @@
           "de": "2026-07-20",
           "ate": "2026-07-24",
           "pl": 200636770.15,
+          "segmento": "trad"
+        },
+        {
+          "cnpj": "51168708000197",
+          "nome": "LT",
+          "gestor": "BTG Asset",
+          "retorno": -1.5162,
+          "obs": 5,
+          "de": "2026-07-20",
+          "ate": "2026-07-24",
+          "pl": 1125871249.13,
           "segmento": "trad"
         }
       ]
@@ -836,7 +836,7 @@
       "texto": "IDA-DI rendeu +0,29% na semana, spread fechou 1 bps."
     },
     {
-      "texto": "Captação líquida 12.431 na semana: −R$ 579 mi (capt. R$ 670 mi − resg. R$ 1,2 bi, 5 dia(s) útil(eis)).",
+      "texto": "Captação líquida 12.431 na semana: −R$ 614 mi (capt. R$ 670 mi − resg. R$ 1,3 bi, 5 dia(s) útil(eis)).",
       "tom": "neg"
     },
     {

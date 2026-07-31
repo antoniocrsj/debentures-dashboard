@@ -1,55 +1,55 @@
 {
-  "updatedAt": "2026-07-30T10:07:36.708Z",
+  "updatedAt": "2026-07-31T12:25:25.475Z",
   "fonte": "ANBIMA - Indice de Debentures (IDA) + familia IMA, arquivos historicos S3 (indices-historico)",
   "indices": [
     {
       "codigo": "IDAGERAL",
       "nome": "IDA-Geral",
-      "dias": 4410,
+      "dias": 4412,
       "dataInicio": "2009-01-05",
-      "dataFim": "2026-07-28"
+      "dataFim": "2026-07-30"
     },
     {
       "codigo": "IDADI",
       "nome": "IDA-DI",
-      "dias": 4410,
+      "dias": 4412,
       "dataInicio": "2009-01-05",
-      "dataFim": "2026-07-28"
+      "dataFim": "2026-07-30"
     },
     {
       "codigo": "IDAIPCA",
       "nome": "IDA-IPCA",
-      "dias": 4410,
+      "dias": 4412,
       "dataInicio": "2009-01-05",
-      "dataFim": "2026-07-28"
+      "dataFim": "2026-07-30"
     },
     {
       "codigo": "IDAIPCAINFRAESTRUTURA",
       "nome": "IDA-IPCA Infraestrutura",
-      "dias": 2901,
+      "dias": 2903,
       "dataInicio": "2015-01-05",
-      "dataFim": "2026-07-28"
+      "dataFim": "2026-07-30"
     },
     {
       "codigo": "IDAIPCAEXINFRAESTRUTURA",
       "nome": "IDA-IPCA ex-Infraestrutura",
-      "dias": 2901,
+      "dias": 2903,
       "dataInicio": "2015-01-05",
-      "dataFim": "2026-07-28"
+      "dataFim": "2026-07-30"
     },
     {
       "codigo": "IDALIQDI",
       "nome": "IDA-LIQ DI",
-      "dias": 2152,
+      "dias": 2154,
       "dataInicio": "2018-01-02",
-      "dataFim": "2026-07-28"
+      "dataFim": "2026-07-30"
     },
     {
       "codigo": "IDALIQIPCAINFRAESTRUTURA",
       "nome": "IDA-LIQ IPCA Infraestrutura",
-      "dias": 2152,
+      "dias": 2154,
       "dataInicio": "2018-01-02",
-      "dataFim": "2026-07-28"
+      "dataFim": "2026-07-30"
     }
   ],
   "spread": {
@@ -57,7 +57,7 @@
     "ancorasBps": {
       "cdi": 97,
       "ipca": -1,
-      "ipcaInfra": -4
+      "ipcaInfra": -2
     },
     "pares": [
       {
@@ -65,7 +65,7 @@
         "credito": "IDADI",
         "govt": "IMAS",
         "nivel": true,
-        "dias": 4410,
+        "dias": 4412,
         "ancoraBps": 97
       },
       {
@@ -73,7 +73,7 @@
         "credito": "IDAIPCA",
         "govt": "IMAB",
         "nivel": false,
-        "dias": 4410,
+        "dias": 4412,
         "ancoraBps": -1
       },
       {
@@ -81,8 +81,8 @@
         "credito": "IDAIPCAINFRAESTRUTURA",
         "govt": "IMAB",
         "nivel": false,
-        "dias": 2901,
-        "ancoraBps": -4
+        "dias": 2903,
+        "ancoraBps": -2
       }
     ]
   }

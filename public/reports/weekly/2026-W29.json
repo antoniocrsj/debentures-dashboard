@@ -161,8 +161,8 @@
       },
       "trad": {
         "captacao": 13554200250.05001,
-        "resgate": 11725095900.82001,
-        "liquido": 1829104349.2300014,
+        "resgate": 11726481050.17001,
+        "liquido": 1827719199.880001,
         "pl": 1587615368931.7402,
         "numFundos": 999,
         "dataPl": "2026-07-17",
@@ -283,8 +283,8 @@
         {
           "gestor": "IAM",
           "captacao": 3028035806.75,
-          "resgate": 2501340353.17,
-          "liquido": 526695453.5799999,
+          "resgate": 2502725502.52,
+          "liquido": 525310304.23,
           "pl": 455410308771.28,
           "dias": 5
         },
@@ -1844,6 +1844,17 @@
       ],
       "topTradPos": [
         {
+          "cnpj": "42736995000101",
+          "nome": "ITAÚ DIFERENCIADO CRÉDITO…",
+          "gestor": "IAM",
+          "retorno": 5.1729,
+          "obs": 5,
+          "de": "2026-07-13",
+          "ate": "2026-07-17",
+          "pl": 99789760,
+          "segmento": "trad"
+        },
+        {
           "cnpj": "61572789000140",
           "nome": "VERDE AM HIGH YIELD II MASTER…",
           "gestor": "Verde",
@@ -1885,17 +1896,6 @@
           "de": "2026-07-13",
           "ate": "2026-07-17",
           "pl": 51659206.55,
-          "segmento": "trad"
-        },
-        {
-          "cnpj": "37887955000112",
-          "nome": "FAMILIA PREV CRÉDITO PRIVADO",
-          "gestor": "XPG",
-          "retorno": 0.7539,
-          "obs": 5,
-          "de": "2026-07-13",
-          "ate": "2026-07-17",
-          "pl": 40539606.27,
           "segmento": "trad"
         }
       ],
@@ -1986,7 +1986,7 @@
       },
       {
         "tipo": "perf-cobertura",
-        "texto": "Performance Tradicional: 5 fundo(s) fora por cobertura < 60% e 2 por dado inválido."
+        "texto": "Performance Tradicional: 4 fundo(s) fora por cobertura < 60% e 2 por dado inválido."
       }
     ],
     "perfCobertura": {
@@ -2002,10 +2002,10 @@
       "trad": {
         "diasUteis": 5,
         "excluidos": {
-          "insuficiente": 5,
+          "insuficiente": 4,
           "glitch": 2
         },
-        "avaliados": 998,
+        "avaliados": 999,
         "minCobertura": 0.6
       }
     }

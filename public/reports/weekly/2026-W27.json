@@ -128,9 +128,9 @@
         "ate": "2026-07-03",
         "diasUteis": 5,
         "anterior": {
-          "liquido": -2009682156.559999,
-          "captacao": 676952124.7499999,
-          "resgate": 2686634281.309999,
+          "liquido": -2006596536.569999,
+          "captacao": 680087255.05,
+          "resgate": 2686683791.619999,
           "de": "2026-06-22",
           "ate": "2026-06-26"
         }
@@ -146,9 +146,9 @@
         "ate": "2026-07-03",
         "diasUteis": 5,
         "anterior": {
-          "liquido": 1246034704.020012,
+          "liquido": 1244044487.2400112,
           "captacao": 14842796218.510004,
-          "resgate": 13596761514.489992,
+          "resgate": 13598751731.269993,
           "de": "2026-06-22",
           "ate": "2026-06-26"
         }
@@ -364,7 +364,7 @@
           "cnpj": "57075698000121",
           "nome": "VINLAND FUNDO INCENTIVADO EM…",
           "gestor": "Vinland",
-          "retorno": 10.1813,
+          "retorno": 10.1812,
           "obs": 5,
           "de": "2026-06-29",
           "ate": "2026-07-03",
@@ -622,7 +622,7 @@
       },
       {
         "tipo": "perf-cobertura",
-        "texto": "Performance Tradicional: 6 fundo(s) fora por cobertura < 60% e 1 por dado inválido."
+        "texto": "Performance Tradicional: 6 fundo(s) fora por cobertura < 60% e 0 por dado inválido."
       }
     ],
     "perfCobertura": {
@@ -639,9 +639,9 @@
         "diasUteis": 5,
         "excluidos": {
           "insuficiente": 6,
-          "glitch": 1
+          "glitch": 0
         },
-        "avaliados": 999,
+        "avaliados": 1000,
         "minCobertura": 0.6
       }
     }
