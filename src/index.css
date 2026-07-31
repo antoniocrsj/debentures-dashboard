@@ -382,6 +382,24 @@ a { color: var(--primary); }
 .dropdown-item.item-selected { background: var(--primary-light); color: var(--primary); font-weight: 600; }
 .dropdown-empty { padding: var(--sp-4) var(--sp-4); font-size: var(--fz-corpo); color: var(--text-muted); text-align: center; }
 
+/* Selecao multipla de ativos (SelectAtivos): caixa de marcacao a esquerda. */
+.dropdown-check { display: flex; align-items: center; gap: var(--sp-3); }
+.dropdown-check .check-box {
+  flex: none;
+  width: 14px; height: 14px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  font-size: 10px; line-height: 1;
+  color: #fff; background: var(--surface);
+}
+.dropdown-check .check-box.on { background: var(--primary); border-color: var(--primary); }
+.dropdown-clear {
+  font-weight: 600;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+}
+
 /* ─── Tabs ───────────────────────────────────────────────────── */
 .tabs {
   display: flex;

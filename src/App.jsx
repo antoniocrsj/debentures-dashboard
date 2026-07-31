@@ -94,6 +94,11 @@ export default function App() {
   const [monthIdx, setMonthIdx]       = useState(0)
   const [tab, setTab]                 = useState(loadInitialTab)
   const [filters, setFilters]         = useState(INIT_FILTERS)
+  // Selecao multipla de tickers (NAO filtra a tabela — a Ativos continua cheia).
+  // Guia os 3 paineis de baixo (vencimentos/gestores/grupos) e o Total da tabela.
+  // Set<codigoAtivo>. Alimentada pelo clique na linha (Ctrl/Cmd/Shift agrega) e
+  // pela caixa de marcacao do botao "Ativos".
+  const [selection, setSelection]     = useState(() => new Set())
   const [sort, setSort]               = useState(INIT_SORT)
   const [selectedAsset, setSelected]  = useState(null)
   const [showMonths, setShowMonths]   = useState(false)
@@ -329,6 +334,22 @@ export default function App() {
     setFilters(f => ({ ...f, [key]: f[key] === value ? '' : value }))
   , [])
 
+  // Selecao de ticker. `additive` (Ctrl/Cmd/Shift ou caixa de marcacao) agrega;
+  // clique simples troca a selecao por esse ativo (e limpa se ja' era o unico).
+  const selectAtivo = useCallback((code, additive) => {
+    if (!code) return
+    setSelection(prev => {
+      if (additive) {
+        const next = new Set(prev)
+        next.has(code) ? next.delete(code) : next.add(code)
+        return next
+      }
+      if (prev.size === 1 && prev.has(code)) return new Set()
+      return new Set([code])
+    })
+  }, [])
+  const clearSelection = useCallback(() => setSelection(new Set()), [])
+
   // Abre o modal de outra debenture pelo codigo (ex.: series irmas de um book).
   // Se estiver na base atual, abre o modal dela; senao filtra a tabela por ela.
   const openTicker = useCallback(cod => {
@@ -337,10 +358,19 @@ export default function App() {
     else { setSelected(null); setFilters(f => ({ ...f, ativo: cod })) }
   }, [allAssets])
 
-  // Manager ranking — only BLC rows for currently-filtered assets
+  // Conjunto "efetivo" que guia os paineis e o Total da tabela: quando ha'
+  // selecao, e' a intersecao dos ativos filtrados com os marcados; sem selecao,
+  // e' o proprio filtrado. A TABELA em si continua mostrando filteredAssets
+  // (cheia) — so' os paineis/rodape reagem a selecao.
+  const effectiveAssets = useMemo(
+    () => selection.size ? filteredAssets.filter(a => selection.has(a.codigoAtivo)) : filteredAssets,
+    [filteredAssets, selection]
+  )
+
+  // Manager ranking — only BLC rows for the effective (selection-aware) assets
   const filteredCodes = useMemo(
-    () => new Set(filteredAssets.map(a => a.codigoAtivo)),
-    [filteredAssets]
+    () => new Set(effectiveAssets.map(a => a.codigoAtivo)),
+    [effectiveAssets]
   )
 
   const managers = useMemo(() => {
@@ -351,7 +381,7 @@ export default function App() {
     return computeManagers(subset, plByGestor)
   }, [raw, indexes, filteredCodes, plByGestor])
 
-  const groups = useMemo(() => computeGroups(filteredAssets), [filteredAssets])
+  const groups = useMemo(() => computeGroups(effectiveAssets), [effectiveAssets])
 
   // PL do gestor selecionado — habilita a coluna %PL no ranking de Grupos.
   const selectedGestorPl = filters.gestor ? (plByGestor[filters.gestor] || 0) : 0
@@ -432,6 +462,9 @@ export default function App() {
             options={options}
             disabled={loading}
             onChange={setFilters}
+            selection={selection}
+            onSelectionToggle={code => selectAtivo(code, true)}
+            onSelectionClear={clearSelection}
             tabsSlot={null}
             updatedLabel={dataFreshness?.label}
             updatedTooltip={dataFreshness?.tooltip}
@@ -490,6 +523,9 @@ export default function App() {
             options={options}
             disabled={loading}
             onChange={setFilters}
+            selection={selection}
+            onSelectionToggle={code => selectAtivo(code, true)}
+            onSelectionClear={clearSelection}
             tabsSlot={null}
             compact={false}
           />
@@ -581,8 +617,9 @@ export default function App() {
                   assets={displayedAssets}
                   sort={sort}
                   onSort={handleSort}
-                  activeAtivo={filters.ativo}
-                  onFilter={handleFilter}
+                  selectedSet={selection}
+                  onSelect={selectAtivo}
+                  footerAssets={effectiveAssets}
                   onInfoClick={setSelected}
                   anbimaRef={anbimaRef}
                   recompraRef={recompraRef}
@@ -622,19 +659,20 @@ export default function App() {
               assets={displayedAssets}
               sort={sort}
               onSort={handleSort}
-              activeAtivo={filters.ativo}
-              onFilter={handleFilter}
+              selectedSet={selection}
+              onSelect={selectAtivo}
+              footerAssets={effectiveAssets}
               onInfoClick={setSelected}
               anbimaRef={anbimaRef}
               recompraRef={recompraRef}
               desktop={desktop}
             />
-            {/* 3 colunas: grafico | gestor | grupo. O grafico reage a
-                filteredAssets, entao acompanha todos os filtros da pagina. */}
+            {/* 3 colunas: grafico | gestor | grupo. Reagem ao conjunto EFETIVO
+                (filtros + selecao de tickers); a tabela acima segue cheia. */}
             <div className="desktop-split desktop-split-3">
               <div className="desktop-split-col">
                 <ErrorBoundary label="o gráfico de vencimentos">
-                  <AmortChart assets={filteredAssets} cronoMap={cronoMap} loading={cronoLoading} onFilter={handleFilter} anoAtivo={filters.anoVenc} />
+                  <AmortChart assets={effectiveAssets} cronoMap={cronoMap} loading={cronoLoading} onFilter={handleFilter} anoAtivo={filters.anoVenc} />
                 </ErrorBoundary>
               </div>
               <div className="desktop-split-col">

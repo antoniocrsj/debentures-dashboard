@@ -1,6 +1,8 @@
 import { fmtBRL, fmtDate, fmtDateShort, fmtDateDDMMYY, fmtTaxa, fmtRecompraTaxa, shortEmissor } from '../utils/format.js'
 import TableWrap from './TableWrap.jsx'
 
+const EMPTY_SET = new Set()
+
 const COLS = [
   { id: 'ativo',        label: 'Ativo',          sticky: true,  sortable: true  },
   { id: 'registroCvm',  label: 'Reg. CVM',       sticky: false, sortable: true  },
@@ -56,8 +58,9 @@ function recompraTooltip(a, ref) {
   return L.join('\n')
 }
 
-export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter, onInfoClick, anbimaRef, recompraRef, desktop }) {
+export default function AssetTable({ assets, sort, onSort, selectedSet, onSelect, footerAssets, onInfoClick, anbimaRef, recompraRef, desktop }) {
   const fmtData = desktop ? fmtDateDDMMYY : fmtDateShort
+  const sel = selectedSet || EMPTY_SET
   if (!assets.length) {
     return (
       <div className="empty-state">
@@ -67,8 +70,12 @@ export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter
     )
   }
 
-  const totalVol  = desktop ? assets.reduce((s, a) => s + (a.volumeEmitido || 0), 0) : 0
-  const totalAloc = desktop ? assets.reduce((s, a) => s + (a.alocacao || 0), 0) : 0
+  // Total reflete a SELECAO quando ha' tickers marcados (footerAssets), senao a
+  // base inteira exibida. A tabela em si continua mostrando todas as linhas.
+  const footer    = footerAssets || assets
+  const totalVol  = desktop ? footer.reduce((s, a) => s + (a.volumeEmitido || 0), 0) : 0
+  const totalAloc = desktop ? footer.reduce((s, a) => s + (a.alocacao || 0), 0) : 0
+  const totalLabel = sel.size ? `Total (${sel.size} sel.)` : 'Total'
 
   return (
     <TableWrap title="Ativos (debêntures)">
@@ -109,16 +116,21 @@ export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter
         </thead>
         <tbody>
           {assets.map((a, i) => {
-            const selected = activeAtivo === a.codigoAtivo
+            const selected = sel.has(a.codigoAtivo)
             const r = a.recompra
             return (
               <tr
                 key={a.codigoAtivo || i}
                 className={`filter-row${selected ? ' row-selected is-filter-active' : ''}`}
-                onClick={() => onFilter('ativo', a.codigoAtivo)}
+                onClick={e => onSelect(a.codigoAtivo, e.ctrlKey || e.metaKey || e.shiftKey)}
                 aria-selected={selected}
                 tabIndex={0}
-                onKeyDown={e => e.key === 'Enter' && onFilter('ativo', a.codigoAtivo)}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    onSelect(a.codigoAtivo, e.ctrlKey || e.metaKey || e.shiftKey)
+                  }
+                }}
               >
                 <td className="col-sticky col-ativo">
                   <div className="ativo-cell">
@@ -166,7 +178,7 @@ export default function AssetTable({ assets, sort, onSort, activeAtivo, onFilter
         {desktop && (
           <tfoot>
             <tr className="total-row">
-              <td className="col-sticky col-ativo">Total</td>
+              <td className="col-sticky col-ativo">{totalLabel}</td>
               <td className="col-num"></td>
               <td className="col-num"></td>
               <td className="col-num"></td>
