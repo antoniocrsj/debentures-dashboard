@@ -2424,6 +2424,7 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 .app.desktop .sec-table .ativo-grupo { max-width: 88px; }
 /* Spread de referencia (B35 +N bps / CDI +X%): numerico, destaque leve. */
 .sec-table td.col-spread { font-variant-numeric: tabular-nums; font-weight: 600; }
+.sec-grupo-table tbody td:first-child { text-align: center; }
 .asset-table col.c-venc   { width: 66px; }
 .asset-table col.c-dur    { width: 62px; }
 .asset-table col.c-txemi  { width: 96px; }

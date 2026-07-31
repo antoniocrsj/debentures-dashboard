@@ -13,8 +13,8 @@ const SecondaryWeeklyChart = lazyWithRetry(() => import('./SecondaryWeeklyChart.
 
 // Colunas do mercado secundario. Uma linha = um TRADE (ativo negociado
 // num dia). Data (short date) + a taxa negociada no dia (min/med/max) e o volume;
-// depois as caracteristicas da emissao (vencimento, duration, taxa de emissao,
-// indexador, 12.431), cruzadas do cadastro por ticker.
+// depois as caracteristicas da emissao (vencimento, duration e taxa de emissao),
+// cruzadas do cadastro por ticker.
 const COLS = [
   { id: 'data',      label: 'Liq.',       sticky: true,  sortable: true  },
   { id: 'ativo',     label: 'Ativo',      sticky: true,  sortable: true  },
@@ -24,8 +24,6 @@ const COLS = [
   { id: 'vencimento',label: 'Venc.',      sticky: false, sortable: true  },
   { id: 'duration',  label: 'Duration',   sticky: false, sortable: false },
   { id: 'txEmissao', label: 'Tx emissão', sticky: false, sortable: false },
-  { id: 'indexador', label: 'Indexador',  sticky: false, sortable: false },
-  { id: 'lei12431',  label: '12.431',     sticky: false, sortable: false },
 ]
 
 const FAIXAS = ['Superior a 5MM', 'Entre 1MM e 5MM', 'Até 1MM']   // filtro de volume (derivado do R$ real)
@@ -321,7 +319,7 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
             <span className="fluxo-field-label">Liquidação</span>
             <select className="sec-input sec-date-input" value={data} onChange={e => setData(e.target.value)}
               aria-label="Filtrar mercado secundario por data de liquidacao">
-              <option value="">Liquidação: todas</option>
+              <option value="">Liq: todas</option>
               {opts.datas.map(d => <option key={d} value={d}>Liq. {fmtDateDDMMYY(d)}</option>)}
             </select>
           </div>
@@ -333,19 +331,16 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
             <span className="fluxo-field-label">Emissor</span>
             <SearchSelect label="Emissor" value={emissor} options={opts.emissores} onChange={setEmissor} />
           </div>
-          <div className="fluxo-field">
+          <div className="fluxo-field sec-field-sel">
             <span className="fluxo-field-label">Ativo</span>
-            <select className="sec-input" value={ativo} onChange={e => setAtivo(e.target.value)}>
-              <option value="">Todos</option>
-              {opts.ativos.map(a => <option key={a} value={a}>{a}</option>)}
-            </select>
+            <SearchSelect label="Ativo" value={ativo} options={opts.ativos} onChange={setAtivo} />
           </div>
           <div className="fluxo-field">
             <span className="fluxo-field-label">Volume</span>
             {(() => {
               // Sweep (‹ valor ›) em vez do segmentado: percorre as faixas em ordem
-              // decrescente de tamanho. Todos → >5MM → 1–5MM → Até 1MM.
-              const VOLS = [['', 'Todos'], ['Superior a 5MM', '> 5MM'], ['Entre 1MM e 5MM', '1–5MM'], ['Até 1MM', 'Até 1MM']]
+              // decrescente de tamanho. Total → >5MM → 1–5MM → Até 1MM.
+              const VOLS = [['', 'R$: Total'], ['Superior a 5MM', '> 5MM'], ['Entre 1MM e 5MM', '1–5MM'], ['Até 1MM', 'Até 1MM']]
               const vi = Math.max(0, VOLS.findIndex(([v]) => v === faixa))
               return (
                 <div className="corte-step corte-step-vol">
@@ -403,8 +398,6 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
             <col className="c-venc" />
             <col className="c-dur" />
             <col className="c-txemi" />
-            <col className="c-idx" />
-            <col className="c-lei" />
           </colgroup>
           <thead>
             <tr>
@@ -423,7 +416,7 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
           </thead>
           <tbody>
             {filtrados.length === 0 && (
-              <tr><td colSpan={10} className="col-sticky">Nenhum negócio com esses filtros.</td></tr>
+              <tr><td colSpan={8} className="col-sticky">Nenhum negócio com esses filtros.</td></tr>
             )}
             {linhasVisiveis.map((a, i) => (
               <tr key={`${a.codigoAtivo}|${a.data}|${i}`}
@@ -455,8 +448,6 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
                 <td className="col-num">{a.vencimento ? fmtDateDDMMYY(a.vencimento) : '-'}</td>
                 <td className="col-num">{(a.duration && a.duration !== '—') ? a.duration : '-'}</td>
                 <td className="col-num">{a.txEmissao ? fmtTaxa(a.txEmissao) : '-'}</td>
-                <td className="col-idx">{a.indexador || '-'}</td>
-                <td className="col-num">{isYes(a.lei12431) ? 'Sim' : '-'}</td>
               </tr>
             ))}
           </tbody>

@@ -16,8 +16,8 @@ const COL_GRID = '#d8c9b8'
 const FZ = 9
 
 function dataCurta(iso) {
-  const [, mes, dia] = (iso || '').split('-')
-  return dia && mes ? `${dia}/${mes}` : iso
+  const [ano, mes, dia] = (iso || '').split('-')
+  return dia && mes && ano ? `${dia}/${mes}/${ano.slice(-2)}` : iso
 }
 
 function fmtVolume(v) {
@@ -40,10 +40,10 @@ function passoVolumeFlexivel(maiorVolume) {
     1_000, 2_000, 5_000, 10_000, 20_000, 50_000,
     100_000, 200_000, 500_000,
     1_000_000, 2_000_000, 5_000_000, 10_000_000, 20_000_000,
-    50_000_000, 100_000_000, 200_000_000, 500_000_000,
+    50_000_000, 100_000_000, 200_000_000, 500_000_000, 1_000_000_000,
   ]
   const passoIdeal = maiorVolume / 8
-  return passos.find(passo => passo >= passoIdeal) || 500_000_000
+  return passos.find(passo => passo >= passoIdeal) || 1_000_000_000
 }
 
 function WeeklyTooltip({ active, payload }) {

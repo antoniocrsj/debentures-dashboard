@@ -13,8 +13,8 @@ const FZ = 9
 const MINUS = '−'           // menos tipografico (igual ao resto do app)
 
 function dataCurta(iso) {
-  const [, m, d] = (iso || '').split('-')
-  return (d && m) ? `${d}/${m}` : iso
+  const [y, m, d] = (iso || '').split('-')
+  return (d && m && y) ? `${d}/${m}/${y.slice(-2)}` : iso
 }
 
 // Ticks do eixo Y (= gridlines) em multiplos de 10 bps (0,10% no CDI), com no

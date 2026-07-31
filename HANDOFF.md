@@ -55,13 +55,16 @@ negócios à esquerda e o resumo visual à direita no desktop.
   mesma janela.
 - O filtro 12.431 mostra apenas **12.431** e **Tradicional**. Nenhum selecionado
   significa todos; clicar novamente na opção ativa remove o filtro.
+- A formatação final dos filtros usa **Liq: todas**, seletor de Ativo pesquisável
+  no mesmo padrão de Emissor e **R$: Total** como rótulo padrão do volume.
 - O botão **Limpar** fica ao lado dos cards no desktop, sem criar uma segunda
   linha de filtros. No compacto ele permanece na faixa rolável de filtros.
 - O novo gráfico semanal agrega **volume total** e **quantidade de trades** por
   semana ISO. Ele responde à busca, data, tipo de fundo e seleção de uma linha.
 - A escala do volume é flexível, busca aproximadamente oito divisões e nunca usa
-  intervalo superior a R$ 500 milhões. O volume sempre mostra uma casa decimal;
+  intervalo superior a R$ 1 bilhão. O volume sempre mostra uma casa decimal;
   trades permanecem inteiros.
+- Os eixos X dos dois gráficos exibem o ano no formato `dd/mm/aa`.
 - As grades horizontais são tracejadas, finas e ficam atrás das colunas. Volume
   usa terracota (`#8c5e3a`); trades e a linha do eixo X usam taupe (`#9a8c7a`).
 - Os dois gráficos têm a mesma altura no desktop, ocupam o espaço disponível e
@@ -69,6 +72,8 @@ negócios à esquerda e o resumo visual à direita no desktop.
 - Ao selecionar um grupo, sua tabela de ativos aparece abaixo dos trades. Ela
   ocupa exatamente a mesma faixa do gráfico semanal: mesmo topo, altura de
   242px e rodapé. A tabela principal usa todo o espaço restante acima.
+- A tabela principal tem oito colunas; **Indexador** e **12.431** foram removidas.
+  Na tabela de ativos do grupo, os dados da coluna Ativo ficam centralizados.
 - No gráfico evolutivo, a janela inicial é de +/-30 bps ou +/-0,30 pp, expandida
   quando os dados exigem. Há no máximo sete linhas; os passos são múltiplos de
   10 bps ou 0,10 pp e o eixo Y sempre exibe uma casa decimal.
