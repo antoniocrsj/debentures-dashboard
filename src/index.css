@@ -2372,32 +2372,31 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 .app.desktop .content .filter-bar { padding-bottom: var(--sp-5); }
 .app.desktop .content .filter-bar + .table-wrap-x > .table-wrap { margin-top: 0; }
 
-/* Debentures desktop: tabela + bloco de graficos (desktop-split-3) cabem na
-   viewport; os graficos terminam 16px do fim, a tabela preenche o topo e rola
-   por dentro. Mesma ideia do Secundario, via :has(> .filter-bar) (so' a Debentures
-   monta o .filter-bar direto no .content). */
+/* Debentures desktop: tabela + bloco inferior cabem na viewport. A tabela usa o
+   maximo de linhas completas e a sobra vertical e dividida igualmente acima e
+   abaixo dos cards. */
 .app.desktop .content:has(> .filter-bar) {
   flex: none; height: calc(100vh - 97px); min-height: 0; box-sizing: border-box;
-  display: flex; flex-direction: column; padding-bottom: var(--sp-5); overflow: hidden;
+  display: flex; flex-direction: column; padding-bottom: 0; overflow: hidden;
+  --deb-filter-h: 61px;
+  --deb-lower-h: 206px;
+  --deb-table-chrome: 46px;
+  --deb-row-h: 20px;
 }
 .app.desktop .content:has(> .filter-bar) > .table-wrap-x {
-  flex: 1 1 0; min-height: 0; display: flex; flex-direction: column;
+  flex: 0 0 auto; min-height: 0; display: flex; flex-direction: column;
+  height: calc(
+    var(--deb-table-chrome) +
+    round(down, calc(100vh - 97px - var(--deb-filter-h) - var(--deb-lower-h) - 20px - var(--deb-table-chrome)), var(--deb-row-h))
+  );
 }
 .app.desktop .content:has(> .filter-bar) > .table-wrap-x > .table-wrap {
   min-height: 0; overflow: auto;
-  /* Trava em linhas inteiras SEM mudar a altura das linhas (20px). Dois passos:
-     1) Altura do scroller = thead + tfoot + N linhas inteiras: round(down,...) tira
-        a fracao de linha, entao a banda visivel do tbody vira multiplo exato de 20px
-        e o Total encaixa na ultima linha ATE' no topo da lista (scrollTop 0).
-     2) Snap por linha (align:end + scroll-padding = tfoot) mantem o encaixe em
-        qualquer ponto de repouso da rolagem, nao so' nos extremos.
-     --chrome = thead (26) + tfoot/Total (20). round() cai fora em navegador antigo
-     -> declaracao ignorada, volta ao max-height:calc(100% - 5px) (degrada p/ so' o snap). */
-  --row-h: 20px;
-  --chrome: 46px;
-  flex: 0 0 auto;
-  height: calc(var(--chrome) + round(down, (100% - 5px - var(--chrome)), var(--row-h)));
-  max-height: calc(var(--chrome) + round(down, (100% - 5px - var(--chrome)), var(--row-h)));
+  /* O pai ja' tem cabecalho + N linhas inteiras + Total. O scroller preenche essa
+     altura; o snap mantem o encaixe ao repousar em qualquer ponto da rolagem. */
+  flex: 1 1 auto;
+  height: 100%;
+  max-height: 100%;
   scroll-snap-type: y mandatory;
   scroll-padding-bottom: 20px;   /* altura do tfoot (Total) sticky */
   scroll-padding-top: 26px;      /* altura do thead sticky */
@@ -2412,7 +2411,7 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
      as 3 colunas (grafico | Gestor | Grupo) ficam alinhadas e cabem exatamente 8
      linhas de dados, em qualquer tela. A tabela de cima preenche o resto. */
   flex: 0 0 auto; height: calc(26px + 8 * 20px + 20px);
-  min-height: 0; margin-top: var(--sp-2); padding-top: 0;
+  min-height: 0; margin-top: auto; margin-bottom: auto; padding-top: 0;
   grid-template-rows: minmax(0, 1fr);
 }
 /* os rankings (Gestor/Grupo) PREENCHEM a celula do grid (senao o max-height:52vh
