@@ -244,6 +244,19 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
   const escondidos = filtrados.length - baseLinhas.length
   const capExcedido = baseLinhas.length - linhasVisiveis.length
 
+  // Cards (compacto): ordem FIXA em dois niveis -- 1) data de LIQUIDACAO (desc,
+  // mais recente primeiro), 2) volume do trade (desc). Independe do sort
+  // interativo da tabela (que so' existe no desktop, via cabecalho). Efeito: ao
+  // filtrar um unico dia, todos tem a mesma data -> os cards saem por volume.
+  const cardRows = useMemo(() => {
+    const arr = [...baseLinhas].sort((a, b) =>
+      (a.data < b.data ? 1 : a.data > b.data ? -1 : 0)     // 1) data desc
+      || ((b.volumeRs || 0) - (a.volumeRs || 0))            // 2) volume desc
+      || (a.codigoAtivo < b.codigoAtivo ? -1 : 1)           // desempate estavel
+    )
+    return arr.length > MAX_LINHAS ? arr.slice(0, MAX_LINHAS) : arr
+  }, [baseLinhas])
+
   if (!trades.length) {
     return (
       <div className="empty-state">
@@ -506,10 +519,10 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
           <p className="sec-cap-nota">Mostrando {MAX_LINHAS.toLocaleString('pt-BR')} de {baseLinhas.length.toLocaleString('pt-BR')} — refine os filtros.</p>
         )}
         <div className="sec-cards asset-cards">
-          {linhasVisiveis.length === 0 && (
+          {cardRows.length === 0 && (
             <div className="sec-card sec-card-empty">Nenhum negócio com esses filtros.</div>
           )}
-          {linhasVisiveis.map((a, i) => {
+          {cardRows.map((a, i) => {
             const emi = a.grupo ? shortEmissor(a.emissorNome, a.grupo) : ''
             const taxaNeg = comIndex(a.indexador, a.taxaMed)         // taxa NEGOCIADA -> vai p/ o tooltip
             const spreadNeg = a.spreadRef ? a.spreadRef.formatada : '—'  // SPREAD negociado (metrica-chave do Secundario)
