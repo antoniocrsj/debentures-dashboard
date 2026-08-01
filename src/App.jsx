@@ -424,28 +424,11 @@ export default function App() {
 
       {/* Filters + tabs scroll together as one sticky block */}
       <div className="sticky-area">
-        {/* Compacto: os filtros da Debêntures ficam no topo (a única faixa de
-            filtro do mobile). No desktop eles desceram para o corpo (abaixo). */}
-        {section === 'debentures' && !desktop && (
-          <Filters
-            filters={filters}
-            options={options}
-            disabled={loading}
-            onChange={setFilters}
-            selection={selection}
-            onSelectionToggle={code => selectAtivo(code, true)}
-            onSelectionClear={clearSelection}
-            tabsSlot={null}
-            updatedLabel={dataFreshness?.label}
-            updatedTooltip={dataFreshness?.tooltip}
-            compact
-          />
-        )}
-
-        {/* Barra de abas SEMPRE standalone no topo. No desktop vale p/ TODAS as
-            abas (topo uniforme — os filtros da Debêntures moram no corpo). No
-            compacto, são as sub-abas da seção Debêntures. */}
-        {(desktop || section === 'debentures') && tabsNav}
+        {/* Barra de abas standalone no topo carvao SO' no desktop (topo uniforme
+            p/ todas as abas). No compacto, as sub-abas e os filtros da Debentures
+            migram pro corpo bege -- assim o carvao fica so' com o Header, do
+            MESMO tamanho em todas as abas. */}
+        {desktop && tabsNav}
 
         {/* "Atualizado em" no canto inferior direito do carvao (desktop, Debentures). */}
         {desktop && section === 'debentures' && dataFreshness?.label && (
@@ -503,6 +486,28 @@ export default function App() {
             compact={false}
           />
         )}
+
+        {/* Compacto: filtros + sub-abas da Debentures no CORPO (bege), nao no
+            carvao -- deixa o carvao (Header/Luc) uniforme em todas as abas. */}
+        {!desktop && section === 'debentures' && (
+          <>
+            <Filters
+              filters={filters}
+              options={options}
+              disabled={loading}
+              onChange={setFilters}
+              selection={selection}
+              onSelectionToggle={code => selectAtivo(code, true)}
+              onSelectionClear={clearSelection}
+              tabsSlot={null}
+              updatedLabel={dataFreshness?.label}
+              updatedTooltip={dataFreshness?.tooltip}
+              compact
+            />
+            {tabsNav}
+          </>
+        )}
+
         {/* Aba Captação: independente do carregamento do BLC/debêntures.
             ErrorBoundary garante que uma falha no import do chunk NUNCA deixe
             a aba em branco — mostra erro + "Tentar novamente". */}

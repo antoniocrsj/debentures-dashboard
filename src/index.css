@@ -466,6 +466,11 @@ a { color: var(--primary); }
 .tab-btn { color: rgba(255,255,255,.6); }
 .tab-btn.active { color: #fff; border-bottom-color: var(--primary); }
 .sticky-area .data-updated { color: rgba(255,255,255,.55); }
+/* Compacto: as sub-abas da Debentures migraram do carvao pro corpo bege ->
+   fundo claro e texto escuro (sobrescreve o tema escuro do carvao acima). */
+.app:not(.desktop) .content .tabs { background: transparent; }
+.app:not(.desktop) .content .tab-btn { color: var(--text-muted); }
+.app:not(.desktop) .content .tab-btn.active { color: var(--primary); }
 
 /* ─── Content area ───────────────────────────────────────────── */
 .content {
