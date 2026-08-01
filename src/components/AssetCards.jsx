@@ -1,18 +1,20 @@
 import { fmtBRL, fmtDateDDMMYY, fmtTaxa, fmtRecompraTaxa, shortEmissor } from '../utils/format.js'
 
-// TESTE (compacto): mostra os ativos da aba Debentures como CARDS em vez de
-// tabela -- como sao muitas colunas, cada ativo vira um card com todas as infos
-// num grid de rotulo/valor. Mesma selecao/info da tabela (clique seleciona; o
-// botao i abre o modal). So' no mobile; o desktop segue com o AssetTable.
+// TESTE (compacto): ativos da aba Debentures como CARDS de 80px, layout do croqui
+// do usuario -- 3 colunas com divisorias tracejadas:
+//   Col 1: ticker + emissor + Registro CVM + Vencimento
+//   Col 2: Taxa, Tx Anbima (com o selo ANBIMA ao lado), Duration, BE + data recompra
+//   Col 3: Vol. mercado e Alocacao (R$, destacados)
+// Tocar no card abre o modal do ativo. So' no mobile; desktop segue com AssetTable.
 const EMPTY_SET = new Set()
 
-function Campo({ k, v }) {
-  return (
-    <div className="asset-card-field">
-      <span className="asset-card-k">{k}</span>
-      <span className="asset-card-v">{v}</span>
-    </div>
-  )
+// Junta indexador + taxa no estilo do croqui ("CDI + 1,25", "IPCA + 7,95").
+function comIndex(indexador, taxaFmt) {
+  if (!taxaFmt || taxaFmt === '-') return '-'
+  const ix = (indexador || '').trim().toUpperCase()
+  if (!ix || ix === 'PRÉ' || ix === 'PRE') return taxaFmt
+  if (ix === 'DI' || ix.includes('CDI')) return `CDI + ${taxaFmt}`
+  return `${ix} + ${taxaFmt}`
 }
 
 export default function AssetCards({ assets, selectedSet, onSelect, onInfoClick }) {
@@ -25,51 +27,58 @@ export default function AssetCards({ assets, selectedSet, onSelect, onInfoClick 
       </div>
     )
   }
-  const select = (cod, e) => onSelect && onSelect(cod, e.ctrlKey || e.metaKey || e.shiftKey)
   return (
     <div className="asset-cards">
       {assets.map((a, i) => {
-        const selected = sel.has(a.codigoAtivo)
         const r = a.recompra
         const emi = a.grupo ? shortEmissor(a.emissorNome, a.grupo) : ''
-        const recompraTaxa = r ? fmtRecompraTaxa(r.taxaEvento, r.remuneracao) : '-'
-        const recompraQuando = r
-          ? (r.statusExercicio === 'Em exercício'
-              ? 'Valendo'
-              : (r.dataEvento ? fmtDateDDMMYY(r.dataEvento) : '-'))
-          : '-'
+        const taxa = comIndex(a.indexador, fmtTaxa(a.taxa))
+        const anbima = (a.txAnbima && a.txAnbima !== '—') ? a.txAnbima : ''
+        const dur = (a.durationAnbima && a.durationAnbima !== '—') ? a.durationAnbima : '-'
+        const be = r ? fmtRecompraTaxa(r.taxaEvento, r.remuneracao) : ''
+        const beData = r
+          ? (r.statusExercicio === 'Em exercício' ? 'valendo' : (r.dataEvento ? fmtDateDDMMYY(r.dataEvento) : ''))
+          : ''
         return (
           <div
             key={a.codigoAtivo || i}
-            className={`asset-card${selected ? ' selected' : ''}`}
+            className={`asset-card${sel.has(a.codigoAtivo) ? ' selected' : ''}`}
             role="button"
             tabIndex={0}
-            aria-selected={selected}
-            onClick={e => select(a.codigoAtivo, e)}
-            onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(a.codigoAtivo, e) } }}
+            onClick={() => onInfoClick && onInfoClick(a)}
+            onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onInfoClick && onInfoClick(a) } }}
           >
-            <div className="asset-card-head">
-              <div className="asset-card-id">
-                <span className="ativo-code">{a.codigoAtivo || '-'}</span>
-                {a.grupo && (
-                  <span className="ativo-grupo" title={a.emissorNome !== '—' ? a.emissorNome : undefined}>
-                    {a.grupo}{emi && <span className="ativo-emissor"> ({emi})</span>}
-                  </span>
-                )}
-              </div>
-              <button className="info-btn" onClick={e => { e.stopPropagation(); onInfoClick && onInfoClick(a) }} aria-label="Ver detalhes">ℹ</button>
+            <div className="ac-col ac-id">
+              <span className="ativo-code">{a.codigoAtivo || '-'}</span>
+              {a.grupo && (
+                <span className="ativo-grupo" title={a.emissorNome !== '—' ? a.emissorNome : undefined}>
+                  {a.grupo}{emi && <span className="ativo-emissor"> ({emi})</span>}
+                </span>
+              )}
+              <span className="ac-date">{fmtDateDDMMYY(a.registroCvm) || '-'}</span>
+              <span className="ac-date">{fmtDateDDMMYY(a.vencimento) || '-'}</span>
             </div>
-            <div className="asset-card-grid">
-              <Campo k="Reg. CVM" v={fmtDateDDMMYY(a.registroCvm) || '-'} />
-              <Campo k="Venc." v={fmtDateDDMMYY(a.vencimento) || '-'} />
-              <Campo k="Taxa" v={fmtTaxa(a.taxa) || '-'} />
-              <Campo k="Tx Anbima" v={(a.txAnbima && a.txAnbima !== '—') ? a.txAnbima : '-'} />
-              <Campo k="Duration" v={(a.durationAnbima && a.durationAnbima !== '—') ? a.durationAnbima : '-'} />
-              <Campo k="Indexador" v={a.indexador || '-'} />
-              <Campo k="Tx. BE" v={recompraTaxa} />
-              <Campo k="Recompra" v={recompraQuando} />
-              <Campo k="Vol. mercado" v={a.volumeEmitido > 0 ? fmtBRL(a.volumeEmitido) : '-'} />
-              <Campo k="Alocação" v={a.alocacao > 0 ? fmtBRL(a.alocacao) : '-'} />
+
+            <div className="ac-col ac-tax">
+              <span className="ac-line ac-taxa">{taxa}</span>
+              <span className="ac-line ac-anbima">
+                {anbima ? <>{anbima}<img className="ac-selo" src="/anbima-selo.jpg" alt="ANBIMA" /></> : <span className="ac-muted">—</span>}
+              </span>
+              <span className="ac-line ac-muted">Dur: {dur}</span>
+              <span className="ac-line">
+                {be ? <>BE: {be}{beData && <em className="ac-be-data"> ({beData})</em>}</> : <span className="ac-muted">BE: —</span>}
+              </span>
+            </div>
+
+            <div className="ac-col ac-val">
+              <div className="ac-val-item">
+                <span className="ac-k">Vol. mercado</span>
+                <span className="ac-v">{a.volumeEmitido > 0 ? fmtBRL(a.volumeEmitido) : '-'}</span>
+              </div>
+              <div className="ac-val-item">
+                <span className="ac-k">Alocação</span>
+                <span className="ac-v">{a.alocacao > 0 ? fmtBRL(a.alocacao) : '-'}</span>
+              </div>
             </div>
           </div>
         )
