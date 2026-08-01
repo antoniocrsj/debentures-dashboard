@@ -2209,7 +2209,7 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 .app:not(.desktop) .tecnico .grafico-card:has(> .venc-chart),
 .app:not(.desktop) .tecnico .grafico-card:has(> .fluxo-chart),
 .app:not(.desktop) .tecnico .grafico-card:has(> .caixa-trend) {
-  height: 190px; display: flex; flex-direction: column;
+  height: 250px; display: flex; flex-direction: column;
 }
 /* height:auto no caixa-trend sobrescreve o 300px fixo global (so' no Tecnico),
    pra os 4 graficos ficarem com a MESMA altura. */
