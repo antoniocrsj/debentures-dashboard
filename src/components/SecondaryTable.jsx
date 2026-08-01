@@ -524,8 +524,9 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
           )}
           {cardRows.map((a, i) => {
             const emi = a.grupo ? shortEmissor(a.emissorNome, a.grupo) : ''
-            const taxaNeg = comIndex(a.indexador, a.taxaMed)         // taxa NEGOCIADA -> vai p/ o tooltip
-            const spreadNeg = a.spreadRef ? a.spreadRef.formatada : '—'  // SPREAD negociado (metrica-chave do Secundario)
+            const txEmis = a.txEmissao ? comIndex(a.indexador, fmtTaxa(a.txEmissao)) : '-'  // EMISSAO (topo, igual ao card de Ativos)
+            const taxaNeg = comIndex(a.indexador, a.taxaMed)         // taxa NEGOCIADA (trade) -> col3, abaixo do volume
+            const spreadNeg = a.spreadRef ? a.spreadRef.formatada : null  // spread do trade -> tooltip
             const anbima = (a.txAnbima && a.txAnbima !== '—') ? a.txAnbima : ''
             const dur = (a.duration && a.duration !== '—') ? a.duration : '-'
             const rc = a.recompra
@@ -549,7 +550,7 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
                   <span className="ac-date">{a.vencimento ? fmtDateDDMMYY(a.vencimento) : '-'}</span>
                 </div>
                 <div className="ac-col ac-tax">
-                  <span className="ac-line ac-taxa" title={taxaNeg ? `Taxa negociada: ${taxaNeg}${a.spreadRef?.ref ? ` · ref ${a.spreadRef.ref}` : ''}` : undefined}>{spreadNeg}</span>
+                  <span className="ac-line ac-taxa" title="Taxa de emissão">{txEmis}</span>
                   <span className="ac-line ac-anbima">
                     {anbima ? <>{anbima}<img className="ac-selo" src="/anbima-selo.jpg" alt="ANBIMA" /></> : <span className="ac-muted">—</span>}
                   </span>
@@ -562,6 +563,10 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
                   <div className="ac-val-item">
                     <span className="ac-k">Vol. negociado</span>
                     <span className="ac-v">{a.volumeRs > 0 ? fmtVolRs(a.volumeRs) : '-'}</span>
+                  </div>
+                  <div className="ac-val-item">
+                    <span className="ac-k">Tx negociada</span>
+                    <span className="ac-v" title={spreadNeg ? `Spread: ${spreadNeg}${a.spreadRef?.ref ? ` · ref ${a.spreadRef.ref}` : ''}` : undefined}>{taxaNeg}</span>
                   </div>
                 </div>
               </div>
