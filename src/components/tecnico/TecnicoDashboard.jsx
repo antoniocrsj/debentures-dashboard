@@ -60,7 +60,7 @@ const UNIDADES = [
   { id: 'rs', label: 'R$' },
   { id: 'pct', label: '%PL' },   /* era '% do PL': o botao competia em largura com o titulo */
 ]
-const EMISSOES_MESES = 12   // janela do gráfico de Emissões: 12 meses pra trás
+const EMISSOES_MESES = 6   // janela do gráfico de Emissões: 6 meses pra trás
 
 // As 12 chaves 'AAAA-MM' terminando no mês corrente (mais antigo primeiro).
 function ultimosMeses(n) {
@@ -426,8 +426,8 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, c
               <div className="tecnico-emissoes-cell">
                 <div className="grafico-card">
                   <p className="tecnico-chart-label">Emissões</p>
-                  <EmissoesBars rows={emissoesMeses} max={maxEmissoes} fmtVal={fmtBRL}
-                    ariaLabel="Volume de emissões por mês — últimos 12 meses (por Registro CVM)" />
+                  <EmissoesBars rows={emissoesMeses} max={maxEmissoes} fmtVal={fmtBRL} fmtLabel={fmtBar}
+                    ariaLabel="Volume de emissões por mês — últimos 6 meses (por Registro CVM)" />
                 </div>
               </div>
             </div>

@@ -4,7 +4,7 @@
 // empilha juros/amort), barra BRANCA com contorno TERRACOTA, e não é clicável
 // (emissão é lado do emissor, não filtra a aba). Valor de cada mês vai no
 // tooltip da coluna — com 12 meses não cabe um rótulo em cima de cada barra.
-export default function EmissoesBars({ rows, max, fmtVal, ariaLabel }) {
+export default function EmissoesBars({ rows, max, fmtVal, fmtLabel, ariaLabel }) {
   const safeMax = Math.max(1e-9, max)
   return (
     <div className="venc-chart emissoes-chart" role="img" aria-label={ariaLabel}>
@@ -14,8 +14,8 @@ export default function EmissoesBars({ rows, max, fmtVal, ariaLabel }) {
           return (
             <div key={m.mes} className="venc-col emissoes-col"
               title={`${m.label}: ${fmtVal(m.total)}`}>
-              {/* Reserva o mesmo topo do MonthBars (paridade de altura), sem texto. */}
-              <span className="venc-bar-total" aria-hidden="true" />
+              {/* Valor em cima da barra (mesmo do MonthBars); some quando zerado. */}
+              <span className="venc-bar-total">{m.total > 0.00001 ? fmtLabel(m.total) : ''}</span>
               <span className="venc-bar-wrap emissoes-bar" style={{ height: `${barPct}%` }} />
             </div>
           )
