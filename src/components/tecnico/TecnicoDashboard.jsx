@@ -20,6 +20,24 @@ import EmissoesBars from './EmissoesBars.jsx'
 import TecnicoGestorTable from './TecnicoGestorTable.jsx'
 import AssetTable from '../AssetTable.jsx'
 import { sortAssets } from '../../utils/sortAssets.js'
+import { CaptacaoIcon, VencimentosIcon, CaixaIcon } from '../SectionIcons.jsx'
+
+// Icone de Emissoes p/ a barra de graficos do compacto (barras — o proprio grafico).
+function EmissoesNavIcon() {
+  return (
+    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 34 V22 M22 34 V14 M32 34 V26 M12 34 h28" />
+    </svg>
+  )
+}
+
+// Barra de graficos (SO' no compacto): escolhe qual grafico + tabela aparece.
+const GRAFICOS = [
+  { id: 'captacao',    label: 'Captação',   Icon: CaptacaoIcon },
+  { id: 'vencimentos', label: 'Vencim.',    Icon: VencimentosIcon },
+  { id: 'emissoes',    label: 'Emissões',   Icon: EmissoesNavIcon },
+  { id: 'caixa',       label: 'Caixa',      Icon: CaixaIcon },
+]
 import CorteSelector from '../CorteSelector.jsx'
 import { CORTE_OFICIAL, isOficial, cnpjsNoCorte, historicoNoCorte } from '../../utils/corte.js'
 
@@ -269,6 +287,10 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, e
   // lista sao as NOSSAS debentures daquele mes -- a contagem nao bate com a barra.
   const [emissaoMes, setEmissaoMes] = useState(null)
   const [ativosSort, setAtivosSort] = useState({ col: 'registroCvm', dir: 'desc' })
+  // Compacto: mostra UM grafico por vez (escolhido na barra inferior de graficos).
+  // No desktop todos aparecem (grid) -> mostra() e' sempre true.
+  const [graficoAtivo, setGraficoAtivo] = useState('captacao')
+  const mostra = c => desktop || graficoAtivo === c
   const onAtivosSort = col => setAtivosSort(s => ({ col, dir: s.col === col && s.dir === 'desc' ? 'asc' : 'desc' }))
   const toggleEmissaoMes = mes => setEmissaoMes(m => (m === mes ? null : mes))
   const ativosDoMes = useMemo(() => {
@@ -380,6 +402,7 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, e
                 gestores - 12.431" quatro vezes e ja' esta' no cabecalho e no
                 filtro. */}
             <div className="tecnico-chart-row">
+              {mostra('captacao') && (
               <div className="tecnico-chart-cell">
                 <div className="grafico-card">
                 <p className="tecnico-chart-label">
@@ -404,6 +427,8 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, e
                 <FluxoChart weekly={weekly} monthly={monthlyAgg} mode={vista} />
                 </div>
               </div>
+              )}
+              {mostra('caixa') && (
               <div className="tecnico-chart-cell">
                 <div className="grafico-card">
                 <p className="tecnico-chart-label">
@@ -418,6 +443,8 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, e
                 <CaixaPctPLLine historico={historico} segmento={caixaSeg} gestor={gestorSel} nMeses={caixaNMeses} />
                 </div>
               </div>
+              )}
+              {mostra('vencimentos') && (
               <div className="tecnico-chart-cell">
                 <div className="grafico-card">
                 <p className="tecnico-chart-label">
@@ -441,15 +468,19 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, e
                       : <div className="caixa-line-empty">Sem PL de {gestorSel || 'carteira'} para calcular %PL.</div>}
                 </div>
               </div>
+              )}
             </div>
 
-            {/* Linha de baixo (espelha as 3 colunas dos graficos): tabela na col 1
-                (sob a Captacao) e o grafico de Emissoes na col 3 (sob o
-                Vencimentos). A col 2 (sob o Caixa) fica vazia. */}
+            {/* Linha de baixo. No desktop: tabela Semanas/Meses (sob a Captacao) +
+                grafico de Emissoes (sob o Vencimentos). No compacto so' aparece a
+                peca do grafico escolhido na barra de baixo. */}
             <div className="fluxo-tables-row tecnico-tables-row">
-              {vista === 'semanas'
-                ? <FluxoTable weekly={weekly} allowExpand={false} />
-                : <FluxoMonthlyTable months={monthlyAgg} />}
+              {(desktop || graficoAtivo === 'captacao') && (
+                vista === 'semanas'
+                  ? <FluxoTable weekly={weekly} allowExpand={false} />
+                  : <FluxoMonthlyTable months={monthlyAgg} />
+              )}
+              {mostra('emissoes') && (
               <div className="tecnico-emissoes-cell">
                 <div className="grafico-card">
                   <p className="tecnico-chart-label">Emissões <span className="tecnico-chart-sub">· preenchido = fundos (ANBIMA) · clique p/ ver os ativos do mês</span></p>
@@ -458,10 +489,11 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, e
                     ariaLabel="Emissão mensal de debêntures (ANBIMA) e a parcela subscrita por fundos de investimento — últimos 6 meses. Clique numa barra para listar os ativos da base emitidos no mês." />
                 </div>
               </div>
+              )}
             </div>
           </div>
 
-          {emissaoMes ? (
+          {(desktop || graficoAtivo !== 'captacao') && (emissaoMes ? (
             <div className="tecnico-drill">
               <div className="tecnico-drill-head">
                 <span className="tecnico-drill-tit">
@@ -478,10 +510,25 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, e
             </div>
           ) : (
             <TecnicoGestorTable rows={gestorRows} activeGestor={gestorSel} onSelect={onSelectGestor} />
-          )}
+          ))}
         </div>
       )}
 
+      {/* Compacto: barra fixa acima do BottomNav para escolher QUAL grafico (e a
+          tabela associada) aparece. So' no compacto -- no desktop o grid mostra
+          tudo. */}
+      {!desktop && (
+        <nav className="tecnico-chart-nav" role="tablist" aria-label="Gráfico exibido">
+          {GRAFICOS.map(g => (
+            <button key={g.id} type="button" role="tab" aria-selected={graficoAtivo === g.id}
+              className={`tecnico-chart-nav-btn${graficoAtivo === g.id ? ' active' : ''}`}
+              onClick={() => { setGraficoAtivo(g.id); setEmissaoMes(null) }}>
+              <span className="tecnico-chart-nav-ico"><g.Icon /></span>
+              <span className="tecnico-chart-nav-lbl">{g.label}</span>
+            </button>
+          ))}
+        </nav>
+      )}
     </section>
   )
 }

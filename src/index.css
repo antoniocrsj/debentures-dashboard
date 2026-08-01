@@ -2207,6 +2207,27 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
   flex: 1; min-height: 0;
 }
 
+/* Barra de graficos do Tecnico (SO' no compacto): fixa logo acima do BottomNav
+   (~76px). Escolhe qual grafico + tabela aparece. */
+.tecnico-chart-nav {
+  position: fixed; left: 0; right: 0;
+  bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+  display: flex; z-index: 40;
+  background: var(--card); border-top: 1px solid var(--border);
+  box-shadow: 0 -3px 12px rgba(38, 33, 29, .08);
+}
+.tecnico-chart-nav-btn {
+  flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 1px;
+  padding: 5px 3px; background: none; border: 0; border-top: 2px solid transparent;
+  cursor: pointer; color: rgba(42, 36, 32, .70);
+}
+.tecnico-chart-nav-btn.active { color: var(--primary); border-top-color: var(--primary); }
+.tecnico-chart-nav-ico { display: flex; align-items: center; justify-content: center; }
+.tecnico-chart-nav-ico svg { width: 30px; height: 30px; margin: -5px 0; }
+.tecnico-chart-nav-lbl { font-size: 10.5px; white-space: nowrap; }
+/* Espaco extra p/ o conteudo nao ficar sob a barra de graficos (alem do BottomNav). */
+.app:not(.desktop) .tecnico { padding-bottom: 52px; }
+
 /* Seta de direção no cabeçalho de Cap. (entrada, verde ↑) e Res. (saída,
    vermelho ↓). Colada ao rótulo, um tico maior que o texto p/ leitura rápida. */
 .fluxo-hdr-ico { margin-left: 1px; font-weight: 700; line-height: 1; }
