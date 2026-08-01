@@ -1,5 +1,5 @@
 import { useMemo, useState, Suspense } from 'react'
-import { parseNum, shortEmissor, fmtDateDDMMYY, fmtTaxa, isYes } from '../utils/format.js'
+import { parseNum, shortEmissor, fmtDateDDMMYY, fmtTaxa, fmtRecompraTaxa, isYes } from '../utils/format.js'
 import { lazyWithRetry } from '../utils/lazyWithRetry.js'
 import { agregaNegociosPorSemana, recortaNegociosPorPeriodo, resumoNegociosSecundario } from '../utils/secondary.js'
 import TableWrap from './TableWrap.jsx'
@@ -35,6 +35,15 @@ const PERIODOS = [
 ]
 
 function fmtTx(v) { return (v && v !== '--') ? `${v}%` : '-' }
+
+// Junta indexador + taxa no estilo do card ("CDI + 1,25", "IPCA + 7,95").
+function comIndex(indexador, taxaFmt) {
+  if (!taxaFmt || taxaFmt === '-' || taxaFmt === '--') return '-'
+  const ix = (indexador || '').trim().toUpperCase()
+  if (!ix || ix === 'PRÉ' || ix === 'PRE') return `${taxaFmt}%`
+  if (ix === 'DI' || ix.includes('CDI')) return `CDI + ${taxaFmt}`
+  return `${ix} + ${taxaFmt}`
+}
 // Volume de mercado em R$ real (base Mercado Verdadeiro): MM com 1 casa; "mil" abaixo de 1MM.
 function fmtVolRs(v) {
   if (v == null || !(v > 0)) return '-'
@@ -496,39 +505,50 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
         {capExcedido > 0 && (
           <p className="sec-cap-nota">Mostrando {MAX_LINHAS.toLocaleString('pt-BR')} de {baseLinhas.length.toLocaleString('pt-BR')} — refine os filtros.</p>
         )}
-        <div className="sec-cards">
+        <div className="sec-cards asset-cards">
           {linhasVisiveis.length === 0 && (
             <div className="sec-card sec-card-empty">Nenhum negócio com esses filtros.</div>
           )}
           {linhasVisiveis.map((a, i) => {
             const emi = a.grupo ? shortEmissor(a.emissorNome, a.grupo) : ''
+            const taxaNeg = comIndex(a.indexador, a.taxaMed)         // taxa NEGOCIADA (no lugar da de emissao)
+            const anbima = (a.txAnbima && a.txAnbima !== '—') ? a.txAnbima : ''
+            const dur = (a.duration && a.duration !== '—') ? a.duration : '-'
+            const rc = a.recompra
+            const be = rc ? fmtRecompraTaxa(rc.taxaEvento, rc.remuneracao) : ''
+            const beData = rc ? (rc.statusExercicio === 'Em exercício' ? 'valendo' : (rc.dataEvento ? fmtDateDDMMYY(rc.dataEvento) : '')) : ''
             return (
               <div key={`${a.codigoAtivo}|${a.data}|${i}`}
-                className={`sec-card sec-card-click${selAtivo === a.codigoAtivo ? ' sec-card-active' : ''}`}
-                onClick={() => onClickAtivo(a.codigoAtivo)}>
-                <div className="sec-card-top">
-                  <div className="sec-card-ativo">
-                    <span className="ativo-code">{a.codigoAtivo || '-'}</span>
-                    {a.grupo && (
-                      <span className="ativo-grupo" title={a.emissorNome !== '—' ? a.emissorNome : undefined}>
-                        {a.grupo}{emi && <span className="ativo-emissor"> ({emi})</span>}
-                      </span>
-                    )}
-                  </div>
-                  <span className="sec-card-data">{fmtDateDDMMYY(a.data)}</span>
-                </div>
-                <div className="sec-card-mid">
-                  <span className="sec-card-taxa">{fmtTx(a.taxaMed)}</span>
-                  {a.spreadRef && (
-                    <span className={`sec-card-spread${a.spreadRef.spreadNum < 0 ? ' neg' : ''}`} title={a.spreadRef.ref || undefined}>
-                      {a.spreadRef.formatada}
+                className={`asset-card${selAtivo === a.codigoAtivo ? ' selected' : ''}`}
+                role="button" tabIndex={0}
+                onClick={() => onClickAtivo(a.codigoAtivo)}
+                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClickAtivo(a.codigoAtivo) } }}
+                title={`Ver a evolução de ${a.codigoAtivo} no gráfico`}>
+                <div className="ac-col ac-id">
+                  <span className="ativo-code">{a.codigoAtivo || '-'}</span>
+                  {a.grupo && (
+                    <span className="ativo-grupo" title={a.emissorNome !== '—' ? a.emissorNome : undefined}>
+                      {a.grupo}{emi && <span className="ativo-emissor"> ({emi})</span>}
                     </span>
                   )}
+                  <span className="ac-date">{fmtDateDDMMYY(a.data)}</span>
+                  <span className="ac-date">{a.vencimento ? fmtDateDDMMYY(a.vencimento) : '-'}</span>
                 </div>
-                <div className="sec-card-meta">
-                  <span>{a.indexador || '-'}</span>
-                  {a.vencimento && <><span className="sec-card-sep">·</span><span>venc {fmtDateDDMMYY(a.vencimento)}</span></>}
-                  <span className="sec-card-sep">·</span><span>{fmtVolRs(a.volumeRs)}</span>
+                <div className="ac-col ac-tax">
+                  <span className="ac-line ac-taxa">{taxaNeg}</span>
+                  <span className="ac-line ac-anbima">
+                    {anbima ? <>{anbima}<img className="ac-selo" src="/anbima-selo.jpg" alt="ANBIMA" /></> : <span className="ac-muted">—</span>}
+                  </span>
+                  <span className="ac-line ac-muted">Dur: {dur}</span>
+                  <span className="ac-line">
+                    {be ? <>BE: {be}{beData && <em className="ac-be-data"> ({beData})</em>}</> : <span className="ac-muted">BE: —</span>}
+                  </span>
+                </div>
+                <div className="ac-col ac-val">
+                  <div className="ac-val-item">
+                    <span className="ac-k">Vol. negociado</span>
+                    <span className="ac-v">{a.volumeRs > 0 ? fmtVolRs(a.volumeRs) : '-'}</span>
+                  </div>
                 </div>
               </div>
             )

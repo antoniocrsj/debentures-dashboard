@@ -223,6 +223,10 @@ export function enrichMercado(mercadoRows, tickerToAsset) {
       txEmissao: asset.taxa || '',
       indexador: asset.indexador || '',
       lei12431: asset.lei12431Str || '',
+      // Do cadastro do ativo (p/ o card do Secundario "manter o resto"):
+      txAnbima: asset.txAnbima || '',
+      recompra: asset.recompra || null,
+      registroCvm: asset.registroCvm || '',
       spreadRef,
     })
   }
