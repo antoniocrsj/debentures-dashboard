@@ -7,10 +7,11 @@
 // Hoje:
 //   - DESKTOP  esconde Captacao, Nivel de Caixa e Vencimentos (fica Debentures,
 //     Secundario e Tecnico -- esta ultima ja' consolida as tres).
-//   - COMPACTO (mobile) mantem Captacao e Vencimentos no BottomNav; esconde so'
-//     o Nivel de Caixa.
+//   - COMPACTO (mobile) esconde Captacao, Nivel de Caixa e Vencimentos -- a aba
+//     Tecnico agora as contempla (barra de graficos: Captacao/Vencim./Emissoes/
+//     Caixa). Fica Debentures, Secundario e Tecnico.
 //
 // PARA REEXIBIR uma aba: remova o id do Set do modo correspondente e rebuild.
 // (Como e' versionado, um `git revert` do commit tambem funciona.) Ver HANDOFF.md.
 export const ABAS_OCULTAS_DESKTOP  = new Set(['captacao', 'caixa', 'vencimentos'])
-export const ABAS_OCULTAS_COMPACTO = new Set(['caixa'])
+export const ABAS_OCULTAS_COMPACTO = new Set(['caixa', 'captacao', 'vencimentos'])

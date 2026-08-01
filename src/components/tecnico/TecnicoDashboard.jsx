@@ -293,16 +293,21 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, e
   const mostra = c => desktop || graficoAtivo === c
   const onAtivosSort = col => setAtivosSort(s => ({ col, dir: s.col === col && s.dir === 'desc' ? 'asc' : 'desc' }))
   const toggleEmissaoMes = mes => setEmissaoMes(m => (m === mes ? null : mes))
+  // Mes efetivo do drill de Ativos: o clicado numa barra; OU, no compacto com
+  // Emissoes selecionado, o mes MAIS RECENTE por padrao -- assim ao escolher
+  // Emissoes a tabela ja' vem em Ativos (nao a de gestores), como pediu.
+  const ultimoMesEmissao = emissoesMeses.length ? emissoesMeses[emissoesMeses.length - 1].mes : null
+  const mesDrill = emissaoMes ?? ((!desktop && graficoAtivo === 'emissoes') ? ultimoMesEmissao : null)
   const ativosDoMes = useMemo(() => {
-    if (!emissaoMes) return []
+    if (!mesDrill) return []
     const inc = tipo === '12431'
     const filtrados = (assets || []).filter(a => {
       if (!a.registroCvm || isYes(a.lei12431Str) !== inc) return false
       const k = dateKey(a.registroCvm)
-      return k && k.length >= 6 && `${k.slice(0, 4)}-${k.slice(4, 6)}` === emissaoMes
+      return k && k.length >= 6 && `${k.slice(0, 4)}-${k.slice(4, 6)}` === mesDrill
     })
     return sortAssets(filtrados, ativosSort)
-  }, [assets, emissaoMes, tipo, ativosSort])
+  }, [assets, mesDrill, tipo, ativosSort])
 
   // ---- Tabela combinada (filtro principal) ----
   const gestorRows = useMemo(() => ranking.map(r => ({
@@ -485,7 +490,7 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, e
                 <div className="grafico-card">
                   <p className="tecnico-chart-label">Emissões <span className="tecnico-chart-sub">· preenchido = fundos (ANBIMA) · clique p/ ver os ativos do mês</span></p>
                   <EmissoesBars rows={emissoesMeses} max={maxEmissoes} fmtVal={fmtBRL} fmtLabel={fmtBar}
-                    onBarClick={toggleEmissaoMes} selectedMes={emissaoMes}
+                    onBarClick={toggleEmissaoMes} selectedMes={mesDrill}
                     ariaLabel="Emissão mensal de debêntures (ANBIMA) e a parcela subscrita por fundos de investimento — últimos 6 meses. Clique numa barra para listar os ativos da base emitidos no mês." />
                 </div>
               </div>
@@ -493,15 +498,15 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, e
             </div>
           </div>
 
-          {(desktop || graficoAtivo !== 'captacao') && (emissaoMes ? (
+          {(desktop || graficoAtivo !== 'captacao') && (mesDrill ? (
             <div className="tecnico-drill">
               <div className="tecnico-drill-head">
                 <span className="tecnico-drill-tit">
-                  Debêntures da base emitidas em {fmtMonthYY(emissaoMes)}
+                  Debêntures da base emitidas em {fmtMonthYY(mesDrill)}
                   <span className="tecnico-drill-seg"> · {tipo === '12431' ? '12.431' : 'Tradicional'}</span>
                   <span className="tecnico-drill-n"> · {ativosDoMes.length}</span>
                 </span>
-                <button type="button" className="tecnico-drill-back" onClick={() => setEmissaoMes(null)}>← gestores</button>
+                {desktop && <button type="button" className="tecnico-drill-back" onClick={() => setEmissaoMes(null)}>← gestores</button>}
               </div>
               <AssetTable assets={ativosDoMes} sort={ativosSort} onSort={onAtivosSort}
                 onSelect={() => {}} footerAssets={ativosDoMes}
