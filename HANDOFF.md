@@ -1,177 +1,82 @@
-# Handoff — debentures-dashboard
+# Handoff — debentures-dashboard (Luc)
 
-Contexto para quem assumir o trabalho a seguir.
+Contexto para outro agente assumir. Atualizado em **ago/2026**.
 
 ## Estado atual
-- Branch `main`, sincronizado com `origin/main`. Deploy automático na Vercel a
-  cada push (~1 min): https://debentures-dashboard-three.vercel.app
-- Último commit: `d1565b5`. App: React 18 + Vite 5. Dev server: `npm run dev` (5173).
+- **Branch:** `main`, em sincronia com `origin/main`. Deploy automático na Vercel
+  a cada push (~1 min): https://debentures-dashboard-three.vercel.app
+- **Stack:** React 18 + Vite 5. Mobile-first; modo **desktop** é manual
+  (localStorage `view-desktop=1` ou `?view=desktop`; exige `innerWidth ≥ 700`).
+- **Árvore de trabalho limpa** (só untracked de OUTRO editor — ver regra abaixo).
 
-## Entrega desta sessão: Mercado Verdadeiro (metodologia) + REUNE + 12 meses
-Frente de **dados/metodologia** do Secundário (paralela ao layout descrito abaixo).
+## ⚠️ Regras duras (não quebrar)
+- **Editor concorrente:** este repo tem um agente Codex + rotina diária mexendo
+  em paralelo. **NUNCA `git add -A`.** Sempre `git fetch` + `git status` antes de
+  commitar/pushar e **stage arquivo por arquivo**. Untracked como
+  `.codex-remote-attachments/`, `outputs/`, `diag.mjs`, `sheet_auditoria.xlsx`,
+  `colunas_oferta_resolucao_160.txt`, `prompt-resumo-do-dia.txt` **não são meus**.
+- **Verificação no navegador:** o dev server já costuma estar no ar em `:5173`.
+  Abra com `?view=desktop` e **redimensione a janela p/ ≥700px** senão cai no
+  compacto (a aba **Técnico é desktop-only**). Screenshot do painel embutido pode
+  falhar ("pane not displayed") — verifique por **DOM/JS** (mcp Browser
+  `javascript_tool`), que é confiável.
+- **Erros de HMR são enganosos:** ao editar props entre 2 arquivos, o console
+  buffera `X is not a function` do estado transitório. Confirme no **DOM ao vivo**
+  (se renderiza a tabela/gráfico e não o ErrorBoundary, está OK) ou dê reload.
+- **Paleta "Luc"** quente/terrosa: terracota `#8c5e3a`, carvão `#26211d`, bege.
+  Verde `--c-verde` / vermelho `--c-vermelho`. Navy foi aposentada.
 
-**1. REUNE removido de tudo** (`3499e21`). O REUNE (trades) era fetch morto no app +
-seção 6 do Resumo do Dia + passo do pipeline. Removido: app, `ResumoDoDiaModal`,
-`gerar-relatorios.mjs`, `preparar-reune.ps1`; deletados `REUNE_Historico.csv`,
-`spreadRef.js`, `cruzar-reune-bdi.mjs`. **A curva TPF (`REUNE_Curvas.csv`, nome legado)
-FICOU** — é load-bearing pro spread. Fonte de datas repontada: diário via `Anbima_Tx.csv`,
-backfill via `Mercado_Verdadeiro.csv`. Ver memória [[reune-historico-tpf-tesouro]].
+## O que foi feito nesta sessão (commits mais recentes → antigos)
+1. **`11e4f11` PWA desligado (`selfDestroying`)** — o service worker (autoUpdate)
+   causava "F5 várias vezes até aparecer o deploy". Agora um `sw.js`
+   self-destroying desregistra o SW de quem tinha e limpa caches; atualização no
+   1º F5. Config em `vite.config.js`. (Headers do Vercel já eram
+   `must-revalidate` — não era cache HTTP.) Perde-se instalável/offline.
+2. **Aba Técnico — gráfico Emissões** (`2d949c7`,`40956af`,`9930a3a`):
+   novo card **Emissões** na coluna 3 da linha de baixo (sob o Vencimentos),
+   `src/components/tecnico/EmissoesBars.jsx` (reusa classes `.venc-*`). Barra
+   **branca com contorno terracota**. Série = soma de `volumeEmitido` dos assets
+   por mês da **Data de Registro CVM** (`registroCvm`; a Data de Emissão é
+   retrodatada), **6 meses pra trás**, valor em cima de cada barra. Segue o
+   segmento (Trad/12.431); **não** filtra por gestor. `TecnicoDashboard` recebe
+   `assets={allAssets}` (App.jsx). CSS: `.tecnico-emissoes-cell` em `grid-column:3`
+   + `height:100%` (a `.tecnico-tables-row` usa `align-items:flex-start`, então o
+   item precisa pedir a altura).
+3. **Aba Técnico — tabela Semanas/Meses unificada** (`6789b42`,`67729c4`,
+   `932bf45`,`4525ca1`): as 2 tabelas viraram UMA (coluna 1, sob a Captação) com
+   alternador `[Semanas|Meses]` no canto do gráfico de Captação; **o gráfico de
+   Captação também segue o alternador** (série semanal/mensal — `FluxoChart`
+   ganhou prop `mode`; `toChartSeriesMensal` em `utils/fluxo.js`). Cabeçalhos
+   `Cap.↑`(verde)/`Res.↓`(vermelho); números **sem R$**, com **1 casa só nos
+   bilhões** (`fmtFluxoTab`/`fmtFluxoTabSigned`); 3 colunas de valor iguais.
+4. **Aba Debêntures — seleção múltipla de tickers** (`9707e31`): clicar na linha
+   NÃO filtra mais — **seleciona** (tabela fica cheia, linha destacada);
+   Ctrl/Cmd/Shift+clique agrega. Botão "Ativos" virou multiselect com caixas
+   (`src/components/SelectAtivos.jsx`). A seleção guia os 3 painéis (Vencimentos/
+   Gestores/Grupos) e o **Total** da tabela (`effectiveAssets` no App.jsx).
+   `filters.ativo` mantido só p/ o fallback `openTicker` (série-irmã fora da base).
+5. **Filtro 12.431 segmentado** (`15d5594`): virou `[12.431|Tradicional]` igual ao
+   do Secundário (`Filters.jsx`, `.seg-lei`).
 
-**2. Secundário estendido p/ 12 meses** (`9515355`): tape BDI de 92 → **252 pregões**
-(31/07/2025 → 30/07/2026). Ordem que importa: **varredura roda DEPOIS do backfill da
-curva** (senão spreads das datas antigas saem vazios).
+## Como rodar / verificar
+- Dev server via mcp Browser `preview_start {name:"deb-dashboard"}` (porta 5173).
+  Se já estiver em uso, `preview_start {url:"http://localhost:5173/?view=desktop"}`.
+- Modelo de tabela canônico e regras de layout: `MODELO_TABELA.md`.
+- Metodologia do Secundário (Mercado Verdadeiro): `METODOLOGIA_Mercado_Verdadeiro.md`.
 
-**3. Recalibração da metodologia Mercado Verdadeiro** (`f71d5d3`) — calibrada com o
-usuário p/ reconciliar o mercado tradicional com a referência de **150–500 MM/dia**:
-- **chave por DATA DE LIQUIDAÇÃO** (era trade): `gruposPorLiquidacao` em `lib-mercado.mjs`.
-- **banda de fee [0,7; 2,3] bps × duration** (era [1; 2]).
-- **relevância >10MM REMOVIDA**.
-- Resultado: mercado **16,4% → 31,8%** do econômico; tradicional **~277 MM/dia** (na faixa).
-- CSV: só `VolMercado>0` + 10 colunas (era 15) → **4,0 MB**. Aba guiada por liquidação
-  (coluna "Liq.", filtro "Liquidação").
-- Doc `METODOLOGIA_Mercado_Verdadeiro.md` + memórias [[bdi-b3-negocio-a-negocio]] atualizados.
+## Possíveis próximos passos (não iniciados)
+- Coluna 2 da linha de baixo do Técnico (sob o Caixa) está **vazia de propósito**
+  — há espaço se quiserem outro card.
+- Emissões hoje é gráfico só; poderia ganhar toggle de unidade/janela se pedirem.
+- Depois de 1 ciclo com o SW self-destruído, dá p/ remover o `vite-plugin-pwa`
+  de vez (hoje só `selfDestroying: true`).
 
-**4. Lupa alinhada** (`d1565b5`): `node tools/lupa-mercado.mjs [N] [TICKER]` agora usa a
-mesma metodologia (liquidação + banda nova) — inspeção bate com a produção.
-
-**Como regenerar a base:** `atualizar-tudo.ps1` (passos BDI → Curvas TPF → Secundário/
-varredura). Manual: `node tools/preparar-bdi-negocios.mjs 252` → `node tools/preparar-reune-curvas-historico.mjs` → `node tools/varredura-mercado.mjs`.
-
-**Avisos honestos:**
-- A **data de liquidação mais recente é parcial** (T+1 do último pregão; falta o T+0 do
-  dia seguinte, ainda não puxado). O dia mais novo sempre fica incompleto.
-- **CSV 4 MB** (era 1,5): fetch OK, mas o cache do localStorage pode estourar → recarrega
-  toda vez (o app funciona, só perde o cache instantâneo).
-- Os `.gz` do tape (`public/bdi/`) são gitignored; só o `Mercado_Verdadeiro.csv` versiona.
-
-## Entrega paralela: layout da aba Secundário
-A aba Secundário agora funciona como um painel master-detail, com a tabela de
-negócios à esquerda e o resumo visual à direita no desktop.
-
-- Três cards respondem aos filtros ativos: **Volume 12.431**, **Volume
-  tradicional** e **Número de trades**.
-- O seletor único **3m / 6m / 12m** recorta toda a aba pela data mais recente da
-  própria base, com **6m** como padrão. Busca, tabelas, cards e gráficos usam a
-  mesma janela.
-- O filtro 12.431 mostra apenas **12.431** e **Tradicional**. Nenhum selecionado
-  significa todos; clicar novamente na opção ativa remove o filtro.
-- A formatação final dos filtros usa **Liq: todas**, seletor de Ativo pesquisável
-  no mesmo padrão de Emissor e **R$: Total** como rótulo padrão do volume.
-- O botão **Limpar** fica ao lado dos cards no desktop, sem criar uma segunda
-  linha de filtros. No compacto ele permanece na faixa rolável de filtros.
-- O novo gráfico semanal agrega **volume total** e **quantidade de trades** por
-  semana ISO. Ele responde à busca, data, tipo de fundo e seleção de uma linha.
-- A escala do volume é flexível, busca aproximadamente oito divisões e nunca usa
-  intervalo superior a R$ 1 bilhão. O volume sempre mostra uma casa decimal;
-  trades permanecem inteiros.
-- Os eixos X dos dois gráficos exibem o ano no formato `dd/mm/aa`.
-- As grades horizontais são tracejadas, finas e ficam atrás das colunas. Volume
-  usa terracota (`#8c5e3a`); trades e a linha do eixo X usam taupe (`#9a8c7a`).
-- Os dois gráficos têm a mesma altura no desktop, ocupam o espaço disponível e
-  terminam alinhados com a tabela, mantendo respiro no rodapé da tela.
-- Ao selecionar um grupo, sua tabela de ativos aparece abaixo dos trades. Ela
-  ocupa exatamente a mesma faixa do gráfico semanal: mesmo topo, altura de
-  242px e rodapé. A tabela principal usa todo o espaço restante acima.
-- A tabela principal tem oito colunas; **Indexador** e **12.431** foram removidas.
-  Na tabela de ativos do grupo, os dados da coluna Ativo ficam centralizados.
-- No gráfico evolutivo, a janela inicial é de +/-30 bps ou +/-0,30 pp, expandida
-  quando os dados exigem. Há no máximo sete linhas; os passos são múltiplos de
-  10 bps ou 0,10 pp e o eixo Y sempre exibe uma casa decimal.
-- O título do gráfico evolutivo mostra apenas o ativo. O texto auxiliar com tipo
-  de spread e número de pregões foi removido para reduzir ruído visual.
-- O modo compacto foi mantido e conferido separadamente.
-
-Arquivos principais desta entrega:
-- `src/components/SecondaryTable.jsx`: filtros, seleção e composição da aba.
-- `src/components/SecondaryChart.jsx`: gráfico evolutivo e escala dinâmica.
-- `src/components/SecondaryWeeklyChart.jsx`: gráfico semanal novo.
-- `src/utils/secondary.js`: agregações e métricas compartilhadas.
-- `src/index.css`: layout responsivo, cards e acabamento visual.
-- `test/secondary-summary.test.js`: testes das métricas e agregações.
-
-Verificação ao fechar a implementação:
-- `npm test`: 135 testes, 133 aprovados e 2 ignorados.
-- `npm run build`: concluído com sucesso; permanece apenas o aviso conhecido de
-  tamanho do bundle.
-- `git diff --check`: sem erros de whitespace.
-
-## Frente anterior: tabelas e navegação
-Padronizou todas as tabelas das abas Debêntures e Técnico num único modelo,
-tendo a tabela de **Ativos** (Debêntures) como referência canônica:
-- Cabeçalho **26px** (nowrap, texto centrado na vertical); linha de dados **20px**;
-  linha de **Total** branca + borda superior 1px carvão, **travada** (sticky) no rodapé.
-- Tabelas **preenchem o card** de ponta a ponta (recuo vem do padding das células,
-  não de moldura em volta).
-- Rolagem **trava em linhas inteiras** (`round()` na altura do scroller + snap por
-  linha): a última linha encaixa no Total, sem meia-linha.
-- Tabela de gestoras (Técnico): removida a coluna **% Caixa**, 4 colunas
-  distribuídas, **sem scroll horizontal** (`table-layout: fixed` + 1ª coluna com
-  reticências).
-
-Commits (mais recente primeiro):
-- `68ea2b3` mantém Captação e Vencimentos no compacto (flag por modo)
-- `546e78b` esconde Captação/Caixa/Vencimentos (feature-flag; refinado por `68ea2b3`)
-- `154bb2b` Ativos: coluna/ordenação por Data de Registro CVM (não Emissão)
-- `f09d8a7` remove %Caixa das gestoras + elimina scroll horizontal
-- `79a91a9` conserta corte da última linha da tabela de gestoras
-- `e1ffe60` centraliza o texto do cabeçalho na vertical
-- `83033ab` tabelas da Técnico preenchem o card + cria MODELO_TABELA.md
-- `61837f7` padroniza tabelas das abas Debêntures e Técnico
-- `d053ce6` Ativos: última linha encaixa no Total até no topo
-
-## Referência obrigatória
-📄 **[`MODELO_TABELA.md`](MODELO_TABELA.md)** — spec canônica da tabela (Ativos).
-É o contrato para qualquer tabela nova ou alterada nessas abas: alturas, Total,
-trava em linhas inteiras, variante "ranking" (div), e o caveat da barra de
-rolagem horizontal.
-
-## Aba Ativos: ordenação por Data de Registro CVM
-A coluna que era "Emis." (Data de Emissão) virou **"Reg. CVM"** (Data de Registro
-CVM da Emissão) e é o default sort (desc). Motivo: a Data de Emissão é retroativa,
-então debêntures registradas depois apareciam mais embaixo — "ordenar pela mais
-nova" não mostrava as recém-publicadas. O campo `asset.emissao` foi **mantido
-intacto** (alimenta o cronograma de fluxo/`parseAgenda` e o match dos books); a
-coluna usa um campo NOVO `asset.registroCvm` (`src/utils/data.js`), com guarda
-contra data futura (a fonte traz 1-2 registros com data errada, ex.: 2028).
-Commit `154bb2b`.
-
-## Abas escondidas (feature-flag, POR MODO)
-Escondidas da navegação via `src/config/abas.js`, com Set separado por modo:
-- **Desktop** (`ABAS_OCULTAS_DESKTOP`, usado em `App.jsx`): esconde Captação,
-  Nível de Caixa e Vencimentos → ficam Debêntures, Secundário, **Técnico** (que
-  consolida as três). `loadInitialTab` ignora `?tab=<escondida>`.
-- **Compacto** (`ABAS_OCULTAS_COMPACTO`, usado em `BottomNav.jsx`): esconde só o
-  Nível de Caixa → BottomNav mostra Debêntures, Secundário, Captação, Vencimentos.
-
-Código, componentes, CSVs em `public/` e o pipeline (`atualizar-tudo.ps1`) ficam
-**intactos** — os dados seguem atualizando.
-- **Reexibir uma aba:** remova o id do Set do modo correspondente e rebuild.
-
-## Convenções do repositório (IMPORTANTE)
-- **Árvore de trabalho compartilhada** com outro agente + rotina automática.
-  Antes de commitar: `git fetch` e cheque ahead/behind. **Nunca `git add -A`** —
-  adicione arquivos explicitamente.
-- Há arquivos **de terceiros não versionados** que NÃO devem ser commitados:
-  `.codex-remote-attachments/`, `outputs/`, `diag.mjs`,
-  `colunas_oferta_resolucao_160.txt`, `prompt-resumo-do-dia.txt`,
-  `sheet_auditoria.xlsx`.
-- `public/bdi/` é gitignorado (tape B3, ~20MB) — não commitar.
-- Ecossistema: leia `CLAUDE.md`, `AGENTS.md` e `ROADMAP_ECOSSISTEMA.md` antes de
-  decidir onde trabalhar (o repo par é o `credit-analyst`/Ana, local, sem remote).
-
-## Armadilhas de verificação
-- **Screenshots do preview interno falham** (o pane não composita frames). Verifique
-  layout por **medição de DOM** (`getBoundingClientRect` via console) ou pelo Chrome.
-- Ao medir o app, cuidado com o modo **compacto**: em janela estreita (<~600px) o
-  app troca para o layout mobile (sem os tabs desktop, sem a linha de Total das
-  tabelas). Redimensione para ≥1280px de largura.
-- Trava de linhas inteiras: se a tabela **rola no eixo X**, a barra horizontal come
-  ~10px da altura útil e corta a última linha — ver o caveat no MODELO_TABELA.md
-  (solução preferida: fazer caber, sem scroll X).
-
-## Possíveis próximos passos (em aberto, não iniciados)
-- Tabelas da aba **Caixa** ainda usam cabeçalho ~33px (`SortableTh` não achatado) —
-  estão fora do escopo formal, mas poderiam entrar no mesmo modelo para
-  consistência total do app.
-- Confirmar visualmente o build publicado na Vercel do `68ea2b3` (código verificado
-  limpo por medição/DOM; falta só o olho no deploy).
+## Fora do repo — análise ANBIMA (sessão atual)
+O usuário pediu análise do Excel `~/Downloads/Boletim_MK_Anexo_v1_a90b3c46da.xlsx`
+(Boletim de Mercado de Capitais ANBIMA), abas de **Debêntures** (07/08) e
+**12.431** (09), séries mensais jan/2020→jun/2026. Principais achados: mercado
+dobrou 2022→2024/25 (271→493 bi), quebra regulatória em 2023 (ICVM/476 → RCVM/160
+Rito Automático ≈99%), IPCA subindo (14%→36%), prazo médio 6,3→8,5a, infra na
+destinação 14%→41%; **12.431 é o motor** (fatia 15%→36% do valor, ~46% das ops em
+2025; prazo ~12–13a; ~90%+ infra; PF sumindo da primária). 1S2026 −12/−13% vs 1S2025.
+Não há entregável commitado — foi análise em chat.
