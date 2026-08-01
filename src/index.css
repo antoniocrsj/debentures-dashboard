@@ -490,8 +490,8 @@ a { color: var(--primary); }
 .ac-id .ativo-grupo { font-size: 10px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ac-date { font-size: 10.5px; color: var(--text); font-variant-numeric: tabular-nums; }
 .ac-line { font-size: 10.5px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.4; }
-.ac-taxa { font-weight: 600; }
-.ac-anbima { display: flex; align-items: center; gap: 4px; }
+.ac-taxa { font-weight: 400; }
+.ac-anbima { display: flex; align-items: center; gap: 4px; font-weight: 600; }
 .ac-selo { height: 13px; width: auto; display: block; }
 .ac-be-data { color: var(--text-muted); font-style: normal; }
 .ac-muted { color: var(--text-muted); }
