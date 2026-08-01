@@ -7,7 +7,8 @@ import {
   filterMensal, periodBounds, startForMonths,
 } from '../../utils/fluxo.js'
 import { buildGestoresPorTicker, flattenEventos, aggMeses, aggGestores, fmtBar, pctFmt } from '../../utils/vencimentos.js'
-import { fmtPct } from '../../utils/format.js'
+import { fmtPct, isYes, dateKey } from '../../utils/format.js'
+import { fmtMonthYY } from '../../utils/fluxo.js'
 import { useCaixaFundosHistorico } from '../../hooks/useCaixaFundosHistorico.js'
 import { fmtBRL } from '../../utils/format.js'
 import FluxoChart from '../fluxo/FluxoChart.jsx'
@@ -15,6 +16,7 @@ import FluxoTable from '../fluxo/FluxoTable.jsx'
 import FluxoMonthlyTable from '../fluxo/FluxoMonthlyTable.jsx'
 import CaixaPctPLLine from '../caixa/CaixaPctPLLine.jsx'
 import MonthBars from '../vencimentos/MonthBars.jsx'
+import EmissoesBars from './EmissoesBars.jsx'
 import TecnicoGestorTable from './TecnicoGestorTable.jsx'
 import CorteSelector from '../CorteSelector.jsx'
 import { CORTE_OFICIAL, isOficial, cnpjsNoCorte, historicoNoCorte } from '../../utils/corte.js'
@@ -58,6 +60,19 @@ const UNIDADES = [
   { id: 'rs', label: 'R$' },
   { id: 'pct', label: '%PL' },   /* era '% do PL': o botao competia em largura com o titulo */
 ]
+const EMISSOES_MESES = 12   // janela do gráfico de Emissões: 12 meses pra trás
+
+// As 12 chaves 'AAAA-MM' terminando no mês corrente (mais antigo primeiro).
+function ultimosMeses(n) {
+  const now = new Date()
+  let y = now.getFullYear(), m = now.getMonth()   // m 0-based
+  const out = []
+  for (let i = 0; i < n; i++) {
+    out.unshift(`${y}-${String(m + 1).padStart(2, '0')}`)
+    if (--m < 0) { m = 11; y-- }
+  }
+  return out
+}
 // Captacao (tabela): a MESMA serie em duas agregacoes. Uma tabela so', com o
 // alternador no canto do grafico de Captacao (ver JSX) -- em vez de duas tabelas
 // lado a lado. Ela mora logo abaixo do grafico, na largura de UM grafico.
@@ -66,7 +81,7 @@ const VISTAS = [
   { id: 'meses',   label: 'Meses' },
 ]
 
-export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, onCorte, corteDisponivel, pctPorCnpj }) {
+export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, corte, onCorte, corteDisponivel, pctPorCnpj }) {
   const [tipo, setTipo] = useState('trad')   // Tradicional: padrao unico do app
   const [gestorSel, setGestorSel] = useState('')
   const [periodo, setPeriodo] = useState(PERIODO_PADRAO)
@@ -219,6 +234,26 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, on
     }
     return acc
   }, [agenda12m, eventos, gpt, tipo])
+
+  // ---- Emissões (volume emitido por mês, últimos 12 meses) ----
+  // Ancorado na data de REGISTRO CVM (a Data de Emissão é retrodatada e
+  // distorceria a linha do tempo — mesmo motivo da coluna da aba Ativos). Segue
+  // o segmento (tipo); gestor NÃO filtra (emissão é do emissor, não do detentor).
+  const emissoesMeses = useMemo(() => {
+    const janela = ultimosMeses(EMISSOES_MESES)
+    const acc = new Map(janela.map(k => [k, 0]))
+    const quer12431 = tipo === '12431'
+    for (const a of assets || []) {
+      if (!a.registroCvm) continue
+      if (quer12431 !== isYes(a.lei12431Str)) continue
+      const k = dateKey(a.registroCvm)          // 'AAAAMMDD'
+      if (!k || k.length < 6) continue
+      const mk = `${k.slice(0, 4)}-${k.slice(4, 6)}`
+      if (acc.has(mk)) acc.set(mk, acc.get(mk) + (a.volumeEmitido || 0))
+    }
+    return janela.map(k => ({ mes: k, label: fmtMonthYY(k), total: acc.get(k) || 0 }))
+  }, [assets, tipo])
+  const maxEmissoes = Math.max(1, ...emissoesMeses.map(m => m.total))
 
   // ---- Tabela combinada (filtro principal) ----
   const gestorRows = useMemo(() => ranking.map(r => ({
@@ -381,13 +416,20 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, corte, on
               </div>
             </div>
 
-            {/* UMA tabela (Semanas ou Meses), na coluna 1 -> largura de um
-                grafico, alinhada sob a Captacao. O alternador vive no card da
-                Captacao (acima). Colunas 2 e 3 ficam vazias de proposito. */}
+            {/* Linha de baixo (espelha as 3 colunas dos graficos): tabela na col 1
+                (sob a Captacao) e o grafico de Emissoes na col 3 (sob o
+                Vencimentos). A col 2 (sob o Caixa) fica vazia. */}
             <div className="fluxo-tables-row tecnico-tables-row">
               {vista === 'semanas'
                 ? <FluxoTable weekly={weekly} allowExpand={false} />
                 : <FluxoMonthlyTable months={monthlyAgg} />}
+              <div className="tecnico-emissoes-cell">
+                <div className="grafico-card">
+                  <p className="tecnico-chart-label">Emissões</p>
+                  <EmissoesBars rows={emissoesMeses} max={maxEmissoes} fmtVal={fmtBRL}
+                    ariaLabel="Volume de emissões por mês — últimos 12 meses (por Registro CVM)" />
+                </div>
+              </div>
             </div>
           </div>
 

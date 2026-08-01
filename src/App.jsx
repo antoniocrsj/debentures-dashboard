@@ -573,7 +573,7 @@ export default function App() {
             <Suspense fallback={
               <div className="state-box"><div className="spinner" aria-label="Carregando" /><p>Carregando…</p></div>
             }>
-              <TecnicoDashboard agenda12m={agenda12m} blc={raw?.blc} plByGestor={plByGestor}
+              <TecnicoDashboard agenda12m={agenda12m} blc={raw?.blc} plByGestor={plByGestor} assets={allAssets}
                 corte={corte} onCorte={setCorte} corteDisponivel={corteDisponivel} pctPorCnpj={pctPorCnpj} />
             </Suspense>
           </ErrorBoundary>

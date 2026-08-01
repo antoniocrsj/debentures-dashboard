@@ -2144,7 +2144,26 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
     padding-left: var(--sp-2) !important;
     padding-right: var(--sp-2) !important;
   }
+
+  /* Emissoes: card na COLUNA 3 da linha de baixo (sob o Vencimentos); a col 2
+     (sob o Caixa) fica vazia. Preenche a altura da linha, como a tabela ao lado. */
+  .app.desktop .tecnico-emissoes-cell {
+    grid-column: 3;
+    min-width: 0; min-height: 0;
+    display: flex;
+  }
+  .app.desktop .tecnico-emissoes-cell > .grafico-card { width: 100%; height: 100%; }
 }
+
+/* Barra de Emissoes: branca com contorno terracota (serie 1 da paleta). Sem os
+   segmentos juros/amort do Vencimentos -- a .venc-bar-wrap E' a barra. */
+.emissoes-bar {
+  background: var(--c-branco);
+  border: 1px solid #8c5e3a;   /* terracota (--serie-1); Recharts/SVG a' parte, aqui e' CSS */
+  box-sizing: border-box;
+}
+.emissoes-col { cursor: default; }
+.emissoes-col:hover { background: transparent; }   /* nao e' clicavel */
 
 /* Seta de direção no cabeçalho de Cap. (entrada, verde ↑) e Res. (saída,
    vermelho ↓). Colada ao rótulo, um tico maior que o texto p/ leitura rápida. */
