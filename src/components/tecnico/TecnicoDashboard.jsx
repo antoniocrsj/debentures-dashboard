@@ -236,19 +236,29 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, e
   }, [agenda12m, eventos, gpt, tipo])
 
   // ---- Emissões (volume emitido por mês x quanto foi para Fundos) ----
-  // Fonte: ANBIMA (Boletim de Mercado de Capitais), aba de Subscritores de
-  // debêntures — total emitido do mês e a parcela subscrita por Fundos de
-  // Investimento. É visão de MERCADO (não da nossa base) e não segue o segmento:
-  // o "quanto foi para fundos" só existe nesse agregado mensal da ANBIMA.
+  // Fonte: ANBIMA (Boletim de Mercado de Capitais), Subscritores de debêntures —
+  // total emitido do mês e a parcela subscrita por Fundos de Investimento. É
+  // visão de MERCADO (não da nossa base); o "quanto foi para fundos" só existe
+  // nesse agregado da ANBIMA. REAGE ao segmento: 12.431 vem direto do boletim
+  // (aba 09-06) e Tradicional é o total (aba 08-05) menos o 12.431.
   // Gerado por tools/preparar-emissoes-anbima.mjs -> public/Emissoes_ANBIMA.csv.
   const emissoesMeses = useMemo(() => {
+    const inc = tipo === '12431'
     return (emissoesAnbima || [])
-      .map(r => ({ mes: (r.Mes || '').trim(), total: Number(r.Total) || 0, fundos: Number(r.Fundos) || 0 }))
-      .filter(r => /^\d{4}-\d{2}$/.test(r.mes))
+      .filter(r => /^\d{4}-\d{2}$/.test((r.Mes || '').trim()))
+      .map(r => {
+        const total = Number(r.Total) || 0, fundos = Number(r.Fundos) || 0
+        const t12 = Number(r.Total12431) || 0, f12 = Number(r.Fundos12431) || 0
+        return {
+          mes: r.Mes.trim(),
+          total: inc ? t12 : Math.max(0, total - t12),
+          fundos: inc ? f12 : Math.max(0, fundos - f12),
+        }
+      })
       .sort((a, b) => a.mes.localeCompare(b.mes))
       .slice(-EMISSOES_MESES)
       .map(r => ({ mes: r.mes, label: fmtMonthYY(r.mes), total: r.total, fundos: r.fundos }))
-  }, [emissoesAnbima])
+  }, [emissoesAnbima, tipo])
   const maxEmissoes = Math.max(1, ...emissoesMeses.map(m => m.total))
 
   // ---- Tabela combinada (filtro principal) ----

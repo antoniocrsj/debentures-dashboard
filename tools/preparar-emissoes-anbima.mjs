@@ -34,10 +34,14 @@ const IN_DIR = path.join(ROOT, 'Anbima - Boletim')
 const OUT_CSV = path.join(ROOT, 'public', 'Emissoes_ANBIMA.csv')
 const OUT_META = path.join(ROOT, 'public', 'Emissoes_ANBIMA_meta.json')
 
-const SHEET = '08-05-Vlr-Det'   // subscritores de debentures por tipo (rito All)
-const HEADER_ROW = 13           // linha do cabecalho (Data | tipos de investidor)
-const COL_DATA = 2              // col B
-const COLS = ['Mes', 'Total', 'Fundos']
+const SHEET = '08-05-Vlr-Det'        // subscritores de debentures por tipo (rito All = todos)
+const SHEET_12431 = '09-06-Vlr-Det'  // subscritores de debentures 12.431 por tipo
+const HEADER_ROW = 13                // linha do cabecalho (Data | tipos de investidor)
+const COL_DATA = 2                   // col B
+// Total/Fundos = mercado TODO; Total12431/Fundos12431 = so' incentivadas.
+// O Tradicional o app deriva (Total - Total12431). Assim o grafico reage ao
+// toggle 12.431/Tradicional da aba Tecnico.
+const COLS = ['Mes', 'Total', 'Fundos', 'Total12431', 'Fundos12431']
 
 const MESES = { jan: '01', fev: '02', mar: '03', abr: '04', mai: '05', jun: '06', jul: '07', ago: '08', set: '09', out: '10', nov: '11', dez: '12' }
 
@@ -119,7 +123,7 @@ function listXlsx() {
 function csvField(v) { return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"' }
 function toCsv(rows) {
   const linhas = [COLS.map(csvField).join(',')]
-  for (const r of rows) linhas.push([r.mes, r.total, r.fundos].map(csvField).join(','))
+  for (const r of rows) linhas.push([r.mes, r.total, r.fundos, r.total12431, r.fundos12431].map(csvField).join(','))
   return linhas.join('\r\n') + '\r\n'
 }
 function preservarAnterior(motivo) {
@@ -147,13 +151,24 @@ async function main() {
 
   const wb = new ExcelJS.Workbook()
   await wb.xlsx.readFile(file.full)
-  const sheet = wb.getWorksheet(SHEET)
-  if (!sheet) { preservarAnterior(`sem a aba '${SHEET}' (nao parece o boletim ANBIMA)`); return }
+  const sheetAll = wb.getWorksheet(SHEET)
+  if (!sheetAll) { preservarAnterior(`sem a aba '${SHEET}' (nao parece o boletim ANBIMA)`); return }
+  const sheet12431 = wb.getWorksheet(SHEET_12431)   // opcional: sem ela, 12.431 = 0
 
-  let rows
-  try { rows = lerEmissoes(sheet) }
-  catch (e) { preservarAnterior(`falha ao ler '${SHEET}': ${e.message}`); return }
-  if (!rows.length) { preservarAnterior('nenhum mes valido na aba'); return }
+  let allRows, incRows
+  try {
+    allRows = lerEmissoes(sheetAll)
+    incRows = sheet12431 ? lerEmissoes(sheet12431) : []
+  } catch (e) { preservarAnterior(`falha ao ler subscritores: ${e.message}`); return }
+  if (!allRows.length) { preservarAnterior('nenhum mes valido na aba'); return }
+
+  // Junta por mes: mercado TODO (08-05) + incentivadas (09-06). Tradicional o
+  // app deriva depois (Total - Total12431).
+  const inc = new Map(incRows.map(r => [r.mes, r]))
+  const rows = allRows.map(r => {
+    const i = inc.get(r.mes)
+    return { mes: r.mes, total: r.total, fundos: r.fundos, total12431: i ? i.total : 0, fundos12431: i ? i.fundos : 0 }
+  })
 
   fs.writeFileSync(OUT_CSV, toCsv(rows), 'utf8')
   const ref = rows[rows.length - 1].mes
@@ -171,11 +186,11 @@ async function main() {
   fs.writeFileSync(OUT_META, JSON.stringify(meta, null, 2) + '\n', 'utf8')
 
   const ult = rows.slice(-6)
+  const bi = v => (v / 1e9).toFixed(1)
   log(`  OK: ${rows.length} meses (${rows[0].mes} -> ${ref}) -> ${path.relative(ROOT, OUT_CSV)}`)
-  log('  ultimos 6 meses (R$ bi):')
+  log('  ultimos 6 meses (R$ bi) -- total (12.431 | trad) · fundos:')
   for (const r of ult) {
-    const pct = r.total ? (100 * r.fundos / r.total).toFixed(0) : '-'
-    log(`     ${r.mes}: total ${(r.total / 1e9).toFixed(1)}  fundos ${(r.fundos / 1e9).toFixed(1)}  (${pct}%)`)
+    log(`     ${r.mes}: ${bi(r.total)} (12.431 ${bi(r.total12431)} | trad ${bi(r.total - r.total12431)})  · fundos ${bi(r.fundos)} (12.431 ${bi(r.fundos12431)})`)
   }
 }
 
