@@ -2018,9 +2018,9 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
    filtros (segmento/periodo) ficam a' esquerda e reservam espaco a' direita
    pra nao passar por baixo dele. */
 .app:not(.desktop) .tecnico { position: relative; }
-.app:not(.desktop) .tecnico-header .controls { padding-right: 150px; }
+.app:not(.desktop) .tecnico-header .controls { padding-right: 162px; }
 .app:not(.desktop) .tecnico-header .controls > .corte-step {
-  position: absolute; top: 0; right: 0; margin: 0; z-index: 3;
+  position: absolute; top: 10px; right: 8px; margin: 0; z-index: 3;
 }
 .tecnico-seg { width: auto; }
 .tecnico-filtro-ativo {
