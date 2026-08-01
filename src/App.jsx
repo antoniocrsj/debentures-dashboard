@@ -501,8 +501,6 @@ export default function App() {
               onSelectionToggle={code => selectAtivo(code, true)}
               onSelectionClear={clearSelection}
               tabsSlot={null}
-              updatedLabel={dataFreshness?.label}
-              updatedTooltip={dataFreshness?.tooltip}
               compact
             />
             {tabsNav}
