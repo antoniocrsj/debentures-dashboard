@@ -2712,6 +2712,14 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
   margin: 0; flex: 1 1 auto; height: 100%; min-height: 0; max-height: none; overflow: auto;
 }
 
+/* Compacto: margem lateral da aba Secundario IGUAL a da Debentures (12px). Antes
+   o .sec-page recuava 16px (--sp-5) e o container dos cards somava +12px -> cards
+   a 28px, mais estreitos que os da Debentures (12px). Aqui o .sec-page cai p/
+   12px (alinha filtros/grafico) e o recuo proprio dos cards zera -- o recuo passa
+   a vir so' do .sec-page, deixando os cards a 12px (largura = a da Debentures). */
+.app:not(.desktop) .sec-page { padding-left: var(--sp-4); padding-right: var(--sp-4); }
+.app:not(.desktop) .sec-cards { padding-left: 0; padding-right: 0; }
+
 /* ── Compacto: filtros do secundario numa unica linha que rola horizontal ─────
    Empilhados (label em cima + campo) eles comiam ~234px de altura. Aqui viram
    uma faixa unica rolavel (padrao do chip-bar de Debentures): campos flex:0 0
