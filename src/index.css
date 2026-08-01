@@ -2220,6 +2220,9 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 }
 /* Respiro entre o grafico (unico, no compacto) e a tabela logo abaixo. */
 .app:not(.desktop) .tecnico .grafico-card { margin-bottom: 12px; }
+/* Titulo "Semanas"/"Meses" acima da tabela e' redundante no Tecnico (o
+   alternador ja' vive no canto do grafico de Captacao). */
+.app:not(.desktop) .tecnico .tecnico-tables-row .fluxo-section-title { display: none; }
 
 /* Barra de graficos do Tecnico (SO' no compacto): fixa logo acima do BottomNav
    (~76px). Escolhe qual grafico + tabela aparece. */
