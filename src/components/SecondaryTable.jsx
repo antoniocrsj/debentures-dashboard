@@ -565,8 +565,8 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
                     <span className="ac-v">{a.volumeRs > 0 ? fmtVolRs(a.volumeRs) : '-'}</span>
                   </div>
                   <div className="ac-val-item">
-                    <span className="ac-k">Tx negociada</span>
-                    <span className="ac-v" title={spreadNeg ? `Spread: ${spreadNeg}${a.spreadRef?.ref ? ` · ref ${a.spreadRef.ref}` : ''}` : undefined}>{taxaNeg}</span>
+                    <span className="ac-k">Spread neg.</span>
+                    <span className="ac-v" title={taxaNeg && taxaNeg !== '-' ? `Taxa nominal negociada: ${taxaNeg}${a.spreadRef?.ref ? ` · ref ${a.spreadRef.ref}` : ''}` : undefined}>{spreadNeg || '—'}</span>
                   </div>
                 </div>
               </div>
