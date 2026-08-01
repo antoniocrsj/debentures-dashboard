@@ -1,21 +1,28 @@
 // Barras de EMISSÃO de debêntures por mês (ANBIMA), com a parcela que foi para
 // FUNDOS DE INVESTIMENTO preenchida. Reusa as classes .venc-* (plot, coluna,
-// baseline, eixo) pra ficar igual ao gráfico de cima. A barra inteira = total
-// emitido no mês (branca, contorno terracota); o preenchimento terracota no PÉ
-// da barra = quanto foi subscrito por fundos (a diferença até o topo = resto).
-// Como a .venc-bar-wrap é flex column-reverse, o filho .emissoes-fundos assenta
-// no fundo. Acima de cada barra vão os DOIS montantes: total e fundos.
-export default function EmissoesBars({ rows, max, fmtVal, fmtLabel, ariaLabel }) {
+// baseline, eixo). A barra inteira = total emitido no mês (branca, contorno
+// terracota); o preenchimento terracota no PÉ = quanto foi para fundos.
+// Se `onBarClick` for passado, cada barra vira um botão (clicar dispara o
+// drill-down da tabela Ativos daquele mês); `selectedMes` marca a barra ativa.
+export default function EmissoesBars({ rows, max, fmtVal, fmtLabel, ariaLabel, onBarClick, selectedMes }) {
   const safeMax = Math.max(1e-9, max)
+  const clickable = typeof onBarClick === 'function'
   return (
     <div className="venc-chart emissoes-chart" role="img" aria-label={ariaLabel}>
       <div className="venc-plot">
         {rows.map(m => {
           const barPct = (m.total / safeMax) * 84
           const fundosPct = m.total > 0 ? Math.min(100, (m.fundos / m.total) * 100) : 0
+          const sel = selectedMes === m.mes
           return (
-            <div key={m.mes} className="venc-col emissoes-col"
-              title={`${m.label}: emitido ${fmtVal(m.total)} · fundos ${fmtVal(m.fundos)}`}>
+            <div key={m.mes}
+              className={`venc-col emissoes-col${clickable ? ' emissoes-col-click' : ''}${sel ? ' sel' : ''}`}
+              title={`${m.label}: emitido ${fmtVal(m.total)} · fundos ${fmtVal(m.fundos)}`}
+              role={clickable ? 'button' : undefined}
+              tabIndex={clickable ? 0 : undefined}
+              aria-pressed={clickable ? sel : undefined}
+              onClick={clickable ? () => onBarClick(m.mes) : undefined}
+              onKeyDown={clickable ? (e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onBarClick(m.mes) } }) : undefined}>
               {/* Montantes acima da barra: total (escuro) e fundos (terracota). */}
               <span className="venc-bar-total emissoes-lbl">
                 {m.total > 0.00001 && (

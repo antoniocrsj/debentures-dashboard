@@ -13,6 +13,7 @@ import BottomNav from './components/BottomNav.jsx'
 import { ABAS_OCULTAS_DESKTOP } from './config/abas.js'
 import Filters from './components/Filters.jsx'
 import AssetTable from './components/AssetTable.jsx'
+import { sortAssets } from './utils/sortAssets.js'
 import SecondaryTable from './components/SecondaryTable.jsx'
 import BlcMaturitySelo from './components/BlcMaturitySelo.jsx'
 import AssetModal from './components/AssetModal.jsx'
@@ -284,35 +285,7 @@ export default function App() {
   }, [allAssets, filters, indexes, cronoMap])
 
   // Sort
-  const sortedAssets = useMemo(() => {
-    const arr = [...filteredAssets]
-    const { col, dir } = sort
-    if (!col) return arr
-    const key = a => {
-      if (col === 'ativo')      return (a.codigoAtivo || '').toLowerCase()
-      if (col === 'registroCvm') return dateKey(a.registroCvm)
-      if (col === 'vencimento') return dateKey(a.vencimento)
-      if (col === 'taxa')       return parseFloat((a.taxa || '').replace(',', '.')) || 0
-      if (col === 'vol')        return a.volumeEmitido
-      if (col === 'alocacao')   return a.alocacao
-      // Recompra/breakeven: registros SEM valor vao sempre para o fim (independe da direcao).
-      if (col === 'recompraTaxa') {
-        const v = a.recompra?.taxaEvento
-        return v == null ? (dir === 'asc' ? Infinity : -Infinity) : v
-      }
-      if (col === 'recompraData') {
-        const k = dateKey(a.recompra?.dataEvento)
-        return k || (dir === 'asc' ? '99999999' : '00000000')
-      }
-      return ''
-    }
-    arr.sort((a, b) => {
-      const va = key(a), vb = key(b)
-      const cmp = typeof va === 'number' ? va - vb : va.localeCompare(vb)
-      return dir === 'asc' ? cmp : -cmp
-    })
-    return arr
-  }, [filteredAssets, sort])
+  const sortedAssets = useMemo(() => sortAssets(filteredAssets, sort), [filteredAssets, sort])
 
   // No desktop a tabela tem scroll próprio → mostra tudo. No mobile limita a 100.
   const displayedAssets = useMemo(
@@ -571,7 +544,8 @@ export default function App() {
               <div className="state-box"><div className="spinner" aria-label="Carregando" /><p>Carregando…</p></div>
             }>
               <TecnicoDashboard agenda12m={agenda12m} blc={raw?.blc} plByGestor={plByGestor} assets={allAssets}
-                emissoesAnbima={raw?.emissoesAnbima}
+                emissoesAnbima={raw?.emissoesAnbima} desktop={desktop} onAssetInfo={setSelected}
+                anbimaRef={anbimaRef} recompraRef={recompraRef}
                 corte={corte} onCorte={setCorte} corteDisponivel={corteDisponivel} pctPorCnpj={pctPorCnpj} />
             </Suspense>
           </ErrorBoundary>

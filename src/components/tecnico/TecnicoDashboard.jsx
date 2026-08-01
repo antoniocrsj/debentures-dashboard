@@ -18,6 +18,8 @@ import CaixaPctPLLine from '../caixa/CaixaPctPLLine.jsx'
 import MonthBars from '../vencimentos/MonthBars.jsx'
 import EmissoesBars from './EmissoesBars.jsx'
 import TecnicoGestorTable from './TecnicoGestorTable.jsx'
+import AssetTable from '../AssetTable.jsx'
+import { sortAssets } from '../../utils/sortAssets.js'
 import CorteSelector from '../CorteSelector.jsx'
 import { CORTE_OFICIAL, isOficial, cnpjsNoCorte, historicoNoCorte } from '../../utils/corte.js'
 
@@ -81,7 +83,7 @@ const VISTAS = [
   { id: 'meses',   label: 'Meses' },
 ]
 
-export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, emissoesAnbima, corte, onCorte, corteDisponivel, pctPorCnpj }) {
+export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, emissoesAnbima, desktop, onAssetInfo, anbimaRef, recompraRef, corte, onCorte, corteDisponivel, pctPorCnpj }) {
   const [tipo, setTipo] = useState('trad')   // Tradicional: padrao unico do app
   const [gestorSel, setGestorSel] = useState('')
   const [periodo, setPeriodo] = useState(PERIODO_PADRAO)
@@ -261,6 +263,25 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, e
   }, [emissoesAnbima, tipo])
   const maxEmissoes = Math.max(1, ...emissoesMeses.map(m => m.total))
 
+  // Drill-down: clicar numa barra troca a tabela de gestores pela tabela ATIVOS,
+  // filtrada pelas debentures da BASE emitidas naquele mes (por Registro CVM) e no
+  // segmento atual (12.431/Tradicional). O mes vem do grafico ANBIMA (mercado); a
+  // lista sao as NOSSAS debentures daquele mes -- a contagem nao bate com a barra.
+  const [emissaoMes, setEmissaoMes] = useState(null)
+  const [ativosSort, setAtivosSort] = useState({ col: 'registroCvm', dir: 'desc' })
+  const onAtivosSort = col => setAtivosSort(s => ({ col, dir: s.col === col && s.dir === 'desc' ? 'asc' : 'desc' }))
+  const toggleEmissaoMes = mes => setEmissaoMes(m => (m === mes ? null : mes))
+  const ativosDoMes = useMemo(() => {
+    if (!emissaoMes) return []
+    const inc = tipo === '12431'
+    const filtrados = (assets || []).filter(a => {
+      if (!a.registroCvm || isYes(a.lei12431Str) !== inc) return false
+      const k = dateKey(a.registroCvm)
+      return k && k.length >= 6 && `${k.slice(0, 4)}-${k.slice(4, 6)}` === emissaoMes
+    })
+    return sortAssets(filtrados, ativosSort)
+  }, [assets, emissaoMes, tipo, ativosSort])
+
   // ---- Tabela combinada (filtro principal) ----
   const gestorRows = useMemo(() => ranking.map(r => ({
     gestor: r.gestor,
@@ -431,15 +452,33 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, e
                 : <FluxoMonthlyTable months={monthlyAgg} />}
               <div className="tecnico-emissoes-cell">
                 <div className="grafico-card">
-                  <p className="tecnico-chart-label">Emissões <span className="tecnico-chart-sub">· preenchido = fundos (ANBIMA)</span></p>
+                  <p className="tecnico-chart-label">Emissões <span className="tecnico-chart-sub">· preenchido = fundos (ANBIMA) · clique p/ ver os ativos do mês</span></p>
                   <EmissoesBars rows={emissoesMeses} max={maxEmissoes} fmtVal={fmtBRL} fmtLabel={fmtBar}
-                    ariaLabel="Emissão mensal de debêntures (ANBIMA) e a parcela subscrita por fundos de investimento — últimos 6 meses" />
+                    onBarClick={toggleEmissaoMes} selectedMes={emissaoMes}
+                    ariaLabel="Emissão mensal de debêntures (ANBIMA) e a parcela subscrita por fundos de investimento — últimos 6 meses. Clique numa barra para listar os ativos da base emitidos no mês." />
                 </div>
               </div>
             </div>
           </div>
 
-          <TecnicoGestorTable rows={gestorRows} activeGestor={gestorSel} onSelect={onSelectGestor} />
+          {emissaoMes ? (
+            <div className="tecnico-drill">
+              <div className="tecnico-drill-head">
+                <span className="tecnico-drill-tit">
+                  Debêntures da base emitidas em {fmtMonthYY(emissaoMes)}
+                  <span className="tecnico-drill-seg"> · {tipo === '12431' ? '12.431' : 'Tradicional'}</span>
+                  <span className="tecnico-drill-n"> · {ativosDoMes.length}</span>
+                </span>
+                <button type="button" className="tecnico-drill-back" onClick={() => setEmissaoMes(null)}>← gestores</button>
+              </div>
+              <AssetTable assets={ativosDoMes} sort={ativosSort} onSort={onAtivosSort}
+                onSelect={() => {}} footerAssets={ativosDoMes}
+                onInfoClick={onAssetInfo || (() => {})}
+                anbimaRef={anbimaRef} recompraRef={recompraRef} desktop={desktop} />
+            </div>
+          ) : (
+            <TecnicoGestorTable rows={gestorRows} activeGestor={gestorSel} onSelect={onSelectGestor} />
+          )}
         </div>
       )}
 
