@@ -81,7 +81,7 @@ const VISTAS = [
   { id: 'meses',   label: 'Meses' },
 ]
 
-export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, corte, onCorte, corteDisponivel, pctPorCnpj }) {
+export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, emissoesAnbima, corte, onCorte, corteDisponivel, pctPorCnpj }) {
   const [tipo, setTipo] = useState('trad')   // Tradicional: padrao unico do app
   const [gestorSel, setGestorSel] = useState('')
   const [periodo, setPeriodo] = useState(PERIODO_PADRAO)
@@ -235,24 +235,20 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, c
     return acc
   }, [agenda12m, eventos, gpt, tipo])
 
-  // ---- Emissões (volume emitido por mês, últimos 12 meses) ----
-  // Ancorado na data de REGISTRO CVM (a Data de Emissão é retrodatada e
-  // distorceria a linha do tempo — mesmo motivo da coluna da aba Ativos). Segue
-  // o segmento (tipo); gestor NÃO filtra (emissão é do emissor, não do detentor).
+  // ---- Emissões (volume emitido por mês x quanto foi para Fundos) ----
+  // Fonte: ANBIMA (Boletim de Mercado de Capitais), aba de Subscritores de
+  // debêntures — total emitido do mês e a parcela subscrita por Fundos de
+  // Investimento. É visão de MERCADO (não da nossa base) e não segue o segmento:
+  // o "quanto foi para fundos" só existe nesse agregado mensal da ANBIMA.
+  // Gerado por tools/preparar-emissoes-anbima.mjs -> public/Emissoes_ANBIMA.csv.
   const emissoesMeses = useMemo(() => {
-    const janela = ultimosMeses(EMISSOES_MESES)
-    const acc = new Map(janela.map(k => [k, 0]))
-    const quer12431 = tipo === '12431'
-    for (const a of assets || []) {
-      if (!a.registroCvm) continue
-      if (quer12431 !== isYes(a.lei12431Str)) continue
-      const k = dateKey(a.registroCvm)          // 'AAAAMMDD'
-      if (!k || k.length < 6) continue
-      const mk = `${k.slice(0, 4)}-${k.slice(4, 6)}`
-      if (acc.has(mk)) acc.set(mk, acc.get(mk) + (a.volumeEmitido || 0))
-    }
-    return janela.map(k => ({ mes: k, label: fmtMonthYY(k), total: acc.get(k) || 0 }))
-  }, [assets, tipo])
+    return (emissoesAnbima || [])
+      .map(r => ({ mes: (r.Mes || '').trim(), total: Number(r.Total) || 0, fundos: Number(r.Fundos) || 0 }))
+      .filter(r => /^\d{4}-\d{2}$/.test(r.mes))
+      .sort((a, b) => a.mes.localeCompare(b.mes))
+      .slice(-EMISSOES_MESES)
+      .map(r => ({ mes: r.mes, label: fmtMonthYY(r.mes), total: r.total, fundos: r.fundos }))
+  }, [emissoesAnbima])
   const maxEmissoes = Math.max(1, ...emissoesMeses.map(m => m.total))
 
   // ---- Tabela combinada (filtro principal) ----
@@ -425,9 +421,9 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, c
                 : <FluxoMonthlyTable months={monthlyAgg} />}
               <div className="tecnico-emissoes-cell">
                 <div className="grafico-card">
-                  <p className="tecnico-chart-label">Emissões</p>
+                  <p className="tecnico-chart-label">Emissões <span className="tecnico-chart-sub">· preenchido = fundos (ANBIMA)</span></p>
                   <EmissoesBars rows={emissoesMeses} max={maxEmissoes} fmtVal={fmtBRL} fmtLabel={fmtBar}
-                    ariaLabel="Volume de emissões por mês — últimos 6 meses (por Registro CVM)" />
+                    ariaLabel="Emissão mensal de debêntures (ANBIMA) e a parcela subscrita por fundos de investimento — últimos 6 meses" />
                 </div>
               </div>
             </div>

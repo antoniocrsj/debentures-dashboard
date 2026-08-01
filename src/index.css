@@ -2169,6 +2169,28 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 }
 .emissoes-col { cursor: default; }
 .emissoes-col:hover { background: transparent; }   /* nao e' clicavel */
+/* Preenchimento terracota no PE da barra = parcela subscrita por Fundos. A wrap
+   e' column-reverse, entao este filho assenta no fundo; o topo branco = o resto. */
+.emissoes-fundos { width: 100%; background: #8c5e3a; }
+/* Rotulo de dois montantes acima da barra: total (escuro) e fundos (terracota). */
+.emissoes-lbl { height: auto; display: flex; flex-direction: column; align-items: center; line-height: 1.05; margin-bottom: 3px; }
+.emissoes-lbl-total { color: var(--text); font-weight: 700; }
+.emissoes-lbl-fundos { color: #8c5e3a; font-weight: 600; font-size: calc(var(--fz-micro) - 0.5px); }
+.tecnico-chart-sub { font-weight: 400; font-size: var(--fz-micro); color: var(--text-muted); }
+
+/* Compacto (mobile): a aba Tecnico empilha os cards em coluna. Fora do grid do
+   desktop, os cards de grafico de BARRAS (venc/fluxo) colapsavam -- o plot e'
+   flex:1 e sem um card com altura ele virava ~0 (Emissoes ficava com 25px).
+   Da' uma altura fixa a esses cards e deixa o plot preencher. O card de Caixa
+   (Recharts) se dimensiona sozinho e fica de fora. */
+.app:not(.desktop) .tecnico .grafico-card:has(> .venc-chart),
+.app:not(.desktop) .tecnico .grafico-card:has(> .fluxo-chart) {
+  height: 190px; display: flex; flex-direction: column;
+}
+.app:not(.desktop) .tecnico .grafico-card:has(> .venc-chart) > .venc-chart,
+.app:not(.desktop) .tecnico .grafico-card:has(> .fluxo-chart) > .fluxo-chart {
+  flex: 1; min-height: 0;
+}
 
 /* Seta de direção no cabeçalho de Cap. (entrada, verde ↑) e Res. (saída,
    vermelho ↓). Colada ao rótulo, um tico maior que o texto p/ leitura rápida. */

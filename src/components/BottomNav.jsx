@@ -4,7 +4,7 @@
 // com traco de accent no topo do icone. Respeita a safe-area do iPhone.
 // Os desenhos vivem em SectionIcons.jsx (compartilhados com as abas de topo).
 import {
-  DebenturesIcon, SecundarioIcon, CaptacaoIcon, CaixaIcon, VencimentosIcon,
+  DebenturesIcon, SecundarioIcon, CaptacaoIcon, CaixaIcon, VencimentosIcon, TecnicoIcon,
 } from './SectionIcons.jsx'
 import { ABAS_OCULTAS_COMPACTO } from '../config/abas.js'
 
@@ -14,6 +14,7 @@ const ITEMS = [
   { id: 'captacao',    label: 'Captação',    Icon: CaptacaoIcon },
   { id: 'caixa',       label: 'Caixa',       Icon: CaixaIcon },
   { id: 'vencimentos', label: 'Vencimentos', Icon: VencimentosIcon },
+  { id: 'tecnico',     label: 'Técnico',     Icon: TecnicoIcon },
 ].filter(t => !ABAS_OCULTAS_COMPACTO.has(t.id))
 
 export default function BottomNav({ section, onSection }) {

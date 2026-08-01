@@ -132,7 +132,7 @@ export default function App() {
     : tab === 'atualizacao' ? 'atualizacao'
     : 'debentures'
   const selectSection = useCallback(
-    s => setTab(s === 'captacao' || s === 'vencimentos' || s === 'caixa' || s === 'secundario' || s === 'atualizacao' ? s : lastDebTab),
+    s => setTab(s === 'captacao' || s === 'vencimentos' || s === 'caixa' || s === 'secundario' || s === 'tecnico' || s === 'atualizacao' ? s : lastDebTab),
     [lastDebTab]
   )
   const { data: agenda12m } = useAgenda12m()
@@ -145,9 +145,6 @@ export default function App() {
     setTab(t => {
       if (desktop && (t === 'ativos' || t === 'gestores' || t === 'grupos')) return 'debentures'
       if (!desktop && t === 'debentures') return 'ativos'
-      // "Técnico" é desktop-only (sem entrada no BottomNav) — se o usuário
-      // alternar pra compacto enquanto está nela, volta pra uma aba válida.
-      if (!desktop && t === 'tecnico') return 'ativos'
       return t
     })
   }, [desktop])
@@ -574,6 +571,7 @@ export default function App() {
               <div className="state-box"><div className="spinner" aria-label="Carregando" /><p>Carregando…</p></div>
             }>
               <TecnicoDashboard agenda12m={agenda12m} blc={raw?.blc} plByGestor={plByGestor} assets={allAssets}
+                emissoesAnbima={raw?.emissoesAnbima}
                 corte={corte} onCorte={setCorte} corteDisponivel={corteDisponivel} pctPorCnpj={pctPorCnpj} />
             </Suspense>
           </ErrorBoundary>

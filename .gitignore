@@ -18,6 +18,11 @@ tools/Sugestao_*.csv
 # Cache de agendas ANBIMA (gerado por preparar-agenda.ps1; nao versionar)
 dados-anbima/agenda-cache/
 
+# Boletim de Mercado de Capitais (ANBIMA): input grande (~4MB/mes) do
+# preparar-emissoes-anbima.mjs. Nao versionar o xlsx; o app consome apenas
+# public/Emissoes_ANBIMA.csv (versionado). O README da pasta e' mantido.
+Anbima - Boletim/*.xlsx
+
 # Exports crus do grupo CRM Books (privados; so o CSV gerado e versionado)
 tools/books/*.txt
 

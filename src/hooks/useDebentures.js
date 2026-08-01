@@ -37,6 +37,11 @@ const STATIC_BLC_MATURIDADE_URL = '/BLC_maturidade.json'
 // real + preco/taxa/spread limpos). Ver METODOLOGIA_Mercado_Verdadeiro.md. OPCIONAL.
 const STATIC_MERCADO_URL = '/Mercado_Verdadeiro.csv'
 
+// Emissoes de debentures do mercado (ANBIMA), mensal: total emitido x quanto foi
+// subscrito por Fundos de Investimento. Gerado por tools/preparar-emissoes-anbima.mjs
+// a partir do Boletim de Mercado de Capitais. Alimenta o grafico da aba Tecnico. OPCIONAL.
+const STATIC_EMISSOES_ANBIMA_URL = '/Emissoes_ANBIMA.csv'
+
 async function fetchCSV(rawUrl) {
   const url = `/api/proxy?url=${encodeURIComponent(rawUrl)}`
   const res = await fetch(url)
@@ -61,7 +66,7 @@ async function fetchStaticJSON(path) {
 }
 
 function cacheKey() {
-  return 'deb-cache-v11'  // v11: + Mercado_Verdadeiro (base do secundario: trade a mercado)
+  return 'deb-cache-v12'  // v12: + Emissoes_ANBIMA (emissao x fundos, grafico do Tecnico)
 }
 
 function readCache() {
@@ -128,9 +133,11 @@ export function useDebentures(blcUrl) {
       fetchStaticJSON(STATIC_ANBIMA_BE_META_URL).catch(() => null),
       // Base Mercado Verdadeiro (trade a mercado) — fonte da aba Secundario. OPCIONAL.
       fetchStaticCSV(STATIC_MERCADO_URL).catch(() => []),
+      // Emissoes ANBIMA (emissao mensal x fundos) — grafico da aba Tecnico. OPCIONAL.
+      fetchStaticCSV(STATIC_EMISSOES_ANBIMA_URL).catch(() => []),
     ])
-      .then(([emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta, mercado]) => {
-        const raw = { emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta, mercado }
+      .then(([emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta, mercado, emissoesAnbima]) => {
+        const raw = { emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta, mercado, emissoesAnbima }
         writeCache(raw)
         if (alive) setState({ loading: false, refreshing: false, error: null, raw, cachedAt: Date.now() })
       })

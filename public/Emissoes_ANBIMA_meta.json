@@ -1,0 +1,11 @@
+{
+  "fonte": "ANBIMA - Boletim de Mercado de Capitais (aba 08-05 Subscritores RF Debentures)",
+  "sourceFile": "Boletim_MK_Anexo_v1_a90b3c46da.xlsx",
+  "dataReferencia": "2026-06",
+  "meses": 78,
+  "primeiroMes": "2020-01",
+  "ultimoMes": "2026-06",
+  "geradoEm": "2026-08-01T13:02:28.598Z",
+  "preservado": false,
+  "aviso": "Os 1-2 meses mais recentes subestimam Fundos (ofertas nao encerradas ficam em Intermediarios)."
+}
