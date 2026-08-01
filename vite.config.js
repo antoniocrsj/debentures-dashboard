@@ -291,6 +291,20 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      // Service worker DESLIGADO (ago/2026). O SW de cache (autoUpdate) servia a
+      // versao antiga primeiro e so' trocava depois de instalar/ativar a nova em
+      // 2o plano -> era preciso dar F5 varias vezes ate' o deploy aparecer (e ja'
+      // tinha causado tela branca por chunk velho no cache). O Luc e' painel de
+      // dados AO VIVO -- offline nao serve --, entao o cache do SW so' atrapalha.
+      //
+      // selfDestroying gera um sw.js que DESREGISTRA o SW de quem ja' tinha e
+      // limpa os caches, sem registrar um novo. Com isso o index.html (Vercel:
+      // must-revalidate) e' sempre buscado fresco e aponta pro bundle novo -> a
+      // atualizacao aparece no PRIMEIRO F5. Os assets seguem hasheados+imutaveis,
+      // entao a velocidade se mantem. O manifest fica (icone/tema); so' se perde
+      // o "instalar como app"/offline. Depois de um ciclo, da' pra remover o
+      // plugin de vez.
+      selfDestroying: true,
       registerType: 'autoUpdate',
       includeAssets: ['icon-192-v2.png', 'icon-512-v2.png', 'icon-maskable-512-v2.png'],
       manifest: {
