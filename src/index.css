@@ -2223,6 +2223,13 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 /* Titulo "Semanas"/"Meses" acima da tabela e' redundante no Tecnico (o
    alternador ja' vive no canto do grafico de Captacao). */
 .app:not(.desktop) .tecnico .tecnico-tables-row .fluxo-section-title { display: none; }
+/* Tabela do Tecnico compacto: ALTURA UNICA (todas iguais) que cabe ate' a barra
+   de graficos -- o conteudo rola POR DENTRO, sem empurrar a pagina. */
+.app:not(.desktop) .tecnico .table-wrap {
+  max-height: calc(100dvh - 545px); min-height: 150px;
+}
+/* Cabecalho mais baixo. */
+.app:not(.desktop) .tecnico .table-wrap thead th { padding-top: 3px; padding-bottom: 3px; }
 
 /* Barra de graficos do Tecnico (SO' no compacto): fixa logo acima do BottomNav
    (~76px). Escolhe qual grafico + tabela aparece. */
