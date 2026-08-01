@@ -2147,9 +2147,14 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 
   /* Emissoes: card na COLUNA 3 da linha de baixo (sob o Vencimentos); a col 2
      (sob o Caixa) fica vazia. Preenche a altura da linha, como a tabela ao lado. */
+  /* height:100% obrigatorio: a .tecnico-tables-row usa align-items:flex-start
+     (nao estica os itens), entao a celula precisa pedir a altura da linha —
+     igual a tabela ao lado faz. Sem isso o card encolhia p/ o conteudo (90px) e
+     as barras viravam tracinhos. */
   .app.desktop .tecnico-emissoes-cell {
     grid-column: 3;
     min-width: 0; min-height: 0;
+    height: 100%;
     display: flex;
   }
   .app.desktop .tecnico-emissoes-cell > .grafico-card { width: 100%; height: 100%; }
