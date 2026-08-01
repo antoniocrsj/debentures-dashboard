@@ -2218,6 +2218,8 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 .app:not(.desktop) .tecnico .grafico-card:has(> .caixa-trend) > .caixa-trend {
   flex: 1; min-height: 0; height: auto;
 }
+/* Respiro entre o grafico (unico, no compacto) e a tabela logo abaixo. */
+.app:not(.desktop) .tecnico .grafico-card { margin-bottom: 12px; }
 
 /* Barra de graficos do Tecnico (SO' no compacto): fixa logo acima do BottomNav
    (~76px). Escolhe qual grafico + tabela aparece. */
