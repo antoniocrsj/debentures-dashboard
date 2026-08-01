@@ -461,7 +461,10 @@ export default function App() {
             30,1 bi. Ligar assim faria o total SUBIR ao apertar o corte. Filtro
             inerte e' pior que filtro ausente, entao o seletor nem aparece la'
             ate' a divergencia ser reconciliada. */}
-        {mostraCorte && !desktop && (
+        {/* Tecnico fica de FORA: ele renderiza o proprio %Deb no canto sup. direito
+            da aba (bege). Sem isto, o compacto mostrava dois seletores iguais -- o
+            do carvao virou redundante. Captacao/Caixa seguem com o corte aqui. */}
+        {mostraCorte && !desktop && tab !== 'tecnico' && (
           <CorteSelector
             corte={corte}
             onChange={setCorte}
