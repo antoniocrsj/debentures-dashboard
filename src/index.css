@@ -2014,6 +2014,14 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
    opostos -- e' o alinhamento que o usuario pediu e o que devolve altura p/ os
    graficos. */
 .tecnico-header .controls > .corte-step { margin-left: auto; }
+/* Compacto: o %Deb sai do fluxo e vai pro CANTO SUPERIOR DIREITO da aba; os
+   filtros (segmento/periodo) ficam a' esquerda e reservam espaco a' direita
+   pra nao passar por baixo dele. */
+.app:not(.desktop) .tecnico { position: relative; }
+.app:not(.desktop) .tecnico-header .controls { padding-right: 150px; }
+.app:not(.desktop) .tecnico-header .controls > .corte-step {
+  position: absolute; top: 0; right: 0; margin: 0; z-index: 3;
+}
 .tecnico-seg { width: auto; }
 .tecnico-filtro-ativo {
   display: inline-flex; align-items: center; gap: 8px; background: var(--card); border: 1.5px solid var(--primary);
@@ -2199,12 +2207,16 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
    Da' uma altura fixa a esses cards e deixa o plot preencher. O card de Caixa
    (Recharts) se dimensiona sozinho e fica de fora. */
 .app:not(.desktop) .tecnico .grafico-card:has(> .venc-chart),
-.app:not(.desktop) .tecnico .grafico-card:has(> .fluxo-chart) {
+.app:not(.desktop) .tecnico .grafico-card:has(> .fluxo-chart),
+.app:not(.desktop) .tecnico .grafico-card:has(> .caixa-trend) {
   height: 190px; display: flex; flex-direction: column;
 }
+/* height:auto no caixa-trend sobrescreve o 300px fixo global (so' no Tecnico),
+   pra os 4 graficos ficarem com a MESMA altura. */
 .app:not(.desktop) .tecnico .grafico-card:has(> .venc-chart) > .venc-chart,
-.app:not(.desktop) .tecnico .grafico-card:has(> .fluxo-chart) > .fluxo-chart {
-  flex: 1; min-height: 0;
+.app:not(.desktop) .tecnico .grafico-card:has(> .fluxo-chart) > .fluxo-chart,
+.app:not(.desktop) .tecnico .grafico-card:has(> .caixa-trend) > .caixa-trend {
+  flex: 1; min-height: 0; height: auto;
 }
 
 /* Barra de graficos do Tecnico (SO' no compacto): fixa logo acima do BottomNav
