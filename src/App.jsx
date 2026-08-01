@@ -13,6 +13,7 @@ import BottomNav from './components/BottomNav.jsx'
 import { ABAS_OCULTAS_DESKTOP } from './config/abas.js'
 import Filters from './components/Filters.jsx'
 import AssetTable from './components/AssetTable.jsx'
+import AssetCards from './components/AssetCards.jsx'
 import { sortAssets } from './utils/sortAssets.js'
 import SecondaryTable from './components/SecondaryTable.jsx'
 import BlcMaturitySelo from './components/BlcMaturitySelo.jsx'
@@ -593,18 +594,28 @@ export default function App() {
           <>
             {tab === 'ativos' && (
               <>
-                <AssetTable
-                  assets={displayedAssets}
-                  sort={sort}
-                  onSort={handleSort}
-                  selectedSet={selection}
-                  onSelect={selectAtivo}
-                  footerAssets={effectiveAssets}
-                  onInfoClick={setSelected}
-                  anbimaRef={anbimaRef}
-                  recompraRef={recompraRef}
-                  desktop={desktop}
-                />
+                {desktop ? (
+                  <AssetTable
+                    assets={displayedAssets}
+                    sort={sort}
+                    onSort={handleSort}
+                    selectedSet={selection}
+                    onSelect={selectAtivo}
+                    footerAssets={effectiveAssets}
+                    onInfoClick={setSelected}
+                    anbimaRef={anbimaRef}
+                    recompraRef={recompraRef}
+                    desktop={desktop}
+                  />
+                ) : (
+                  /* TESTE compacto: ativos em cards (todas as infos) em vez de tabela. */
+                  <AssetCards
+                    assets={displayedAssets}
+                    selectedSet={selection}
+                    onSelect={selectAtivo}
+                    onInfoClick={setSelected}
+                  />
+                )}
                 {!showAll && filteredAssets.length > PAGE_SIZE && (
                   <button className="show-all-btn" onClick={() => setShowAll(true)}>
                     Mostrando {PAGE_SIZE} de {filteredAssets.length.toLocaleString('pt-BR')} ativos — ver todos
