@@ -498,6 +498,11 @@ a { color: var(--primary); }
 .ac-val-item { display: flex; flex-direction: column; align-items: flex-end; line-height: 1.15; }
 .ac-val .ac-k { font-size: 9px; color: var(--text-muted); text-transform: uppercase; }
 .ac-val .ac-v { font-size: 13px; font-weight: 700; color: var(--primary); font-variant-numeric: tabular-nums; }
+/* Secundario (card): volume em carvao; spread verde se negociou abaixo da ANBIMA,
+   vermelho se acima (ver SecondaryTable). */
+.ac-val .ac-v.ac-v-carvao   { color: var(--text); }
+.ac-val .ac-v.ac-v-verde    { color: var(--c-verde); }
+.ac-val .ac-v.ac-v-vermelho { color: var(--c-vermelho); }
 
 /* ─── Content area ───────────────────────────────────────────── */
 .content {

@@ -525,8 +525,14 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
           {cardRows.map((a, i) => {
             const emi = a.grupo ? shortEmissor(a.emissorNome, a.grupo) : ''
             const txEmis = a.txEmissao ? comIndex(a.indexador, fmtTaxa(a.txEmissao)) : '-'  // EMISSAO (topo, igual ao card de Ativos)
-            const taxaNeg = comIndex(a.indexador, a.taxaMed)         // taxa NEGOCIADA (trade) -> col3, abaixo do volume
-            const spreadNeg = a.spreadRef ? a.spreadRef.formatada : null  // spread do trade -> tooltip
+            const taxaNeg = comIndex(a.indexador, a.taxaMed)         // taxa NEGOCIADA (trade) -> tooltip
+            const spreadNeg = a.spreadRef ? a.spreadRef.formatada : null  // spread do trade -> col3, abaixo do volume
+            // Cor do spread: verde se negociou ABAIXO da ANBIMA (spread menor),
+            // vermelho se ACIMA. Sem ANBIMA comparavel -> sem cor.
+            const spN = a.spreadRef?.spreadNum, anbN = a.anbimaSpreadNum
+            const spreadCor = (spN != null && !isNaN(spN) && anbN != null && !isNaN(anbN))
+              ? (spN < anbN ? ' ac-v-verde' : spN > anbN ? ' ac-v-vermelho' : '')
+              : ''
             const anbima = (a.txAnbima && a.txAnbima !== '—') ? a.txAnbima : ''
             const dur = (a.duration && a.duration !== '—') ? a.duration : '-'
             const rc = a.recompra
@@ -562,11 +568,11 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
                 <div className="ac-col ac-val">
                   <div className="ac-val-item">
                     <span className="ac-k">Vol. negociado</span>
-                    <span className="ac-v">{a.volumeRs > 0 ? fmtVolRs(a.volumeRs) : '-'}</span>
+                    <span className="ac-v ac-v-carvao">{a.volumeRs > 0 ? fmtVolRs(a.volumeRs) : '-'}</span>
                   </div>
                   <div className="ac-val-item">
                     <span className="ac-k">Spread neg.</span>
-                    <span className="ac-v" title={taxaNeg && taxaNeg !== '-' ? `Taxa nominal negociada: ${taxaNeg}${a.spreadRef?.ref ? ` · ref ${a.spreadRef.ref}` : ''}` : undefined}>{spreadNeg || '—'}</span>
+                    <span className={`ac-v${spreadCor}`} title={taxaNeg && taxaNeg !== '-' ? `Taxa nominal negociada: ${taxaNeg}${a.spreadRef?.ref ? ` · ref ${a.spreadRef.ref}` : ''}` : undefined}>{spreadNeg || '—'}</span>
                   </div>
                 </div>
               </div>

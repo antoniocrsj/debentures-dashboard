@@ -203,6 +203,18 @@ export function enrichMercado(mercadoRows, tickerToAsset) {
       spreadNum: parseNum(r['Spread']),
       ref: (r['RefSpread'] || '').trim(),
     } : null
+    // Spread ANBIMA na MESMA unidade/ref do spread negociado, p/ colorir o card
+    // (verde = negociou ABAIXO da ANBIMA, vermelho = acima). IPCA: bps sobre a
+    // NTN-B (so' se for a MESMA NTN-B do negociado, senao nao compara). DI+: %
+    // sobre o CDI (taxaAnbimaOriginal). Outros indexadores -> null (sem cor).
+    const ai = asset.anbimaInfo
+    let anbimaSpreadNum = null
+    if (spreadRef && ai) {
+      if (spreadRef.tipo === 'IPCA' && spreadRef.ref && spreadRef.ref === (ai['codigoNtnbExibicao'] || '').trim())
+        anbimaSpreadNum = parseNum(ai['spreadNtnbBps'])
+      else if (spreadRef.tipo === 'DI+')
+        anbimaSpreadNum = parseNum(ai['taxaAnbimaOriginal'])
+    }
     const { faixa, rank } = faixaDeVolMercado(vol)
     out.push({
       codigoAtivo: ticker,
@@ -228,6 +240,7 @@ export function enrichMercado(mercadoRows, tickerToAsset) {
       recompra: asset.recompra || null,
       registroCvm: asset.registroCvm || '',
       spreadRef,
+      anbimaSpreadNum,
     })
   }
   return out
