@@ -501,8 +501,8 @@ a { color: var(--primary); }
 /* Drill de Vencimentos: 3 itens (Vol/Alocação/Amortização) no card de 80px ->
    fonte menor e linhas mais justas p/ não apertar. */
 .asset-card-3val .ac-val-item { line-height: 1.05; }
-.asset-card-3val .ac-val .ac-k { font-size: 7.5px; }
-.asset-card-3val .ac-val .ac-v { font-size: 9.5px; }
+.asset-card-3val .ac-val .ac-k { font-size: 8px; }
+.asset-card-3val .ac-val .ac-v { font-size: 10.5px; }
 /* Secundario (card): volume em carvao; spread verde se negociou abaixo da ANBIMA,
    vermelho se acima (ver SecondaryTable). */
 .ac-val .ac-v.ac-v-carvao   { color: var(--text); }
