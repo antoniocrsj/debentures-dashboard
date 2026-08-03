@@ -529,6 +529,29 @@ function loadEmissoesCVM() {
   } catch { return null }
 }
 
+// Novas ofertas de DEBENTURES no SRE da CVM (TEMPO REAL), geradas por
+// tools/preparar-ofertas-sre.mjs -> public/data/Novas_Ofertas_SRE.json. Pega a
+// oferta assim que e' protocolada (mesmo "Aguardando Bookbuilding"), antes de
+// virar "Registro Concedido". Complementa loadEmissoesCVM (dados-abertos, so'
+// confirmadas). So' anexada ao relatorio mais recente (asOf).
+function loadOfertasSRE() {
+  const f = path.join(DATA, 'Novas_Ofertas_SRE.json')
+  if (!fs.existsSync(f)) return null
+  try {
+    const j = JSON.parse(fs.readFileSync(f, 'utf8'))
+    const itens = (j.itens || []).map(e => ({
+      data: e.data || '',
+      emissor: repairText((e.emissor || '').trim()),
+      cnpj: digits(e.cnpj),
+      valor: parseNum(e.valor),
+      status: (e.status || '').trim(),
+      lider: repairText((e.lider || '').trim()),
+      numeroRegistro: e.numeroRegistro || null,
+    })).sort((a, b) => (a.data < b.data ? 1 : a.data > b.data ? -1 : 0))
+    return { asOf: j.asOf || '', janelaDias: j.janelaDias || null, itens }
+  } catch { return null }
+}
+
 // Cadastro de emissores (CNPJ -> grupo/setor) — inteligencia do usuario, snapshot
 // em public/Emissores.csv pela pipeline (preparar-emissores.ps1). Usado para a
 // coluna Grupo (ANBIMA) e para detectar emissores novos ainda nao classificados.
@@ -599,7 +622,7 @@ function resolveDatas(src, sd, anbimaAsc, D) {
   }
 }
 
-function buildReport(src, D, allDates, anbimaAsc, prevD = null, emissoesCVM = null, emissoresMap = new Map()) {
+function buildReport(src, D, allDates, anbimaAsc, prevD = null, emissoesCVM = null, emissoresMap = new Map(), ofertasSRE = null) {
   const sd = perSourceDates(src)
   const cur = resolveDatas(src, sd, anbimaAsc, D)
   const prev = prevD ? resolveDatas(src, sd, anbimaAsc, prevD) : null
@@ -643,6 +666,10 @@ function buildReport(src, D, allDates, anbimaAsc, prevD = null, emissoesCVM = nu
     ...emissoesCVM,
     itens: emissoesCVM.itens.map(e => ({ ...e, grupo: (emissoresMap.get(digits(e.cnpj)) || {}).grupo || '' })),
   } : null
+  const ofertasSREenriquecido = ofertasSRE ? {
+    ...ofertasSRE,
+    itens: ofertasSRE.itens.map(e => ({ ...e, grupo: (emissoresMap.get(digits(e.cnpj)) || {}).grupo || '' })),
+  } : null
   return {
     date: D,
     label: fmtDia(D),
@@ -650,7 +677,7 @@ function buildReport(src, D, allDates, anbimaAsc, prevD = null, emissoesCVM = nu
     sourceDates,
     novoPorFonte: novo,   // quais fontes trazem dado novo neste relatorio (UI marca o resto como "sem novidade")
     summary: summarize(summaryInput, novo),
-    sections: { ...sections, alertas, emissoesCVM: emissoesCVMenriquecido, emissoresFaltantes: buildEmissoresFaltantes(emissoresMap, emissoesCVM) },
+    sections: { ...sections, alertas, emissoesCVM: emissoesCVMenriquecido, emissoresFaltantes: buildEmissoresFaltantes(emissoresMap, emissoesCVM), ofertasSRE: ofertasSREenriquecido },
   }
 }
 
@@ -952,13 +979,14 @@ function main() {
   }
   const utf8 = { encoding: 'utf8' }
   const emissoesCVM = loadEmissoesCVM()   // pendencias da CVM: so no relatorio mais recente
+  const ofertasSRE = loadOfertasSRE()     // novas ofertas SRE (tempo real): so no relatorio mais recente
   const emissoresMap = loadEmissores()    // cadastro do usuario (grupo/setor por CNPJ)
   const index = []
   let latestRep = null
   for (let i = 0; i < datas.length; i++) {
     const D = datas[i]
     const prevD = datas[i + 1] || null   // proximo mais antigo (datas e' desc)
-    const rep = buildReport(src, D, datas, anbimaAsc, prevD, D === datas[0] ? emissoesCVM : null, emissoresMap)
+    const rep = buildReport(src, D, datas, anbimaAsc, prevD, D === datas[0] ? emissoesCVM : null, emissoresMap, D === datas[0] ? ofertasSRE : null)
     if (!latestRep) latestRep = rep   // datas[0] = mais recente
     fs.writeFileSync(path.join(REPORTS, `${D}.json`), JSON.stringify(rep, null, 2) + '\n', utf8)
     fs.writeFileSync(path.join(REPORTS, `${D}.html`), renderHtml(rep), utf8)

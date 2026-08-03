@@ -756,6 +756,21 @@ if ($SkipRelatorios) {
     Warn "$($summary.Emissores) (seguindo com o snapshot anterior)"
   }
 
+  # Novas ofertas de debentures no SRE da CVM (TEMPO REAL) -> public\data\
+  # Novas_Ofertas_SRE.json, que o gerador anexa ao Resumo do Dia (bloco proprio).
+  # Pega a oferta assim que e' protocolada (mesmo antes de precificar), diferente
+  # do dados-abertos (so' confirmadas). Best-effort: CVM fora do ar NAO trava.
+  Progress 'Ofertas SRE (CVM, tempo real)'
+  try {
+    & node (Join-Path $PSScriptRoot 'preparar-ofertas-sre.mjs') '--janela' '15'
+    if ($LASTEXITCODE -ne 0) { throw "node saiu com codigo $LASTEXITCODE" }
+    $summary.OfertasSRE = 'OK'
+    Ok 'Novas ofertas do SRE gravadas em public\data\Novas_Ofertas_SRE.json.'
+  } catch {
+    $summary.OfertasSRE = "FALHOU sem travar: $($_.Exception.Message)"
+    Warn "$($summary.OfertasSRE) (SRE/CVM acessivel? o Resumo do Dia segue sem esse bloco)"
+  }
+
   Progress 'Resumo do Dia (relatorios)'
   # Atributos de cadastro dos fundos curados (Forma_Condominio/tipo/datas/PL) da
   # CVM -> public/data/Fundos_Atributos.csv. O app/gerador rodam sem acesso a CVM,

@@ -37,7 +37,7 @@ function Bullets({ items }) {
   )
 }
 
-function Debentures({ sec, cvm, faltantes, periodo }) {
+function Debentures({ sec, cvm, faltantes, sre, periodo }) {
   const temNovas = sec?.novas?.length > 0
   // Período: registro no intervalo (colunas Ticker/Emissor/Grupo/Registro).
   if (periodo) {
@@ -84,8 +84,43 @@ function Debentures({ sec, cvm, faltantes, periodo }) {
       ) : (
         <Empty>Sem novas debêntures cadastradas neste dia.</Empty>
       )}
+      <OfertasSRE sre={sre} />
       <EmissoesCVM cvm={cvm} />
       <EmissoresFaltantes faltantes={faltantes} />
+    </div>
+  )
+}
+
+// Novas ofertas de debêntures no SRE da CVM (TEMPO REAL): a oferta aparece assim
+// que é protocolada (mesmo "Aguardando Bookbuilding", antes de precificar) —
+// heads-up do que está chegando. Complementa "Registradas na CVM" (só confirmadas).
+function OfertasSRE({ sre }) {
+  if (!sre) return null
+  return (
+    <div className="rd-cvm">
+      <h4>
+        Novas ofertas de debêntures na CVM (SRE)
+        {sre.janelaDias && <span className="rd-cap-dia"> · últimos {sre.janelaDias} dias</span>}
+      </h4>
+      {sre.itens?.length ? (
+        <table className="rd-table">
+          <thead><tr><th>Data</th><th>Emissor</th><th>Grupo</th><th>Status</th><th>Líder</th><th className="rd-num">Valor (R$ MM)</th></tr></thead>
+          <tbody>
+            {sre.itens.map((e, i) => (
+              <tr key={`${e.cnpj}-${e.data}-${i}`}>
+                <td>{fmtDia(e.data)}</td>
+                <td className="rd-empresa" title={e.emissor}>{e.emissor}</td>
+                <td className="rd-empresa" title={e.grupo}>{e.grupo || '—'}</td>
+                <td className="rd-empresa" title={e.status}>{e.status || '—'}</td>
+                <td className="rd-empresa" title={e.lider}>{e.lider || '—'}</td>
+                <td className="rd-num">{mm(e.valor)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <Empty>Nenhuma nova oferta de debênture na CVM na janela.</Empty>
+      )}
     </div>
   )
 }
@@ -382,7 +417,7 @@ export default function ResumoDoDiaModal({ mode, setMode, index, available, sele
             <>
               <Section title="1. Sumário executivo"><Bullets items={report.summary} /></Section>
               <Section title="2. Novas debêntures e emissões">
-                <Debentures sec={s.debentures} cvm={s.emissoesCVM} faltantes={s.emissoresFaltantes} periodo={periodo} />
+                <Debentures sec={s.debentures} cvm={s.emissoesCVM} faltantes={s.emissoresFaltantes} sre={s.ofertasSRE} periodo={periodo} />
                 {!periodo && inc?.temSnapshotBlc && inc.novosBlc?.length > 0 && (
                   <p className="rd-note">Novos ativos no BLC/alocação: {inc.novosBlc.length}</p>
                 )}
