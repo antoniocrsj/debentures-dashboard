@@ -80,6 +80,13 @@ export default function AssetCards({ assets, selectedSet, onSelect, onInfoClick 
                 <span className="ac-k">Alocação</span>
                 <span className="ac-v">{a.alocacao > 0 ? fmtBRL(a.alocacao) : '-'}</span>
               </div>
+              {/* Drill de Vencimentos: amortização do mês (abaixo da alocação). */}
+              {a.amortVenc != null && (
+                <div className="ac-val-item">
+                  <span className="ac-k">Amortização</span>
+                  <span className="ac-v">{a.amortVenc > 0 ? fmtBRL(a.amortVenc) : '-'}</span>
+                </div>
+              )}
             </div>
           </div>
         )

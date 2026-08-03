@@ -22,7 +22,17 @@ export default function MonthBars({ rows, max, selMes, onPick, fmtVal, fmtLabel,
               className={`venc-col${selMes === m.mes ? ' sel' : ''}`}
               title={`${m.label}: juros ${fmtVal(m.juros)} + amort. ${fmtVal(m.amort)} = ${fmtVal(m.total)} — clique para ${selMes === m.mes ? 'limpar o filtro' : 'filtrar'}`}
               onClick={() => onPick(m.mes)} aria-pressed={selMes === m.mes}>
-              <span className="venc-bar-total">{m.total > 0.00001 ? fmtLabel(m.total) : ''}</span>
+              {/* No compacto (Tecnico) o valor sai de DENTRO das barras -> mostra
+                  acima: total (escuro) + juros (cinza) + amort (terracota). */}
+              <span className={`venc-bar-total${compacto ? ' venc-bar-total-stack' : ''}`}>
+                {m.total <= 0.00001 ? '' : compacto ? (
+                  <>
+                    <span className="venc-lbl-t">{fmtLabel(m.total)}</span>
+                    <span className="venc-lbl-j">{fmtLabel(m.juros)}</span>
+                    <span className="venc-lbl-a">{fmtLabel(m.amort)}</span>
+                  </>
+                ) : fmtLabel(m.total)}
+              </span>
               <span className="venc-bar-wrap" style={{ height: `${barPct}%` }}>
                 <span className="venc-seg venc-seg-juros" style={{ height: `${jPct}%` }}>
                   {showJ && !compacto && <span className="venc-seg-lbl">{fmtLabel(m.juros)}</span>}

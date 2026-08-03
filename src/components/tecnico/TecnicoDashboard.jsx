@@ -6,7 +6,7 @@ import {
   agregarFundosPorGestor, computeCards, fmtFluxoSigned,
   filterMensal, periodBounds, startForMonths,
 } from '../../utils/fluxo.js'
-import { buildGestoresPorTicker, flattenEventos, aggMeses, aggGestores, fmtBar, pctFmt } from '../../utils/vencimentos.js'
+import { buildGestoresPorTicker, flattenEventos, aggMeses, aggGestores, aggAtivos, fmtBar, pctFmt } from '../../utils/vencimentos.js'
 import { fmtPct, isYes, dateKey } from '../../utils/format.js'
 import { fmtMonthYY } from '../../utils/fluxo.js'
 import { useCaixaFundosHistorico } from '../../hooks/useCaixaFundosHistorico.js'
@@ -307,11 +307,14 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, e
   // segmento atual (12.431/Tradicional). O mes vem do grafico ANBIMA (mercado); a
   // lista sao as NOSSAS debentures daquele mes -- a contagem nao bate com a barra.
   const [emissaoMes, setEmissaoMes] = useState(null)
+  const [vencMes, setVencMes] = useState(null)   // drill do Vencimentos (amortização)
   // Compacto: mostra UM grafico por vez (escolhido na barra inferior de graficos).
   // No desktop todos aparecem (grid) -> mostra() e' sempre true.
   const [graficoAtivo, setGraficoAtivo] = useState('captacao')
   const mostra = c => desktop || graficoAtivo === c
-  const toggleEmissaoMes = mes => setEmissaoMes(m => (m === mes ? null : mes))
+  // Emissões e Vencimentos dividem a MESMA coluna de drill -> um limpa o outro.
+  const toggleEmissaoMes = mes => { setVencMes(null); setEmissaoMes(m => (m === mes ? null : mes)) }
+  const toggleVencMes = mes => { setEmissaoMes(null); setVencMes(m => (m === mes ? null : mes)) }
   // Mes efetivo do drill de Ativos: o clicado numa barra; OU, no compacto com
   // Emissoes selecionado, o mes MAIS RECENTE por padrao -- assim ao escolher
   // Emissoes a tabela ja' vem em Ativos (nao a de gestores), como pediu.
@@ -328,6 +331,22 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, e
     // Cards ordenados por volume emitido (maior primeiro).
     return filtrados.sort((x, y) => (y.volumeEmitido || 0) - (x.volumeEmitido || 0))
   }, [assets, mesDrill, tipo])
+
+  // Drill de VENCIMENTOS: clicar numa barra lista os ativos que pagam AMORTIZAÇÃO
+  // naquele mês (ignora quem só paga juros), como CARDS ordenados pela amortização.
+  const assetByTicker = useMemo(() => {
+    const m = new Map()
+    for (const a of (assets || [])) m.set((a.codigoAtivo || '').toUpperCase(), a)
+    return m
+  }, [assets])
+  const vencCards = useMemo(() => {
+    if (!vencMes || !agenda12m) return []
+    return aggAtivos(agenda12m, gpt, { gestorSel, seg: tipo, selMes: vencMes, persp: 'carteira' })
+      .filter(r => r.amort > 0.5)                 // só quem paga amortização
+      .sort((a, b) => b.amort - a.amort)          // maior amortização primeiro
+      .map(r => { const a = assetByTicker.get((r.ticker || '').toUpperCase()); return a ? { ...a, amortVenc: r.amort } : null })
+      .filter(Boolean)
+  }, [vencMes, agenda12m, gpt, gestorSel, tipo, assetByTicker])
 
   // ---- Tabela combinada (filtro principal) ----
   const gestorRows = useMemo(() => ranking.map(r => ({
@@ -402,10 +421,10 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, e
               <button key={p.id} className={`segmented-btn${periodo === p.id ? ' active' : ''}`} onClick={() => setPeriodo(p.id)}>{p.label}</button>
             ))}
           </div>
-          {/* Drill de Emissões ativo: "Limpar" fecha o drill (volta p/ gestores).
-              Substitui o antigo "← gestores" e fica alinhado à direita com o %Deb. */}
-          {desktop && emissaoMes && (
-            <button type="button" className="tecnico-limpar" onClick={() => setEmissaoMes(null)}
+          {/* Drill ativo (Emissões OU Vencimentos): "Limpar" fecha o drill (volta
+              p/ gestores). Alinhado à direita com o %Deb. */}
+          {desktop && (emissaoMes || vencMes) && (
+            <button type="button" className="tecnico-limpar" onClick={() => { setEmissaoMes(null); setVencMes(null) }}
               title="Voltar para a tabela de gestores">Limpar</button>
           )}
           <CorteSelector corte={corte} onChange={onCorte} disponivel={corteDisponivel} />
@@ -491,10 +510,10 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, e
                 {!agenda12m
                   ? <div className="caixa-line-empty">Sem agenda de vencimentos carregada ainda.</div>
                   : unidade === 'rs'
-                    ? <MonthBars rows={mesesViewCurto} max={maxVenc} selMes={null} onPick={() => {}}
-                        fmtVal={fmtBRL} fmtLabel={fmtBar} ariaLabel="Vencimentos por mês em reais" compacto />
+                    ? <MonthBars rows={mesesViewCurto} max={maxVenc} selMes={vencMes} onPick={toggleVencMes}
+                        fmtVal={fmtBRL} fmtLabel={fmtBar} ariaLabel="Vencimentos por mês em reais — clique numa barra para ver, em cards, os ativos que pagam amortização no mês" compacto />
                     : plDenom > 0
-                      ? <MonthBars rows={mesesPLCurto} max={maxPct} selMes={null} onPick={() => {}}
+                      ? <MonthBars rows={mesesPLCurto} max={maxPct} selMes={vencMes} onPick={toggleVencMes}
                           fmtVal={pctFmt} fmtLabel={pctFmt} ariaLabel="Vencimentos por mês em % do PL" compacto />
                       : <div className="caixa-line-empty">Sem PL de {gestorSel || 'carteira'} para calcular %PL.</div>}
                 </div>
@@ -532,6 +551,13 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, e
                   fecha o drill é o botão "Limpar" no cabeçalho (ao lado do %Deb). */}
               <AssetCards assets={ativosDoMes} onInfoClick={onAssetInfo || (() => {})} />
             </div>
+          ) : vencMes ? (
+            <div className="tecnico-drill">
+              {/* Drill de Vencimentos: ativos que pagam AMORTIZAÇÃO no mês (quem só
+                  paga juros fica de fora), ordenados pela amortização. A 3ª coluna
+                  do card mostra a amortização (abaixo da alocação). */}
+              <AssetCards assets={vencCards} onInfoClick={onAssetInfo || (() => {})} />
+            </div>
           ) : (
             <TecnicoGestorTable rows={gestorRows} activeGestor={gestorSel} onSelect={onSelectGestor} />
           ))}
@@ -546,7 +572,7 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, e
           {GRAFICOS.map(g => (
             <button key={g.id} type="button" role="tab" aria-selected={graficoAtivo === g.id}
               className={`tecnico-chart-nav-btn${graficoAtivo === g.id ? ' active' : ''}`}
-              onClick={() => { setGraficoAtivo(g.id); setEmissaoMes(null) }}>
+              onClick={() => { setGraficoAtivo(g.id); setEmissaoMes(null); setVencMes(null) }}>
               <span className="tecnico-chart-nav-ico"><g.Icon /></span>
               <span className="tecnico-chart-nav-lbl">{g.label}</span>
             </button>

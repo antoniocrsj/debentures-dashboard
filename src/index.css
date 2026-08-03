@@ -2281,6 +2281,12 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 .emissoes-lbl { height: auto; display: flex; flex-direction: column; align-items: center; line-height: 1.05; margin-bottom: 3px; }
 .emissoes-lbl-total { color: var(--text); font-weight: 700; }
 .emissoes-lbl-fundos { color: #8c5e3a; font-weight: 600; font-size: calc(var(--fz-micro) - 0.5px); }
+/* Vencimentos (compacto/Técnico): acima da barra, total escuro + juros CINZA +
+   amort TERRACOTA empilhados (o valor sai de dentro das barras nesse modo). */
+.venc-bar-total-stack { height: auto; display: flex; flex-direction: column; align-items: center; line-height: 1.05; }
+.venc-lbl-t { color: var(--text); font-weight: 700; }
+.venc-lbl-j { color: #8a7f70; font-weight: 600; font-size: calc(var(--fz-micro) - 0.5px); }
+.venc-lbl-a { color: #8c5e3a; font-weight: 600; font-size: calc(var(--fz-micro) - 0.5px); }
 .tecnico-chart-sub { font-weight: 400; font-size: var(--fz-micro); color: var(--text-muted); }
 
 /* Compacto (mobile): a aba Tecnico empilha os cards em coluna. Fora do grid do
