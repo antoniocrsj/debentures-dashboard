@@ -161,6 +161,9 @@ test('parseTeto: NTN-B com spread negativo/positivo, CDI e piso (remuneração m
   assert.equal(parseTeto('NTNB-30-0,05% ano base 252 ou IPCA+7,30%').compacto, 'B30 −5bps')
   assert.equal(parseTeto('O maior entre: B40 - 0,90% ou IPCA + 6,25%').compacto, 'B40 −90bps')
   assert.equal(parseTeto('NTN-B 2035, apurada no dia do Book + 5,50%').compacto, 'B35 +550bps')
+  // EGIEA6: "vencimento em ... 2037, acrescida ... de, no máximo, -1,15%" — sinal
+  // de MENOS literal (sem a palavra "negativo") tem de dar spread NEGATIVO.
+  assert.equal(parseTeto('taxa interna de retorno do Tesouro IPCA+ com vencimento em 15 de maio de 2037, acrescida exponencialmente de spread (sobretaxa) de, no máximo, -1,15% ao ano, base 252').compacto, 'B37 −115bps')
   // sem informação -> null
   assert.equal(parseTeto(''), null)
 })

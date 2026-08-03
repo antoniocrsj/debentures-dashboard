@@ -55,7 +55,9 @@ export function parseTeto(txt) {
   let ntnb = null, spreadBps = null
   if (anoM) ntnb = 'B' + anoM[1].slice(2)
   else if (ntnbDiretoM) ntnb = 'B' + ntnbDiretoM[1]
-  if (acresM) { const neg = /negativ/i.test(acresM[0]); spreadBps = Math.round(parseFloat(`${acresM[1]}.${acresM[2]}`) * 100) * (neg ? -1 : 1) }
+  // negativo pela PALAVRA "negativo" OU por um sinal de MENOS literal antes do
+  // número (ex.: "spread ... de, no máximo, -1,15%" — sem a palavra "negativo").
+  if (acresM) { const neg = /negativ/i.test(acresM[0]) || /[-−–]\s*\d+,\d+\s*%/.test(acresM[0]); spreadBps = Math.round(parseFloat(`${acresM[1]}.${acresM[2]}`) * 100) * (neg ? -1 : 1) }
   else if (spreadDiretoBps != null) spreadBps = spreadDiretoBps
   const floorPct = floorM ? `${floorM[1]},${floorM[2]}%` : null
   const compacto = (ntnb && spreadBps != null) ? `${ntnb} ${spreadBps < 0 ? '−' : '+'}${Math.abs(spreadBps)}bps`
@@ -117,22 +119,31 @@ async function main() {
       }))
       // garante o líder marcado mesmo se não veio na lista de participantes
       if (cnpjLider && !coords.some(c => c.lider) && o.nomeCoordenadorLider) coords.unshift({ razaoSocial: o.nomeCoordenadorLider.trim(), cnpj: o.cnpjCoordenadorLider || '', lider: true })
-      // acaoObjeto: campos estruturados da oferta (remuneração máxima/final, rating…)
-      let campos = {}
-      try { const ra = await fetch(ACAO(o.idRequerimento), { headers: UA }); if (ra.ok) campos = flattenCampos(await ra.json()) } catch {}
-      const remMax = campos['Informações sobre remuneração máxima'] || ''
-      const entry = {
+      // acaoObjeto: campos estruturados POR SÉRIE (array, um elemento por série).
+      // Numa oferta multi-série cada série tem sua PRÓPRIA remuneração máxima/final
+      // (ex.: série IPCA "NTN-B 2033 +0,55%" vs série PRÉ "14,315%"). Antes o
+      // flattenCampos colapsava tudo e a última série sobrescrevia as outras ->
+      // a série IPCA perdia o teto. Agora mapeia posicional: chaves[i] <-> acaoObjeto[i].
+      let acaoArr = []
+      try { const ra = await fetch(ACAO(o.idRequerimento), { headers: UA }); if (ra.ok) { const j = await ra.json(); acaoArr = Array.isArray(j) ? j : [j] } } catch {}
+      const base = {
         numeroRegistro: o.numeroRegistro, idRequerimento: String(o.idRequerimento),
         cnpjEmissor: o.cnpjEmissor || '', data: o.data || '',
         lider: o.nomeCoordenadorLider ? { nome: o.nomeCoordenadorLider.trim(), cnpj: o.cnpjCoordenadorLider || '' } : null,
         coordenadores: coords,
-        remuneracaoMaxima: remMax || null,
-        teto: parseTeto(remMax),
-        remuneracaoFinal: campos['Informações sobre remuneração final (pós bookbuilding)'] || null,
-        rating: campos['Avaliação de risco'] || null,
-        setorProjeto: campos['Setor e subsetor do projeto de investimento'] || null,
       }
-      for (const k of chaves) cache[k] = entry   // indexa sob cada série da oferta
+      chaves.forEach((k, i) => {
+        const campos = flattenCampos(acaoArr[i] ?? acaoArr[0] ?? {})   // dados DESSA série
+        const remMax = campos['Informações sobre remuneração máxima'] || ''
+        cache[k] = {
+          ...base,
+          remuneracaoMaxima: remMax || null,
+          teto: parseTeto(remMax),
+          remuneracaoFinal: campos['Informações sobre remuneração final (pós bookbuilding)'] || null,
+          rating: campos['Avaliação de risco'] || null,
+          setorProjeto: campos['Setor e subsetor do projeto de investimento'] || null,
+        }
+      })
       buscados++
       await sleep(150)   // polido com a API pública
     } catch (e) { falhas++; }

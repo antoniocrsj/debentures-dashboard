@@ -146,12 +146,12 @@
             }
           ],
           "teto": {
-            "compacto": "CDI + 0,90%",
+            "compacto": "CDI + 0,80%",
             "ntnb": null,
             "spreadBps": null,
             "floorPct": null
           },
-          "remuneracaoMaxima": "CDI + 0,90% a.a.",
+          "remuneracaoMaxima": "CDI + 0,80% a.a.",
           "rating": "AAA",
           "dataRegistro": "2026-07-15",
           "incentivada": false,
@@ -332,7 +332,7 @@
             }
           ],
           "teto": null,
-          "remuneracaoMaxima": "incidirão juros remuneratórios correspondentes à variação acumulada de 100% (cem por cento) da Taxa DI, acrescida de spread (sobretaxa) de 0,35% (trinta e cinco centésimos por cento) ao\nano, base 252 (duzentos e cinquenta e dois) Dias Úteis (“Remuneração das Debêntures da Segunda Série” e, quando em conjunto com a Remuneração das Debêntures da Primeira Série, a “Remuneração”).",
+          "remuneracaoMaxima": "incidirão juros remuneratórios correspondentes à variação acumulada de 100% (cem por cento) das taxas médias diárias dos DI – Depósitos Interfinanceiros de um dia, “over extra-grupo”, expressas na forma de percentual ao ano, base 252 (duzentos e cinquenta e dois) Dias Úteis, calculadas e divulgadas diariamente pela B3 no informativo diário disponível em sua página na Internet (www.b3.com.br) (“Taxa DI”), acrescida de spread (sobretaxa) de 0,10% (dez centésimos por cento) ao ano, base 252 (duzentos e cinquenta e dois)\nDias Úteis",
           "rating": null,
           "dataRegistro": "2026-07-14",
           "incentivada": false,

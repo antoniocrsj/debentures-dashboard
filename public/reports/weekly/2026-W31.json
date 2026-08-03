@@ -71,12 +71,12 @@
             }
           ],
           "teto": {
-            "compacto": "B40 −30bps",
-            "ntnb": "B40",
-            "spreadBps": -30,
+            "compacto": "B31 −50bps",
+            "ntnb": "B31",
+            "spreadBps": -50,
             "floorPct": null
           },
-          "remuneracaoMaxima": "Sobre o saldo do Valor Nominal Unitário Atualizado das Debêntures da Sexta Série incidirão juros remuneratórios, a serem definidos no Procedimento de Bookbuilding e, em qualquer caso, correspondentes à taxa interna de retorno do Tesouro IPCA+ com Juros Semestrais (“Tesouro IPCA+”), com vencimento em 15 de agosto de 2040, conforme apurada no fechamento do Dia Útil da realização do Procedimento de Bookbuilding, acrescida, exponencialmente, de um determinado spread negativo equivalente a, no máximo, 0,30% ao ano.",
+          "remuneracaoMaxima": "Sobre o saldo do Valor Nominal Unitário das Debêntures da Primeira Série, incidirão juros remuneratórios prefixados, a serem fixados na data do Procedimento de Bookbuilding, equivalentes à Taxa DI baseada no preço de ajuste (interpolação) da curva ‘DI x Pré’ equivalente ao contrato futuro com vencimento em 2 de janeiro de 2031, relativa à ‘DI x Pré’, DI verificado na data de realização do Procedimento de Bookbuilding, , acrescidas, exponencialmente, de um determinado spread negativo equivalente a, no máximo, 0,50% ao ano.",
           "rating": null,
           "dataRegistro": "2026-07-27",
           "incentivada": true,
