@@ -1707,7 +1707,12 @@
         }
       ],
       "remuneracaoMaxima": "Sobre o Valor Nominal Unitário Atualizado das Debêntures incidirão juros remuneratórios correspondentes a um determinado percentual ao ano, base 252 (duzentos e cinquenta e dois) Dias Úteis, a ser estabelecido no dia do Procedimento de Bookbuilding e, em qualquer caso, limitado à taxa interna de retorno do Título Público Tesouro IPCA + com Juros Semestrais (NTNB),com vencimento em 15 de agosto de 2032, apurada de acordo com a cotação indicativa divulgada pela ANBIMA no fechamento do mercado do Dia Útil da realização do Procedimento de Bookbuilding decrescida exponencialmente de 0,30% a.a.",
-      "teto": null,
+      "teto": {
+        "compacto": "B32 −30bps",
+        "ntnb": "B32",
+        "spreadBps": -30,
+        "floorPct": null
+      },
       "remuneracaoFinal": null,
       "rating": null,
       "setorProjeto": "III - Energia: Produção de Combustíveis Sintéticos com Baixa Intensidade de Carbono"
@@ -4611,9 +4616,9 @@
       ],
       "remuneracaoMaxima": "O que for maior entre: (i) NTN-B, com vencimento em 15 de agosto de 2040, decrescida exponencialmente de 0,87% (oitenta e sete centésimos percentuais) ao ano; ou (ii) 6,30% (seis inteiros e trinta centésimos por cento) ao ano.",
       "teto": {
-        "compacto": null,
+        "compacto": "B40 −87bps",
         "ntnb": "B40",
-        "spreadBps": null,
+        "spreadBps": -87,
         "floorPct": "6,30%"
       },
       "remuneracaoFinal": "IPCA + 6,4618% a.a.",
@@ -4648,9 +4653,9 @@
       ],
       "remuneracaoMaxima": "O que for maior entre: (i) NTN-B, com vencimento em 15 de agosto de 2040, decrescida exponencialmente de 0,87% (oitenta e sete centésimos percentuais) ao ano; ou (ii) 6,30% (seis inteiros e trinta centésimos por cento) ao ano.",
       "teto": {
-        "compacto": null,
+        "compacto": "B40 −87bps",
         "ntnb": "B40",
-        "spreadBps": null,
+        "spreadBps": -87,
         "floorPct": "6,30%"
       },
       "remuneracaoFinal": "IPCA + 6,4618% a.a.",
@@ -7214,7 +7219,12 @@
         }
       ],
       "remuneracaoMaxima": "Limitado à taxa interna de retorno do Tesouro IPCA+ com juros semestrais (denominação atual da antiga Nota do Tesouro Nacional, série B – NTN-B), com vencimento em 15 de maio de 2035, baseada na cotação indicativa divulgada pela ANBIMA em sua página na internet (http://www.anbima.com.br) e conforme apurado no fechamento do Dia Útil de realização do Procedimento de Bookbuilding, crescida exponencialmente de um spread negativo de - 0,98% (noventa e oito centésimos por cento negativos) ao ano, base 252 dias úteis conforme cláusula 4.10.3. da Escritura de Emissão",
-      "teto": null,
+      "teto": {
+        "compacto": "B35 −98bps",
+        "ntnb": "B35",
+        "spreadBps": -98,
+        "floorPct": null
+      },
       "remuneracaoFinal": "6,2907% a.a., conforme escritura de emissão",
       "rating": "AAA (S&P)",
       "setorProjeto": null
@@ -9137,9 +9147,9 @@
       ],
       "remuneracaoMaxima": "NTNB 2035 - 50bps ou IPCA + 6,80% a.a.",
       "teto": {
-        "compacto": "B35 +680bps",
+        "compacto": "B35 −50bps",
         "ntnb": "B35",
-        "spreadBps": 680,
+        "spreadBps": -50,
         "floorPct": null
       },
       "remuneracaoFinal": "7,1841%",
@@ -9405,9 +9415,9 @@
       ],
       "remuneracaoMaxima": "Sobre o Valor Nominal Unitário Atualizado incidirão juros remuneratórios correspondentes a um determinado percentual ao ano, a ser definido de acordo com o Procedimento de Bookbuilding e, em qualquer caso, limitado ao que for maior entre (i) a cotação indicativa da taxa interna de retorno do Tesouro IPCA+ com Juros Semestrais com vencimento em 2035, decrescida exponencialmente de spread de 0,50% ao ano, base 252 Dias Úteis; ou (ii) 7,10% ao ano, base 252 Dias Úteis.",
       "teto": {
-        "compacto": null,
+        "compacto": "B35 −50bps",
         "ntnb": "B35",
-        "spreadBps": null,
+        "spreadBps": -50,
         "floorPct": "7,10%"
       },
       "remuneracaoFinal": "Sobre o Valor Nominal Unitário Atualizado incidirão juros remuneratórios correspondentes a 7,0225% ao ano.",
@@ -10444,7 +10454,12 @@
         }
       ],
       "remuneracaoMaxima": "NTNB 2032 + 30bps a.a.",
-      "teto": null,
+      "teto": {
+        "compacto": "B32 +30bps",
+        "ntnb": "B32",
+        "spreadBps": 30,
+        "floorPct": null
+      },
       "remuneracaoFinal": "IPCA + 7,9830% a.a.",
       "rating": "n/a",
       "setorProjeto": null
@@ -12583,7 +12598,12 @@
         }
       ],
       "remuneracaoMaxima": "NTN-B 35 + 25bps",
-      "teto": null,
+      "teto": {
+        "compacto": "B35 +25bps",
+        "ntnb": "B35",
+        "spreadBps": 25,
+        "floorPct": null
+      },
       "remuneracaoFinal": "IPCA + 7,7218% a.a.",
       "rating": null,
       "setorProjeto": null
@@ -18361,9 +18381,9 @@
       ],
       "remuneracaoMaxima": "O maior entre NTN-B30 + 60bps ou IPCA + 8,48% a.a.",
       "teto": {
-        "compacto": "B30 +848bps",
+        "compacto": "B30 +60bps",
         "ntnb": "B30",
-        "spreadBps": 848,
+        "spreadBps": 60,
         "floorPct": null
       },
       "remuneracaoFinal": "IPCA + 8,0857%",
@@ -18398,9 +18418,9 @@
       ],
       "remuneracaoMaxima": "O maior entre NTN-B32 + 80bps ou IPCA + 8,49% a.a.",
       "teto": {
-        "compacto": "B32 +849bps",
+        "compacto": "B32 +80bps",
         "ntnb": "B32",
-        "spreadBps": 849,
+        "spreadBps": 80,
         "floorPct": null
       },
       "remuneracaoFinal": "IPCA + 8,1432%",
@@ -22130,7 +22150,12 @@
         }
       ],
       "remuneracaoMaxima": "Título Público Tesouro IPCA + com Juros Semestrais (NTN-B), com vencimento em 15 de maio de 2035, apurada de acordo com a cotação indicativa divulgada pela ANBIMA no fechamento do mercado do Dia Útil da realização do Procedimento de Coleta de Intenções, decrescido exponencialmente de 0,41% (quarenta e um centésimos percentuais) ao ano, base 252 Dias Úteis.",
-      "teto": null,
+      "teto": {
+        "compacto": "B35 −41bps",
+        "ntnb": "B35",
+        "spreadBps": -41,
+        "floorPct": null
+      },
       "remuneracaoFinal": "IPCA + 6,9164% a.a.",
       "rating": "AAA(bra) pela Fitch Ratings",
       "setorProjeto": null
@@ -24493,9 +24518,9 @@
       ],
       "remuneracaoMaxima": "O Preço de Aquisição das será fixado na data do Procedimento de Bookbuilding e será correspondente ao valor presente do fluxo financeiro das Debêntures na data da revenda, descontado a valor presente a um cupom equivalente à soma exponencial da taxa interna de retorno do Tesouro IPCA+ (Nota do Tesouro Nacional, Série B - NTN-B), com vencimento em 2030, baseada na cotação indicativa divulgada pela ANBIMA, apurada no fechamento do Dia Útil na data do Procedimento de Bookbuilding, decrescida de um spread de, no máximo, 0,05% ao ano e acrescida de um spread de, no máximo, 0,10% ao ano.",
       "teto": {
-        "compacto": "B30 +10bps",
+        "compacto": "B30 −5bps",
         "ntnb": "B30",
-        "spreadBps": 10,
+        "spreadBps": -5,
         "floorPct": null
       },
       "remuneracaoFinal": "IPCA + 7,7555%",
@@ -24618,9 +24643,9 @@
       ],
       "remuneracaoMaxima": "maior entre: (i) a taxa interna de retorno do Título Público Tesouro IPCA + com Juros Semestrais (NTN-B), com vencimento em 15 de maio de 2040, apurada de acordo com a cotação indicativa divulgada pela ANBIMA em sua página na Internet (www.anbima.com.br) no fechamento do mercado do Dia Útil da realização da Coleta de Intenções de Investimento, decrescida exponencialmente de 0,40% (quarenta centésimos por cento) ao ano, base 252 (duzentos e cinquenta e dois) Dias Úteis; ou (ii) 6,70% (seis inteiros e setenta centésimos por cento) ao ano, base 252 (duzentos e cinquenta e dois) Dias Úteis.",
       "teto": {
-        "compacto": null,
+        "compacto": "B40 −40bps",
         "ntnb": "B40",
-        "spreadBps": null,
+        "spreadBps": -40,
         "floorPct": "6,70%"
       },
       "remuneracaoFinal": "IPCA + 6,7000% a.a.",
@@ -24834,9 +24859,9 @@
       ],
       "remuneracaoMaxima": "O maior entre: (i) IPCA + 9,59% a.a. ou (ii) NTN-B maio de 2035 + 1,80% a.a.",
       "teto": {
-        "compacto": "9,59%",
-        "ntnb": null,
-        "spreadBps": null,
+        "compacto": "B35 +180bps",
+        "ntnb": "B35",
+        "spreadBps": 180,
         "floorPct": null
       },
       "remuneracaoFinal": "O maior entre: (i) IPCA + 9,59% a.a. ou (ii) NTN-B maio de 2035 + 1,80% a.a.",
@@ -24876,9 +24901,9 @@
       ],
       "remuneracaoMaxima": "5.18.1\tSobre o Valor Nominal Unitário Atualizado incidirão juros remuneratórios correspondentes a um determinado percentual ao ano, sendo tal percentual limitado ao maior entre (i) o percentual correspondente à  (NTN-B), com vencimento em 15 de maio de 2035, a ser verificada após o fechamento do mercado da data do Procedimento de Bookbuilding, decrescido exponencialmente de 0,20% (vinte centésimos por cento) ao ano; ou (ii) 7,00%",
       "teto": {
-        "compacto": null,
+        "compacto": "B35 −20bps",
         "ntnb": "B35",
-        "spreadBps": null,
+        "spreadBps": -20,
         "floorPct": "7,00%"
       },
       "remuneracaoFinal": "Sobre o Valor Nominal Unitário Atualizado incidirão juros remuneratórios correspondentes a 7,0606%",
@@ -24918,9 +24943,9 @@
       ],
       "remuneracaoMaxima": "Sobre o Valor Nominal Unitário Atualizado incidirão juros remuneratórios correspondentes a um determinado percentual ao ano, sendo tal percentual limitado ao maior entre (i) o percentual correspondente à NTN-B, com vencimento em 15 de maio de 2035, decrescido exponencialmente de 0,20% ao ano; ou (ii) 7,00%",
       "teto": {
-        "compacto": null,
+        "compacto": "B35 −20bps",
         "ntnb": "B35",
-        "spreadBps": null,
+        "spreadBps": -20,
         "floorPct": "7,00%"
       },
       "remuneracaoFinal": "Sobre o Valor Nominal Unitário Atualizado incidirão juros remuneratórios correspondentes a 7,0606%",
@@ -24960,9 +24985,9 @@
       ],
       "remuneracaoMaxima": "5.18.1\tSobre o Valor Nominal Unitário Atualizado incidirão juros remuneratórios correspondentes a um determinado percentual ao ano, sendo tal percentual limitado ao maior entre (i) o percentual correspondente à NTN-B com vencimento em 15 de maio de 2035, decrescido exponencialmente de 0,20% ao ano; ou (ii) 7,00% ao ano",
       "teto": {
-        "compacto": null,
+        "compacto": "B35 −20bps",
         "ntnb": "B35",
-        "spreadBps": null,
+        "spreadBps": -20,
         "floorPct": "7,00%"
       },
       "remuneracaoFinal": "Sobre o Valor Nominal Unitário Atualizado incidirão juros remuneratórios correspondentes a 7,0606%",
@@ -26161,9 +26186,9 @@
       ],
       "remuneracaoMaxima": "a maior taxa entre “(i)” e “(ii)” a seguir: (i) a taxa interna de retorno do Tesouro IPCA+ com Juros Semestrais (denominação atual da antiga Nota do Tesouro Nacional, série B – NTN-B), com vencimento em 15 de maio de 2029, baseada na cotação indicativa divulgada pela ANBIMA em sua página na internet (http://www.anbima.com.br) e conforme apurado na data de realização do Procedimento de Bookbuilding, decrescida de um spread de 0,24% (vinte e quatro centésimos por cento) ao ano, base 252 (duzentos e cinquenta e dois) Dias Úteis; e (ii) 7,28% (sete inteiros e vinte e oito centésimos por cento)",
       "teto": {
-        "compacto": null,
+        "compacto": "B29 −24bps",
         "ntnb": "B29",
-        "spreadBps": null,
+        "spreadBps": -24,
         "floorPct": "7,28%"
       },
       "remuneracaoFinal": "IPCA + 7,4512%",
@@ -30129,9 +30154,9 @@
       ],
       "remuneracaoMaxima": "NTN-B, com vencimento em 15 de maio de 2035, apurada de acordo com a cotação indicativa divulgada pela ANBIMA em sua página na Internet (www.anbima.com.br) no fechamento do mercado do Dia Útil da realização do Procedimento de Bookbuilding, decrescida exponencialmente de 0,15% (quinze centésimos por cento) ao ano, base 252 (duzentos e cinquenta e dois) Dias Úteis; ou (ii) 7,1354% (sete inteiros, mil, trezentos e cinquenta e quatro décimos de milésimos por cento) ao ano, base 252 (duzentos e cinquenta e dois) Dias Úteis (“Remuneração”)",
       "teto": {
-        "compacto": null,
+        "compacto": "B35 −15bps",
         "ntnb": "B35",
-        "spreadBps": null,
+        "spreadBps": -15,
         "floorPct": "7,1354%"
       },
       "remuneracaoFinal": "IPCA + 7,4515% a.a.",
@@ -31547,9 +31572,9 @@
       ],
       "remuneracaoMaxima": "Sobre o Valor Nominal Unitário Atualizado das Debêntures da Primeira Série incidirão juros remuneratórios correspondentes a um determinado percentual ao ano, base 252 Dias Úteis, Limitado ao que for maior entre: (i) a taxa interna de retorno do Título Público Tesouro IPCA + com Juros Semestrais (NTN-B), com vencimento em 15 de maio de 2033, apurada de acordo com a cotação indicativa divulgada pela ANBIMA em sua página na Internet no fechamento do mercado do Dia Útil da realização do Procedimento de Bookbuilding, decrescida exponencialmente de 0,32% ao ano, ou (ii) 7,20%",
       "teto": {
-        "compacto": null,
+        "compacto": "B33 −32bps",
         "ntnb": "B33",
-        "spreadBps": null,
+        "spreadBps": -32,
         "floorPct": "7,20%"
       },
       "remuneracaoFinal": "IPCA + 7,4118% a.a., base 252 dias úteis",
@@ -31588,7 +31613,12 @@
         }
       ],
       "remuneracaoMaxima": "Sobre o Valor Nominal Unitário Atualizado das Debêntures da Segunda Série incidirão juros remuneratórios correspondentes à taxa interna de retorno do Título Público Tesouro IPCA + com Juros Semestrais (NTN-B), com vencimento em 15 de maio de 2033, apurada de acordo com a cotação indicativa divulgada pela ANBIMA em sua página na Internet no fechamento do mercado do Dia Útil da realização do Procedimento de Bookbuilding, decrescida exponencialmente de 0,32% ao ano",
-      "teto": null,
+      "teto": {
+        "compacto": "B33 −32bps",
+        "ntnb": "B33",
+        "spreadBps": -32,
+        "floorPct": null
+      },
       "remuneracaoFinal": "IPCA + 7,4118% a.a., base 252 dias úteis",
       "rating": "AAA",
       "setorProjeto": null
@@ -33000,7 +33030,12 @@
         }
       ],
       "remuneracaoMaxima": "IPCA + 7,60% ou NTN-B 30 - 16bps, dos dois o maior",
-      "teto": null,
+      "teto": {
+        "compacto": "B30 −16bps",
+        "ntnb": "B30",
+        "spreadBps": -16,
+        "floorPct": null
+      },
       "remuneracaoFinal": null,
       "rating": "Será contratada, para atuar como agência de classificação de risco da oferta, a Standard & Poor's, a Fitch Ratings ou a Moody's",
       "setorProjeto": null

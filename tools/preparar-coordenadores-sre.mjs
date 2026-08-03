@@ -37,27 +37,39 @@ export function parseTeto(txt) {
   const t = txt.replace(/\s+/g, ' ')
   // ano da NTN-B: pega o 20xx logo após "vencimento em" (aceita "15 de maio de 2035" e "15/05/2035")
   const anoM = t.match(/vencimento em[^.]{0,40}?(20\d{2})/i)
-  // spread: o 1º "X,XX%" após "acrescida/o"; sinal negativo se houver "negativ" nesse trecho
-  const acresM = t.match(/acrescid[ao].*?(\d+),(\d+)\s*%/i)
+  // spread por VERBO: "(a)crescid[ao]" = + (acréscimo), "decrescid[ao]" = −
+  // (decréscimo); "negativo"/menos literal também viram −. Ex.: "acrescida de
+  // 0,15%", "decrescido de 0,41%", "crescida ... spread negativo de -0,98%".
+  const acresM = t.match(/(de|a)?crescid[ao].*?(\d+),(\d+)\s*%/i)
   const cdiM = t.match(/CDI\s*\+\s*(\d+),(\d+)\s*%/i)
   const floorM = t.match(/\(ii\)\s*(\d+),(\d+)\s*%/i)
   const fixaM = t.match(/(\d+),(\d+)\s*%\s*a\.?\s*a\.?/i)
-  // Formatos DIRETOS "NTN-B/NTNB [20]YY [sinal] X,XX%" (sem "vencimento em"), ex.:
-  // "NTN-B35 - 0,10%", "NTNB40 - 1,18%", "NTN-B 2035 + 5,50%", "NTN-B32 (-) 0,35%",
-  // "NTNB-30-0,05%". Fallback p/ quando o formato "vencimento em" não casa.
+  // Referência NTN-B DIRETA (sem "vencimento em"): vértice colado ("NTN-B35",
+  // "NTNB40", "B40") OU o ano à frente ("NTN-B maio de 2035"). O spread vem logo
+  // após, em "X,XX%" OU em "N bps" (inteiro). Sinal por menos/(-)/+.
   const ntnbDiretoM = t.match(/\b(?:NTN-?)?B\s*-?\s*(?:20)?(\d{2})\b/i)
+  const ntnbAnoM = t.match(/NTN-?B[^.]{0,25}?(20\d{2})/i)
+  const ntnbRef = ntnbDiretoM || ntnbAnoM
   let spreadDiretoBps = null
-  if (ntnbDiretoM) {
-    const resto = t.slice(ntnbDiretoM.index + ntnbDiretoM[0].length)
+  if (ntnbRef) {
+    const resto = t.slice(ntnbRef.index + ntnbRef[0].length)
     const sm = resto.match(/(\(?\s*[-−–]\s*\)?|\+)\s*(\d+),(\d+)\s*%/)
-    if (sm) { const neg = /[-−–]/.test(sm[1]); spreadDiretoBps = Math.round(parseFloat(`${sm[2]}.${sm[3]}`) * 100) * (neg ? -1 : 1) }
+    const bm = resto.match(/(\(?\s*[-−–]\s*\)?|\+)\s*(\d+)\s*bps/i)
+    // usa o spread que vem PRIMEIRO após a referência — senão, em "NTNB 2035 - 50bps
+    // ou IPCA + 6,80%", o regex de "%" pularia o "-50bps" e pegaria a alternativa IPCA.
+    const usaBm = bm && (!sm || bm.index < sm.index)
+    if (usaBm) { const neg = /[-−–]/.test(bm[1]); spreadDiretoBps = parseInt(bm[2], 10) * (neg ? -1 : 1) }
+    else if (sm) { const neg = /[-−–]/.test(sm[1]); spreadDiretoBps = Math.round(parseFloat(`${sm[2]}.${sm[3]}`) * 100) * (neg ? -1 : 1) }
   }
   let ntnb = null, spreadBps = null
   if (anoM) ntnb = 'B' + anoM[1].slice(2)
   else if (ntnbDiretoM) ntnb = 'B' + ntnbDiretoM[1]
-  // negativo pela PALAVRA "negativo" OU por um sinal de MENOS literal antes do
-  // número (ex.: "spread ... de, no máximo, -1,15%" — sem a palavra "negativo").
-  if (acresM) { const neg = /negativ/i.test(acresM[0]) || /[-−–]\s*\d+,\d+\s*%/.test(acresM[0]); spreadBps = Math.round(parseFloat(`${acresM[1]}.${acresM[2]}`) * 100) * (neg ? -1 : 1) }
+  else if (ntnbAnoM) ntnb = 'B' + ntnbAnoM[1].slice(2)
+  // sinal: "decrescid" (decréscimo) OU palavra "negativo" OU menos literal antes do número.
+  if (acresM) {
+    const neg = /^de$/i.test(acresM[1] || '') || /negativ/i.test(acresM[0]) || /[-−–]\s*\d+,\d+\s*%/.test(acresM[0])
+    spreadBps = Math.round(parseFloat(`${acresM[2]}.${acresM[3]}`) * 100) * (neg ? -1 : 1)
+  }
   else if (spreadDiretoBps != null) spreadBps = spreadDiretoBps
   const floorPct = floorM ? `${floorM[1]},${floorM[2]}%` : null
   const compacto = (ntnb && spreadBps != null) ? `${ntnb} ${spreadBps < 0 ? '−' : '+'}${Math.abs(spreadBps)}bps`
