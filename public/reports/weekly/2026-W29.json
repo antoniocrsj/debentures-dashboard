@@ -393,9 +393,9 @@
             }
           ],
           "teto": {
-            "compacto": "0,10%",
-            "ntnb": null,
-            "spreadBps": null,
+            "compacto": "B35 −10bps",
+            "ntnb": "B35",
+            "spreadBps": -10,
             "floorPct": null
           },
           "remuneracaoMaxima": "NTN-B35 - 0,10% a.a. ou IPCA + 7,79 a.a.",
@@ -420,7 +420,7 @@
               "amortizacao": "Percentual variável sobre o valor nominal atualizado em períodos uniformes",
               "incentivada": true,
               "resgateAntecipado": "N",
-              "spreadEmissao": "B37 −5bps",
+              "spreadEmissao": "B35 −13bps",
               "spreadEst": true,
               "spreadFonte": "base"
             }
@@ -443,9 +443,9 @@
             }
           ],
           "teto": {
-            "compacto": "0,10%",
-            "ntnb": null,
-            "spreadBps": null,
+            "compacto": "B35 −10bps",
+            "ntnb": "B35",
+            "spreadBps": -10,
             "floorPct": null
           },
           "remuneracaoMaxima": "NTN-B35 - 0,10% a.a. ou IPCA + 7,79 a.a.",
@@ -470,7 +470,7 @@
               "amortizacao": "Percentual variável sobre o valor nominal atualizado em períodos uniformes",
               "incentivada": true,
               "resgateAntecipado": "N",
-              "spreadEmissao": "B37 −5bps",
+              "spreadEmissao": "B35 −13bps",
               "spreadEst": true,
               "spreadFonte": "base"
             }

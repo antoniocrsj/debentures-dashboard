@@ -155,6 +155,12 @@ test('parseTeto: NTN-B com spread negativo/positivo, CDI e piso (remuneração m
   assert.equal(btg.compacto, 'B40 −30bps')
   // CDI
   assert.equal(parseTeto('CDI + 2,50% a.a.').compacto, 'CDI + 2,50%')
+  // Formatos DIRETOS (sem "vencimento em"): "NTN-B35 - 0,10%", "NTNB-30-0,05%",
+  // "B40 - 0,90%" (sem NTN-), "+ 5,50%" (positivo).
+  assert.equal(parseTeto('NTN-B35 - 0,10% a.a. ou IPCA + 7,79 a.a.').compacto, 'B35 −10bps')
+  assert.equal(parseTeto('NTNB-30-0,05% ano base 252 ou IPCA+7,30%').compacto, 'B30 −5bps')
+  assert.equal(parseTeto('O maior entre: B40 - 0,90% ou IPCA + 6,25%').compacto, 'B40 −90bps')
+  assert.equal(parseTeto('NTN-B 2035, apurada no dia do Book + 5,50%').compacto, 'B35 +550bps')
   // sem informação -> null
   assert.equal(parseTeto(''), null)
 })

@@ -42,9 +42,21 @@ export function parseTeto(txt) {
   const cdiM = t.match(/CDI\s*\+\s*(\d+),(\d+)\s*%/i)
   const floorM = t.match(/\(ii\)\s*(\d+),(\d+)\s*%/i)
   const fixaM = t.match(/(\d+),(\d+)\s*%\s*a\.?\s*a\.?/i)
+  // Formatos DIRETOS "NTN-B/NTNB [20]YY [sinal] X,XX%" (sem "vencimento em"), ex.:
+  // "NTN-B35 - 0,10%", "NTNB40 - 1,18%", "NTN-B 2035 + 5,50%", "NTN-B32 (-) 0,35%",
+  // "NTNB-30-0,05%". Fallback p/ quando o formato "vencimento em" não casa.
+  const ntnbDiretoM = t.match(/\b(?:NTN-?)?B\s*-?\s*(?:20)?(\d{2})\b/i)
+  let spreadDiretoBps = null
+  if (ntnbDiretoM) {
+    const resto = t.slice(ntnbDiretoM.index + ntnbDiretoM[0].length)
+    const sm = resto.match(/(\(?\s*[-−–]\s*\)?|\+)\s*(\d+),(\d+)\s*%/)
+    if (sm) { const neg = /[-−–]/.test(sm[1]); spreadDiretoBps = Math.round(parseFloat(`${sm[2]}.${sm[3]}`) * 100) * (neg ? -1 : 1) }
+  }
   let ntnb = null, spreadBps = null
   if (anoM) ntnb = 'B' + anoM[1].slice(2)
+  else if (ntnbDiretoM) ntnb = 'B' + ntnbDiretoM[1]
   if (acresM) { const neg = /negativ/i.test(acresM[0]); spreadBps = Math.round(parseFloat(`${acresM[1]}.${acresM[2]}`) * 100) * (neg ? -1 : 1) }
+  else if (spreadDiretoBps != null) spreadBps = spreadDiretoBps
   const floorPct = floorM ? `${floorM[1]},${floorM[2]}%` : null
   const compacto = (ntnb && spreadBps != null) ? `${ntnb} ${spreadBps < 0 ? '−' : '+'}${Math.abs(spreadBps)}bps`
     : cdiM ? `CDI + ${cdiM[1]},${cdiM[2]}%`
@@ -87,7 +99,7 @@ async function main() {
     totalPaginas = j.totalPaginas || 1
     for (const r of (j.registros || [])) if (isDeb(r.nomeValorMobiliario) && r.numeroRegistro) ofertas.push(r)
     pagina++
-  } while (pagina <= totalPaginas && pagina <= 20)
+  } while (pagina <= totalPaginas && pagina <= 60)   // janela larga (ex.: 550d) tem ~33 páginas; 20 cortava os meses antigos
 
   let buscados = 0, reaproveitados = 0, falhas = 0
   for (const o of ofertas) {
