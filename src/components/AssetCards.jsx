@@ -42,7 +42,7 @@ export default function AssetCards({ assets, selectedSet, onSelect, onInfoClick 
         return (
           <div
             key={a.codigoAtivo || i}
-            className={`asset-card${sel.has(a.codigoAtivo) ? ' selected' : ''}`}
+            className={`asset-card${sel.has(a.codigoAtivo) ? ' selected' : ''}${a.amortVenc != null ? ' asset-card-3val' : ''}`}
             role="button"
             tabIndex={0}
             onClick={() => onInfoClick && onInfoClick(a)}
