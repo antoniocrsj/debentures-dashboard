@@ -180,6 +180,28 @@ function tcEmissor(tok) {
   if (tok.length <= 2 || !/[AEIOU]/.test(tok)) return tok // acronimo/numero: mantem
   return tok.charAt(0) + tok.slice(1).toLowerCase()
 }
+// Encurta o nome de uma INSTITUIÇÃO financeira (coordenador/banco) para a marca:
+// mantém os primeiros tokens de marca e para no 1º descritor genérico/jurídico.
+// Ex.: "BTG PACTUAL INVESTMENT BANKING LTDA." -> "BTG Pactual"; "XP INVESTIMENTOS
+// CCTVM S.A." -> "XP"; "ITAU BBA ASSESSORIA FINANCEIRA S.A" -> "Itau BBA";
+// "BANCO BRADESCO BBI S.A" -> "Bradesco BBI".
+const INST_STOP = new Set([
+  'BANCO', 'INVESTMENT', 'BANKING', 'ASSESSORIA', 'FINANCEIRA', 'FINANCEIROS',
+  'INVESTIMENTOS', 'INVESTIMENTO', 'DISTRIBUIDORA', 'CORRETORA', 'CCTVM', 'DTVM',
+  'CTVM', 'CVM', 'TITULOS', 'VALORES', 'MOBILIARIOS', 'PARTICIPACOES', 'HOLDING',
+  'SERVICOS', 'SECURITIES', 'CAPITAL', 'ASSET', 'MANAGEMENT', 'GESTAO', 'GESTORA',
+  'ADMINISTRADORA', 'DE', 'DO', 'DA', 'DOS', 'DAS', 'E', 'S', 'SA', 'LTDA', 'ME',
+  'EIRELI', 'S/A',
+])
+export function shortInstituicao(nome) {
+  const toks = String(nome || '').toUpperCase().replace(/\([^)]*\)/g, ' ').replace(/["']/g, '').replace(/[.,/]/g, ' ').split(/\s+/).filter(Boolean)
+  const keep = []
+  for (const t of toks) { if (INST_STOP.has(t)) { if (keep.length) break; continue } keep.push(t) }
+  const tc = w => w.length <= 3 ? w : w[0] + w.slice(1).toLowerCase()   // ≤3 = sigla (BTG/BBA/BBI/XP)
+  const out = keep.map(tc).join(' ').trim()
+  return out || String(nome || '').trim()
+}
+
 export function shortEmissor(nome, grupo = '') {
   if (!nome) return ''
   const toks = String(nome).toUpperCase().replace(/["']/g, '').replace(/[.,]/g, ' ')

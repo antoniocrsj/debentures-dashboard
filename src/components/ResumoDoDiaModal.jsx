@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { fmtBRL } from '../utils/format.js'
+import { fmtBRL, shortInstituicao } from '../utils/format.js'
 import { fmtDia } from '../utils/reports.js'
 import { downloadFile, downloadName } from '../utils/download.js'
 
@@ -123,6 +123,107 @@ function OfertasSRE({ sre }) {
       )}
     </div>
   )
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Resumo SEMANAL v2 — 3 partes espelhando as abas (Debêntures/Secundário/Técnico).
+// Só é usado quando report.formato === 'v2' (Semanal). Dia e Mês seguem intactos.
+const _brl = v => { if (v == null || !isFinite(v)) return '—'; const a = Math.abs(v), s = v < 0 ? '−' : ''; if (a >= 1e9) return `${s}R$ ${(a / 1e9).toLocaleString('pt-BR', { maximumFractionDigits: 2 })} bi`; if (a >= 1e6) return `${s}R$ ${(a / 1e6).toLocaleString('pt-BR', { maximumFractionDigits: 1 })} mi`; if (a >= 1e3) return `${s}R$ ${(a / 1e3).toLocaleString('pt-BR', { maximumFractionDigits: 0 })} mil`; return `${s}R$ ${a.toLocaleString('pt-BR')}` }
+const _bps = v => v == null ? '—' : `${v >= 0 ? '+' : '−'}${Math.abs(Math.round(v * 10) / 10)} bps`
+const _pct = v => v == null ? '—' : `${v >= 0 ? '+' : '−'}${Math.abs(v * 100).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%`
+const _curtoInst = shortInstituicao   // marca da instituição (BTG Pactual, XP, Itaú BBA…)
+const SemSintese = ({ arr }) => arr?.length ? <ul className="rd-sintese">{arr.map((s, i) => <li key={i}>{s}</li>)}</ul> : null
+
+function SemDeb({ d }) {
+  const r = d.resumo
+  return (
+    <Section title="1. Debêntures">
+      <SemSintese arr={d.sintese} />
+      <div className="rd-kpis">
+        <div><b>{r.nOfertas}</b><span>ofertas · {r.nSeries} séries</span></div>
+        <div><b>{r.nEmissores}</b><span>emissores · {r.nGrupos} grupos</span></div>
+        <div><b>{_brl(r.volumeTotal)}</b><span>volume{r.volumeConfiavel ? '' : ' (parcial)'}</span></div>
+        <div><b>{_brl(r.volume12431)}</b><span>12.431</span></div>
+        <div><b>{_brl(r.volumeTradicional)}</b><span>Tradicional</span></div>
+      </div>
+      {d.inconsistencias?.length > 0 && <div className="rd-alerta">{d.inconsistencias.map((i, k) => <div key={k}>⚠ {i.emissor}: {i.motivo}</div>)}</div>}
+      <h4 className="rd-h4">Novas emissões</h4>
+      {d.ofertas.length ? d.ofertas.map((o, i) => (
+        <div key={i} className="rd-oferta">
+          <div className="rd-oferta-h"><b>{o.emissor}</b> {o.incentivada ? <span className="rd-tag">12.431</span> : <span className="rd-tag t2">Trad</span>}{o.volumeParcial && <span className="rd-tag warn">parcial</span>} <span className="rd-oferta-vol">{_brl(o.volumeOferta)}</span></div>
+          <div className="rd-oferta-meta">{o.grupo || '—'}{o.setor ? ` · ${o.setor}` : ''} · reg. CVM {fmtDia(o.dataRegistro)}{o.rating ? ` · rating ${o.rating}` : ''}</div>
+          {(o.teto || o.remuneracaoMaxima) && <div className="rd-oferta-meta rd-teto" title={o.remuneracaoMaxima ? o.remuneracaoMaxima.replace(/\s+/g, ' ') : undefined}>Remuneração máx.: {o.teto?.compacto
+            ? <><b>{o.teto.compacto}</b>{o.teto.floorPct ? ` (piso ${o.teto.floorPct})` : ''}</>
+            : (o.remuneracaoMaxima || '').replace(/\s+/g, ' ').slice(0, 140)}</div>}
+          {(o.coordenadores?.length || o.coordenador) && <div className="rd-oferta-meta">Coordenadores: {o.coordenadores?.length
+            ? o.coordenadores.map((c, k) => <span key={k}>{k > 0 ? ', ' : ''}{_curtoInst(c.razaoSocial)}{c.lider && <b> (líder)</b>}</span>)
+            : <>{_curtoInst(o.coordenador)}<b> (líder)</b></>}</div>}
+          <table className="rd-table"><thead><tr><th>Série</th><th className="rd-num">Volume</th><th>Detalhes</th></tr></thead><tbody>
+            {o.series.map((s, k) => (<tr key={k}><td>{s.ticker}{s.serie ? <span className="rd-sub"> {s.serie}</span> : ''}</td><td className="rd-num">{s.volumeSerie ? _brl(s.volumeSerie) : '—'}</td><td className="rd-det">{[s.indexador, s.taxaEmissao && `taxa ${s.taxaEmissao}`, s.vencimento && `venc ${fmtDia(s.vencimento)}`, s.durationAnos != null && `dur ${s.durationAnos}a`, s.garantia && `gar. ${s.garantia}`, s.amortizacao && `amort. ${s.amortizacao}`, s.recompra?.breakeven && `BE ${s.recompra.breakeven}`].filter(Boolean).join(' · ') || '—'}</td></tr>))}
+          </tbody></table>
+        </div>
+      )) : <Empty>Nenhuma nova debênture registrada na CVM na semana.</Empty>}
+    </Section>
+  )
+}
+
+function SemSec({ s }) {
+  const rz = s.trades.resumo
+  return (
+    <Section title="2. Secundário">
+      <SemSintese arr={s.sintese} />
+      <h4 className="rd-h4">Tendência de spread</h4>
+      <div className="rd-cards2">
+        {['12431', 'trad'].map(seg => {
+          const t = s.tendencia.porSegmento[seg]; const nome = seg === '12431' ? '12.431' : 'Tradicional'; if (!t) return null
+          return (<div key={seg} className="rd-card">{t.classificacao === 'dados insuficientes' ? (<><b>{nome}: <span className="rd-cls insuf">dados insuficientes</span></b><p className="rd-oferta-meta">{t.motivoInsuf}</p></>) : (<>
+            <b>{nome}: <span className="rd-cls">{t.classificacao}</span>{t.amostraPequena && <span className="rd-tag warn">amostra pequena</span>}</b>
+            <p className="rd-oferta-meta">mediana {_bps(t.medianaBps)} · aparada {_bps(t.mediaAparadaBps)} · {t.n} comparáveis · abriram {t.abriu} ({t.pctAbriu}%) · fecharam {t.fechou} ({t.pctFechou}%){t.vsAnbima ? ` · vs ANBIMA: ${t.vsAnbima.acima} acima / ${t.vsAnbima.abaixo} abaixo` : ''}</p>
+            {t.maioresAberturas.length > 0 && <div className="rd-mini"><b>Maiores aberturas:</b> {t.maioresAberturas.map(m => `${m.ticker} ${_bps(m.variacaoBps)}`).join(', ')}</div>}
+            {t.maioresFechamentos.length > 0 && <div className="rd-mini"><b>Maiores fechamentos:</b> {t.maioresFechamentos.map(m => `${m.ticker} ${_bps(m.variacaoBps)}`).join(', ')}</div>}
+          </>)}</div>)
+        })}
+      </div>
+      <h4 className="rd-h4">Resumo semanal</h4>
+      <div className="rd-kpis">
+        <div><b>{_brl(rz.volume)}</b><span>volume · {rz.nTrades} negócios</span></div>
+        <div><b>{_brl(rz.volume12431)}</b><span>12.431</span></div>
+        <div><b>{_brl(rz.volumeTradicional)}</b><span>Tradicional</span></div>
+        <div><b>{_pct(rz.variacaoVolPct)}</b><span>vs semana anterior</span></div>
+        <div><b>{_pct(rz.variacaoVs4Pct)}</b><span>vs média 4 semanas</span></div>
+      </div>
+      <h4 className="rd-h4">Negócios em destaque (≥ R$ 20 mi, por grupo)</h4>
+      {s.trades.grupos.length ? (<div className="rd-tablewrap"><table className="rd-table"><thead><tr><th>Grupo</th><th className="rd-num">Volume</th><th className="rd-num">Neg.</th><th>Ativos</th><th className="rd-num">Maior</th><th>Spread</th></tr></thead><tbody>
+        {s.trades.grupos.map((g, i) => (<tr key={i}><td>{g.grupo} {g.enquadramento === '12.431' ? <span className="rd-tag">12.431</span> : <span className="rd-tag t2">{g.enquadramento === 'misto' ? 'misto' : 'Trad'}</span>}</td><td className="rd-num">{_brl(g.volumeTotal)}</td><td className="rd-num">{g.nTrades}</td><td className="rd-det">{g.ativos.join(', ')}</td><td className="rd-num">{g.maiorTrade ? _brl(g.maiorTrade.volume) : '—'}</td><td>{g.maiorTrade ? g.maiorTrade.spreadFmt : '—'}</td></tr>))}
+      </tbody></table></div>) : <Empty>Nenhum negócio ≥ R$ 20 mi na semana.</Empty>}
+    </Section>
+  )
+}
+
+function SemTec({ t }) {
+  const bloco = k => {
+    const x = t[k]; if (!x) return null; const nome = k === '12431' ? '12.431' : 'Tradicional'
+    const row = (lbl, i) => (<tr key={lbl}><td>{lbl}</td><td className="rd-num">{_brl(i.valor)}</td><td className="rd-num">{i.anterior == null ? '—' : _brl(i.anterior)}</td><td className="rd-num">{_brl(i.variacaoNominal)}</td><td className="rd-num">{_pct(i.variacaoPct)}</td><td className="rd-num">{i.media4Semanas == null ? '—' : _brl(i.media4Semanas)}</td></tr>)
+    return (<div key={k} className="rd-card"><b>{nome}{x.captacaoBruta.diasUteis ? <span className="rd-oferta-meta"> ({x.captacaoBruta.diasUteis} d.u. · até {fmtDia(x.captacaoBruta.dataFonte)})</span> : ''}</b>
+      <table className="rd-table"><thead><tr><th>Indicador</th><th className="rd-num">Semana</th><th className="rd-num">Anterior</th><th className="rd-num">Δ</th><th className="rd-num">Δ%</th><th className="rd-num">Média 4s</th></tr></thead><tbody>
+        {row('Captação bruta', x.captacaoBruta)}{row('Resgates', x.resgates)}{row('Captação líquida', x.captacaoLiquida)}{row('Emissão CVM', x.volumeEmitidoCVM)}</tbody></table>
+      <div className="rd-mini"><b>Maiores líquidas:</b> {x.destaques.maioresLiquidas.map(d => `${d.gestor} ${_brl(d.valor)}`).join(', ') || '—'}</div>
+      <div className="rd-mini"><b>Piores líquidas:</b> {x.destaques.pioresLiquidas.map(d => `${d.gestor} ${_brl(d.valor)}`).join(', ') || '—'}</div></div>)
+  }
+  const ve = t.volumeEmitidoDestaques
+  return (<Section title="3. Técnico"><SemSintese arr={t.sintese} /><div className="rd-cards2">{bloco('12431')}{bloco('trad')}</div>
+    <h4 className="rd-h4">Volume emitido — destaques</h4>
+    <div className="rd-mini"><b>Por grupo:</b> {ve.porGrupo.map(g => `${g.nome} ${_brl(g.volume)}`).join(', ') || '—'}</div>
+    <div className="rd-mini"><b>Por emissor:</b> {ve.porEmissor.map(g => `${g.nome} ${_brl(g.volume)}`).join(', ') || '—'}</div></Section>)
+}
+
+function SemanalV2({ rep }) {
+  return (<>
+    {rep.alertas?.length > 0 && <div className="rd-alerta">{rep.alertas.map((a, i) => <div key={i}>{a.texto}</div>)}</div>}
+    <SemDeb d={rep.partes.debentures} />
+    <SemSec s={rep.partes.secundario} />
+    <SemTec t={rep.partes.tecnico} />
+  </>)
 }
 
 // Emissores das emissões novas ainda sem grupo cadastrado — o usuário classifica
@@ -413,7 +514,8 @@ export default function ResumoDoDiaModal({ mode, setMode, index, available, sele
         <div className="modal-body">
           {loading && <p className="rd-empty">Carregando…</p>}
           {!loading && !report && <p className="rd-empty">{reports.length ? 'Selecione um período.' : 'Sem relatórios neste modo ainda.'}</p>}
-          {!loading && report && s && (
+          {!loading && report && report.formato === 'v2' && <SemanalV2 rep={report} />}
+          {!loading && report && !report.formato && s && (
             <>
               <Section title="1. Sumário executivo"><Bullets items={report.summary} /></Section>
               <Section title="2. Novas debêntures e emissões">

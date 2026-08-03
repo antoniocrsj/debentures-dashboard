@@ -771,6 +771,20 @@ if ($SkipRelatorios) {
     Warn "$($summary.OfertasSRE) (SRE/CVM acessivel? o Resumo do Dia segue sem esse bloco)"
   }
 
+  # Sindicato de distribuicao (coordenadores + lider) das ofertas de debentures,
+  # do detalhe do SRE -> public\data\Coordenadores_SRE.json. Alimenta o Resumo
+  # SEMANAL (novas emissoes). Incremental/cacheado; best-effort (CVM fora nao trava).
+  Progress 'Coordenadores SRE (sindicato)'
+  try {
+    & node (Join-Path $PSScriptRoot 'preparar-coordenadores-sre.mjs') '--janela' '180'
+    if ($LASTEXITCODE -ne 0) { throw "node saiu com codigo $LASTEXITCODE" }
+    $summary.CoordenadoresSRE = 'OK'
+    Ok 'Sindicato das ofertas gravado em public\data\Coordenadores_SRE.json.'
+  } catch {
+    $summary.CoordenadoresSRE = "FALHOU sem travar: $($_.Exception.Message)"
+    Warn "$($summary.CoordenadoresSRE) (o Semanal segue com o lider do cadastro)"
+  }
+
   Progress 'Resumo do Dia (relatorios)'
   # Atributos de cadastro dos fundos curados (Forma_Condominio/tipo/datas/PL) da
   # CVM -> public/data/Fundos_Atributos.csv. O app/gerador rodam sem acesso a CVM,

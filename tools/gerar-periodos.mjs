@@ -20,6 +20,8 @@ import {
 import { aggCaptacaoPeriodo, aggGestoresPeriodo, aggPerfPeriodo, diasNoIntervalo } from '../src/utils/aggregacao.js'
 import { aggIda, IDA_SEG } from '../src/utils/ida.js'
 import { renderPeriodoHtml } from './relatorios/render-periodo.mjs'
+import { buildSemanal, anbimaSpreadMap } from './relatorios/semanal.mjs'
+import { renderSemanalHtml } from './relatorios/render-semanal.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.join(__dirname, '..')
@@ -64,7 +66,7 @@ function loadAll() {
   // debentures (novas por registro CVM) + emissores (grupo)
   const emissores = new Map()
   for (const r of readCsv(path.join(PUBLIC, 'Emissores.csv'))) {
-    const c = digits(r['CNPJ Emissor'] || r['CNPJ']); if (c) emissores.set(c, { grupo: (r['Grupo'] || '').trim(), empresa: (r['Emissor'] || r['Empresa'] || '').trim() })
+    const c = digits(r['CNPJ Emissor'] || r['CNPJ']); if (c) emissores.set(c, { grupo: (r['Grupo'] || '').trim(), empresa: (r['Emissor'] || r['Empresa'] || '').trim(), setor: (r['Setor'] || '').trim() })
   }
   const debentures = readCsv(path.join(PUBLIC, 'Debentures.csv'))
   return { dia, perf, nomePorCnpj, idaByCode, spreadByPar, emissores, debentures }
@@ -269,6 +271,16 @@ function tickerInfoMap(src) {
 function main() {
   const src = loadAll()
   const tickerInfo = tickerInfoMap(src)
+  // ── Extras SÓ para o Semanal v2 (o Mensal ignora; nada muda p/ ele) ──
+  src.tickerInfo = tickerInfo
+  src.flag12431 = new Map()
+  for (const r of src.debentures) { const t = (r['Codigo do Ativo'] || '').trim().toUpperCase(); if (t) src.flag12431.set(t, /^(s|sim|1|true|x)$/i.test((r['Deb. Incent. (Lei 12.431)'] || '').trim())) }
+  src.anbimaTx = new Map(); for (const r of readCsv(path.join(PUBLIC, 'Anbima_Tx.csv'))) { const t = (r.ticker || '').trim().toUpperCase(); if (t) src.anbimaTx.set(t, r) }
+  src.anbimaBE = new Map(); for (const r of readCsv(path.join(PUBLIC, 'Anbima_BE.csv'))) { const t = (r.ticker || '').trim().toUpperCase(); if (t) src.anbimaBE.set(t, r) }
+  src.mercado = readCsv(path.join(PUBLIC, 'Mercado_Verdadeiro.csv'))
+  src.anbimaNum = anbimaSpreadMap(src.anbimaTx)
+  try { src.coordenadores = JSON.parse(fs.readFileSync(path.join(DATA, 'Coordenadores_SRE.json'), 'utf8')).itens || {} } catch { src.coordenadores = {} }
+  const helpers = { snapDates, readSnap, lastLT, lastLE, periodStatus, weekLabel }
   const capDatas = [...new Set([...distinctDias(src.dia['12431']), ...distinctDias(src.dia.trad)])].sort()
   let totalW = 0, totalM = 0
   for (const tipo of ['weekly', 'monthly']) {
@@ -277,9 +289,9 @@ function main() {
     const ids = recentPeriods(capDatas, tipo, N)
     const index = []
     for (const id of ids) {
-      const rep = buildPeriodo(tipo, id, src, tickerInfo)
+      const rep = tipo === 'weekly' ? buildSemanal(id, src, helpers) : buildPeriodo(tipo, id, src, tickerInfo)
       fs.writeFileSync(path.join(dir, `${id}.json`), JSON.stringify(rep, null, 2))
-      fs.writeFileSync(path.join(dir, `${id}.html`), renderPeriodoHtml(rep))
+      fs.writeFileSync(path.join(dir, `${id}.html`), tipo === 'weekly' ? renderSemanalHtml(rep) : renderPeriodoHtml(rep))
       index.push({ id, label: rep.label, de: rep.de, ate: rep.ate, status: rep.status, json: `/reports/${tipo}/${id}.json`, html: `/reports/${tipo}/${id}.html`, sourceDates: rep.sourceDates })
       if (tipo === 'weekly') totalW++; else totalM++
     }

@@ -1691,6 +1691,36 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 .rd-table th { color: var(--text-muted); font-weight: 600; }
 .rd-table .rd-num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .rd-table tr.rd-sep td { border-bottom: 2px solid var(--primary-border); padding: 0; height: 2px; }
+
+/* Resumo Semanal v2 (3 partes) */
+.rd-sintese { margin: 0 0 10px; padding-left: 18px; }
+.rd-sintese li { margin: 2px 0; font-size: var(--fz-corpo); }
+.rd-h4 { font-size: var(--fz-corpo); font-weight: 600; margin: 14px 0 6px; color: var(--text); }
+.rd-kpis { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+.rd-kpis > div { background: var(--c-bege); border-radius: 8px; padding: 6px 10px; min-width: 108px; }
+.rd-kpis b { display: block; font-size: 14px; font-variant-numeric: tabular-nums; }
+.rd-kpis span { font-size: 10px; color: var(--text-muted); }
+.rd-cards2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.rd-card { background: var(--c-bege); border-radius: 8px; padding: 10px; min-width: 0; overflow-x: auto; }
+.rd-oferta, .rd-cards2 .rd-card, .rd-tablewrap { overflow-x: auto; }
+.rd-card > b { font-size: var(--fz-corpo); }
+.rd-oferta { border: 1px solid var(--primary-border); border-radius: 8px; padding: 10px; margin: 8px 0; }
+.rd-oferta-h { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.rd-oferta-h b { font-size: var(--fz-corpo); }
+.rd-oferta-vol { margin-left: auto; font-weight: 700; color: var(--terracota, #8c5e3a); font-variant-numeric: tabular-nums; }
+.rd-oferta-meta { color: var(--text-muted); font-size: 11px; margin: 4px 0 6px; }
+.rd-oferta-meta.rd-teto { color: var(--text); }
+.rd-oferta-meta.rd-teto b { color: #8c5e3a; }
+.rd-tag { background: #8c5e3a; color: #fff; border-radius: 4px; padding: 1px 5px; font-size: 10px; }
+.rd-tag.t2 { background: var(--text-muted); }
+.rd-tag.warn { background: var(--c-vermelho); }
+.rd-cls { color: #8c5e3a; font-weight: 700; }
+.rd-cls.insuf { color: var(--text-muted); }
+.rd-mini { font-size: 11px; margin: 4px 0; }
+.rd-mini b { color: var(--text-muted); font-weight: 600; }
+.rd-det { white-space: normal; font-size: 11px; color: var(--text-muted); }
+.rd-alerta { background: #fdf3e7; border: 1px solid #8c5e3a; border-radius: 8px; padding: 8px 10px; font-size: 11px; margin: 8px 0; }
+@media (max-width: 640px) { .rd-cards2 { grid-template-columns: 1fr; } }
 .rd-strong { font-weight: 700; }
 .rd-sub { display: block; font-size: var(--fz-micro); font-weight: 400; color: var(--text-muted); margin-top: 1px; }
 .rd-empresa { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; vertical-align: bottom; }
