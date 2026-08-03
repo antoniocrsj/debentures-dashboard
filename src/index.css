@@ -503,6 +503,9 @@ a { color: var(--primary); }
 .asset-card-3val .ac-val-item { line-height: 1.05; }
 .asset-card-3val .ac-val .ac-k { font-size: 8px; }
 .asset-card-3val .ac-val .ac-v { font-size: 10.5px; }
+/* Cores dos valores: Vol. mercado e Alocação em CARVÃO; Amortização em VERDE. */
+.asset-card-3val .ac-val .ac-v { color: var(--text); }
+.asset-card-3val .ac-val-item:last-child .ac-v { color: var(--c-verde); }
 /* Secundario (card): volume em carvao; spread verde se negociou abaixo da ANBIMA,
    vermelho se acima (ver SecondaryTable). */
 .ac-val .ac-v.ac-v-carvao   { color: var(--text); }
