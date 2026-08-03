@@ -881,7 +881,7 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 .book-src { font-size: var(--fz-micro); color: var(--text-muted); opacity: .8; margin: 6px 0 0; }
 
 /* Ação "Ver na ANBIMA" (link externo) — mesma identidade dos botões claros */
-.modal-actions { padding-top: var(--sp-5); }
+.modal-actions { padding-top: var(--sp-5); display: flex; gap: 8px; flex-wrap: wrap; }
 .btn-anbima {
   display: inline-flex;
   align-items: center;

@@ -15,6 +15,8 @@ const FIELDS = {
   // Data de REGISTRO CVM da emissao (nao confundir com [7] "Registro CVM da
   // Emissao", que e' o NUMERO). Reflete quando a debenture foi publicada/registrada.
   registroCvm:    ['Data de Registro CVM da Emissao', 'Data de Registro CVM da Emissão'],
+  // NÚMERO do registro (não a data) — chave p/ casar com o SRE (idRequerimento).
+  registroNum:    ['Registro CVM da Emissao', 'Registro CVM da Emissão'],
   indexador:      ['Indexador', 'Indice', 'Índice', 'indice'],
   coordenador:    ['Coordenador Lider', 'Coordenador Líder', 'Coordenador', 'Lead Manager'],
   garantia:       ['Garantia', 'Tipo de Garantia', 'Garantia/Especie'],
@@ -41,14 +43,22 @@ function pick(row, keys) {
   return ''
 }
 
-export function buildIndexes({ emissores }) {
+export function buildIndexes({ emissores, coordenadoresSre }) {
   const emissorMap = {}
   emissores.forEach(e => {
     const key = normCNPJ(pick(e, FIELDS.cnpjEmissor))
     if (key) emissorMap[key] = e
   })
 
-  return { emissorMap }
+  // SRE: número de registro (já sem o prefixo "CVM/SRE/") -> idRequerimento da
+  // oferta, p/ o link "Ver na CVM" no modal do ativo. Multi-série já vem indexado
+  // por série. Fonte: public/data/Coordenadores_SRE.json (opcional).
+  const sreByRegistro = {}
+  for (const [reg, e] of Object.entries(coordenadoresSre?.itens || {})) {
+    if (e?.idRequerimento) sreByRegistro[reg] = String(e.idRequerimento)
+  }
+
+  return { emissorMap, sreByRegistro }
 }
 
 // PL por gestor, a partir do PL_Gestores.csv (gerado por preparar-fluxo.ps1)
@@ -112,7 +122,7 @@ export function buildAnbimaBEIndex(anbimaBE) {
   return map
 }
 
-export function enrichDebenture(deb, { emissorMap, blcByAtivo, anbimaByTicker, anbimaBEByTicker }) {
+export function enrichDebenture(deb, { emissorMap, blcByAtivo, anbimaByTicker, anbimaBEByTicker, sreByRegistro }) {
   const codigoAtivo = (pick(deb, FIELDS.codigoAtivo) || '').trim()
   const cnpjKey = normCNPJ(pick(deb, FIELDS.cnpjEmissor))
   const emissor = emissorMap[cnpjKey] || {}
@@ -136,6 +146,9 @@ export function enrichDebenture(deb, { emissorMap, blcByAtivo, anbimaByTicker, a
   // o casamento dos books de primario -- nao pode virar a data de registro.
   const regRaw = pick(deb, FIELDS.registroCvm)
   const registroCvm = regRaw && dateKey(regRaw) > HOJE_KEY ? '' : regRaw
+  // Oferta no SRE da CVM (idRequerimento) pelo NÚMERO do registro -> "Ver na CVM".
+  const regNum = (pick(deb, FIELDS.registroNum) || '').trim()
+  const sreOfferId = (sreByRegistro && regNum) ? (sreByRegistro[regNum] || null) : null
 
   return {
     ...deb,
@@ -162,6 +175,8 @@ export function enrichDebenture(deb, { emissorMap, blcByAtivo, anbimaByTicker, a
     anbimaInfo: anbima,
     // Recompra antecipada / breakeven (objeto ou null). Conceito separado de Taxa/Tx Anbima.
     recompra,
+    // Id da oferta no SRE da CVM (p/ "Ver na CVM"); null quando não está no cache SRE.
+    sreOfferId,
   }
 }
 

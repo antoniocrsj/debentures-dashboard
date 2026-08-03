@@ -41,6 +41,8 @@ const STATIC_MERCADO_URL = '/Mercado_Verdadeiro.csv'
 // subscrito por Fundos de Investimento. Gerado por tools/preparar-emissoes-anbima.mjs
 // a partir do Boletim de Mercado de Capitais. Alimenta o grafico da aba Tecnico. OPCIONAL.
 const STATIC_EMISSOES_ANBIMA_URL = '/Emissoes_ANBIMA.csv'
+// Sindicato/oferta do SRE da CVM (idRequerimento por registro) — p/ "Ver na CVM".
+const STATIC_COORD_SRE_URL = '/data/Coordenadores_SRE.json'
 
 async function fetchCSV(rawUrl) {
   const url = `/api/proxy?url=${encodeURIComponent(rawUrl)}`
@@ -135,9 +137,11 @@ export function useDebentures(blcUrl) {
       fetchStaticCSV(STATIC_MERCADO_URL).catch(() => []),
       // Emissoes ANBIMA (emissao mensal x fundos) — grafico da aba Tecnico. OPCIONAL.
       fetchStaticCSV(STATIC_EMISSOES_ANBIMA_URL).catch(() => []),
+      // Ofertas do SRE (idRequerimento por registro) — link "Ver na CVM". OPCIONAL.
+      fetchStaticJSON(STATIC_COORD_SRE_URL).catch(() => null),
     ])
-      .then(([emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta, mercado, emissoesAnbima]) => {
-        const raw = { emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta, mercado, emissoesAnbima }
+      .then(([emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta, mercado, emissoesAnbima, coordenadoresSre]) => {
+        const raw = { emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta, mercado, emissoesAnbima, coordenadoresSre }
         writeCache(raw)
         if (alive) setState({ loading: false, refreshing: false, error: null, raw, cachedAt: Date.now() })
       })

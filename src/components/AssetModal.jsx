@@ -4,6 +4,22 @@ import { anbimaUrl } from '../utils/anbima.js'
 import { useAgenda } from '../hooks/useAgenda.js'
 import { useBooks, fmtBookTaxa, fmtBookDemanda } from '../hooks/useBooks.js'
 
+// Ícone de link externo (compartilhado pelos botões ANBIMA e CVM).
+function ExtIcon() {
+  return (
+    <svg
+      className="btn-anbima-icon"
+      viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"
+      fill="none" stroke="currentColor" strokeWidth="2"
+      strokeLinecap="round" strokeLinejoin="round"
+    >
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+      <polyline points="15 3 21 3 21 9" />
+      <line x1="10" y1="14" x2="21" y2="3" />
+    </svg>
+  )
+}
+
 export default function AssetModal({ asset, onClose, onSelectTicker }) {
   // Close on Escape
   useEffect(() => {
@@ -27,26 +43,32 @@ export default function AssetModal({ asset, onClose, onSelectTicker }) {
         </div>
 
         <div className="modal-body">
-          {anbimaHref && (
+          {(anbimaHref || asset.sreOfferId) && (
             <div className="modal-actions">
-              <a
-                className="btn-anbima"
-                href={anbimaHref}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Ver na ANBIMA
-                <svg
-                  className="btn-anbima-icon"
-                  viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"
-                  fill="none" stroke="currentColor" strokeWidth="2"
-                  strokeLinecap="round" strokeLinejoin="round"
+              {anbimaHref && (
+                <a
+                  className="btn-anbima"
+                  href={anbimaHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                  <polyline points="15 3 21 3 21 9" />
-                  <line x1="10" y1="14" x2="21" y2="3" />
-                </svg>
-              </a>
+                  Ver na ANBIMA
+                  <ExtIcon />
+                </a>
+              )}
+              {/* Oferta no SRE da CVM — mesma pílula, ao lado da ANBIMA. Só quando
+                  a debênture está no cache do SRE (ofertas recentes). */}
+              {asset.sreOfferId && (
+                <a
+                  className="btn-anbima"
+                  href={`https://web.cvm.gov.br/sre-publico-cvm/#/oferta-publica/${asset.sreOfferId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Ver na CVM
+                  <ExtIcon />
+                </a>
+              )}
             </div>
           )}
 
