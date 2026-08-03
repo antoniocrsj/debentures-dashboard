@@ -92,7 +92,10 @@
               "garantia": "Quirografária",
               "amortizacao": "-",
               "incentivada": false,
-              "resgateAntecipado": "N"
+              "resgateAntecipado": "N",
+              "spreadEmissao": "CDI +0,45%",
+              "spreadEst": false,
+              "spreadFonte": "base"
             },
             {
               "ticker": "PCHSI6",
@@ -104,7 +107,10 @@
               "garantia": "Quirografária",
               "amortizacao": "-",
               "incentivada": false,
-              "resgateAntecipado": "N"
+              "resgateAntecipado": "N",
+              "spreadEmissao": "CDI +0,65%",
+              "spreadEst": false,
+              "spreadFonte": "base"
             },
             {
               "ticker": "PCHSJ6",
@@ -116,7 +122,10 @@
               "garantia": "Quirografária",
               "amortizacao": "-",
               "incentivada": false,
-              "resgateAntecipado": "N"
+              "resgateAntecipado": "N",
+              "spreadEmissao": "CDI +0,75%",
+              "spreadEst": false,
+              "spreadFonte": "base"
             },
             {
               "ticker": "PCHSK6",
@@ -128,7 +137,10 @@
               "garantia": "Quirografária",
               "amortizacao": "-",
               "incentivada": false,
-              "resgateAntecipado": "N"
+              "resgateAntecipado": "N",
+              "spreadEmissao": "CDI +0,85%",
+              "spreadEst": false,
+              "spreadFonte": "base"
             },
             {
               "ticker": "PCHSL6",
@@ -140,7 +152,10 @@
               "garantia": "Quirografária",
               "amortizacao": "-",
               "incentivada": false,
-              "resgateAntecipado": "N"
+              "resgateAntecipado": "N",
+              "spreadEmissao": "CDI +1,00%",
+              "spreadEst": false,
+              "spreadFonte": "base"
             },
             {
               "ticker": "PCHSM6",
@@ -152,7 +167,10 @@
               "garantia": "Quirografária",
               "amortizacao": "-",
               "incentivada": false,
-              "resgateAntecipado": "N"
+              "resgateAntecipado": "N",
+              "spreadEmissao": "CDI +1,10%",
+              "spreadEst": false,
+              "spreadFonte": "base"
             },
             {
               "ticker": "PCHSN6",
@@ -164,7 +182,10 @@
               "garantia": "Quirografária",
               "amortizacao": "-",
               "incentivada": false,
-              "resgateAntecipado": "N"
+              "resgateAntecipado": "N",
+              "spreadEmissao": "CDI +0,00%",
+              "spreadEst": false,
+              "spreadFonte": "base"
             }
           ]
         },
@@ -216,7 +237,10 @@
               "garantia": "Quirografária",
               "amortizacao": "-",
               "incentivada": false,
-              "resgateAntecipado": "S"
+              "resgateAntecipado": "S",
+              "spreadEmissao": "CDI +0,25%",
+              "spreadEst": false,
+              "spreadFonte": "base"
             }
           ]
         },
@@ -263,7 +287,10 @@
               "garantia": "Quirografária",
               "amortizacao": "-",
               "incentivada": false,
-              "resgateAntecipado": "S"
+              "resgateAntecipado": "S",
+              "spreadEmissao": "CDI +0,42%",
+              "spreadEst": false,
+              "spreadFonte": "base"
             }
           ]
         },
@@ -325,7 +352,10 @@
               "garantia": "Quirografária",
               "amortizacao": "-",
               "incentivada": false,
-              "resgateAntecipado": "S"
+              "resgateAntecipado": "S",
+              "spreadEmissao": "CDI +2,75%",
+              "spreadEst": false,
+              "spreadFonte": "base"
             }
           ]
         },
@@ -372,7 +402,10 @@
               "garantia": "Real",
               "amortizacao": "Percentual variável sobre o valor nominal atualizado em períodos uniformes",
               "incentivada": false,
-              "resgateAntecipado": "S"
+              "resgateAntecipado": "S",
+              "spreadEmissao": "CDI +2,10%",
+              "spreadEst": false,
+              "spreadFonte": "base"
             }
           ]
         },
@@ -414,7 +447,10 @@
               "garantia": "Quirografária",
               "amortizacao": "-",
               "incentivada": false,
-              "resgateAntecipado": "S"
+              "resgateAntecipado": "S",
+              "spreadEmissao": "CDI +0,75%",
+              "spreadEst": false,
+              "spreadFonte": "base"
             }
           ]
         },
@@ -457,7 +493,10 @@
               "garantia": "Quirografária",
               "amortizacao": "-",
               "incentivada": false,
-              "resgateAntecipado": "S"
+              "resgateAntecipado": "S",
+              "spreadEmissao": "CDI +1,90%",
+              "spreadEst": false,
+              "spreadFonte": "base"
             },
             {
               "ticker": "OREN31",
@@ -469,7 +508,10 @@
               "garantia": "Quirografária",
               "amortizacao": "-",
               "incentivada": false,
-              "resgateAntecipado": "S"
+              "resgateAntecipado": "S",
+              "spreadEmissao": "CDI +1,90%",
+              "spreadEst": false,
+              "spreadFonte": "base"
             }
           ]
         },
@@ -516,7 +558,10 @@
               "garantia": "Real",
               "amortizacao": "-",
               "incentivada": false,
-              "resgateAntecipado": "S"
+              "resgateAntecipado": "S",
+              "spreadEmissao": "CDI +3,55%",
+              "spreadEst": false,
+              "spreadFonte": "base"
             }
           ]
         }

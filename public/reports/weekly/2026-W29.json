@@ -107,7 +107,10 @@
               "garantia": "Quirografária",
               "amortizacao": "Percentual fixo sobre o valor nominal de emissão em períodos uniformes",
               "incentivada": false,
-              "resgateAntecipado": "S"
+              "resgateAntecipado": "S",
+              "spreadEmissao": "CDI +1,25%",
+              "spreadEst": false,
+              "spreadFonte": "base"
             }
           ]
         },
@@ -170,7 +173,10 @@
               "garantia": "Quirografária",
               "amortizacao": "-",
               "incentivada": false,
-              "resgateAntecipado": "S"
+              "resgateAntecipado": "S",
+              "spreadEmissao": "CDI +0,70%",
+              "spreadEst": false,
+              "spreadFonte": "base"
             },
             {
               "ticker": "AXIAB0",
@@ -182,7 +188,10 @@
               "garantia": "Quirografária",
               "amortizacao": "Percentual variável sobre o valor nominal atualizado em períodos uniformes",
               "incentivada": false,
-              "resgateAntecipado": "S"
+              "resgateAntecipado": "S",
+              "spreadEmissao": "CDI +0,85%",
+              "spreadEst": false,
+              "spreadFonte": "base"
             }
           ]
         },
@@ -234,7 +243,10 @@
               "garantia": "Quirografária",
               "amortizacao": "-",
               "incentivada": false,
-              "resgateAntecipado": "S"
+              "resgateAntecipado": "S",
+              "spreadEmissao": "CDI +0,42%",
+              "spreadEst": false,
+              "spreadFonte": "base"
             }
           ]
         },
@@ -291,7 +303,10 @@
               "garantia": "Quirografária",
               "amortizacao": "Percentual fixo sobre o valor nominal atualizado em períodos uniformes",
               "incentivada": false,
-              "resgateAntecipado": "S"
+              "resgateAntecipado": "S",
+              "spreadEmissao": "CDI +1,25%",
+              "spreadEst": false,
+              "spreadFonte": "base"
             }
           ]
         },
@@ -339,7 +354,10 @@
               "garantia": "Quirografária",
               "amortizacao": "-",
               "incentivada": false,
-              "resgateAntecipado": "S"
+              "resgateAntecipado": "S",
+              "spreadEmissao": "CDI +0,10%",
+              "spreadEst": false,
+              "spreadFonte": "base"
             },
             {
               "ticker": "EGIEB7",
@@ -351,7 +369,10 @@
               "garantia": "Quirografária",
               "amortizacao": "-",
               "incentivada": false,
-              "resgateAntecipado": "S"
+              "resgateAntecipado": "S",
+              "spreadEmissao": "CDI +0,35%",
+              "spreadEst": false,
+              "spreadFonte": "base"
             }
           ]
         },
@@ -398,7 +419,10 @@
               "garantia": "Quirografária",
               "amortizacao": "Percentual variável sobre o valor nominal atualizado em períodos uniformes",
               "incentivada": true,
-              "resgateAntecipado": "N"
+              "resgateAntecipado": "N",
+              "spreadEmissao": "B37 −5bps",
+              "spreadEst": true,
+              "spreadFonte": "base"
             }
           ]
         },
@@ -445,7 +469,10 @@
               "garantia": "Quirografária",
               "amortizacao": "Percentual variável sobre o valor nominal atualizado em períodos uniformes",
               "incentivada": true,
-              "resgateAntecipado": "N"
+              "resgateAntecipado": "N",
+              "spreadEmissao": "B37 −5bps",
+              "spreadEst": true,
+              "spreadFonte": "base"
             }
           ]
         },
@@ -487,7 +514,10 @@
               "garantia": "Quirografária",
               "amortizacao": "Percentual variável sobre o valor nominal atualizado em períodos uniformes",
               "incentivada": false,
-              "resgateAntecipado": "S"
+              "resgateAntecipado": "S",
+              "spreadEmissao": "CDI +1,26%",
+              "spreadEst": false,
+              "spreadFonte": "base"
             }
           ]
         },
@@ -523,7 +553,10 @@
               "garantia": "Quirografária",
               "amortizacao": "-",
               "incentivada": false,
-              "resgateAntecipado": "N"
+              "resgateAntecipado": "N",
+              "spreadEmissao": "DI +2,48%",
+              "spreadEst": true,
+              "spreadFonte": "base"
             }
           ]
         },
@@ -570,7 +603,10 @@
               "garantia": "Real",
               "amortizacao": "-",
               "incentivada": false,
-              "resgateAntecipado": "S"
+              "resgateAntecipado": "S",
+              "spreadEmissao": "CDI +2,40%",
+              "spreadEst": false,
+              "spreadFonte": "base"
             }
           ]
         },
@@ -612,7 +648,10 @@
               "garantia": "Quirografária",
               "amortizacao": "Percentual variável sobre o valor nominal atualizado em períodos uniformes",
               "incentivada": true,
-              "resgateAntecipado": "N"
+              "resgateAntecipado": "N",
+              "spreadEmissao": "B40 +427bps",
+              "spreadEst": true,
+              "spreadFonte": "base"
             }
           ]
         },
@@ -648,7 +687,10 @@
               "garantia": "Quirografária",
               "amortizacao": "Percentual variável sobre o valor nominal atualizado em períodos não uniformes",
               "incentivada": false,
-              "resgateAntecipado": "S"
+              "resgateAntecipado": "S",
+              "spreadEmissao": "DI −14,15%",
+              "spreadEst": true,
+              "spreadFonte": "base"
             }
           ]
         },
@@ -684,7 +726,10 @@
               "garantia": "Quirografária",
               "amortizacao": "Percentual variável sobre o valor nominal atualizado em períodos não uniformes",
               "incentivada": false,
-              "resgateAntecipado": "N"
+              "resgateAntecipado": "N",
+              "spreadEmissao": "CDI +2,65%",
+              "spreadEst": false,
+              "spreadFonte": "base"
             }
           ]
         }

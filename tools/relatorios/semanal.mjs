@@ -17,6 +17,7 @@ import { weekRange, isoWeekId } from '../../src/utils/periods.js'
 import { aggCaptacaoPeriodo, aggGestoresPeriodo } from '../../src/utils/aggregacao.js'
 import { aggIda, IDA_SEG } from '../../src/utils/ida.js'
 import { parseNum, fmtRecompraTaxa } from '../../src/utils/format.js'
+import { spreadDe } from '../lib-mercado.mjs'
 
 const TRADE_DESTAQUE = 20e6   // R$ 20 milhões (negócio asset-dia)
 const digits = s => String(s || '').replace(/\D/g, '')
@@ -81,6 +82,28 @@ function volSerie(r) {
   const vn = parseNum(r['Valor Nominal na Emissao']) || parseNum(r['Valor Nominal Atual'])
   return (isFinite(q) && isFinite(vn) && q > 0 && vn > 0) ? q * vn : null
 }
+// Indexador CRU da base (IPCA/DI/PRÉ) -> família do spreadDe. DI com cupom grande
+// (>=50) é % do CDI (DI_PERCENTUAL), senão é DI+ (o cupom já é o spread).
+const EMPTY_MAP = new Map()
+function idxSpread(raw, cupom) {
+  const s = (raw || '').toUpperCase()
+  if (/IPCA|NTN|INFRA/.test(s)) return 'IPCA_SPREAD'
+  if (/PR[EÉ]|PREFIX/.test(s)) return 'PREFIXADO'
+  if (/DI|CDI/.test(s)) return (cupom != null && cupom >= 50) ? 'DI_PERCENTUAL' : 'DI_SPREAD'
+  return null
+}
+// Cupom a partir da "remuneração final (pós-bookbuilding)" do SRE — só nos casos
+// LIMPOS (o resto, e a prosa multi-série, ficam p/ o teto). Ex.: "CDI + 2,50%" ->
+// {idx:'DI_SPREAD',cupom:2.5}; "IPCA+8,3323%" -> {idx:'IPCA_SPREAD',cupom:8.3323}.
+function cupomDoFinal(txt) {
+  if (!txt) return null
+  const t = txt.replace(/\s+/g, ' ')
+  let m = t.match(/IPCA\s*\+\s*(\d+),(\d+)/i)
+  if (m) return { idx: 'IPCA_SPREAD', cupom: parseFloat(`${m[1]}.${m[2]}`) }
+  m = t.match(/(?:CDI|DI)\s*\+\s*(\d+),(\d+)/i)
+  if (m) return { idx: 'DI_SPREAD', cupom: parseFloat(`${m[1]}.${m[2]}`) }
+  return null
+}
 function buildDebentures(range, src) {
   const emissores = src.emissores, be = src.anbimaBE, tx = src.anbimaTx
   // 1) linhas de debênture com Registro CVM dentro da semana
@@ -104,6 +127,14 @@ function buildDebentures(range, src) {
   for (const o of ofertasMap.values()) {
     const r0 = o.series[0]
     const emi = emissores.get(o.cnpj) || {}
+    // SRE por número de registro (sindicato/teto/final): resolvido AQUI porque o
+    // spread de emissão usa o "final" como fallback quando a base ainda não tem taxa.
+    const registro = (r0['Registro CVM da Emissao'] || '').trim()
+    const coordInfo = (src.coordenadores || {})[registro] || null
+    const dataRegistro = isoOf(r0['Data de Registro CVM da Emissao'])
+    // "remuneração final" do SRE só p/ oferta de série ÚNICA (multi-série a prosa
+    // não mapeia por série) e só nos casos limpos (CDI+/DI+/IPCA+).
+    const finalCupom = (o.series.length === 1) ? cupomDoFinal(coordInfo?.remuneracaoFinal) : null
     // volume da oferta = soma das séries (base é por-série -> sem dupla contagem)
     let volTotal = 0, semVol = 0
     const seriesDet = o.series.map(r => {
@@ -126,14 +157,29 @@ function buildDebentures(range, src) {
         resgateAntecipado: campo('r', r['Resgate Antecipado']),
         recompra: rc ? { status: rc.statusExercicio || null, data: rc.dataEvento || null, breakeven: rc.taxaEvento != null && rc.taxaEvento !== '' ? fmtRecompraTaxa(parseNum(rc.taxaEvento), rc.remuneracao) : null, pctPuPar: rc.pctPuPar ? round(parseNum(rc.pctPuPar) * 100, 2) : null } : null,
       }
+      // SPREAD DE EMISSÃO (é o que interessa — nunca a nominal): cupom da base ou,
+      // se vazio, da "remuneração final" do SRE; cruzado com a curva NTN-B/LTN (a
+      // mesma máquina do Secundário). DI+ é exato; IPCA/PRÉ é ESTIMATIVA (curva
+      // TPF). Sem cupom -> fica p/ o teto (spread-teto do SRE) no card.
+      let cupom = parseNum(det.taxaEmissao), idxTipo = idxSpread(det.indexador, cupom), fonteSp = 'base'
+      if ((cupom == null || !isFinite(cupom)) && finalCupom) { cupom = finalCupom.cupom; idxTipo = finalCupom.idx; fonteSp = 'sre' }
+      if (cupom != null && isFinite(cupom) && idxTipo && det.vencimento && src.curvas) {
+        const dia = isoOf(r['Data de Registro CVM da Emissao']) || dataRegistro
+        // IPCA de série ÚNICA: ancora no MESMO vértice NTN-B que o teto/prospecto
+        // nomeia (ex.: "B35" -> 2035) — a oferta precifica por DURATION, não pelo
+        // vencimento, então o venc bruto pegaria o vértice errado. Multi-série usa
+        // o venc de cada série (cada uma tem sua própria referência).
+        const refVenc = (idxTipo === 'IPCA_SPREAD' && o.series.length === 1 && coordInfo?.teto?.ntnb)
+          ? `20${coordInfo.teto.ntnb.slice(1)}-05-15` : det.vencimento
+        const sp = spreadDe(det.ticker, dia, cupom, idxTipo, EMPTY_MAP, new Map([[det.ticker, refVenc]]), src.curvas)
+        if (sp) { det.spreadEmissao = sp.fmt.replace(/(\d)\.(\d)/g, '$1,$2'); det.spreadEst = idxTipo !== 'DI_SPREAD'; det.spreadFonte = fonteSp }
+      }
       // remove campos vazios (omitir, nunca inventar)
       for (const k of Object.keys(det)) if (det[k] == null || det[k] === '') delete det[k]
       return det
     })
     if (semVol > 0) inconsistencias.push({ oferta: o.chave, emissor: emi.empresa || (r0['Empresa'] || '').trim(), motivo: `${semVol} série(s) sem quantidade/valor nominal — volume da oferta pode estar incompleto`, seriesSemVolume: o.series.filter(r => volSerie(r) == null).map(r => (r['Codigo do Ativo'] || '').trim()) })
-    // sindicato completo (SRE) por número de registro; líder já vem marcado.
-    const registro = (r0['Registro CVM da Emissao'] || '').trim()
-    const coordInfo = (src.coordenadores || {})[registro] || null
+    // sindicato/teto/final do SRE já resolvidos acima (registro, coordInfo).
     ofertas.push({
       chave: o.chave, cnpj: o.cnpj, emissao: o.emissao, registro,
       emissor: emi.empresa || (r0['Empresa'] || '').trim(),
@@ -147,7 +193,7 @@ function buildDebentures(range, src) {
       teto: coordInfo?.teto || null,
       remuneracaoMaxima: coordInfo?.remuneracaoMaxima || null,
       rating: (coordInfo?.rating && !/^n[.\/ ]?a\b/i.test(coordInfo.rating.trim())) ? coordInfo.rating.trim() : null,
-      dataRegistro: isoOf(r0['Data de Registro CVM da Emissao']),
+      dataRegistro,
       incentivada: isYes(r0['Deb. Incent. (Lei 12.431)']),
       volumeOferta: volTotal > 0 ? volTotal : null,
       volumeParcial: semVol > 0,

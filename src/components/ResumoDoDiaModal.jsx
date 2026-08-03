@@ -159,7 +159,7 @@ function SemDeb({ d }) {
             ? o.coordenadores.map((c, k) => <span key={k}>{k > 0 ? ', ' : ''}{_curtoInst(c.razaoSocial)}{c.lider && <b> (líder)</b>}</span>)
             : <>{_curtoInst(o.coordenador)}<b> (líder)</b></>}</div>}
           <table className="rd-table"><thead><tr><th>Série</th><th className="rd-num">Volume</th><th>Detalhes</th></tr></thead><tbody>
-            {o.series.map((s, k) => (<tr key={k}><td>{s.ticker}{s.serie ? <span className="rd-sub"> {s.serie}</span> : ''}</td><td className="rd-num">{s.volumeSerie ? _brl(s.volumeSerie) : '—'}</td><td className="rd-det">{[s.indexador, s.taxaEmissao && `taxa ${s.taxaEmissao}`, s.vencimento && `venc ${fmtDia(s.vencimento)}`, s.durationAnos != null && `dur ${s.durationAnos}a`, s.garantia && `gar. ${s.garantia}`, s.amortizacao && `amort. ${s.amortizacao}`, s.recompra?.breakeven && `BE ${s.recompra.breakeven}`].filter(Boolean).join(' · ') || '—'}</td></tr>))}
+            {o.series.map((s, k) => (<tr key={k}><td>{s.ticker}{s.serie ? <span className="rd-sub"> {s.serie}</span> : ''}</td><td className="rd-num">{s.volumeSerie ? _brl(s.volumeSerie) : '—'}</td><td className="rd-det">{[s.spreadEmissao ? `${s.spreadEmissao}${s.spreadEst ? ' est.' : ''}` : s.indexador, s.vencimento && `venc ${fmtDia(s.vencimento)}`, s.durationAnos != null && `dur ${s.durationAnos}a`, s.garantia && `gar. ${s.garantia}`, s.amortizacao && `amort. ${s.amortizacao}`, s.recompra?.breakeven && `BE ${s.recompra.breakeven}`].filter(Boolean).join(' · ') || '—'}</td></tr>))}
           </tbody></table>
         </div>
       )) : <Empty>Nenhuma nova debênture registrada na CVM na semana.</Empty>}

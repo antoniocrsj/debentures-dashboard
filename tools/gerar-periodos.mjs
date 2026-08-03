@@ -21,6 +21,7 @@ import { aggCaptacaoPeriodo, aggGestoresPeriodo, aggPerfPeriodo, diasNoIntervalo
 import { aggIda, IDA_SEG } from '../src/utils/ida.js'
 import { renderPeriodoHtml } from './relatorios/render-periodo.mjs'
 import { buildSemanal, anbimaSpreadMap } from './relatorios/semanal.mjs'
+import { lerCurvas } from './lib-mercado.mjs'
 import { renderSemanalHtml } from './relatorios/render-semanal.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -280,6 +281,8 @@ function main() {
   src.mercado = readCsv(path.join(PUBLIC, 'Mercado_Verdadeiro.csv'))
   src.anbimaNum = anbimaSpreadMap(src.anbimaTx)
   try { src.coordenadores = JSON.parse(fs.readFileSync(path.join(DATA, 'Coordenadores_SRE.json'), 'utf8')).itens || {} } catch { src.coordenadores = {} }
+  // Curva NTN-B/LTN (TPF) por dia — p/ o SPREAD DE EMISSÃO no card do Semanal.
+  src.curvas = lerCurvas(PUBLIC)
   const helpers = { snapDates, readSnap, lastLT, lastLE, periodStatus, weekLabel }
   const capDatas = [...new Set([...distinctDias(src.dia['12431']), ...distinctDias(src.dia.trad)])].sort()
   let totalW = 0, totalM = 0

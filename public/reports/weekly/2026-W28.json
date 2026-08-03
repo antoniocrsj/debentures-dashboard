@@ -89,7 +89,10 @@
               "garantia": "Quirografária",
               "amortizacao": "Percentual variável sobre o valor nominal atualizado em períodos uniformes",
               "incentivada": true,
-              "resgateAntecipado": "S"
+              "resgateAntecipado": "S",
+              "spreadEmissao": "B50 −23bps",
+              "spreadEst": true,
+              "spreadFonte": "base"
             },
             {
               "ticker": "GSEA22",
@@ -101,7 +104,10 @@
               "garantia": "Quirografária",
               "amortizacao": "Percentual variável sobre o valor nominal atualizado em períodos uniformes",
               "incentivada": true,
-              "resgateAntecipado": "S"
+              "resgateAntecipado": "S",
+              "spreadEmissao": "B50 −23bps",
+              "spreadEst": true,
+              "spreadFonte": "base"
             }
           ]
         },
@@ -153,7 +159,10 @@
               "garantia": "Quirografária",
               "amortizacao": "Percentual fixo sobre o valor nominal atualizado em períodos uniformes",
               "incentivada": true,
-              "resgateAntecipado": "S"
+              "resgateAntecipado": "S",
+              "spreadEmissao": "B32 +108bps",
+              "spreadEst": true,
+              "spreadFonte": "base"
             }
           ]
         },
@@ -200,7 +209,10 @@
               "garantia": "Quirografária",
               "amortizacao": "-",
               "incentivada": false,
-              "resgateAntecipado": "S"
+              "resgateAntecipado": "S",
+              "spreadEmissao": "CDI +0,65%",
+              "spreadEst": false,
+              "spreadFonte": "base"
             }
           ]
         },
@@ -247,7 +259,10 @@
               "garantia": "Real",
               "amortizacao": "-",
               "incentivada": false,
-              "resgateAntecipado": "S"
+              "resgateAntecipado": "S",
+              "spreadEmissao": "CDI +1,30%",
+              "spreadEst": false,
+              "spreadFonte": "base"
             }
           ]
         }

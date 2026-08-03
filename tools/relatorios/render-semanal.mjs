@@ -46,7 +46,9 @@ function parteDebentures(d) {
   const ofertas = d.ofertas.map(o => {
     const linhasSerie = o.series.map(s => {
       const campos = [
-        s.indexador && `${esc(s.indexador)}`, s.taxaEmissao && `taxa ${esc(s.taxaEmissao)}`,
+        // O que interessa é o SPREAD (nunca a nominal): spread de emissão calculado
+        // (IPCA/PRÉ = estimativa via curva; DI+ exato); sem cálculo, só o indexador.
+        s.spreadEmissao ? `<b>${esc(s.spreadEmissao)}</b>${s.spreadEst ? ' <span class="sub" title="estimativa: cupom de emissão × curva NTN-B/LTN do dia">est.</span>' : ''}` : (s.indexador ? esc(s.indexador) : null),
         s.vencimento && `venc ${fmtD(s.vencimento)}`, s.durationAnos != null && `dur ${s.durationAnos}a`,
         s.garantia && `gar. ${esc(s.garantia)}`, s.amortizacao && `amort. ${esc(s.amortizacao)}`,
         s.recompra && s.recompra.breakeven && `BE ${esc(s.recompra.breakeven)}`,
