@@ -822,44 +822,47 @@ function renderHtml(rep) {
     /* Catalogo da casa: 6 cores cruas + branco. Navy APOSENTADA (jul/2026).
        Texto sempre carvao (--text-muted=carvao, hierarquia por tamanho/peso);
        borda e grade bege; ambar aposentado (--warn=terracota). */
-    --c-terracota:#8c5e3a;--c-carvao:#2a2420;--c-bege:#f2ede5;--c-taupe:#9a8c7a;--c-verde:#047857;--c-vermelho:#b91c1c;--c-branco:#fff;
+    /* Formatação v2 — mesmo modelo do Resumo Semanal (FORMATACAO_Resumo_Semanal.md):
+       cantos retos, réguas de tabela em --linha, cabeçalho de tabela bege,
+       escala de 5 fontes. */
+    --c-terracota:#8c5e3a;--c-carvao:#26211d;--c-bege:#f2ede5;--c-taupe:#9a8c7a;--c-verde:#047857;--c-vermelho:#b91c1c;--c-branco:#fff;
     --primary:var(--c-terracota); --primary-dark:var(--c-carvao); --primary-light:var(--c-bege);
     --primary-border:var(--c-bege); --bg:var(--c-bege); --card:var(--c-branco); --text:var(--c-carvao);
-    --text-muted:var(--c-carvao); --border:var(--c-bege);
+    --text-muted:var(--c-carvao); --border:var(--c-bege); --bege:#e8dfd2; --linha:#d5c7b0;
     --pos:var(--c-verde); --neg:var(--c-vermelho); --success:var(--c-verde); --danger:var(--c-vermelho);
     --warn:var(--c-terracota);
   }
   *{box-sizing:border-box}
   body{font-family:system-ui,Segoe UI,Arial,sans-serif;max-width:860px;margin:0 auto;
     padding:24px 20px 48px;color:var(--text);background:var(--bg);line-height:1.5}
-  .head{background:var(--primary-dark);color:#fff;border-radius:12px;padding:18px 22px;margin-bottom:18px}
-  h1{font-size:22px;margin:0 0 4px;font-weight:600}
+  .head{background:var(--primary-dark);color:#fff;border-radius:0;padding:18px 22px;margin-bottom:18px}
+  h1{font-size:20px;margin:0 0 4px;font-weight:600}
   .head .sub{color:var(--c-bege);margin:0;font-size:12.5px}
-  section{background:var(--card);border:1px solid var(--border);border-radius:12px;
+  section{background:var(--card);border:1px solid var(--border);border-radius:0;
     padding:16px 18px;margin-bottom:14px}
-  h2{font-size:15px;margin:0 0 10px;color:var(--primary-dark);font-weight:600;
-    border-bottom:2px solid var(--primary-light);padding-bottom:6px}
+  h2{font-size:16px;margin:0 0 10px;color:var(--primary-dark);font-weight:600;
+    border-bottom:2px solid var(--linha);padding-bottom:6px}
   h2 .n{display:inline-block;min-width:22px;color:var(--primary)}
-  h4{font-size:12.5px;margin:14px 0 6px;color:var(--primary);font-weight:600;text-transform:none}
+  h4{font-size:14px;margin:14px 0 6px;color:var(--primary);font-weight:600;text-transform:none}
   h4:first-of-type{margin-top:4px}
-  h5.anb-sub{font-size:11.5px;margin:10px 0 4px;color:var(--text-muted);font-weight:600;text-transform:none}
+  h5.anb-sub{font-size:11px;margin:10px 0 4px;color:var(--text-muted);font-weight:600;text-transform:none}
   .cap-dia{font-weight:400;color:var(--text-muted);font-size:11px}
   .tw{overflow-x:auto}
   table{border-collapse:collapse;width:100%;font-size:12.5px;margin:4px 0}
-  th,td{border:1px solid var(--border);padding:6px 9px;text-align:left;vertical-align:top}
+  th,td{border:0;border-bottom:1px solid var(--linha);padding:6px 9px;text-align:left;vertical-align:top}
   td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
   th.num{text-align:right}
   td.num.pos{color:var(--success);font-weight:600} td.num.neg{color:var(--danger);font-weight:600}
-  th{background:var(--primary-light);color:var(--primary-dark);font-weight:600;white-space:nowrap}
+  th{background:var(--bege);color:var(--primary-dark);font-weight:600;white-space:nowrap}
   table.kv td:first-child{color:var(--text-muted);width:52%}
   table.kv td:last-child{text-align:right;font-variant-numeric:tabular-nums}
-  table.kv tr.ant td{border-top:2px solid var(--border);color:var(--text-muted);font-size:11.5px}
+  table.kv tr.ant td{border-top:2px solid var(--linha);color:var(--text-muted);font-size:11px}
   .cap-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .cap-card{min-width:0}
   ol.rank,ul.chips,ul.sumario,ul.alertas{margin:6px 0;padding:0;list-style:none}
   ol.rank{counter-reset:r}
   ol.rank li{counter-increment:r;display:flex;justify-content:space-between;gap:12px;
-    align-items:baseline;padding:4px 0;border-bottom:1px solid var(--primary-light);font-size:12.5px}
+    align-items:baseline;padding:4px 0;border-bottom:1px solid var(--linha);font-size:12.5px}
   ol.rank li:last-child{border-bottom:0}
   ol.rank li::before{content:counter(r);color:var(--primary);font-weight:600;
     min-width:16px;font-size:11px}
@@ -868,7 +871,7 @@ function renderHtml(rep) {
   .g-val{white-space:nowrap;font-variant-numeric:tabular-nums;text-align:right}
   .val{font-variant-numeric:tabular-nums}
   .val.pos{color:var(--success);font-weight:600} .val.neg{color:var(--danger);font-weight:600}
-  ul.sumario li{padding:5px 0 5px 14px;position:relative;font-size:13px;border-bottom:1px solid var(--primary-light)}
+  ul.sumario li{padding:5px 0 5px 14px;position:relative;font-size:12.5px;border-bottom:1px solid var(--linha)}
   ul.sumario li:last-child{border-bottom:0}
   ul.sumario li::before{content:"";position:absolute;left:0;top:11px;width:6px;height:6px;
     border-radius:50%;background:var(--primary)}
@@ -1000,4 +1003,6 @@ function main() {
   try { snapshotSources(src) } catch (e) { console.log('  AVISO: falha ao salvar snapshots: ' + e.message) }
 }
 
-main()
+export { renderHtml }
+// só executa a rotina completa quando chamado direto (não ao ser importado p/ re-render)
+if (process.argv[1] && /gerar-relatorios\.mjs$/.test(process.argv[1].replace(/\\/g, '/'))) main()

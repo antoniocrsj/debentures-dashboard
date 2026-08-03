@@ -17,18 +17,20 @@ export default function EmissoesBars({ rows, max, fmtVal, fmtLabel, ariaLabel, o
           return (
             <div key={m.mes}
               className={`venc-col emissoes-col${clickable ? ' emissoes-col-click' : ''}${sel ? ' sel' : ''}`}
-              title={`${m.label}: emitido ${fmtVal(m.total)} · fundos ${fmtVal(m.fundos)}`}
+              title={`${m.label}: emitido ${fmtVal(m.total)}${m.fonte === 'cvm' ? ' · base CVM' : ` · fundos ${fmtVal(m.fundos)}`}`}
               role={clickable ? 'button' : undefined}
               tabIndex={clickable ? 0 : undefined}
               aria-pressed={clickable ? sel : undefined}
               onClick={clickable ? () => onBarClick(m.mes) : undefined}
               onKeyDown={clickable ? (e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onBarClick(m.mes) } }) : undefined}>
-              {/* Montantes acima da barra: total (escuro) e fundos (terracota). */}
+              {/* Montantes acima da barra: total (escuro) e, quando há parcela
+                  de fundos (ANBIMA), fundos (terracota). Nos meses da base CVM não
+                  há quebra por fundos -> só o total. */}
               <span className="venc-bar-total emissoes-lbl">
                 {m.total > 0.00001 && (
                   <>
                     <span className="emissoes-lbl-total">{fmtLabel(m.total)}</span>
-                    <span className="emissoes-lbl-fundos">{fmtLabel(m.fundos)}</span>
+                    {m.fundos > 0.00001 && <span className="emissoes-lbl-fundos">{fmtLabel(m.fundos)}</span>}
                   </>
                 )}
               </span>

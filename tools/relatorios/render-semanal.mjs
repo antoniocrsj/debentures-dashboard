@@ -8,6 +8,10 @@ const bps = v => v == null ? '—' : `${v >= 0 ? '+' : '−'}${Math.abs(round(v,
 const pct = v => v == null ? '—' : `${v >= 0 ? '+' : '−'}${Math.abs(v * 100).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%`
 const fmtD = d => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(d || ''); return m ? `${m[3]}/${m[2]}/${m[1]}` : (d || '—') }
 const money = v => fmtBRL(v)
+// vermelho só p/ valor factualmente negativo (§8 da FORMATACAO); positivo fica carvão.
+const negWrap = (s, v) => (typeof v === 'number' && v < 0) ? `<span class="neg">${s}</span>` : s
+const moneyN = v => negWrap(money(v), v)
+const pctN = v => v == null ? '—' : negWrap(pct(v), v)
 // Remuneração máxima (teto do bookbuilding). Destaque no compacto + texto integral no title.
 const tetoStr = o => {
   if (!o.teto && !o.remuneracaoMaxima) return ''
@@ -77,8 +81,8 @@ function parteSecundario(s) {
     <div><b>${money(rz.volume)}</b><span>volume negociado · ${rz.nTrades} negócios</span></div>
     <div><b>${money(rz.volume12431)}</b><span>12.431</span></div>
     <div><b>${money(rz.volumeTradicional)}</b><span>Tradicional</span></div>
-    <div><b>${pct(rz.variacaoVolPct)}</b><span>vs semana anterior</span></div>
-    <div><b>${pct(rz.variacaoVs4Pct)}</b><span>vs média 4 semanas</span></div>
+    <div><b>${pctN(rz.variacaoVolPct)}</b><span>vs semana anterior</span></div>
+    <div><b>${pctN(rz.variacaoVs4Pct)}</b><span>vs média 4 semanas</span></div>
   </div>`
   const grupos = s.trades.grupos.map(g => `<tr><td>${esc(g.grupo)} ${g.enquadramento === '12.431' ? '<span class="tag">12.431</span>' : g.enquadramento === 'Tradicional' ? '<span class="tag tag2">Trad</span>' : '<span class="tag tag2">misto</span>'}</td><td class="num">${money(g.volumeTotal)}</td><td class="num">${g.nTrades}</td><td>${esc(g.ativos.join(', '))}</td><td class="num">${g.maiorTrade ? money(g.maiorTrade.volume) : '—'}</td><td>${g.maiorTrade ? esc(g.maiorTrade.spreadFmt) : '—'}</td></tr>`).join('')
   return `<section><h2>2. Secundário</h2>${sintese(s.sintese)}
@@ -91,12 +95,12 @@ function parteTecnico(t) {
   const linhasSeg = seg => {
     const x = t[seg]; if (!x) return ''
     const nome = seg === '12431' ? '12.431' : 'Tradicional'
-    const ind = (lbl, i) => `<tr><td>${lbl}</td><td class="num">${money(i.valor)}</td><td class="num">${i.anterior == null ? '—' : money(i.anterior)}</td><td class="num">${money(i.variacaoNominal)}</td><td class="num">${pct(i.variacaoPct)}</td><td class="num">${i.media4Semanas == null ? '—' : money(i.media4Semanas)}</td></tr>`
+    const ind = (lbl, i) => `<tr><td>${lbl}</td><td class="num">${moneyN(i.valor)}</td><td class="num">${i.anterior == null ? '—' : moneyN(i.anterior)}</td><td class="num">${moneyN(i.variacaoNominal)}</td><td class="num">${pctN(i.variacaoPct)}</td><td class="num">${i.media4Semanas == null ? '—' : moneyN(i.media4Semanas)}</td></tr>`
     return `<div class="card"><h4>${nome}${x.captacaoBruta.diasUteis ? ` <span class="meta">(${x.captacaoBruta.diasUteis} d.u. · até ${fmtD(x.captacaoBruta.dataFonte)})</span>` : ''}</h4>
       <table><thead><tr><th>Indicador</th><th class="num">Semana</th><th class="num">Anterior</th><th class="num">Δ</th><th class="num">Δ%</th><th class="num">Média 4s</th></tr></thead><tbody>
       ${ind('Captação bruta', x.captacaoBruta)}${ind('Resgates', x.resgates)}${ind('Captação líquida', x.captacaoLiquida)}${ind('Emissão CVM', x.volumeEmitidoCVM)}</tbody></table>
       <div class="mini"><b>Maiores líquidas:</b> ${x.destaques.maioresLiquidas.map(d => `${esc(d.gestor)} ${money(d.valor)}`).join(', ') || '—'}</div>
-      <div class="mini"><b>Piores líquidas:</b> ${x.destaques.pioresLiquidas.map(d => `${esc(d.gestor)} ${money(d.valor)}`).join(', ') || '—'}</div></div>`
+      <div class="mini"><b>Piores líquidas:</b> ${x.destaques.pioresLiquidas.map(d => `${esc(d.gestor)} ${moneyN(d.valor)}`).join(', ') || '—'}</div></div>`
   }
   const ve = t.volumeEmitidoDestaques
   return `<section><h2>3. Técnico</h2>${sintese(t.sintese)}
@@ -112,26 +116,31 @@ export function renderSemanalHtml(rep) {
   const fontes = Object.entries(rep.sourceDates || {}).map(([k, v]) => `${k}: ${fmtD(v)}`).join(' · ')
   return `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(rep.label)} — Luc</title><style>
-:root{--bg:#f2ede5;--card:#fff;--terra:#8c5e3a;--carvao:#26211d;--bege:#e8dfd2;--pos:#047857;--neg:#b91c1c;--muted:#7a6f63}
+/* Formatação v2 — ver FORMATACAO_Resumo_Semanal.md. Cantos RETOS nos contêineres
+   de dado (exceção: chips e .alerta = arredondados); réguas de tabela em --linha;
+   5 tamanhos de fonte (20/16/14/12,5/11); cor semântica disciplinada (classificação
+   sempre terracota; vermelho só p/ valor factualmente negativo). */
+:root{--bg:#f2ede5;--card:#fff;--terra:#8c5e3a;--carvao:#26211d;--bege:#e8dfd2;--linha:#d5c7b0;--pos:#047857;--neg:#b91c1c;--muted:#7a6f63}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--carvao);font:14px/1.45 -apple-system,Segoe UI,Roboto,sans-serif;padding:16px}
-.wrap{max-width:900px;margin:0 auto}h1{font-size:20px;margin:0 0 2px}.sub{color:var(--muted);font-size:13px;margin:0 0 16px}
-section{background:var(--card);border:1px solid var(--bege);border-radius:10px;padding:16px;margin-bottom:14px}
-h2{font-size:16px;color:var(--terra);margin:0 0 8px;border-bottom:2px solid var(--bege);padding-bottom:6px}
-h3{font-size:13px;margin:16px 0 6px;color:var(--carvao)}h4{font-size:13px;margin:0 0 4px}
+.wrap{max-width:900px;margin:0 auto}h1{font-size:20px;margin:0 0 2px}
+section{background:var(--card);border:1px solid var(--bege);border-radius:0;padding:16px;margin-bottom:14px}
+h2{font-size:16px;color:var(--terra);margin:0 0 8px;border-bottom:2px solid var(--linha);padding-bottom:6px}
+h3{font-size:14px;font-weight:600;margin:16px 0 6px;color:var(--carvao)}h4{font-size:14px;font-weight:600;margin:0 0 4px}
 .sintese{margin:0 0 10px;padding-left:18px}.sintese li{margin:2px 0}
-.kpis{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0}.kpis>div{background:var(--bege);border-radius:8px;padding:8px 10px;min-width:120px}
-.kpis b{display:block;font-size:15px}.kpis span{font-size:11px;color:var(--muted)}
-table{width:100%;border-collapse:collapse;font-size:12.5px;margin:4px 0}th,td{text-align:left;padding:3px 6px;border-bottom:1px solid var(--bege)}
+.kpis{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0}.kpis>div{background:var(--bege);border-radius:0;padding:8px 10px;min-width:120px}
+.kpis b{display:block;font-size:14px;font-weight:600}.kpis span{font-size:11px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin:4px 0}th,td{text-align:left;padding:3px 6px;border-bottom:1px solid var(--linha)}
 th{background:var(--bege);font-weight:600}.num{text-align:right;font-variant-numeric:tabular-nums}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}.card{background:var(--bg);border:1px solid var(--bege);border-radius:8px;padding:10px}
-.oferta{border:1px solid var(--bege);border-radius:8px;padding:10px;margin:8px 0}.oferta .meta{color:var(--muted);font-size:12px;margin:0 0 6px}
-.series th,.series td{font-size:12px}.sub{color:var(--muted);font-size:11px}.meta{color:var(--muted);font-size:12px}
+.neg{color:var(--neg)}.pos{color:var(--pos)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}.card{background:var(--bg);border:1px solid var(--bege);border-radius:0;padding:10px}
+.oferta{border:1px solid var(--bege);border-radius:0;padding:10px;margin:8px 0}.oferta .meta{color:var(--muted);font-size:11px;margin:0 0 6px}
+.series th,.series td{font-size:12.5px}.sub{color:var(--muted);font-size:11px}.meta{color:var(--muted);font-size:11px}
 .meta.teto{color:var(--carvao)}.meta.teto b{color:var(--terra)}
-.tag{background:var(--terra);color:#fff;border-radius:4px;padding:1px 5px;font-size:10px}.tag2{background:var(--muted)}.tag-warn{background:var(--neg)}
+.tag{background:var(--terra);color:#fff;border-radius:999px;padding:1px 7px;font-size:11px}.tag2{background:var(--muted)}.tag-warn{background:var(--neg)}
 .cls{color:var(--terra);font-weight:700}.cls.insuf{color:var(--muted)}
-.mini{font-size:12px;margin:4px 0;color:var(--carvao)}.mini b{color:var(--muted);font-weight:600}
-.alerta{background:#fdf3e7;border:1px solid var(--terra);border-radius:8px;padding:8px 10px;font-size:12px;margin:8px 0}
-.vazio{color:var(--muted);font-size:12px}.fontes{color:var(--muted);font-size:11px;margin-top:10px}
+.mini{font-size:11px;margin:4px 0;color:var(--carvao)}.mini b{color:var(--muted);font-weight:600}
+.alerta{background:#fdf3e7;border:1px solid var(--terra);border-radius:8px;padding:8px 10px;font-size:11px;margin:8px 0}
+.vazio{color:var(--muted);font-size:11px}.fontes{color:var(--muted);font-size:11px;margin-top:10px}
 @media(max-width:640px){.cards{grid-template-columns:1fr}}
 </style></head><body><div class="wrap">
 <h1>${esc(rep.label)}</h1><p class="sub">${esc(rep.status === 'partial' ? 'Parcial' : 'Fechado')} · ${fmtD(rep.de)}–${fmtD(rep.ate)}</p>

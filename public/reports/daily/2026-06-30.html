@@ -6,43 +6,47 @@
     /* Catalogo da casa: 6 cores cruas + branco. Navy APOSENTADA (jul/2026).
        Texto sempre carvao (--text-muted=carvao, hierarquia por tamanho/peso);
        borda e grade bege; ambar aposentado (--warn=terracota). */
-    --c-terracota:#8c5e3a;--c-carvao:#2a2420;--c-bege:#f2ede5;--c-taupe:#9a8c7a;--c-verde:#047857;--c-vermelho:#b91c1c;--c-branco:#fff;
+    /* Formatação v2 — mesmo modelo do Resumo Semanal (FORMATACAO_Resumo_Semanal.md):
+       cantos retos, réguas de tabela em --linha, cabeçalho de tabela bege,
+       escala de 5 fontes. */
+    --c-terracota:#8c5e3a;--c-carvao:#26211d;--c-bege:#f2ede5;--c-taupe:#9a8c7a;--c-verde:#047857;--c-vermelho:#b91c1c;--c-branco:#fff;
     --primary:var(--c-terracota); --primary-dark:var(--c-carvao); --primary-light:var(--c-bege);
     --primary-border:var(--c-bege); --bg:var(--c-bege); --card:var(--c-branco); --text:var(--c-carvao);
-    --text-muted:var(--c-carvao); --border:var(--c-bege);
+    --text-muted:var(--c-carvao); --border:var(--c-bege); --bege:#e8dfd2; --linha:#d5c7b0;
     --pos:var(--c-verde); --neg:var(--c-vermelho); --success:var(--c-verde); --danger:var(--c-vermelho);
     --warn:var(--c-terracota);
   }
   *{box-sizing:border-box}
   body{font-family:system-ui,Segoe UI,Arial,sans-serif;max-width:860px;margin:0 auto;
     padding:24px 20px 48px;color:var(--text);background:var(--bg);line-height:1.5}
-  .head{background:var(--primary-dark);color:#fff;border-radius:12px;padding:18px 22px;margin-bottom:18px}
-  h1{font-size:22px;margin:0 0 4px;font-weight:600}
+  .head{background:var(--primary-dark);color:#fff;border-radius:0;padding:18px 22px;margin-bottom:18px}
+  h1{font-size:20px;margin:0 0 4px;font-weight:600}
   .head .sub{color:var(--c-bege);margin:0;font-size:12.5px}
-  section{background:var(--card);border:1px solid var(--border);border-radius:12px;
+  section{background:var(--card);border:1px solid var(--border);border-radius:0;
     padding:16px 18px;margin-bottom:14px}
-  h2{font-size:15px;margin:0 0 10px;color:var(--primary-dark);font-weight:600;
-    border-bottom:2px solid var(--primary-light);padding-bottom:6px}
+  h2{font-size:16px;margin:0 0 10px;color:var(--primary-dark);font-weight:600;
+    border-bottom:2px solid var(--linha);padding-bottom:6px}
   h2 .n{display:inline-block;min-width:22px;color:var(--primary)}
-  h4{font-size:12.5px;margin:14px 0 6px;color:var(--primary);font-weight:600;text-transform:none}
+  h4{font-size:14px;margin:14px 0 6px;color:var(--primary);font-weight:600;text-transform:none}
   h4:first-of-type{margin-top:4px}
+  h5.anb-sub{font-size:11px;margin:10px 0 4px;color:var(--text-muted);font-weight:600;text-transform:none}
   .cap-dia{font-weight:400;color:var(--text-muted);font-size:11px}
   .tw{overflow-x:auto}
   table{border-collapse:collapse;width:100%;font-size:12.5px;margin:4px 0}
-  th,td{border:1px solid var(--border);padding:6px 9px;text-align:left;vertical-align:top}
+  th,td{border:0;border-bottom:1px solid var(--linha);padding:6px 9px;text-align:left;vertical-align:top}
   td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
   th.num{text-align:right}
   td.num.pos{color:var(--success);font-weight:600} td.num.neg{color:var(--danger);font-weight:600}
-  th{background:var(--primary-light);color:var(--primary-dark);font-weight:600;white-space:nowrap}
+  th{background:var(--bege);color:var(--primary-dark);font-weight:600;white-space:nowrap}
   table.kv td:first-child{color:var(--text-muted);width:52%}
   table.kv td:last-child{text-align:right;font-variant-numeric:tabular-nums}
-  table.kv tr.ant td{border-top:2px solid var(--border);color:var(--text-muted);font-size:11.5px}
+  table.kv tr.ant td{border-top:2px solid var(--linha);color:var(--text-muted);font-size:11px}
   .cap-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .cap-card{min-width:0}
   ol.rank,ul.chips,ul.sumario,ul.alertas{margin:6px 0;padding:0;list-style:none}
   ol.rank{counter-reset:r}
   ol.rank li{counter-increment:r;display:flex;justify-content:space-between;gap:12px;
-    align-items:baseline;padding:4px 0;border-bottom:1px solid var(--primary-light);font-size:12.5px}
+    align-items:baseline;padding:4px 0;border-bottom:1px solid var(--linha);font-size:12.5px}
   ol.rank li:last-child{border-bottom:0}
   ol.rank li::before{content:counter(r);color:var(--primary);font-weight:600;
     min-width:16px;font-size:11px}
@@ -51,12 +55,12 @@
   .g-val{white-space:nowrap;font-variant-numeric:tabular-nums;text-align:right}
   .val{font-variant-numeric:tabular-nums}
   .val.pos{color:var(--success);font-weight:600} .val.neg{color:var(--danger);font-weight:600}
-  ul.sumario li{padding:5px 0 5px 14px;position:relative;font-size:13px;border-bottom:1px solid var(--primary-light)}
+  ul.sumario li{padding:5px 0 5px 14px;position:relative;font-size:12.5px;border-bottom:1px solid var(--linha)}
   ul.sumario li:last-child{border-bottom:0}
   ul.sumario li::before{content:"";position:absolute;left:0;top:11px;width:6px;height:6px;
     border-radius:50%;background:var(--primary)}
-  ul.sumario li.pos::before{background:var(--success)} ul.sumario li.pos{color:#065f46}
-  ul.sumario li.neg::before{background:var(--danger)} ul.sumario li.neg{color:#7f1d1d}
+  ul.sumario li.pos::before{background:var(--success)} ul.sumario li.pos{color:var(--pos)}
+  ul.sumario li.neg::before{background:var(--danger)} ul.sumario li.neg{color:var(--neg)}
   ul.sumario li.warn::before{background:var(--warn)} ul.sumario li.warn{color:var(--warn)}
   ul.chips{display:flex;flex-wrap:wrap;gap:6px}
   ul.chips li{background:var(--primary-light);border:1px solid var(--primary-border);
@@ -78,21 +82,23 @@
 <section><h2><span class="n">1.</span> Sumário executivo</h2><ul class="sumario"><li class="neg">Captação líquida Incentivados: −R$ 162 mi</li><li class="neg">Captação líquida Tradicional: −R$ 463 mi</li><li class="pos">Maior captação: BRAM (+R$ 52 mi)</li><li class="neg">Maior resgate: Absolute (−R$ 74 mi)</li><li class="warn">2 alerta(s) de qualidade</li></ul></section>
 <section><h2><span class="n">2.</span> Novas debêntures e emissões</h2><p class="empty">Sem novas debêntures neste dia.</p></section>
 <section><h2><span class="n">3.</span> Captação líquida do dia</h2><div class="cap-grid"><div class="cap-card"><h4>Incentivados (12.431) <span class="cap-dia">30/06/2026</span></h4><table class="kv"><tbody>
-      <tr><td>Captação</td><td><span class="val pos">R$ 207,5M</span></td></tr>
-      <tr><td>Resgate</td><td><span class="val neg">R$ -369,4M</span></td></tr>
-      <tr><td>Líquido</td><td><span class="val neg">R$ -161,9M</span></td></tr>
-      <tr><td>PL</td><td><span class="val">R$ 300,5Bi</span></td></tr>
-      <tr><td>Nº fundos</td><td><span class="val">1605</span></td></tr>
-      <tr class="ant"><td>Líquido (dia anterior 29/06/2026)</td><td><span class="val neg">R$ -785,1M</span></td></tr>
+      <tr><td>Captação</td><td><span class="val pos">R$ 207,5 mi</span></td></tr>
+      <tr><td>Resgate</td><td><span class="val neg">R$ -369,4 mi</span></td></tr>
+      <tr><td>Líquido</td><td><span class="val neg">R$ -161,9 mi</span></td></tr>
+      <tr><td>PL</td><td><span class="val">R$ 300,5 bi</span></td></tr>
+      <tr><td>Fundos reportados</td><td><span class="val">1605</span></td></tr>
+      
+      <tr class="ant"><td>Líquido (dia anterior 29/06/2026)</td><td><span class="val neg">R$ -785,1 mi</span></td></tr>
     </tbody></table></div><div class="cap-card"><h4>Crédito Tradicional <span class="cap-dia">30/06/2026</span></h4><table class="kv"><tbody>
-      <tr><td>Captação</td><td><span class="val pos">R$ 1,9Bi</span></td></tr>
-      <tr><td>Resgate</td><td><span class="val neg">R$ -2,3Bi</span></td></tr>
-      <tr><td>Líquido</td><td><span class="val neg">R$ -462,6M</span></td></tr>
-      <tr><td>PL</td><td><span class="val">R$ 1.080,5Bi</span></td></tr>
-      <tr><td>Nº fundos</td><td><span class="val">818</span></td></tr>
-      <tr class="ant"><td>Líquido (dia anterior 29/06/2026)</td><td><span class="val neg">R$ -245,5M</span></td></tr>
+      <tr><td>Captação</td><td><span class="val pos">R$ 1,9 bi</span></td></tr>
+      <tr><td>Resgate</td><td><span class="val neg">R$ -2,3 bi</span></td></tr>
+      <tr><td>Líquido</td><td><span class="val neg">R$ -462,6 mi</span></td></tr>
+      <tr><td>PL</td><td><span class="val">R$ 1.080,5 bi</span></td></tr>
+      <tr><td>Fundos reportados</td><td><span class="val">818</span></td></tr>
+      
+      <tr class="ant"><td>Líquido (dia anterior 29/06/2026)</td><td><span class="val neg">R$ -245,5 mi</span></td></tr>
     </tbody></table></div></div></section>
-<section><h2><span class="n">4.</span> Destaques por gestor (captação líquida)</h2><div class="cap-grid"><div class="cap-card"><h4>Incentivados (12.431)</h4><table><thead><tr><th>Gestor</th><th class="num">Cap. líquida</th></tr></thead><tbody><tr><td>BRAM</td><td class="num pos">R$ 51,6M</td></tr><tr><td>ARX</td><td class="num pos">R$ 9,2M</td></tr><tr><td>JGP</td><td class="num pos">R$ 3,5M</td></tr><tr><td>Icatu</td><td class="num pos">R$ 1,9M</td></tr><tr><td>XPG</td><td class="num pos">R$ 1,1M</td></tr><tr><td>Absolute</td><td class="num neg">R$ -73,6M</td></tr><tr><td>IAM</td><td class="num neg">R$ -56,7M</td></tr><tr><td>SAM</td><td class="num neg">R$ -34,9M</td></tr><tr><td>Safra Asset</td><td class="num neg">R$ -21,5M</td></tr><tr><td>AZ Quest</td><td class="num neg">R$ -10,8M</td></tr></tbody></table></div><div class="cap-card"><h4>Crédito Tradicional</h4><table><thead><tr><th>Gestor</th><th class="num">Cap. líquida</th></tr></thead><tbody><tr><td>CEF Asset</td><td class="num pos">R$ 186,2M</td></tr><tr><td>BRAM</td><td class="num pos">R$ 88,2M</td></tr><tr><td>Regia</td><td class="num pos">R$ 37,7M</td></tr><tr><td>Sulamérica</td><td class="num pos">R$ 36,6M</td></tr><tr><td>SAM</td><td class="num pos">R$ 19,6M</td></tr><tr><td>BB Asset</td><td class="num neg">R$ -492,1M</td></tr><tr><td>XPG</td><td class="num neg">R$ -107,0M</td></tr><tr><td>JGP</td><td class="num neg">R$ -50,9M</td></tr><tr><td>IAM</td><td class="num neg">R$ -44,1M</td></tr><tr><td>Franklin Templeton</td><td class="num neg">R$ -43,2M</td></tr></tbody></table></div></div></section>
+<section><h2><span class="n">4.</span> Destaques por gestor (captação líquida)</h2><div class="cap-grid"><div class="cap-card"><h4>Incentivados (12.431)</h4><table><thead><tr><th>Gestor</th><th class="num">Cap. líquida</th></tr></thead><tbody><tr><td>BRAM</td><td class="num pos">R$ 51,6 mi</td></tr><tr><td>ARX</td><td class="num pos">R$ 9,2 mi</td></tr><tr><td>JGP</td><td class="num pos">R$ 3,5 mi</td></tr><tr><td>Icatu</td><td class="num pos">R$ 1,9 mi</td></tr><tr><td>XPG</td><td class="num pos">R$ 1,1 mi</td></tr><tr><td>Absolute</td><td class="num neg">R$ -73,6 mi</td></tr><tr><td>IAM</td><td class="num neg">R$ -56,7 mi</td></tr><tr><td>SAM</td><td class="num neg">R$ -34,9 mi</td></tr><tr><td>Safra Asset</td><td class="num neg">R$ -21,5 mi</td></tr><tr><td>AZ Quest</td><td class="num neg">R$ -10,8 mi</td></tr></tbody></table></div><div class="cap-card"><h4>Crédito Tradicional</h4><table><thead><tr><th>Gestor</th><th class="num">Cap. líquida</th></tr></thead><tbody><tr><td>CEF Asset</td><td class="num pos">R$ 186,2 mi</td></tr><tr><td>BRAM</td><td class="num pos">R$ 88,2 mi</td></tr><tr><td>Regia</td><td class="num pos">R$ 37,7 mi</td></tr><tr><td>Sulamérica</td><td class="num pos">R$ 36,6 mi</td></tr><tr><td>SAM</td><td class="num pos">R$ 19,6 mi</td></tr><tr><td>BB Asset</td><td class="num neg">R$ -492,1 mi</td></tr><tr><td>XPG</td><td class="num neg">R$ -107,0 mi</td></tr><tr><td>JGP</td><td class="num neg">R$ -50,9 mi</td></tr><tr><td>IAM</td><td class="num neg">R$ -44,1 mi</td></tr><tr><td>Franklin Templeton</td><td class="num neg">R$ -43,2 mi</td></tr></tbody></table></div></div></section>
 <section><h2><span class="n">5.</span> Variação ANBIMA (spread)</h2><p class="empty">Sem dia anterior de ANBIMA para comparar (começa no próximo snapshot).</p></section>
 <section><h2><span class="n">6.</span> Fundos incluídos/excluídos</h2><p class="empty">Sem snapshot anterior do universo de fundos (começa no próximo).</p></section>
 <section><h2><span class="n">7.</span> Performance de fundos</h2><p class="tally">Retorno nominal da cota no dia (não é %CDI).</p><h4>Incentivados — maiores altas</h4><ol class="rank"><li><span class="g-nome">MACADÂMIA FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO <em>(XPG)</em></span><span class="g-val"><span class="val pos">3.88%</span></span></li><li><span class="g-nome">G5 ALLOCATION II FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA <em>(G5)</em></span><span class="g-val"><span class="val pos">1.58%</span></span></li><li><span class="g-nome">AUGME BB FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA <em>(Augme)</em></span><span class="g-val"><span class="val pos">0.53%</span></span></li><li><span class="g-nome">ITAÚ DEBÊNTURES INCENTIVADAS PRÉ TARGET 2030 II FIF INCENTIVADO EM INFRA RF CRED PRIV RESP LIMITADA <em>(IAM)</em></span><span class="g-val"><span class="val pos">0.41%</span></span></li><li><span class="g-nome">ITAÚ DEB INCENTIVADAS PRÉ TARGET 2030 SHIFT FIIF EM INFRA RF CRÉD PRIV RESP LIMITADA <em>(IAM)</em></span><span class="g-val"><span class="val pos">0.40%</span></span></li></ol><h4>Incentivados — maiores quedas</h4><ol class="rank"><li><span class="g-nome">BB MASTER RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA <em>(BB Asset)</em></span><span class="g-val"><span class="val neg">-26.05%</span></span></li><li><span class="g-nome">VINLAND INC XP FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA FIF RF CRED PRIV RESP LIMITADA <em>(Vinland)</em></span><span class="g-val"><span class="val neg">-14.70%</span></span></li><li><span class="g-nome">DAYCOVAL FI INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RF CRÉD PRIV LP RESP LIMITADA <em>(Daycoval)</em></span><span class="g-val"><span class="val neg">-4.14%</span></span></li><li><span class="g-nome">INTER INFRA MASTER FIF INCENTIV DE INVESTIMENTO EM INFRA RENDA FIXA CRÉD PRIV RESP LIMITADA <em>(Inter)</em></span><span class="g-val"><span class="val neg">-1.23%</span></span></li><li><span class="g-nome">SPARTA INFRA CDI MASTER IV FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA <em>(Sparta)</em></span><span class="g-val"><span class="val neg">-0.94%</span></span></li></ol><h4>Tradicional — maiores altas</h4><ol class="rank"><li><span class="g-nome">UBS ROKA FUNDO DE INVESTIMENTO FINANCEIRO - MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA <em>(UBS)</em></span><span class="g-val"><span class="val pos">2.46%</span></span></li><li><span class="g-nome">DEVANT AUDAX FUNDO DE INVESTIMENTO FINANCEIRO RESPONSABILIDADE LIMITADA <em>(Devant)</em></span><span class="g-val"><span class="val pos">1.96%</span></span></li><li><span class="g-nome">EURÁSIA PREVIDÊNCIA FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA <em>(XPG)</em></span><span class="g-val"><span class="val pos">1.48%</span></span></li><li><span class="g-nome">CATEDRAL FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA CRÉDITO PRIVADO - RESPONSABILIDADE LIMITADA <em>(Funcef)</em></span><span class="g-val"><span class="val pos">0.74%</span></span></li><li><span class="g-nome">BTG PACTUAL BRASLIGHT EOS FUNDO DE INVESTIMENTO FINANCEIRO <em>(BTG Asset)</em></span><span class="g-val"><span class="val pos">0.63%</span></span></li></ol><h4>Tradicional — maiores quedas</h4><ol class="rank"><li><span class="g-nome">CL VI FUNDO DE INVESTIMENTO MULTIMERCADO <em>(Springs)</em></span><span class="g-val"><span class="val neg">-5.53%</span></span></li><li><span class="g-nome">G5 TORONTO FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO <em>(G5)</em></span><span class="g-val"><span class="val neg">-1.40%</span></span></li><li><span class="g-nome">DHF-M FUNDO DE INVESTIMENTO FINANCEIRO <em>(Dynamo)</em></span><span class="g-val"><span class="val neg">-1.35%</span></span></li><li><span class="g-nome">VERDE AM CARRY MASTER FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO RESP LIMITADA <em>(Verde)</em></span><span class="g-val"><span class="val neg">-0.69%</span></span></li><li><span class="g-nome">MINERVA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO <em>(BTG WM)</em></span><span class="g-val"><span class="val neg">-0.67%</span></span></li></ol></section>

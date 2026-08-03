@@ -1687,31 +1687,31 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 .rd-pos { color: var(--pos); } .rd-neg { color: var(--neg); } .rd-warn { color: var(--flag-ink); }
 .rd-tablewrap { overflow-x: auto; }
 .rd-table { border-collapse: collapse; width: 100%; font-size: var(--fz-corpo); }
-.rd-table th, .rd-table td { border-bottom: 1px solid var(--primary-border); padding: var(--sp-2) var(--sp-3); text-align: left; white-space: nowrap; }
-.rd-table th { color: var(--text-muted); font-weight: 600; }
+.rd-table th, .rd-table td { border-bottom: 1px solid #d5c7b0; padding: var(--sp-2) var(--sp-3); text-align: left; white-space: nowrap; }
+.rd-table th { background: #e8dfd2; color: var(--text); font-weight: 600; }
 .rd-table .rd-num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.rd-table tr.rd-sep td { border-bottom: 2px solid var(--primary-border); padding: 0; height: 2px; }
+.rd-table tr.rd-sep td { border-bottom: 2px solid #d5c7b0; padding: 0; height: 2px; }
 
 /* Resumo Semanal v2 (3 partes) */
 .rd-sintese { margin: 0 0 10px; padding-left: 18px; }
 .rd-sintese li { margin: 2px 0; font-size: var(--fz-corpo); }
 .rd-h4 { font-size: var(--fz-corpo); font-weight: 600; margin: 14px 0 6px; color: var(--text); }
 .rd-kpis { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
-.rd-kpis > div { background: var(--c-bege); border-radius: 8px; padding: 6px 10px; min-width: 108px; }
+.rd-kpis > div { background: #e8dfd2; border-radius: 0; padding: 6px 10px; min-width: 108px; }
 .rd-kpis b { display: block; font-size: 14px; font-variant-numeric: tabular-nums; }
-.rd-kpis span { font-size: 10px; color: var(--text-muted); }
+.rd-kpis span { font-size: 11px; color: var(--text-muted); }
 .rd-cards2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.rd-card { background: var(--c-bege); border-radius: 8px; padding: 10px; min-width: 0; overflow-x: auto; }
+.rd-card { background: var(--c-bege); border-radius: 0; padding: 10px; min-width: 0; overflow-x: auto; }
 .rd-oferta, .rd-cards2 .rd-card, .rd-tablewrap { overflow-x: auto; }
 .rd-card > b { font-size: var(--fz-corpo); }
-.rd-oferta { border: 1px solid var(--primary-border); border-radius: 8px; padding: 10px; margin: 8px 0; }
+.rd-oferta { border: 1px solid #e8dfd2; border-radius: 0; padding: 10px; margin: 8px 0; }
 .rd-oferta-h { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 .rd-oferta-h b { font-size: var(--fz-corpo); }
 .rd-oferta-vol { margin-left: auto; font-weight: 700; color: var(--terracota, #8c5e3a); font-variant-numeric: tabular-nums; }
 .rd-oferta-meta { color: var(--text-muted); font-size: 11px; margin: 4px 0 6px; }
 .rd-oferta-meta.rd-teto { color: var(--text); }
 .rd-oferta-meta.rd-teto b { color: #8c5e3a; }
-.rd-tag { background: #8c5e3a; color: #fff; border-radius: 4px; padding: 1px 5px; font-size: 10px; }
+.rd-tag { background: #8c5e3a; color: #fff; border-radius: 999px; padding: 1px 7px; font-size: 11px; }
 .rd-tag.t2 { background: var(--text-muted); }
 .rd-tag.warn { background: var(--c-vermelho); }
 .rd-cls { color: #8c5e3a; font-weight: 700; }
@@ -1726,7 +1726,7 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 .rd-empresa { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; vertical-align: bottom; }
 /* No modal largo (desktop) sobra espaco: emissor/grupo truncam menos. */
 @media (min-width: 520px) { .modal-wide .rd-empresa { max-width: 300px; } }
-.rd-cvm { margin-top: 14px; padding-top: var(--sp-4); border-top: 1px solid var(--primary-border); }
+.rd-cvm { margin-top: 14px; padding-top: var(--sp-4); border-top: 1px solid #d5c7b0; }
 .rd-cvm h4 { font-size: var(--fz-corpo); margin: 0 0 6px; color: var(--text); }
 .rd-cap { display: flex; gap: 18px; flex-wrap: wrap; }
 .rd-cap-seg { flex: 1; min-width: 220px; }
@@ -2220,14 +2220,16 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
     padding-right: var(--sp-2) !important;
   }
 
-  /* Emissoes: card na COLUNA 3 da linha de baixo (sob o Vencimentos); a col 2
-     (sob o Caixa) fica vazia. Preenche a altura da linha, como a tabela ao lado. */
+  /* Emissoes: card ocupa as COLUNAS 2 e 3 da linha de baixo -- a borda esquerda
+     alinha com a do grafico Caixa (2a coluna do topo) e o card vai ate o extremo
+     direito (sob o Vencimentos). A col 1 (sob a Captacao) fica com a tabela. Mais
+     largura = mais respiro p/ as 12 barras. */
   /* height:100% obrigatorio: a .tecnico-tables-row usa align-items:flex-start
      (nao estica os itens), entao a celula precisa pedir a altura da linha —
      igual a tabela ao lado faz. Sem isso o card encolhia p/ o conteudo (90px) e
      as barras viravam tracinhos. */
   .app.desktop .tecnico-emissoes-cell {
-    grid-column: 3;
+    grid-column: 2 / 4;
     min-width: 0; min-height: 0;
     height: 100%;
     display: flex;
@@ -2248,6 +2250,19 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 .emissoes-col-click { cursor: pointer; border-radius: 6px 6px 0 0; }
 .emissoes-col-click:hover { background: var(--primary-light); }
 .emissoes-col.sel { background: var(--primary-light); box-shadow: inset 0 -2px 0 var(--primary); }
+/* Drill de Emissões: cards compactos rolam dentro da coluna de 362px do grid. */
+.tecnico-drill { min-height: 0; height: 100%; display: flex; flex-direction: column; overflow: hidden; }
+.tecnico-drill .asset-cards { flex: 1; min-height: 0; overflow-y: auto; padding: 2px 2px 12px; }
+/* Sem isto, os cards encolhem p/ caber (flex-shrink) em vez de manter 80px e
+   rolar -- mesmo bug do ranking. flex:none trava a altura e liga o scroll. */
+.tecnico-drill .asset-card { flex: none; }
+/* "Limpar" no cabeçalho: fecha o drill; margin-left:auto o agrupa à direita com
+   o %Deb (o corte-step tambem tem auto -> os dois ficam adjacentes na ponta). */
+.tecnico-limpar { margin-left: auto; padding: var(--sp-2) var(--sp-4); border-radius: 7px; border: 1px solid var(--primary-border); background: #fff; color: var(--primary-dark); font-size: var(--fz-corpo); font-weight: 600; cursor: pointer; }
+.tecnico-limpar:hover { background: var(--blue-soft); }
+/* Com o Limpar presente, só ELE empurra p/ a direita: zera o auto do %Deb
+   seguinte (senão os dois autos dividem o espaço e o Limpar fica no meio). */
+.tecnico-header .controls > .tecnico-limpar + .corte-step { margin-left: 0; }
 /* Cabecalho do drill-down (tabela Ativos no lugar da de gestores). */
 .tecnico-drill-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 10px 0 4px; }
 .tecnico-drill-tit { font-size: var(--fz-corpo); font-weight: 600; color: var(--text); }
@@ -2369,7 +2384,8 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
   line-height: 1;
   height: 34px;
   display: inline-flex;
-  align-items: flex-start;
+  align-items: center;   /* centraliza o rótulo (vertical) sob a barra */
+  justify-content: flex-start;
 }
 .app.desktop .tecnico .venc-axis { align-items: flex-start; min-height: 36px; }
 

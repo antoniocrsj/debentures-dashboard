@@ -1,25 +1,30 @@
 <!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Semana 31/2026 · 27/07–31/07 — Luc</title><style>
-:root{--bg:#f2ede5;--card:#fff;--terra:#8c5e3a;--carvao:#26211d;--bege:#e8dfd2;--pos:#047857;--neg:#b91c1c;--muted:#7a6f63}
+/* Formatação v2 — ver FORMATACAO_Resumo_Semanal.md. Cantos RETOS nos contêineres
+   de dado (exceção: chips e .alerta = arredondados); réguas de tabela em --linha;
+   5 tamanhos de fonte (20/16/14/12,5/11); cor semântica disciplinada (classificação
+   sempre terracota; vermelho só p/ valor factualmente negativo). */
+:root{--bg:#f2ede5;--card:#fff;--terra:#8c5e3a;--carvao:#26211d;--bege:#e8dfd2;--linha:#d5c7b0;--pos:#047857;--neg:#b91c1c;--muted:#7a6f63}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--carvao);font:14px/1.45 -apple-system,Segoe UI,Roboto,sans-serif;padding:16px}
-.wrap{max-width:900px;margin:0 auto}h1{font-size:20px;margin:0 0 2px}.sub{color:var(--muted);font-size:13px;margin:0 0 16px}
-section{background:var(--card);border:1px solid var(--bege);border-radius:10px;padding:16px;margin-bottom:14px}
-h2{font-size:16px;color:var(--terra);margin:0 0 8px;border-bottom:2px solid var(--bege);padding-bottom:6px}
-h3{font-size:13px;margin:16px 0 6px;color:var(--carvao)}h4{font-size:13px;margin:0 0 4px}
+.wrap{max-width:900px;margin:0 auto}h1{font-size:20px;margin:0 0 2px}
+section{background:var(--card);border:1px solid var(--bege);border-radius:0;padding:16px;margin-bottom:14px}
+h2{font-size:16px;color:var(--terra);margin:0 0 8px;border-bottom:2px solid var(--linha);padding-bottom:6px}
+h3{font-size:14px;font-weight:600;margin:16px 0 6px;color:var(--carvao)}h4{font-size:14px;font-weight:600;margin:0 0 4px}
 .sintese{margin:0 0 10px;padding-left:18px}.sintese li{margin:2px 0}
-.kpis{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0}.kpis>div{background:var(--bege);border-radius:8px;padding:8px 10px;min-width:120px}
-.kpis b{display:block;font-size:15px}.kpis span{font-size:11px;color:var(--muted)}
-table{width:100%;border-collapse:collapse;font-size:12.5px;margin:4px 0}th,td{text-align:left;padding:3px 6px;border-bottom:1px solid var(--bege)}
+.kpis{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0}.kpis>div{background:var(--bege);border-radius:0;padding:8px 10px;min-width:120px}
+.kpis b{display:block;font-size:14px;font-weight:600}.kpis span{font-size:11px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin:4px 0}th,td{text-align:left;padding:3px 6px;border-bottom:1px solid var(--linha)}
 th{background:var(--bege);font-weight:600}.num{text-align:right;font-variant-numeric:tabular-nums}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}.card{background:var(--bg);border:1px solid var(--bege);border-radius:8px;padding:10px}
-.oferta{border:1px solid var(--bege);border-radius:8px;padding:10px;margin:8px 0}.oferta .meta{color:var(--muted);font-size:12px;margin:0 0 6px}
-.series th,.series td{font-size:12px}.sub{color:var(--muted);font-size:11px}.meta{color:var(--muted);font-size:12px}
+.neg{color:var(--neg)}.pos{color:var(--pos)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}.card{background:var(--bg);border:1px solid var(--bege);border-radius:0;padding:10px}
+.oferta{border:1px solid var(--bege);border-radius:0;padding:10px;margin:8px 0}.oferta .meta{color:var(--muted);font-size:11px;margin:0 0 6px}
+.series th,.series td{font-size:12.5px}.sub{color:var(--muted);font-size:11px}.meta{color:var(--muted);font-size:11px}
 .meta.teto{color:var(--carvao)}.meta.teto b{color:var(--terra)}
-.tag{background:var(--terra);color:#fff;border-radius:4px;padding:1px 5px;font-size:10px}.tag2{background:var(--muted)}.tag-warn{background:var(--neg)}
+.tag{background:var(--terra);color:#fff;border-radius:999px;padding:1px 7px;font-size:11px}.tag2{background:var(--muted)}.tag-warn{background:var(--neg)}
 .cls{color:var(--terra);font-weight:700}.cls.insuf{color:var(--muted)}
-.mini{font-size:12px;margin:4px 0;color:var(--carvao)}.mini b{color:var(--muted);font-weight:600}
-.alerta{background:#fdf3e7;border:1px solid var(--terra);border-radius:8px;padding:8px 10px;font-size:12px;margin:8px 0}
-.vazio{color:var(--muted);font-size:12px}.fontes{color:var(--muted);font-size:11px;margin-top:10px}
+.mini{font-size:11px;margin:4px 0;color:var(--carvao)}.mini b{color:var(--muted);font-weight:600}
+.alerta{background:#fdf3e7;border:1px solid var(--terra);border-radius:8px;padding:8px 10px;font-size:11px;margin:8px 0}
+.vazio{color:var(--muted);font-size:11px}.fontes{color:var(--muted);font-size:11px;margin-top:10px}
 @media(max-width:640px){.cards{grid-template-columns:1fr}}
 </style></head><body><div class="wrap">
 <h1>Semana 31/2026 · 27/07–31/07</h1><p class="sub">Fechado · 27/07/2026–31/07/2026</p>
@@ -70,13 +75,13 @@ th{background:var(--bege);font-weight:600}.num{text-align:right;font-variant-num
 <section><h2>3. Técnico</h2><ul class="sintese"><li>12.431: captação líquida −R$ 729,6 mi (5 d.u.), emissão CVM R$ 2,3 bi.</li><li>Tradicional: captação líquida −R$ 239,4 mi (5 d.u.), emissão CVM R$ 140 mi.</li></ul>
     <div class="cards"><div class="card"><h4>12.431 <span class="meta">(5 d.u. · até 31/07/2026)</span></h4>
       <table><thead><tr><th>Indicador</th><th class="num">Semana</th><th class="num">Anterior</th><th class="num">Δ</th><th class="num">Δ%</th><th class="num">Média 4s</th></tr></thead><tbody>
-      <tr><td>Captação bruta</td><td class="num">R$ 402,7 mi</td><td class="num">R$ 670,3 mi</td><td class="num">−R$ 267,6 mi</td><td class="num">−39,9%</td><td class="num">R$ 1,06 bi</td></tr><tr><td>Resgates</td><td class="num">R$ 1,13 bi</td><td class="num">R$ 1,28 bi</td><td class="num">−R$ 152 mi</td><td class="num">−11,8%</td><td class="num">R$ 2,06 bi</td></tr><tr><td>Captação líquida</td><td class="num">−R$ 729,6 mi</td><td class="num">−R$ 614 mi</td><td class="num">−R$ 115,6 mi</td><td class="num">−18,8%</td><td class="num">−R$ 998,5 mi</td></tr><tr><td>Emissão CVM</td><td class="num">R$ 2,3 bi</td><td class="num">R$ 0</td><td class="num">R$ 2,3 bi</td><td class="num">—</td><td class="num">R$ 1,11 bi</td></tr></tbody></table>
+      <tr><td>Captação bruta</td><td class="num">R$ 402,7 mi</td><td class="num">R$ 670,3 mi</td><td class="num"><span class="neg">−R$ 267,6 mi</span></td><td class="num"><span class="neg">−39,9%</span></td><td class="num">R$ 1,06 bi</td></tr><tr><td>Resgates</td><td class="num">R$ 1,13 bi</td><td class="num">R$ 1,28 bi</td><td class="num"><span class="neg">−R$ 152 mi</span></td><td class="num"><span class="neg">−11,8%</span></td><td class="num">R$ 2,06 bi</td></tr><tr><td>Captação líquida</td><td class="num"><span class="neg">−R$ 729,6 mi</span></td><td class="num"><span class="neg">−R$ 614 mi</span></td><td class="num"><span class="neg">−R$ 115,6 mi</span></td><td class="num"><span class="neg">−18,8%</span></td><td class="num"><span class="neg">−R$ 998,5 mi</span></td></tr><tr><td>Emissão CVM</td><td class="num">R$ 2,3 bi</td><td class="num">R$ 0</td><td class="num">R$ 2,3 bi</td><td class="num">—</td><td class="num">R$ 1,11 bi</td></tr></tbody></table>
       <div class="mini"><b>Maiores líquidas:</b> JGP R$ 17,5 mi, Bocaina R$ 3,1 mi, Daycoval Asset R$ 3 mi, Kinea R$ 3 mi, G5 R$ 2,2 mi</div>
-      <div class="mini"><b>Piores líquidas:</b> IAM −R$ 161 mi, BRAM −R$ 87,8 mi, BTG WM −R$ 73,6 mi, Safra Asset −R$ 56,3 mi, Absolute −R$ 56,1 mi</div></div><div class="card"><h4>Tradicional <span class="meta">(5 d.u. · até 31/07/2026)</span></h4>
+      <div class="mini"><b>Piores líquidas:</b> IAM <span class="neg">−R$ 161 mi</span>, BRAM <span class="neg">−R$ 87,8 mi</span>, BTG WM <span class="neg">−R$ 73,6 mi</span>, Safra Asset <span class="neg">−R$ 56,3 mi</span>, Absolute <span class="neg">−R$ 56,1 mi</span></div></div><div class="card"><h4>Tradicional <span class="meta">(5 d.u. · até 31/07/2026)</span></h4>
       <table><thead><tr><th>Indicador</th><th class="num">Semana</th><th class="num">Anterior</th><th class="num">Δ</th><th class="num">Δ%</th><th class="num">Média 4s</th></tr></thead><tbody>
-      <tr><td>Captação bruta</td><td class="num">R$ 10,05 bi</td><td class="num">R$ 11,9 bi</td><td class="num">−R$ 1,85 bi</td><td class="num">−15,6%</td><td class="num">R$ 13,48 bi</td></tr><tr><td>Resgates</td><td class="num">R$ 10,29 bi</td><td class="num">R$ 13,62 bi</td><td class="num">−R$ 3,34 bi</td><td class="num">−24,5%</td><td class="num">R$ 13,95 bi</td></tr><tr><td>Captação líquida</td><td class="num">−R$ 239,4 mi</td><td class="num">−R$ 1,73 bi</td><td class="num">R$ 1,49 bi</td><td class="num">+86,1%</td><td class="num">−R$ 466,1 mi</td></tr><tr><td>Emissão CVM</td><td class="num">R$ 140 mi</td><td class="num">R$ 9,74 bi</td><td class="num">−R$ 9,6 bi</td><td class="num">−98,6%</td><td class="num">R$ 7,91 bi</td></tr></tbody></table>
+      <tr><td>Captação bruta</td><td class="num">R$ 10,05 bi</td><td class="num">R$ 11,9 bi</td><td class="num"><span class="neg">−R$ 1,85 bi</span></td><td class="num"><span class="neg">−15,6%</span></td><td class="num">R$ 13,48 bi</td></tr><tr><td>Resgates</td><td class="num">R$ 10,29 bi</td><td class="num">R$ 13,62 bi</td><td class="num"><span class="neg">−R$ 3,34 bi</span></td><td class="num"><span class="neg">−24,5%</span></td><td class="num">R$ 13,95 bi</td></tr><tr><td>Captação líquida</td><td class="num"><span class="neg">−R$ 239,4 mi</span></td><td class="num"><span class="neg">−R$ 1,73 bi</span></td><td class="num">R$ 1,49 bi</td><td class="num">+86,1%</td><td class="num"><span class="neg">−R$ 466,1 mi</span></td></tr><tr><td>Emissão CVM</td><td class="num">R$ 140 mi</td><td class="num">R$ 9,74 bi</td><td class="num"><span class="neg">−R$ 9,6 bi</span></td><td class="num"><span class="neg">−98,6%</span></td><td class="num">R$ 7,91 bi</td></tr></tbody></table>
       <div class="mini"><b>Maiores líquidas:</b> IAM R$ 448,6 mi, BB Asset R$ 337,2 mi, Regia R$ 229,8 mi, BTG Asset R$ 79,8 mi, Icatu R$ 48,1 mi</div>
-      <div class="mini"><b>Piores líquidas:</b> CEF Asset −R$ 248,7 mi, AZ Quest −R$ 181,9 mi, Kinea −R$ 171,3 mi, Safra Asset −R$ 135,7 mi, UBS −R$ 133,9 mi</div></div></div>
+      <div class="mini"><b>Piores líquidas:</b> CEF Asset <span class="neg">−R$ 248,7 mi</span>, AZ Quest <span class="neg">−R$ 181,9 mi</span>, Kinea <span class="neg">−R$ 171,3 mi</span>, Safra Asset <span class="neg">−R$ 135,7 mi</span>, UBS <span class="neg">−R$ 133,9 mi</span></div></div></div>
     <h3>Volume emitido — destaques</h3>
     <div class="mini"><b>Por grupo:</b> BTG Pactual R$ 1,4 bi, Axia R$ 500 mi, JBS  S/A R$ 400 mi, Alubar R$ 100 mi, Fortbras R$ 40 mi</div>
     <div class="mini"><b>Por emissor:</b> BTG PACTUAL COMMODITIES SERTRADING SA R$ 1,4 bi, AXIA ENERGIA S.A. R$ 500 mi, JBS  S/A R$ 400 mi, ALUBAR METAIS E CABOS S.A R$ 100 mi, FORTBRAS AUTOPECAS S/A R$ 40 mi</div>

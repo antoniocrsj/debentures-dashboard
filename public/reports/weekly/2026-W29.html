@@ -1,25 +1,30 @@
 <!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Semana 29/2026 · 13/07–17/07 — Luc</title><style>
-:root{--bg:#f2ede5;--card:#fff;--terra:#8c5e3a;--carvao:#26211d;--bege:#e8dfd2;--pos:#047857;--neg:#b91c1c;--muted:#7a6f63}
+/* Formatação v2 — ver FORMATACAO_Resumo_Semanal.md. Cantos RETOS nos contêineres
+   de dado (exceção: chips e .alerta = arredondados); réguas de tabela em --linha;
+   5 tamanhos de fonte (20/16/14/12,5/11); cor semântica disciplinada (classificação
+   sempre terracota; vermelho só p/ valor factualmente negativo). */
+:root{--bg:#f2ede5;--card:#fff;--terra:#8c5e3a;--carvao:#26211d;--bege:#e8dfd2;--linha:#d5c7b0;--pos:#047857;--neg:#b91c1c;--muted:#7a6f63}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--carvao);font:14px/1.45 -apple-system,Segoe UI,Roboto,sans-serif;padding:16px}
-.wrap{max-width:900px;margin:0 auto}h1{font-size:20px;margin:0 0 2px}.sub{color:var(--muted);font-size:13px;margin:0 0 16px}
-section{background:var(--card);border:1px solid var(--bege);border-radius:10px;padding:16px;margin-bottom:14px}
-h2{font-size:16px;color:var(--terra);margin:0 0 8px;border-bottom:2px solid var(--bege);padding-bottom:6px}
-h3{font-size:13px;margin:16px 0 6px;color:var(--carvao)}h4{font-size:13px;margin:0 0 4px}
+.wrap{max-width:900px;margin:0 auto}h1{font-size:20px;margin:0 0 2px}
+section{background:var(--card);border:1px solid var(--bege);border-radius:0;padding:16px;margin-bottom:14px}
+h2{font-size:16px;color:var(--terra);margin:0 0 8px;border-bottom:2px solid var(--linha);padding-bottom:6px}
+h3{font-size:14px;font-weight:600;margin:16px 0 6px;color:var(--carvao)}h4{font-size:14px;font-weight:600;margin:0 0 4px}
 .sintese{margin:0 0 10px;padding-left:18px}.sintese li{margin:2px 0}
-.kpis{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0}.kpis>div{background:var(--bege);border-radius:8px;padding:8px 10px;min-width:120px}
-.kpis b{display:block;font-size:15px}.kpis span{font-size:11px;color:var(--muted)}
-table{width:100%;border-collapse:collapse;font-size:12.5px;margin:4px 0}th,td{text-align:left;padding:3px 6px;border-bottom:1px solid var(--bege)}
+.kpis{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0}.kpis>div{background:var(--bege);border-radius:0;padding:8px 10px;min-width:120px}
+.kpis b{display:block;font-size:14px;font-weight:600}.kpis span{font-size:11px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin:4px 0}th,td{text-align:left;padding:3px 6px;border-bottom:1px solid var(--linha)}
 th{background:var(--bege);font-weight:600}.num{text-align:right;font-variant-numeric:tabular-nums}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}.card{background:var(--bg);border:1px solid var(--bege);border-radius:8px;padding:10px}
-.oferta{border:1px solid var(--bege);border-radius:8px;padding:10px;margin:8px 0}.oferta .meta{color:var(--muted);font-size:12px;margin:0 0 6px}
-.series th,.series td{font-size:12px}.sub{color:var(--muted);font-size:11px}.meta{color:var(--muted);font-size:12px}
+.neg{color:var(--neg)}.pos{color:var(--pos)}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}.card{background:var(--bg);border:1px solid var(--bege);border-radius:0;padding:10px}
+.oferta{border:1px solid var(--bege);border-radius:0;padding:10px;margin:8px 0}.oferta .meta{color:var(--muted);font-size:11px;margin:0 0 6px}
+.series th,.series td{font-size:12.5px}.sub{color:var(--muted);font-size:11px}.meta{color:var(--muted);font-size:11px}
 .meta.teto{color:var(--carvao)}.meta.teto b{color:var(--terra)}
-.tag{background:var(--terra);color:#fff;border-radius:4px;padding:1px 5px;font-size:10px}.tag2{background:var(--muted)}.tag-warn{background:var(--neg)}
+.tag{background:var(--terra);color:#fff;border-radius:999px;padding:1px 7px;font-size:11px}.tag2{background:var(--muted)}.tag-warn{background:var(--neg)}
 .cls{color:var(--terra);font-weight:700}.cls.insuf{color:var(--muted)}
-.mini{font-size:12px;margin:4px 0;color:var(--carvao)}.mini b{color:var(--muted);font-weight:600}
-.alerta{background:#fdf3e7;border:1px solid var(--terra);border-radius:8px;padding:8px 10px;font-size:12px;margin:8px 0}
-.vazio{color:var(--muted);font-size:12px}.fontes{color:var(--muted);font-size:11px;margin-top:10px}
+.mini{font-size:11px;margin:4px 0;color:var(--carvao)}.mini b{color:var(--muted);font-weight:600}
+.alerta{background:#fdf3e7;border:1px solid var(--terra);border-radius:8px;padding:8px 10px;font-size:11px;margin:8px 0}
+.vazio{color:var(--muted);font-size:11px}.fontes{color:var(--muted);font-size:11px;margin-top:10px}
 @media(max-width:640px){.cards{grid-template-columns:1fr}}
 </style></head><body><div class="wrap">
 <h1>Semana 29/2026 · 13/07–17/07</h1><p class="sub">Fechado · 13/07/2026–17/07/2026</p>
@@ -95,20 +100,20 @@ th{background:var(--bege);font-weight:600}.num{text-align:right;font-variant-num
     <div><b>R$ 1,3 bi</b><span>volume negociado · 1216 negócios</span></div>
     <div><b>R$ 702,6 mi</b><span>12.431</span></div>
     <div><b>R$ 593,6 mi</b><span>Tradicional</span></div>
-    <div><b>−62,4%</b><span>vs semana anterior</span></div>
-    <div><b>−68,1%</b><span>vs média 4 semanas</span></div>
+    <div><b><span class="neg">−62,4%</span></b><span>vs semana anterior</span></div>
+    <div><b><span class="neg">−68,1%</span></b><span>vs média 4 semanas</span></div>
   </div>
     <h3>Negócios em destaque (≥ R$ 20 mi, por grupo)</h3><table><thead><tr><th>Grupo</th><th class="num">Volume</th><th class="num">Negócios</th><th>Ativos</th><th class="num">Maior</th><th>Spread</th></tr></thead><tbody><tr><td>Energisa <span class="tag">12.431</span></td><td class="num">R$ 77,6 mi</td><td class="num">2</td><td>ENGIB4, ENMTF8</td><td class="num">R$ 47,6 mi</td><td>B29 −30bps</td></tr><tr><td>Axia <span class="tag tag2">misto</span></td><td class="num">R$ 75 mi</td><td class="num">2</td><td>ELTN19, AXIA19</td><td class="num">R$ 54,6 mi</td><td>CDI +0.64%</td></tr><tr><td>Motiva <span class="tag tag2">Trad</span></td><td class="num">R$ 71,1 mi</td><td class="num">2</td><td>CNLM17, ANHBA6</td><td class="num">R$ 35,6 mi</td><td>CDI +0.84%</td></tr><tr><td>EcoRodovias <span class="tag">12.431</span></td><td class="num">R$ 58,5 mi</td><td class="num">2</td><td>CERT11, ECOC13</td><td class="num">R$ 35 mi</td><td></td></tr><tr><td>Alupar <span class="tag">12.431</span></td><td class="num">R$ 50,6 mi</td><td class="num">1</td><td>ALUP18</td><td class="num">R$ 50,6 mi</td><td>B33 −73bps</td></tr><tr><td>Natura <span class="tag tag2">Trad</span></td><td class="num">R$ 33,7 mi</td><td class="num">1</td><td>NATUA3</td><td class="num">R$ 33,7 mi</td><td></td></tr><tr><td>Eneva <span class="tag tag2">Trad</span></td><td class="num">R$ 33,2 mi</td><td class="num">1</td><td>ENEVC0</td><td class="num">R$ 33,2 mi</td><td>CDI +0.60%</td></tr><tr><td>Holding do Araguaia <span class="tag">12.431</span></td><td class="num">R$ 23,8 mi</td><td class="num">1</td><td>HARG11</td><td class="num">R$ 23,8 mi</td><td>B32 +51bps</td></tr><tr><td>Ânima <span class="tag tag2">Trad</span></td><td class="num">R$ 21,2 mi</td><td class="num">1</td><td>INEL12</td><td class="num">R$ 21,2 mi</td><td>CDI +1.15%</td></tr><tr><td>Smart Fit <span class="tag tag2">Trad</span></td><td class="num">R$ 20,4 mi</td><td class="num">1</td><td>SMFTC3</td><td class="num">R$ 20,4 mi</td><td>CDI +0.97%</td></tr><tr><td>Hypera <span class="tag tag2">Trad</span></td><td class="num">R$ 20,3 mi</td><td class="num">1</td><td>HYPEB1</td><td class="num">R$ 20,3 mi</td><td>CDI +0.70%</td></tr><tr><td>Iguá <span class="tag tag2">Trad</span></td><td class="num">R$ 20 mi</td><td class="num">1</td><td>ISPE13</td><td class="num">R$ 20 mi</td><td>CDI +2.45%</td></tr></tbody></table></section>
 <section><h2>3. Técnico</h2><ul class="sintese"><li>12.431: captação líquida −R$ 862,3 mi (5 d.u.), emissão CVM R$ 800 mi.</li><li>Tradicional: captação líquida R$ 1,83 bi (5 d.u.), emissão CVM R$ 12,42 bi.</li></ul>
     <div class="cards"><div class="card"><h4>12.431 <span class="meta">(5 d.u. · até 17/07/2026)</span></h4>
       <table><thead><tr><th>Indicador</th><th class="num">Semana</th><th class="num">Anterior</th><th class="num">Δ</th><th class="num">Δ%</th><th class="num">Média 4s</th></tr></thead><tbody>
-      <tr><td>Captação bruta</td><td class="num">R$ 1,21 bi</td><td class="num">R$ 719,5 mi</td><td class="num">R$ 493,1 mi</td><td class="num">+68,5%</td><td class="num">R$ 1,08 bi</td></tr><tr><td>Resgates</td><td class="num">R$ 2,07 bi</td><td class="num">R$ 1,85 bi</td><td class="num">R$ 228,6 mi</td><td class="num">+12,4%</td><td class="num">R$ 2,75 bi</td></tr><tr><td>Captação líquida</td><td class="num">−R$ 862,3 mi</td><td class="num">−R$ 1,13 bi</td><td class="num">R$ 264,5 mi</td><td class="num">+23,5%</td><td class="num">−R$ 1,67 bi</td></tr><tr><td>Emissão CVM</td><td class="num">R$ 800 mi</td><td class="num">R$ 439,4 mi</td><td class="num">R$ 360,6 mi</td><td class="num">+82,1%</td><td class="num">R$ 1,65 bi</td></tr></tbody></table>
+      <tr><td>Captação bruta</td><td class="num">R$ 1,21 bi</td><td class="num">R$ 719,5 mi</td><td class="num">R$ 493,1 mi</td><td class="num">+68,5%</td><td class="num">R$ 1,08 bi</td></tr><tr><td>Resgates</td><td class="num">R$ 2,07 bi</td><td class="num">R$ 1,85 bi</td><td class="num">R$ 228,6 mi</td><td class="num">+12,4%</td><td class="num">R$ 2,75 bi</td></tr><tr><td>Captação líquida</td><td class="num"><span class="neg">−R$ 862,3 mi</span></td><td class="num"><span class="neg">−R$ 1,13 bi</span></td><td class="num">R$ 264,5 mi</td><td class="num">+23,5%</td><td class="num"><span class="neg">−R$ 1,67 bi</span></td></tr><tr><td>Emissão CVM</td><td class="num">R$ 800 mi</td><td class="num">R$ 439,4 mi</td><td class="num">R$ 360,6 mi</td><td class="num">+82,1%</td><td class="num">R$ 1,65 bi</td></tr></tbody></table>
       <div class="mini"><b>Maiores líquidas:</b> Journey R$ 158,1 mi, JGP R$ 47,7 mi, Portofino R$ 44,5 mi, Bocaina R$ 8,4 mi, Altera R$ 7 mi</div>
-      <div class="mini"><b>Piores líquidas:</b> Safra Asset −R$ 280,6 mi, IAM −R$ 151,3 mi, Absolute −R$ 89,9 mi, SAM −R$ 81,4 mi, ARX −R$ 55,8 mi</div></div><div class="card"><h4>Tradicional <span class="meta">(5 d.u. · até 17/07/2026)</span></h4>
+      <div class="mini"><b>Piores líquidas:</b> Safra Asset <span class="neg">−R$ 280,6 mi</span>, IAM <span class="neg">−R$ 151,3 mi</span>, Absolute <span class="neg">−R$ 89,9 mi</span>, SAM <span class="neg">−R$ 81,4 mi</span>, ARX <span class="neg">−R$ 55,8 mi</span></div></div><div class="card"><h4>Tradicional <span class="meta">(5 d.u. · até 17/07/2026)</span></h4>
       <table><thead><tr><th>Indicador</th><th class="num">Semana</th><th class="num">Anterior</th><th class="num">Δ</th><th class="num">Δ%</th><th class="num">Média 4s</th></tr></thead><tbody>
-      <tr><td>Captação bruta</td><td class="num">R$ 13,55 bi</td><td class="num">R$ 13,65 bi</td><td class="num">−R$ 93,3 mi</td><td class="num">−0,7%</td><td class="num">R$ 14,4 bi</td></tr><tr><td>Resgates</td><td class="num">R$ 11,73 bi</td><td class="num">R$ 14,23 bi</td><td class="num">−R$ 2,5 bi</td><td class="num">−17,6%</td><td class="num">R$ 15,05 bi</td></tr><tr><td>Captação líquida</td><td class="num">R$ 1,83 bi</td><td class="num">−R$ 581,4 mi</td><td class="num">R$ 2,41 bi</td><td class="num">+414,4%</td><td class="num">−R$ 650,7 mi</td></tr><tr><td>Emissão CVM</td><td class="num">R$ 12,42 bi</td><td class="num">R$ 270 mi</td><td class="num">R$ 12,15 bi</td><td class="num">+4.498,7%</td><td class="num">R$ 4,09 bi</td></tr></tbody></table>
+      <tr><td>Captação bruta</td><td class="num">R$ 13,55 bi</td><td class="num">R$ 13,65 bi</td><td class="num"><span class="neg">−R$ 93,3 mi</span></td><td class="num"><span class="neg">−0,7%</span></td><td class="num">R$ 14,4 bi</td></tr><tr><td>Resgates</td><td class="num">R$ 11,73 bi</td><td class="num">R$ 14,23 bi</td><td class="num"><span class="neg">−R$ 2,5 bi</span></td><td class="num"><span class="neg">−17,6%</span></td><td class="num">R$ 15,05 bi</td></tr><tr><td>Captação líquida</td><td class="num">R$ 1,83 bi</td><td class="num"><span class="neg">−R$ 581,4 mi</span></td><td class="num">R$ 2,41 bi</td><td class="num">+414,4%</td><td class="num"><span class="neg">−R$ 650,7 mi</span></td></tr><tr><td>Emissão CVM</td><td class="num">R$ 12,42 bi</td><td class="num">R$ 270 mi</td><td class="num">R$ 12,15 bi</td><td class="num">+4.498,7%</td><td class="num">R$ 4,09 bi</td></tr></tbody></table>
       <div class="mini"><b>Maiores líquidas:</b> BB Asset R$ 991,7 mi, SAM R$ 683,9 mi, IAM R$ 525,3 mi, Regia R$ 193 mi, Icatu R$ 150 mi</div>
-      <div class="mini"><b>Piores líquidas:</b> AZ Quest −R$ 163,7 mi, BRAM −R$ 156,9 mi, Rio Bravo −R$ 149,7 mi, Absolute −R$ 140,6 mi, XPG −R$ 120,2 mi</div></div></div>
+      <div class="mini"><b>Piores líquidas:</b> AZ Quest <span class="neg">−R$ 163,7 mi</span>, BRAM <span class="neg">−R$ 156,9 mi</span>, Rio Bravo <span class="neg">−R$ 149,7 mi</span>, Absolute <span class="neg">−R$ 140,6 mi</span>, XPG <span class="neg">−R$ 120,2 mi</span></div></div></div>
     <h3>Volume emitido — destaques</h3>
     <div class="mini"><b>Por grupo:</b> Localiza R$ 7,06 bi, Axia R$ 2,0 bi, ISA Energia R$ 1,5 bi, Engie R$ 700 mi, Energisa R$ 700 mi</div>
     <div class="mini"><b>Por emissor:</b> LOCALIZA RENT A CAR S/A R$ 5,64 bi, AXIA ENERGIA S.A. R$ 2,0 bi, ISA ENERGIA BRASIL S.A. R$ 1,5 bi, LOCALIZA FLEET S/A R$ 1,42 bi, ENGIE BRASIL ENERGIA SA R$ 700 mi</div>
