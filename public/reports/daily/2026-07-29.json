@@ -64,26 +64,26 @@
         "captacao": 119376039.33000001,
         "resgate": 498127763.90999997,
         "liquido": -378751724.5799999,
-        "pl": 264767965006.79013,
-        "numFundos": 1713,
+        "pl": 264821695004.18015,
+        "numFundos": 1714,
         "curados": 1737,
-        "fechados": 288,
+        "fechados": 287,
         "anterior": {
           "dia": "2026-07-24",
           "captacao": 95918827.97999999,
           "resgate": 266466227.66000003,
           "liquido": -170547399.68000004,
-          "pl": 264820141255.26004,
-          "numFundos": 1708
+          "pl": 264873852488.46005,
+          "numFundos": 1709
         }
       },
       "trad": {
         "dia": "2026-07-27",
         "captacao": 2231842193.7099996,
-        "resgate": 2931527922.7699986,
-        "liquido": -699685729.059999,
-        "pl": 1591148649735.3313,
-        "numFundos": 998,
+        "resgate": 2931527841.389999,
+        "liquido": -699685647.6799994,
+        "pl": 1591201754932.251,
+        "numFundos": 999,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
@@ -91,7 +91,7 @@
           "captacao": 2092471401.1100006,
           "resgate": 3014921681.689998,
           "liquido": -922450280.5799975,
-          "pl": 1581374313518.4497,
+          "pl": 1581374363846.8499,
           "numFundos": 996
         }
       }
@@ -221,7 +221,7 @@
           "captacao": 509647027.35,
           "resgate": 670112353.58,
           "liquido": -160465326.23000002,
-          "pl": 456497301105.58
+          "pl": 456497301009.77
         },
         {
           "gestor": "CEF Asset",
@@ -235,7 +235,7 @@
           "captacao": 40966914.47,
           "resgate": 120036695.47,
           "liquido": -79069781,
-          "pl": 58343850454.88
+          "pl": 58343900868.71
         },
         {
           "gestor": "AZ Quest",
@@ -1166,7 +1166,7 @@
               "ticker": "JSMLA5",
               "indexador": "DI + 3.5000%",
               "indexadorFamilia": "CDI+",
-              "emissor": "JSL S.A",
+              "emissor": "SIMPAR S.A.",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "CDI",
@@ -1608,12 +1608,12 @@
           "pl": 25760151.38
         },
         {
-          "cnpj": "63806809000125",
-          "nome": "HERITAGE RUBY MASTER II FUNDO DE INVESTIMENTO RENDA FIXA INFRA CRÉDITO PRIVADO - RESP LIMT",
-          "gestor": "Heritage",
+          "cnpj": "42847484000159",
+          "nome": "NINESUL PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "gestor": "XPG",
           "segmento": "trad",
-          "retorno": -0.0807,
-          "pl": 88461347.43
+          "retorno": -0.0811,
+          "pl": 52796374.62
         }
       ]
     },
@@ -1629,6 +1629,7 @@
       }
     ],
     "emissoesCVM": null,
-    "emissoresFaltantes": null
+    "emissoresFaltantes": null,
+    "ofertasSRE": null
   }
 }

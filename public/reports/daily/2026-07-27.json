@@ -1,7 +1,7 @@
 {
   "date": "2026-07-27",
   "label": "27/07/2026",
-  "previousDate": "2026-07-24",
+  "previousDate": null,
   "sourceDates": {
     "debentures": "2026-07-27",
     "cap12431": "2026-07-23",
@@ -198,7 +198,7 @@
         "pl": 256346913527.15002,
         "numFundos": 1688,
         "curados": 1737,
-        "fechados": 288,
+        "fechados": 287,
         "anterior": {
           "dia": "2026-07-22",
           "captacao": 165879319.16000006,
@@ -213,8 +213,8 @@
         "captacao": 2526719274.5600004,
         "resgate": 1622738572.9000003,
         "liquido": 903980701.6600001,
-        "pl": 1574831370592.551,
-        "numFundos": 995,
+        "pl": 1574843537186.011,
+        "numFundos": 996,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
@@ -222,8 +222,8 @@
           "captacao": 2342239112.8899994,
           "resgate": 2260167669.189999,
           "liquido": 82071443.70000029,
-          "pl": 1579830092727.89,
-          "numFundos": 998
+          "pl": 1579842248986.9397,
+          "numFundos": 999
         }
       }
     },
@@ -308,7 +308,7 @@
           "captacao": 839649251.58,
           "resgate": 414866545.87,
           "liquido": 424782705.71000004,
-          "pl": 456516562544.73
+          "pl": 456516562543.98
         },
         {
           "gestor": "BRAM",
@@ -1207,7 +1207,7 @@
               "ticker": "JSMLB5",
               "indexador": "IPCA + 7.9677%",
               "indexadorFamilia": "IPCA+",
-              "emissor": "JSL S.A",
+              "emissor": "SIMPAR S.A.",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "B30",
@@ -1279,7 +1279,7 @@
               "ticker": "JSMLA5",
               "indexador": "DI + 3.5000%",
               "indexadorFamilia": "CDI+",
-              "emissor": "JSL S.A",
+              "emissor": "SIMPAR S.A.",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "CDI",
@@ -1665,14 +1665,6 @@
       ],
       "topTradPos": [
         {
-          "cnpj": "64436974000103",
-          "nome": "BB MASTER III RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
-          "gestor": "BB Asset",
-          "segmento": "trad",
-          "retorno": 6.0736,
-          "pl": 209462843.69
-        },
-        {
           "cnpj": "51977823000102",
           "nome": "CATTUS FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
           "gestor": "Starboard",
@@ -1703,6 +1695,14 @@
           "segmento": "trad",
           "retorno": 0.5148,
           "pl": 29010861.81
+        },
+        {
+          "cnpj": "37467474000158",
+          "nome": "NORTE LONG BIAS MASTER CLASSE DE  INVESTIMENTO MULTIMERCADO - RESP LIMITADA",
+          "gestor": "Norte",
+          "segmento": "trad",
+          "retorno": 0.4358,
+          "pl": 195663429.01
         }
       ],
       "topTradNeg": [
@@ -1770,6 +1770,7 @@
       }
     ],
     "emissoesCVM": null,
-    "emissoresFaltantes": null
+    "emissoresFaltantes": null,
+    "ofertasSRE": null
   }
 }
