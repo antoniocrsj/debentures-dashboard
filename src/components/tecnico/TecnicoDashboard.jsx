@@ -488,7 +488,7 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, e
               {mostra('emissoes') && (
               <div className="tecnico-emissoes-cell">
                 <div className="grafico-card">
-                  <p className="tecnico-chart-label">Emissões <span className="tecnico-chart-sub">· preenchido = fundos (ANBIMA) · clique p/ ver os ativos do mês</span></p>
+                  <p className="tecnico-chart-label">Emissões</p>
                   <EmissoesBars rows={emissoesMeses} max={maxEmissoes} fmtVal={fmtBRL} fmtLabel={fmtBar}
                     onBarClick={toggleEmissaoMes} selectedMes={mesDrill}
                     ariaLabel="Emissão mensal de debêntures (ANBIMA) e a parcela subscrita por fundos de investimento — últimos 6 meses. Clique numa barra para listar os ativos da base emitidos no mês." />
