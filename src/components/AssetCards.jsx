@@ -60,7 +60,8 @@ export default function AssetCards({ assets, selectedSet, onSelect, onInfoClick 
             </div>
 
             <div className="ac-col ac-tax">
-              <span className="ac-line ac-taxa">{taxa}</span>
+              {/* Nominal + spread de emissão do SRE (teto), ex.: "IPCA + 7,95 (B35 −20)". */}
+              <span className="ac-line ac-taxa">{taxa}{a.sreSpread ? ` (${a.sreSpread.replace(/bps$/i, '').trim()})` : ''}</span>
               <span className="ac-line ac-anbima">
                 {anbima ? <>{anbima}<img className="ac-selo" src="/anbima-selo.jpg" alt="ANBIMA" /></> : <span className="ac-muted">—</span>}
               </span>

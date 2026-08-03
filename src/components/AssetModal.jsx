@@ -83,6 +83,8 @@ export default function AssetModal({ asset, onClose, onSelectTicker }) {
             <Row label="Vencimento"        value={fmtDate(asset.vencimento)} />
             <Row label="Indexador"         value={asset.indexador} />
             <Row label="Taxa"              value={asset.taxa} highlight />
+            {/* Spread de emissão (teto do SRE, IPCA) — o que interessa, não a nominal. */}
+            {asset.sreSpread && <Row label="Spread emissão" value={asset.sreSpread} highlight />}
             <Row label="12.431"            value={lei} tag={isYes(asset.lei12431Str)} />
             <Row label="Garantia"          value={asset.garantia} />
             <Row label="Coordenador Líder" value={asset.coordenador} />

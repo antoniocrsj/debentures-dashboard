@@ -55,7 +55,12 @@ export function buildIndexes({ emissores, coordenadoresSre }) {
   // por série. Fonte: public/data/Coordenadores_SRE.json (opcional).
   const sreByRegistro = {}
   for (const [reg, e] of Object.entries(coordenadoresSre?.itens || {})) {
-    if (e?.idRequerimento) sreByRegistro[reg] = String(e.idRequerimento)
+    if (!e?.idRequerimento) continue
+    // Spread de emissão p/ o card: o TETO (remuneração máxima) do SRE, na forma
+    // compacta ("B35 −20bps"). Só no IPCA (spread sobre a NTN-B) — no DI/CDI a
+    // própria taxa nominal do card já É o spread.
+    const spread = (e.teto?.ntnb && e.teto?.compacto) ? e.teto.compacto : null
+    sreByRegistro[reg] = { id: String(e.idRequerimento), spread }
   }
 
   return { emissorMap, sreByRegistro }
@@ -146,9 +151,14 @@ export function enrichDebenture(deb, { emissorMap, blcByAtivo, anbimaByTicker, a
   // o casamento dos books de primario -- nao pode virar a data de registro.
   const regRaw = pick(deb, FIELDS.registroCvm)
   const registroCvm = regRaw && dateKey(regRaw) > HOJE_KEY ? '' : regRaw
-  // Oferta no SRE da CVM (idRequerimento) pelo NÚMERO do registro -> "Ver na CVM".
+  // Oferta no SRE da CVM pelo NÚMERO do registro: idRequerimento -> "Ver na CVM";
+  // spread -> teto de emissão exibido no card (IPCA).
   const regNum = (pick(deb, FIELDS.registroNum) || '').trim()
-  const sreOfferId = (sreByRegistro && regNum) ? (sreByRegistro[regNum] || null) : null
+  const sre = (sreByRegistro && regNum) ? (sreByRegistro[regNum] || null) : null
+  const sreOfferId = sre?.id || null
+  // O teto (spread NTN-B) é da série IPCA da oferta — não se aplica a séries PRÉ/DI
+  // da mesma oferta (que herdam o mesmo registro/idRequerimento).
+  const sreSpread = (sre?.spread && /IPCA|NTN|INFRA/i.test(pick(deb, FIELDS.indexador) || '')) ? sre.spread : null
 
   return {
     ...deb,
@@ -177,6 +187,8 @@ export function enrichDebenture(deb, { emissorMap, blcByAtivo, anbimaByTicker, a
     recompra,
     // Id da oferta no SRE da CVM (p/ "Ver na CVM"); null quando não está no cache SRE.
     sreOfferId,
+    // Spread de emissão (teto do SRE, forma "B35 −20bps") p/ o card; null fora do SRE/DI.
+    sreSpread,
   }
 }
 
