@@ -127,6 +127,24 @@ export function buildAnbimaBEIndex(anbimaBE) {
   return map
 }
 
+// Tx Anbima SEMPRE como SPREAD (nunca a nominal IPCA+/%CDI/PRÉ), p/ exibir E
+// ordenar independentemente do indexador:
+//   DI+   -> "CDI + X%" (a própria taxa já é o spread)      | sort: X*100 bps
+//   IPCA  -> "Bxx + Ybps" (spread sobre a NTN-B correta)    | sort: spreadNtnbBps
+//   %CDI  -> "CDI + X%" (do spreadCdiEquivalente)           | sort: X*100 bps
+//   PRÉ   -> nominal por ora (spread sobre o DI = TODO)     | sort: pro fim
+// Fonte: campos já calculados no Anbima_Tx.csv (spreadNtnbBps, spreadCdiEquivalente).
+function anbimaTxSpread(anbima) {
+  if (!anbima) return { fmt: '—', bps: null }
+  const tipo = (anbima.tipoTaxaAnbima || '').trim()
+  const fmt0 = anbima.txAnbimaFormatada && anbima.txAnbimaFormatada !== '—' ? anbima.txAnbimaFormatada : '—'
+  const cdiFmt = v => `CDI ${v < 0 ? '−' : '+'} ${Math.abs(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`
+  if (tipo === 'IPCA_SPREAD') { const b = parseNum(anbima.spreadNtnbBps); return { fmt: fmt0, bps: isFinite(b) ? b : null } }
+  if (tipo === 'DI_SPREAD') { const v = parseNum(anbima.taxaAnbimaOriginal); return { fmt: fmt0, bps: isFinite(v) ? Math.round(v * 100) : null } }
+  if (tipo === 'DI_PERCENTUAL') { const v = parseNum(anbima.spreadCdiEquivalente); return isFinite(v) ? { fmt: cdiFmt(v), bps: Math.round(v * 100) } : { fmt: '—', bps: null } }
+  return { fmt: fmt0, bps: null }   // PREFIXADO (TODO) e outros: mantém, sem ordenação
+}
+
 export function enrichDebenture(deb, { emissorMap, blcByAtivo, anbimaByTicker, anbimaBEByTicker, sreByRegistro }) {
   const codigoAtivo = (pick(deb, FIELDS.codigoAtivo) || '').trim()
   const cnpjKey = normCNPJ(pick(deb, FIELDS.cnpjEmissor))
@@ -159,6 +177,7 @@ export function enrichDebenture(deb, { emissorMap, blcByAtivo, anbimaByTicker, a
   // O teto (spread NTN-B) é da série IPCA da oferta — não se aplica a séries PRÉ/DI
   // da mesma oferta (que herdam o mesmo registro/idRequerimento).
   const sreSpread = (sre?.spread && /IPCA|NTN|INFRA/i.test(pick(deb, FIELDS.indexador) || '')) ? sre.spread : null
+  const anbimaTx = anbimaTxSpread(anbima)
 
   return {
     ...deb,
@@ -178,8 +197,10 @@ export function enrichDebenture(deb, { emissorMap, blcByAtivo, anbimaByTicker, a
     gestores,
     alocacao,
     volumeEmitido: qtd * vna,
-    // ANBIMA (ja calculado na etapa de preparacao). '—' quando o ticker nao consta.
-    txAnbima: (anbima && anbima['txAnbimaFormatada']) ? anbima['txAnbimaFormatada'] : '—',
+    // ANBIMA como SPREAD (ver anbimaTxSpread): DI+/%CDI -> "CDI + X%", IPCA -> "Bxx
+    // + Ybps", PRÉ -> nominal (TODO). txAnbimaBps = mesmo spread em bps, p/ ordenar.
+    txAnbima: anbimaTx.fmt,
+    txAnbimaBps: anbimaTx.bps,
     // Duration em anos (dias uteis / 252, ja convertido na preparacao).
     durationAnbima: (anbima && anbima['durationAnbimaAnos']) ? anbima['durationAnbimaAnos'] : '—',
     anbimaInfo: anbima,

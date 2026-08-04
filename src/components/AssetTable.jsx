@@ -8,8 +8,8 @@ const COLS = [
   { id: 'registroCvm',  label: 'Reg. CVM',       sticky: false, sortable: true  },
   { id: 'vencimento',   label: 'Venc.',          sticky: false, sortable: true  },
   { id: 'taxa',         label: 'Taxa',           sticky: false, sortable: true  },
-  { id: 'txanbima',     label: 'Tx Anbima',      sticky: false, sortable: false },
-  { id: 'duration',     label: 'Duration',       sticky: false, sortable: false },
+  { id: 'txanbima',     label: 'Tx Anbima',      sticky: false, sortable: true  },
+  { id: 'duration',     label: 'Duration',       sticky: false, sortable: true  },
   // Recompra antecipada / breakeven (fonte separada; nao mistura com Taxa/Tx Anbima).
   { id: 'recompraTaxa', label: 'Tx. BE', sticky: false, sortable: true },
   { id: 'recompraData', label: 'Data recompra',  sticky: false, sortable: true },
