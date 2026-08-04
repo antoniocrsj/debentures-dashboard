@@ -3,7 +3,7 @@ import { useDebentures, BLC_DEFAULT_URL } from './hooks/useDebentures.js'
 import { usePeriodReports } from './hooks/usePeriodReports.js'
 import { useAgenda12m } from './hooks/useAgenda12m.js'
 import {
-  buildIndexes, buildBlcIndex, buildAnbimaIndex, buildAnbimaBEIndex, buildPlByGestor,
+  buildIndexes, buildBlcIndex, buildAnbimaIndex, buildAnbimaBEIndex, buildPreDiIndex, buildPlByGestor,
   enrichDebenture, enrichMercado, computeManagers, computeGroups, recomputeAlocByGestor
 } from './utils/data.js'
 import { isYes, dateKey, fmtDateOnly, parseBRDateTime, parseISODate, fmtMesAno } from './utils/format.js'
@@ -195,6 +195,7 @@ export default function App() {
       blcByAtivo: buildBlcIndex(raw.blc),
       anbimaByTicker: buildAnbimaIndex(raw.anbima),
       anbimaBEByTicker: buildAnbimaBEIndex(raw.anbimaBE),
+      preDiByTicker: buildPreDiIndex(raw.anbimaPreDi),
     }
   }, [raw])
 

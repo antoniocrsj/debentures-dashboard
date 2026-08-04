@@ -921,6 +921,20 @@ if ($SkipBE) {
   }
 }
 
+# 5h. Spread PRÉ sobre o DI futuro (Tx Anbima do PRÉ -> "DIxx + Y%"). Consome o
+# Anbima_Tx.csv (PREFIXADO) + a curva LTN do REUNE_Curvas; interpola o vertice DI
+# pela duration. OPCIONAL e ISOLADO: nao trava a atualizacao.
+Progress 'Spread PRE->DI'
+try {
+  & node (Join-Path $PSScriptRoot 'preparar-anbima-predi.mjs')
+  if ($LASTEXITCODE -ne 0) { throw "node saiu com codigo $LASTEXITCODE" }
+  $summary.PreDi = 'OK'
+  Ok 'public\Anbima_PreDi.csv atualizado.'
+} catch {
+  $summary.PreDi = "FALHOU sem travar: $($_.Exception.Message)"
+  Warn "$($summary.PreDi) (Tx Anbima do PRE fica com o snapshot anterior)"
+}
+
 # 6. Resumo
 Progress 'Resumo'
 $snapshotAfter = Get-DataSnapshot

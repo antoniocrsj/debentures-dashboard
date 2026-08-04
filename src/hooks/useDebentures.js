@@ -26,6 +26,7 @@ const STATIC_ANBIMA_URL = '/Anbima_Tx.csv'
 // tools/preparar-anbima-be.mjs. OPCIONAL — o app segue sem ele.
 const STATIC_ANBIMA_BE_URL = '/Anbima_BE.csv'
 const STATIC_ANBIMA_BE_META_URL = '/Anbima_BE_meta.json'
+const STATIC_ANBIMA_PRE_DI_URL = '/Anbima_PreDi.csv'
 // PL por gestor: gerado por preparar-fluxo.ps1 a partir do Informe Diario da CVM.
 const STATIC_PL_GESTORES_URL = '/PL_Gestores.csv'
 // Metadados de quando cada fonte foi gerada (nao o cache do navegador) — usados em App.jsx (dataFreshness).
@@ -139,9 +140,11 @@ export function useDebentures(blcUrl) {
       fetchStaticCSV(STATIC_EMISSOES_ANBIMA_URL).catch(() => []),
       // Ofertas do SRE (idRequerimento por registro) — link "Ver na CVM". OPCIONAL.
       fetchStaticJSON(STATIC_COORD_SRE_URL).catch(() => null),
+      // Spread PRÉ sobre o DI futuro (companion Anbima_PreDi) — Tx Anbima do PRÉ. OPCIONAL.
+      fetchStaticCSV(STATIC_ANBIMA_PRE_DI_URL).catch(() => []),
     ])
-      .then(([emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta, mercado, emissoesAnbima, coordenadoresSre]) => {
-        const raw = { emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta, mercado, emissoesAnbima, coordenadoresSre }
+      .then(([emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta, mercado, emissoesAnbima, coordenadoresSre, anbimaPreDi]) => {
+        const raw = { emissores, debentures, blc, anbima, plGestores, debenturesMeta, blcMeta, blcMaturidade, anbimaBE, anbimaBEMeta, mercado, emissoesAnbima, coordenadoresSre, anbimaPreDi }
         writeCache(raw)
         if (alive) setState({ loading: false, refreshing: false, error: null, raw, cachedAt: Date.now() })
       })
