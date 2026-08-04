@@ -10,8 +10,8 @@
     "fluxo12431": "2026-07-17",
     "fluxoTrad": "2026-07-17",
     "anbima": "2026-07-17",
-    "mercado": "2026-08-03",
-    "debentures": "2026-07-30"
+    "mercado": "2026-08-05",
+    "debentures": "2026-07-31"
   },
   "alertas": [],
   "partes": {
@@ -740,8 +740,8 @@
       "sintese": [
         "Spread 12.431: abertura (mediana +2 bps, 443 abriram / 86 fecharam de 594).",
         "Spread Tradicional: abertura (mediana +3 bps, 16 abriram / 1 fecharam de 21 — amostra pequena).",
-        "Secundário: R$ 1,3 bi em 1216 negócio(s) (12.431 R$ 702,6 mi · Trad R$ 593,6 mi).",
-        "16 negócio(s) ≥ R$ 20 mi em 12 grupo(s)."
+        "Secundário: R$ 1,3 bi em 1216 negócio(s) (12.431 R$ 702,8 mi · Trad R$ 593,6 mi).",
+        "16 negócio(s) ≥ R$ 20 mi em 11 grupo(s)."
       ],
       "tendencia": {
         "semFronteira": false,
@@ -848,10 +848,10 @@
               }
             ],
             "vsAnbima": {
-              "comparaveis": 965,
-              "acima": 400,
-              "abaixo": 535,
-              "igual": 30
+              "comparaveis": 966,
+              "acima": 382,
+              "abaixo": 557,
+              "igual": 27
             }
           },
           "trad": {
@@ -888,7 +888,7 @@
               },
               {
                 "ticker": "JSMLB5",
-                "emissor": "SIMPAR S.A.",
+                "emissor": "JSL S.A",
                 "grupo": "Simpar",
                 "variacaoBps": 16,
                 "spreadAnteriorBps": 580,
@@ -924,8 +924,8 @@
             "vsAnbima": {
               "comparaveis": 201,
               "acima": 120,
-              "abaixo": 66,
-              "igual": 15
+              "abaixo": 64,
+              "igual": 17
             }
           }
         }
@@ -955,30 +955,30 @@
       "trades": {
         "limiar": 20000000,
         "resumo": {
-          "volume": 1296210335,
+          "volume": 1296411564,
           "nTrades": 1216,
-          "volume12431": 702595044,
-          "volumeTradicional": 593615291,
+          "volume12431": 702763075,
+          "volumeTradicional": 593648489,
           "anterior": {
-            "volume": 3443101023,
+            "volume": 3443478966,
             "nTrades": 1332
           },
-          "variacaoVolNominal": -2146890688,
-          "variacaoVolPct": -0.623534039128889,
-          "media4Semanas": 4067691738.25,
-          "variacaoVs4Pct": -0.6813400772700502,
+          "variacaoVolNominal": -2147067402,
+          "variacaoVolPct": -0.6235169208813457,
+          "media4Semanas": 4067628859.5,
+          "variacaoVs4Pct": -0.6812856804837998,
           "maioresGrupos": [
             {
               "nome": "Axia",
               "volume": 144265654
             },
             {
-              "nome": "Energisa",
-              "volume": 121721402
+              "nome": "EcoRodovias",
+              "volume": 126294872
             },
             {
-              "nome": "EcoRodovias",
-              "volume": 99172518
+              "nome": "Energisa",
+              "volume": 121721402
             },
             {
               "nome": "Motiva",
@@ -986,7 +986,7 @@
             },
             {
               "nome": "Eneva",
-              "volume": 60150004
+              "volume": 60223765
             }
           ],
           "maioresAtivos": [
@@ -1013,6 +1013,59 @@
           ]
         },
         "grupos": [
+          {
+            "grupo": "EcoRodovias",
+            "emissores": [
+              "HOLDING DO ARAGUAIA S.A.",
+              "CONCESSIONARIA ECOVIAS RAPOSO-CASTELO S.A",
+              "ECO101 CONCESSIONARIA DE RODOVIAS S/A."
+            ],
+            "ativos": [
+              "HARG11",
+              "CERT11",
+              "ECOC13"
+            ],
+            "volumeTotal": 82324464,
+            "nTrades": 3,
+            "datas": [
+              "2026-07-13"
+            ],
+            "enquadramento": "12.431",
+            "maiorTrade": {
+              "ticker": "ECOC13",
+              "data": "2026-07-13",
+              "volume": 34996564,
+              "taxaMed": "8.8438",
+              "spreadFmt": "",
+              "vsAnbima": null
+            },
+            "trades": [
+              {
+                "ticker": "ECOC13",
+                "data": "2026-07-13",
+                "volume": 34996564,
+                "taxaMed": "8.8438",
+                "spreadFmt": "",
+                "vsAnbima": null
+              },
+              {
+                "ticker": "HARG11",
+                "data": "2026-07-13",
+                "volume": 23777389,
+                "taxaMed": "8.6819",
+                "spreadFmt": "B32 +51bps",
+                "vsAnbima": -5
+              },
+              {
+                "ticker": "CERT11",
+                "data": "2026-07-13",
+                "volume": 23550511,
+                "taxaMed": "8.5809",
+                "spreadFmt": "B29 +21bps",
+                "vsAnbima": -7
+              }
+            ]
+          },
           {
             "grupo": "Energisa",
             "emissores": [
@@ -1053,7 +1106,7 @@
                 "volume": 30053815,
                 "taxaMed": "8.0755",
                 "spreadFmt": "B35 +9bps",
-                "vsAnbima": -5
+                "vsAnbima": -4
               }
             ]
           },
@@ -1080,7 +1133,7 @@
               "volume": 54607227,
               "taxaMed": "0.6399",
               "spreadFmt": "CDI +0.64%",
-              "vsAnbima": -0.03
+              "vsAnbima": -0.01
             },
             "trades": [
               {
@@ -1089,7 +1142,7 @@
                 "volume": 54607227,
                 "taxaMed": "0.6399",
                 "spreadFmt": "CDI +0.64%",
-                "vsAnbima": -0.03
+                "vsAnbima": -0.01
               },
               {
                 "ticker": "AXIA19",
@@ -1145,49 +1198,6 @@
             ]
           },
           {
-            "grupo": "EcoRodovias",
-            "emissores": [
-              "CONCESSIONARIA ECOVIAS RAPOSO-CASTELO S.A",
-              "ECO101 CONCESSIONARIA DE RODOVIAS S/A."
-            ],
-            "ativos": [
-              "CERT11",
-              "ECOC13"
-            ],
-            "volumeTotal": 58547075,
-            "nTrades": 2,
-            "datas": [
-              "2026-07-13"
-            ],
-            "enquadramento": "12.431",
-            "maiorTrade": {
-              "ticker": "ECOC13",
-              "data": "2026-07-13",
-              "volume": 34996564,
-              "taxaMed": "8.8438",
-              "spreadFmt": "",
-              "vsAnbima": null
-            },
-            "trades": [
-              {
-                "ticker": "ECOC13",
-                "data": "2026-07-13",
-                "volume": 34996564,
-                "taxaMed": "8.8438",
-                "spreadFmt": "",
-                "vsAnbima": null
-              },
-              {
-                "ticker": "CERT11",
-                "data": "2026-07-13",
-                "volume": 23550511,
-                "taxaMed": "8.5809",
-                "spreadFmt": "B29 +21bps",
-                "vsAnbima": -1
-              }
-            ]
-          },
-          {
             "grupo": "Alupar",
             "emissores": [
               "ALUPAR INVESTIMENTO S/A"
@@ -1207,7 +1217,7 @@
               "volume": 50574321,
               "taxaMed": "7.4448",
               "spreadFmt": "B33 −73bps",
-              "vsAnbima": -14
+              "vsAnbima": -16
             },
             "trades": [
               {
@@ -1216,7 +1226,7 @@
                 "volume": 50574321,
                 "taxaMed": "7.4448",
                 "spreadFmt": "B33 −73bps",
-                "vsAnbima": -14
+                "vsAnbima": -16
               }
             ]
           },
@@ -1240,7 +1250,7 @@
               "volume": 33682246,
               "taxaMed": "",
               "spreadFmt": "",
-              "vsAnbima": -1.71
+              "vsAnbima": -1.69
             },
             "trades": [
               {
@@ -1249,7 +1259,7 @@
                 "volume": 33682246,
                 "taxaMed": "",
                 "spreadFmt": "",
-                "vsAnbima": -1.71
+                "vsAnbima": -1.69
               }
             ]
           },
@@ -1283,39 +1293,6 @@
                 "taxaMed": "0.6000",
                 "spreadFmt": "CDI +0.60%",
                 "vsAnbima": 0.01
-              }
-            ]
-          },
-          {
-            "grupo": "Holding do Araguaia",
-            "emissores": [
-              "HOLDING DO ARAGUAIA S.A."
-            ],
-            "ativos": [
-              "HARG11"
-            ],
-            "volumeTotal": 23777389,
-            "nTrades": 1,
-            "datas": [
-              "2026-07-13"
-            ],
-            "enquadramento": "12.431",
-            "maiorTrade": {
-              "ticker": "HARG11",
-              "data": "2026-07-13",
-              "volume": 23777389,
-              "taxaMed": "8.6819",
-              "spreadFmt": "B32 +51bps",
-              "vsAnbima": -2
-            },
-            "trades": [
-              {
-                "ticker": "HARG11",
-                "data": "2026-07-13",
-                "volume": 23777389,
-                "taxaMed": "8.6819",
-                "spreadFmt": "B32 +51bps",
-                "vsAnbima": -2
               }
             ]
           },
@@ -1372,7 +1349,7 @@
               "volume": 20407185,
               "taxaMed": "0.9707",
               "spreadFmt": "CDI +0.97%",
-              "vsAnbima": 0.03
+              "vsAnbima": 0.02
             },
             "trades": [
               {
@@ -1381,7 +1358,7 @@
                 "volume": 20407185,
                 "taxaMed": "0.9707",
                 "spreadFmt": "CDI +0.97%",
-                "vsAnbima": 0.03
+                "vsAnbima": 0.02
               }
             ]
           },
@@ -1438,7 +1415,7 @@
               "volume": 20019787,
               "taxaMed": "2.4500",
               "spreadFmt": "CDI +2.45%",
-              "vsAnbima": -0.02
+              "vsAnbima": -0.03
             },
             "trades": [
               {
@@ -1447,7 +1424,7 @@
                 "volume": 20019787,
                 "taxaMed": "2.4500",
                 "spreadFmt": "CDI +2.45%",
-                "vsAnbima": -0.02
+                "vsAnbima": -0.03
               }
             ]
           }

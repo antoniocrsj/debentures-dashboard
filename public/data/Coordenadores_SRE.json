@@ -1,9 +1,9 @@
 {
-  "asOf": "2026-08-03",
-  "geradoEm": "2026-08-03T15:28:40.892Z",
+  "asOf": "2026-08-04",
+  "geradoEm": "2026-08-04T11:38:23.752Z",
   "fonte": "CVM SRE (participantes)",
-  "janelaDias": 550,
-  "total": 1124,
+  "janelaDias": 180,
+  "total": 1126,
   "itens": {
     "AUT/DEB/PRI/2026/370": {
       "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/370",
@@ -33891,6 +33891,60 @@
       "teto": null,
       "remuneracaoFinal": null,
       "rating": "A ser atribuído em até 15 dias úteis da primeira integralização",
+      "setorProjeto": null
+    },
+    "AUT/DEB/PRI/2026/372": {
+      "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/372",
+      "idRequerimento": "27390",
+      "cnpjEmissor": "15.811.119/0001-11",
+      "data": "03/08/2026",
+      "lider": {
+        "nome": "BANCO BNP PARIBAS BRASIL S/A",
+        "cnpj": "01.522.368/0001-82"
+      },
+      "coordenadores": [
+        {
+          "razaoSocial": "BANCO BNP PARIBAS BRASIL S/A",
+          "cnpj": "01.522.368/0001-82",
+          "lider": true
+        }
+      ],
+      "remuneracaoMaxima": null,
+      "teto": null,
+      "remuneracaoFinal": null,
+      "rating": null,
+      "setorProjeto": null
+    },
+    "AUT/DEB/PRI/2026/371": {
+      "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/371",
+      "idRequerimento": "27395",
+      "cnpjEmissor": "15.811.119/0001-11",
+      "data": "03/08/2026",
+      "lider": {
+        "nome": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+        "cnpj": "04.845.753/0001-59"
+      },
+      "coordenadores": [
+        {
+          "razaoSocial": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+          "cnpj": "04.845.753/0001-59",
+          "lider": true
+        },
+        {
+          "razaoSocial": "BANCO SANTANDER (BRASIL) S.A.",
+          "cnpj": "90.400.888/0001-42",
+          "lider": false
+        },
+        {
+          "razaoSocial": "BANCO BRADESCO BBI S.A.",
+          "cnpj": "06.271.464/0001-19",
+          "lider": false
+        }
+      ],
+      "remuneracaoMaxima": null,
+      "teto": null,
+      "remuneracaoFinal": null,
+      "rating": null,
       "setorProjeto": null
     }
   }

@@ -80,8 +80,8 @@
         "captacao": 123571754.23,
         "resgate": 194555716.25000006,
         "liquido": -70983962.02000006,
-        "pl": 266339216809.77997,
-        "numFundos": 1712,
+        "pl": 266389873240.27994,
+        "numFundos": 1713,
         "curados": 1737,
         "fechados": 287,
         "anterior": {
@@ -89,8 +89,8 @@
           "captacao": 119376039.33000001,
           "resgate": 498127763.90999997,
           "liquido": -378751724.5799999,
-          "pl": 264821695004.18015,
-          "numFundos": 1714
+          "pl": 264872431868.60016,
+          "numFundos": 1715
         }
       },
       "trad": {
@@ -98,8 +98,8 @@
         "captacao": 3440547696.5799994,
         "resgate": 1903372412.159999,
         "liquido": 1537175284.4200006,
-        "pl": 1592950368324.6204,
-        "numFundos": 998,
+        "pl": 1593488025088.0703,
+        "numFundos": 999,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
@@ -107,8 +107,8 @@
           "captacao": 2231842193.7099996,
           "resgate": 2931527841.389999,
           "liquido": -699685647.6799994,
-          "pl": 1591201754932.251,
-          "numFundos": 999
+          "pl": 1591236315672.861,
+          "numFundos": 1001
         }
       }
     },
@@ -258,7 +258,7 @@
           "captacao": 21181504.63,
           "resgate": 34782274.86,
           "liquido": -13600770.23,
-          "pl": 10847363950
+          "pl": 10847363949.97
         }
       ]
     },
@@ -1200,7 +1200,7 @@
               "ticker": "JSMLB5",
               "indexador": "IPCA + 7.9677%",
               "indexadorFamilia": "IPCA+",
-              "emissor": "SIMPAR S.A.",
+              "emissor": "JSL S.A",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "B30",
@@ -1388,14 +1388,6 @@
           "pl": 6463460.66
         },
         {
-          "cnpj": "59123735000155",
-          "nome": "PORTO PAINEIRA CDI FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA RF CRÉD PRIV RESP LIMITADA",
-          "gestor": "Porto Asset",
-          "segmento": "12431",
-          "retorno": 2.2346,
-          "pl": 23266422.17
-        },
-        {
           "cnpj": "60124635000122",
           "nome": "SAFRA INFRA EXCLUSIVO PRÉ II RF FIF INVESTIMENTO EM INFRA CI EM INFRAESTRUTURA RF RESP LIMITADA",
           "gestor": "Safra Asset",
@@ -1418,9 +1410,41 @@
           "segmento": "12431",
           "retorno": 0.9182,
           "pl": 10373836.6
+        },
+        {
+          "cnpj": "59878473000139",
+          "nome": "SAFRA INFRA EXCLUSIVO PRÉ RF FIF INVESTIMENTO EM INFRA CI EM INFRAESTRUTURA EM RF RESP LIMITADA",
+          "gestor": "Safra Asset",
+          "segmento": "12431",
+          "retorno": 0.7935,
+          "pl": 9155665.16
         }
       ],
       "top12431Neg": [
+        {
+          "cnpj": "39723106000159",
+          "nome": "SPARTA INFLAÇÃO MASTER FUNDO INCENTIVADO DE INVEST FINANCEIRO EM INFRA RENDA FIXA - RESP LTDA",
+          "gestor": "Sparta",
+          "segmento": "12431",
+          "retorno": -46.7604,
+          "pl": 20000000
+        },
+        {
+          "cnpj": "61141536000111",
+          "nome": "BB MASTER RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
+          "gestor": "BB Asset",
+          "segmento": "12431",
+          "retorno": -25.0147,
+          "pl": 580279029.45
+        },
+        {
+          "cnpj": "63729525000182",
+          "nome": "CAPITÂNIA INFRA ADVISORY SENIOR II FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRA RENDA FIXA",
+          "gestor": "Capitânia",
+          "segmento": "12431",
+          "retorno": -3.9702,
+          "pl": 114225658.32
+        },
         {
           "cnpj": "60853232000114",
           "nome": "SAFRA INFRA INOVAÇÃO PÓS RENDA FIXA FIF INVESTIMENTO EM INFRA CI EM INFRA EM RF RESP LIMITADA",
@@ -1436,30 +1460,6 @@
           "segmento": "12431",
           "retorno": -0.8186,
           "pl": 57908987.04
-        },
-        {
-          "cnpj": "60775750000167",
-          "nome": "G5 ALLOCATION II FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
-          "gestor": "G5",
-          "segmento": "12431",
-          "retorno": -0.7952,
-          "pl": 46194738.2
-        },
-        {
-          "cnpj": "63942021000146",
-          "nome": "OCCAM BB INFRA LINEAR FI FINANCEIRO RENDA FIXA INVESTIMENTO EM INFRAESTRUTURA - RESP LIMITADA",
-          "gestor": "Occam",
-          "segmento": "12431",
-          "retorno": -0.7072,
-          "pl": 117599939.84
-        },
-        {
-          "cnpj": "54501503000170",
-          "nome": "BTG INFRA MASTER IV FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA CRÉDITO PRIVADO",
-          "gestor": "BTG Asset",
-          "segmento": "12431",
-          "retorno": -0.6052,
-          "pl": 356123818.81
         }
       ],
       "topTradPos": [
@@ -1480,6 +1480,14 @@
           "pl": 38298298.08
         },
         {
+          "cnpj": "39487617000119",
+          "nome": "LEGACY CAPITAL CREDIT FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO - CRÉDITO PRIVADO RESPONSABILIDA",
+          "gestor": "Legacy",
+          "segmento": "trad",
+          "retorno": 0.3812,
+          "pl": 109245213.19
+        },
+        {
           "cnpj": "43636081000123",
           "nome": "MAESTRANZA PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
           "gestor": "XPG",
@@ -1494,14 +1502,6 @@
           "segmento": "trad",
           "retorno": 0.2735,
           "pl": 44043893.86
-        },
-        {
-          "cnpj": "14158932000171",
-          "nome": "FUNDO DE INVESTIMENTO MULTIMERCADO FRATELLI LONGO PRAZO",
-          "gestor": "Scalare",
-          "segmento": "trad",
-          "retorno": 0.2717,
-          "pl": 21357120.92
         }
       ],
       "topTradNeg": [

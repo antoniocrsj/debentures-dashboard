@@ -1,6 +1,22 @@
 {
   "reports": [
     {
+      "id": "2026-W32",
+      "label": "Semana 32/2026 · Parcial até 03/08",
+      "de": "2026-08-03",
+      "ate": "2026-08-03",
+      "status": "partial",
+      "json": "/reports/weekly/2026-W32.json",
+      "html": "/reports/weekly/2026-W32.html",
+      "sourceDates": {
+        "fluxo12431": "2026-08-03",
+        "fluxoTrad": null,
+        "anbima": "2026-08-03",
+        "mercado": "2026-08-05",
+        "debentures": "2026-07-31"
+      }
+    },
+    {
       "id": "2026-W31",
       "label": "Semana 31/2026 · 27/07–31/07",
       "de": "2026-07-27",
@@ -12,8 +28,8 @@
         "fluxo12431": "2026-07-31",
         "fluxoTrad": "2026-07-31",
         "anbima": "2026-07-31",
-        "mercado": "2026-08-03",
-        "debentures": "2026-07-30"
+        "mercado": "2026-08-05",
+        "debentures": "2026-07-31"
       }
     },
     {
@@ -28,8 +44,8 @@
         "fluxo12431": "2026-07-24",
         "fluxoTrad": "2026-07-24",
         "anbima": "2026-07-24",
-        "mercado": "2026-08-03",
-        "debentures": "2026-07-30"
+        "mercado": "2026-08-05",
+        "debentures": "2026-07-31"
       }
     },
     {
@@ -44,8 +60,8 @@
         "fluxo12431": "2026-07-17",
         "fluxoTrad": "2026-07-17",
         "anbima": "2026-07-17",
-        "mercado": "2026-08-03",
-        "debentures": "2026-07-30"
+        "mercado": "2026-08-05",
+        "debentures": "2026-07-31"
       }
     },
     {
@@ -60,24 +76,8 @@
         "fluxo12431": "2026-07-10",
         "fluxoTrad": "2026-07-10",
         "anbima": "2026-07-10",
-        "mercado": "2026-08-03",
-        "debentures": "2026-07-30"
-      }
-    },
-    {
-      "id": "2026-W27",
-      "label": "Semana 27/2026 · 29/06–03/07",
-      "de": "2026-06-29",
-      "ate": "2026-07-03",
-      "status": "closed",
-      "json": "/reports/weekly/2026-W27.json",
-      "html": "/reports/weekly/2026-W27.html",
-      "sourceDates": {
-        "fluxo12431": "2026-07-03",
-        "fluxoTrad": "2026-07-03",
-        "anbima": "2026-07-03",
-        "mercado": "2026-08-03",
-        "debentures": "2026-07-30"
+        "mercado": "2026-08-05",
+        "debentures": "2026-07-31"
       }
     }
   ]

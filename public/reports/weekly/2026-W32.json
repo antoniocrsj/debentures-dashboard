@@ -1,0 +1,639 @@
+{
+  "periodo": "weekly",
+  "formato": "v2",
+  "id": "2026-W32",
+  "label": "Semana 32/2026 · Parcial até 03/08",
+  "status": "partial",
+  "de": "2026-08-03",
+  "ate": "2026-08-03",
+  "sourceDates": {
+    "fluxo12431": "2026-08-03",
+    "fluxoTrad": null,
+    "anbima": "2026-08-03",
+    "mercado": "2026-08-05",
+    "debentures": "2026-07-31"
+  },
+  "alertas": [
+    {
+      "tipo": "parcial",
+      "texto": "Semana em andamento — dados até 2026-08-03."
+    }
+  ],
+  "partes": {
+    "debentures": {
+      "sintese": [
+        "Nenhuma nova debênture registrada na CVM na semana."
+      ],
+      "resumo": {
+        "nOfertas": 0,
+        "nSeries": 0,
+        "nEmissores": 0,
+        "nGrupos": 0,
+        "volumeTotal": 0,
+        "volume12431": 0,
+        "volumeTradicional": 0,
+        "maioresPorGrupo": [],
+        "volumeConfiavel": true
+      },
+      "ofertas": [],
+      "inconsistencias": []
+    },
+    "secundario": {
+      "sintese": [
+        "Spread 12.431: movimento misto (mediana +0 bps, 251 abriram / 224 fecharam de 626).",
+        "Spread Tradicional: estabilidade (mediana +0 bps, 6 abriram / 4 fecharam de 21 — amostra pequena).",
+        "Secundário: R$ 835,6 mi em 322 negócio(s) (12.431 R$ 203,6 mi · Trad R$ 632,1 mi).",
+        "7 negócio(s) ≥ R$ 20 mi em 5 grupo(s)."
+      ],
+      "tendencia": {
+        "semFronteira": false,
+        "dataIni": "2026-07-31",
+        "dataFim": "2026-08-03",
+        "porSegmento": {
+          "12431": {
+            "classificacao": "movimento misto",
+            "motivoInsuf": null,
+            "amostraPequena": false,
+            "n": 626,
+            "medianaBps": 0,
+            "mediaAparadaBps": 0.2,
+            "abriu": 251,
+            "fechou": 224,
+            "estavel": 151,
+            "pctAbriu": 40,
+            "pctFechou": 36,
+            "pctEstavel": 24,
+            "p25Bps": -1,
+            "p75Bps": 1,
+            "maioresAberturas": [
+              {
+                "ticker": "CSNAA4",
+                "emissor": "COMPANHIA SIDERURGICA NACIONAL",
+                "grupo": "CSN",
+                "variacaoBps": 24,
+                "spreadAnteriorBps": 1939,
+                "spreadAtualBps": 1963
+              },
+              {
+                "ticker": "TEPA11",
+                "emissor": "BRASIL TECNOLOGIA E PARTICIPACAO S.A.",
+                "grupo": "Brasil Tecnologia e Participacao",
+                "variacaoBps": 17,
+                "spreadAnteriorBps": 937,
+                "spreadAtualBps": 954
+              },
+              {
+                "ticker": "ASER12",
+                "emissor": "AGUAS DO SERTAO S.A.",
+                "grupo": "Conasa",
+                "variacaoBps": 14,
+                "spreadAnteriorBps": 385,
+                "spreadAtualBps": 399
+              },
+              {
+                "ticker": "CRMG15",
+                "emissor": "CONCESSIONARIA DA RODOVIA MG-050 S.A.",
+                "grupo": "Via Appia",
+                "variacaoBps": 14,
+                "spreadAnteriorBps": -32,
+                "spreadAtualBps": -18
+              },
+              {
+                "ticker": "SUMI19",
+                "emissor": "GIGA MAIS FIBRA TELECOMUNICACOES S.A.",
+                "grupo": "Giga+",
+                "variacaoBps": 14,
+                "spreadAnteriorBps": 540,
+                "spreadAtualBps": 554
+              }
+            ],
+            "maioresFechamentos": [
+              {
+                "ticker": "EBAS13",
+                "emissor": "EMPRESA BAIANA DE AGUAS E SANEAMENTO SA",
+                "grupo": "Embasa",
+                "variacaoBps": -29,
+                "spreadAnteriorBps": 47,
+                "spreadAtualBps": 18
+              },
+              {
+                "ticker": "CSNAC4",
+                "emissor": "COMPANHIA SIDERURGICA NACIONAL",
+                "grupo": "CSN",
+                "variacaoBps": -27,
+                "spreadAnteriorBps": 860,
+                "spreadAtualBps": 833
+              },
+              {
+                "ticker": "SAPR10",
+                "emissor": "COMPANHIA DE SANEAMENTO  DO PARANA - SANEPAR",
+                "grupo": "Sanepar",
+                "variacaoBps": -14,
+                "spreadAnteriorBps": -17,
+                "spreadAtualBps": -31
+              },
+              {
+                "ticker": "AESLB0",
+                "emissor": "RGE SUL DISTRIBUIDORA DE ENERGIA S/A",
+                "grupo": "CPFL",
+                "variacaoBps": -6,
+                "spreadAnteriorBps": -22,
+                "spreadAtualBps": -28
+              },
+              {
+                "ticker": "CASN24",
+                "emissor": "COMPANHIA CATARINENSE DE AGUAS E SANEAMENTO - CASAN",
+                "grupo": "Casan",
+                "variacaoBps": -6,
+                "spreadAnteriorBps": 64,
+                "spreadAtualBps": 58
+              }
+            ],
+            "vsAnbima": {
+              "comparaveis": 235,
+              "acima": 163,
+              "abaixo": 65,
+              "igual": 7
+            }
+          },
+          "trad": {
+            "classificacao": "estabilidade",
+            "motivoInsuf": null,
+            "amostraPequena": true,
+            "n": 21,
+            "medianaBps": 0,
+            "mediaAparadaBps": 0,
+            "abriu": 6,
+            "fechou": 4,
+            "estavel": 11,
+            "pctAbriu": 29,
+            "pctFechou": 19,
+            "pctEstavel": 52,
+            "p25Bps": 0,
+            "p75Bps": 1,
+            "maioresAberturas": [
+              {
+                "ticker": "LCAMD1",
+                "emissor": "LOCALIZA RENT A CAR S/A",
+                "grupo": "Localiza",
+                "variacaoBps": 3,
+                "spreadAnteriorBps": 152,
+                "spreadAtualBps": 155
+              },
+              {
+                "ticker": "VAMO33",
+                "emissor": "VAMOS LOCACAO DE CAMINHOES MAQUINAS E EQUIPAMENTOS S.A.",
+                "grupo": "Simpar",
+                "variacaoBps": 2,
+                "spreadAnteriorBps": 559,
+                "spreadAtualBps": 561
+              },
+              {
+                "ticker": "CSMGB8",
+                "emissor": "COMPANHIA DE SANEAMENTO DE MINAS GERAIS COPASA MG",
+                "grupo": "Copasa",
+                "variacaoBps": 1,
+                "spreadAnteriorBps": 44,
+                "spreadAtualBps": 45
+              },
+              {
+                "ticker": "CSMGB9",
+                "emissor": "COMPANHIA DE SANEAMENTO DE MINAS GERAIS COPASA MG",
+                "grupo": "Copasa",
+                "variacaoBps": 1,
+                "spreadAnteriorBps": 94,
+                "spreadAtualBps": 95
+              },
+              {
+                "ticker": "FEPS11",
+                "emissor": "",
+                "grupo": "",
+                "variacaoBps": 1,
+                "spreadAnteriorBps": 75,
+                "spreadAtualBps": 76
+              }
+            ],
+            "maioresFechamentos": [
+              {
+                "ticker": "JSMLB5",
+                "emissor": "JSL S.A",
+                "grupo": "Simpar",
+                "variacaoBps": -6,
+                "spreadAnteriorBps": 517,
+                "spreadAtualBps": 511
+              },
+              {
+                "ticker": "MOVI37",
+                "emissor": "MOVIDA PARTICIPACOES S/A",
+                "grupo": "Simpar",
+                "variacaoBps": -5,
+                "spreadAnteriorBps": 526,
+                "spreadAtualBps": 521
+              },
+              {
+                "ticker": "CSMGE2",
+                "emissor": "COMPANHIA DE SANEAMENTO DE MINAS GERAIS COPASA MG",
+                "grupo": "Copasa",
+                "variacaoBps": -2,
+                "spreadAnteriorBps": 101,
+                "spreadAtualBps": 99
+              },
+              {
+                "ticker": "LCAMD3",
+                "emissor": "LOCALIZA RENT A CAR S/A",
+                "grupo": "Localiza",
+                "variacaoBps": -2,
+                "spreadAnteriorBps": 167,
+                "spreadAtualBps": 165
+              }
+            ],
+            "vsAnbima": {
+              "comparaveis": 61,
+              "acima": 27,
+              "abaixo": 24,
+              "igual": 10
+            }
+          }
+        }
+      },
+      "ida": {
+        "12431": null,
+        "trad": null
+      },
+      "trades": {
+        "limiar": 20000000,
+        "resumo": {
+          "volume": 835641819,
+          "nTrades": 322,
+          "volume12431": 203570044,
+          "volumeTradicional": 632071775,
+          "anterior": {
+            "volume": 2882011027,
+            "nTrades": 1256
+          },
+          "variacaoVolNominal": -2046369208,
+          "variacaoVolPct": -0.7100490556173018,
+          "media4Semanas": 2366172693,
+          "variacaoVs4Pct": -0.646838195085197,
+          "maioresGrupos": [
+            {
+              "nome": "Equatorial",
+              "volume": 318026082
+            },
+            {
+              "nome": "Axia",
+              "volume": 99722778
+            },
+            {
+              "nome": "Localiza",
+              "volume": 53835369
+            },
+            {
+              "nome": "EcoRodovias",
+              "volume": 46011813
+            },
+            {
+              "nome": "VLI",
+              "volume": 45036248
+            }
+          ],
+          "maioresAtivos": [
+            {
+              "nome": "CEEDA1",
+              "volume": 176390875
+            },
+            {
+              "nome": "CGOS15",
+              "volume": 108128801
+            },
+            {
+              "nome": "AXIAA0",
+              "volume": 83766087
+            },
+            {
+              "nome": "RENTH7",
+              "volume": 45618501
+            },
+            {
+              "nome": "VLIM19",
+              "volume": 43011244
+            }
+          ]
+        },
+        "grupos": [
+          {
+            "grupo": "Equatorial",
+            "emissores": [
+              "EQUATORIAL GOIAS DISTRIBUIDORA DE ENERGIA S.A.",
+              "COMPANHIA ESTADUAL DE DISTRIBUICAO DE ENERGIA ELETRICA - CEEE D"
+            ],
+            "ativos": [
+              "CGOS15",
+              "CEEDA1",
+              "CGOSB0"
+            ],
+            "volumeTotal": 306571815,
+            "nTrades": 3,
+            "datas": [
+              "2026-08-03"
+            ],
+            "enquadramento": "misto",
+            "maiorTrade": {
+              "ticker": "CEEDA1",
+              "data": "2026-08-03",
+              "volume": 176390875,
+              "taxaMed": "0.7597",
+              "spreadFmt": "CDI +0.76%",
+              "vsAnbima": -0.01
+            },
+            "trades": [
+              {
+                "ticker": "CEEDA1",
+                "data": "2026-08-03",
+                "volume": 176390875,
+                "taxaMed": "0.7597",
+                "spreadFmt": "CDI +0.76%",
+                "vsAnbima": -0.01
+              },
+              {
+                "ticker": "CGOS15",
+                "data": "2026-08-03",
+                "volume": 106350906,
+                "taxaMed": "0.6355",
+                "spreadFmt": "CDI +0.64%",
+                "vsAnbima": -0.01
+              },
+              {
+                "ticker": "CGOSB0",
+                "data": "2026-08-03",
+                "volume": 23830034,
+                "taxaMed": "8.3218",
+                "spreadFmt": "B35 +27bps",
+                "vsAnbima": 11
+              }
+            ]
+          },
+          {
+            "grupo": "Axia",
+            "emissores": [
+              "AXIA ENERGIA S.A."
+            ],
+            "ativos": [
+              "AXIAA0"
+            ],
+            "volumeTotal": 73717701,
+            "nTrades": 1,
+            "datas": [
+              "2026-08-03"
+            ],
+            "enquadramento": "Tradicional",
+            "maiorTrade": {
+              "ticker": "AXIAA0",
+              "data": "2026-08-03",
+              "volume": 73717701,
+              "taxaMed": "0.6707",
+              "spreadFmt": "",
+              "vsAnbima": null
+            },
+            "trades": [
+              {
+                "ticker": "AXIAA0",
+                "data": "2026-08-03",
+                "volume": 73717701,
+                "taxaMed": "0.6707",
+                "spreadFmt": "",
+                "vsAnbima": null
+              }
+            ]
+          },
+          {
+            "grupo": "Localiza",
+            "emissores": [
+              "LOCALIZA RENT A CAR S/A"
+            ],
+            "ativos": [
+              "RENTH7"
+            ],
+            "volumeTotal": 45618501,
+            "nTrades": 1,
+            "datas": [
+              "2026-08-03"
+            ],
+            "enquadramento": "Tradicional",
+            "maiorTrade": {
+              "ticker": "RENTH7",
+              "data": "2026-08-03",
+              "volume": 45618501,
+              "taxaMed": "1.2303",
+              "spreadFmt": "",
+              "vsAnbima": null
+            },
+            "trades": [
+              {
+                "ticker": "RENTH7",
+                "data": "2026-08-03",
+                "volume": 45618501,
+                "taxaMed": "1.2303",
+                "spreadFmt": "",
+                "vsAnbima": null
+              }
+            ]
+          },
+          {
+            "grupo": "VLI",
+            "emissores": [
+              "VLI MULTIMODAL S.A."
+            ],
+            "ativos": [
+              "VLIM19"
+            ],
+            "volumeTotal": 43011244,
+            "nTrades": 1,
+            "datas": [
+              "2026-08-03"
+            ],
+            "enquadramento": "12.431",
+            "maiorTrade": {
+              "ticker": "VLIM19",
+              "data": "2026-08-03",
+              "volume": 43011244,
+              "taxaMed": "7.9389",
+              "spreadFmt": "B37 +5bps",
+              "vsAnbima": 3
+            },
+            "trades": [
+              {
+                "ticker": "VLIM19",
+                "data": "2026-08-03",
+                "volume": 43011244,
+                "taxaMed": "7.9389",
+                "spreadFmt": "B37 +5bps",
+                "vsAnbima": 3
+              }
+            ]
+          },
+          {
+            "grupo": "Unidas",
+            "emissores": [
+              "UNIDAS LOCACOES E SERVICOS S/A"
+            ],
+            "ativos": [
+              "OVSAB1"
+            ],
+            "volumeTotal": 23515001,
+            "nTrades": 1,
+            "datas": [
+              "2026-08-03"
+            ],
+            "enquadramento": "Tradicional",
+            "maiorTrade": {
+              "ticker": "OVSAB1",
+              "data": "2026-08-03",
+              "volume": 23515001,
+              "taxaMed": "2.3521",
+              "spreadFmt": "CDI +2.35%",
+              "vsAnbima": 0
+            },
+            "trades": [
+              {
+                "ticker": "OVSAB1",
+                "data": "2026-08-03",
+                "volume": 23515001,
+                "taxaMed": "2.3521",
+                "spreadFmt": "CDI +2.35%",
+                "vsAnbima": 0
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "tecnico": {
+      "12431": {
+        "captacaoBruta": {
+          "valor": 0,
+          "anterior": 490822206.8599999,
+          "variacaoNominal": -490822206.8599999,
+          "variacaoPct": -1,
+          "media4Semanas": 773283301.1799998,
+          "diasUteis": 1,
+          "dataFonte": "2026-08-03"
+        },
+        "resgates": {
+          "valor": 0,
+          "anterior": 1327528046.9200006,
+          "variacaoNominal": -1327528046.9200006,
+          "variacaoPct": -1,
+          "media4Semanas": 1633230829.2925,
+          "diasUteis": 1,
+          "dataFonte": "2026-08-03"
+        },
+        "captacaoLiquida": {
+          "valor": 0,
+          "anterior": -836705840.0600007,
+          "variacaoNominal": 836705840.0600007,
+          "variacaoPct": 1,
+          "media4Semanas": -859947528.1125002,
+          "diasUteis": 1,
+          "dataFonte": "2026-08-03"
+        },
+        "volumeEmitidoCVM": {
+          "valor": 0,
+          "anterior": 2300000000,
+          "variacaoNominal": -2300000000,
+          "variacaoPct": -1,
+          "media4Semanas": 884850000,
+          "diasUteis": null,
+          "dataFonte": "2026-08-09"
+        },
+        "destaques": {
+          "maioresCaptacoes": [
+            {
+              "gestor": "IAM",
+              "valor": 0
+            }
+          ],
+          "maioresResgates": [
+            {
+              "gestor": "IAM",
+              "valor": 0
+            }
+          ],
+          "maioresLiquidas": [
+            {
+              "gestor": "IAM",
+              "valor": 0
+            }
+          ],
+          "pioresLiquidas": [
+            {
+              "gestor": "IAM",
+              "valor": 0
+            }
+          ],
+          "maioresMudancas": [
+            {
+              "gestor": "IAM",
+              "deltaLiquido": 175460579.79000002,
+              "liquido": 0
+            }
+          ]
+        }
+      },
+      "sintese": [
+        "12.431: captação líquida R$ 0 (1 d.u.), emissão CVM R$ 0."
+      ],
+      "trad": {
+        "captacaoBruta": {
+          "valor": 0,
+          "anterior": 12578729698.709997,
+          "variacaoNominal": -12578729698.709997,
+          "variacaoPct": -1,
+          "media4Semanas": 12919825651.134998,
+          "diasUteis": 0,
+          "dataFonte": null
+        },
+        "resgates": {
+          "valor": 0,
+          "anterior": 13801753253.49,
+          "variacaoNominal": -13801753253.49,
+          "variacaoPct": -1,
+          "media4Semanas": 13345426560.212503,
+          "diasUteis": 0,
+          "dataFonte": null
+        },
+        "captacaoLiquida": {
+          "valor": 0,
+          "anterior": -1223023554.7800026,
+          "variacaoNominal": 1223023554.7800026,
+          "variacaoPct": 1,
+          "media4Semanas": -425600909.0775051,
+          "diasUteis": 0,
+          "dataFonte": null
+        },
+        "volumeEmitidoCVM": {
+          "valor": 0,
+          "anterior": 6210000000,
+          "variacaoNominal": -6210000000,
+          "variacaoPct": -1,
+          "media4Semanas": 7157890902,
+          "diasUteis": null,
+          "dataFonte": "2026-08-09"
+        },
+        "destaques": {
+          "maioresCaptacoes": [],
+          "maioresResgates": [],
+          "maioresLiquidas": [],
+          "pioresLiquidas": [],
+          "maioresMudancas": []
+        }
+      },
+      "volumeEmitidoDestaques": {
+        "porGrupo": [],
+        "porEmissor": [],
+        "volume12431": 0,
+        "volumeTradicional": 0
+      }
+    }
+  }
+}

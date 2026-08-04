@@ -1,15 +1,16 @@
 {
-    "timestamp":  "2026-08-03T08:28:49",
+    "timestamp":  "2026-08-04T08:36:17",
     "modo":  "incremental",
     "mesesProcessados":  [
+                             "202608",
                              "202607"
                          ],
     "mesesFalha":  [
-                       "202608"
+
                    ],
     "periodoCoberto":  {
                            "inicio":  "2026-07-01",
-                           "fim":  "2026-07-31"
+                           "fim":  "2026-08-03"
                        },
     "linhasInvalidas":  0,
     "12431":  {

@@ -1,12 +1,12 @@
 {
   "fonte": "ANBIMA PU Par + Premio (xlsx)",
   "sourceFile": "PU Par + Prêmio.xlsx",
-  "dataReferencia": "2026-07-24",
-  "geradoEm": "2026-08-03T11:31:26.933Z",
-  "total": 940,
-  "emExercicio": 276,
-  "futuro": 664,
-  "tickersNoCadastro": 939,
+  "dataReferencia": "2026-07-31",
+  "geradoEm": "2026-08-04T11:40:50.180Z",
+  "total": 943,
+  "emExercicio": 273,
+  "futuro": 670,
+  "tickersNoCadastro": 942,
   "tickersNaoEncontrados": [
     "FEPS11"
   ],

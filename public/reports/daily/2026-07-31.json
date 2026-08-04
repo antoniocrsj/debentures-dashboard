@@ -3,7 +3,7 @@
   "label": "31/07/2026",
   "previousDate": "2026-07-30",
   "sourceDates": {
-    "debentures": "2026-07-30",
+    "debentures": "2026-07-31",
     "cap12431": "2026-07-29",
     "capTrad": "2026-07-29",
     "perf12431": "2026-07-29",
@@ -13,7 +13,7 @@
     "fundos": "2026-07-29"
   },
   "novoPorFonte": {
-    "debentures": false,
+    "debentures": true,
     "cap": true,
     "anbima": true,
     "fundos": true,
@@ -21,7 +21,11 @@
   },
   "summary": [
     {
-      "texto": "Captação líquida Incentivados: −R$ 110 mi",
+      "texto": "2 nova(s) debênture(s) cadastrada(s)",
+      "tom": "pos"
+    },
+    {
+      "texto": "Captação líquida Incentivados: −R$ 117 mi",
       "tom": "neg"
     },
     {
@@ -51,7 +55,36 @@
   ],
   "sections": {
     "debentures": {
-      "novas": [],
+      "novas": [
+        {
+          "ticker": "RBRAO3",
+          "empresa": "OPEA SECURITIZADORA S/A",
+          "grupo": "Opea Securitizadora",
+          "cnpj": "02773542000122",
+          "dataRegistro": "31/07/2026",
+          "dataEmissao": "03/08/2026",
+          "vencimento": "03/08/2029",
+          "indexador": "DI",
+          "taxa": "0",
+          "volumeEmitido": 6000000000,
+          "incentivada": false,
+          "coordenador": "ITAU UNIBANCO HOLDING S.A"
+        },
+        {
+          "ticker": "TMAQ15",
+          "empresa": "TRADIMAQ S.A.",
+          "grupo": "Tradimaq",
+          "cnpj": "22320881000160",
+          "dataRegistro": "31/07/2026",
+          "dataEmissao": "28/07/2026",
+          "vencimento": "28/07/2031",
+          "indexador": "DI",
+          "taxa": "1,56",
+          "volumeEmitido": 70000000,
+          "incentivada": false,
+          "coordenador": "BCO VOTORANTIM S/A"
+        }
+      ],
       "saidas": [],
       "temSnapshotAnterior": false
     },
@@ -59,10 +92,10 @@
       "12431": {
         "dia": "2026-07-29",
         "captacao": 91600962.08999997,
-        "resgate": 201505685.63000005,
-        "liquido": -109904723.54000008,
-        "pl": 265508509275.4201,
-        "numFundos": 1708,
+        "resgate": 209005685.63000005,
+        "liquido": -117404723.54000008,
+        "pl": 265551254847.75015,
+        "numFundos": 1709,
         "curados": 1737,
         "fechados": 287,
         "anterior": {
@@ -70,8 +103,8 @@
           "captacao": 123571754.23,
           "resgate": 194555716.25000006,
           "liquido": -70983962.02000006,
-          "pl": 266339216809.77997,
-          "numFundos": 1712
+          "pl": 266389873240.27994,
+          "numFundos": 1713
         }
       },
       "trad": {
@@ -79,8 +112,8 @@
         "captacao": 2820533214.419999,
         "resgate": 2578044184.92,
         "liquido": 242489029.49999905,
-        "pl": 1593951229943.0393,
-        "numFundos": 996,
+        "pl": 1594020381484.3796,
+        "numFundos": 998,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
@@ -88,8 +121,8 @@
           "captacao": 3440547696.5799994,
           "resgate": 1903372412.159999,
           "liquido": 1537175284.4200006,
-          "pl": 1592950368324.6204,
-          "numFundos": 998
+          "pl": 1593488025088.0703,
+          "numFundos": 999
         }
       }
     },
@@ -137,7 +170,7 @@
           "captacao": 2935639.01,
           "resgate": 31738012.25,
           "liquido": -28802373.240000002,
-          "pl": 15141208021.36
+          "pl": 15191659596.04
         },
         {
           "gestor": "IAM",
@@ -154,18 +187,18 @@
           "pl": 927948540.18
         },
         {
+          "gestor": "Sparta",
+          "captacao": 849435.32,
+          "resgate": 13764957.53,
+          "liquido": -12915522.209999999,
+          "pl": 10373044951.94
+        },
+        {
           "gestor": "SAM",
           "captacao": 1609971.78,
           "resgate": 12002660.39,
           "liquido": -10392688.610000001,
           "pl": 11741324122.54
-        },
-        {
-          "gestor": "Absolute",
-          "captacao": 1627307.86,
-          "resgate": 11590916.21,
-          "liquido": -9963608.350000001,
-          "pl": 11190835539.97
         }
       ],
       "topTradCaptacao": [
@@ -174,7 +207,7 @@
           "captacao": 607406879.75,
           "resgate": 363056556.72,
           "liquido": 244350323.02999997,
-          "pl": 192665967187.61
+          "pl": 192665902972.7
         },
         {
           "gestor": "SAM",
@@ -188,7 +221,7 @@
           "captacao": 595894115.17,
           "resgate": 427922976.54,
           "liquido": 167971138.62999994,
-          "pl": 457971299617.05
+          "pl": 458015396756.51
         },
         {
           "gestor": "Regia",
@@ -218,7 +251,7 @@
           "captacao": 28492227.82,
           "resgate": 128555493.58,
           "liquido": -100063265.75999999,
-          "pl": 58455153752.85
+          "pl": 58455153752.86
         },
         {
           "gestor": "Occam",
@@ -1403,22 +1436,6 @@
       ],
       "top12431Neg": [
         {
-          "cnpj": "39723106000159",
-          "nome": "SPARTA INFLAÇÃO MASTER FUNDO INCENTIVADO DE INVEST FINANCEIRO EM INFRA RENDA FIXA - RESP LTDA",
-          "gestor": "Sparta",
-          "segmento": "12431",
-          "retorno": -47.1267,
-          "pl": 19961022.3
-        },
-        {
-          "cnpj": "61141536000111",
-          "nome": "BB MASTER RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
-          "gestor": "BB Asset",
-          "segmento": "12431",
-          "retorno": -25.2728,
-          "pl": 578592761.83
-        },
-        {
           "cnpj": "57075698000121",
           "nome": "VINLAND FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA IPCA RF CRED PRIV LP RESP LIMITADA",
           "gestor": "Vinland",
@@ -1441,6 +1458,22 @@
           "segmento": "12431",
           "retorno": -2.0471,
           "pl": 45249095.88
+        },
+        {
+          "cnpj": "54005088000163",
+          "nome": "FX FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
+          "gestor": "BTG WM",
+          "segmento": "12431",
+          "retorno": -1.2195,
+          "pl": 80001392.71
+        },
+        {
+          "cnpj": "63942021000146",
+          "nome": "OCCAM BB INFRA LINEAR FI FINANCEIRO RENDA FIXA INVESTIMENTO EM INFRAESTRUTURA - RESP LIMITADA",
+          "gestor": "Occam",
+          "segmento": "12431",
+          "retorno": -1.1372,
+          "pl": 116262578.71
         }
       ],
       "topTradPos": [
@@ -1461,6 +1494,14 @@
           "pl": 45924965.34
         },
         {
+          "cnpj": "00888897000131",
+          "nome": "BTG PACTUAL HEDGE FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
+          "gestor": "BTG Asset",
+          "segmento": "trad",
+          "retorno": 0.3461,
+          "pl": 39138979.7
+        },
+        {
           "cnpj": "18990334000115",
           "nome": "JGP CORPORATE PLUS MASTER FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO RESP LTDA",
           "gestor": "JGP",
@@ -1475,14 +1516,6 @@
           "segmento": "trad",
           "retorno": 0.247,
           "pl": 88706177.28
-        },
-        {
-          "cnpj": "43597393000175",
-          "nome": "VERDE AM CARRY MASTER FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO RESP LIMITADA",
-          "gestor": "Verde",
-          "segmento": "trad",
-          "retorno": 0.2448,
-          "pl": 73478686.4
         }
       ],
       "topTradNeg": [
@@ -1529,7 +1562,10 @@
       ]
     },
     "inclusoes": {
-      "novosDebentures": [],
+      "novosDebentures": [
+        "RBRAO3",
+        "TMAQ15"
+      ],
       "novosBlc": [],
       "temSnapshotBlc": true
     },
@@ -1539,109 +1575,8 @@
         "texto": "74 ativo(s) no BLC sem correspondencia em Debentures.csv"
       }
     ],
-    "emissoesCVM": {
-      "asOf": "2026-08-03",
-      "itens": []
-    },
-    "emissoresFaltantes": {
-      "itens": [],
-      "asOf": "2026-08-03"
-    },
-    "ofertasSRE": {
-      "asOf": "2026-08-03",
-      "janelaDias": 15,
-      "itens": [
-        {
-          "data": "2026-07-31",
-          "emissor": "LWART SOLUÇÕES AMBIENTAIS S.A.",
-          "cnpj": "46201083000188",
-          "valor": 150000000,
-          "status": "Aguardando Bookbuilding",
-          "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-          "numeroRegistro": null,
-          "grupo": "Lwart"
-        },
-        {
-          "data": "2026-07-31",
-          "emissor": "TRADIMAQ S.A.",
-          "cnpj": "22320881000160",
-          "valor": 70000000,
-          "status": "Registro Concedido",
-          "lider": "BANCO VOTORANTIM S.A.",
-          "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/370",
-          "grupo": "Tradimaq"
-        },
-        {
-          "data": "2026-07-31",
-          "emissor": "VIA ARAUCARIA CONCESSIONARIA DE RODOVIAS S.A.",
-          "cnpj": "47155252000153",
-          "valor": 1000000000,
-          "status": "Aguardando Bookbuilding",
-          "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-          "numeroRegistro": null,
-          "grupo": ""
-        },
-        {
-          "data": "2026-07-30",
-          "emissor": "ALUBAR METAIS E CABOS S.A.",
-          "cnpj": "08262121000113",
-          "valor": 100000000,
-          "status": "Registro Concedido",
-          "lider": "BANCO VOTORANTIM S.A.",
-          "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/369",
-          "grupo": "Alubar"
-        },
-        {
-          "data": "2026-07-28",
-          "emissor": "M. DIGITAL I PARTICIPACOES S.A.",
-          "cnpj": "62461790000160",
-          "valor": 430000000,
-          "status": "Aguardando Bookbuilding",
-          "lider": "BANCO BRADESCO BBI S.A.",
-          "numeroRegistro": null,
-          "grupo": ""
-        },
-        {
-          "data": "2026-07-27",
-          "emissor": "CERAN - COMPANHIA ENERGETICA RIO DAS ANTAS",
-          "cnpj": "04237975000199",
-          "valor": 120000000,
-          "status": "Aguardando Bookbuilding",
-          "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-          "numeroRegistro": null,
-          "grupo": ""
-        },
-        {
-          "data": "2026-07-27",
-          "emissor": "SMARTFIT ESCOLA DE GINÁSTICA E DANÇA S.A.",
-          "cnpj": "07594978000178",
-          "valor": 1250000000,
-          "status": "Aguardando Bookbuilding",
-          "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-          "numeroRegistro": null,
-          "grupo": "Smart Fit"
-        },
-        {
-          "data": "2026-07-27",
-          "emissor": "FORTBRAS AUTOPECAS S.A.",
-          "cnpj": "22761584000150",
-          "valor": 40000000,
-          "status": "Oferta Encerrada",
-          "lider": "BANCO BRADESCO BBI S.A.",
-          "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/360",
-          "grupo": "Fortbras"
-        },
-        {
-          "data": "2026-07-20",
-          "emissor": "ORIGEM ENERGIA PILAR S.A.",
-          "cnpj": "43094886000192",
-          "valor": 650000000,
-          "status": "Oferta Encerrada",
-          "lider": "XP INVESTIMENTOS CCTVM S.A.",
-          "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/352;CVM/SRE/AUT/DEB/PRI/2026/353;CVM/SRE/AUT/DEB/PRI/2026/354",
-          "grupo": "Origem Energia"
-        }
-      ]
-    }
+    "emissoesCVM": null,
+    "emissoresFaltantes": null,
+    "ofertasSRE": null
   }
 }

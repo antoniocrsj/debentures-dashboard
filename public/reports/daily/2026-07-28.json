@@ -1,7 +1,7 @@
 {
   "date": "2026-07-28",
   "label": "28/07/2026",
-  "previousDate": "2026-07-27",
+  "previousDate": null,
   "sourceDates": {
     "debentures": "2026-07-27",
     "cap12431": "2026-07-24",
@@ -13,7 +13,7 @@
     "fundos": "2026-07-24"
   },
   "novoPorFonte": {
-    "debentures": false,
+    "debentures": true,
     "cap": true,
     "anbima": true,
     "fundos": true,
@@ -64,8 +64,8 @@
         "captacao": 95918827.97999999,
         "resgate": 266466227.66000003,
         "liquido": -170547399.68000004,
-        "pl": 264873852488.46005,
-        "numFundos": 1709,
+        "pl": 264924549248.60004,
+        "numFundos": 1710,
         "curados": 1737,
         "fechados": 287,
         "anterior": {
@@ -73,7 +73,7 @@
           "captacao": 75346824.96000002,
           "resgate": 225260599.79000005,
           "liquido": -149913774.83000004,
-          "pl": 256346913527.15002,
+          "pl": 256346905485.13004,
           "numFundos": 1688
         }
       },
@@ -82,7 +82,7 @@
         "captacao": 2092471401.1100006,
         "resgate": 3014921681.689998,
         "liquido": -922450280.5799975,
-        "pl": 1581374363846.8499,
+        "pl": 1581374363846.2998,
         "numFundos": 996,
         "curados": 1014,
         "fechados": 50,
@@ -161,7 +161,7 @@
           "captacao": 4726986,
           "resgate": 21249224.31,
           "liquido": -16522238.309999999,
-          "pl": 15279979463.61
+          "pl": 15330676223.75
         },
         {
           "gestor": "BRAM",
@@ -562,7 +562,7 @@
               "ticker": "CPFGA2",
               "indexador": "IPCA + 6.0265%",
               "indexadorFamilia": "IPCA+",
-              "emissor": "CPFL COMERCIALIZACAO BRASIL S/A",
+              "emissor": "CPFL TRANSMISSAO S.A.",
               "grupo": "CPFL",
               "incentivada": true,
               "base": "B30",
@@ -1238,7 +1238,7 @@
               "ticker": "JSMLA5",
               "indexador": "DI + 3.5000%",
               "indexadorFamilia": "CDI+",
-              "emissor": "SIMPAR S.A.",
+              "emissor": "JSL S.A",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "CDI",

@@ -64,8 +64,8 @@
         "captacao": 119376039.33000001,
         "resgate": 498127763.90999997,
         "liquido": -378751724.5799999,
-        "pl": 264821695004.18015,
-        "numFundos": 1714,
+        "pl": 264872431868.60016,
+        "numFundos": 1715,
         "curados": 1737,
         "fechados": 287,
         "anterior": {
@@ -73,8 +73,8 @@
           "captacao": 95918827.97999999,
           "resgate": 266466227.66000003,
           "liquido": -170547399.68000004,
-          "pl": 264873852488.46005,
-          "numFundos": 1709
+          "pl": 264924549248.60004,
+          "numFundos": 1710
         }
       },
       "trad": {
@@ -82,8 +82,8 @@
         "captacao": 2231842193.7099996,
         "resgate": 2931527841.389999,
         "liquido": -699685647.6799994,
-        "pl": 1591201754932.251,
-        "numFundos": 999,
+        "pl": 1591236315672.861,
+        "numFundos": 1001,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
@@ -91,7 +91,7 @@
           "captacao": 2092471401.1100006,
           "resgate": 3014921681.689998,
           "liquido": -922450280.5799975,
-          "pl": 1581374363846.8499,
+          "pl": 1581374363846.2998,
           "numFundos": 996
         }
       }
@@ -1166,7 +1166,7 @@
               "ticker": "JSMLA5",
               "indexador": "DI + 3.5000%",
               "indexadorFamilia": "CDI+",
-              "emissor": "SIMPAR S.A.",
+              "emissor": "JSL S.A",
               "grupo": "Simpar",
               "incentivada": false,
               "base": "CDI",
@@ -1450,12 +1450,12 @@
     "perf": {
       "top12431Pos": [
         {
-          "cnpj": "59123735000155",
-          "nome": "PORTO PAINEIRA CDI FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA RF CRÉD PRIV RESP LIMITADA",
-          "gestor": "Porto Asset",
+          "cnpj": "63729525000182",
+          "nome": "CAPITÂNIA INFRA ADVISORY SENIOR II FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRA RENDA FIXA",
+          "gestor": "Capitânia",
           "segmento": "12431",
-          "retorno": 2.1357,
-          "pl": 20556285.22
+          "retorno": 4.2438,
+          "pl": 13850125.9
         },
         {
           "cnpj": "59772310000177",
@@ -1576,6 +1576,14 @@
       ],
       "topTradNeg": [
         {
+          "cnpj": "39487617000119",
+          "nome": "LEGACY CAPITAL CREDIT FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO - CRÉDITO PRIVADO RESPONSABILIDA",
+          "gestor": "Legacy",
+          "segmento": "trad",
+          "retorno": -0.2811,
+          "pl": 295951701.56
+        },
+        {
           "cnpj": "52273351000170",
           "nome": "PORTFOLIO RF II PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
           "gestor": "XPG",
@@ -1606,14 +1614,6 @@
           "segmento": "trad",
           "retorno": -0.0849,
           "pl": 25760151.38
-        },
-        {
-          "cnpj": "42847484000159",
-          "nome": "NINESUL PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
-          "gestor": "XPG",
-          "segmento": "trad",
-          "retorno": -0.0811,
-          "pl": 52796374.62
         }
       ]
     },
