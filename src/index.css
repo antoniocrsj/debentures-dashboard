@@ -2577,7 +2577,7 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 }
 /* Debentures desktop: sem a linha "Atualizado em" no corpo, a tabela fica
    16px abaixo dos filtros (padding do filtro + margin da tabela 0). */
-.app.desktop .content .filter-bar { padding-bottom: var(--sp-5); }
+.app.desktop .content .filter-bar { padding-bottom: calc(var(--sp-5) - 6px); }
 .app.desktop .content .filter-bar + .table-wrap-x > .table-wrap { margin-top: 0; }
 
 /* Debentures desktop: tabela + bloco inferior cabem na viewport. A tabela usa o
