@@ -23,6 +23,7 @@ import ExcelJS from 'exceljs'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
+import { lerAnbima, lerVenc, lerCurvas, spreadDe } from './lib-mercado.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
@@ -44,7 +45,18 @@ const MAP_FUTURO = {
   ticker: 'código', remuneracao: 'remuneração', dataEvento: 'data início resgate',
   diasUteisAteEvento: 'dias úteis para o início do resgate', pctPuPar: '%pupar estimado', taxaEvento: 'taxa break even',
 }
-const COLS = ['ticker', 'statusExercicio', 'dataEvento', 'diasUteisAteEvento', 'pctPuPar', 'taxaEvento', 'tipoTaxa', 'remuneracao', 'dataReferencia', 'origemAba']
+const COLS = ['ticker', 'statusExercicio', 'dataEvento', 'diasUteisAteEvento', 'pctPuPar', 'taxaEvento', 'tipoTaxa', 'remuneracao', 'dataReferencia', 'origemAba', 'spreadBE', 'spreadBEUnid']
+
+// remuneracao do BE -> família do spreadDe (mesma máquina/curva dos trades).
+// IPCA -> spread s/ NTN-B (bps); "% do DI" -> DI_PERCENTUAL; "DI/CDI + X%" -> DI_SPREAD.
+function idxBE(rem) {
+  const r = String(rem || '').toLowerCase()
+  if (r.includes('ipca')) return 'IPCA_SPREAD'
+  const rc = r.replace(/\s/g, '')
+  if (rc.includes('%dodi') || rc.includes('%di')) return 'DI_PERCENTUAL'
+  if (r.trimStart().startsWith('di') || r.includes('cdi')) return 'DI_SPREAD'
+  return null
+}
 
 const log = (m) => process.stdout.write(m + '\n')
 export const norm = (s) => String(s == null ? '' : s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim()
@@ -231,6 +243,23 @@ async function main() {
 
   if (registros.length === 0) { preservarAnterior('planilha sem registros validos', { sourceFile: escolhido.file.name }); return }
 
+  // SPREAD DA BE p/ a linha horizontal no gráfico do Secundário: converte a taxa/
+  // percentual do BE no SPREAD sobre a MESMA referência dos trades (NTN-B pelo
+  // ntnbRef da ANBIMA; CDI via LTN), com a curva do dia. IPCA -> bps; DI/%DI -> %.
+  // Sem indexador mapeável / sem curva -> null (a linha só aparece quando dá).
+  const PUB = path.join(ROOT, 'public')
+  const anbima = lerAnbima(PUB), vencDeb = lerVenc(PUB), curvas = lerCurvas(PUB)
+  let comSpread = 0
+  for (const reg of registros) {
+    reg.spreadBE = null; reg.spreadBEUnid = null
+    const idx = idxBE(reg.remuneracao)
+    const dia = reg.dataReferencia || reg.dataEvento
+    if (idx && reg.taxaEvento != null && dia) {
+      const sp = spreadDe(reg.ticker, dia, reg.taxaEvento, idx, anbima, vencDeb, curvas)
+      if (sp) { reg.spreadBE = sp.num; reg.spreadBEUnid = sp.unid; comSpread++ }
+    }
+  }
+
   // Conciliacao com o cadastro de debentures.
   const cadastro = tickersDoCadastro()
   const naoEncontrados = cadastro ? registros.filter(r => !cadastro.has(r.ticker)).map(r => r.ticker) : []
@@ -244,6 +273,7 @@ async function main() {
     dataReferencia: escolhido.ref,
     geradoEm: new Date().toISOString(),
     total: registros.length,
+    comSpreadBE: comSpread,
     emExercicio: emExerc.length,
     futuro: futuro.length,
     tickersNoCadastro: cadastro ? registros.length - naoEncontrados.length : null,

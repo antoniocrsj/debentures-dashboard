@@ -122,6 +122,10 @@ export function buildAnbimaBEIndex(anbimaBE) {
       remuneracao: row['remuneracao'] || '',
       dataReferencia: (row['dataReferencia'] || '').trim(),
       origemAba: row['origemAba'] || '',
+      // Spread da BE sobre a referência dos trades (bps p/ IPCA, % p/ CDI) — p/ a
+      // linha horizontal no gráfico do Secundário. Calculado no prep. null se n/d.
+      spreadBE: num(row, 'spreadBE'),
+      spreadBEUnid: (row['spreadBEUnid'] || '').trim(),
     }
   })
   return map

@@ -1,4 +1,4 @@
-import { ComposedChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import { ComposedChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts'
 
 // Serie temporal do mercado secundario. Por padrao mostra o SPREAD sobre a
 // referencia (CDI+ p/ DI/%DI, DI+ p/ Pre, NTN-B+ em bps p/ IPCA) -- vem pronto
@@ -6,6 +6,7 @@ import { ComposedChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveCo
 // cru). Recebe {pontos, modo, unidade, refLabel} desmembrado em props.
 // Recharts nao le var() -> catalogo Luc.
 const COL_MED = '#8c5e3a'   // terracota: a media (linha principal)
+const COL_BE = '#047857'    // verde: linha horizontal da BE (recompra/breakeven)
 const COL_RANGE = '#9a8c7a' // taupe: min/max (o range)
 const COL_EIXO = '#2a2420'
 const COL_GRID = '#e4d5c3'
@@ -71,7 +72,7 @@ function ChartTooltip({ active, payload, modo, unidade, refLabel }) {
   )
 }
 
-export default function SecondaryChart({ serie, titulo, modo = 'taxa', unidade, refLabel }) {
+export default function SecondaryChart({ serie, titulo, modo = 'taxa', unidade, refLabel, beLine = null }) {
   if (!serie || !serie.length) return null
   const spread = modo === 'spread'
   const kMed = spread ? 'spMed' : 'txMed'
@@ -93,6 +94,8 @@ export default function SecondaryChart({ serie, titulo, modo = 'taxa', unidade, 
       if (p[kMax] != null) vals.push(p[kMax])
       if (p[kMed] != null) vals.push(p[kMed])
     }
+    // A linha da BE entra no domínio p/ nunca ficar fora da escala.
+    if (beLine != null && isFinite(beLine)) vals.push(beLine)
     if (vals.length) {
       const HALF = unidade === 'bps' ? 30 : 0.30   // meia-janela base: +/-30 bps
       const PAD = unidade === 'bps' ? 20 : 0.20     // folga do dado ao eixo qdo expande
@@ -119,6 +122,10 @@ export default function SecondaryChart({ serie, titulo, modo = 'taxa', unidade, 
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={serie} margin={{ top: 6, right: 10, bottom: 0, left: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke={COL_GRID} vertical={false} syncWithTicks />
+            {spread && beLine != null && isFinite(beLine) && (
+              <ReferenceLine y={beLine} stroke={COL_BE} strokeWidth={1.5} strokeDasharray="5 4" ifOverflow="extendDomain"
+                label={{ value: `BE ${fmtSpread(beLine, unidade)}`, position: 'insideTopLeft', fontSize: FZ, fill: COL_BE }} />
+            )}
             <XAxis dataKey="data" tickFormatter={dataCurta} tick={{ fontSize: FZ, fill: COL_EIXO }}
                    tickMargin={4} axisLine={false} tickLine={false} interval="preserveStartEnd" minTickGap={16} />
             <YAxis tick={{ fontSize: FZ, fill: COL_EIXO, textAnchor: 'start' }} dx={-26} width={36}
