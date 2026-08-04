@@ -197,13 +197,13 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
   // ativo focado, TRADICIONAL (em 12.431 não se aplica), com spreadBE calculado
   // (prep) e na MESMA unidade do gráfico (bps p/ IPCA, % p/ CDI).
   const beLine = useMemo(() => {
-    if (!selAtivo || !serieGrafico || serieGrafico.modo !== 'spread' || !chartRows?.length) return null
+    if (nAtivosFiltro !== 1 || !serieGrafico || serieGrafico.modo !== 'spread' || !chartRows?.length) return null
     const r0 = chartRows[0]
     if (isYes(r0.lei12431) || !r0.recompra || r0.recompra.spreadBE == null) return null
     const ok = (serieGrafico.unidade === 'bps' && r0.recompra.spreadBEUnid === 'bps')
       || (serieGrafico.unidade === 'pct' && r0.recompra.spreadBEUnid === '%')
     return ok ? r0.recompra.spreadBE : null
-  }, [selAtivo, serieGrafico, chartRows])
+  }, [nAtivosFiltro, serieGrafico, chartRows])
 
   // Tabela de ativos do GRUPO selecionado (abaixo da tabela de trades): 1 linha por ativo,
   // ordenada por LIQUIDEZ nos ultimos 40 pregoes (soma da faixa de volume). Clicar
@@ -298,7 +298,7 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
             {grupoAtivos.map(a => (
               <tr key={a.ticker}
                 className={`sec-row-click filter-row${ativo === a.ticker ? ' sec-row-active is-filter-active' : ''}`}
-                onClick={() => setAtivo(v => (v === a.ticker ? '' : a.ticker))}
+                onClick={() => { setSelAtivo(''); setAtivo(v => (v === a.ticker ? '' : a.ticker)) }}
                 aria-selected={ativo === a.ticker}
                 title={`Filtrar ${a.ticker} na tabela e no gráfico`}>
                 <td className="col-ativo"><span className="ativo-code">{a.ticker}</span></td>
