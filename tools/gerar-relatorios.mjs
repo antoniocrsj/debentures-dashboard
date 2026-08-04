@@ -720,7 +720,7 @@ function renderHtml(rep) {
     ? `<div class="tw"><table><thead><tr><th>Ativo</th><th>Emis.</th><th>Venc.</th><th>Taxa</th><th class="num">Vol. emit.</th></tr></thead><tbody>${
         s.debentures.novas.map(d => `<tr><td><strong>${esc(d.ticker)}</strong>${d.grupo ? `<br><span class="cap-dia">${esc(d.grupo)}</span>` : ''}</td><td>${esc(fmtDia(d.dataEmissao))}</td><td>${esc(fmtDia(d.vencimento))}</td><td>${esc(d.taxa)}</td><td class="num">${d.volumeEmitido > 0 ? esc(money(d.volumeEmitido)) : '-'}</td></tr>`).join('')
       }</tbody></table></div>`
-    : empty('Sem novas debêntures neste dia.')
+    : empty('Sem novas debêntures cadastradas neste dia.')
 
   // Emissoes registradas na CVM ainda nao cadastradas (so no relatorio mais recente).
   const cvm = s.emissoesCVM
@@ -731,6 +731,19 @@ function renderHtml(rep) {
              cvm.itens.map(e => `<tr><td>${esc(fmtDia(e.dataRequerimento || e.dataRegistro))}</td><td>${esc(String(e.emissao ?? ''))}ª</td><td>${esc(e.emissor)}</td><td>${esc(e.grupo || '—')}</td><td>${esc(e.lider)}</td><td class="num">${esc(fmtMM(e.valor))}</td></tr>`).join('')
            }</tbody></table></div>`
         : `<h4>Registradas na CVM, ainda não no cadastro</h4>${empty('Nenhuma emissão pendente na CVM neste momento.')}`)
+    : ''
+
+  // Novas ofertas de debentures no SRE (tempo real, todos os status) — espelha o
+  // componente OfertasSRE do modal React (ResumoDoDiaModal.jsx) para o HTML nao
+  // ficar diferente da tela. So no relatorio mais recente (asOf).
+  const sre = s.ofertasSRE
+  const sreBlock = sre
+    ? `<h4>Novas ofertas de debêntures na CVM (SRE)${sre.janelaDias ? ` <span class="cap-dia">últimos ${sre.janelaDias} dias</span>` : ''}</h4>
+       ${sre.itens.length
+          ? `<div class="tw"><table><thead><tr><th>Data</th><th>Emissor</th><th>Grupo</th><th>Status</th><th>Líder</th><th>Valor (R$ MM)</th></tr></thead><tbody>${
+              sre.itens.map(e => `<tr><td>${esc(fmtDia(e.data))}</td><td>${esc(e.emissor)}</td><td>${esc(e.grupo || '—')}</td><td>${esc(e.status || '—')}</td><td>${esc(e.lider || '—')}</td><td class="num">${esc(fmtMM(e.valor))}</td></tr>`).join('')
+            }</tbody></table></div>`
+          : empty('Nenhuma nova oferta de debênture na CVM na janela.')}`
     : ''
 
   // Inclusoes no BLC (antigo §6, agora dentro do §2).
@@ -896,7 +909,7 @@ function renderHtml(rep) {
   <p class="sub">Comparado ao dia anterior disponível de cada fonte. Gerado a partir da data dos dados, não do calendário.</p>
 </div>
 <section><h2><span class="n">1.</span> Sumário executivo</h2>${bullets}</section>
-<section><h2><span class="n">2.</span> Novas debêntures e emissões</h2>${debTable}${cvmBlock}${faltantesBlock}${inclNote}</section>
+<section><h2><span class="n">2.</span> Novas debêntures e emissões</h2>${debTable}${sreBlock}${cvmBlock}${faltantesBlock}${inclNote}</section>
 <section><h2><span class="n">3.</span> Captação líquida do dia</h2>${capBlock}</section>
 <section><h2><span class="n">4.</span> Destaques por gestor (captação líquida)</h2>${gestBlock}</section>
 <section><h2><span class="n">5.</span> Variação ANBIMA (spread)</h2>${anbimaBlock}</section>
