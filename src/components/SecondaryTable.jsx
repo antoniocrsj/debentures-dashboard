@@ -24,6 +24,8 @@ const COLS = [
   { id: 'vencimento',label: 'Venc.',      sticky: false, sortable: true  },
   { id: 'duration',  label: 'Duration',   sticky: false, sortable: false },
   { id: 'txEmissao', label: 'Tx emissão', sticky: false, sortable: false },
+  { id: 'recompraTaxa', label: 'Tx. BE',        sticky: false, sortable: false },
+  { id: 'recompraData', label: 'Data recompra', sticky: false, sortable: false },
 ]
 
 const FAIXAS = ['Superior a 5MM', 'Entre 1MM e 5MM', 'Até 1MM']   // filtro de volume (derivado do R$ real)
@@ -420,6 +422,8 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
             <col className="c-venc" />
             <col className="c-dur" />
             <col className="c-txemi" />
+            <col className="c-recompra" />
+            <col className="c-recompra" />
           </colgroup>
           <thead>
             <tr>
@@ -438,7 +442,7 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
           </thead>
           <tbody>
             {filtrados.length === 0 && (
-              <tr><td colSpan={8} className="col-sticky">Nenhum negócio com esses filtros.</td></tr>
+              <tr><td colSpan={10} className="col-sticky">Nenhum negócio com esses filtros.</td></tr>
             )}
             {linhasVisiveis.map((a, i) => (
               <tr key={`${a.codigoAtivo}|${a.data}|${i}`}
@@ -470,6 +474,13 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
                 <td className="col-num">{a.vencimento ? fmtDateDDMMYY(a.vencimento) : '-'}</td>
                 <td className="col-num">{(a.duration && a.duration !== '—') ? a.duration : '-'}</td>
                 <td className="col-num">{a.txEmissao ? fmtTaxa(a.txEmissao) : '-'}</td>
+                {/* Recompra/BE só vale p/ Tradicional; em 12.431 não se aplica -> "-". */}
+                <td className="col-num">{(a.recompra && !isYes(a.lei12431)) ? fmtRecompraTaxa(a.recompra.taxaEvento, a.recompra.remuneracao) : '-'}</td>
+                <td className="col-num">{(a.recompra && !isYes(a.lei12431))
+                  ? (a.recompra.statusExercicio === 'Em exercício'
+                      ? <span className="recompra-valendo">Valendo</span>
+                      : (a.recompra.dataEvento ? fmtDateDDMMYY(a.recompra.dataEvento) : '-'))
+                  : '-'}</td>
               </tr>
             ))}
           </tbody>
