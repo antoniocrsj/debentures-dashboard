@@ -670,9 +670,15 @@ function buildReport(src, D, allDates, anbimaAsc, prevD = null, emissoesCVM = nu
     ...emissoesCVM,
     itens: emissoesCVM.itens.map(e => ({ ...e, grupo: (emissoresMap.get(digits(e.cnpj)) || {}).grupo || '' })),
   } : null
+  // Recorte pelo INTERVALO do relatório diário: ofertas surgidas DESDE o último
+  // diário (data > prevD) até o dia (data <= D). Sem prevD (relatório mais antigo
+  // da lista), fica só o próprio dia.
   const ofertasSREenriquecido = ofertasSRE ? {
     ...ofertasSRE,
-    itens: ofertasSRE.itens.map(e => ({ ...e, grupo: (emissoresMap.get(digits(e.cnpj)) || {}).grupo || '' })),
+    caption: 'no dia',
+    itens: ofertasSRE.itens
+      .filter(e => prevD ? (e.data > prevD && e.data <= D) : (e.data === D))
+      .map(e => ({ ...e, grupo: (emissoresMap.get(digits(e.cnpj)) || {}).grupo || '' })),
   } : null
   return {
     date: D,
@@ -741,7 +747,7 @@ function renderHtml(rep) {
   // componente OfertasSRE do modal React (ResumoDoDiaModal.jsx) para o HTML nao
   // ficar diferente da tela. So no relatorio mais recente (asOf).
   const sre = s.ofertasSRE
-  const sreBlock = sre ? renderSecaoSre(sre.itens, sre.janelaDias) : ''
+  const sreBlock = sre ? renderSecaoSre(sre.itens, sre.caption, sre.foraDaJanela) : ''
 
   // Inclusoes no BLC (antigo §6, agora dentro do §2).
   const inclNote = s.inclusoes.temSnapshotBlc && s.inclusoes.novosBlc.length
@@ -992,14 +998,14 @@ function main() {
   }
   const utf8 = { encoding: 'utf8' }
   const emissoesCVM = loadEmissoesCVM()   // pendencias da CVM: so no relatorio mais recente
-  const ofertasSRE = loadOfertasSRE()     // novas ofertas SRE (tempo real): so no relatorio mais recente
+  const ofertasSRE = loadOfertasSRE()     // novas ofertas SRE (tempo real): recortadas por dia em cada relatorio
   const emissoresMap = loadEmissores()    // cadastro do usuario (grupo/setor por CNPJ)
   const index = []
   let latestRep = null
   for (let i = 0; i < datas.length; i++) {
     const D = datas[i]
     const prevD = datas[i + 1] || null   // proximo mais antigo (datas e' desc)
-    const rep = buildReport(src, D, datas, anbimaAsc, prevD, D === datas[0] ? emissoesCVM : null, emissoresMap, D === datas[0] ? ofertasSRE : null)
+    const rep = buildReport(src, D, datas, anbimaAsc, prevD, D === datas[0] ? emissoesCVM : null, emissoresMap, ofertasSRE)
     if (!latestRep) latestRep = rep   // datas[0] = mais recente
     fs.writeFileSync(path.join(REPORTS, `${D}.json`), JSON.stringify(rep, null, 2) + '\n', utf8)
     fs.writeFileSync(path.join(REPORTS, `${D}.html`), renderHtml(rep), utf8)

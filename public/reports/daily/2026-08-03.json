@@ -1577,6 +1577,181 @@
     ],
     "emissoesCVM": null,
     "emissoresFaltantes": null,
-    "ofertasSRE": null
+    "ofertasSRE": {
+      "asOf": "2026-08-05",
+      "janelaDias": 40,
+      "itens": [
+        {
+          "data": "2026-08-03",
+          "emissor": "CIA CAT. DE ÁGUAS E SANEAMENTO - CASAN",
+          "cnpj": "82508433000117",
+          "valorTotal": 90000000,
+          "status": "Aguardando Bookbuilding",
+          "rating": null,
+          "numSeries": 1,
+          "sindicato": [
+            {
+              "nome": "BANCO VOTORANTIM S.A.",
+              "lider": true
+            }
+          ],
+          "series": [
+            {
+              "incentivada": false,
+              "final": null,
+              "spread": null,
+              "teto": null,
+              "venc": "2028-07-25",
+              "tenor": 2,
+              "amort": "amort",
+              "resgate": "Sim",
+              "rating": null
+            }
+          ],
+          "numeroRegistro": null,
+          "grupo": "Casan"
+        },
+        {
+          "data": "2026-08-03",
+          "emissor": "IHS BRASIL – CESSÃO DE INFRAESTRUTURAS S.A.",
+          "cnpj": "15811119000111",
+          "valorTotal": 400000000,
+          "status": "Registro Concedido",
+          "rating": null,
+          "numSeries": 1,
+          "sindicato": [
+            {
+              "nome": "BANCO BNP PARIBAS BRASIL S/A",
+              "lider": true
+            }
+          ],
+          "series": [
+            {
+              "incentivada": false,
+              "final": null,
+              "spread": null,
+              "teto": null,
+              "venc": "2031-08-06",
+              "tenor": 5,
+              "amort": "amort",
+              "resgate": "Sim",
+              "rating": null
+            }
+          ],
+          "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/372",
+          "grupo": "IHS Towers"
+        },
+        {
+          "data": "2026-08-03",
+          "emissor": "IHS BRASIL – CESSÃO DE INFRAESTRUTURAS S.A.",
+          "cnpj": "15811119000111",
+          "valorTotal": 1100000000,
+          "status": "Registro Concedido",
+          "rating": null,
+          "numSeries": 1,
+          "sindicato": [
+            {
+              "nome": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+              "lider": true
+            },
+            {
+              "nome": "BANCO SANTANDER (BRASIL) S.A.",
+              "lider": false
+            },
+            {
+              "nome": "BANCO BRADESCO BBI S.A.",
+              "lider": false
+            }
+          ],
+          "series": [
+            {
+              "incentivada": false,
+              "final": null,
+              "spread": null,
+              "teto": null,
+              "venc": "2031-08-06",
+              "tenor": 5,
+              "amort": "bullet",
+              "resgate": "Sim",
+              "rating": null
+            }
+          ],
+          "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/371",
+          "grupo": "IHS Towers"
+        },
+        {
+          "data": "2026-08-03",
+          "emissor": "MOVIDA PARTICIPAÇÕES S.A.",
+          "cnpj": "21314559000166",
+          "valorTotal": 1140000000,
+          "status": "Aguardando Bookbuilding",
+          "rating": null,
+          "numSeries": 2,
+          "sindicato": [
+            {
+              "nome": "BANCO BRADESCO BBI S.A.",
+              "lider": true
+            }
+          ],
+          "series": [
+            {
+              "incentivada": false,
+              "final": null,
+              "spread": null,
+              "teto": "CDI + 2,10%",
+              "venc": "2028-07-15",
+              "tenor": 2,
+              "amort": "amort",
+              "resgate": "Sim",
+              "rating": null
+            },
+            {
+              "incentivada": false,
+              "final": null,
+              "spread": null,
+              "teto": "CDI + 2,50%",
+              "venc": "2033-07-15",
+              "tenor": 7,
+              "amort": "amort",
+              "resgate": "Sim",
+              "rating": null
+            }
+          ],
+          "numeroRegistro": null,
+          "grupo": "Simpar"
+        },
+        {
+          "data": "2026-08-03",
+          "emissor": "GSH CORP PARTICIPAÇÕES S.A.",
+          "cnpj": "08397078000101",
+          "valorTotal": 125000000,
+          "status": "Aguardando Bookbuilding",
+          "rating": "n/a",
+          "numSeries": 1,
+          "sindicato": [
+            {
+              "nome": "BANCO SANTANDER (BRASIL) S.A.",
+              "lider": true
+            }
+          ],
+          "series": [
+            {
+              "incentivada": false,
+              "final": null,
+              "spread": null,
+              "teto": "CDI + 2,35%",
+              "venc": "2031-07-30",
+              "tenor": 5,
+              "amort": "amort",
+              "resgate": "Sim",
+              "rating": "n/a"
+            }
+          ],
+          "numeroRegistro": null,
+          "grupo": "GSH Corp"
+        }
+      ],
+      "caption": "no dia"
+    }
   }
 }

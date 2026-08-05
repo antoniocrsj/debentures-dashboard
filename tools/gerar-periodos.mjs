@@ -23,6 +23,7 @@ import { renderPeriodoHtml } from './relatorios/render-periodo.mjs'
 import { buildSemanal, anbimaSpreadMap } from './relatorios/semanal.mjs'
 import { lerCurvas } from './lib-mercado.mjs'
 import { renderSemanalHtml } from './relatorios/render-semanal.mjs'
+import { recortarSre } from './relatorios/card-sre.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.join(__dirname, '..')
@@ -252,7 +253,7 @@ function buildPeriodo(tipo, id, src, tickerInfo) {
   return {
     periodo: tipo, id, label: labelFinal, status, de: range.start, ate: critAte || range.end,
     sourceDates,
-    sections: { debentures: { novas: novasDeb }, captacao, gestores, anbima, ida, fundos, perf, inclusoes, alertas, perfCobertura: perfCob },
+    sections: { debentures: { novas: novasDeb }, captacao, gestores, anbima, ida, fundos, perf, inclusoes, alertas, perfCobertura: perfCob, ofertasSRE: recortarSre(src.ofertasSRE, range.start, range.end, 'no mês') },
     summary,
   }
 }
@@ -294,12 +295,9 @@ function main() {
     const ids = recentPeriods(capDatas, tipo, N)
     const index = []
     for (const id of ids) {
-      // Seção SRE (tempo real, últimos 15 dias) só no relatório MAIS RECENTE —
-      // igual ao diário (asOf). ids[0] é o período mais novo.
-      const sreBackup = src.ofertasSRE
-      if (tipo === 'weekly' && id !== ids[0]) src.ofertasSRE = null
+      // Cada período recorta a seção SRE pelo SEU intervalo (semana/mês) lá dentro
+      // (buildSemanal/buildPeriodo via recortarSre) — sem gate global.
       const rep = tipo === 'weekly' ? buildSemanal(id, src, helpers) : buildPeriodo(tipo, id, src, tickerInfo)
-      src.ofertasSRE = sreBackup
       fs.writeFileSync(path.join(dir, `${id}.json`), JSON.stringify(rep, null, 2))
       fs.writeFileSync(path.join(dir, `${id}.html`), tipo === 'weekly' ? renderSemanalHtml(rep) : renderPeriodoHtml(rep))
       index.push({ id, label: rep.label, de: rep.de, ate: rep.ate, status: rep.status, json: `/reports/${tipo}/${id}.json`, html: `/reports/${tipo}/${id}.html`, sourceDates: rep.sourceDates })

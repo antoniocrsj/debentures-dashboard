@@ -53,9 +53,8 @@ function kpisSre(itens) {
 // aparecem no SRE), não mais o filtro "só registrado na semana".
 function parteDebentures(d) {
   const sre = d.ofertasSRE
-  if (!sre) return `<section><h2>1. Debêntures</h2><p class="vazio">As novas ofertas no SRE (tempo real, últimos 15 dias) constam apenas no relatório da semana corrente.</p></section>`
-  const itens = sre.itens || []
-  return `<section><h2>1. Debêntures</h2>${itens.length ? kpisSre(itens) : ''}${renderSecaoSre(itens, sre.janelaDias)}</section>`
+  const itens = sre?.itens || []
+  return `<section><h2>1. Debêntures</h2>${itens.length ? kpisSre(itens) : ''}${renderSecaoSre(itens, sre?.caption || 'na semana', sre?.foraDaJanela)}</section>`
 }
 
 function parteSecundario(s) {

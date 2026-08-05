@@ -1,5 +1,6 @@
 // Render HTML self-contained do Resumo da Semana/Mes. Identidade visual alinhada
 // ao Resumo do Dia (cartao claro, acento terracota). Sem assets externos.
+import { renderSecaoSre } from './card-sre.mjs'
 const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]))
 const money = v => { const a = Math.abs(v || 0), s = v < 0 ? '−' : ''; if (a >= 1e9) return `${s}R$ ${(a / 1e9).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} bi`; if (a >= 1e6) return `${s}R$ ${(a / 1e6).toLocaleString('pt-BR', { maximumFractionDigits: 0 })} mi`; if (a >= 1e3) return `${s}R$ ${(a / 1e3).toLocaleString('pt-BR', { maximumFractionDigits: 0 })} mil`; return `${s}R$ ${a.toLocaleString('pt-BR', { maximumFractionDigits: 0 })}` }
 const pct = v => v == null ? '—' : `${v >= 0 ? '+' : ''}${Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`
@@ -44,8 +45,9 @@ export function renderPeriodoHtml(rep) {
   const s = rep.sections
   const titulo = rep.periodo === 'weekly' ? 'Resumo da Semana' : 'Resumo do Mês'
   const bullets = (rep.summary || []).map(b => `<li class="${b.tom || ''}">${esc(b.texto)}</li>`).join('') || '<li class="muted">Sem destaques no período.</li>'
-  const novas = s.debentures?.novas || []
-  const debHtml = novas.length ? `<table><thead><tr><th>Ticker</th><th>Emissor</th><th>Grupo</th><th>Registro</th></tr></thead><tbody>${novas.map(d => `<tr><td>${esc(d.ticker)}${d.incentivada ? ' <span class="tag">12.431</span>' : ''}</td><td>${esc(d.empresa)}</td><td>${esc(d.grupo)}</td><td>${fmtD(d.dataRegistro)}</td></tr>`).join('')}</tbody></table>` : '<p class="muted">Nenhuma nova debênture registrada no período.</p>'
+  // Seção 2 = ofertas do SRE recortadas pelo MÊS (mesma seção do diário/semanal).
+  const sre = s.ofertasSRE
+  const debHtml = renderSecaoSre(sre?.itens || [], sre?.caption || 'no mês', sre?.foraDaJanela)
   const fundos = s.fundos || {}
   const fundosHtml = fundos.semAnterior ? '<p class="muted">Sem snapshot de fronteira — inclusões/exclusões indisponíveis.</p>'
     : `<div class="grid2"><div class="col"><h4>Incluídos (${(fundos.novos || []).length})</h4><ul>${(fundos.novos || []).slice(0, 15).map(f => `<li><span>${esc(f.nome)}</span></li>`).join('') || '<li class="muted">—</li>'}</ul></div><div class="col"><h4>Excluídos (${(fundos.removidos || []).length})</h4><ul>${(fundos.removidos || []).slice(0, 15).map(f => `<li><span>${esc(f.nome)}</span></li>`).join('') || '<li class="muted">—</li>'}</ul></div></div>`

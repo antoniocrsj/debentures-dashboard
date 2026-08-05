@@ -18,6 +18,7 @@ import { aggCaptacaoPeriodo, aggGestoresPeriodo } from '../../src/utils/aggregac
 import { aggIda, IDA_SEG } from '../../src/utils/ida.js'
 import { parseNum, fmtRecompraTaxa } from '../../src/utils/format.js'
 import { spreadDe } from '../lib-mercado.mjs'
+import { recortarSre } from './card-sre.mjs'
 
 const TRADE_DESTAQUE = 20e6   // R$ 20 milhões (negócio asset-dia)
 const digits = s => String(s || '').replace(/\D/g, '')
@@ -471,9 +472,9 @@ export function buildSemanal(id, src, helpers) {
   const semAnt = semanasAnteriores(id, 4)
   const volEmitWk = volumeEmitidoPorSemana(src)
   const debentures = buildDebentures(range, src)
-  // Seção SRE (todas as debêntures do SRE) — mesma do diário, substitui o filtro
-  // "só registrado" no render. tecnico/kpis do buildDebentures seguem valendo.
-  debentures.ofertasSRE = src.ofertasSRE || null
+  // Seção SRE recortada pela SEMANA (ofertas com data no intervalo [start, end]).
+  // Substitui o filtro "só registrado". tecnico/kpis do buildDebentures seguem valendo.
+  debentures.ofertasSRE = recortarSre(src.ofertasSRE, range.start, range.end, 'na semana')
   const secundario = buildSecundario(range, src, helpers, semAnt)
   const tecnico = buildTecnico(range, src, semAnt, debentures, volEmitWk, id)
 

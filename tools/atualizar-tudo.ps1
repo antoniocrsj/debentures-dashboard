@@ -762,7 +762,7 @@ if ($SkipRelatorios) {
   # do dados-abertos (so' confirmadas). Best-effort: CVM fora do ar NAO trava.
   Progress 'Ofertas SRE (CVM, tempo real)'
   try {
-    & node (Join-Path $PSScriptRoot 'preparar-ofertas-sre.mjs') '--janela' '15'
+    & node (Join-Path $PSScriptRoot 'preparar-ofertas-sre.mjs') '--janela' '40'
     if ($LASTEXITCODE -ne 0) { throw "node saiu com codigo $LASTEXITCODE" }
     $summary.OfertasSRE = 'OK'
     Ok 'Novas ofertas do SRE gravadas em public\data\Novas_Ofertas_SRE.json.'

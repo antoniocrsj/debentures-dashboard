@@ -1577,6 +1577,102 @@
     ],
     "emissoesCVM": null,
     "emissoresFaltantes": null,
-    "ofertasSRE": null
+    "ofertasSRE": {
+      "asOf": "2026-08-05",
+      "janelaDias": 40,
+      "itens": [
+        {
+          "data": "2026-07-31",
+          "emissor": "LWART SOLUÇÕES AMBIENTAIS S.A.",
+          "cnpj": "46201083000188",
+          "valorTotal": 150000000,
+          "status": "Aguardando Bookbuilding",
+          "rating": null,
+          "numSeries": 1,
+          "sindicato": [
+            {
+              "nome": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+              "lider": true
+            }
+          ],
+          "series": [
+            {
+              "incentivada": false,
+              "final": null,
+              "spread": null,
+              "teto": "PRÉ 15,26%",
+              "venc": "2034-07-15",
+              "tenor": 8,
+              "amort": "amort",
+              "resgate": "Sim",
+              "rating": null
+            }
+          ],
+          "numeroRegistro": null,
+          "grupo": "Lwart"
+        },
+        {
+          "data": "2026-07-31",
+          "emissor": "TRADIMAQ S.A.",
+          "cnpj": "22320881000160",
+          "valorTotal": 70000000,
+          "status": "Oferta Encerrada",
+          "rating": "A",
+          "numSeries": 1,
+          "sindicato": [
+            {
+              "nome": "BANCO VOTORANTIM S.A.",
+              "lider": true
+            }
+          ],
+          "series": [
+            {
+              "incentivada": false,
+              "final": "DI + 1,56%",
+              "spread": null,
+              "teto": "DI + 1,56%",
+              "venc": "2031-07-28",
+              "tenor": 5,
+              "amort": "amort",
+              "resgate": "Sim",
+              "rating": "A"
+            }
+          ],
+          "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/370",
+          "grupo": "Tradimaq"
+        },
+        {
+          "data": "2026-07-31",
+          "emissor": "VIA ARAUCARIA CONCESSIONARIA DE RODOVIAS S.A.",
+          "cnpj": "47155252000153",
+          "valorTotal": 1000000000,
+          "status": "Aguardando Bookbuilding",
+          "rating": null,
+          "numSeries": 1,
+          "sindicato": [
+            {
+              "nome": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+              "lider": true
+            }
+          ],
+          "series": [
+            {
+              "incentivada": false,
+              "final": null,
+              "spread": null,
+              "teto": "2,00%",
+              "venc": "2028-08-05",
+              "tenor": 2,
+              "amort": "bullet",
+              "resgate": "Sim",
+              "rating": null
+            }
+          ],
+          "numeroRegistro": null,
+          "grupo": ""
+        }
+      ],
+      "caption": "no dia"
+    }
   }
 }

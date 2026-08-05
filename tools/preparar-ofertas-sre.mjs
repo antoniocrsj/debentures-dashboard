@@ -33,7 +33,9 @@ const ANO_MS = 365.25 * 864e5
 
 const args = process.argv.slice(2)
 const argVal = (flag, def) => { const i = args.indexOf(flag); return i >= 0 && args[i + 1] ? args[i + 1] : def }
-const JANELA = Math.max(1, parseInt(argVal('--janela', '15'), 10) || 15)
+// 40 dias: cobre o recorte do relatório MENSAL (mês inteiro + margem); diário e
+// semanal são subconjuntos disso. O recorte por intervalo é feito no render.
+const JANELA = Math.max(1, parseInt(argVal('--janela', '40'), 10) || 40)
 const OUT = argVal('--out', path.join(DATA, 'Novas_Ofertas_SRE.json'))
 
 const digits = s => String(s || '').replace(/\D/g, '')

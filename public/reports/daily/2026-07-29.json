@@ -1630,6 +1630,11 @@
     ],
     "emissoesCVM": null,
     "emissoresFaltantes": null,
-    "ofertasSRE": null
+    "ofertasSRE": {
+      "asOf": "2026-08-05",
+      "janelaDias": 40,
+      "itens": [],
+      "caption": "no dia"
+    }
   }
 }

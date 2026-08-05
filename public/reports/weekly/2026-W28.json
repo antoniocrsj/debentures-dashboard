@@ -268,7 +268,128 @@
         }
       ],
       "inconsistencias": [],
-      "ofertasSRE": null
+      "ofertasSRE": {
+        "asOf": "2026-08-05",
+        "geradoEm": "2026-08-05T16:49:05.458Z",
+        "fonte": "CVM SRE (detalhado + participantes + acaoObjeto)",
+        "janelaDias": 40,
+        "periodo": {
+          "de": "26/06/2026",
+          "ate": "05/08/2026"
+        },
+        "total": 40,
+        "itens": [
+          {
+            "idRequerimento": "27027",
+            "data": "2026-07-10",
+            "emissor": "ARENA SERRA DOURADA S.A.",
+            "cnpj": "60.311.421/0001-65",
+            "valorTotal": 120000000,
+            "valor": 120000000,
+            "status": "Oferta Encerrada",
+            "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+            "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/338",
+            "numSeries": 1,
+            "rating": null,
+            "sindicato": [
+              {
+                "nome": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+                "lider": true
+              }
+            ],
+            "series": [
+              {
+                "incentivada": false,
+                "final": null,
+                "spread": null,
+                "teto": "CDI + 1,30%",
+                "venc": "2027-07-13",
+                "tenor": 1,
+                "amort": "bullet",
+                "resgate": "Sim",
+                "rating": null
+              }
+            ]
+          },
+          {
+            "idRequerimento": "26976",
+            "data": "2026-07-08",
+            "emissor": "CONCESSIONARIA ACCIONA AGUA - LOTE 2 PARANA SPE S.A.",
+            "cnpj": "58.452.599/0001-84",
+            "valorTotal": 150000000,
+            "valor": 150000000,
+            "status": "Oferta Encerrada",
+            "lider": "BANCO CREDIT AGRICOLE BRASIL S/A",
+            "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/337",
+            "numSeries": 1,
+            "rating": "A",
+            "sindicato": [
+              {
+                "nome": "BANCO CREDIT AGRICOLE BRASIL S/A",
+                "lider": true
+              }
+            ],
+            "series": [
+              {
+                "incentivada": false,
+                "final": null,
+                "spread": null,
+                "teto": "CDI + 0,65%",
+                "venc": "2026-12-30",
+                "tenor": 1,
+                "amort": "bullet",
+                "resgate": "Sim",
+                "rating": "A"
+              }
+            ]
+          },
+          {
+            "idRequerimento": "26928",
+            "data": "2026-07-07",
+            "emissor": "GRANDE SERTAO I TRANSMISSORA DE ENERGIA S/A.",
+            "cnpj": "53.191.447/0001-51",
+            "valorTotal": 239400000,
+            "valor": 239400000,
+            "status": "Oferta Encerrada",
+            "lider": "BANCO NACIONAL DE DESENVOLVIMENTO ECONÔMICO E SOCIAL - BNDES",
+            "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/334;CVM/SRE/AUT/DEB/PRI/2026/335",
+            "numSeries": 2,
+            "rating": "AAAbr",
+            "sindicato": [
+              {
+                "nome": "BANCO NACIONAL DE DESENVOLVIMENTO ECONÔMICO E SOCIAL - BNDES",
+                "lider": true
+              }
+            ],
+            "series": [
+              {
+                "incentivada": false,
+                "final": null,
+                "spread": null,
+                "teto": null,
+                "venc": "2050-04-15",
+                "tenor": 24,
+                "amort": "",
+                "resgate": "Sim",
+                "rating": "AAAbr"
+              },
+              {
+                "incentivada": false,
+                "final": null,
+                "spread": null,
+                "teto": null,
+                "venc": "2050-04-15",
+                "tenor": 24,
+                "amort": "",
+                "resgate": "Sim",
+                "rating": "AAAbr"
+              }
+            ]
+          }
+        ],
+        "caption": "na semana",
+        "foraDaJanela": false
+      }
     },
     "secundario": {
       "sintese": [

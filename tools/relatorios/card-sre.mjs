@@ -88,12 +88,29 @@ export function renderCardSre(o) {
   </div>`
 }
 
-// Renderiza a LISTA de cards (ou o vazio). janelaDias -> caption do heading.
+// Recorta as ofertas SRE pelo intervalo [de, ate] (inclusive, yyyy-MM-dd) e carimba
+// o caption do intervalo. Usado pelo semanal e pelo mensal (o diário recorta por
+// (prevD, D] direto no build). Devolve null quando não há SRE.
+export function recortarSre(sre, de, ate, caption) {
+  if (!sre) return null
+  const itens = (sre.itens || []).filter(o => o.data >= de && o.data <= ate)
+  // Janela de coleta do SRE (periodo.de vem em dd/MM/yyyy). Se o intervalo do
+  // relatório termina ANTES do início da coleta, não temos dado — não é "zero
+  // ofertas" (regra: nunca afirmar ausência sem ter lido).
+  const winDe = sre.periodo?.de ? sre.periodo.de.split('/').reverse().join('-') : null
+  const foraDaJanela = !!(winDe && ate < winDe)
+  return { ...sre, caption, itens, foraDaJanela }
+}
+
+// Renderiza a LISTA de cards (ou o vazio). caption -> rótulo do intervalo.
 // Estilos do caption/vazio inline p/ independer do CSS (diário tem cap-dia/empty;
 // semanal não).
-export function renderSecaoSre(ofertas, janelaDias) {
-  const cap = janelaDias ? ` <span style="font-weight:400;color:${TAUPE};font-size:11px">últimos ${janelaDias} dias</span>` : ''
+export function renderSecaoSre(ofertas, caption, foraDaJanela = false) {
+  const cap = caption ? ` <span style="font-weight:400;color:${TAUPE};font-size:11px">${esc(caption)}</span>` : ''
   const head = `<h4>Novas ofertas de debêntures na CVM (SRE)${cap}</h4>`
-  if (!ofertas || !ofertas.length) return `${head}<p style="color:${TAUPE};font-style:italic;font-size:12.5px;margin:4px 0">Nenhuma nova oferta de debênture na CVM na janela.</p>`
+  const vazio = foraDaJanela
+    ? 'Período anterior à janela de coleta do SRE — sem dados para este intervalo.'
+    : (caption ? `Nenhuma nova oferta de debênture na CVM ${esc(caption)}.` : 'Nenhuma nova oferta de debênture na CVM na janela.')
+  if (!ofertas || !ofertas.length) return `${head}<p style="color:${TAUPE};font-style:italic;font-size:12.5px;margin:4px 0">${vazio}</p>`
   return head + ofertas.map(renderCardSre).join('')
 }

@@ -735,7 +735,366 @@
         }
       ],
       "inconsistencias": [],
-      "ofertasSRE": null
+      "ofertasSRE": {
+        "asOf": "2026-08-05",
+        "geradoEm": "2026-08-05T16:49:05.458Z",
+        "fonte": "CVM SRE (detalhado + participantes + acaoObjeto)",
+        "janelaDias": 40,
+        "periodo": {
+          "de": "26/06/2026",
+          "ate": "05/08/2026"
+        },
+        "total": 40,
+        "itens": [
+          {
+            "idRequerimento": "27081",
+            "data": "2026-07-16",
+            "emissor": "ENERGISA MATO GROSSO-DISTRIBUIDORA DE ENERGIA S/A",
+            "cnpj": "03.467.321/0001-99",
+            "valorTotal": 350000000,
+            "valor": 350000000,
+            "status": "Oferta Encerrada",
+            "lider": "BTG PACTUAL INVESTMENT BANKING LTDA.",
+            "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/350",
+            "numSeries": 1,
+            "rating": "AAA",
+            "sindicato": [
+              {
+                "nome": "BTG PACTUAL INVESTMENT BANKING LTDA.",
+                "lider": true
+              }
+            ],
+            "series": [
+              {
+                "incentivada": false,
+                "final": "IPCA + 7,89%",
+                "spread": "B37 − 5 bps",
+                "teto": "B35 −10bps",
+                "venc": "2036-07-15",
+                "tenor": 10,
+                "amort": "",
+                "resgate": "Sim",
+                "rating": "AAA"
+              }
+            ]
+          },
+          {
+            "idRequerimento": "27080",
+            "data": "2026-07-16",
+            "emissor": "ENERGISA MATO GROSSO DO SUL - DIST DE ENERGIA S.A.",
+            "cnpj": "15.413.826/0001-50",
+            "valorTotal": 350000000,
+            "valor": 350000000,
+            "status": "Oferta Encerrada",
+            "lider": "BTG PACTUAL INVESTMENT BANKING LTDA.",
+            "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/349",
+            "numSeries": 1,
+            "rating": "AAA",
+            "sindicato": [
+              {
+                "nome": "BTG PACTUAL INVESTMENT BANKING LTDA.",
+                "lider": true
+              }
+            ],
+            "series": [
+              {
+                "incentivada": false,
+                "final": "IPCA + 7,89%",
+                "spread": "B37 − 5 bps",
+                "teto": "B35 −10bps",
+                "venc": "2036-07-15",
+                "tenor": 10,
+                "amort": "",
+                "resgate": "Sim",
+                "rating": "AAA"
+              }
+            ]
+          },
+          {
+            "idRequerimento": "27154",
+            "data": "2026-07-16",
+            "emissor": "OCTANTE SECURITIZADORA SA",
+            "cnpj": "12.139.922/0001-63",
+            "valorTotal": 60000000,
+            "valor": 60000000,
+            "status": "Aguardando Bookbuilding",
+            "lider": "OCTANTE SECURITIZADORA SA",
+            "numeroRegistro": null,
+            "numSeries": 2,
+            "rating": null,
+            "sindicato": [
+              {
+                "nome": "OCTANTE SECURITIZADORA SA",
+                "lider": true
+              }
+            ],
+            "series": [
+              {
+                "incentivada": false,
+                "final": null,
+                "spread": null,
+                "teto": null,
+                "venc": "2030-07-20",
+                "tenor": 4,
+                "amort": "amort",
+                "resgate": "Sim",
+                "rating": null
+              },
+              {
+                "incentivada": false,
+                "final": null,
+                "spread": null,
+                "teto": null,
+                "venc": "2030-07-20",
+                "tenor": 4,
+                "amort": "amort",
+                "resgate": "Sim",
+                "rating": null
+              }
+            ]
+          },
+          {
+            "idRequerimento": "26932",
+            "data": "2026-07-15",
+            "emissor": "AXIA ENERGIA S.A.",
+            "cnpj": "00.001.180/0001-26",
+            "valorTotal": 2000000000,
+            "valor": 2000000000,
+            "status": "Oferta Encerrada",
+            "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+            "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/345;CVM/SRE/AUT/DEB/PRI/2026/346",
+            "numSeries": 2,
+            "rating": "AAA",
+            "sindicato": [
+              {
+                "nome": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+                "lider": true
+              },
+              {
+                "nome": "BANCO SANTANDER (BRASIL) S.A.",
+                "lider": false
+              },
+              {
+                "nome": "UBS BB Corretora de Câmbio, Títulos e Valores Mobiliários S.A.",
+                "lider": false
+              },
+              {
+                "nome": "BANCO BRADESCO BBI S.A.",
+                "lider": false
+              }
+            ],
+            "series": [
+              {
+                "incentivada": false,
+                "final": null,
+                "spread": null,
+                "teto": "CDI + 0,80%",
+                "venc": "2033-07-15",
+                "tenor": 7,
+                "amort": "bullet",
+                "resgate": "Sim",
+                "rating": "AAA"
+              },
+              {
+                "incentivada": false,
+                "final": null,
+                "spread": null,
+                "teto": "CDI + 0,90%",
+                "venc": "2036-07-15",
+                "tenor": 10,
+                "amort": "",
+                "resgate": "Sim",
+                "rating": "AAA"
+              }
+            ]
+          },
+          {
+            "idRequerimento": "27024",
+            "data": "2026-07-14",
+            "emissor": "ENGIE BRASIL ENERGIA S.A.",
+            "cnpj": "02.474.103/0001-19",
+            "valorTotal": 700000000,
+            "valor": 700000000,
+            "status": "Oferta Encerrada",
+            "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+            "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/343;CVM/SRE/AUT/DEB/PRI/2026/344",
+            "numSeries": 2,
+            "rating": "n/a",
+            "sindicato": [
+              {
+                "nome": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+                "lider": true
+              },
+              {
+                "nome": "BANCO SANTANDER (BRASIL) S.A.",
+                "lider": false
+              }
+            ],
+            "series": [
+              {
+                "incentivada": false,
+                "final": "DI + 0,10%",
+                "spread": null,
+                "teto": "DI + 0,10%",
+                "venc": "2026-09-15",
+                "tenor": 1,
+                "amort": "bullet",
+                "resgate": "Sim",
+                "rating": "n/a"
+              },
+              {
+                "incentivada": false,
+                "final": "DI + 0,35%",
+                "spread": null,
+                "teto": "DI + 0,35%",
+                "venc": "2028-07-15",
+                "tenor": 2,
+                "amort": "bullet",
+                "resgate": "Sim",
+                "rating": "n/a"
+              }
+            ]
+          },
+          {
+            "idRequerimento": "27009",
+            "data": "2026-07-14",
+            "emissor": "ISA ENERGIA BRASIL S.A.",
+            "cnpj": "02.998.611/0001-04",
+            "valorTotal": 1500000000,
+            "valor": 1500000000,
+            "status": "Oferta Encerrada",
+            "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+            "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/342",
+            "numSeries": 1,
+            "rating": "Fitch",
+            "sindicato": [
+              {
+                "nome": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+                "lider": true
+              },
+              {
+                "nome": "UBS BB Corretora de Câmbio, Títulos e Valores Mobiliários S.A.",
+                "lider": false
+              },
+              {
+                "nome": "BANCO BRADESCO BBI S.A.",
+                "lider": false
+              }
+            ],
+            "series": [
+              {
+                "incentivada": false,
+                "final": null,
+                "spread": null,
+                "teto": null,
+                "venc": "2030-07-15",
+                "tenor": 4,
+                "amort": "bullet",
+                "resgate": "Sim",
+                "rating": "Fitch"
+              }
+            ]
+          },
+          {
+            "idRequerimento": "27034",
+            "data": "2026-07-13",
+            "emissor": "APPLE PARTICIPACOES S.A.",
+            "cnpj": "60.517.062/0001-05",
+            "valorTotal": 230000000,
+            "valor": 230000000,
+            "status": "Oferta Encerrada",
+            "lider": "BANCO BRADESCO BBI S.A.",
+            "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/341",
+            "numSeries": 1,
+            "rating": "n/a",
+            "sindicato": [
+              {
+                "nome": "BANCO BRADESCO BBI S.A.",
+                "lider": true
+              }
+            ],
+            "series": [
+              {
+                "incentivada": false,
+                "final": null,
+                "spread": null,
+                "teto": "2,40%",
+                "venc": "2030-07-07",
+                "tenor": 4,
+                "amort": "bullet",
+                "resgate": "Sim",
+                "rating": "n/a"
+              }
+            ]
+          },
+          {
+            "idRequerimento": "27114",
+            "data": "2026-07-13",
+            "emissor": "SOCICAM ADMINISTRACAO, PROJETOS E REPRESENTACOES S.A.",
+            "cnpj": "43.217.280/0001-05",
+            "valorTotal": 100000000,
+            "valor": 100000000,
+            "status": "Oferta Encerrada",
+            "lider": "XP INVESTIMENTOS CCTVM S.A.",
+            "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/340",
+            "numSeries": 1,
+            "rating": null,
+            "sindicato": [
+              {
+                "nome": "XP INVESTIMENTOS CCTVM S.A.",
+                "lider": true
+              }
+            ],
+            "series": [
+              {
+                "incentivada": false,
+                "final": null,
+                "spread": null,
+                "teto": null,
+                "venc": "2041-03-15",
+                "tenor": 15,
+                "amort": "amort",
+                "resgate": "Sim",
+                "rating": null
+              }
+            ]
+          },
+          {
+            "idRequerimento": "27032",
+            "data": "2026-07-13",
+            "emissor": "BAESA-ENERGETICA BARRA GRANDE S/A",
+            "cnpj": "04.781.143/0001-39",
+            "valorTotal": 316000000,
+            "valor": 316000000,
+            "status": "Oferta Encerrada",
+            "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+            "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/339",
+            "numSeries": 1,
+            "rating": "n/a",
+            "sindicato": [
+              {
+                "nome": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+                "lider": true
+              }
+            ],
+            "series": [
+              {
+                "incentivada": false,
+                "final": "DI + 1,26%",
+                "spread": null,
+                "teto": "DI + 1,26%",
+                "venc": "2033-07-15",
+                "tenor": 7,
+                "amort": "amort",
+                "resgate": "Sim",
+                "rating": "n/a"
+              }
+            ]
+          }
+        ],
+        "caption": "na semana",
+        "foraDaJanela": false
+      }
     },
     "secundario": {
       "sintese": [

@@ -567,7 +567,287 @@
         }
       ],
       "inconsistencias": [],
-      "ofertasSRE": null
+      "ofertasSRE": {
+        "asOf": "2026-08-05",
+        "geradoEm": "2026-08-05T16:49:05.458Z",
+        "fonte": "CVM SRE (detalhado + participantes + acaoObjeto)",
+        "janelaDias": 40,
+        "periodo": {
+          "de": "26/06/2026",
+          "ate": "05/08/2026"
+        },
+        "total": 40,
+        "itens": [
+          {
+            "idRequerimento": "27188",
+            "data": "2026-07-22",
+            "emissor": "CARBON HOLDING S.A.",
+            "cnpj": "29.694.063/0001-77",
+            "valorTotal": 650000000,
+            "valor": 650000000,
+            "status": "Oferta Encerrada",
+            "lider": "BANCO BRADESCO BBI S.A.",
+            "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/359",
+            "numSeries": 1,
+            "rating": "n/a",
+            "sindicato": [
+              {
+                "nome": "BANCO BRADESCO BBI S.A.",
+                "lider": true
+              }
+            ],
+            "series": [
+              {
+                "incentivada": false,
+                "final": null,
+                "spread": null,
+                "teto": "2,10%",
+                "venc": "2029-05-30",
+                "tenor": 3,
+                "amort": "",
+                "resgate": "Sim",
+                "rating": "n/a"
+              }
+            ]
+          },
+          {
+            "idRequerimento": "27146",
+            "data": "2026-07-22",
+            "emissor": "LOGISTICA AMBIENTAL DE SAO PAULO S.A. - LOGA",
+            "cnpj": "07.032.886/0001-02",
+            "valorTotal": 450000000,
+            "valor": 450000000,
+            "status": "Oferta Encerrada",
+            "lider": "BANCO SANTANDER (BRASIL) S.A.",
+            "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/358",
+            "numSeries": 1,
+            "rating": null,
+            "sindicato": [
+              {
+                "nome": "BANCO SANTANDER (BRASIL) S.A.",
+                "lider": true
+              }
+            ],
+            "series": [
+              {
+                "incentivada": false,
+                "final": null,
+                "spread": null,
+                "teto": null,
+                "venc": "2027-07-14",
+                "tenor": 1,
+                "amort": "bullet",
+                "resgate": "Sim",
+                "rating": null
+              }
+            ]
+          },
+          {
+            "idRequerimento": "27172",
+            "data": "2026-07-21",
+            "emissor": "ISA ENERGIA BRASIL S.A.",
+            "cnpj": "02.998.611/0001-04",
+            "valorTotal": 1000000000,
+            "valor": 1000000000,
+            "status": "Oferta Encerrada",
+            "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+            "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/357",
+            "numSeries": 1,
+            "rating": "Fitch",
+            "sindicato": [
+              {
+                "nome": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+                "lider": true
+              }
+            ],
+            "series": [
+              {
+                "incentivada": false,
+                "final": null,
+                "spread": null,
+                "teto": "0,42%",
+                "venc": "2031-01-10",
+                "tenor": 5,
+                "amort": "bullet",
+                "resgate": "Sim",
+                "rating": "Fitch"
+              }
+            ]
+          },
+          {
+            "idRequerimento": "27092",
+            "data": "2026-07-21",
+            "emissor": "COPEL DISTRIBUIÇÃO S.A.",
+            "cnpj": "04.368.898/0001-06",
+            "valorTotal": 1300000000,
+            "valor": 1300000000,
+            "status": "Oferta Encerrada",
+            "lider": "XP INVESTIMENTOS CCTVM S.A.",
+            "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/356",
+            "numSeries": 1,
+            "rating": null,
+            "sindicato": [
+              {
+                "nome": "XP INVESTIMENTOS CCTVM S.A.",
+                "lider": true
+              },
+              {
+                "nome": "BTG PACTUAL INVESTMENT BANKING LTDA.",
+                "lider": false
+              },
+              {
+                "nome": "BANCO SAFRA S/A",
+                "lider": false
+              }
+            ],
+            "series": [
+              {
+                "incentivada": false,
+                "final": "DI + 0,25%",
+                "spread": null,
+                "teto": "DI + 0,25%",
+                "venc": "2028-07-15",
+                "tenor": 2,
+                "amort": "bullet",
+                "resgate": "Sim",
+                "rating": null
+              }
+            ]
+          },
+          {
+            "idRequerimento": "27112",
+            "data": "2026-07-21",
+            "emissor": "AUTOPASS S.A.",
+            "cnpj": "07.140.538/0001-40",
+            "valorTotal": 185000000,
+            "valor": 185000000,
+            "status": "Oferta Encerrada",
+            "lider": "BANCO BRADESCO BBI S.A.",
+            "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/355",
+            "numSeries": 1,
+            "rating": "A",
+            "sindicato": [
+              {
+                "nome": "BANCO BRADESCO BBI S.A.",
+                "lider": true
+              }
+            ],
+            "series": [
+              {
+                "incentivada": false,
+                "final": null,
+                "spread": null,
+                "teto": "CDI + 3,55%",
+                "venc": "2031-07-15",
+                "tenor": 5,
+                "amort": "amort",
+                "resgate": "Sim",
+                "rating": "A"
+              }
+            ]
+          },
+          {
+            "idRequerimento": "27212",
+            "data": "2026-07-20",
+            "emissor": "ORIGEM ENERGIA PILAR S.A.",
+            "cnpj": "43.094.886/0001-92",
+            "valorTotal": 650000000,
+            "valor": 650000000,
+            "status": "Oferta Encerrada",
+            "lider": "XP INVESTIMENTOS CCTVM S.A.",
+            "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/352;CVM/SRE/AUT/DEB/PRI/2026/353;CVM/SRE/AUT/DEB/PRI/2026/354",
+            "numSeries": 3,
+            "rating": null,
+            "sindicato": [
+              {
+                "nome": "XP INVESTIMENTOS CCTVM S.A.",
+                "lider": true
+              }
+            ],
+            "series": [
+              {
+                "incentivada": false,
+                "final": null,
+                "spread": null,
+                "teto": null,
+                "venc": "2028-01-20",
+                "tenor": 2,
+                "amort": "bullet",
+                "resgate": "Sim",
+                "rating": null
+              },
+              {
+                "incentivada": false,
+                "final": null,
+                "spread": null,
+                "teto": null,
+                "venc": "2028-01-20",
+                "tenor": 2,
+                "amort": "bullet",
+                "resgate": "Sim",
+                "rating": null
+              },
+              {
+                "incentivada": false,
+                "final": null,
+                "spread": null,
+                "teto": null,
+                "venc": "2028-01-20",
+                "tenor": 2,
+                "amort": "bullet",
+                "resgate": "Sim",
+                "rating": null
+              }
+            ]
+          },
+          {
+            "idRequerimento": "26971",
+            "data": "2026-07-20",
+            "emissor": "DIAGNOSTICOS DA AMERICA SA",
+            "cnpj": "61.486.650/0001-83",
+            "valorTotal": 700000000,
+            "valor": 700000000,
+            "status": "Oferta Encerrada",
+            "lider": "BANCO BRADESCO BBI S.A.",
+            "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/351",
+            "numSeries": 1,
+            "rating": "AA(bra)",
+            "sindicato": [
+              {
+                "nome": "BANCO BRADESCO BBI S.A.",
+                "lider": true
+              },
+              {
+                "nome": "BANCO SANTANDER (BRASIL) S.A.",
+                "lider": false
+              },
+              {
+                "nome": "UBS BB Corretora de Câmbio, Títulos e Valores Mobiliários S.A.",
+                "lider": false
+              },
+              {
+                "nome": "CAIXA ECONOMICA FEDERAL",
+                "lider": false
+              }
+            ],
+            "series": [
+              {
+                "incentivada": false,
+                "final": null,
+                "spread": null,
+                "teto": "CDI + 2,90%",
+                "venc": "2028-07-20",
+                "tenor": 2,
+                "amort": "bullet",
+                "resgate": "Sim",
+                "rating": "AA(bra)"
+              }
+            ]
+          }
+        ],
+        "caption": "na semana",
+        "foraDaJanela": false
+      }
     },
     "secundario": {
       "sintese": [

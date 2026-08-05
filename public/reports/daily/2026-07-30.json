@@ -1562,6 +1562,42 @@
     ],
     "emissoesCVM": null,
     "emissoresFaltantes": null,
-    "ofertasSRE": null
+    "ofertasSRE": {
+      "asOf": "2026-08-05",
+      "janelaDias": 40,
+      "itens": [
+        {
+          "data": "2026-07-30",
+          "emissor": "ALUBAR METAIS E CABOS S.A.",
+          "cnpj": "08262121000113",
+          "valorTotal": 100000000,
+          "status": "Oferta Encerrada",
+          "rating": "A",
+          "numSeries": 1,
+          "sindicato": [
+            {
+              "nome": "BANCO VOTORANTIM S.A.",
+              "lider": true
+            }
+          ],
+          "series": [
+            {
+              "incentivada": false,
+              "final": null,
+              "spread": null,
+              "teto": "CDI + 2,50%",
+              "venc": "2030-07-20",
+              "tenor": 4,
+              "amort": "amort",
+              "resgate": "Sim",
+              "rating": "A"
+            }
+          ],
+          "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/369",
+          "grupo": "Alubar"
+        }
+      ],
+      "caption": "no dia"
+    }
   }
 }

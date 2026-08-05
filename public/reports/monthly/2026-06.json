@@ -835,6 +835,85 @@
         "avaliados": 0,
         "minCobertura": 0.6
       }
+    },
+    "ofertasSRE": {
+      "asOf": "2026-08-05",
+      "geradoEm": "2026-08-05T16:49:05.458Z",
+      "fonte": "CVM SRE (detalhado + participantes + acaoObjeto)",
+      "janelaDias": 40,
+      "periodo": {
+        "de": "26/06/2026",
+        "ate": "05/08/2026"
+      },
+      "total": 40,
+      "itens": [
+        {
+          "idRequerimento": "26942",
+          "data": "2026-06-29",
+          "emissor": "VERDE TRANSMISSAO DE ENERGIA S.A.",
+          "cnpj": "44.323.802/0001-08",
+          "valorTotal": 1585000000,
+          "valor": 1585000000,
+          "status": "Oferta Encerrada",
+          "lider": "BANCO NACIONAL DE DESENVOLVIMENTO ECONÔMICO E SOCIAL - BNDES",
+          "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/328",
+          "numSeries": 1,
+          "rating": "A",
+          "sindicato": [
+            {
+              "nome": "BANCO NACIONAL DE DESENVOLVIMENTO ECONÔMICO E SOCIAL - BNDES",
+              "lider": true
+            }
+          ],
+          "series": [
+            {
+              "incentivada": false,
+              "final": null,
+              "spread": null,
+              "teto": null,
+              "venc": "2050-03-15",
+              "tenor": 24,
+              "amort": "",
+              "resgate": "Sim",
+              "rating": "A"
+            }
+          ]
+        },
+        {
+          "idRequerimento": "26944",
+          "data": "2026-06-29",
+          "emissor": "BURITI TRANSMISSAO DE ENERGIA S.A.",
+          "cnpj": "47.290.852/0001-24",
+          "valorTotal": 618000000,
+          "valor": 618000000,
+          "status": "Oferta Encerrada",
+          "lider": "BANCO NACIONAL DE DESENVOLVIMENTO ECONÔMICO E SOCIAL - BNDES",
+          "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/327",
+          "numSeries": 1,
+          "rating": "A",
+          "sindicato": [
+            {
+              "nome": "BANCO NACIONAL DE DESENVOLVIMENTO ECONÔMICO E SOCIAL - BNDES",
+              "lider": true
+            }
+          ],
+          "series": [
+            {
+              "incentivada": false,
+              "final": null,
+              "spread": null,
+              "teto": null,
+              "venc": "2050-03-15",
+              "tenor": 24,
+              "amort": "",
+              "resgate": "Sim",
+              "rating": "A"
+            }
+          ]
+        }
+      ],
+      "caption": "no mês",
+      "foraDaJanela": false
     }
   },
   "summary": [

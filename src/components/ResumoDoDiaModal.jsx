@@ -40,25 +40,9 @@ function Bullets({ items }) {
 
 function Debentures({ sec, cvm, faltantes, sre, periodo }) {
   const temNovas = sec?.novas?.length > 0
-  // Período: registro no intervalo (colunas Ticker/Emissor/Grupo/Registro).
+  // Período (mensal): mesma seção SRE recortada pelo intervalo (não o registro).
   if (periodo) {
-    return temNovas ? (
-      <div className="rd-tablewrap">
-        <table className="rd-table">
-          <thead><tr><th>Ativo</th><th>Emissor</th><th>Grupo</th><th>Registro</th></tr></thead>
-          <tbody>
-            {sec.novas.map((d, i) => (
-              <tr key={d.ticker || i}>
-                <td className="rd-strong">{d.ticker}{d.incentivada && <span className="rd-sub">12.431</span>}</td>
-                <td className="rd-empresa" title={d.empresa}>{d.empresa || '—'}</td>
-                <td className="rd-empresa" title={d.grupo}>{d.grupo || '—'}</td>
-                <td>{fmtDia(d.dataRegistro)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    ) : <Empty>Nenhuma nova debênture registrada no período.</Empty>
+    return <OfertasSRE sre={sre} />
   }
   return (
     <div className="rd-tablewrap">
@@ -162,8 +146,8 @@ function SecaoSRE({ sre }) {
   const itens = sre.itens || []
   return (
     <div className="rd-cvm">
-      <h4>Novas ofertas de debêntures na CVM (SRE){sre.janelaDias && <span className="rd-cap-dia"> · últimos {sre.janelaDias} dias</span>}</h4>
-      {itens.length ? itens.map((o, i) => <CardSRE key={o.idRequerimento || i} o={o} />) : <Empty>Nenhuma nova oferta de debênture na CVM na janela.</Empty>}
+      <h4>Novas ofertas de debêntures na CVM (SRE){sre.caption && <span className="rd-cap-dia"> {sre.caption}</span>}</h4>
+      {itens.length ? itens.map((o, i) => <CardSRE key={o.idRequerimento || i} o={o} />) : <Empty>{sre.foraDaJanela ? 'Período anterior à janela de coleta do SRE — sem dados para este intervalo.' : `Nenhuma nova oferta de debênture na CVM ${sre.caption || 'na janela'}.`}</Empty>}
     </div>
   )
 }
