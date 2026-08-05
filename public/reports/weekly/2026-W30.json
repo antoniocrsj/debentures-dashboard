@@ -566,7 +566,8 @@
           ]
         }
       ],
-      "inconsistencias": []
+      "inconsistencias": [],
+      "ofertasSRE": null
     },
     "secundario": {
       "sintese": [
@@ -810,8 +811,8 @@
           "retornoPct": 0.2859,
           "dataIni": "2026-07-17",
           "dataFim": "2026-07-24",
-          "spreadIniBps": 97,
-          "spreadFimBps": 97,
+          "spreadIniBps": 98,
+          "spreadFimBps": 98,
           "variacaoBps": 0,
           "spreadConfiavel": true
         }

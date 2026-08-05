@@ -699,8 +699,8 @@
         "retornoPct": 1.2317,
         "dataIni": "2026-03-31",
         "dataFim": "2026-04-30",
-        "spreadIniBps": 125,
-        "spreadFimBps": 124,
+        "spreadIniBps": 126,
+        "spreadFimBps": 125,
         "variacaoBps": -1,
         "spreadConfiavel": true
       }
