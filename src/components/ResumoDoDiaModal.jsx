@@ -95,7 +95,7 @@ function Debentures({ sec, cvm, faltantes, sre, periodo }) {
 // ── Card de oferta do SRE (mesmo do relatório HTML, ver tools/relatorios/card-sre.mjs).
 // Estilos inline (paleta Luc, hex literais) p/ ficar idêntico ao card do relatório.
 // Restyle compacto (só apresentação): sem status/resgate/datas, tipo texto puro.
-const SRE_C = { T: '#8c5e3a', CARVAO: '#2a2420', TAUPE: '#9a8c7a', BORDA: '#ddd1c3', DIV: '#eee5db', BEGE: '#f2ede5' }
+const SRE_C = { T: '#8c5e3a', CARVAO: '#2a2420', TAUPE: '#9a8c7a', BORDA: '#6f4a2e', DIV: '#eee5db', BEGE: '#f2ede5' }
 
 // remuneração numa linha: teto em terracota + "(final X%)" em carvão quando existir.
 function CelRemun({ s }) {

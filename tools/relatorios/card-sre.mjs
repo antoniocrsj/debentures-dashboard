@@ -15,7 +15,7 @@ const fmtValor = fmtValorCurto
 const T = '#8c5e3a'        // terracota (destaque: data + remuneração)
 const CARVAO = '#2a2420'   // texto predominante
 const TAUPE = '#9a8c7a'    // secundário, só quando necessário
-const BORDA = '#ddd1c3'    // borda principal
+const BORDA = '#6f4a2e'    // borda principal — terracota escura (contorno do card)
 const DIV = '#eee5db'      // divisórias internas discretas
 const BEGE = '#f2ede5'     // fundo do cabeçalho da tabela
 
