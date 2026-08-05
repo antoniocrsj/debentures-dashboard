@@ -25,11 +25,11 @@
       "tom": "pos"
     },
     {
-      "texto": "Captação líquida Incentivados: −R$ 117 mi",
+      "texto": "Captação líquida Incentivados: −R$ 118 mi",
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional: +R$ 242 mi",
+      "texto": "Captação líquida Tradicional: +R$ 243 mi",
       "tom": "pos"
     },
     {
@@ -92,9 +92,9 @@
       "12431": {
         "dia": "2026-07-29",
         "captacao": 91600962.08999997,
-        "resgate": 209005685.63000005,
-        "liquido": -117404723.54000008,
-        "pl": 265551254847.75015,
+        "resgate": 209505685.63000005,
+        "liquido": -117904723.54000008,
+        "pl": 265550844771.10013,
         "numFundos": 1709,
         "curados": 1737,
         "fechados": 287,
@@ -109,20 +109,20 @@
       },
       "trad": {
         "dia": "2026-07-29",
-        "captacao": 2820533214.419999,
-        "resgate": 2578044184.92,
-        "liquido": 242489029.49999905,
-        "pl": 1594020381484.3796,
-        "numFundos": 998,
+        "captacao": 2820502134.119999,
+        "resgate": 2578000912.7400002,
+        "liquido": 242501221.37999868,
+        "pl": 1594555805807.4097,
+        "numFundos": 999,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
           "dia": "2026-07-28",
-          "captacao": 3440547696.5799994,
-          "resgate": 1903372412.159999,
-          "liquido": 1537175284.4200006,
-          "pl": 1593488025088.0703,
-          "numFundos": 999
+          "captacao": 3440596233.5799994,
+          "resgate": 1904074476.559999,
+          "liquido": 1536521757.0200005,
+          "pl": 1593619125911.4507,
+          "numFundos": 1003
         }
       }
     },
@@ -161,7 +161,7 @@
           "captacao": 1733000,
           "resgate": 0,
           "liquido": 1733000,
-          "pl": 2295896582.53
+          "pl": 2295510288.93
         }
       ],
       "top12431Resgate": [
@@ -177,7 +177,7 @@
           "captacao": 18418083.67,
           "resgate": 45685296.56,
           "liquido": -27267212.89,
-          "pl": 55609564623.95
+          "pl": 55609564623.66
         },
         {
           "gestor": "Ibuina",
@@ -1436,6 +1436,14 @@
       ],
       "top12431Neg": [
         {
+          "cnpj": "39723106000159",
+          "nome": "SPARTA INFLAÇÃO MASTER FUNDO INCENTIVADO DE INVEST FINANCEIRO EM INFRA RENDA FIXA - RESP LTDA",
+          "gestor": "Sparta",
+          "segmento": "12431",
+          "retorno": -47.1267,
+          "pl": 19961022.3
+        },
+        {
           "cnpj": "57075698000121",
           "nome": "VINLAND FIF FUNDO INCENTIVADO EM INVESTIMENTO EM DEB DE INFRA IPCA RF CRED PRIV LP RESP LIMITADA",
           "gestor": "Vinland",
@@ -1466,14 +1474,6 @@
           "segmento": "12431",
           "retorno": -1.2195,
           "pl": 80001392.71
-        },
-        {
-          "cnpj": "63942021000146",
-          "nome": "OCCAM BB INFRA LINEAR FI FINANCEIRO RENDA FIXA INVESTIMENTO EM INFRAESTRUTURA - RESP LIMITADA",
-          "gestor": "Occam",
-          "segmento": "12431",
-          "retorno": -1.1372,
-          "pl": 116262578.71
         }
       ],
       "topTradPos": [
@@ -1494,14 +1494,6 @@
           "pl": 45924965.34
         },
         {
-          "cnpj": "00888897000131",
-          "nome": "BTG PACTUAL HEDGE FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
-          "gestor": "BTG Asset",
-          "segmento": "trad",
-          "retorno": 0.3461,
-          "pl": 39138979.7
-        },
-        {
           "cnpj": "18990334000115",
           "nome": "JGP CORPORATE PLUS MASTER FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO RESP LTDA",
           "gestor": "JGP",
@@ -1516,6 +1508,14 @@
           "segmento": "trad",
           "retorno": 0.247,
           "pl": 88706177.28
+        },
+        {
+          "cnpj": "43597393000175",
+          "nome": "VERDE AM CARRY MASTER FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO RESP LIMITADA",
+          "gestor": "Verde",
+          "segmento": "trad",
+          "retorno": 0.2448,
+          "pl": 73478686.4
         }
       ],
       "topTradNeg": [
@@ -1526,6 +1526,14 @@
           "segmento": "trad",
           "retorno": -19.4007,
           "pl": 21214373
+        },
+        {
+          "cnpj": "64436974000103",
+          "nome": "BB MASTER III RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
+          "gestor": "BB Asset",
+          "segmento": "trad",
+          "retorno": -6.0306,
+          "pl": 1047068248.5
         },
         {
           "cnpj": "19770499000144",
@@ -1550,14 +1558,6 @@
           "segmento": "trad",
           "retorno": -1.4198,
           "pl": 14013779.04
-        },
-        {
-          "cnpj": "37467474000158",
-          "nome": "NORTE LONG BIAS MASTER CLASSE DE  INVESTIMENTO MULTIMERCADO - RESP LIMITADA",
-          "gestor": "Norte",
-          "segmento": "trad",
-          "retorno": -1.3328,
-          "pl": 187497910.28
         }
       ]
     },

@@ -1,14 +1,56 @@
 {
-  "asOf": "2026-08-04",
-  "geradoEm": "2026-08-04T11:38:15.788Z",
+  "asOf": "2026-08-05",
+  "geradoEm": "2026-08-05T11:57:16.402Z",
   "fonte": "CVM SRE (rest/sitePublico/pesquisar/detalhado)",
   "janelaDias": 15,
   "periodo": {
-    "de": "20/07/2026",
-    "ate": "04/08/2026"
+    "de": "21/07/2026",
+    "ate": "05/08/2026"
   },
-  "total": 14,
+  "total": 15,
   "itens": [
+    {
+      "idRequerimento": "27412",
+      "data": "2026-08-05",
+      "emissor": "N. ZEPPONE S.A.",
+      "cnpj": "00.674.246/0001-49",
+      "valor": 130000000,
+      "status": "Aguardando Bookbuilding",
+      "lider": "UBS BB Corretora de Câmbio, Títulos e Valores Mobiliários S.A.",
+      "tipoOferta": "PRIMARIA",
+      "numeroProtocolo": "2504/2026",
+      "numeroRegistro": null,
+      "possuiBook": false,
+      "registroAutomatico": true
+    },
+    {
+      "idRequerimento": "27411",
+      "data": "2026-08-04",
+      "emissor": "CIA CAT. DE ÁGUAS E SANEAMENTO - CASAN",
+      "cnpj": "82.508.433/0001-17",
+      "valor": 175000000,
+      "status": "Aguardando Bookbuilding",
+      "lider": "BANCO SAFRA S/A",
+      "tipoOferta": "PRIMARIA",
+      "numeroProtocolo": "2500/2026",
+      "numeroRegistro": null,
+      "possuiBook": false,
+      "registroAutomatico": true
+    },
+    {
+      "idRequerimento": "27385",
+      "data": "2026-08-04",
+      "emissor": "YDUQS PARTICIPACOES S.A.",
+      "cnpj": "08.807.432/0001-10",
+      "valor": 1375000000,
+      "status": "Aguardando Bookbuilding",
+      "lider": "UBS BB Corretora de Câmbio, Títulos e Valores Mobiliários S.A.",
+      "tipoOferta": "PRIMARIA",
+      "numeroProtocolo": "2499/2026",
+      "numeroRegistro": null,
+      "possuiBook": false,
+      "registroAutomatico": true
+    },
     {
       "idRequerimento": "27397",
       "data": "2026-08-03",
@@ -99,7 +141,7 @@
       "emissor": "TRADIMAQ S.A.",
       "cnpj": "22.320.881/0001-60",
       "valor": 70000000,
-      "status": "Registro Concedido",
+      "status": "Oferta Encerrada",
       "lider": "BANCO VOTORANTIM S.A.",
       "tipoOferta": "PRIMARIA",
       "numeroProtocolo": "2382/2026",
@@ -174,34 +216,6 @@
       "tipoOferta": "PRIMARIA",
       "numeroProtocolo": "2374/2026",
       "numeroRegistro": null,
-      "possuiBook": false,
-      "registroAutomatico": true
-    },
-    {
-      "idRequerimento": "26973",
-      "data": "2026-07-27",
-      "emissor": "FORTBRAS AUTOPECAS S.A.",
-      "cnpj": "22.761.584/0001-50",
-      "valor": 40000000,
-      "status": "Oferta Encerrada",
-      "lider": "BANCO BRADESCO BBI S.A.",
-      "tipoOferta": "PRIMARIA",
-      "numeroProtocolo": "2319/2026",
-      "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/360",
-      "possuiBook": true,
-      "registroAutomatico": true
-    },
-    {
-      "idRequerimento": "27212",
-      "data": "2026-07-20",
-      "emissor": "ORIGEM ENERGIA PILAR S.A.",
-      "cnpj": "43.094.886/0001-92",
-      "valor": 650000000,
-      "status": "Oferta Encerrada",
-      "lider": "XP INVESTIMENTOS CCTVM S.A.",
-      "tipoOferta": "PRIMARIA",
-      "numeroProtocolo": "2318/2026",
-      "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/352;CVM/SRE/AUT/DEB/PRI/2026/353;CVM/SRE/AUT/DEB/PRI/2026/354",
       "possuiBook": false,
       "registroAutomatico": true
     }

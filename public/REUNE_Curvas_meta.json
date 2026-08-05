@@ -1,11 +1,11 @@
 {
     "fonte":  "ANBIMA Data API (titulos-publicos, view=precos)",
-    "totalPontos":  5210,
-    "datasCobertas":  252,
+    "totalPontos":  5237,
+    "datasCobertas":  253,
     "datasHistorico":  1,
     "datasNovas":  1,
     "datasSemCurva":  [
 
                       ],
-    "updatedAt":  "2026-08-04T08:28:59"
+    "updatedAt":  "2026-08-05T08:54:18"
 }

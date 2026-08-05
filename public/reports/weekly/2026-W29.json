@@ -11,7 +11,7 @@
     "fluxoTrad": "2026-07-17",
     "anbima": "2026-07-17",
     "mercado": "2026-08-05",
-    "debentures": "2026-07-31"
+    "debentures": "2026-08-03"
   },
   "alertas": [],
   "partes": {
@@ -740,7 +740,7 @@
       "sintese": [
         "Spread 12.431: abertura (mediana +2 bps, 443 abriram / 86 fecharam de 594).",
         "Spread Tradicional: abertura (mediana +3 bps, 16 abriram / 1 fecharam de 21 — amostra pequena).",
-        "Secundário: R$ 1,3 bi em 1216 negócio(s) (12.431 R$ 702,8 mi · Trad R$ 593,6 mi).",
+        "Secundário: R$ 1,3 bi em 1216 negócio(s) (12.431 R$ 702,6 mi · Trad R$ 593,7 mi).",
         "16 negócio(s) ≥ R$ 20 mi em 11 grupo(s)."
       ],
       "tendencia": {
@@ -848,10 +848,10 @@
               }
             ],
             "vsAnbima": {
-              "comparaveis": 966,
-              "acima": 382,
-              "abaixo": 557,
-              "igual": 27
+              "comparaveis": 962,
+              "acima": 383,
+              "abaixo": 553,
+              "igual": 26
             }
           },
           "trad": {
@@ -923,9 +923,9 @@
             ],
             "vsAnbima": {
               "comparaveis": 201,
-              "acima": 120,
-              "abaixo": 64,
-              "igual": 17
+              "acima": 117,
+              "abaixo": 73,
+              "igual": 11
             }
           }
         }
@@ -946,27 +946,27 @@
           "retornoPct": 0.302,
           "dataIni": "2026-07-10",
           "dataFim": "2026-07-17",
-          "spreadIniBps": 98,
+          "spreadIniBps": 97,
           "spreadFimBps": 97,
-          "variacaoBps": -1,
+          "variacaoBps": 0,
           "spreadConfiavel": true
         }
       },
       "trades": {
         "limiar": 20000000,
         "resumo": {
-          "volume": 1296411564,
+          "volume": 1296245960,
           "nTrades": 1216,
-          "volume12431": 702763075,
-          "volumeTradicional": 593648489,
+          "volume12431": 702564531,
+          "volumeTradicional": 593681429,
           "anterior": {
-            "volume": 3443478966,
+            "volume": 3443059617,
             "nTrades": 1332
           },
-          "variacaoVolNominal": -2147067402,
-          "variacaoVolPct": -0.6235169208813457,
-          "media4Semanas": 4067628859.5,
-          "variacaoVs4Pct": -0.6812856804837998,
+          "variacaoVolNominal": -2146813657,
+          "variacaoVolPct": -0.6235191648730606,
+          "media4Semanas": 4067849846,
+          "variacaoVs4Pct": -0.6813437051334073,
           "maioresGrupos": [
             {
               "nome": "Axia",
@@ -974,7 +974,7 @@
             },
             {
               "nome": "EcoRodovias",
-              "volume": 126294872
+              "volume": 126192824
             },
             {
               "nome": "Energisa",
@@ -1062,7 +1062,7 @@
                 "volume": 23550511,
                 "taxaMed": "8.5809",
                 "spreadFmt": "B29 +21bps",
-                "vsAnbima": -7
+                "vsAnbima": -2
               }
             ]
           },
@@ -1089,7 +1089,7 @@
               "volume": 47590208,
               "taxaMed": "7.9389",
               "spreadFmt": "B29 −30bps",
-              "vsAnbima": -17
+              "vsAnbima": -15
             },
             "trades": [
               {
@@ -1098,7 +1098,7 @@
                 "volume": 47590208,
                 "taxaMed": "7.9389",
                 "spreadFmt": "B29 −30bps",
-                "vsAnbima": -17
+                "vsAnbima": -15
               },
               {
                 "ticker": "ENMTF8",
@@ -1106,7 +1106,7 @@
                 "volume": 30053815,
                 "taxaMed": "8.0755",
                 "spreadFmt": "B35 +9bps",
-                "vsAnbima": -4
+                "vsAnbima": -7
               }
             ]
           },
@@ -1133,7 +1133,7 @@
               "volume": 54607227,
               "taxaMed": "0.6399",
               "spreadFmt": "CDI +0.64%",
-              "vsAnbima": -0.01
+              "vsAnbima": -0.02
             },
             "trades": [
               {
@@ -1142,7 +1142,7 @@
                 "volume": 54607227,
                 "taxaMed": "0.6399",
                 "spreadFmt": "CDI +0.64%",
-                "vsAnbima": -0.01
+                "vsAnbima": -0.02
               },
               {
                 "ticker": "AXIA19",
@@ -1150,7 +1150,7 @@
                 "volume": 20406700,
                 "taxaMed": "7.7275",
                 "spreadFmt": "B35 −29bps",
-                "vsAnbima": -9
+                "vsAnbima": -8
               }
             ]
           },
@@ -1176,7 +1176,7 @@
               "volume": 35560935,
               "taxaMed": "0.8428",
               "spreadFmt": "CDI +0.84%",
-              "vsAnbima": 0.07
+              "vsAnbima": 0.08
             },
             "trades": [
               {
@@ -1185,7 +1185,7 @@
                 "volume": 35560935,
                 "taxaMed": "0.8428",
                 "spreadFmt": "CDI +0.84%",
-                "vsAnbima": 0.07
+                "vsAnbima": 0.08
               },
               {
                 "ticker": "ANHBA6",
@@ -1217,7 +1217,7 @@
               "volume": 50574321,
               "taxaMed": "7.4448",
               "spreadFmt": "B33 −73bps",
-              "vsAnbima": -16
+              "vsAnbima": -17
             },
             "trades": [
               {
@@ -1226,7 +1226,7 @@
                 "volume": 50574321,
                 "taxaMed": "7.4448",
                 "spreadFmt": "B33 −73bps",
-                "vsAnbima": -16
+                "vsAnbima": -17
               }
             ]
           },
@@ -1250,7 +1250,7 @@
               "volume": 33682246,
               "taxaMed": "",
               "spreadFmt": "",
-              "vsAnbima": -1.69
+              "vsAnbima": -1.67
             },
             "trades": [
               {
@@ -1259,7 +1259,7 @@
                 "volume": 33682246,
                 "taxaMed": "",
                 "spreadFmt": "",
-                "vsAnbima": -1.69
+                "vsAnbima": -1.67
               }
             ]
           },
@@ -1283,7 +1283,7 @@
               "volume": 33172625,
               "taxaMed": "0.6000",
               "spreadFmt": "CDI +0.60%",
-              "vsAnbima": 0.01
+              "vsAnbima": 0
             },
             "trades": [
               {
@@ -1292,7 +1292,7 @@
                 "volume": 33172625,
                 "taxaMed": "0.6000",
                 "spreadFmt": "CDI +0.60%",
-                "vsAnbima": 0.01
+                "vsAnbima": 0
               }
             ]
           },
@@ -1316,7 +1316,7 @@
               "volume": 21214487,
               "taxaMed": "1.1502",
               "spreadFmt": "CDI +1.15%",
-              "vsAnbima": -0.23
+              "vsAnbima": -0.22
             },
             "trades": [
               {
@@ -1325,7 +1325,7 @@
                 "volume": 21214487,
                 "taxaMed": "1.1502",
                 "spreadFmt": "CDI +1.15%",
-                "vsAnbima": -0.23
+                "vsAnbima": -0.22
               }
             ]
           },
@@ -1349,7 +1349,7 @@
               "volume": 20407185,
               "taxaMed": "0.9707",
               "spreadFmt": "CDI +0.97%",
-              "vsAnbima": 0.02
+              "vsAnbima": 0
             },
             "trades": [
               {
@@ -1358,7 +1358,7 @@
                 "volume": 20407185,
                 "taxaMed": "0.9707",
                 "spreadFmt": "CDI +0.97%",
-                "vsAnbima": 0.02
+                "vsAnbima": 0
               }
             ]
           },
@@ -1415,7 +1415,7 @@
               "volume": 20019787,
               "taxaMed": "2.4500",
               "spreadFmt": "CDI +2.45%",
-              "vsAnbima": -0.03
+              "vsAnbima": -0.04
             },
             "trades": [
               {
@@ -1424,7 +1424,7 @@
                 "volume": 20019787,
                 "taxaMed": "2.4500",
                 "spreadFmt": "CDI +2.45%",
-                "vsAnbima": -0.03
+                "vsAnbima": -0.04
               }
             ]
           }

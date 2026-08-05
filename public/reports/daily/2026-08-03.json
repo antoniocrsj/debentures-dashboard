@@ -3,17 +3,17 @@
   "label": "03/08/2026",
   "previousDate": "2026-07-31",
   "sourceDates": {
-    "debentures": "2026-07-31",
+    "debentures": "2026-08-03",
     "cap12431": "2026-07-30",
     "capTrad": "2026-07-30",
     "perf12431": "2026-07-30",
     "perfTrad": "2026-07-30",
     "anbima": "2026-08-03",
-    "blc": "2026-07-31",
+    "blc": "2026-08-03",
     "fundos": "2026-07-30"
   },
   "novoPorFonte": {
-    "debentures": false,
+    "debentures": true,
     "cap": true,
     "anbima": true,
     "fundos": true,
@@ -21,11 +21,15 @@
   },
   "summary": [
     {
+      "texto": "2 nova(s) debênture(s) cadastrada(s)",
+      "tom": "pos"
+    },
+    {
       "texto": "Captação líquida Incentivados: −R$ 163 mi",
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional: −R$ 906 mi",
+      "texto": "Captação líquida Tradicional: −R$ 909 mi",
       "tom": "neg"
     },
     {
@@ -51,7 +55,36 @@
   ],
   "sections": {
     "debentures": {
-      "novas": [],
+      "novas": [
+        {
+          "ticker": "IHSB15",
+          "empresa": "IHS BRASIL CESSAO DE INFRAESTRUTURAS S.A.",
+          "grupo": "IHS Towers",
+          "cnpj": "15811119000111",
+          "dataRegistro": "03/08/2026",
+          "dataEmissao": "06/08/2026",
+          "vencimento": "06/08/2031",
+          "indexador": "DI",
+          "taxa": "2,75",
+          "volumeEmitido": 1100000000,
+          "incentivada": false,
+          "coordenador": "ITAU UNIBANCO HOLDING S.A"
+        },
+        {
+          "ticker": "IHSB16",
+          "empresa": "IHS BRASIL CESSAO DE INFRAESTRUTURAS S.A.",
+          "grupo": "IHS Towers",
+          "cnpj": "15811119000111",
+          "dataRegistro": "03/08/2026",
+          "dataEmissao": "06/08/2026",
+          "vencimento": "06/08/2031",
+          "indexador": "DI",
+          "taxa": "2,75",
+          "volumeEmitido": 400000000,
+          "incentivada": false,
+          "coordenador": "BANCO BNP PARIBAS BRASIL  S/A"
+        }
+      ],
       "saidas": [],
       "temSnapshotAnterior": false
     },
@@ -59,37 +92,37 @@
       "12431": {
         "dia": "2026-07-30",
         "captacao": 80984033.71000001,
-        "resgate": 243721624.20000002,
-        "liquido": -162737590.49,
-        "pl": 264708892585,
-        "numFundos": 1700,
+        "resgate": 243721376.24,
+        "liquido": -162737342.53,
+        "pl": 264914799332.63998,
+        "numFundos": 1703,
         "curados": 1737,
         "fechados": 287,
         "anterior": {
           "dia": "2026-07-29",
           "captacao": 91600962.08999997,
-          "resgate": 209005685.63000005,
-          "liquido": -117404723.54000008,
-          "pl": 265551254847.75015,
+          "resgate": 209505685.63000005,
+          "liquido": -117904723.54000008,
+          "pl": 265550844771.10013,
           "numFundos": 1709
         }
       },
       "trad": {
         "dia": "2026-07-30",
-        "captacao": 2518811842.1399994,
-        "resgate": 3424628537.770001,
-        "liquido": -905816695.6300015,
-        "pl": 1593574222369.21,
-        "numFundos": 992,
+        "captacao": 2518824962.7399993,
+        "resgate": 3427972643.0700006,
+        "liquido": -909147680.3300014,
+        "pl": 1594435450540.181,
+        "numFundos": 995,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
           "dia": "2026-07-29",
-          "captacao": 2820533214.419999,
-          "resgate": 2578044184.92,
-          "liquido": 242489029.49999905,
-          "pl": 1594020381484.3796,
-          "numFundos": 998
+          "captacao": 2820502134.119999,
+          "resgate": 2578000912.7400002,
+          "liquido": 242501221.37999868,
+          "pl": 1594555805807.4097,
+          "numFundos": 999
         }
       }
     },
@@ -137,7 +170,7 @@
           "captacao": 17655089.69,
           "resgate": 83448399.33,
           "liquido": -65793309.64,
-          "pl": 55535530354.81
+          "pl": 55665190110.06
         },
         {
           "gestor": "BTG WM",
@@ -209,9 +242,9 @@
         {
           "gestor": "IAM",
           "captacao": 402463584.72,
-          "resgate": 853776569.12,
-          "liquido": -451312984.4,
-          "pl": 457826155091.57
+          "resgate": 856629993.11,
+          "liquido": -454166408.39,
+          "pl": 457823301666.03
         },
         {
           "gestor": "BRAM",
@@ -1503,14 +1536,6 @@
           "pl": 6376188.88
         },
         {
-          "cnpj": "00888897000131",
-          "nome": "BTG PACTUAL HEDGE FUNDO DE INVESTIMENTO FINANCEIRO RENDA FIXA",
-          "gestor": "BTG Asset",
-          "segmento": "trad",
-          "retorno": -0.5321,
-          "pl": 671560790.38
-        },
-        {
           "cnpj": "17072641000154",
           "nome": "PORTO SEGURO INFLAÇÃO MASTER PREVIDENCIÁRIO FIF RENDA FIXA RESPONSABILIDADE LIMITADA",
           "gestor": "Porto Asset",
@@ -1525,11 +1550,22 @@
           "segmento": "trad",
           "retorno": -0.4483,
           "pl": 86917244.9
+        },
+        {
+          "cnpj": "45295157000120",
+          "nome": "VALORA ARKA FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
+          "gestor": "Valora",
+          "segmento": "trad",
+          "retorno": -0.4243,
+          "pl": 183472355.32
         }
       ]
     },
     "inclusoes": {
-      "novosDebentures": [],
+      "novosDebentures": [
+        "IHSB15",
+        "IHSB16"
+      ],
       "novosBlc": [],
       "temSnapshotBlc": true
     },
@@ -1539,182 +1575,8 @@
         "texto": "74 ativo(s) no BLC sem correspondencia em Debentures.csv"
       }
     ],
-    "emissoesCVM": {
-      "asOf": "2026-08-04",
-      "itens": [
-        {
-          "dataRegistro": "2026-08-03",
-          "dataRequerimento": "2026-08-03",
-          "emissor": "IHS BRASIL - CESSÃO DE INFRAESTRUTURAS S.A.",
-          "cnpj": "15811119000111",
-          "emissao": 5,
-          "valor": 1100000000,
-          "incentivada": false,
-          "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-          "grupo": "IHS Towers"
-        },
-        {
-          "dataRegistro": "2026-08-03",
-          "dataRequerimento": "2026-08-03",
-          "emissor": "IHS BRASIL - CESSÃO DE INFRAESTRUTURAS S.A.",
-          "cnpj": "15811119000111",
-          "emissao": 6,
-          "valor": 400000000,
-          "incentivada": false,
-          "lider": "BANCO BNP PARIBAS BRASIL S/A",
-          "grupo": "IHS Towers"
-        }
-      ]
-    },
-    "emissoresFaltantes": {
-      "itens": [],
-      "asOf": "2026-08-04"
-    },
-    "ofertasSRE": {
-      "asOf": "2026-08-04",
-      "janelaDias": 15,
-      "itens": [
-        {
-          "data": "2026-08-03",
-          "emissor": "CIA CAT. DE ÁGUAS E SANEAMENTO - CASAN",
-          "cnpj": "82508433000117",
-          "valor": 90000000,
-          "status": "Aguardando Bookbuilding",
-          "lider": "BANCO VOTORANTIM S.A.",
-          "numeroRegistro": null,
-          "grupo": "Casan"
-        },
-        {
-          "data": "2026-08-03",
-          "emissor": "IHS BRASIL – CESSÃO DE INFRAESTRUTURAS S.A.",
-          "cnpj": "15811119000111",
-          "valor": 400000000,
-          "status": "Registro Concedido",
-          "lider": "BANCO BNP PARIBAS BRASIL S/A",
-          "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/372",
-          "grupo": "IHS Towers"
-        },
-        {
-          "data": "2026-08-03",
-          "emissor": "IHS BRASIL – CESSÃO DE INFRAESTRUTURAS S.A.",
-          "cnpj": "15811119000111",
-          "valor": 1100000000,
-          "status": "Registro Concedido",
-          "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-          "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/371",
-          "grupo": "IHS Towers"
-        },
-        {
-          "data": "2026-08-03",
-          "emissor": "MOVIDA PARTICIPAÇÕES S.A.",
-          "cnpj": "21314559000166",
-          "valor": 1140000000,
-          "status": "Aguardando Bookbuilding",
-          "lider": "BANCO BRADESCO BBI S.A.",
-          "numeroRegistro": null,
-          "grupo": "Simpar"
-        },
-        {
-          "data": "2026-08-03",
-          "emissor": "GSH CORP PARTICIPAÇÕES S.A.",
-          "cnpj": "08397078000101",
-          "valor": 125000000,
-          "status": "Aguardando Bookbuilding",
-          "lider": "BANCO SANTANDER (BRASIL) S.A.",
-          "numeroRegistro": null,
-          "grupo": "GSH Corp"
-        },
-        {
-          "data": "2026-07-31",
-          "emissor": "LWART SOLUÇÕES AMBIENTAIS S.A.",
-          "cnpj": "46201083000188",
-          "valor": 150000000,
-          "status": "Aguardando Bookbuilding",
-          "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-          "numeroRegistro": null,
-          "grupo": "Lwart"
-        },
-        {
-          "data": "2026-07-31",
-          "emissor": "TRADIMAQ S.A.",
-          "cnpj": "22320881000160",
-          "valor": 70000000,
-          "status": "Registro Concedido",
-          "lider": "BANCO VOTORANTIM S.A.",
-          "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/370",
-          "grupo": "Tradimaq"
-        },
-        {
-          "data": "2026-07-31",
-          "emissor": "VIA ARAUCARIA CONCESSIONARIA DE RODOVIAS S.A.",
-          "cnpj": "47155252000153",
-          "valor": 1000000000,
-          "status": "Aguardando Bookbuilding",
-          "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-          "numeroRegistro": null,
-          "grupo": ""
-        },
-        {
-          "data": "2026-07-30",
-          "emissor": "ALUBAR METAIS E CABOS S.A.",
-          "cnpj": "08262121000113",
-          "valor": 100000000,
-          "status": "Oferta Encerrada",
-          "lider": "BANCO VOTORANTIM S.A.",
-          "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/369",
-          "grupo": "Alubar"
-        },
-        {
-          "data": "2026-07-28",
-          "emissor": "M. DIGITAL I PARTICIPACOES S.A.",
-          "cnpj": "62461790000160",
-          "valor": 430000000,
-          "status": "Aguardando Bookbuilding",
-          "lider": "BANCO BRADESCO BBI S.A.",
-          "numeroRegistro": null,
-          "grupo": ""
-        },
-        {
-          "data": "2026-07-27",
-          "emissor": "CERAN - COMPANHIA ENERGETICA RIO DAS ANTAS",
-          "cnpj": "04237975000199",
-          "valor": 120000000,
-          "status": "Aguardando Bookbuilding",
-          "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-          "numeroRegistro": null,
-          "grupo": ""
-        },
-        {
-          "data": "2026-07-27",
-          "emissor": "SMARTFIT ESCOLA DE GINÁSTICA E DANÇA S.A.",
-          "cnpj": "07594978000178",
-          "valor": 1250000000,
-          "status": "Aguardando Bookbuilding",
-          "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-          "numeroRegistro": null,
-          "grupo": "Smart Fit"
-        },
-        {
-          "data": "2026-07-27",
-          "emissor": "FORTBRAS AUTOPECAS S.A.",
-          "cnpj": "22761584000150",
-          "valor": 40000000,
-          "status": "Oferta Encerrada",
-          "lider": "BANCO BRADESCO BBI S.A.",
-          "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/360",
-          "grupo": "Fortbras"
-        },
-        {
-          "data": "2026-07-20",
-          "emissor": "ORIGEM ENERGIA PILAR S.A.",
-          "cnpj": "43094886000192",
-          "valor": 650000000,
-          "status": "Oferta Encerrada",
-          "lider": "XP INVESTIMENTOS CCTVM S.A.",
-          "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/352;CVM/SRE/AUT/DEB/PRI/2026/353;CVM/SRE/AUT/DEB/PRI/2026/354",
-          "grupo": "Origem Energia"
-        }
-      ]
-    }
+    "emissoesCVM": null,
+    "emissoresFaltantes": null,
+    "ofertasSRE": null
   }
 }

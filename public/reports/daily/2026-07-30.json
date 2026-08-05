@@ -87,19 +87,19 @@
         "anterior": {
           "dia": "2026-07-27",
           "captacao": 119376039.33000001,
-          "resgate": 498127763.90999997,
-          "liquido": -378751724.5799999,
-          "pl": 264872431868.60016,
+          "resgate": 488127763.90999997,
+          "liquido": -368751724.5799999,
+          "pl": 264872431847.88013,
           "numFundos": 1715
         }
       },
       "trad": {
         "dia": "2026-07-28",
-        "captacao": 3440547696.5799994,
-        "resgate": 1903372412.159999,
-        "liquido": 1537175284.4200006,
-        "pl": 1593488025088.0703,
-        "numFundos": 999,
+        "captacao": 3440596233.5799994,
+        "resgate": 1904074476.559999,
+        "liquido": 1536521757.0200005,
+        "pl": 1593619125911.4507,
+        "numFundos": 1003,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
@@ -107,8 +107,8 @@
           "captacao": 2231842193.7099996,
           "resgate": 2931527841.389999,
           "liquido": -699685647.6799994,
-          "pl": 1591236315672.861,
-          "numFundos": 1001
+          "pl": 1591248516154.631,
+          "numFundos": 1002
         }
       }
     },
@@ -193,7 +193,7 @@
           "captacao": 1323605992.49,
           "resgate": 449244384.3,
           "liquido": 874361608.19,
-          "pl": 457612169688.03
+          "pl": 457612169685.2
         },
         {
           "gestor": "BB Asset",
@@ -244,7 +244,7 @@
           "captacao": 25017483.03,
           "resgate": 40325704.86,
           "liquido": -15308221.829999998,
-          "pl": 22593744060.26
+          "pl": 22593849177.07
         },
         {
           "gestor": "Kinea",
@@ -1422,28 +1422,12 @@
       ],
       "top12431Neg": [
         {
-          "cnpj": "39723106000159",
-          "nome": "SPARTA INFLAÇÃO MASTER FUNDO INCENTIVADO DE INVEST FINANCEIRO EM INFRA RENDA FIXA - RESP LTDA",
-          "gestor": "Sparta",
-          "segmento": "12431",
-          "retorno": -46.7604,
-          "pl": 20000000
-        },
-        {
           "cnpj": "61141536000111",
           "nome": "BB MASTER RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
           "gestor": "BB Asset",
           "segmento": "12431",
           "retorno": -25.0147,
           "pl": 580279029.45
-        },
-        {
-          "cnpj": "63729525000182",
-          "nome": "CAPITÂNIA INFRA ADVISORY SENIOR II FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRA RENDA FIXA",
-          "gestor": "Capitânia",
-          "segmento": "12431",
-          "retorno": -3.9702,
-          "pl": 114225658.32
         },
         {
           "cnpj": "60853232000114",
@@ -1460,6 +1444,22 @@
           "segmento": "12431",
           "retorno": -0.8186,
           "pl": 57908987.04
+        },
+        {
+          "cnpj": "60775750000167",
+          "nome": "G5 ALLOCATION II FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "gestor": "G5",
+          "segmento": "12431",
+          "retorno": -0.7952,
+          "pl": 46194738.2
+        },
+        {
+          "cnpj": "63942021000146",
+          "nome": "OCCAM BB INFRA LINEAR FI FINANCEIRO RENDA FIXA INVESTIMENTO EM INFRAESTRUTURA - RESP LIMITADA",
+          "gestor": "Occam",
+          "segmento": "12431",
+          "retorno": -0.7072,
+          "pl": 117599939.84
         }
       ],
       "topTradPos": [
@@ -1480,14 +1480,6 @@
           "pl": 38298298.08
         },
         {
-          "cnpj": "39487617000119",
-          "nome": "LEGACY CAPITAL CREDIT FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO - CRÉDITO PRIVADO RESPONSABILIDA",
-          "gestor": "Legacy",
-          "segmento": "trad",
-          "retorno": 0.3812,
-          "pl": 109245213.19
-        },
-        {
           "cnpj": "43636081000123",
           "nome": "MAESTRANZA PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
           "gestor": "XPG",
@@ -1502,17 +1494,17 @@
           "segmento": "trad",
           "retorno": 0.2735,
           "pl": 44043893.86
+        },
+        {
+          "cnpj": "14158932000171",
+          "nome": "FUNDO DE INVESTIMENTO MULTIMERCADO FRATELLI LONGO PRAZO",
+          "gestor": "Scalare",
+          "segmento": "trad",
+          "retorno": 0.2717,
+          "pl": 21357120.92
         }
       ],
       "topTradNeg": [
-        {
-          "cnpj": "64436974000103",
-          "nome": "BB MASTER III RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
-          "gestor": "BB Asset",
-          "segmento": "trad",
-          "retorno": -5.9407,
-          "pl": 1047744080.83
-        },
         {
           "cnpj": "36532178000120",
           "nome": "CHRONOS FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO",
@@ -1544,6 +1536,14 @@
           "segmento": "trad",
           "retorno": -1.2419,
           "pl": 191033991.06
+        },
+        {
+          "cnpj": "52273351000170",
+          "nome": "PORTFOLIO RF II PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
+          "gestor": "XPG",
+          "segmento": "trad",
+          "retorno": -0.7398,
+          "pl": 10853834.7
         }
       ]
     },

@@ -6,12 +6,12 @@
   "dias": 256,
   "data_recente": "2026-08-05",
   "data_antiga": "2025-07-31",
-  "linhas": 55963,
-  "ativos_dia": 178544,
-  "com_spread": 45669,
-  "sem_duration": 364,
-  "vol_mercado_total": 167015267298,
-  "vol_econ_total": 524858155320,
-  "pct_mercado_do_econ": 31.8,
-  "gerado_em": "2026-08-04T11:29:51.602Z"
+  "linhas": 56216,
+  "ativos_dia": 179189,
+  "com_spread": 45899,
+  "sem_duration": 368,
+  "vol_mercado_total": 166673220575,
+  "vol_econ_total": 526315179311,
+  "pct_mercado_do_econ": 31.7,
+  "gerado_em": "2026-08-05T11:54:48.219Z"
 }

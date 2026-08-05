@@ -1,7 +1,7 @@
 {
   "date": "2026-07-29",
   "label": "29/07/2026",
-  "previousDate": "2026-07-28",
+  "previousDate": null,
   "sourceDates": {
     "debentures": "2026-07-27",
     "cap12431": "2026-07-27",
@@ -13,7 +13,7 @@
     "fundos": "2026-07-27"
   },
   "novoPorFonte": {
-    "debentures": false,
+    "debentures": true,
     "cap": true,
     "anbima": true,
     "fundos": true,
@@ -21,7 +21,7 @@
   },
   "summary": [
     {
-      "texto": "Captação líquida Incentivados: −R$ 379 mi",
+      "texto": "Captação líquida Incentivados: −R$ 369 mi",
       "tom": "neg"
     },
     {
@@ -29,7 +29,7 @@
       "tom": "neg"
     },
     {
-      "texto": "Maior captação: Kinea (+R$ 4 mi)",
+      "texto": "Maior captação: San WM (+R$ 10 mi)",
       "tom": "pos"
     },
     {
@@ -62,9 +62,9 @@
       "12431": {
         "dia": "2026-07-27",
         "captacao": 119376039.33000001,
-        "resgate": 498127763.90999997,
-        "liquido": -378751724.5799999,
-        "pl": 264872431868.60016,
+        "resgate": 488127763.90999997,
+        "liquido": -368751724.5799999,
+        "pl": 264872431847.88013,
         "numFundos": 1715,
         "curados": 1737,
         "fechados": 287,
@@ -73,7 +73,7 @@
           "captacao": 95918827.97999999,
           "resgate": 266466227.66000003,
           "liquido": -170547399.68000004,
-          "pl": 264924549248.60004,
+          "pl": 264924549247.02005,
           "numFundos": 1710
         }
       },
@@ -82,8 +82,8 @@
         "captacao": 2231842193.7099996,
         "resgate": 2931527841.389999,
         "liquido": -699685647.6799994,
-        "pl": 1591236315672.861,
-        "numFundos": 1001,
+        "pl": 1591248516154.631,
+        "numFundos": 1002,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
@@ -91,13 +91,20 @@
           "captacao": 2092471401.1100006,
           "resgate": 3014921681.689998,
           "liquido": -922450280.5799975,
-          "pl": 1581374363846.2998,
-          "numFundos": 996
+          "pl": 1581386487118.7698,
+          "numFundos": 997
         }
       }
     },
     "gestores": {
       "top12431Captacao": [
+        {
+          "gestor": "San WM",
+          "captacao": 10857748.44,
+          "resgate": 531400,
+          "liquido": 10326348.44,
+          "pl": 7533088429.01
+        },
         {
           "gestor": "Kinea",
           "captacao": 3618407.09,
@@ -118,13 +125,6 @@
           "resgate": 265000,
           "liquido": 451000,
           "pl": 1082220929.03
-        },
-        {
-          "gestor": "San WM",
-          "captacao": 10857748.44,
-          "resgate": 10531400,
-          "liquido": 326348.4399999995,
-          "pl": 7533088429.01
         },
         {
           "gestor": "Track",
@@ -221,7 +221,7 @@
           "captacao": 509647027.35,
           "resgate": 670112353.58,
           "liquido": -160465326.23000002,
-          "pl": 456497301009.77
+          "pl": 456497301009.37
         },
         {
           "gestor": "CEF Asset",
@@ -1450,12 +1450,12 @@
     "perf": {
       "top12431Pos": [
         {
-          "cnpj": "63729525000182",
-          "nome": "CAPITÂNIA INFRA ADVISORY SENIOR II FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRA RENDA FIXA",
-          "gestor": "Capitânia",
+          "cnpj": "59878473000139",
+          "nome": "SAFRA INFRA EXCLUSIVO PRÉ RF FIF INVESTIMENTO EM INFRA CI EM INFRAESTRUTURA EM RF RESP LIMITADA",
+          "gestor": "Safra Asset",
           "segmento": "12431",
-          "retorno": 4.2438,
-          "pl": 13850125.9
+          "retorno": 10.3743,
+          "pl": 9083587.08
         },
         {
           "cnpj": "59772310000177",
@@ -1464,14 +1464,6 @@
           "segmento": "12431",
           "retorno": 1.0376,
           "pl": 10279447
-        },
-        {
-          "cnpj": "59878473000139",
-          "nome": "SAFRA INFRA EXCLUSIVO PRÉ RF FIF INVESTIMENTO EM INFRA CI EM INFRAESTRUTURA EM RF RESP LIMITADA",
-          "gestor": "Safra Asset",
-          "segmento": "12431",
-          "retorno": 0.9844,
-          "pl": 9083587.08
         },
         {
           "cnpj": "54936922000134",
@@ -1488,6 +1480,14 @@
           "segmento": "12431",
           "retorno": 0.5984,
           "pl": 18290612.9
+        },
+        {
+          "cnpj": "43758715000110",
+          "nome": "ITAOCAIA FIF INVESTIMENTO EM INFRAESTRUTURA CLASSE DE INVESTIMENTO EM INFRA RENDA FIXA RESP LIMITADA",
+          "gestor": "Safra Asset",
+          "segmento": "12431",
+          "retorno": 0.541,
+          "pl": 40447328.25
         }
       ],
       "top12431Neg": [
@@ -1576,14 +1576,6 @@
       ],
       "topTradNeg": [
         {
-          "cnpj": "39487617000119",
-          "nome": "LEGACY CAPITAL CREDIT FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO - CRÉDITO PRIVADO RESPONSABILIDA",
-          "gestor": "Legacy",
-          "segmento": "trad",
-          "retorno": -0.2811,
-          "pl": 295951701.56
-        },
-        {
           "cnpj": "52273351000170",
           "nome": "PORTFOLIO RF II PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
           "gestor": "XPG",
@@ -1614,6 +1606,14 @@
           "segmento": "trad",
           "retorno": -0.0849,
           "pl": 25760151.38
+        },
+        {
+          "cnpj": "63806809000125",
+          "nome": "HERITAGE RUBY MASTER II FUNDO DE INVESTIMENTO RENDA FIXA INFRA CRÉDITO PRIVADO - RESP LIMT",
+          "gestor": "Heritage",
+          "segmento": "trad",
+          "retorno": -0.0807,
+          "pl": 88461347.43
         }
       ]
     },

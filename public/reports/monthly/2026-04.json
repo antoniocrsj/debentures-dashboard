@@ -35,6 +35,14 @@
           "incentivada": false
         },
         {
+          "ticker": "AEDI22",
+          "empresa": "AEDIFICA OESTE SP SPE S.A.",
+          "grupo": "Aedifica",
+          "dataRegistro": "2026-04-17",
+          "indexador": "DI",
+          "incentivada": false
+        },
+        {
           "ticker": "ASCYA1",
           "empresa": "ASCENTY DATA CENTERS E TELECOMUNICACOES S/A",
           "grupo": "Ascenty",
@@ -712,6 +720,7 @@
       "novosDebentures": [
         "ADGE15",
         "AEDI12",
+        "AEDI22",
         "ASCYA1",
         "ASCYA2",
         "BATA11",
@@ -820,7 +829,7 @@
       "tom": "neg"
     },
     {
-      "texto": "55 nova(s) debênture(s) registrada(s) no mês."
+      "texto": "56 nova(s) debênture(s) registrada(s) no mês."
     }
   ]
 }
