@@ -55,3 +55,12 @@ export function tenorAmort(s) {
   const amort = s.amort === 'amort' ? 'amort.' : s.amort === 'bullet' ? 'bullet' : (s.amort || '')
   return [tenor, amort].filter(Boolean).join(' ') || '—'
 }
+// Número do spread final (pós-bookbuilding) para o "(final X%)" ao lado da
+// remuneração. Extrai só o número+% do texto (ex.: "DI + 0,72%" -> "0,72%",
+// "IPCA − 0,53%" -> "−0,53%"). null quando não há número.
+export function spreadFinalCurto(str) {
+  const m = String(str || '').match(/([+−–-]?)\s*(\d+(?:[.,]\d+)?)\s*%/)
+  if (!m) return null
+  const neg = /[−–-]/.test(m[1])
+  return `${neg ? '−' : ''}${m[2].replace('.', ',')}%`
+}

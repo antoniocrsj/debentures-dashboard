@@ -943,9 +943,9 @@
       "ida": {
         "12431": {
           "indice": "IDA-IPCA Infraestrutura",
-          "retornoPct": 0.3232,
+          "retornoPct": 0.2679,
           "dataIni": "2026-07-31",
-          "dataFim": "2026-08-03",
+          "dataFim": "2026-08-04",
           "spreadIniBps": null,
           "spreadFimBps": null,
           "variacaoBps": null,
@@ -953,9 +953,9 @@
         },
         "trad": {
           "indice": "IDA-DI",
-          "retornoPct": 0.0669,
+          "retornoPct": 0.1292,
           "dataIni": "2026-07-31",
-          "dataFim": "2026-08-03",
+          "dataFim": "2026-08-04",
           "spreadIniBps": 97,
           "spreadFimBps": 96,
           "variacaoBps": -1,

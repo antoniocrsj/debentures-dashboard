@@ -11,7 +11,7 @@
     "anbima": "2026-08-04",
     "fundos": "2026-08-04",
     "blc": "2026-08-04",
-    "ida": "2026-08-03",
+    "ida": "2026-08-04",
     "perf12431": "2026-08-03",
     "perfTrad": "2026-08-03"
   },
@@ -385,9 +385,9 @@
     "ida": {
       "12431": {
         "indice": "IDA-IPCA Infraestrutura",
-        "retornoPct": 0.3232,
+        "retornoPct": 0.2679,
         "dataIni": "2026-07-31",
-        "dataFim": "2026-08-03",
+        "dataFim": "2026-08-04",
         "spreadIniBps": null,
         "spreadFimBps": null,
         "variacaoBps": null,
@@ -395,9 +395,9 @@
       },
       "trad": {
         "indice": "IDA-DI",
-        "retornoPct": 0.0669,
+        "retornoPct": 0.1292,
         "dataIni": "2026-07-31",
-        "dataFim": "2026-08-03",
+        "dataFim": "2026-08-04",
         "spreadIniBps": 97,
         "spreadFimBps": 96,
         "variacaoBps": -1,
@@ -469,10 +469,10 @@
       "tom": ""
     },
     {
-      "texto": "IDA-IPCA Infraestrutura rendeu +0,32% no mês."
+      "texto": "IDA-IPCA Infraestrutura rendeu +0,27% no mês."
     },
     {
-      "texto": "IDA-DI rendeu +0,07% no mês, spread fechou 1 bps."
+      "texto": "IDA-DI rendeu +0,13% no mês, spread fechou 1 bps."
     },
     {
       "texto": "Captação líquida 12.431 no mês: −R$ 29 mi (capt. R$ 225 mi − resg. R$ 254 mi, 2 dia(s) útil(eis)).",

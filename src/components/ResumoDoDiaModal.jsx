@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { fmtBRL, shortInstituicao } from '../utils/format.js'
 import { fmtDia } from '../utils/reports.js'
 import { downloadFile, downloadName } from '../utils/download.js'
-import { siglaBanco, fmtValorCurto, fmtDataDia, fmtDataCurta, tenorAmort } from '../utils/sreCard.js'
+import { siglaBanco, fmtValorCurto, fmtDataDia, tenorAmort, spreadFinalCurto } from '../utils/sreCard.js'
 
 const money = v => fmtBRL(typeof v === 'number' ? v : Number(v))
 const pct = v => (v == null || Number.isNaN(+v) ? '—' : `${(+v).toFixed(2)}%`)
@@ -94,67 +94,63 @@ function Debentures({ sec, cvm, faltantes, sre, periodo }) {
 
 // ── Card de oferta do SRE (mesmo do relatório HTML, ver tools/relatorios/card-sre.mjs).
 // Estilos inline (paleta Luc, hex literais) p/ ficar idêntico ao card do relatório.
-const SRE_C = { T: '#8c5e3a', CARVAO: '#26211d', MUTED: '#8a7d6c', FAINT: '#b4a893', LINHA: '#ece0cd', BORDA: '#e0d0bb' }
+// Restyle compacto (só apresentação): sem status/resgate/datas, tipo texto puro.
+const SRE_C = { T: '#8c5e3a', CARVAO: '#2a2420', TAUPE: '#9a8c7a', BORDA: '#ddd1c3', DIV: '#eee5db', BEGE: '#f2ede5' }
 
+// remuneração numa linha: teto em terracota + "(final X%)" em carvão quando existir.
 function CelRemun({ s }) {
-  const l1 = s.final || s.teto || '—'
+  const main = s.teto || s.final || '—'
+  const fin = (s.teto && s.final) ? spreadFinalCurto(s.final) : null
   return (
     <>
-      <span style={{ fontWeight: 600, color: SRE_C.T }}>{l1}</span>
-      {s.spread && <><br /><span style={{ color: SRE_C.MUTED }}>{s.spread}</span></>}
-      {s.final && s.teto && <><br /><span style={{ color: SRE_C.FAINT, fontSize: 11 }}>teto {s.teto}</span></>}
+      <span style={{ fontSize: 12, fontWeight: 500, color: SRE_C.T }}>{main}</span>
+      {fin && <span style={{ fontSize: 9.5, fontWeight: 400, color: SRE_C.CARVAO }}> (final {fin})</span>}
     </>
   )
 }
+// 12.431 / Trad como texto simples (sem fundo, borda, badge ou negrito)
 function SeloTipo({ inc }) {
-  return inc
-    ? <span style={{ fontSize: 10.5, fontWeight: 600, color: '#55611f', background: '#eef0dc', borderRadius: 4, padding: '1px 6px' }}>12.431</span>
-    : <span style={{ fontSize: 10.5, fontWeight: 600, color: '#7a6a55', background: '#efe4d3', borderRadius: 4, padding: '1px 6px' }}>Trad</span>
+  return <span style={{ fontSize: 12, fontWeight: 400, color: SRE_C.CARVAO }}>{inc ? '12.431' : 'Trad'}</span>
 }
 
 function CardSRE({ o }) {
   const series = Array.isArray(o.series) ? o.series : []
-  const tdV = { textAlign: 'center', padding: '7px 6px', verticalAlign: 'top' }
-  const tdLbl = { textAlign: 'left', padding: '7px 8px', color: SRE_C.MUTED }
-  const trTop = { borderTop: `1px solid ${SRE_C.LINHA}` }
+  const tdLbl = { textAlign: 'left', padding: '3px 7px', fontSize: 11, fontWeight: 400, color: SRE_C.CARVAO }
+  const tdV = { textAlign: 'center', padding: '3px 7px', verticalAlign: 'middle' }
+  const bb = { borderBottom: `1px solid ${SRE_C.DIV}` }
   const razao = o.razaoSocial && o.razaoSocial.toLowerCase() !== String(o.emissor || '').toLowerCase() ? o.razaoSocial : o.grupo
   return (
-    <div style={{ background: '#fff', border: `1px solid ${SRE_C.BORDA}`, borderRadius: 12, overflow: 'hidden', margin: '10px 0', fontSize: 13, color: SRE_C.CARVAO }}>
-      <div style={{ padding: '13px 16px 12px', borderBottom: `1px solid ${SRE_C.LINHA}`, display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, flexWrap: 'wrap' }}>
-          <span style={{ fontSize: 12, color: SRE_C.T, fontWeight: 600 }}>{fmtDataDia(o.data)}</span>
-          <span style={{ fontSize: 16, fontWeight: 600 }}>{o.emissor || '—'}</span>
-          {razao && <span style={{ fontSize: 12, color: SRE_C.MUTED }}>{razao}</span>}
+    <div style={{ background: '#fff', border: `1px solid ${SRE_C.BORDA}`, borderRadius: 8, boxShadow: '0 1px 2px rgb(42 36 32 / 7%)', overflow: 'hidden', margin: '8px 0', color: SRE_C.CARVAO }}>
+      <div style={{ minHeight: 42, padding: '5px 10px', borderBottom: `1px solid ${SRE_C.DIV}`, display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 10, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap', minWidth: 0 }}>
+          <span style={{ fontSize: 11, color: SRE_C.T, fontWeight: 500 }}>{fmtDataDia(o.data)}</span>
+          <span style={{ fontSize: 14, fontWeight: 500, color: SRE_C.CARVAO }}>{o.emissor || '—'}</span>
+          {razao && <span style={{ fontSize: 11, color: SRE_C.CARVAO }}>{razao}</span>}
         </div>
-        <div style={{ display: 'flex', gap: 6 }}>
-          {o.rating && <span style={{ fontSize: 11, fontWeight: 600, color: '#5f4a33', background: '#efe1cd', borderRadius: 5, padding: '2px 8px' }}>{o.rating}</span>}
-          {o.status && <span style={{ fontSize: 11, fontWeight: 600, color: '#5b6b2e', background: '#eef0dc', borderRadius: 5, padding: '2px 8px' }}>{o.status}</span>}
-        </div>
+        {o.rating && <span style={{ fontSize: 11, color: SRE_C.TAUPE }}>{o.rating}</span>}
       </div>
-      <div style={{ padding: '10px 16px', borderBottom: `1px solid ${SRE_C.LINHA}`, fontSize: 12.5, lineHeight: 1.7 }}>
-        <span style={{ color: SRE_C.MUTED }}>Sindicato </span>
-        <span style={{ fontWeight: 600 }}>{(o.sindicato || []).length
-          ? (o.sindicato || []).map((c, k) => <span key={k}>{k > 0 ? ' · ' : ''}{siglaBanco(c.nome || c.razaoSocial)}{c.lider && <span style={{ color: SRE_C.T }}> (líder)</span>}</span>)
+      <div style={{ minHeight: 32, padding: '4px 10px', borderBottom: `1px solid ${SRE_C.DIV}`, fontSize: 11, lineHeight: 1.6, color: SRE_C.CARVAO }}>
+        Sindicato <span style={{ fontWeight: 500 }}>{(o.sindicato || []).length
+          ? (o.sindicato || []).map((c, k) => <span key={k}>{k > 0 ? ' · ' : ''}{siglaBanco(c.nome || c.razaoSocial)}{c.lider && ' (líder)'}</span>)
           : '—'}</span>
-        <span style={{ color: '#d9c9b3', margin: '0 10px' }}>|</span>
-        <span style={{ color: SRE_C.MUTED }}>Total </span><span style={{ fontWeight: 600 }}>{fmtValorCurto(o.valorTotal ?? o.valor)}</span>
-        <span style={{ color: '#d9c9b3', margin: '0 10px' }}>|</span>
-        <span style={{ fontWeight: 600 }}>{series.length || o.numSeries || '—'} série{(series.length || o.numSeries) === 1 ? '' : 's'}</span>
+        <span style={{ color: SRE_C.TAUPE, margin: '0 7px' }}>|</span>
+        Total <span style={{ fontWeight: 500 }}>{fmtValorCurto(o.valorTotal ?? o.valor)}</span>
+        <span style={{ color: SRE_C.TAUPE, margin: '0 7px' }}>|</span>
+        <span style={{ fontWeight: 500 }}>{series.length || o.numSeries || '—'} série{(series.length || o.numSeries) === 1 ? '' : 's'}</span>
       </div>
       {series.length ? (
-        <div style={{ padding: '6px 8px 12px', overflowX: 'auto' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12, minWidth: Math.max(560, 120 + series.length * 96) }}>
-            <thead><tr><th style={{ textAlign: 'left', padding: '8px 8px 6px', color: SRE_C.MUTED, fontWeight: 600 }}>Série</th>{series.map((_, i) => <th key={i} style={{ padding: '8px 6px 6px', fontWeight: 600, textAlign: 'center' }}>{i + 1}ª</th>)}</tr></thead>
+        <div style={{ padding: '5px 8px 7px', overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: Math.max(360, 110 + series.length * 90) }}>
+            <thead><tr style={{ background: SRE_C.BEGE }}><th style={{ ...tdLbl, height: 28 }}>Série</th>{series.map((_, i) => <th key={i} style={{ height: 28, padding: '3px 7px', textAlign: 'center', fontSize: 11, fontWeight: 500, color: SRE_C.CARVAO }}>{i + 1}ª</th>)}</tr></thead>
             <tbody>
-              <tr style={trTop}><td style={tdLbl}>Tipo</td>{series.map((s, i) => <td key={i} style={tdV}><SeloTipo inc={s.incentivada} /></td>)}</tr>
-              <tr style={trTop}><td style={{ ...tdLbl, verticalAlign: 'top' }}>Remuneração<br /><span style={{ fontSize: 10, color: SRE_C.FAINT }}>final · spread · teto</span></td>{series.map((s, i) => <td key={i} style={tdV}><CelRemun s={s} /></td>)}</tr>
-              <tr style={trTop}><td style={tdLbl}>Vencimento</td>{series.map((s, i) => <td key={i} style={{ ...tdV, fontWeight: 600 }}>{tenorAmort(s)}<br /><span style={{ color: SRE_C.MUTED, fontWeight: 400 }}>({fmtDataCurta(s.venc)})</span></td>)}</tr>
-              <tr style={trTop}><td style={tdLbl}>Resgate antec.</td>{series.map((s, i) => <td key={i} style={{ ...tdV, fontWeight: 600 }}>{s.resgate || '—'}</td>)}</tr>
+              <tr><td style={{ ...tdLbl, height: 28, ...bb }}>Tipo</td>{series.map((s, i) => <td key={i} style={{ ...tdV, height: 28, ...bb }}><SeloTipo inc={s.incentivada} /></td>)}</tr>
+              <tr><td style={{ ...tdLbl, height: 34, ...bb }}>Remuneração</td>{series.map((s, i) => <td key={i} style={{ ...tdV, height: 34, ...bb }}><CelRemun s={s} /></td>)}</tr>
+              <tr><td style={{ ...tdLbl, height: 28 }}>Vencimento</td>{series.map((s, i) => <td key={i} style={{ ...tdV, height: 28, fontSize: 12, fontWeight: 500 }}>{tenorAmort(s)}</td>)}</tr>
             </tbody>
           </table>
         </div>
       ) : (
-        <div style={{ padding: '10px 16px', color: SRE_C.MUTED, fontStyle: 'italic', fontSize: 12 }}>Detalhamento das séries ainda não disponível no SRE (oferta recém-protocolada).</div>
+        <div style={{ padding: '8px 10px', color: SRE_C.TAUPE, fontStyle: 'italic', fontSize: 11 }}>Detalhamento das séries ainda não disponível no SRE (oferta recém-protocolada).</div>
       )}
     </div>
   )
