@@ -65,7 +65,7 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
   const [grupo, setGrupo] = useState('')
   const [emissor, setEmissor] = useState('')
   const [ativo, setAtivo] = useState('')
-  const [faixa, setFaixa] = useState('')
+  const [faixa, setFaixa] = useState('Superior a 5MM')  // padrao: so' liquidez > 5MM
   const [periodo, setPeriodo] = useState('6m')
   const [lei, setLei] = useState('')   // '' todos · 'sim' 12.431 · 'nao' tradicional
   const [selAtivo, setSelAtivo] = useState('')   // ativo clicado -> foca o grafico (master-detail)
@@ -228,7 +228,7 @@ export default function SecondaryTable({ trades, secRef, dias, desktop }) {
   // Clicar num ativo foca o grafico (toggle: clicar de novo solta). Independe dos
   // filtros da tabela (master-detail).
   const onClickAtivo = cod => setSelAtivo(s => (s === cod ? '' : cod))
-  const limpar = () => { setBusca(''); setData(''); setGrupo(''); setEmissor(''); setAtivo(''); setFaixa(''); setLei(''); setSelAtivo('') }
+  const limpar = () => { setBusca(''); setData(''); setGrupo(''); setEmissor(''); setAtivo(''); setFaixa('Superior a 5MM'); setLei(''); setSelAtivo('') }
   const mudarPeriodo = id => { setPeriodo(id); setData('') }
   const temFiltro = busca || data || grupo || emissor || ativo || faixa || lei
 
