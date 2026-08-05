@@ -1,7 +1,7 @@
 {
   "asOf": "2026-08-05",
-  "geradoEm": "2026-08-05T11:57:16.402Z",
-  "fonte": "CVM SRE (rest/sitePublico/pesquisar/detalhado)",
+  "geradoEm": "2026-08-05T13:15:20.871Z",
+  "fonte": "CVM SRE (detalhado + participantes + acaoObjeto)",
   "janelaDias": 15,
   "periodo": {
     "de": "21/07/2026",
@@ -14,210 +14,571 @@
       "data": "2026-08-05",
       "emissor": "N. ZEPPONE S.A.",
       "cnpj": "00.674.246/0001-49",
+      "valorTotal": 130000000,
       "valor": 130000000,
       "status": "Aguardando Bookbuilding",
       "lider": "UBS BB Corretora de Câmbio, Títulos e Valores Mobiliários S.A.",
-      "tipoOferta": "PRIMARIA",
-      "numeroProtocolo": "2504/2026",
       "numeroRegistro": null,
-      "possuiBook": false,
-      "registroAutomatico": true
+      "numSeries": 1,
+      "rating": null,
+      "sindicato": [
+        {
+          "nome": "UBS BB Corretora de Câmbio, Títulos e Valores Mobiliários S.A.",
+          "lider": true
+        },
+        {
+          "nome": "CAIXA ECONOMICA FEDERAL",
+          "lider": false
+        }
+      ],
+      "series": [
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": "CDI + 3,20%",
+          "venc": "2031-08-10",
+          "tenor": 5,
+          "amort": "amort",
+          "resgate": "Sim",
+          "rating": null
+        }
+      ]
     },
     {
       "idRequerimento": "27411",
       "data": "2026-08-04",
       "emissor": "CIA CAT. DE ÁGUAS E SANEAMENTO - CASAN",
       "cnpj": "82.508.433/0001-17",
+      "valorTotal": 175000000,
       "valor": 175000000,
       "status": "Aguardando Bookbuilding",
       "lider": "BANCO SAFRA S/A",
-      "tipoOferta": "PRIMARIA",
-      "numeroProtocolo": "2500/2026",
       "numeroRegistro": null,
-      "possuiBook": false,
-      "registroAutomatico": true
+      "numSeries": 1,
+      "rating": null,
+      "sindicato": [
+        {
+          "nome": "BANCO SAFRA S/A",
+          "lider": true
+        }
+      ],
+      "series": [
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": "CDI + 1,60%",
+          "venc": "2031-07-25",
+          "tenor": 5,
+          "amort": "amort",
+          "resgate": "Não",
+          "rating": null
+        }
+      ]
     },
     {
       "idRequerimento": "27385",
       "data": "2026-08-04",
       "emissor": "YDUQS PARTICIPACOES S.A.",
       "cnpj": "08.807.432/0001-10",
+      "valorTotal": 1375000000,
       "valor": 1375000000,
       "status": "Aguardando Bookbuilding",
       "lider": "UBS BB Corretora de Câmbio, Títulos e Valores Mobiliários S.A.",
-      "tipoOferta": "PRIMARIA",
-      "numeroProtocolo": "2499/2026",
       "numeroRegistro": null,
-      "possuiBook": false,
-      "registroAutomatico": true
+      "numSeries": 3,
+      "rating": null,
+      "sindicato": [
+        {
+          "nome": "UBS BB Corretora de Câmbio, Títulos e Valores Mobiliários S.A.",
+          "lider": true
+        },
+        {
+          "nome": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+          "lider": false
+        },
+        {
+          "nome": "BANCO VOTORANTIM S.A.",
+          "lider": false
+        },
+        {
+          "nome": "CAIXA ECONOMICA FEDERAL",
+          "lider": false
+        }
+      ],
+      "series": [
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": "CDI + 0,80%",
+          "venc": "2031-08-25",
+          "tenor": 5,
+          "amort": "bullet",
+          "resgate": "Sim",
+          "rating": null
+        },
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": "CDI + 0,95%",
+          "venc": "2033-08-25",
+          "tenor": 7,
+          "amort": "amort",
+          "resgate": "Sim",
+          "rating": null
+        },
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": "CDI + 0,95%",
+          "venc": "2033-08-25",
+          "tenor": 7,
+          "amort": "amort",
+          "resgate": "Sim",
+          "rating": null
+        }
+      ]
     },
     {
       "idRequerimento": "27397",
       "data": "2026-08-03",
       "emissor": "CIA CAT. DE ÁGUAS E SANEAMENTO - CASAN",
       "cnpj": "82.508.433/0001-17",
+      "valorTotal": 90000000,
       "valor": 90000000,
       "status": "Aguardando Bookbuilding",
       "lider": "BANCO VOTORANTIM S.A.",
-      "tipoOferta": "PRIMARIA",
-      "numeroProtocolo": "2487/2026",
       "numeroRegistro": null,
-      "possuiBook": false,
-      "registroAutomatico": true
+      "numSeries": 1,
+      "rating": null,
+      "sindicato": [
+        {
+          "nome": "BANCO VOTORANTIM S.A.",
+          "lider": true
+        }
+      ],
+      "series": [
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": null,
+          "venc": "2028-07-25",
+          "tenor": 2,
+          "amort": "amort",
+          "resgate": "Sim",
+          "rating": null
+        }
+      ]
     },
     {
       "idRequerimento": "27390",
       "data": "2026-08-03",
       "emissor": "IHS BRASIL – CESSÃO DE INFRAESTRUTURAS S.A.",
       "cnpj": "15.811.119/0001-11",
+      "valorTotal": 400000000,
       "valor": 400000000,
       "status": "Registro Concedido",
       "lider": "BANCO BNP PARIBAS BRASIL S/A",
-      "tipoOferta": "PRIMARIA",
-      "numeroProtocolo": "2486/2026",
       "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/372",
-      "possuiBook": false,
-      "registroAutomatico": true
+      "numSeries": 1,
+      "rating": null,
+      "sindicato": [
+        {
+          "nome": "BANCO BNP PARIBAS BRASIL S/A",
+          "lider": true
+        }
+      ],
+      "series": [
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": null,
+          "venc": "2031-08-06",
+          "tenor": 5,
+          "amort": "amort",
+          "resgate": "Sim",
+          "rating": null
+        }
+      ]
     },
     {
       "idRequerimento": "27395",
       "data": "2026-08-03",
       "emissor": "IHS BRASIL – CESSÃO DE INFRAESTRUTURAS S.A.",
       "cnpj": "15.811.119/0001-11",
+      "valorTotal": 1100000000,
       "valor": 1100000000,
       "status": "Registro Concedido",
       "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-      "tipoOferta": "PRIMARIA",
-      "numeroProtocolo": "2484/2026",
       "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/371",
-      "possuiBook": false,
-      "registroAutomatico": true
+      "numSeries": 1,
+      "rating": null,
+      "sindicato": [
+        {
+          "nome": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+          "lider": true
+        },
+        {
+          "nome": "BANCO SANTANDER (BRASIL) S.A.",
+          "lider": false
+        },
+        {
+          "nome": "BANCO BRADESCO BBI S.A.",
+          "lider": false
+        }
+      ],
+      "series": [
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": null,
+          "venc": "2031-08-06",
+          "tenor": 5,
+          "amort": "bullet",
+          "resgate": "Sim",
+          "rating": null
+        }
+      ]
     },
     {
       "idRequerimento": "27346",
       "data": "2026-08-03",
       "emissor": "MOVIDA PARTICIPAÇÕES S.A.",
       "cnpj": "21.314.559/0001-66",
+      "valorTotal": 1140000000,
       "valor": 1140000000,
       "status": "Aguardando Bookbuilding",
       "lider": "BANCO BRADESCO BBI S.A.",
-      "tipoOferta": "PRIMARIA",
-      "numeroProtocolo": "2480/2026",
       "numeroRegistro": null,
-      "possuiBook": false,
-      "registroAutomatico": true
+      "numSeries": 2,
+      "rating": null,
+      "sindicato": [
+        {
+          "nome": "BANCO BRADESCO BBI S.A.",
+          "lider": true
+        }
+      ],
+      "series": [
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": "CDI + 2,10%",
+          "venc": "2028-07-15",
+          "tenor": 2,
+          "amort": "amort",
+          "resgate": "Sim",
+          "rating": null
+        },
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": "CDI + 2,50%",
+          "venc": "2033-07-15",
+          "tenor": 7,
+          "amort": "amort",
+          "resgate": "Sim",
+          "rating": null
+        }
+      ]
     },
     {
       "idRequerimento": "27363",
       "data": "2026-08-03",
       "emissor": "GSH CORP PARTICIPAÇÕES S.A.",
       "cnpj": "08.397.078/0001-01",
+      "valorTotal": 125000000,
       "valor": 125000000,
       "status": "Aguardando Bookbuilding",
       "lider": "BANCO SANTANDER (BRASIL) S.A.",
-      "tipoOferta": "PRIMARIA",
-      "numeroProtocolo": "2478/2026",
       "numeroRegistro": null,
-      "possuiBook": false,
-      "registroAutomatico": true
+      "numSeries": 1,
+      "rating": "n/a",
+      "sindicato": [
+        {
+          "nome": "BANCO SANTANDER (BRASIL) S.A.",
+          "lider": true
+        }
+      ],
+      "series": [
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": "CDI + 2,35%",
+          "venc": "2031-07-30",
+          "tenor": 5,
+          "amort": "amort",
+          "resgate": "Sim",
+          "rating": "n/a"
+        }
+      ]
     },
     {
       "idRequerimento": "27362",
       "data": "2026-07-31",
       "emissor": "LWART SOLUÇÕES AMBIENTAIS S.A.",
       "cnpj": "46.201.083/0001-88",
+      "valorTotal": 150000000,
       "valor": 150000000,
       "status": "Aguardando Bookbuilding",
       "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-      "tipoOferta": "PRIMARIA",
-      "numeroProtocolo": "2463/2026",
       "numeroRegistro": null,
-      "possuiBook": false,
-      "registroAutomatico": true
+      "numSeries": 1,
+      "rating": null,
+      "sindicato": [
+        {
+          "nome": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+          "lider": true
+        }
+      ],
+      "series": [
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": "PRÉ 15,26%",
+          "venc": "2034-07-15",
+          "tenor": 8,
+          "amort": "amort",
+          "resgate": "Sim",
+          "rating": null
+        }
+      ]
     },
     {
       "idRequerimento": "27280",
       "data": "2026-07-31",
       "emissor": "TRADIMAQ S.A.",
       "cnpj": "22.320.881/0001-60",
+      "valorTotal": 70000000,
       "valor": 70000000,
       "status": "Oferta Encerrada",
       "lider": "BANCO VOTORANTIM S.A.",
-      "tipoOferta": "PRIMARIA",
-      "numeroProtocolo": "2382/2026",
       "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/370",
-      "possuiBook": true,
-      "registroAutomatico": true
+      "numSeries": 1,
+      "rating": "A",
+      "sindicato": [
+        {
+          "nome": "BANCO VOTORANTIM S.A.",
+          "lider": true
+        }
+      ],
+      "series": [
+        {
+          "incentivada": false,
+          "final": "DI + 1,56%",
+          "spread": null,
+          "teto": "DI + 1,56%",
+          "venc": "2031-07-28",
+          "tenor": 5,
+          "amort": "amort",
+          "resgate": "Sim",
+          "rating": "A"
+        }
+      ]
     },
     {
       "idRequerimento": "27348",
       "data": "2026-07-31",
       "emissor": "VIA ARAUCARIA CONCESSIONARIA DE RODOVIAS S.A.",
       "cnpj": "47.155.252/0001-53",
+      "valorTotal": 1000000000,
       "valor": 1000000000,
       "status": "Aguardando Bookbuilding",
       "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-      "tipoOferta": "PRIMARIA",
-      "numeroProtocolo": "2455/2026",
       "numeroRegistro": null,
-      "possuiBook": false,
-      "registroAutomatico": true
+      "numSeries": 1,
+      "rating": null,
+      "sindicato": [
+        {
+          "nome": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+          "lider": true
+        }
+      ],
+      "series": [
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": "2,00%",
+          "venc": "2028-08-05",
+          "tenor": 2,
+          "amort": "bullet",
+          "resgate": "Sim",
+          "rating": null
+        }
+      ]
     },
     {
       "idRequerimento": "27283",
       "data": "2026-07-30",
       "emissor": "ALUBAR METAIS E CABOS S.A.",
       "cnpj": "08.262.121/0001-13",
+      "valorTotal": 100000000,
       "valor": 100000000,
       "status": "Oferta Encerrada",
       "lider": "BANCO VOTORANTIM S.A.",
-      "tipoOferta": "PRIMARIA",
-      "numeroProtocolo": "2384/2026",
       "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/369",
-      "possuiBook": true,
-      "registroAutomatico": true
+      "numSeries": 1,
+      "rating": "A",
+      "sindicato": [
+        {
+          "nome": "BANCO VOTORANTIM S.A.",
+          "lider": true
+        }
+      ],
+      "series": [
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": "CDI + 2,50%",
+          "venc": "2030-07-20",
+          "tenor": 4,
+          "amort": "amort",
+          "resgate": "Sim",
+          "rating": "A"
+        }
+      ]
     },
     {
       "idRequerimento": "27313",
       "data": "2026-07-28",
       "emissor": "M. DIGITAL I PARTICIPACOES S.A.",
       "cnpj": "62.461.790/0001-60",
+      "valorTotal": 430000000,
       "valor": 430000000,
       "status": "Aguardando Bookbuilding",
       "lider": "BANCO BRADESCO BBI S.A.",
-      "tipoOferta": "PRIMARIA",
-      "numeroProtocolo": "2416/2026",
       "numeroRegistro": null,
-      "possuiBook": false,
-      "registroAutomatico": true
+      "numSeries": 1,
+      "rating": "A",
+      "sindicato": [
+        {
+          "nome": "BANCO BRADESCO BBI S.A.",
+          "lider": true
+        }
+      ],
+      "series": [
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": "2,70%",
+          "venc": "2031-08-05",
+          "tenor": 5,
+          "amort": "amort",
+          "resgate": "Sim",
+          "rating": "A"
+        }
+      ]
     },
     {
       "idRequerimento": "27286",
       "data": "2026-07-27",
       "emissor": "CERAN - COMPANHIA ENERGETICA RIO DAS ANTAS",
       "cnpj": "04.237.975/0001-99",
+      "valorTotal": 120000000,
       "valor": 120000000,
       "status": "Aguardando Bookbuilding",
       "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-      "tipoOferta": "PRIMARIA",
-      "numeroProtocolo": "2390/2026",
       "numeroRegistro": null,
-      "possuiBook": false,
-      "registroAutomatico": true
+      "numSeries": 1,
+      "rating": "n/a",
+      "sindicato": [
+        {
+          "nome": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+          "lider": true
+        }
+      ],
+      "series": [
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": "DI + 1,28%",
+          "venc": "2033-07-24",
+          "tenor": 7,
+          "amort": "amort",
+          "resgate": "Sim",
+          "rating": "n/a"
+        }
+      ]
     },
     {
       "idRequerimento": "27270",
       "data": "2026-07-27",
       "emissor": "SMARTFIT ESCOLA DE GINÁSTICA E DANÇA S.A.",
       "cnpj": "07.594.978/0001-78",
+      "valorTotal": 1250000000,
       "valor": 1250000000,
       "status": "Aguardando Bookbuilding",
       "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-      "tipoOferta": "PRIMARIA",
-      "numeroProtocolo": "2374/2026",
       "numeroRegistro": null,
-      "possuiBook": false,
-      "registroAutomatico": true
+      "numSeries": 3,
+      "rating": null,
+      "sindicato": [
+        {
+          "nome": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+          "lider": true
+        },
+        {
+          "nome": "BANCO BRADESCO BBI S.A.",
+          "lider": false
+        },
+        {
+          "nome": "BANCO VOTORANTIM S.A.",
+          "lider": false
+        },
+        {
+          "nome": "XP INVESTIMENTOS CCTVM S.A.",
+          "lider": false
+        }
+      ],
+      "series": [
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": "0,65%",
+          "venc": "2031-08-19",
+          "tenor": 5,
+          "amort": "",
+          "resgate": "Sim",
+          "rating": null
+        },
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": "0,75%",
+          "venc": "2033-08-20",
+          "tenor": 7,
+          "amort": "",
+          "resgate": "Sim",
+          "rating": null
+        },
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": "1,05%",
+          "venc": "2036-08-20",
+          "tenor": 10,
+          "amort": "",
+          "resgate": "Sim",
+          "rating": null
+        }
+      ]
     }
   ]
 }

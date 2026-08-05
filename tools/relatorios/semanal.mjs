@@ -471,6 +471,9 @@ export function buildSemanal(id, src, helpers) {
   const semAnt = semanasAnteriores(id, 4)
   const volEmitWk = volumeEmitidoPorSemana(src)
   const debentures = buildDebentures(range, src)
+  // Seção SRE (todas as debêntures do SRE) — mesma do diário, substitui o filtro
+  // "só registrado" no render. tecnico/kpis do buildDebentures seguem valendo.
+  debentures.ofertasSRE = src.ofertasSRE || null
   const secundario = buildSecundario(range, src, helpers, semAnt)
   const tecnico = buildTecnico(range, src, semAnt, debentures, volEmitWk, id)
 

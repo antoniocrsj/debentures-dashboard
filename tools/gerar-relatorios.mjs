@@ -20,6 +20,7 @@ import {
   pickReportDates, previousDate, sourceDateFor, summarize, repairText, stepBackTradingDays,
 } from '../src/utils/reports.js'
 import { pruneDir } from './relatorios/retencao.mjs'
+import { renderSecaoSre } from './relatorios/card-sre.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.join(__dirname, '..')
@@ -543,9 +544,12 @@ function loadOfertasSRE() {
       data: e.data || '',
       emissor: repairText((e.emissor || '').trim()),
       cnpj: digits(e.cnpj),
-      valor: parseNum(e.valor),
+      valorTotal: parseNum(e.valorTotal),
       status: (e.status || '').trim(),
-      lider: repairText((e.lider || '').trim()),
+      rating: e.rating || null,
+      numSeries: e.numSeries || null,
+      sindicato: (e.sindicato || []).map(c => ({ nome: repairText(c.nome), lider: !!c.lider })),
+      series: (e.series || []).map(s => ({ ...s })),
       numeroRegistro: e.numeroRegistro || null,
     })).sort((a, b) => (a.data < b.data ? 1 : a.data > b.data ? -1 : 0))
     return { asOf: j.asOf || '', janelaDias: j.janelaDias || null, itens }
@@ -737,14 +741,7 @@ function renderHtml(rep) {
   // componente OfertasSRE do modal React (ResumoDoDiaModal.jsx) para o HTML nao
   // ficar diferente da tela. So no relatorio mais recente (asOf).
   const sre = s.ofertasSRE
-  const sreBlock = sre
-    ? `<h4>Novas ofertas de debêntures na CVM (SRE)${sre.janelaDias ? ` <span class="cap-dia">últimos ${sre.janelaDias} dias</span>` : ''}</h4>
-       ${sre.itens.length
-          ? `<div class="tw"><table><thead><tr><th>Data</th><th>Emissor</th><th>Grupo</th><th>Status</th><th>Líder</th><th>Valor (R$ MM)</th></tr></thead><tbody>${
-              sre.itens.map(e => `<tr><td>${esc(fmtDia(e.data))}</td><td>${esc(e.emissor)}</td><td>${esc(e.grupo || '—')}</td><td>${esc(e.status || '—')}</td><td>${esc(e.lider || '—')}</td><td class="num">${esc(fmtMM(e.valor))}</td></tr>`).join('')
-            }</tbody></table></div>`
-          : empty('Nenhuma nova oferta de debênture na CVM na janela.')}`
-    : ''
+  const sreBlock = sre ? renderSecaoSre(sre.itens, sre.janelaDias) : ''
 
   // Inclusoes no BLC (antigo §6, agora dentro do §2).
   const inclNote = s.inclusoes.temSnapshotBlc && s.inclusoes.novosBlc.length

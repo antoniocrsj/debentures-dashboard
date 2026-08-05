@@ -281,6 +281,8 @@ function main() {
   src.mercado = readCsv(path.join(PUBLIC, 'Mercado_Verdadeiro.csv'))
   src.anbimaNum = anbimaSpreadMap(src.anbimaTx)
   try { src.coordenadores = JSON.parse(fs.readFileSync(path.join(DATA, 'Coordenadores_SRE.json'), 'utf8')).itens || {} } catch { src.coordenadores = {} }
+  // Novas ofertas do SRE (tempo real, todas as debêntures) — MESMA seção do diário.
+  try { src.ofertasSRE = JSON.parse(fs.readFileSync(path.join(DATA, 'Novas_Ofertas_SRE.json'), 'utf8')) } catch { src.ofertasSRE = null }
   // Curva NTN-B/LTN (TPF) por dia — p/ o SPREAD DE EMISSÃO no card do Semanal.
   src.curvas = lerCurvas(PUBLIC)
   const helpers = { snapDates, readSnap, lastLT, lastLE, periodStatus, weekLabel }
@@ -292,7 +294,12 @@ function main() {
     const ids = recentPeriods(capDatas, tipo, N)
     const index = []
     for (const id of ids) {
+      // Seção SRE (tempo real, últimos 15 dias) só no relatório MAIS RECENTE —
+      // igual ao diário (asOf). ids[0] é o período mais novo.
+      const sreBackup = src.ofertasSRE
+      if (tipo === 'weekly' && id !== ids[0]) src.ofertasSRE = null
       const rep = tipo === 'weekly' ? buildSemanal(id, src, helpers) : buildPeriodo(tipo, id, src, tickerInfo)
+      src.ofertasSRE = sreBackup
       fs.writeFileSync(path.join(dir, `${id}.json`), JSON.stringify(rep, null, 2))
       fs.writeFileSync(path.join(dir, `${id}.html`), tipo === 'weekly' ? renderSemanalHtml(rep) : renderPeriodoHtml(rep))
       index.push({ id, label: rep.label, de: rep.de, ate: rep.ate, status: rep.status, json: `/reports/${tipo}/${id}.json`, html: `/reports/${tipo}/${id}.html`, sourceDates: rep.sourceDates })

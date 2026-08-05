@@ -2,6 +2,7 @@
 // Mesma identidade visual dos demais relatórios (paleta Luc). Sem assets externos.
 import { fmtBRL, round } from './semanal.mjs'
 import { shortInstituicao } from '../../src/utils/format.js'
+import { renderSecaoSre } from './card-sre.mjs'
 
 const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]))
 const bps = v => v == null ? '—' : `${v >= 0 ? '+' : '−'}${Math.abs(round(v, 1))} bps`
@@ -34,37 +35,27 @@ function tabela(cols, linhas) {
 }
 const sintese = arr => arr && arr.length ? `<ul class="sintese">${arr.map(s => `<li>${esc(s)}</li>`).join('')}</ul>` : ''
 
-function parteDebentures(d) {
-  const r = d.resumo
-  const kpis = `<div class="kpis">
-    <div><b>${r.nOfertas}</b><span>ofertas (${r.nSeries} séries)</span></div>
-    <div><b>${r.nEmissores}</b><span>emissores · ${r.nGrupos} grupos</span></div>
-    <div><b>${money(r.volumeTotal)}</b><span>volume total${r.volumeConfiavel ? '' : ' (parcial)'}</span></div>
-    <div><b>${money(r.volume12431)}</b><span>12.431</span></div>
-    <div><b>${money(r.volumeTradicional)}</b><span>Tradicional</span></div>
+// KPIs derivados do próprio SRE (consistentes com os cards). Volume por série o
+// SRE não tem -> mostramos contagem de séries 12.431, não split de volume.
+function kpisSre(itens) {
+  const n = itens.length
+  const nS = itens.reduce((s, o) => s + (o.series?.length || o.numSeries || 0), 0)
+  const vol = itens.reduce((s, o) => s + (o.valorTotal || 0), 0)
+  const inc = itens.reduce((s, o) => s + (o.series || []).filter(x => x.incentivada).length, 0)
+  return `<div class="kpis">
+    <div><b>${n}</b><span>ofertas no SRE</span></div>
+    <div><b>${nS}</b><span>séries</span></div>
+    <div><b>${money(vol)}</b><span>volume total</span></div>
+    <div><b>${inc}</b><span>séries 12.431</span></div>
   </div>`
-  const ofertas = d.ofertas.map(o => {
-    const linhasSerie = o.series.map(s => {
-      const campos = [
-        // O que interessa é o SPREAD (nunca a nominal): spread de emissão calculado
-        // (IPCA/PRÉ = estimativa via curva; DI+ exato); sem cálculo, só o indexador.
-        s.spreadEmissao ? `<b>${esc(s.spreadEmissao)}</b>${s.spreadEst ? ' <span class="sub" title="estimativa: cupom de emissão × curva NTN-B/LTN do dia">est.</span>' : ''}` : (s.indexador ? esc(s.indexador) : null),
-        s.vencimento && `venc ${fmtD(s.vencimento)}`, s.durationAnos != null && `dur ${s.durationAnos}a`,
-        s.garantia && `gar. ${esc(s.garantia)}`, s.amortizacao && `amort. ${esc(s.amortizacao)}`,
-        s.recompra && s.recompra.breakeven && `BE ${esc(s.recompra.breakeven)}`,
-        s.resgateAntecipado && `resg.antec.`,
-      ].filter(Boolean).join(' · ')
-      return `<tr><td>${esc(s.ticker)}${s.serie ? ` <span class="sub">${esc(s.serie)}</span>` : ''}</td><td class="num">${s.volumeSerie ? money(s.volumeSerie) : '—'}</td><td>${campos || '—'}</td></tr>`
-    }).join('')
-    const cs = coordStr(o)
-    return `<div class="oferta"><h4>${esc(o.emissor)} ${o.incentivada ? '<span class="tag">12.431</span>' : '<span class="tag tag2">Trad</span>'}${o.volumeParcial ? ' <span class="tag tag-warn">volume parcial</span>' : ''}</h4>
-      <p class="meta">${esc(o.grupo || '—')}${o.setor ? ` · ${esc(o.setor)}` : ''} · reg. CVM ${fmtD(o.dataRegistro)} · ${money(o.volumeOferta)}${o.rating ? ` · rating ${esc(o.rating)}` : ''}</p>
-      ${tetoStr(o)}
-      ${cs ? `<p class="meta">Coordenadores: ${cs}</p>` : ''}
-      <table class="series"><thead><tr><th>Série</th><th class="num">Volume</th><th>Detalhes</th></tr></thead><tbody>${linhasSerie}</tbody></table></div>`
-  }).join('')
-  const inc = d.inconsistencias.length ? `<div class="alerta">⚠ ${d.inconsistencias.map(i => `${esc(i.emissor)}: ${esc(i.motivo)}`).join(' · ')}</div>` : ''
-  return `<section><h2>1. Debêntures</h2>${sintese(d.sintese)}${kpis}${inc}<h3>Novas emissões</h3>${d.ofertas.length ? ofertas : '<p class="vazio">Nenhuma nova debênture registrada na CVM na semana.</p>'}</section>`
+}
+// Debêntures (Semanal) = MESMA seção SRE do diário (todas as debêntures que
+// aparecem no SRE), não mais o filtro "só registrado na semana".
+function parteDebentures(d) {
+  const sre = d.ofertasSRE
+  if (!sre) return `<section><h2>1. Debêntures</h2><p class="vazio">As novas ofertas no SRE (tempo real, últimos 15 dias) constam apenas no relatório da semana corrente.</p></section>`
+  const itens = sre.itens || []
+  return `<section><h2>1. Debêntures</h2>${itens.length ? kpisSre(itens) : ''}${renderSecaoSre(itens, sre.janelaDias)}</section>`
 }
 
 function parteSecundario(s) {
