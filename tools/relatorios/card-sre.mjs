@@ -5,50 +5,11 @@
 // (preparar-ofertas-sre.mjs): a oferta já traz sindicato[], valorTotal, status e
 // series[] (cada série com incentivada/final/spread/teto/venc/tenor/amort/resgate).
 
+import { siglaBanco, fmtValorCurto, fmtDataDia as fmtDia, fmtDataCurta as fmtCurta, tenorAmort } from '../../src/utils/sreCard.js'
+export { siglaBanco }
+
 const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]))
-
-// Razão social do coordenador -> sigla curta da mesa (dicionário do usuário).
-// Casa por palavra-chave no nome em maiúsculas; fallback = 1ª palavra "significativa".
-const SIGLAS = [
-  [/\bBTG\b/, 'BTG'],
-  [/ITA[UÚ].*BBA|\bBBA\b/, 'BBA'],
-  [/BRADESCO.*BBI|\bBBI\b/, 'BBI'],
-  [/\bXP\b/, 'XP'],
-  [/VOTORANTIM|\bBV\b/, 'BV'],
-  [/SAFRA/, 'Safra'],
-  [/SANTANDER|\bSAN\b/, 'SAN'],
-  [/CAIXA|\bCEF\b/, 'CEF'],
-  [/\bUBS\b/, 'UBS BB'],
-  [/DAYCOVAL|\bDAY\b/, 'DAY'],
-  [/\bABC\b/, 'ABC'],
-  [/ITA[UÚ].*UNIBANCO|ITA[UÚ]\b/, 'Itaú'],
-  [/BANCO DO BRASIL|\bBB\b/, 'BB'],
-  [/MORGAN STANLEY/, 'Morgan'],
-  [/CITI/, 'Citi'],
-  [/J\.?P\.?\s*MORGAN|JPMORGAN/, 'JPM'],
-  [/GENIAL/, 'Genial'],
-  [/BofA|MERRILL|BANK OF AMERICA/, 'BofA'],
-]
-export function siglaBanco(razao) {
-  const u = String(razao || '').toUpperCase()
-  for (const [re, sig] of SIGLAS) if (re.test(u)) return sig
-  // fallback: 1ª palavra que não seja "BANCO"/"S.A." etc.
-  const w = u.replace(/\b(BANCO|S\.?A\.?|LTDA|CCTVM|DTVM|INVESTMENT|BANKING|ASSESSORIA|FINANCEIRA)\b/g, ' ')
-    .replace(/[^A-ZÀ-Ú ]/g, ' ').trim().split(/\s+/)[0] || razao || '—'
-  return w.charAt(0) + w.slice(1).toLowerCase()
-}
-
-// dd/MM/yyyy a partir de "yyyy-MM-dd" OU "dd/MM/yyyy" (passa reto).
-const fmtDia = d => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(d || ''); return m ? `${m[3]}/${m[2]}/${m[1]}` : (d || '—') }
-// data curta "15/02/33" p/ o rodapé do vencimento
-const fmtCurta = d => { const s = fmtDia(d); const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(s); return m ? `${m[1]}/${m[2]}/${m[3].slice(2)}` : s }
-// valor total: R$ X,XX bi / R$ XXX MM
-function fmtValor(v) {
-  const n = Number(v) || 0
-  if (n >= 1e9) return `R$ ${(n / 1e9).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} bi`
-  if (n >= 1e6) return `R$ ${Math.round(n / 1e6).toLocaleString('pt-BR')} MM`
-  return `R$ ${n.toLocaleString('pt-BR')}`
-}
+const fmtValor = fmtValorCurto
 
 // paleta (hex literais p/ independer do CSS do template)
 const T = '#8c5e3a', CARVAO = '#26211d', MUTED = '#8a7d6c', FAINT = '#b4a893'
@@ -77,10 +38,7 @@ function seloTipo(inc) {
 
 // vencimento "10y bullet (15/02/36)" — reflete a amortização real (bullet vs amort.)
 function celVenc(s) {
-  const tenor = s.tenor != null ? `${s.tenor}y` : ''
-  const amort = s.amort === 'amort' ? 'amort.' : s.amort === 'bullet' ? 'bullet' : (s.amort || '')
-  const topo = [tenor, amort].filter(Boolean).join(' ') || '—'
-  return `${esc(topo)}<br><span style="color:${MUTED};font-weight:400">(${esc(fmtCurta(s.venc))})</span>`
+  return `${esc(tenorAmort(s))}<br><span style="color:${MUTED};font-weight:400">(${esc(fmtCurta(s.venc))})</span>`
 }
 
 const thS = 'padding:8px 6px 6px;font-weight:600;text-align:center'

@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { fmtBRL, shortInstituicao } from '../utils/format.js'
 import { fmtDia } from '../utils/reports.js'
 import { downloadFile, downloadName } from '../utils/download.js'
+import { siglaBanco, fmtValorCurto, fmtDataDia, fmtDataCurta, tenorAmort } from '../utils/sreCard.js'
 
 const money = v => fmtBRL(typeof v === 'number' ? v : Number(v))
 const pct = v => (v == null || Number.isNaN(+v) ? '—' : `${(+v).toFixed(2)}%`)
@@ -91,39 +92,87 @@ function Debentures({ sec, cvm, faltantes, sre, periodo }) {
   )
 }
 
-// Novas ofertas de debêntures no SRE da CVM (TEMPO REAL): a oferta aparece assim
-// que é protocolada (mesmo "Aguardando Bookbuilding", antes de precificar) —
-// heads-up do que está chegando. Complementa "Registradas na CVM" (só confirmadas).
-function OfertasSRE({ sre }) {
-  if (!sre) return null
+// ── Card de oferta do SRE (mesmo do relatório HTML, ver tools/relatorios/card-sre.mjs).
+// Estilos inline (paleta Luc, hex literais) p/ ficar idêntico ao card do relatório.
+const SRE_C = { T: '#8c5e3a', CARVAO: '#26211d', MUTED: '#8a7d6c', FAINT: '#b4a893', LINHA: '#ece0cd', BORDA: '#e0d0bb' }
+
+function CelRemun({ s }) {
+  const l1 = s.final || s.teto || '—'
   return (
-    <div className="rd-cvm">
-      <h4>
-        Novas ofertas de debêntures na CVM (SRE)
-        {sre.janelaDias && <span className="rd-cap-dia"> · últimos {sre.janelaDias} dias</span>}
-      </h4>
-      {sre.itens?.length ? (
-        <table className="rd-table">
-          <thead><tr><th>Data</th><th>Emissor</th><th>Grupo</th><th>Status</th><th>Líder</th><th className="rd-num">Valor (R$ MM)</th></tr></thead>
-          <tbody>
-            {sre.itens.map((e, i) => (
-              <tr key={`${e.cnpj}-${e.data}-${i}`}>
-                <td>{fmtDia(e.data)}</td>
-                <td className="rd-empresa" title={e.emissor}>{e.emissor}</td>
-                <td className="rd-empresa" title={e.grupo}>{e.grupo || '—'}</td>
-                <td className="rd-empresa" title={e.status}>{e.status || '—'}</td>
-                <td className="rd-empresa" title={e.lider}>{e.lider || '—'}</td>
-                <td className="rd-num">{mm(e.valor)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <>
+      <span style={{ fontWeight: 600, color: SRE_C.T }}>{l1}</span>
+      {s.spread && <><br /><span style={{ color: SRE_C.MUTED }}>{s.spread}</span></>}
+      {s.final && s.teto && <><br /><span style={{ color: SRE_C.FAINT, fontSize: 11 }}>teto {s.teto}</span></>}
+    </>
+  )
+}
+function SeloTipo({ inc }) {
+  return inc
+    ? <span style={{ fontSize: 10.5, fontWeight: 600, color: '#55611f', background: '#eef0dc', borderRadius: 4, padding: '1px 6px' }}>12.431</span>
+    : <span style={{ fontSize: 10.5, fontWeight: 600, color: '#7a6a55', background: '#efe4d3', borderRadius: 4, padding: '1px 6px' }}>Trad</span>
+}
+
+function CardSRE({ o }) {
+  const series = Array.isArray(o.series) ? o.series : []
+  const tdV = { textAlign: 'center', padding: '7px 6px', verticalAlign: 'top' }
+  const tdLbl = { textAlign: 'left', padding: '7px 8px', color: SRE_C.MUTED }
+  const trTop = { borderTop: `1px solid ${SRE_C.LINHA}` }
+  const razao = o.razaoSocial && o.razaoSocial.toLowerCase() !== String(o.emissor || '').toLowerCase() ? o.razaoSocial : o.grupo
+  return (
+    <div style={{ background: '#fff', border: `1px solid ${SRE_C.BORDA}`, borderRadius: 12, overflow: 'hidden', margin: '10px 0', fontSize: 13, color: SRE_C.CARVAO }}>
+      <div style={{ padding: '13px 16px 12px', borderBottom: `1px solid ${SRE_C.LINHA}`, display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, flexWrap: 'wrap' }}>
+          <span style={{ fontSize: 12, color: SRE_C.T, fontWeight: 600 }}>{fmtDataDia(o.data)}</span>
+          <span style={{ fontSize: 16, fontWeight: 600 }}>{o.emissor || '—'}</span>
+          {razao && <span style={{ fontSize: 12, color: SRE_C.MUTED }}>{razao}</span>}
+        </div>
+        <div style={{ display: 'flex', gap: 6 }}>
+          {o.rating && <span style={{ fontSize: 11, fontWeight: 600, color: '#5f4a33', background: '#efe1cd', borderRadius: 5, padding: '2px 8px' }}>{o.rating}</span>}
+          {o.status && <span style={{ fontSize: 11, fontWeight: 600, color: '#5b6b2e', background: '#eef0dc', borderRadius: 5, padding: '2px 8px' }}>{o.status}</span>}
+        </div>
+      </div>
+      <div style={{ padding: '10px 16px', borderBottom: `1px solid ${SRE_C.LINHA}`, fontSize: 12.5, lineHeight: 1.7 }}>
+        <span style={{ color: SRE_C.MUTED }}>Sindicato </span>
+        <span style={{ fontWeight: 600 }}>{(o.sindicato || []).length
+          ? (o.sindicato || []).map((c, k) => <span key={k}>{k > 0 ? ' · ' : ''}{siglaBanco(c.nome || c.razaoSocial)}{c.lider && <span style={{ color: SRE_C.T }}> (líder)</span>}</span>)
+          : '—'}</span>
+        <span style={{ color: '#d9c9b3', margin: '0 10px' }}>|</span>
+        <span style={{ color: SRE_C.MUTED }}>Total </span><span style={{ fontWeight: 600 }}>{fmtValorCurto(o.valorTotal ?? o.valor)}</span>
+        <span style={{ color: '#d9c9b3', margin: '0 10px' }}>|</span>
+        <span style={{ fontWeight: 600 }}>{series.length || o.numSeries || '—'} série{(series.length || o.numSeries) === 1 ? '' : 's'}</span>
+      </div>
+      {series.length ? (
+        <div style={{ padding: '6px 8px 12px', overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12, minWidth: Math.max(560, 120 + series.length * 96) }}>
+            <thead><tr><th style={{ textAlign: 'left', padding: '8px 8px 6px', color: SRE_C.MUTED, fontWeight: 600 }}>Série</th>{series.map((_, i) => <th key={i} style={{ padding: '8px 6px 6px', fontWeight: 600, textAlign: 'center' }}>{i + 1}ª</th>)}</tr></thead>
+            <tbody>
+              <tr style={trTop}><td style={tdLbl}>Tipo</td>{series.map((s, i) => <td key={i} style={tdV}><SeloTipo inc={s.incentivada} /></td>)}</tr>
+              <tr style={trTop}><td style={{ ...tdLbl, verticalAlign: 'top' }}>Remuneração<br /><span style={{ fontSize: 10, color: SRE_C.FAINT }}>final · spread · teto</span></td>{series.map((s, i) => <td key={i} style={tdV}><CelRemun s={s} /></td>)}</tr>
+              <tr style={trTop}><td style={tdLbl}>Vencimento</td>{series.map((s, i) => <td key={i} style={{ ...tdV, fontWeight: 600 }}>{tenorAmort(s)}<br /><span style={{ color: SRE_C.MUTED, fontWeight: 400 }}>({fmtDataCurta(s.venc)})</span></td>)}</tr>
+              <tr style={trTop}><td style={tdLbl}>Resgate antec.</td>{series.map((s, i) => <td key={i} style={{ ...tdV, fontWeight: 600 }}>{s.resgate || '—'}</td>)}</tr>
+            </tbody>
+          </table>
+        </div>
       ) : (
-        <Empty>Nenhuma nova oferta de debênture na CVM na janela.</Empty>
+        <div style={{ padding: '10px 16px', color: SRE_C.MUTED, fontStyle: 'italic', fontSize: 12 }}>Detalhamento das séries ainda não disponível no SRE (oferta recém-protocolada).</div>
       )}
     </div>
   )
 }
+
+// Seção completa (heading + cards) — usada no modal do Dia e no Semanal v2.
+function SecaoSRE({ sre }) {
+  if (!sre) return null
+  const itens = sre.itens || []
+  return (
+    <div className="rd-cvm">
+      <h4>Novas ofertas de debêntures na CVM (SRE){sre.janelaDias && <span className="rd-cap-dia"> · últimos {sre.janelaDias} dias</span>}</h4>
+      {itens.length ? itens.map((o, i) => <CardSRE key={o.idRequerimento || i} o={o} />) : <Empty>Nenhuma nova oferta de debênture na CVM na janela.</Empty>}
+    </div>
+  )
+}
+// Novas ofertas de debêntures no SRE (TEMPO REAL): card por oferta (séries em colunas).
+function OfertasSRE({ sre }) { return <SecaoSRE sre={sre} /> }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Resumo SEMANAL v2 — 3 partes espelhando as abas (Debêntures/Secundário/Técnico).
@@ -134,35 +183,31 @@ const _pct = v => v == null ? '—' : `${v >= 0 ? '+' : '−'}${Math.abs(v * 100
 const _curtoInst = shortInstituicao   // marca da instituição (BTG Pactual, XP, Itaú BBA…)
 const SemSintese = ({ arr }) => arr?.length ? <ul className="rd-sintese">{arr.map((s, i) => <li key={i}>{s}</li>)}</ul> : null
 
+// KPIs derivados do próprio SRE (consistentes com os cards).
+function KpisSre({ itens }) {
+  const n = itens.length
+  const nS = itens.reduce((s, o) => s + (o.series?.length || o.numSeries || 0), 0)
+  const vol = itens.reduce((s, o) => s + (o.valorTotal || 0), 0)
+  const inc = itens.reduce((s, o) => s + (o.series || []).filter(x => x.incentivada).length, 0)
+  return (
+    <div className="rd-kpis">
+      <div><b>{n}</b><span>ofertas no SRE</span></div>
+      <div><b>{nS}</b><span>séries</span></div>
+      <div><b>{_brl(vol)}</b><span>volume total</span></div>
+      <div><b>{inc}</b><span>séries 12.431</span></div>
+    </div>
+  )
+}
+// Debêntures (Semanal) = MESMA seção SRE do diário (todas as debêntures do SRE),
+// só no relatório da semana corrente (como o asOf do diário).
 function SemDeb({ d }) {
-  const r = d.resumo
+  const sre = d.ofertasSRE
+  if (!sre) return <Section title="1. Debêntures"><Empty>As novas ofertas no SRE (tempo real, últimos 15 dias) constam apenas no relatório da semana corrente.</Empty></Section>
+  const itens = sre.itens || []
   return (
     <Section title="1. Debêntures">
-      <SemSintese arr={d.sintese} />
-      <div className="rd-kpis">
-        <div><b>{r.nOfertas}</b><span>ofertas · {r.nSeries} séries</span></div>
-        <div><b>{r.nEmissores}</b><span>emissores · {r.nGrupos} grupos</span></div>
-        <div><b>{_brl(r.volumeTotal)}</b><span>volume{r.volumeConfiavel ? '' : ' (parcial)'}</span></div>
-        <div><b>{_brl(r.volume12431)}</b><span>12.431</span></div>
-        <div><b>{_brl(r.volumeTradicional)}</b><span>Tradicional</span></div>
-      </div>
-      {d.inconsistencias?.length > 0 && <div className="rd-alerta">{d.inconsistencias.map((i, k) => <div key={k}>⚠ {i.emissor}: {i.motivo}</div>)}</div>}
-      <h4 className="rd-h4">Novas emissões</h4>
-      {d.ofertas.length ? d.ofertas.map((o, i) => (
-        <div key={i} className="rd-oferta">
-          <div className="rd-oferta-h"><b>{o.emissor}</b> {o.incentivada ? <span className="rd-tag">12.431</span> : <span className="rd-tag t2">Trad</span>}{o.volumeParcial && <span className="rd-tag warn">parcial</span>} <span className="rd-oferta-vol">{_brl(o.volumeOferta)}</span></div>
-          <div className="rd-oferta-meta">{o.grupo || '—'}{o.setor ? ` · ${o.setor}` : ''} · reg. CVM {fmtDia(o.dataRegistro)}{o.rating ? ` · rating ${o.rating}` : ''}</div>
-          {(o.teto || o.remuneracaoMaxima) && <div className="rd-oferta-meta rd-teto" title={o.remuneracaoMaxima ? o.remuneracaoMaxima.replace(/\s+/g, ' ') : undefined}>Remuneração máx.: {o.teto?.compacto
-            ? <><b>{o.teto.compacto}</b>{o.teto.floorPct ? ` (piso ${o.teto.floorPct})` : ''}</>
-            : (o.remuneracaoMaxima || '').replace(/\s+/g, ' ').slice(0, 140)}</div>}
-          {(o.coordenadores?.length || o.coordenador) && <div className="rd-oferta-meta">Coordenadores: {o.coordenadores?.length
-            ? o.coordenadores.map((c, k) => <span key={k}>{k > 0 ? ', ' : ''}{_curtoInst(c.razaoSocial)}{c.lider && <b> (líder)</b>}</span>)
-            : <>{_curtoInst(o.coordenador)}<b> (líder)</b></>}</div>}
-          <table className="rd-table"><thead><tr><th>Série</th><th className="rd-num">Volume</th><th>Detalhes</th></tr></thead><tbody>
-            {o.series.map((s, k) => (<tr key={k}><td>{s.ticker}{s.serie ? <span className="rd-sub"> {s.serie}</span> : ''}</td><td className="rd-num">{s.volumeSerie ? _brl(s.volumeSerie) : '—'}</td><td className="rd-det">{[s.spreadEmissao ? `${s.spreadEmissao}${s.spreadEst ? ' est.' : ''}` : s.indexador, s.vencimento && `venc ${fmtDia(s.vencimento)}`, s.durationAnos != null && `dur ${s.durationAnos}a`, s.garantia && `gar. ${s.garantia}`, s.amortizacao && `amort. ${s.amortizacao}`, s.recompra?.breakeven && `BE ${s.recompra.breakeven}`].filter(Boolean).join(' · ') || '—'}</td></tr>))}
-          </tbody></table>
-        </div>
-      )) : <Empty>Nenhuma nova debênture registrada na CVM na semana.</Empty>}
+      {itens.length > 0 && <KpisSre itens={itens} />}
+      <SecaoSRE sre={sre} />
     </Section>
   )
 }
