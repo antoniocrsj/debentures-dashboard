@@ -363,7 +363,7 @@
       "inconsistencias": [],
       "ofertasSRE": {
         "asOf": "2026-08-06",
-        "geradoEm": "2026-08-06T15:54:38.317Z",
+        "geradoEm": "2026-08-06T18:20:20.616Z",
         "fonte": "CVM SRE (detalhado + participantes + acaoObjeto)",
         "janelaDias": 40,
         "periodo": {
@@ -824,8 +824,8 @@
       "sintese": [
         "Spread 12.431: movimento misto (mediana +0 bps, 218 abriram / 308 fecharam de 626).",
         "Spread Tradicional: leve abertura (mediana +1 bps, 12 abriram / 6 fecharam de 21 — amostra pequena).",
-        "Secundário: R$ 2,11 bi em 923 negócio(s) (12.431 R$ 652,3 mi · Trad R$ 1,46 bi).",
-        "22 negócio(s) ≥ R$ 20 mi em 17 grupo(s)."
+        "Secundário: R$ 2,51 bi em 1019 negócio(s) (12.431 R$ 684,1 mi · Trad R$ 1,82 bi).",
+        "30 negócio(s) ≥ R$ 20 mi em 20 grupo(s)."
       ],
       "tendencia": {
         "semFronteira": false,
@@ -932,10 +932,10 @@
               }
             ],
             "vsAnbima": {
-              "comparaveis": 671,
-              "acima": 416,
-              "abaixo": 244,
-              "igual": 11
+              "comparaveis": 716,
+              "acima": 438,
+              "abaixo": 268,
+              "igual": 10
             }
           },
           "trad": {
@@ -1038,10 +1038,10 @@
               }
             ],
             "vsAnbima": {
-              "comparaveis": 189,
-              "acima": 94,
-              "abaixo": 63,
-              "igual": 32
+              "comparaveis": 231,
+              "acima": 106,
+              "abaixo": 76,
+              "igual": 49
             }
           }
         }
@@ -1071,38 +1071,38 @@
       "trades": {
         "limiar": 20000000,
         "resumo": {
-          "volume": 2114201518,
-          "nTrades": 923,
-          "volume12431": 652292074,
-          "volumeTradicional": 1461909444,
+          "volume": 2506269760,
+          "nTrades": 1019,
+          "volume12431": 684077564,
+          "volumeTradicional": 1822192196,
           "anterior": {
             "volume": 2881674961,
             "nTrades": 1256
           },
-          "variacaoVolNominal": -767473443,
-          "variacaoVolPct": -0.26632894180878436,
+          "variacaoVolNominal": -375405201,
+          "variacaoVolPct": -0.13027326332103978,
           "media4Semanas": 2358792306.25,
-          "variacaoVs4Pct": -0.10369322792935916,
+          "variacaoVs4Pct": 0.06252244140327011,
           "maioresGrupos": [
             {
               "nome": "Equatorial",
-              "volume": 338262202
-            },
-            {
-              "nome": "EcoRodovias",
-              "volume": 183473159
-            },
-            {
-              "nome": "BRK",
-              "volume": 158019754
+              "volume": 338672744
             },
             {
               "nome": "Axia",
-              "volume": 128977421
+              "volume": 208747043
+            },
+            {
+              "nome": "EcoRodovias",
+              "volume": 185836837
+            },
+            {
+              "nome": "BRK",
+              "volume": 160074224
             },
             {
               "nome": "Energisa",
-              "volume": 124429773
+              "volume": 124471275
             }
           ],
           "maioresAtivos": [
@@ -1124,7 +1124,7 @@
             },
             {
               "nome": "CESPA4",
-              "volume": 72187199
+              "volume": 73337984
             }
           ]
         },
@@ -1178,6 +1178,67 @@
                 "taxaMed": "8.3218",
                 "spreadFmt": "B35 +27bps",
                 "vsAnbima": 15
+              }
+            ]
+          },
+          {
+            "grupo": "Axia",
+            "emissores": [
+              "AXIA ENERGIA S.A."
+            ],
+            "ativos": [
+              "AXIAA0",
+              "AXIAB0",
+              "ELET17"
+            ],
+            "volumeTotal": 144612366,
+            "nTrades": 4,
+            "datas": [
+              "2026-08-03",
+              "2026-08-06",
+              "2026-08-07"
+            ],
+            "enquadramento": "Tradicional",
+            "maiorTrade": {
+              "ticker": "AXIAA0",
+              "data": "2026-08-03",
+              "volume": 73717701,
+              "taxaMed": "0.6707",
+              "spreadFmt": "",
+              "vsAnbima": null
+            },
+            "trades": [
+              {
+                "ticker": "AXIAA0",
+                "data": "2026-08-03",
+                "volume": 73717701,
+                "taxaMed": "0.6707",
+                "spreadFmt": "",
+                "vsAnbima": null
+              },
+              {
+                "ticker": "ELET17",
+                "data": "2026-08-06",
+                "volume": 25314136,
+                "taxaMed": "0.6900",
+                "spreadFmt": "CDI +0.69%",
+                "vsAnbima": -0.03
+              },
+              {
+                "ticker": "AXIAB0",
+                "data": "2026-08-06",
+                "volume": 25313458,
+                "taxaMed": "0.7600",
+                "spreadFmt": "",
+                "vsAnbima": null
+              },
+              {
+                "ticker": "AXIAB0",
+                "data": "2026-08-07",
+                "volume": 20267071,
+                "taxaMed": "0.7550",
+                "spreadFmt": "",
+                "vsAnbima": null
               }
             ]
           },
@@ -1301,35 +1362,97 @@
             ]
           },
           {
-            "grupo": "Axia",
+            "grupo": "Localiza",
             "emissores": [
-              "AXIA ENERGIA S.A."
+              "LOCALIZA RENT A CAR S/A"
             ],
             "ativos": [
-              "AXIAA0"
+              "RENTH7",
+              "RENTQ8"
             ],
-            "volumeTotal": 73717701,
-            "nTrades": 1,
+            "volumeTotal": 89031473,
+            "nTrades": 2,
             "datas": [
-              "2026-08-03"
+              "2026-08-03",
+              "2026-08-06"
             ],
             "enquadramento": "Tradicional",
             "maiorTrade": {
-              "ticker": "AXIAA0",
+              "ticker": "RENTH7",
               "data": "2026-08-03",
-              "volume": 73717701,
-              "taxaMed": "0.6707",
+              "volume": 45618501,
+              "taxaMed": "1.2303",
               "spreadFmt": "",
               "vsAnbima": null
             },
             "trades": [
               {
-                "ticker": "AXIAA0",
+                "ticker": "RENTH7",
                 "data": "2026-08-03",
-                "volume": 73717701,
-                "taxaMed": "0.6707",
+                "volume": 45618501,
+                "taxaMed": "1.2303",
                 "spreadFmt": "",
                 "vsAnbima": null
+              },
+              {
+                "ticker": "RENTQ8",
+                "data": "2026-08-06",
+                "volume": 43412972,
+                "taxaMed": "1.2277",
+                "spreadFmt": "",
+                "vsAnbima": null
+              }
+            ]
+          },
+          {
+            "grupo": "Vibra",
+            "emissores": [
+              "VIBRA ENERGIA S.A"
+            ],
+            "ativos": [
+              "VBBR17",
+              "VBBR16",
+              "VBBR18"
+            ],
+            "volumeTotal": 69258831,
+            "nTrades": 3,
+            "datas": [
+              "2026-08-05",
+              "2026-08-06"
+            ],
+            "enquadramento": "Tradicional",
+            "maiorTrade": {
+              "ticker": "VBBR18",
+              "data": "2026-08-06",
+              "volume": 25142551,
+              "taxaMed": "0.7487",
+              "spreadFmt": "CDI +0.75%",
+              "vsAnbima": -0.04
+            },
+            "trades": [
+              {
+                "ticker": "VBBR18",
+                "data": "2026-08-06",
+                "volume": 25142551,
+                "taxaMed": "0.7487",
+                "spreadFmt": "CDI +0.75%",
+                "vsAnbima": -0.04
+              },
+              {
+                "ticker": "VBBR17",
+                "data": "2026-08-05",
+                "volume": 24108761,
+                "taxaMed": "0.7400",
+                "spreadFmt": "CDI +0.74%",
+                "vsAnbima": -0.03
+              },
+              {
+                "ticker": "VBBR16",
+                "data": "2026-08-05",
+                "volume": 20007519,
+                "taxaMed": "0.7400",
+                "spreadFmt": "CDI +0.74%",
+                "vsAnbima": -0.06
               }
             ]
           },
@@ -1400,39 +1523,6 @@
             ]
           },
           {
-            "grupo": "Localiza",
-            "emissores": [
-              "LOCALIZA RENT A CAR S/A"
-            ],
-            "ativos": [
-              "RENTH7"
-            ],
-            "volumeTotal": 45618501,
-            "nTrades": 1,
-            "datas": [
-              "2026-08-03"
-            ],
-            "enquadramento": "Tradicional",
-            "maiorTrade": {
-              "ticker": "RENTH7",
-              "data": "2026-08-03",
-              "volume": 45618501,
-              "taxaMed": "1.2303",
-              "spreadFmt": "",
-              "vsAnbima": null
-            },
-            "trades": [
-              {
-                "ticker": "RENTH7",
-                "data": "2026-08-03",
-                "volume": 45618501,
-                "taxaMed": "1.2303",
-                "spreadFmt": "",
-                "vsAnbima": null
-              }
-            ]
-          },
-          {
             "grupo": "NTS",
             "emissores": [
               "NOVA TRANSPORTADORA DO SUDESTE S.A. – NTS"
@@ -1462,48 +1552,6 @@
                 "taxaMed": "0.6302",
                 "spreadFmt": "CDI +0.63%",
                 "vsAnbima": -0.01
-              }
-            ]
-          },
-          {
-            "grupo": "Vibra",
-            "emissores": [
-              "VIBRA ENERGIA S.A"
-            ],
-            "ativos": [
-              "VBBR17",
-              "VBBR16"
-            ],
-            "volumeTotal": 44116280,
-            "nTrades": 2,
-            "datas": [
-              "2026-08-05"
-            ],
-            "enquadramento": "Tradicional",
-            "maiorTrade": {
-              "ticker": "VBBR17",
-              "data": "2026-08-05",
-              "volume": 24108761,
-              "taxaMed": "0.7400",
-              "spreadFmt": "CDI +0.74%",
-              "vsAnbima": -0.03
-            },
-            "trades": [
-              {
-                "ticker": "VBBR17",
-                "data": "2026-08-05",
-                "volume": 24108761,
-                "taxaMed": "0.7400",
-                "spreadFmt": "CDI +0.74%",
-                "vsAnbima": -0.03
-              },
-              {
-                "ticker": "VBBR16",
-                "data": "2026-08-05",
-                "volume": 20007519,
-                "taxaMed": "0.7400",
-                "spreadFmt": "CDI +0.74%",
-                "vsAnbima": -0.06
               }
             ]
           },
@@ -1541,6 +1589,39 @@
             ]
           },
           {
+            "grupo": "Aura Minerals",
+            "emissores": [
+              "AURA ALMAS MINERACAO S.A."
+            ],
+            "ativos": [
+              "AALM12"
+            ],
+            "volumeTotal": 40009801,
+            "nTrades": 1,
+            "datas": [
+              "2026-08-07"
+            ],
+            "enquadramento": "Tradicional",
+            "maiorTrade": {
+              "ticker": "AALM12",
+              "data": "2026-08-07",
+              "volume": 40009801,
+              "taxaMed": "0.7500",
+              "spreadFmt": "CDI +0.75%",
+              "vsAnbima": 0.04
+            },
+            "trades": [
+              {
+                "ticker": "AALM12",
+                "data": "2026-08-07",
+                "volume": 40009801,
+                "taxaMed": "0.7500",
+                "spreadFmt": "CDI +0.75%",
+                "vsAnbima": 0.04
+              }
+            ]
+          },
+          {
             "grupo": "Neoenergia",
             "emissores": [
               "CIA. DE ELETRIC. DO EST. DA BAHIA-COELBA"
@@ -1548,7 +1629,7 @@
             "ativos": [
               "CEEBD1"
             ],
-            "volumeTotal": 30949985,
+            "volumeTotal": 31514105,
             "nTrades": 1,
             "datas": [
               "2026-08-06"
@@ -1557,19 +1638,19 @@
             "maiorTrade": {
               "ticker": "CEEBD1",
               "data": "2026-08-06",
-              "volume": 30949985,
-              "taxaMed": "14.0673",
-              "spreadFmt": "DI −0.29%",
-              "vsAnbima": -14.42
+              "volume": 31514105,
+              "taxaMed": "14.0600",
+              "spreadFmt": "DI −0.30%",
+              "vsAnbima": -14.43
             },
             "trades": [
               {
                 "ticker": "CEEBD1",
                 "data": "2026-08-06",
-                "volume": 30949985,
-                "taxaMed": "14.0673",
-                "spreadFmt": "DI −0.29%",
-                "vsAnbima": -14.42
+                "volume": 31514105,
+                "taxaMed": "14.0600",
+                "spreadFmt": "DI −0.30%",
+                "vsAnbima": -14.43
               }
             ]
           },
@@ -1636,6 +1717,39 @@
                 "taxaMed": "2.3521",
                 "spreadFmt": "CDI +2.35%",
                 "vsAnbima": 0
+              }
+            ]
+          },
+          {
+            "grupo": "Equipav",
+            "emissores": [
+              "EQUIPAV SANEAMENTO S.A."
+            ],
+            "ativos": [
+              "AEGE17"
+            ],
+            "volumeTotal": 22921544,
+            "nTrades": 1,
+            "datas": [
+              "2026-08-06"
+            ],
+            "enquadramento": "Tradicional",
+            "maiorTrade": {
+              "ticker": "AEGE17",
+              "data": "2026-08-06",
+              "volume": 22921544,
+              "taxaMed": "5.4987",
+              "spreadFmt": "CDI +5.50%",
+              "vsAnbima": 0.39
+            },
+            "trades": [
+              {
+                "ticker": "AEGE17",
+                "data": "2026-08-06",
+                "volume": 22921544,
+                "taxaMed": "5.4987",
+                "spreadFmt": "CDI +5.50%",
+                "vsAnbima": 0.39
               }
             ]
           },
@@ -1735,6 +1849,39 @@
                 "taxaMed": "0.3350",
                 "spreadFmt": "CDI +0.34%",
                 "vsAnbima": -0.02
+              }
+            ]
+          },
+          {
+            "grupo": "Azzas",
+            "emissores": [
+              "AZZAS 2154 S.A."
+            ],
+            "ativos": [
+              "AZZA13"
+            ],
+            "volumeTotal": 20004196,
+            "nTrades": 1,
+            "datas": [
+              "2026-08-06"
+            ],
+            "enquadramento": "Tradicional",
+            "maiorTrade": {
+              "ticker": "AZZA13",
+              "data": "2026-08-06",
+              "volume": 20004196,
+              "taxaMed": "1.8500",
+              "spreadFmt": "CDI +1.85%",
+              "vsAnbima": -0.08
+            },
+            "trades": [
+              {
+                "ticker": "AZZA13",
+                "data": "2026-08-06",
+                "volume": 20004196,
+                "taxaMed": "1.8500",
+                "spreadFmt": "CDI +1.85%",
+                "vsAnbima": -0.08
               }
             ]
           }

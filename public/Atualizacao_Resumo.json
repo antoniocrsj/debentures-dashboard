@@ -1,5 +1,5 @@
 {
-    "timestamp":  "2026-08-06T12:59:36",
+    "timestamp":  "2026-08-06T15:22:13",
     "captacaoModo":  "Auto",
     "etapas":  {
                    "Debentures":  "OK",
@@ -8,7 +8,7 @@
                    "BLC":  "PULADO (mes 202603 ja registrado)",
                    "ANBIMA":  "OK",
                    "CurvasTPF":  "OK (254/1 datas, 5264 pontos)",
-                   "Secundario":  "OK (ate 2026-08-10; 56514 linhas)",
+                   "Secundario":  "OK (ate 2026-08-10; 56610 linhas)",
                    "Ofertas":  "OK (0 emissao(oes) registrada(s) na CVM ainda nao no cadastro)",
                    "Emissores":  "OK (Ana; 33 curadoria(s) manual(is))",
                    "RecompraBE":  "OK (ref 2026-07-31; em exercicio 273, futuro 670; 942 no cadastro, 1 nao encontrado(s), 16 incompleto(s))"
@@ -90,11 +90,11 @@
                                      },
                     "debentures":  {
                                        "Ativos":  {
-                                                      "antes":  4715,
+                                                      "antes":  4716,
                                                       "depois":  4716
                                                   },
                                        "Emissores":  {
-                                                         "antes":  1460,
+                                                         "antes":  1461,
                                                          "depois":  1461
                                                      },
                                        "Incentivadas":  {
@@ -102,7 +102,7 @@
                                                             "depois":  1293
                                                         },
                                        "Registradas":  {
-                                                           "antes":  4715,
+                                                           "antes":  4716,
                                                            "depois":  4716
                                                        }
                                    },
