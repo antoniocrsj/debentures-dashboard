@@ -363,7 +363,7 @@
       "inconsistencias": [],
       "ofertasSRE": {
         "asOf": "2026-08-06",
-        "geradoEm": "2026-08-06T13:40:40.215Z",
+        "geradoEm": "2026-08-06T15:54:38.317Z",
         "fonte": "CVM SRE (detalhado + participantes + acaoObjeto)",
         "janelaDias": 40,
         "periodo": {
@@ -1006,7 +1006,7 @@
               },
               {
                 "ticker": "JSMLB5",
-                "emissor": "SIMPAR S.A.",
+                "emissor": "JSL S.A",
                 "grupo": "Simpar",
                 "variacaoBps": -5,
                 "spreadAnteriorBps": 517,
@@ -1049,9 +1049,9 @@
       "ida": {
         "12431": {
           "indice": "IDA-IPCA Infraestrutura",
-          "retornoPct": 0.2679,
+          "retornoPct": 0.4035,
           "dataIni": "2026-07-31",
-          "dataFim": "2026-08-04",
+          "dataFim": "2026-08-05",
           "spreadIniBps": null,
           "spreadFimBps": null,
           "variacaoBps": null,
@@ -1059,12 +1059,12 @@
         },
         "trad": {
           "indice": "IDA-DI",
-          "retornoPct": 0.1292,
+          "retornoPct": 0.2004,
           "dataIni": "2026-07-31",
-          "dataFim": "2026-08-04",
-          "spreadIniBps": 97,
+          "dataFim": "2026-08-05",
+          "spreadIniBps": 98,
           "spreadFimBps": 96,
-          "variacaoBps": -1,
+          "variacaoBps": -2,
           "spreadConfiavel": true
         }
       },

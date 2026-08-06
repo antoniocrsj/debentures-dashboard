@@ -270,7 +270,7 @@
       "inconsistencias": [],
       "ofertasSRE": {
         "asOf": "2026-08-06",
-        "geradoEm": "2026-08-06T13:40:40.215Z",
+        "geradoEm": "2026-08-06T15:54:38.317Z",
         "fonte": "CVM SRE (detalhado + participantes + acaoObjeto)",
         "janelaDias": 40,
         "periodo": {
@@ -577,7 +577,7 @@
               },
               {
                 "ticker": "JSMLB5",
-                "emissor": "SIMPAR S.A.",
+                "emissor": "JSL S.A",
                 "grupo": "Simpar",
                 "variacaoBps": -3,
                 "spreadAnteriorBps": 583,
@@ -633,8 +633,8 @@
           "retornoPct": 0.3552,
           "dataIni": "2026-07-03",
           "dataFim": "2026-07-10",
-          "spreadIniBps": 101,
-          "spreadFimBps": 98,
+          "spreadIniBps": 102,
+          "spreadFimBps": 99,
           "variacaoBps": -3,
           "spreadConfiavel": true
         }
