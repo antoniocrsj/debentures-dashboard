@@ -51,6 +51,25 @@ const monthsBetween = (msA, msB) => { const a = new Date(msA), b = new Date(msB)
 const ymKey = ms => { const d = new Date(ms); return `${d.getUTCFullYear()}${String(d.getUTCMonth() + 1).padStart(2, '0')}` }
 const monthOfDia = dia => (dia || '').slice(0, 7).replace('-', '')   // '2026-07-02' -> '202607'
 
+// PL de referência AS OF um mês-alvo (ty, tm): MIN(PL do mês, média ~180d = 6
+// pontos mensais trailing até ele). Reproduz a regra legal em CADA ponto do
+// tempo: um aporte recente entra POUCO na média (é recente), então não dispara
+// exigência prematura — é o que impede o backlog de inflar em fundos que acabaram
+// de captar. Meses >= hoje congelam no PL_ref de hoje (premissa forward, sem
+// forecast). `plMap` = { 'AAAAMM': PL } do histórico mensal do CDA.
+function plRefNoMes(plMap, ty, tm, hojeYm, plRefHoje) {
+  if (ty * 100 + tm >= hojeYm) return plRefHoje
+  const pts = []
+  for (let k = 0; k < 6; k++) {
+    let yy = ty, mm = tm - k; while (mm <= 0) { mm += 12; yy-- }
+    const v = plMap[`${yy}${String(mm).padStart(2, '0')}`]; if (v > 0) pts.push(v)
+  }
+  if (!pts.length) return plRefHoje
+  const media = pts.reduce((a, b) => a + b, 0) / pts.length
+  const plAsOf = plMap[`${ty}${String(tm).padStart(2, '0')}`] || pts[0]
+  return Math.min(plAsOf, media)
+}
+
 function main() {
   // 1) tickers 12.431 (do cadastro de debêntures)
   const deb = readCsv(path.join(PUB, 'Debentures.csv'))
@@ -191,13 +210,18 @@ function main() {
       row[`Eleg_${h}m`] = Math.round(elig[h]); row[`pctExig_${h}m`] = pct; row[`Compra_${h}m`] = Math.round(compra)
     }
     linhas.push(row)
-    if (pos.length) fundos.push({ pos, plRef, iniMs: ini ? msOf(ini) : null, Mms, gestor: f.gestor || '—' })
+    if (pos.length) fundos.push({ pos, plRef, iniMs: ini ? msOf(ini) : null, Mms, gestor: f.gestor || '—', plMap: plMensal[c] || {} })
   }
 
   // 6b) SÉRIE MENSAL da demanda (compra necessária TOTAL) a partir de M, mês a mês,
-  // com o degrau 67->85% e a amortização da carteira agindo em cada mês (PL constante).
+  // com o degrau 67->85% e a amortização da carteira agindo em cada mês. O PL de
+  // referência é recalculado EM CADA MÊS (média 180d trailing daquele mês, via
+  // plRefNoMes) — não o de hoje aplicado para trás: senão fundos que captaram há
+  // pouco apareceriam com backlog inflado (o aporte recente ainda não maturou na
+  // média). Meses >= hoje congelam no PL_ref de hoje (forward, sem forecast).
   // Além do TOTAL, acumula a série por GESTORA (p/ o gráfico mensal filtrar ao
   // clicar numa gestora). NMES = nº de meses da série.
+  const hojeYm = +ymKey(hojeMs)
   // A série começa em M+1: o BLC é o mês FECHADO (foto no fim de M), então o
   // primeiro mês de projeção é o seguinte. O denominador da amortização (fd.Mms)
   // continua em M — os VL_ALOCADO são do fechamento de M. O backlog acumulado
@@ -223,7 +247,8 @@ function main() {
           if (denM <= 1e-6) { elig += p.vl; continue }
           elig += p.vl * Math.max(0, Math.min(1, (1 - cumFrac(p.t, alvo)) / denM))
         }
-        const compra = fd.plRef * pctExig - elig
+        const plRefMes = plRefNoMes(fd.plMap, ty, tm, hojeYm, fd.plRef)   // PL_ref daquele mês
+        const compra = plRefMes * pctExig - elig
         if (compra > 0) {
           total += compra; nDes++
           const g = porGestora[fd.gestor] || (porGestora[fd.gestor] = new Array(NMES).fill(0))
