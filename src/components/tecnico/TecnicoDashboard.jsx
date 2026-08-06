@@ -457,6 +457,7 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, e
       )}
 
       {!error && rows.length > 0 && (
+        <>
         <div className="tecnico-grid" ref={gridRef}>
           <div className="tecnico-charts-col">
             {/* Linha 1: Captacao (fluxo) ao lado de Caixa (estoque). Titulo de UMA
@@ -556,16 +557,6 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, e
               )}
             </div>
 
-            {/* Enquadramento 12.431: ranking da compra necessária de debêntures
-                incentivadas por fundo (hoje/6m/12m). Linha própria (largura cheia). */}
-            {mostra('enquadramento') && (
-            <div className="tecnico-enq-row">
-              <div className="grafico-card">
-                <p className="tecnico-chart-label">Enquadramento 12.431</p>
-                <Enquadramento12431 rows={enquadRows} gestor={gestorSel} />
-              </div>
-            </div>
-            )}
           </div>
 
           {(desktop || graficoAtivo !== 'captacao') && (mesDrill ? (
@@ -587,6 +578,17 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, e
             <TecnicoGestorTable rows={gestorRows} activeGestor={gestorSel} onSelect={onSelectGestor} />
           ))}
         </div>
+
+        {/* Enquadramento 12.431: ranking da compra necessária (consolidado por
+            gestora), ABAIXO do grid de cards — largura cheia, próprio label/KPI. */}
+        {mostra('enquadramento') && (
+          <div className="tecnico-enq-row">
+            <div className="grafico-card">
+              <Enquadramento12431 rows={enquadRows} gestor={gestorSel} />
+            </div>
+          </div>
+        )}
+        </>
       )}
 
       {/* Compacto: barra fixa acima do BottomNav para escolher QUAL grafico (e a

@@ -70,11 +70,14 @@ Wire: passo isolado no `atualizar-tudo.ps1` (após BLC + Cronograma + Perf_Diari
 ## App
 - Hook `src/hooks/useEnquadramento12431.js` — carrega o CSV sob demanda.
 - Componente `src/components/tecnico/Enquadramento12431.jsx` — **ranking horizontal**
-  (Recharts) da **Compra(horizonte)** em R$, desc, top ~20; **toggle 6m/12m**;
-  cabeçalho "N de M enquadrados · total R$ X"; rótulo `fundo · %atual → %exigido`;
-  barra terracota; rodapé de avisos.
-- Plug no `TecnicoDashboard.jsx`: célula `.grafico-card`, item no array `GRAFICOS`
-  (id `enquadramento`), gate `mostra()`, reusa `tipo`/`gestorSel`.
+  (Recharts) da **Compra(horizonte)** em R$, desc, top ~20; **CONSOLIDADO POR GESTORA**
+  por padrão (soma da compra dos fundos de cada gestora); com uma gestora selecionada
+  na tabela, faz drill nos **fundos dela**. **Toggle 6m/12m**; header no padrão dos
+  outros gráficos (label + `grafico-kpi` "N de M enquadrados · faltam R$ X"); barra
+  terracota; rodapé de avisos.
+- Plug no `TecnicoDashboard.jsx`: **linha própria ABAIXO do grid de cards** (largura
+  cheia — fora do grid de 2 linhas da coluna), item no array `GRAFICOS` (id
+  `enquadramento`), gate `mostra()`, reusa `gestorSel`.
 
 ## Rodapé de avisos (premissas / vieses)
 - Elegíveis = **só debêntures 12.431** (não capta cotas de FI-Infra) → compra é **teto**.
