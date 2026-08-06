@@ -2037,6 +2037,20 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 .tecnico-enq-row > .grafico-card { width: 100%; }
 .enq-plot { width: 100%; }
 .enq-nota { margin: 6px 0 0; font-size: 10.5px; line-height: 1.4; color: var(--text-muted); }
+/* Tabela dos fundos que compõem a barra da gestora (abre ao clicar) */
+.enq-fundos { margin-top: 8px; border-top: 1px solid var(--linha, #d5c7b0); padding-top: 8px; }
+.enq-fundos-head { display: flex; align-items: baseline; gap: 8px; margin: 0 0 4px; font-size: var(--fz-corpo); }
+.enq-fundos-head b { color: var(--text); }
+.enq-fundos-head span { color: var(--text-muted); font-size: 11px; }
+.enq-close { margin-left: auto; font-size: 11px; padding: 2px 10px; border: 1px solid var(--linha, #d5c7b0); background: #fff; color: var(--text); border-radius: 5px; cursor: pointer; }
+.enq-close:hover { background: #f2ede5; }
+.enq-table-wrap { max-height: 320px; overflow-y: auto; }
+.enq-table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+.enq-table th { position: sticky; top: 0; background: #f2ede5; color: var(--text); font-weight: 600; text-align: left; padding: 4px 8px; white-space: nowrap; }
+.enq-table td { padding: 3px 8px; border-bottom: 1px solid #eee5db; color: var(--text); }
+.enq-table td.num, .enq-table th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.enq-table td.enq-fnome { max-width: 340px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.enq-table tr.enq-ok td { color: var(--text-muted); }
 .caixa-trend-bars { display: flex; align-items: flex-end; gap: 14px; height: 150px; }
 .caixa-bar-col { flex: 1 1 0; display: flex; flex-direction: column; align-items: center; gap: 4px; height: 100%; justify-content: flex-end; }
 .caixa-bar-val { font-size: var(--fz-corpo); font-weight: 700; color: var(--text); white-space: nowrap; }
