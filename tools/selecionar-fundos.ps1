@@ -17,7 +17,12 @@
     - PL do fundo precisa ser > R$ 5 milhoes.
     - 12431 (Incentivados): entre os elegiveis, entra se tiver >= 5% do PL em
       debentures Lei 12.431 E nome com indicio de infraestrutura/incentivado;
-      ou, mesmo sem nome, se tiver > 20% do PL em debentures Lei 12.431.
+      ou, mesmo SEM nome, se for MADURO (1a cota ha mais de 6 meses) E tiver
+      MAIS de 67% do PL em debentures Lei 12.431. O 67% e' o patamar do proprio
+      enquadramento: um fundo maduro ja' >67% em 12.431 e' infra de fato. A idade
+      usa a 1a COTA (1o mes com PL no CDA), nao o registro CVM (que antecede a 1a
+      integralizacao). Antes bastava > 20% sem nome, o que deixava entrar
+      previdencia e multimercado generico que apenas carregam alguns papeis.
     - Tradicional (CDI): o que sobrar depois dos filtros acima.
 
   Fontes (publicas, baixadas automaticamente):
@@ -79,7 +84,11 @@ param(
   # em 10% os dois coincidem -- baixe este p/ estudar cortes abaixo da regua.
   [double]$LimiarCandidatosPct = 0.10,
   [double]$LimiarLei12431Pct = 0.05,
-  [double]$LimiarLei12431FortePct = 0.20,
+  # Fundo SEM nome de infra so' entra no 12431 se for maduro (1a cota ha mais de
+  # IdadeMinSemNomeMeses) E tiver mais de LimiarLei12431SemNomePct em 12.431.
+  # Antes bastava > 20% (val. "Forte"), que deixava entrar credito generico.
+  [double]$LimiarLei12431SemNomePct = 0.67,
+  [int]$IdadeMinSemNomeMeses = 6,
   [double]$MinPl = 5000000,
   [int]$JanelaFeederMeses = 4,
   [string]$DebenturesPath = '',
@@ -97,6 +106,41 @@ $NOME_12431_REGEX = 'INCENTIV|INFRAESTR|\bINFRA?\b|INFRA[- ]|DEB\S* DE INF|12\.?
 . (Join-Path $PSScriptRoot 'lib-cadastro.ps1')
 
 function Step($m) { Write-Host "  $m" -ForegroundColor Cyan }
+
+# 1a COTA por fundo = 1o mes em que ele aparece com PL > 0 no CDA (cda_fi_PL).
+# Proxy da 1a integralizacao ("sem cota o fundo nao existe"). Varre TODO o
+# historico disponivel em $cdaDir (pastas cda_extraido_AAAAMM). Aceita os dois
+# esquemas de coluna (CNPJ_FUNDO antigo / CNPJ_FUNDO_CLASSE pos-Res.175).
+# Retorna @{ cnpj(norm) -> [datetime] 1o dia do mes da 1a cota }.
+function Get-PrimeiraCotaMap([string]$cdaDir) {
+  $first = @{}
+  if (-not (Test-Path $cdaDir)) { return $first }
+  $dirs = @(Get-ChildItem -Path $cdaDir -Directory -ErrorAction SilentlyContinue |
+    Where-Object { $_.Name -match '^cda_extraido_(\d{6})$' } | Sort-Object Name)
+  $ci = [System.Globalization.CultureInfo]::InvariantCulture
+  foreach ($d in $dirs) {
+    $mes = ($d.Name -replace '^cda_extraido_(\d{6})$', '$1')
+    $f = Join-Path $d.FullName "cda_fi_PL_$mes.csv"
+    if (-not (Test-Path $f)) { continue }
+    $lines = [System.IO.File]::ReadAllLines($f, [System.Text.Encoding]::GetEncoding('latin1'))
+    if ($lines.Count -lt 2) { continue }
+    $hdr = $lines[0].Split(';'); $iC = -1; $iP = -1
+    for ($j = 0; $j -lt $hdr.Count; $j++) {
+      $h = $hdr[$j].Trim()
+      if ($h -eq 'CNPJ_FUNDO_CLASSE') { $iC = $j } elseif ($iC -lt 0 -and $h -eq 'CNPJ_FUNDO') { $iC = $j }
+      if ($h -eq 'VL_PATRIM_LIQ') { $iP = $j }
+    }
+    if ($iC -lt 0 -or $iP -lt 0) { continue }
+    $dt = [datetime]::ParseExact($mes + '01', 'yyyyMMdd', $null)
+    for ($i = 1; $i -lt $lines.Count; $i++) {
+      $c = $lines[$i].Split(';'); if ($c.Count -le $iP) { continue }
+      $cnpj = NormCNPJ $c[$iC]; if ($cnpj -eq '' -or $first.ContainsKey($cnpj)) { continue }
+      $pl = 0.0; [double]::TryParse($c[$iP], [System.Globalization.NumberStyles]::Any, $ci, [ref]$pl) | Out-Null
+      if ($pl -gt 0) { $first[$cnpj] = $dt }
+    }
+  }
+  return $first
+}
 
 if (-not $OutDir) { $OutDir = $PSScriptRoot }
 if (-not $DebenturesPath) { $DebenturesPath = Join-Path (Split-Path $PSScriptRoot -Parent) 'public\Debentures.csv' }
@@ -262,6 +306,16 @@ if ($ativosSemCadastroLei.Count -gt 0) {
   Write-Host "    AVISO: $($ativosSemCadastroLei.Count) ativo(s) do CDA nao apareceram no cadastro de debentures." -ForegroundColor Yellow
 }
 
+# 1a cota por fundo (1o mes com PL no CDA) = inicio real p/ a idade na regra 12431
+# sem-nome. So' no fluxo com CDA (o -XlsxPath nao tem historico; cai no registro).
+$primeiraCota = @{}
+if ([string]::IsNullOrWhiteSpace($XlsxPath)) {
+  Step "Varrendo 1a cota (historico de PL do CDA)..."
+  $primeiraCota = Get-PrimeiraCotaMap $CdaDir
+  Step "  1a cota encontrada p/ $($primeiraCota.Count) fundo(s)"
+}
+$refDate = if ($MesAno) { [datetime]::ParseExact($MesAno + '01', 'yyyyMMdd', $null) } else { Get-Date }
+
 # ---- 2. Cadastro de classes da CVM (registro_classe + registro_fundo) -----
 Step "Baixando/lendo cadastro de classes da CVM (registro_fundo_classe.zip)..."
 $extractDir = Get-RegistroFundoClasseDir $RegistroDir -NoDownload:$NoDownload
@@ -305,12 +359,18 @@ foreach ($cnpj in $carteira.Keys) {
   $pctLei = $snap.DebLei / $pl
   $nome12431 = [regex]::IsMatch((Normalize-Text $info.Denom), $NOME_12431_REGEX)
   $carteira12431Minima = ($pctLei -ge $LimiarLei12431Pct)
-  $carteira12431Forte = ($pctLei -gt $LimiarLei12431FortePct)
-  $eh12431 = (($carteira12431Minima -and $nome12431) -or $carteira12431Forte)
+  # Idade pela 1a COTA (1o mes com PL no CDA); registro CVM so' como fallback.
+  $iniData = $null
+  if ($primeiraCota.ContainsKey($cnpj)) { $iniData = $primeiraCota[$cnpj] }
+  elseif ($info.DataInicio) { $tmp = [datetime]::MinValue; if ([datetime]::TryParse($info.DataInicio, [ref]$tmp)) { $iniData = $tmp } }
+  $idadeMeses = if ($iniData) { ($refDate.Year - $iniData.Year) * 12 + ($refDate.Month - $iniData.Month) } else { -1 }
+  # SEM nome de infra: so' entra se for MADURO (> N meses de 1a cota) E fortemente 12.431 (> 67%).
+  $carteira12431SemNomeOk = (($idadeMeses -gt $IdadeMinSemNomeMeses) -and ($pctLei -gt $LimiarLei12431SemNomePct))
+  $eh12431 = (($carteira12431Minima -and $nome12431) -or $carteira12431SemNomeOk)
   if ($pct -gt $LimiarPct) {
     if ($nome12431 -and -not $carteira12431Minima) { $nome12431SemCarteira++ }
-    if ($carteira12431Minima -and -not $nome12431 -and -not $carteira12431Forte) { $carteira12431SemNome++ }
-    if ($carteira12431Forte -and -not $nome12431) { $carteiraForteSemNome++ }
+    if ($carteira12431Minima -and -not $nome12431 -and -not $carteira12431SemNomeOk) { $carteira12431SemNome++ }
+    if ($carteira12431SemNomeOk -and -not $nome12431) { $carteiraForteSemNome++ }
   }
   $segmento = if ($eh12431) { '12431' } else { 'CDI' }
 
@@ -329,7 +389,7 @@ $n12431 = ($candidatos | Where-Object { $_.Segmento -eq '12431' }).Count
 $nCdi   = ($candidatos | Where-Object { $_.Segmento -eq 'CDI' }).Count
 Step "  $($candidatos.Count) fundos qualificados na curadoria oficial (12431: $n12431 | CDI nao-isento: $nCdi) | universo candidato (>$($LimiarCandidatosPct*100)%): $($universo.Count)"
 Step "  excluidos do universo -> sem registro: $semRegistro | sem PL valido: $semPL | <= $($LimiarCandidatosPct*100)% deb: $abaixoDeb | PL <= R$ 5 mi: $plBaixo | tipo nao elegivel: $tipoNaoElegivel"
-Step "  alertas 12431 (curadoria) -> nome sem >= $($LimiarLei12431Pct*100)% Lei 12.431: $nome12431SemCarteira | >= $($LimiarLei12431Pct*100)% e <= $($LimiarLei12431FortePct*100)% Lei 12.431 sem nome: $carteira12431SemNome | > $($LimiarLei12431FortePct*100)% sem nome incluidos: $carteiraForteSemNome"
+Step "  alertas 12431 (curadoria) -> nome sem >= $($LimiarLei12431Pct*100)% Lei 12.431: $nome12431SemCarteira | sem nome e fora da regra (viram CDI): $carteira12431SemNome | sem nome, maduros > $($LimiarLei12431SemNomePct*100)% (incluidos): $carteiraForteSemNome"
 
 $semGestor = @($candidatos | Where-Object { $_.CnpjGestor -eq '' })
 $semApelido = @($candidatos | Where-Object { $_.CnpjGestor -ne '' -and $_.Apelido -eq '' })
@@ -532,7 +592,7 @@ if ($duplicados.Count -gt 0) {
   Write-Host "  ATENCAO: $($duplicados.Count) fundo(s) duplicado(s) entre Fundos_12431 e Fundos_CDI (ver acima)" -ForegroundColor Red
 }
 Write-Host "  Regra base                         : > $($LimiarPct*100)% do PL em debentures, PL > R$ 5 mi, tipo elegivel"
-Write-Host "  Regra 12431                        : >= $($LimiarLei12431Pct*100)% Lei 12.431 + nome infra/incentivado; ou > $($LimiarLei12431FortePct*100)% Lei 12.431 mesmo sem nome"
+Write-Host "  Regra 12431                        : >= $($LimiarLei12431Pct*100)% Lei 12.431 + nome infra; ou SEM nome se maduro (1a cota > $IdadeMinSemNomeMeses m) e > $($LimiarLei12431SemNomePct*100)% em 12.431"
 Write-Host "  Fundos qualificados no CDA atual   : $($candidatos.Count) (12431: $n12431 | CDI nao-isento: $nCdi)"
 Write-Host "  Universo candidato (> $($LimiarCandidatosPct*100)%)      : $($universo.Count) fundos - para a analise de sensibilidade de corte"
 Write-Host "  Novos (nao estao nas abas hoje)    : $($novos.Count)"
