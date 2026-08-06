@@ -29,7 +29,7 @@ Compra(h) = MAX(0,  PL_ref(h) × %_exigido(h)  −  Elegíveis(h) )     h ∈ {0
 ## Foto de HOJE (o melhor de cada fonte)
 - `PL_ref(hoje) = MIN(PL_hoje observado, média 180d)` — PL real (diário até ~03/ago + mensal).
 - `Elegíveis(hoje) = carteira_M (BLC) rolada pela amortização contratual [M→hoje]`.
-- `idade(hoje) = HOJE − Data_Início`.
+- `idade(hoje) = HOJE − 1ª cota` (1º mês com PL no CDA; **não** o registro CVM — ver abaixo).
 
 ## Fórmula da projeção (h = 0/6/12 meses após HOJE)
 ```
@@ -47,7 +47,13 @@ Os **mesmos fundos da seleção do app** (`tools/Fundos_12431.csv`) — na prát
 segmento `'12431'` em `Caixa_Potencial_Fundos.csv` que têm carteira no CDA (~1714).
 Sem filtro novo; sem exclusão de feeder por conta própria (a seleção já é curada).
 - Fundos da seleção sem CDA (~23): fora do cálculo (sem carteira p/ medir).
-- Fundos sem `Data_Inicio` (~16, 0,2% do PL): assume **<24m (67%)** e marca. Imaterial.
+- **Idade pela 1ª COTA, não pelo registro CVM.** A idade (carência 6m + degrau 24m)
+  parte do **1º mês em que o fundo tem PL no CDA** (proxy da 1ª integralização —
+  "sem cota o fundo ainda não existe"). O registro CVM (`Fundos_Atributos.Data_Inicio`)
+  antecede a 1ª cota em vários meses (306 fundos com ≥2m de gap) e envelhecia o fundo
+  cedo demais, inflando o backlog. Só usa registro CVM como fallback. Efeito medido:
+  backlog de mar/26 caiu de **4,12 → 1,11 bi (−73%)**. Fonte: `preparar-primeira-cota.mjs`.
+- Fundos sem 1ª cota nem `Data_Inicio`: assume **<24m (67%)** e marca. Imaterial.
 
 ## Fontes de dado (todas já existem)
 | Ingrediente | Arquivo | Campo |
@@ -59,7 +65,8 @@ Sem filtro novo; sem exclusão de feeder por conta própria (a seleção já é 
 | PL fresco (hoje) | `public/data/Perf_Diario_12431.csv` | `PL` diário |
 | PL p/ média 180d | `public/data/Caixa_Potencial_Fundos_Historico.csv` | `Mes, CNPJ, PL` (mensal) |
 | Universo + PL carteira | `public/data/Caixa_Potencial_Fundos.csv` | `Segmento='12431', PL_Carteira` (MesBase **NÃO** é M — é ciclo mais novo, só p/ PL) |
-| Data início | `public/data/Fundos_Atributos.csv` | `Data_Inicio` |
+| **1ª cota (idade)** | `public/data/Fundos_PrimeiraCota.csv` | `CNPJ, PrimeiraCotaData` (1º mês com PL no CDA) |
+| Data início (fallback) | `public/data/Fundos_Atributos.csv` | `Data_Inicio` (registro CVM — só se faltar 1ª cota) |
 
 ## Saída do prep
 `tools/preparar-enquadramento-12431.mjs` → `public/data/Enquadramento_12431.csv`
@@ -114,4 +121,4 @@ Wire: passo isolado no `atualizar-tudo.ps1` (após BLC + Cronograma + Perf_Diari
 - Amortização real (ANBIMA) na maioria; papéis sem agenda = aproximação (marcado).
 - Projeção (h=0/6/12): PL **constante após hoje**. Série mensal: PL_ref **por mês**
   (média 180d trailing daquele mês) nos meses passados; congela no de hoje p/ frente.
-- Média 180d = proxy mensal; data início = registro CVM (≈ 1ª integralização).
+- Média 180d = proxy mensal; idade = 1ª cota (1º mês com PL no CDA), registro CVM só como fallback.

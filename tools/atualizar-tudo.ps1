@@ -935,9 +935,24 @@ try {
   Warn "$($summary.PreDi) (Tx Anbima do PRE fica com o snapshot anterior)"
 }
 
+# 5h-bis. 1a cota por fundo (1o mes com PL no CDA) = inicio CORRETO da carencia.
+# Varre os cda_fi_PL_*.csv; o enquadramento usa isso como idade (registro CVM so'
+# como fallback). OPCIONAL e ISOLADO: se o CDA nao estiver acessivel, o enquadramento
+# cai no registro CVM. Roda ANTES do enquadramento.
+Progress '1a cota (CDA)'
+try {
+  & node (Join-Path $PSScriptRoot 'preparar-primeira-cota.mjs')
+  if ($LASTEXITCODE -ne 0) { throw "node saiu com codigo $LASTEXITCODE" }
+  $summary.PrimeiraCota = 'OK'
+  Ok 'public\data\Fundos_PrimeiraCota.csv atualizado.'
+} catch {
+  $summary.PrimeiraCota = "FALHOU sem travar: $($_.Exception.Message)"
+  Warn "$($summary.PrimeiraCota) (enquadramento usa o registro CVM como idade)"
+}
+
 # 5i. Enquadramento 12.431 (compra necessaria de deb. incentivadas por fundo,
-# hoje/6m/12m). Consome BLC_PorFundo + Cronograma_Amortizacao + Caixa/Perf + Fundos_Atributos
-# (todos ja gerados acima). OPCIONAL e ISOLADO: nao trava a atualizacao.
+# hoje/6m/12m). Consome BLC_PorFundo + Cronograma_Amortizacao + Caixa/Perf +
+# Fundos_Atributos + Fundos_PrimeiraCota (todos ja gerados acima). OPCIONAL e ISOLADO.
 Progress 'Enquadramento 12.431'
 try {
   & node (Join-Path $PSScriptRoot 'preparar-enquadramento-12431.mjs')

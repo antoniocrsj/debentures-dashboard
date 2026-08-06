@@ -142,11 +142,20 @@ function main() {
     for (const r of hist.rows) { const c = digits(r[iC]); (plMensal[c] || (plMensal[c] = {}))[(r[iM] || '').trim()] = num(r[iP]) }
   }
 
-  // 5) data de início (proxy: cadastro CVM)
+  // 5) data de início. A idade (carência 6m + degrau 24m) parte da 1ª COTA
+  // (1º mês com PL no CDA) — "sem cota o fundo ainda não existe". O registro CVM
+  // (Fundos_Atributos.Data_Inicio) antecede a 1ª integralização em vários meses e
+  // envelhecia o fundo cedo demais (backlog inflado). 1ª cota é a fonte primária;
+  // registro CVM só como fallback. Ver preparar-primeira-cota.mjs.
   const atr = readCsv(path.join(DATA, 'Fundos_Atributos.csv'))
   const iniPorCnpj = {}
   { const iC = atr.header.indexOf('CNPJ_FUNDO_CLASSE'), iI = atr.header.indexOf('Data_Inicio')
     for (const r of atr.rows) { const c = digits(r[iC]); const ini = (r[iI] || '').trim(); if (ini) iniPorCnpj[c] = ini }
+  }
+  const cotaPorCnpj = {}
+  { const pc = readCsv(path.join(DATA, 'Fundos_PrimeiraCota.csv'))
+    const iC = pc.header.indexOf('CNPJ'), iD = pc.header.indexOf('PrimeiraCotaData')
+    if (iC >= 0 && iD >= 0) for (const r of pc.rows) { const c = digits(r[iC]); const d = (r[iD] || '').trim(); if (d) cotaPorCnpj[c] = d }
   }
 
   // últimos 6 meses (janela ~180d) terminando no mês de HOJE
@@ -156,7 +165,7 @@ function main() {
   const HORIZ = [0, 6, 12]
   const linhas = []
   const fundos = []   // essenciais p/ a série mensal (posições, PL_ref, datas)
-  let semCarteira = 0, semDataInicio = 0
+  let semCarteira = 0, semDataInicio = 0, usouCota = 0
   for (const c in cx) {
     const f = cx[c]
     const pos = posPorFundo[c] || []
@@ -175,8 +184,9 @@ function main() {
     if (!(plHoje > 0)) continue
     const plRef = Math.min(plHoje, media180 > 0 ? media180 : plHoje)
     if (!(plRef > 0)) continue
-    // idade
-    const ini = iniPorCnpj[c]; const semIni = !ini
+    // idade: parte da 1ª cota (correto); registro CVM só como fallback
+    const ini = cotaPorCnpj[c] || iniPorCnpj[c]; const semIni = !ini
+    if (cotaPorCnpj[c]) usouCota++
     if (semIni) semDataInicio++
     const idade = ini ? monthsBetween(msOf(ini), hojeMs) : 0   // sem data -> assume <24m (67%)
     // elegíveis por horizonte (roll de amortização) + flag de estimativa
@@ -290,7 +300,7 @@ function main() {
   fs.writeFileSync(OUT_META, JSON.stringify(meta, null, 2) + '\n', 'utf8')
   console.log(`[enquadramento-12431] ${linhas.length} fundo(s) | HOJE ${meta.dataHoje} | M ${meta.dataM}`)
   console.log(`  desenquadrados 6m: ${meta.cobertura.desenquadrados6m} (compra R$ ${(meta.cobertura.compraTotal6m / 1e9).toFixed(1)} bi) | 12m: ${meta.cobertura.desenquadrados12m}`)
-  console.log(`  sem carteira 12.431: ${semCarteira} | sem data início: ${semDataInicio}`)
+  console.log(`  sem carteira 12.431: ${semCarteira} | sem data início: ${semDataInicio} | idade pela 1ª cota: ${usouCota} (resto: registro CVM)`)
   console.log(`  -> ${path.relative(path.join(__dirname, '..'), OUT)}`)
 }
 
