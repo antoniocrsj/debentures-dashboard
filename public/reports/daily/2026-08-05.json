@@ -119,38 +119,38 @@
     "captacao": {
       "12431": {
         "dia": "2026-08-03",
-        "captacao": 250398195.44999996,
-        "resgate": 381949028.25,
+        "captacao": 250351469.43999997,
+        "resgate": 381902302.24,
         "liquido": -131550832.80000004,
-        "pl": 262502871773.80997,
-        "numFundos": 1692,
-        "curados": 1737,
-        "fechados": 287,
+        "pl": 259733918292.51996,
+        "numFundos": 1678,
+        "curados": 1723,
+        "fechados": 286,
         "anterior": {
           "dia": "2026-07-31",
-          "captacao": 85640760.58000001,
-          "resgate": 220199001.52,
+          "captacao": 85620039.59000002,
+          "resgate": 220178280.53,
           "liquido": -134558240.94,
-          "pl": 264381266627.05,
-          "numFundos": 1704
+          "pl": 261615248314.38,
+          "numFundos": 1690
         }
       },
       "trad": {
         "dia": "2026-08-03",
-        "captacao": 2227432580.1099997,
-        "resgate": 4353093626.190001,
+        "captacao": 2227479306.12,
+        "resgate": 4353140352.200001,
         "liquido": -2125661046.0800009,
-        "pl": 1581728252839.7498,
-        "numFundos": 987,
-        "curados": 1014,
-        "fechados": 50,
+        "pl": 1584497206321.04,
+        "numFundos": 1001,
+        "curados": 1028,
+        "fechados": 51,
         "anterior": {
           "dia": "2026-07-31",
-          "captacao": 2465033144.170001,
-          "resgate": 4527558006.160001,
+          "captacao": 2465053865.160001,
+          "resgate": 4527578727.150001,
           "liquido": -2062524861.9899998,
-          "pl": 1593149482297.39,
-          "numFundos": 991
+          "pl": 1595915500610.0605,
+          "numFundos": 1005
         }
       }
     },
@@ -205,7 +205,7 @@
           "captacao": 2821676.67,
           "resgate": 26189377.3,
           "liquido": -23367700.630000003,
-          "pl": 20129037758.75
+          "pl": 19770936020.15
         },
         {
           "gestor": "Absolute",
@@ -235,7 +235,7 @@
           "captacao": 822518679.71,
           "resgate": 677105531.67,
           "liquido": 145413148.04000008,
-          "pl": 247974630423.62
+          "pl": 248332732162.22
         },
         {
           "gestor": "Daycoval",
@@ -263,7 +263,7 @@
           "captacao": 37465688.83,
           "resgate": 25900533.41,
           "liquido": 11565155.419999998,
-          "pl": 26664426509.22
+          "pl": 27971961402.05
         }
       ],
       "topTradResgate": [
@@ -1605,14 +1605,8 @@
         "texto": "74 ativo(s) no BLC sem correspondencia em Debentures.csv"
       }
     ],
-    "emissoesCVM": {
-      "asOf": "2026-08-06",
-      "itens": []
-    },
-    "emissoresFaltantes": {
-      "itens": [],
-      "asOf": "2026-08-06"
-    },
+    "emissoesCVM": null,
+    "emissoresFaltantes": null,
     "ofertasSRE": {
       "asOf": "2026-08-06",
       "janelaDias": 40,

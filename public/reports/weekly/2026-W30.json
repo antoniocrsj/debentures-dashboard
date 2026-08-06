@@ -569,14 +569,14 @@
       "inconsistencias": [],
       "ofertasSRE": {
         "asOf": "2026-08-06",
-        "geradoEm": "2026-08-06T18:20:20.616Z",
+        "geradoEm": "2026-08-06T23:02:22.429Z",
         "fonte": "CVM SRE (detalhado + participantes + acaoObjeto)",
         "janelaDias": 40,
         "periodo": {
           "de": "27/06/2026",
           "ate": "06/08/2026"
         },
-        "total": 40,
+        "total": 41,
         "itens": [
           {
             "idRequerimento": "27188",
@@ -853,7 +853,7 @@
       "sintese": [
         "Spread 12.431: leve fechamento (mediana −1 bps, 189 abriram / 354 fecharam de 618).",
         "Spread Tradicional: estabilidade (mediana +0 bps, 6 abriram / 8 fecharam de 21 — amostra pequena).",
-        "Secundário: R$ 1,81 bi em 1158 negócio(s) (12.431 R$ 1,09 bi · Trad R$ 728,7 mi).",
+        "Secundário: R$ 1,82 bi em 1160 negócio(s) (12.431 R$ 1,09 bi · Trad R$ 730,8 mi).",
         "23 negócio(s) ≥ R$ 20 mi em 16 grupo(s)."
       ],
       "tendencia": {
@@ -961,10 +961,10 @@
               }
             ],
             "vsAnbima": {
-              "comparaveis": 891,
-              "acima": 375,
-              "abaixo": 504,
-              "igual": 12
+              "comparaveis": 884,
+              "acima": 360,
+              "abaixo": 511,
+              "igual": 13
             }
           },
           "trad": {
@@ -1067,10 +1067,10 @@
               }
             ],
             "vsAnbima": {
-              "comparaveis": 204,
-              "acima": 120,
-              "abaixo": 64,
-              "igual": 20
+              "comparaveis": 206,
+              "acima": 121,
+              "abaixo": 66,
+              "igual": 19
             }
           }
         }
@@ -1100,18 +1100,18 @@
       "trades": {
         "limiar": 20000000,
         "resumo": {
-          "volume": 1814202418,
-          "nTrades": 1158,
-          "volume12431": 1085542518,
-          "volumeTradicional": 728659900,
+          "volume": 1816382119,
+          "nTrades": 1160,
+          "volume12431": 1085584798,
+          "volumeTradicional": 730797321,
           "anterior": {
-            "volume": 1296325395,
-            "nTrades": 1216
+            "volume": 1296408879,
+            "nTrades": 1217
           },
-          "variacaoVolNominal": 517877023,
-          "variacaoVolPct": 0.39949616430988766,
-          "media4Semanas": 3069640713,
-          "variacaoVs4Pct": -0.4089854195910256,
+          "variacaoVolNominal": 519973240,
+          "variacaoVolPct": 0.4010873794701926,
+          "media4Semanas": 3067272119.75,
+          "variacaoVs4Pct": -0.40781839755774735,
           "maioresGrupos": [
             {
               "nome": "Engie",
@@ -1179,7 +1179,7 @@
               "volume": 90733612,
               "taxaMed": "7.7897",
               "spreadFmt": "B37 −28bps",
-              "vsAnbima": 0
+              "vsAnbima": 1
             },
             "trades": [
               {
@@ -1188,7 +1188,7 @@
                 "volume": 90733612,
                 "taxaMed": "7.7897",
                 "spreadFmt": "B37 −28bps",
-                "vsAnbima": 0
+                "vsAnbima": 1
               },
               {
                 "ticker": "EGIEB4",
@@ -1243,7 +1243,7 @@
                 "volume": 22487303,
                 "taxaMed": "8.4336",
                 "spreadFmt": "B35 +26bps",
-                "vsAnbima": 11
+                "vsAnbima": 9
               },
               {
                 "ticker": "ENERB7",
@@ -1327,7 +1327,7 @@
               "volume": 76820032,
               "taxaMed": "2.1515",
               "spreadFmt": "CDI +2.15%",
-              "vsAnbima": -0.36
+              "vsAnbima": -0.26
             },
             "trades": [
               {
@@ -1336,7 +1336,7 @@
                 "volume": 76820032,
                 "taxaMed": "2.1515",
                 "spreadFmt": "CDI +2.15%",
-                "vsAnbima": -0.36
+                "vsAnbima": -0.26
               }
             ]
           },
@@ -1361,7 +1361,7 @@
               "volume": 50326467,
               "taxaMed": "1.1200",
               "spreadFmt": "CDI +1.12%",
-              "vsAnbima": 0.05
+              "vsAnbima": 0.06
             },
             "trades": [
               {
@@ -1370,7 +1370,7 @@
                 "volume": 50326467,
                 "taxaMed": "1.1200",
                 "spreadFmt": "CDI +1.12%",
-                "vsAnbima": 0.05
+                "vsAnbima": 0.06
               },
               {
                 "ticker": "RDORD3",
@@ -1378,7 +1378,7 @@
                 "volume": 23181788,
                 "taxaMed": "1.1006",
                 "spreadFmt": "CDI +1.10%",
-                "vsAnbima": 0.03
+                "vsAnbima": 0.04
               }
             ]
           },
@@ -1444,7 +1444,7 @@
               "volume": 50161833,
               "taxaMed": "14.4128",
               "spreadFmt": "DI −0.30%",
-              "vsAnbima": -14.42
+              "vsAnbima": -14.44
             },
             "trades": [
               {
@@ -1453,7 +1453,7 @@
                 "volume": 50161833,
                 "taxaMed": "14.4128",
                 "spreadFmt": "DI −0.30%",
-                "vsAnbima": -14.42
+                "vsAnbima": -14.44
               }
             ]
           },
@@ -1477,7 +1477,7 @@
               "volume": 48359773,
               "taxaMed": "7.5663",
               "spreadFmt": "B40 −33bps",
-              "vsAnbima": -3
+              "vsAnbima": -4
             },
             "trades": [
               {
@@ -1486,7 +1486,7 @@
                 "volume": 48359773,
                 "taxaMed": "7.5663",
                 "spreadFmt": "B40 −33bps",
-                "vsAnbima": -3
+                "vsAnbima": -4
               }
             ]
           },
@@ -1576,7 +1576,7 @@
               "volume": 30080435,
               "taxaMed": "8.0742",
               "spreadFmt": "B31 −22bps",
-              "vsAnbima": 8
+              "vsAnbima": 7
             },
             "trades": [
               {
@@ -1585,7 +1585,7 @@
                 "volume": 30080435,
                 "taxaMed": "8.0742",
                 "spreadFmt": "B31 −22bps",
-                "vsAnbima": 8
+                "vsAnbima": 7
               }
             ]
           },
@@ -1609,7 +1609,7 @@
               "volume": 26945665,
               "taxaMed": "",
               "spreadFmt": "",
-              "vsAnbima": -87
+              "vsAnbima": -89
             },
             "trades": [
               {
@@ -1618,7 +1618,7 @@
                 "volume": 26945665,
                 "taxaMed": "",
                 "spreadFmt": "",
-                "vsAnbima": -87
+                "vsAnbima": -89
               }
             ]
           },
@@ -1642,7 +1642,7 @@
               "volume": 25840241,
               "taxaMed": "0.7500",
               "spreadFmt": "CDI +0.75%",
-              "vsAnbima": 0.05
+              "vsAnbima": 0.04
             },
             "trades": [
               {
@@ -1651,7 +1651,7 @@
                 "volume": 25840241,
                 "taxaMed": "0.7500",
                 "spreadFmt": "CDI +0.75%",
-                "vsAnbima": 0.05
+                "vsAnbima": 0.04
               }
             ]
           },
@@ -1708,7 +1708,7 @@
               "volume": 22961009,
               "taxaMed": "8.2375",
               "spreadFmt": "B35 +9bps",
-              "vsAnbima": -4
+              "vsAnbima": -5
             },
             "trades": [
               {
@@ -1717,7 +1717,7 @@
                 "volume": 22961009,
                 "taxaMed": "8.2375",
                 "spreadFmt": "B35 +9bps",
-                "vsAnbima": -4
+                "vsAnbima": -5
               }
             ]
           },
@@ -1760,29 +1760,29 @@
     "tecnico": {
       "12431": {
         "captacaoBruta": {
-          "valor": 670275391.0099996,
-          "anterior": 1212567567.6299994,
-          "variacaoNominal": -542292176.6199998,
-          "variacaoPct": -0.44722635760407686,
-          "media4Semanas": 1061107409.925,
+          "valor": 669174859.3599997,
+          "anterior": 1182984062.4499996,
+          "variacaoNominal": -513809203.0899999,
+          "variacaoPct": -0.4343331574779493,
+          "media4Semanas": 1053682934.4175,
           "diasUteis": 5,
           "dataFonte": "2026-07-24"
         },
         "resgates": {
-          "valor": 1284283071.7300005,
-          "anterior": 2074846386.689999,
-          "variacaoNominal": -790563314.9599986,
-          "variacaoPct": -0.38102257595136174,
-          "media4Semanas": 2407750616.229999,
+          "valor": 1283182540.0800006,
+          "anterior": 2028349893.2499988,
+          "variacaoNominal": -745167353.1699982,
+          "variacaoPct": -0.3673761394174583,
+          "media4Semanas": 2396060393.6574993,
           "diasUteis": 5,
           "dataFonte": "2026-07-24"
         },
         "captacaoLiquida": {
-          "valor": -614007680.7200009,
-          "anterior": -862278819.0599997,
-          "variacaoNominal": 248271138.33999884,
-          "variacaoPct": 0.28792443099860426,
-          "media4Semanas": -1346643206.304999,
+          "valor": -614007680.720001,
+          "anterior": -845365830.7999992,
+          "variacaoNominal": 231358150.07999825,
+          "variacaoPct": 0.2736781422322877,
+          "media4Semanas": -1342377459.239999,
           "diasUteis": 5,
           "dataFonte": "2026-07-24"
         },
@@ -1896,6 +1896,11 @@
               "liquido": 414595.26
             },
             {
+              "gestor": "BB Asset",
+              "deltaLiquido": -72069279.06,
+              "liquido": -82313614.02
+            },
+            {
               "gestor": "IAM",
               "deltaLiquido": 56707237.69,
               "liquido": -94587711.69999999
@@ -1904,11 +1909,6 @@
               "gestor": "BRAM",
               "deltaLiquido": 51780667.899999976,
               "liquido": 4931591.679999977
-            },
-            {
-              "gestor": "Portofino",
-              "deltaLiquido": -38831719.63999999,
-              "liquido": 5663467.78
             }
           ]
         }
@@ -1919,29 +1919,29 @@
       ],
       "trad": {
         "captacaoBruta": {
-          "valor": 11898786957.799986,
-          "anterior": 13554253524.11001,
-          "variacaoNominal": -1655466566.3100243,
-          "variacaoPct": -0.12213631413676279,
-          "media4Semanas": 14219262677.407503,
+          "valor": 11899887489.449986,
+          "anterior": 13583837029.29001,
+          "variacaoNominal": -1683949539.840025,
+          "variacaoPct": -0.12396714832554498,
+          "media4Semanas": 14226687152.915003,
           "diasUteis": 5,
           "dataFonte": "2026-07-24"
         },
         "resgates": {
-          "valor": 13624602196.250002,
-          "anterior": 11726459592.32001,
-          "variacaoNominal": 1898142603.9299927,
-          "variacaoPct": 0.1618683447451727,
-          "media4Semanas": 13942922583.6175,
+          "valor": 13625702727.900002,
+          "anterior": 11772956085.76001,
+          "variacaoNominal": 1852746642.1399918,
+          "variacaoPct": 0.15737310397182092,
+          "media4Semanas": 13954612806.190002,
           "diasUteis": 5,
           "dataFonte": "2026-07-24"
         },
         "captacaoLiquida": {
           "valor": -1725815238.450016,
-          "anterior": 1827793931.790001,
-          "variacaoNominal": -3553609170.240017,
-          "variacaoPct": -1.9442066791193935,
-          "media4Semanas": 276340093.7900028,
+          "anterior": 1810880943.5300007,
+          "variacaoNominal": -3536696181.9800167,
+          "variacaoPct": -1.9530252359306606,
+          "media4Semanas": 272074346.72500324,
           "diasUteis": 5,
           "dataFonte": "2026-07-24"
         },
@@ -2051,7 +2051,7 @@
             },
             {
               "gestor": "BB Asset",
-              "deltaLiquido": -868329502.1500001,
+              "deltaLiquido": -832329402.1500001,
               "liquido": 123336004.96000004
             },
             {

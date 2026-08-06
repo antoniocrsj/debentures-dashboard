@@ -422,11 +422,11 @@
     },
     "captacao": {
       "12431": {
-        "captacao": 3611778407.0199986,
-        "resgate": 7512010773.05,
-        "liquido": -3900232366.0300016,
-        "pl": 264381266627.05,
-        "numFundos": 1704,
+        "captacao": 3580928393.7500005,
+        "resgate": 7464097825.699999,
+        "liquido": -3883169431.9499984,
+        "pl": 261615248314.38,
+        "numFundos": 1690,
         "dataPl": "2026-07-31",
         "de": "2026-07-01",
         "ate": "2026-07-31",
@@ -440,11 +440,11 @@
         }
       },
       "trad": {
-        "captacao": 60910620969.720085,
-        "resgate": 63625845584.88002,
-        "liquido": -2715224615.159935,
-        "pl": 1593149482297.39,
-        "numFundos": 991,
+        "captacao": 60941470982.99009,
+        "resgate": 63673758532.23003,
+        "liquido": -2732287549.239937,
+        "pl": 1595915500610.0605,
+        "numFundos": 1005,
         "dataPl": "2026-07-31",
         "de": "2026-07-01",
         "ate": "2026-07-31",
@@ -489,7 +489,7 @@
           "captacao": 30010000,
           "resgate": 1671401.9200000002,
           "liquido": 28338598.08,
-          "pl": 387617258.24,
+          "pl": 251130539.88,
           "dias": 23
         },
         {
@@ -535,11 +535,11 @@
           "dias": 23
         },
         {
-          "gestor": "BB Asset",
-          "captacao": 195011713.47000003,
-          "resgate": 463809987.93,
-          "liquido": -268798274.46,
-          "pl": 20140050122.48,
+          "gestor": "Absolute",
+          "captacao": 136409929.17,
+          "resgate": 395546921.8500001,
+          "liquido": -259136992.6800001,
+          "pl": 11187061245.05,
           "dias": 23
         }
       ],
@@ -547,9 +547,9 @@
         {
           "gestor": "BB Asset",
           "captacao": 15492458258.070002,
-          "resgate": 13646931854.460001,
-          "liquido": 1845526403.6100006,
-          "pl": 247710702879.57,
+          "resgate": 13682931954.460001,
+          "liquido": 1809526303.6100006,
+          "pl": 248068131031.02,
           "dias": 23
         },
         {
@@ -607,7 +607,7 @@
           "captacao": 118321537.41000003,
           "resgate": 1025669819.9699999,
           "liquido": -907348282.56,
-          "pl": 19788156774.82,
+          "pl": 19997471960.69,
           "dias": 23
         },
         {
@@ -974,7 +974,7 @@
           "insuficiente": 35,
           "glitch": 4
         },
-        "avaliados": 1685,
+        "avaliados": 1671,
         "minCobertura": 0.6
       },
       "trad": {
@@ -983,20 +983,20 @@
           "insuficiente": 5,
           "glitch": 4
         },
-        "avaliados": 997,
+        "avaliados": 1011,
         "minCobertura": 0.6
       }
     },
     "ofertasSRE": {
       "asOf": "2026-08-06",
-      "geradoEm": "2026-08-06T18:20:20.616Z",
+      "geradoEm": "2026-08-06T23:02:22.429Z",
       "fonte": "CVM SRE (detalhado + participantes + acaoObjeto)",
       "janelaDias": 40,
       "periodo": {
         "de": "27/06/2026",
         "ate": "06/08/2026"
       },
-      "total": 40,
+      "total": 41,
       "itens": [
         {
           "idRequerimento": "27362",
@@ -1020,8 +1020,8 @@
             {
               "incentivada": false,
               "final": null,
-              "spread": null,
-              "teto": "PRÉ 15,26%",
+              "spread": "B35 + 81 bps",
+              "teto": "8,93%",
               "venc": "2034-07-15",
               "tenor": 8,
               "amort": "amort",
@@ -2094,7 +2094,7 @@
       "tom": "neg"
     },
     {
-      "texto": "Captação líquida Tradicional no mês: −R$ 2,7 bi (capt. R$ 60,9 bi − resg. R$ 63,6 bi, 23 dia(s) útil(eis)).",
+      "texto": "Captação líquida Tradicional no mês: −R$ 2,7 bi (capt. R$ 60,9 bi − resg. R$ 63,7 bi, 23 dia(s) útil(eis)).",
       "tom": "neg"
     },
     {

@@ -8,7 +8,7 @@
   "sourceDates": {
     "cap12431": "2026-08-04",
     "capTrad": "2026-08-04",
-    "anbima": "2026-08-05",
+    "anbima": "2026-08-06",
     "fundos": "2026-08-04",
     "blc": "2026-08-04",
     "ida": "2026-08-05",
@@ -118,37 +118,37 @@
     },
     "captacao": {
       "12431": {
-        "captacao": 278389594.03000003,
-        "resgate": 514243630.44,
+        "captacao": 278342868.02000004,
+        "resgate": 514196904.43,
         "liquido": -235854036.40999997,
-        "pl": 181339268661.25992,
-        "numFundos": 1145,
+        "pl": 180843813214.35992,
+        "numFundos": 1138,
         "dataPl": "2026-08-04",
         "de": "2026-08-03",
         "ate": "2026-08-04",
         "diasUteis": 2,
         "anterior": {
-          "liquido": -3900232366.0300016,
-          "captacao": 3611778407.0199986,
-          "resgate": 7512010773.05,
+          "liquido": -3883169431.9499984,
+          "captacao": 3580928393.7500005,
+          "resgate": 7464097825.699999,
           "de": "2026-07-01",
           "ate": "2026-07-31"
         }
       },
       "trad": {
-        "captacao": 4641052389.65,
-        "resgate": 5924006325.74,
+        "captacao": 4641099115.66,
+        "resgate": 5924053051.75,
         "liquido": -1282953936.0900002,
-        "pl": 1346633738915.7002,
-        "numFundos": 677,
+        "pl": 1347129194362.6003,
+        "numFundos": 684,
         "dataPl": "2026-08-04",
         "de": "2026-08-03",
         "ate": "2026-08-04",
         "diasUteis": 2,
         "anterior": {
-          "liquido": -2715224615.159935,
-          "captacao": 60910620969.720085,
-          "resgate": 63625845584.88002,
+          "liquido": -2732287549.239937,
+          "captacao": 60941470982.99009,
+          "resgate": 63673758532.23003,
           "de": "2026-07-01",
           "ate": "2026-07-31"
         }
@@ -261,7 +261,7 @@
           "captacao": 104428849.99,
           "resgate": 61866553.87,
           "liquido": 42562296.12,
-          "pl": 56182491008.08,
+          "pl": 56440473246.21,
           "dias": 2
         },
         {
@@ -335,32 +335,10 @@
               "grupo": "CSN",
               "indexadorFamilia": "IPCA/NTN-B",
               "spreadAnteriorBps": 1162,
-              "spreadAtualBps": 1199,
-              "variacaoBps": 37,
-              "spreadAtual": "1199 bps",
-              "durationAnos": 4.48
-            },
-            {
-              "ticker": "SUMI37",
-              "emissor": "GIGA MAIS FIBRA TELECOMUNICACOES S.A.",
-              "grupo": "Giga+",
-              "indexadorFamilia": "IPCA/NTN-B",
-              "spreadAnteriorBps": 571,
-              "spreadAtualBps": 608,
-              "variacaoBps": 37,
-              "spreadAtual": "608 bps",
-              "durationAnos": 5.09
-            },
-            {
-              "ticker": "CSNAA5",
-              "emissor": "COMPANHIA SIDERURGICA NACIONAL",
-              "grupo": "CSN",
-              "indexadorFamilia": "IPCA/NTN-B",
-              "spreadAnteriorBps": 1173,
-              "spreadAtualBps": 1203,
-              "variacaoBps": 30,
-              "spreadAtual": "1203 bps",
-              "durationAnos": 4.68
+              "spreadAtualBps": 1202,
+              "variacaoBps": 40,
+              "spreadAtual": "1202 bps",
+              "durationAnos": 4.47
             },
             {
               "ticker": "CSNAA4",
@@ -368,34 +346,89 @@
               "grupo": "CSN",
               "indexadorFamilia": "IPCA/NTN-B",
               "spreadAnteriorBps": 1939,
-              "spreadAtualBps": 1963,
-              "variacaoBps": 24,
-              "spreadAtual": "1963 bps",
-              "durationAnos": 3.3
+              "spreadAtualBps": 1977,
+              "variacaoBps": 38,
+              "spreadAtual": "1977 bps",
+              "durationAnos": 3.29
             },
             {
-              "ticker": "CSNAB5",
+              "ticker": "CSNAA5",
               "emissor": "COMPANHIA SIDERURGICA NACIONAL",
               "grupo": "CSN",
               "indexadorFamilia": "IPCA/NTN-B",
-              "spreadAnteriorBps": 872,
-              "spreadAtualBps": 893,
-              "variacaoBps": 21,
-              "spreadAtual": "893 bps",
-              "durationAnos": 6.27
+              "spreadAnteriorBps": 1173,
+              "spreadAtualBps": 1207,
+              "variacaoBps": 34,
+              "spreadAtual": "1207 bps",
+              "durationAnos": 4.67
+            },
+            {
+              "ticker": "TIMS12",
+              "emissor": "TIM S.A.",
+              "grupo": "TIM",
+              "indexadorFamilia": "IPCA/NTN-B",
+              "spreadAnteriorBps": -68,
+              "spreadAtualBps": -37,
+              "variacaoBps": 31,
+              "spreadAtual": "-37 bps",
+              "durationAnos": 1.3
+            },
+            {
+              "ticker": "TEPA12",
+              "emissor": "BRASIL TECNOLOGIA E PARTICIPACAO S.A.",
+              "grupo": "Brasil Tecnologia e Participacao",
+              "indexadorFamilia": "IPCA/NTN-B",
+              "spreadAnteriorBps": 837,
+              "spreadAtualBps": 867,
+              "variacaoBps": 30,
+              "spreadAtual": "867 bps",
+              "durationAnos": 2.41
             }
           ],
           "fechamentos": [
+            {
+              "ticker": "CMIN22",
+              "emissor": "CSN MINERACAO S.A.",
+              "grupo": "CSN",
+              "indexadorFamilia": "IPCA/NTN-B",
+              "spreadAnteriorBps": 653,
+              "spreadAtualBps": 616,
+              "variacaoBps": -37,
+              "spreadAtual": "616 bps",
+              "durationAnos": 6.42
+            },
+            {
+              "ticker": "SUMI17",
+              "emissor": "GIGA MAIS FIBRA TELECOMUNICACOES S.A.",
+              "grupo": "Giga+",
+              "indexadorFamilia": "IPCA/NTN-B",
+              "spreadAnteriorBps": 542,
+              "spreadAtualBps": 523,
+              "variacaoBps": -19,
+              "spreadAtual": "523 bps",
+              "durationAnos": 3.7
+            },
             {
               "ticker": "EBAS13",
               "emissor": "EMPRESA BAIANA DE AGUAS E SANEAMENTO SA",
               "grupo": "Embasa",
               "indexadorFamilia": "IPCA/NTN-B",
               "spreadAnteriorBps": 47,
-              "spreadAtualBps": 12,
-              "variacaoBps": -35,
-              "spreadAtual": "12 bps",
-              "durationAnos": 3.74
+              "spreadAtualBps": 29,
+              "variacaoBps": -18,
+              "spreadAtual": "29 bps",
+              "durationAnos": 3.72
+            },
+            {
+              "ticker": "RSAN16",
+              "emissor": "COMPANHIA RIOGRANDENSE DE SANEAMENTO - CORSAN",
+              "grupo": "Aegea",
+              "indexadorFamilia": "IPCA/NTN-B",
+              "spreadAnteriorBps": 158,
+              "spreadAtualBps": 140,
+              "variacaoBps": -18,
+              "spreadAtual": "140 bps",
+              "durationAnos": 5.4
             },
             {
               "ticker": "APRB18",
@@ -403,50 +436,17 @@
               "grupo": "Arteris",
               "indexadorFamilia": "IPCA/NTN-B",
               "spreadAnteriorBps": 100,
-              "spreadAtualBps": 85,
-              "variacaoBps": -15,
-              "spreadAtual": "85 bps",
+              "spreadAtualBps": 84,
+              "variacaoBps": -16,
+              "spreadAtual": "84 bps",
               "durationAnos": 3.02
-            },
-            {
-              "ticker": "SAPR10",
-              "emissor": "COMPANHIA DE SANEAMENTO  DO PARANA - SANEPAR",
-              "grupo": "Sanepar",
-              "indexadorFamilia": "IPCA/NTN-B",
-              "spreadAnteriorBps": -17,
-              "spreadAtualBps": -31,
-              "variacaoBps": -14,
-              "spreadAtual": "-31 bps",
-              "durationAnos": 0.58
-            },
-            {
-              "ticker": "CMIN22",
-              "emissor": "CSN MINERACAO S.A.",
-              "grupo": "CSN",
-              "indexadorFamilia": "IPCA/NTN-B",
-              "spreadAnteriorBps": 653,
-              "spreadAtualBps": 641,
-              "variacaoBps": -12,
-              "spreadAtual": "641 bps",
-              "durationAnos": 6.4
-            },
-            {
-              "ticker": "HBSA11",
-              "emissor": "HIDROVIAS DO BRASIL S.A.",
-              "grupo": "Ultrapar",
-              "indexadorFamilia": "IPCA/NTN-B",
-              "spreadAnteriorBps": 13,
-              "spreadAtualBps": 1,
-              "variacaoBps": -12,
-              "spreadAtual": "1 bps",
-              "durationAnos": 2.04
             }
           ],
-          "totalAberturas": 230,
-          "totalFechamentos": 314,
-          "totalComparados": 626,
-          "variacaoMediaBps": 0,
-          "variacaoMedianaBps": -1
+          "totalAberturas": 331,
+          "totalFechamentos": 192,
+          "totalComparados": 622,
+          "variacaoMediaBps": 1,
+          "variacaoMedianaBps": 1
         },
         "trad": {
           "aberturas": [],
@@ -458,9 +458,9 @@
           "variacaoMedianaBps": 0
         }
       },
-      "totalComparados": 647,
+      "totalComparados": 643,
       "dataIni": "2026-07-31",
-      "dataFim": "2026-08-05"
+      "dataFim": "2026-08-06"
     },
     "ida": {
       "12431": {
@@ -745,44 +745,108 @@
       },
       {
         "tipo": "perf-cobertura",
-        "texto": "Performance 12.431: 547 fundo(s) fora por cobertura < 60% e 1 por dado inválido."
+        "texto": "Performance 12.431: 540 fundo(s) fora por cobertura < 60% e 1 por dado inválido."
       },
       {
         "tipo": "perf-cobertura",
-        "texto": "Performance Tradicional: 316 fundo(s) fora por cobertura < 60% e 2 por dado inválido."
+        "texto": "Performance Tradicional: 323 fundo(s) fora por cobertura < 60% e 2 por dado inválido."
       }
     ],
     "perfCobertura": {
       "12431": {
         "diasUteis": 2,
         "excluidos": {
-          "insuficiente": 547,
+          "insuficiente": 540,
           "glitch": 1
         },
-        "avaliados": 1143,
+        "avaliados": 1136,
         "minCobertura": 0.6
       },
       "trad": {
         "diasUteis": 2,
         "excluidos": {
-          "insuficiente": 316,
+          "insuficiente": 323,
           "glitch": 2
         },
-        "avaliados": 672,
+        "avaliados": 679,
         "minCobertura": 0.6
       }
     },
     "ofertasSRE": {
       "asOf": "2026-08-06",
-      "geradoEm": "2026-08-06T18:20:20.616Z",
+      "geradoEm": "2026-08-06T23:02:22.429Z",
       "fonte": "CVM SRE (detalhado + participantes + acaoObjeto)",
       "janelaDias": 40,
       "periodo": {
         "de": "27/06/2026",
         "ate": "06/08/2026"
       },
-      "total": 40,
+      "total": 41,
       "itens": [
+        {
+          "idRequerimento": "27443",
+          "data": "2026-08-06",
+          "emissor": "EMPREENDIMENTOS PAGUE MENOS SA",
+          "cnpj": "06.626.253/0001-51",
+          "valorTotal": 350000000,
+          "valor": 350000000,
+          "status": "Aguardando Bookbuilding",
+          "lider": "BANCO BRADESCO BBI S.A.",
+          "numeroRegistro": null,
+          "numSeries": 1,
+          "rating": null,
+          "sindicato": [
+            {
+              "nome": "BANCO BRADESCO BBI S.A.",
+              "lider": true
+            }
+          ],
+          "series": [
+            {
+              "incentivada": false,
+              "final": null,
+              "spread": null,
+              "teto": "CDI + 1,40%",
+              "venc": "2030-08-25",
+              "tenor": 4,
+              "amort": "bullet",
+              "resgate": "Sim",
+              "rating": null
+            }
+          ]
+        },
+        {
+          "idRequerimento": "27363",
+          "data": "2026-08-06",
+          "emissor": "GSH CORP PARTICIPAÇÕES S.A.",
+          "cnpj": "08.397.078/0001-01",
+          "valorTotal": 125000000,
+          "valor": 125000000,
+          "status": "Registro Concedido",
+          "lider": "BANCO SANTANDER (BRASIL) S.A.",
+          "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/381",
+          "numSeries": 1,
+          "rating": "n/a",
+          "sindicato": [
+            {
+              "nome": "BANCO SANTANDER (BRASIL) S.A.",
+              "lider": true
+            }
+          ],
+          "series": [
+            {
+              "incentivada": false,
+              "final": null,
+              "spread": null,
+              "teto": "CDI + 2,35%",
+              "venc": "2031-07-30",
+              "tenor": 5,
+              "amort": "amort",
+              "resgate": "Sim",
+              "rating": "n/a"
+            }
+          ]
+        },
         {
           "idRequerimento": "27286",
           "data": "2026-08-05",
@@ -1193,38 +1257,6 @@
               "rating": null
             }
           ]
-        },
-        {
-          "idRequerimento": "27363",
-          "data": "2026-08-03",
-          "emissor": "GSH CORP PARTICIPAÇÕES S.A.",
-          "cnpj": "08.397.078/0001-01",
-          "valorTotal": 125000000,
-          "valor": 125000000,
-          "status": "Aguardando Bookbuilding",
-          "lider": "BANCO SANTANDER (BRASIL) S.A.",
-          "numeroRegistro": null,
-          "numSeries": 1,
-          "rating": "n/a",
-          "sindicato": [
-            {
-              "nome": "BANCO SANTANDER (BRASIL) S.A.",
-              "lider": true
-            }
-          ],
-          "series": [
-            {
-              "incentivada": false,
-              "final": null,
-              "spread": null,
-              "teto": "CDI + 2,35%",
-              "venc": "2031-07-30",
-              "tenor": 5,
-              "amort": "amort",
-              "resgate": "Sim",
-              "rating": "n/a"
-            }
-          ]
         }
       ],
       "caption": "no mês",
@@ -1233,11 +1265,11 @@
   },
   "summary": [
     {
-      "texto": "Spread ANBIMA 12.431 estável no mês (31/07→05/08): média +0.0 bps — 314 fechamentos, 230 aberturas e 82 sem mudança (626 papéis).",
-      "tom": ""
+      "texto": "Spread ANBIMA 12.431 abriu no mês (31/07→06/08): média +1.0 bps — 192 fechamentos, 331 aberturas e 99 sem mudança (622 papéis).",
+      "tom": "neg"
     },
     {
-      "texto": "Spread ANBIMA Tradicional estável no mês (31/07→05/08): média +0.0 bps — 0 fechamentos, 0 aberturas e 21 sem mudança (21 papéis).",
+      "texto": "Spread ANBIMA Tradicional estável no mês (31/07→06/08): média +0.0 bps — 0 fechamentos, 0 aberturas e 21 sem mudança (21 papéis).",
       "tom": ""
     },
     {

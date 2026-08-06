@@ -1,14 +1,78 @@
 {
   "asOf": "2026-08-06",
-  "geradoEm": "2026-08-06T18:20:20.616Z",
+  "geradoEm": "2026-08-06T23:02:22.429Z",
   "fonte": "CVM SRE (detalhado + participantes + acaoObjeto)",
   "janelaDias": 40,
   "periodo": {
     "de": "27/06/2026",
     "ate": "06/08/2026"
   },
-  "total": 40,
+  "total": 41,
   "itens": [
+    {
+      "idRequerimento": "27443",
+      "data": "2026-08-06",
+      "emissor": "EMPREENDIMENTOS PAGUE MENOS SA",
+      "cnpj": "06.626.253/0001-51",
+      "valorTotal": 350000000,
+      "valor": 350000000,
+      "status": "Aguardando Bookbuilding",
+      "lider": "BANCO BRADESCO BBI S.A.",
+      "numeroRegistro": null,
+      "numSeries": 1,
+      "rating": null,
+      "sindicato": [
+        {
+          "nome": "BANCO BRADESCO BBI S.A.",
+          "lider": true
+        }
+      ],
+      "series": [
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": "CDI + 1,40%",
+          "venc": "2030-08-25",
+          "tenor": 4,
+          "amort": "bullet",
+          "resgate": "Sim",
+          "rating": null
+        }
+      ]
+    },
+    {
+      "idRequerimento": "27363",
+      "data": "2026-08-06",
+      "emissor": "GSH CORP PARTICIPAÇÕES S.A.",
+      "cnpj": "08.397.078/0001-01",
+      "valorTotal": 125000000,
+      "valor": 125000000,
+      "status": "Registro Concedido",
+      "lider": "BANCO SANTANDER (BRASIL) S.A.",
+      "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/381",
+      "numSeries": 1,
+      "rating": "n/a",
+      "sindicato": [
+        {
+          "nome": "BANCO SANTANDER (BRASIL) S.A.",
+          "lider": true
+        }
+      ],
+      "series": [
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": "CDI + 2,35%",
+          "venc": "2031-07-30",
+          "tenor": 5,
+          "amort": "amort",
+          "resgate": "Sim",
+          "rating": "n/a"
+        }
+      ]
+    },
     {
       "idRequerimento": "27286",
       "data": "2026-08-05",
@@ -421,38 +485,6 @@
       ]
     },
     {
-      "idRequerimento": "27363",
-      "data": "2026-08-03",
-      "emissor": "GSH CORP PARTICIPAÇÕES S.A.",
-      "cnpj": "08.397.078/0001-01",
-      "valorTotal": 125000000,
-      "valor": 125000000,
-      "status": "Aguardando Bookbuilding",
-      "lider": "BANCO SANTANDER (BRASIL) S.A.",
-      "numeroRegistro": null,
-      "numSeries": 1,
-      "rating": "n/a",
-      "sindicato": [
-        {
-          "nome": "BANCO SANTANDER (BRASIL) S.A.",
-          "lider": true
-        }
-      ],
-      "series": [
-        {
-          "incentivada": false,
-          "final": null,
-          "spread": null,
-          "teto": "CDI + 2,35%",
-          "venc": "2031-07-30",
-          "tenor": 5,
-          "amort": "amort",
-          "resgate": "Sim",
-          "rating": "n/a"
-        }
-      ]
-    },
-    {
       "idRequerimento": "27362",
       "data": "2026-07-31",
       "emissor": "LWART SOLUÇÕES AMBIENTAIS S.A.",
@@ -474,8 +506,8 @@
         {
           "incentivada": false,
           "final": null,
-          "spread": null,
-          "teto": "PRÉ 15,26%",
+          "spread": "B35 + 81 bps",
+          "teto": "8,93%",
           "venc": "2034-07-15",
           "tenor": 8,
           "amort": "amort",

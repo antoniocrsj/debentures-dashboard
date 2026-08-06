@@ -270,14 +270,14 @@
       "inconsistencias": [],
       "ofertasSRE": {
         "asOf": "2026-08-06",
-        "geradoEm": "2026-08-06T18:20:20.616Z",
+        "geradoEm": "2026-08-06T23:02:22.429Z",
         "fonte": "CVM SRE (detalhado + participantes + acaoObjeto)",
         "janelaDias": 40,
         "periodo": {
           "de": "27/06/2026",
           "ate": "06/08/2026"
         },
-        "total": 40,
+        "total": 41,
         "itens": [
           {
             "idRequerimento": "27027",
@@ -395,7 +395,7 @@
       "sintese": [
         "Spread 12.431: leve abertura (mediana +1 bps, 346 abriram / 177 fecharam de 604).",
         "Spread Tradicional: movimento misto (mediana +0 bps, 8 abriram / 8 fecharam de 21 — amostra pequena).",
-        "Secundário: R$ 3,44 bi em 1332 negócio(s) (12.431 R$ 1,58 bi · Trad R$ 1,87 bi).",
+        "Secundário: R$ 3,44 bi em 1331 negócio(s) (12.431 R$ 1,58 bi · Trad R$ 1,87 bi).",
         "54 negócio(s) ≥ R$ 20 mi em 33 grupo(s)."
       ],
       "tendencia": {
@@ -503,10 +503,10 @@
               }
             ],
             "vsAnbima": {
-              "comparaveis": 1036,
-              "acima": 495,
-              "abaixo": 517,
-              "igual": 24
+              "comparaveis": 1030,
+              "acima": 482,
+              "abaixo": 531,
+              "igual": 17
             }
           },
           "trad": {
@@ -609,10 +609,10 @@
               }
             ],
             "vsAnbima": {
-              "comparaveis": 242,
-              "acima": 170,
-              "abaixo": 58,
-              "igual": 14
+              "comparaveis": 241,
+              "acima": 165,
+              "abaixo": 60,
+              "igual": 16
             }
           }
         }
@@ -642,18 +642,18 @@
       "trades": {
         "limiar": 20000000,
         "resumo": {
-          "volume": 3442966451,
-          "nTrades": 1332,
-          "volume12431": 1575286919,
-          "volumeTradicional": 1867679532,
+          "volume": 3442523326,
+          "nTrades": 1331,
+          "volume12431": 1575273489,
+          "volumeTradicional": 1867249837,
           "anterior": {
-            "volume": 3980543769,
-            "nTrades": 1239
+            "volume": 3968100892,
+            "nTrades": 1238
           },
-          "variacaoVolNominal": -537577318,
-          "variacaoVolPct": -0.13505122646473278,
-          "media4Semanas": 4288066807,
-          "variacaoVs4Pct": -0.19708190054791747,
+          "variacaoVolNominal": -525577566,
+          "variacaoVolPct": -0.1324506559446624,
+          "media4Semanas": 4284948716.5,
+          "variacaoVs4Pct": -0.19660104384822222,
           "maioresGrupos": [
             {
               "nome": "Localiza",
@@ -661,7 +661,7 @@
             },
             {
               "nome": "Equatorial",
-              "volume": 377105112
+              "volume": 377198278
             },
             {
               "nome": "Aegea",
@@ -742,7 +742,7 @@
                 "volume": 92403290,
                 "taxaMed": "1.2300",
                 "spreadFmt": "CDI +1.23%",
-                "vsAnbima": -0.07
+                "vsAnbima": -0.08
               },
               {
                 "ticker": "TFLE19",
@@ -750,7 +750,7 @@
                 "volume": 35527746,
                 "taxaMed": "1.0007",
                 "spreadFmt": "CDI +1.00%",
-                "vsAnbima": -0.03
+                "vsAnbima": -0.04
               },
               {
                 "ticker": "TFLE19",
@@ -758,7 +758,7 @@
                 "volume": 25378081,
                 "taxaMed": "1.0000",
                 "spreadFmt": "CDI +1.00%",
-                "vsAnbima": -0.03
+                "vsAnbima": -0.04
               },
               {
                 "ticker": "LORTB2",
@@ -774,7 +774,7 @@
                 "volume": 20418922,
                 "taxaMed": "1.2308",
                 "spreadFmt": "CDI +1.23%",
-                "vsAnbima": -0.07
+                "vsAnbima": -0.08
               }
             ]
           },
@@ -805,7 +805,7 @@
               "volume": 63191485,
               "taxaMed": "8.3477",
               "spreadFmt": "B37 +34bps",
-              "vsAnbima": 13
+              "vsAnbima": 14
             },
             "trades": [
               {
@@ -814,7 +814,7 @@
                 "volume": 63191485,
                 "taxaMed": "8.3477",
                 "spreadFmt": "B37 +34bps",
-                "vsAnbima": 13
+                "vsAnbima": 14
               },
               {
                 "ticker": "CEEDA1",
@@ -830,7 +830,7 @@
                 "volume": 51007649,
                 "taxaMed": "0.6200",
                 "spreadFmt": "CDI +0.62%",
-                "vsAnbima": -0.04
+                "vsAnbima": -0.03
               },
               {
                 "ticker": "EQTL17",
@@ -854,7 +854,7 @@
                 "volume": 30001447,
                 "taxaMed": "0.6200",
                 "spreadFmt": "CDI +0.62%",
-                "vsAnbima": -0.04
+                "vsAnbima": -0.03
               },
               {
                 "ticker": "CGOSA2",
@@ -862,7 +862,7 @@
                 "volume": 29507383,
                 "taxaMed": "8.2250",
                 "spreadFmt": "B37 +24bps",
-                "vsAnbima": 3
+                "vsAnbima": 4
               }
             ]
           },
@@ -888,7 +888,7 @@
               "volume": 94720889,
               "taxaMed": "2.1013",
               "spreadFmt": "CDI +2.10%",
-              "vsAnbima": -0.41
+              "vsAnbima": -0.31
             },
             "trades": [
               {
@@ -897,7 +897,7 @@
                 "volume": 94720889,
                 "taxaMed": "2.1013",
                 "spreadFmt": "CDI +2.10%",
-                "vsAnbima": -0.41
+                "vsAnbima": -0.31
               },
               {
                 "ticker": "RNDNA1",
@@ -930,7 +930,7 @@
               "volume": 79604577,
               "taxaMed": "3.5136",
               "spreadFmt": "CDI +3.51%",
-              "vsAnbima": 0.21
+              "vsAnbima": 0.2
             },
             "trades": [
               {
@@ -939,7 +939,7 @@
                 "volume": 79604577,
                 "taxaMed": "3.5136",
                 "spreadFmt": "CDI +3.51%",
-                "vsAnbima": 0.21
+                "vsAnbima": 0.2
               },
               {
                 "ticker": "AEGP19",
@@ -947,7 +947,7 @@
                 "volume": 29779490,
                 "taxaMed": "2.7585",
                 "spreadFmt": "CDI +2.76%",
-                "vsAnbima": 0.11
+                "vsAnbima": 0.18
               }
             ]
           },
@@ -1014,7 +1014,7 @@
               "volume": 47582853,
               "taxaMed": "14.1110",
               "spreadFmt": "B33 +579bps",
-              "vsAnbima": 8
+              "vsAnbima": 5
             },
             "trades": [
               {
@@ -1023,7 +1023,7 @@
                 "volume": 47582853,
                 "taxaMed": "14.1110",
                 "spreadFmt": "B33 +579bps",
-                "vsAnbima": 8
+                "vsAnbima": 5
               },
               {
                 "ticker": "CGEE13",
@@ -1031,7 +1031,7 @@
                 "volume": 36520976,
                 "taxaMed": "14.0580",
                 "spreadFmt": "B33 +573bps",
-                "vsAnbima": 2
+                "vsAnbima": -1
               }
             ]
           },
@@ -1058,7 +1058,7 @@
               "volume": 35368505,
               "taxaMed": "8.1859",
               "spreadFmt": "B35 +8bps",
-              "vsAnbima": 7
+              "vsAnbima": 6
             },
             "trades": [
               {
@@ -1067,7 +1067,7 @@
                 "volume": 35368505,
                 "taxaMed": "8.1859",
                 "spreadFmt": "B35 +8bps",
-                "vsAnbima": 7
+                "vsAnbima": 6
               },
               {
                 "ticker": "EKTRA8",
@@ -1075,7 +1075,7 @@
                 "volume": 23782597,
                 "taxaMed": "8.2260",
                 "spreadFmt": "B31 −33bps",
-                "vsAnbima": -22
+                "vsAnbima": -23
               },
               {
                 "ticker": "CEEBD1",
@@ -1083,7 +1083,7 @@
                 "volume": 20082023,
                 "taxaMed": "14.1736",
                 "spreadFmt": "DI −0.34%",
-                "vsAnbima": -14.46
+                "vsAnbima": -14.48
               }
             ]
           },
@@ -1149,7 +1149,7 @@
               "volume": 65163045,
               "taxaMed": "7.6799",
               "spreadFmt": "B29 −65bps",
-              "vsAnbima": -3
+              "vsAnbima": -4
             },
             "trades": [
               {
@@ -1158,7 +1158,7 @@
                 "volume": 65163045,
                 "taxaMed": "7.6799",
                 "spreadFmt": "B29 −65bps",
-                "vsAnbima": -3
+                "vsAnbima": -4
               }
             ]
           },
@@ -1182,7 +1182,7 @@
               "volume": 64816099,
               "taxaMed": "0.6609",
               "spreadFmt": "CDI +0.66%",
-              "vsAnbima": 0.04
+              "vsAnbima": 0.03
             },
             "trades": [
               {
@@ -1191,7 +1191,7 @@
                 "volume": 64816099,
                 "taxaMed": "0.6609",
                 "spreadFmt": "CDI +0.66%",
-                "vsAnbima": 0.04
+                "vsAnbima": 0.03
               }
             ]
           },
@@ -1291,7 +1291,7 @@
               "volume": 50000581,
               "taxaMed": "0.5707",
               "spreadFmt": "CDI +0.57%",
-              "vsAnbima": 0.01
+              "vsAnbima": -0.01
             },
             "trades": [
               {
@@ -1300,7 +1300,7 @@
                 "volume": 50000581,
                 "taxaMed": "0.5707",
                 "spreadFmt": "CDI +0.57%",
-                "vsAnbima": 0.01
+                "vsAnbima": -0.01
               }
             ]
           },
@@ -1399,7 +1399,7 @@
               "volume": 46326264,
               "taxaMed": "",
               "spreadFmt": "",
-              "vsAnbima": -94
+              "vsAnbima": -95
             },
             "trades": [
               {
@@ -1408,7 +1408,7 @@
                 "volume": 46326264,
                 "taxaMed": "",
                 "spreadFmt": "",
-                "vsAnbima": -94
+                "vsAnbima": -95
               }
             ]
           },
@@ -1484,7 +1484,7 @@
                 "volume": 20001590,
                 "taxaMed": "2.5500",
                 "spreadFmt": "CDI +2.55%",
-                "vsAnbima": 0.03
+                "vsAnbima": 0.04
               }
             ]
           },
@@ -1574,7 +1574,7 @@
               "volume": 31898268,
               "taxaMed": "9.5200",
               "spreadFmt": "B30 +100bps",
-              "vsAnbima": 1
+              "vsAnbima": 2
             },
             "trades": [
               {
@@ -1583,7 +1583,7 @@
                 "volume": 31898268,
                 "taxaMed": "9.5200",
                 "spreadFmt": "B30 +100bps",
-                "vsAnbima": 1
+                "vsAnbima": 2
               }
             ]
           },
@@ -1640,7 +1640,7 @@
               "volume": 30048772,
               "taxaMed": "1.1500",
               "spreadFmt": "CDI +1.15%",
-              "vsAnbima": 0.08
+              "vsAnbima": 0.09
             },
             "trades": [
               {
@@ -1649,7 +1649,7 @@
                 "volume": 30048772,
                 "taxaMed": "1.1500",
                 "spreadFmt": "CDI +1.15%",
-                "vsAnbima": 0.08
+                "vsAnbima": 0.09
               }
             ]
           },
@@ -1673,7 +1673,7 @@
               "volume": 30001652,
               "taxaMed": "6.0000",
               "spreadFmt": "CDI +6.00%",
-              "vsAnbima": 1.01
+              "vsAnbima": 1.09
             },
             "trades": [
               {
@@ -1682,7 +1682,7 @@
                 "volume": 30001652,
                 "taxaMed": "6.0000",
                 "spreadFmt": "CDI +6.00%",
-                "vsAnbima": 1.01
+                "vsAnbima": 1.09
               }
             ]
           },
@@ -1706,7 +1706,7 @@
               "volume": 29270191,
               "taxaMed": "8.2950",
               "spreadFmt": "B37 +29bps",
-              "vsAnbima": -6
+              "vsAnbima": -9
             },
             "trades": [
               {
@@ -1715,7 +1715,7 @@
                 "volume": 29270191,
                 "taxaMed": "8.2950",
                 "spreadFmt": "B37 +29bps",
-                "vsAnbima": -6
+                "vsAnbima": -9
               }
             ]
           },
@@ -1739,7 +1739,7 @@
               "volume": 22992529,
               "taxaMed": "7.7794",
               "spreadFmt": "B37 −25bps",
-              "vsAnbima": -11
+              "vsAnbima": -12
             },
             "trades": [
               {
@@ -1748,7 +1748,7 @@
                 "volume": 22992529,
                 "taxaMed": "7.7794",
                 "spreadFmt": "B37 −25bps",
-                "vsAnbima": -11
+                "vsAnbima": -12
               }
             ]
           },
@@ -1772,7 +1772,7 @@
               "volume": 22791712,
               "taxaMed": "1.3800",
               "spreadFmt": "CDI +1.38%",
-              "vsAnbima": -1.1
+              "vsAnbima": -1.12
             },
             "trades": [
               {
@@ -1781,7 +1781,7 @@
                 "volume": 22791712,
                 "taxaMed": "1.3800",
                 "spreadFmt": "CDI +1.38%",
-                "vsAnbima": -1.1
+                "vsAnbima": -1.12
               }
             ]
           },
@@ -1805,7 +1805,7 @@
               "volume": 21261911,
               "taxaMed": "3.8000",
               "spreadFmt": "CDI +3.80%",
-              "vsAnbima": 0.13
+              "vsAnbima": 0.14
             },
             "trades": [
               {
@@ -1814,7 +1814,7 @@
                 "volume": 21261911,
                 "taxaMed": "3.8000",
                 "spreadFmt": "CDI +3.80%",
-                "vsAnbima": 0.13
+                "vsAnbima": 0.14
               }
             ]
           },
@@ -1937,7 +1937,7 @@
               "volume": 20043600,
               "taxaMed": "0.7508",
               "spreadFmt": "CDI +0.75%",
-              "vsAnbima": 0.04
+              "vsAnbima": 0.03
             },
             "trades": [
               {
@@ -1946,7 +1946,7 @@
                 "volume": 20043600,
                 "taxaMed": "0.7508",
                 "spreadFmt": "CDI +0.75%",
-                "vsAnbima": 0.04
+                "vsAnbima": 0.03
               }
             ]
           },
@@ -1970,7 +1970,7 @@
               "volume": 20009338,
               "taxaMed": "0.3500",
               "spreadFmt": "CDI +0.35%",
-              "vsAnbima": 0
+              "vsAnbima": -0.01
             },
             "trades": [
               {
@@ -1979,7 +1979,7 @@
                 "volume": 20009338,
                 "taxaMed": "0.3500",
                 "spreadFmt": "CDI +0.35%",
-                "vsAnbima": 0
+                "vsAnbima": -0.01
               }
             ]
           }
@@ -1989,28 +1989,28 @@
     "tecnico": {
       "12431": {
         "captacaoBruta": {
-          "valor": 719468039.2200001,
-          "anterior": 1632306777.8000002,
-          "variacaoNominal": -912838738.58,
-          "variacaoPct": -0.5592323397751929,
-          "media4Semanas": 1483800573.2224998,
+          "valor": 719455429.4100001,
+          "anterior": 1632204990.7600002,
+          "variacaoNominal": -912749561.3500001,
+          "variacaoPct": -0.5592125783937215,
+          "media4Semanas": 1483775126.4625,
           "diasUteis": 5,
           "dataFonte": "2026-07-10"
         },
         "resgates": {
-          "valor": 1846295811.83,
-          "anterior": 3023176474.779999,
-          "variacaoNominal": -1176880662.9499989,
-          "variacaoPct": -0.3892861276104109,
-          "media4Semanas": 3262411895.7174997,
+          "valor": 1846133202.02,
+          "anterior": 3023074687.739999,
+          "variacaoNominal": -1176941485.7199988,
+          "variacaoPct": -0.3893193543953957,
+          "media4Semanas": 3262386448.9575005,
           "diasUteis": 5,
           "dataFonte": "2026-07-10"
         },
         "captacaoLiquida": {
-          "valor": -1126827772.6099997,
+          "valor": -1126677772.61,
           "anterior": -1390869696.9799986,
-          "variacaoNominal": 264041924.36999893,
-          "variacaoPct": 0.18983943998730746,
+          "variacaoNominal": 264191924.3699987,
+          "variacaoPct": 0.18994728617902867,
           "media4Semanas": -1778611322.495,
           "diasUteis": 5,
           "dataFonte": "2026-07-10"
@@ -2144,32 +2144,32 @@
       },
       "sintese": [
         "12.431: captação líquida −R$ 1,13 bi (5 d.u.), emissão CVM R$ 439,4 mi.",
-        "Tradicional: captação líquida −R$ 581,4 mi (5 d.u.), emissão CVM R$ 270 mi."
+        "Tradicional: captação líquida −R$ 581,5 mi (5 d.u.), emissão CVM R$ 270 mi."
       ],
       "trad": {
         "captacaoBruta": {
-          "valor": 13647532423.92,
-          "anterior": 14832468543.09,
-          "variacaoNominal": -1184936119.17,
-          "variacaoPct": -0.07988799138374213,
-          "media4Semanas": 14990931681.882502,
+          "valor": 13647545033.730001,
+          "anterior": 14832570330.130001,
+          "variacaoNominal": -1185025296.3999996,
+          "variacaoPct": -0.07989345541769047,
+          "media4Semanas": 14990957128.6425,
           "diasUteis": 5,
           "dataFonte": "2026-07-10"
         },
         "resgates": {
-          "valor": 14228891198.790003,
-          "anterior": 16217587812.089998,
-          "variacaoNominal": -1988696613.2999954,
-          "variacaoPct": -0.12262591923920081,
-          "media4Semanas": 14802085853.1475,
+          "valor": 14229053808.600002,
+          "anterior": 16217689599.13,
+          "variacaoNominal": -1988635790.5299969,
+          "variacaoPct": -0.12262139920575849,
+          "media4Semanas": 14802111299.9075,
           "diasUteis": 5,
           "dataFonte": "2026-07-10"
         },
         "captacaoLiquida": {
-          "valor": -581358774.8700027,
+          "valor": -581508774.8700008,
           "anterior": -1385119268.999998,
-          "variacaoNominal": 803760494.1299953,
-          "variacaoPct": 0.580282515822828,
+          "variacaoNominal": 803610494.1299973,
+          "variacaoPct": 0.5801742218994416,
           "media4Semanas": 188845828.73500252,
           "diasUteis": 5,
           "dataFonte": "2026-07-10"

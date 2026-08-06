@@ -91,38 +91,38 @@
     "captacao": {
       "12431": {
         "dia": "2026-07-30",
-        "captacao": 80984033.71000001,
-        "resgate": 243721376.24,
-        "liquido": -162737342.53,
-        "pl": 265203434356.82,
-        "numFundos": 1707,
-        "curados": 1737,
-        "fechados": 287,
+        "captacao": 80983397.72000001,
+        "resgate": 243720740.25,
+        "liquido": -162737342.52999997,
+        "pl": 262439835190.1,
+        "numFundos": 1693,
+        "curados": 1723,
+        "fechados": 286,
         "anterior": {
           "dia": "2026-07-29",
-          "captacao": 91600962.08999997,
-          "resgate": 209005685.63000005,
-          "liquido": -117404723.54000008,
-          "pl": 265708329263.84012,
-          "numFundos": 1710
+          "captacao": 91583306.04999997,
+          "resgate": 208988029.59000006,
+          "liquido": -117404723.5400001,
+          "pl": 262948578159.58008,
+          "numFundos": 1696
         }
       },
       "trad": {
         "dia": "2026-07-30",
-        "captacao": 2518824962.7399993,
-        "resgate": 3427972552.5500007,
+        "captacao": 2518825598.729999,
+        "resgate": 3427973188.5400004,
         "liquido": -909147589.8100014,
-        "pl": 1594627380095.3005,
-        "numFundos": 997,
-        "curados": 1014,
-        "fechados": 50,
+        "pl": 1597390979262.0203,
+        "numFundos": 1011,
+        "curados": 1028,
+        "fechados": 51,
         "anterior": {
           "dia": "2026-07-29",
-          "captacao": 2820502134.119999,
-          "resgate": 2578000912.7400002,
+          "captacao": 2820519790.159999,
+          "resgate": 2578018568.78,
           "liquido": 242501221.37999868,
-          "pl": 1594554999216.7095,
-          "numFundos": 999
+          "pl": 1597314750320.9695,
+          "numFundos": 1013
         }
       }
     },
@@ -133,7 +133,7 @@
           "captacao": 14384688.24,
           "resgate": 6858947.1,
           "liquido": 7525741.140000001,
-          "pl": 20114048431.38
+          "pl": 19757112669.71
         },
         {
           "gestor": "Daycoval Asset",
@@ -161,7 +161,7 @@
           "captacao": 2019089.84,
           "resgate": 1025678.66,
           "liquido": 993411.18,
-          "pl": 4979061083.73
+          "pl": 3671941918.54
         }
       ],
       "top12431Resgate": [
@@ -177,7 +177,7 @@
           "captacao": 1448566.13,
           "resgate": 34659480.52,
           "liquido": -33210914.390000004,
-          "pl": 15211210561.66
+          "pl": 15161247481
         },
         {
           "gestor": "Absolute",
@@ -207,7 +207,7 @@
           "captacao": 1062096115.11,
           "resgate": 630329438.63,
           "liquido": 431766676.48,
-          "pl": 248627383109.56
+          "pl": 248984318871.23
         },
         {
           "gestor": "Regia",
@@ -1719,36 +1719,6 @@
           ],
           "numeroRegistro": null,
           "grupo": "Simpar"
-        },
-        {
-          "data": "2026-08-03",
-          "emissor": "GSH CORP PARTICIPAÇÕES S.A.",
-          "cnpj": "08397078000101",
-          "valorTotal": 125000000,
-          "status": "Aguardando Bookbuilding",
-          "rating": "n/a",
-          "numSeries": 1,
-          "sindicato": [
-            {
-              "nome": "BANCO SANTANDER (BRASIL) S.A.",
-              "lider": true
-            }
-          ],
-          "series": [
-            {
-              "incentivada": false,
-              "final": null,
-              "spread": null,
-              "teto": "CDI + 2,35%",
-              "venc": "2031-07-30",
-              "tenor": 5,
-              "amort": "amort",
-              "resgate": "Sim",
-              "rating": "n/a"
-            }
-          ],
-          "numeroRegistro": null,
-          "grupo": "GSH Corp"
         }
       ],
       "caption": "no dia"

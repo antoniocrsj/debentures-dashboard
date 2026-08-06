@@ -1,5 +1,5 @@
 {
-    "timestamp":  "2026-08-06T15:20:10",
+    "timestamp":  "2026-08-06T20:01:59",
     "modo":  "incremental",
     "mesesProcessados":  [
                              "202608",
@@ -14,18 +14,18 @@
                        },
     "linhasInvalidas":  0,
     "12431":  {
-                  "gestoras":  1728,
+                  "gestoras":  1714,
                   "naoEncontrados":  3,
-                  "linhasSemanais":  669,
-                  "linhasMensais":  222,
-                  "gestorasRentabilidade":  112
+                  "linhasSemanais":  657,
+                  "linhasMensais":  218,
+                  "gestorasRentabilidade":  110
               },
     "trad":  {
-                 "gestoras":  1007,
+                 "gestoras":  1021,
                  "naoEncontrados":  1,
-                 "linhasSemanais":  885,
-                 "linhasMensais":  293,
-                 "gestorasRentabilidade":  148
+                 "linhasSemanais":  891,
+                 "linhasMensais":  295,
+                 "gestorasRentabilidade":  149
              },
     "gestoresPl":  179
 }
