@@ -10,8 +10,8 @@
     "fluxo12431": "2026-08-04",
     "fluxoTrad": "2026-08-04",
     "anbima": "2026-08-05",
-    "mercado": "2026-08-06",
-    "debentures": "2026-08-04"
+    "mercado": "2026-08-10",
+    "debentures": "2026-08-06"
   },
   "alertas": [
     {
@@ -22,18 +22,18 @@
   "partes": {
     "debentures": {
       "sintese": [
-        "3 oferta(s) nova(s) (7 série(s)) de 2 emissor(es), somando R$ 2,2 bi.",
-        "12.431: R$ 0 · Tradicional: R$ 2,2 bi.",
+        "4 oferta(s) nova(s) (12 série(s)) de 3 emissor(es), somando R$ 2,36 bi.",
+        "12.431: R$ 0 · Tradicional: R$ 2,36 bi.",
         "Maior: IHS Towers (R$ 1,5 bi)."
       ],
       "resumo": {
-        "nOfertas": 3,
-        "nSeries": 7,
-        "nEmissores": 2,
+        "nOfertas": 4,
+        "nSeries": 12,
+        "nEmissores": 3,
         "nGrupos": 2,
-        "volumeTotal": 2199245000,
+        "volumeTotal": 2361070957,
         "volume12431": 0,
-        "volumeTradicional": 2199245000,
+        "volumeTradicional": 2361070957,
         "maioresPorGrupo": [
           {
             "nome": "IHS Towers",
@@ -42,6 +42,10 @@
           {
             "nome": "Vert Companhia Securitizadora",
             "volume": 699245000
+          },
+          {
+            "nome": "RTT PARTS S.A.",
+            "volume": 161825957
           }
         ],
         "volumeConfiavel": true
@@ -249,12 +253,117 @@
               "spreadFonte": "base"
             }
           ]
+        },
+        {
+          "chave": "62762501000162|001",
+          "cnpj": "62762501000162",
+          "emissao": "001",
+          "registro": "AUT/DEB/PRI/2026/373",
+          "emissor": "RTT PARTS S.A.",
+          "grupo": "",
+          "setor": "",
+          "coordenador": "GALAPAGOS CAPITAL DTVM S.A",
+          "coordenadores": [
+            {
+              "razaoSocial": "GALAPAGOS CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A. - GLPG DTVM",
+              "cnpj": "28.650.236/0001-92",
+              "lider": true
+            }
+          ],
+          "teto": null,
+          "remuneracaoMaxima": null,
+          "rating": null,
+          "dataRegistro": "2026-08-05",
+          "incentivada": false,
+          "volumeOferta": 161825957,
+          "volumeParcial": false,
+          "nSeries": 5,
+          "tickers": [
+            "RTTP11",
+            "RTTP21",
+            "RTTP51",
+            "RTTP61",
+            "RTTP71"
+          ],
+          "series": [
+            {
+              "ticker": "RTTP11",
+              "serie": "001",
+              "volumeSerie": 28481,
+              "indexador": "DI",
+              "taxaEmissao": "6",
+              "vencimento": "2030-12-30",
+              "garantia": "Real",
+              "amortizacao": "-",
+              "incentivada": false,
+              "resgateAntecipado": "N",
+              "spreadEmissao": "CDI +6,00%",
+              "spreadEst": false,
+              "spreadFonte": "base"
+            },
+            {
+              "ticker": "RTTP21",
+              "serie": "002",
+              "volumeSerie": 123194627,
+              "indexador": "DI",
+              "vencimento": "2030-12-30",
+              "garantia": "Real",
+              "amortizacao": "-",
+              "incentivada": false,
+              "resgateAntecipado": "N",
+              "spreadEmissao": "CDI +0,00%",
+              "spreadEst": false,
+              "spreadFonte": "base"
+            },
+            {
+              "ticker": "RTTP51",
+              "serie": "005",
+              "volumeSerie": 38440838,
+              "indexador": "DI",
+              "vencimento": "2030-12-30",
+              "garantia": "Real",
+              "amortizacao": "-",
+              "incentivada": false,
+              "resgateAntecipado": "N",
+              "spreadEmissao": "CDI +0,00%",
+              "spreadEst": false,
+              "spreadFonte": "base"
+            },
+            {
+              "ticker": "RTTP61",
+              "serie": "006",
+              "volumeSerie": 50586,
+              "indexador": "DI",
+              "vencimento": "2030-12-30",
+              "garantia": "Real",
+              "amortizacao": "-",
+              "incentivada": false,
+              "resgateAntecipado": "N",
+              "spreadEmissao": "CDI +0,00%",
+              "spreadEst": false,
+              "spreadFonte": "base"
+            },
+            {
+              "ticker": "RTTP71",
+              "serie": "007",
+              "volumeSerie": 111425,
+              "indexador": "DI",
+              "vencimento": "2030-12-30",
+              "garantia": "Real",
+              "amortizacao": "-",
+              "incentivada": false,
+              "resgateAntecipado": "N",
+              "spreadEmissao": "CDI +0,00%",
+              "spreadEst": false,
+              "spreadFonte": "base"
+            }
+          ]
         }
       ],
       "inconsistencias": [],
       "ofertasSRE": {
         "asOf": "2026-08-06",
-        "geradoEm": "2026-08-06T12:12:31.658Z",
+        "geradoEm": "2026-08-06T13:40:40.215Z",
         "fonte": "CVM SRE (detalhado + participantes + acaoObjeto)",
         "janelaDias": 40,
         "periodo": {
@@ -715,8 +824,8 @@
       "sintese": [
         "Spread 12.431: movimento misto (mediana +0 bps, 218 abriram / 308 fecharam de 626).",
         "Spread Tradicional: leve abertura (mediana +1 bps, 12 abriram / 6 fecharam de 21 — amostra pequena).",
-        "Secundário: R$ 1,65 bi em 810 negócio(s) (12.431 R$ 430,4 mi · Trad R$ 1,22 bi).",
-        "17 negócio(s) ≥ R$ 20 mi em 13 grupo(s)."
+        "Secundário: R$ 2,11 bi em 923 negócio(s) (12.431 R$ 652,3 mi · Trad R$ 1,46 bi).",
+        "22 negócio(s) ≥ R$ 20 mi em 17 grupo(s)."
       ],
       "tendencia": {
         "semFronteira": false,
@@ -823,10 +932,10 @@
               }
             ],
             "vsAnbima": {
-              "comparaveis": 595,
-              "acima": 368,
-              "abaixo": 217,
-              "igual": 10
+              "comparaveis": 671,
+              "acima": 416,
+              "abaixo": 244,
+              "igual": 11
             }
           },
           "trad": {
@@ -897,7 +1006,7 @@
               },
               {
                 "ticker": "JSMLB5",
-                "emissor": "JSL S.A",
+                "emissor": "SIMPAR S.A.",
                 "grupo": "Simpar",
                 "variacaoBps": -5,
                 "spreadAnteriorBps": 517,
@@ -929,10 +1038,10 @@
               }
             ],
             "vsAnbima": {
-              "comparaveis": 162,
-              "acima": 84,
-              "abaixo": 50,
-              "igual": 28
+              "comparaveis": 189,
+              "acima": 94,
+              "abaixo": 63,
+              "igual": 32
             }
           }
         }
@@ -962,44 +1071,48 @@
       "trades": {
         "limiar": 20000000,
         "resumo": {
-          "volume": 1654702274,
-          "nTrades": 810,
-          "volume12431": 430352654,
-          "volumeTradicional": 1224349620,
+          "volume": 2114201518,
+          "nTrades": 923,
+          "volume12431": 652292074,
+          "volumeTradicional": 1461909444,
           "anterior": {
             "volume": 2881674961,
             "nTrades": 1256
           },
-          "variacaoVolNominal": -1226972687,
-          "variacaoVolPct": -0.42578455363828244,
+          "variacaoVolNominal": -767473443,
+          "variacaoVolPct": -0.26632894180878436,
           "media4Semanas": 2358792306.25,
-          "variacaoVs4Pct": -0.2984959847394788,
+          "variacaoVs4Pct": -0.10369322792935916,
           "maioresGrupos": [
             {
               "nome": "Equatorial",
-              "volume": 325075187
+              "volume": 338262202
             },
             {
               "nome": "EcoRodovias",
-              "volume": 135092578
+              "volume": 183473159
+            },
+            {
+              "nome": "BRK",
+              "volume": 158019754
             },
             {
               "nome": "Axia",
-              "volume": 121175817
+              "volume": 128977421
             },
             {
-              "nome": "Auren",
-              "volume": 100804615
-            },
-            {
-              "nome": "VLI",
-              "volume": 61442044
+              "nome": "Energisa",
+              "volume": 124429773
             }
           ],
           "maioresAtivos": [
             {
               "nome": "CEEDA1",
               "volume": 176390875
+            },
+            {
+              "nome": "BRKPA5",
+              "volume": 121477831
             },
             {
               "nome": "CGOS15",
@@ -1012,10 +1125,6 @@
             {
               "nome": "CESPA4",
               "volume": 72187199
-            },
-            {
-              "nome": "ECOV17",
-              "volume": 50417061
             }
           ]
         },
@@ -1082,36 +1191,112 @@
               "ECOV17",
               "ERDVA6"
             ],
-            "volumeTotal": 77503549,
+            "volumeTotal": 111370861,
             "nTrades": 2,
             "datas": [
               "2026-08-05"
             ],
             "enquadramento": "Tradicional",
             "maiorTrade": {
-              "ticker": "ECOV17",
+              "ticker": "ERDVA6",
               "data": "2026-08-05",
-              "volume": 50417061,
-              "taxaMed": "0.6994",
-              "spreadFmt": "CDI +0.70%",
-              "vsAnbima": -0.03
+              "volume": 57685129,
+              "taxaMed": "0.8297",
+              "spreadFmt": "CDI +0.83%",
+              "vsAnbima": -0.01
             },
             "trades": [
               {
+                "ticker": "ERDVA6",
+                "data": "2026-08-05",
+                "volume": 57685129,
+                "taxaMed": "0.8297",
+                "spreadFmt": "CDI +0.83%",
+                "vsAnbima": -0.01
+              },
+              {
                 "ticker": "ECOV17",
                 "data": "2026-08-05",
-                "volume": 50417061,
+                "volume": 53685732,
                 "taxaMed": "0.6994",
                 "spreadFmt": "CDI +0.70%",
                 "vsAnbima": -0.03
+              }
+            ]
+          },
+          {
+            "grupo": "BRK",
+            "emissores": [
+              "BRK AMBIENTAL PARTICIPACOES S/A"
+            ],
+            "ativos": [
+              "BRKPA5"
+            ],
+            "volumeTotal": 105668409,
+            "nTrades": 1,
+            "datas": [
+              "2026-08-06"
+            ],
+            "enquadramento": "Tradicional",
+            "maiorTrade": {
+              "ticker": "BRKPA5",
+              "data": "2026-08-06",
+              "volume": 105668409,
+              "taxaMed": "2.0000",
+              "spreadFmt": "CDI +2.00%",
+              "vsAnbima": -0.09
+            },
+            "trades": [
+              {
+                "ticker": "BRKPA5",
+                "data": "2026-08-06",
+                "volume": 105668409,
+                "taxaMed": "2.0000",
+                "spreadFmt": "CDI +2.00%",
+                "vsAnbima": -0.09
+              }
+            ]
+          },
+          {
+            "grupo": "Energisa",
+            "emissores": [
+              "ENERGISA SERGIPE - DISTRIBUIDORA DE ENERGIA S/A",
+              "ENERGISA PARAIBA - DISTRIBUIDORA DE ENERGIA S/A"
+            ],
+            "ativos": [
+              "ENSEA5",
+              "SAELB8"
+            ],
+            "volumeTotal": 94698615,
+            "nTrades": 2,
+            "datas": [
+              "2026-08-06"
+            ],
+            "enquadramento": "12.431",
+            "maiorTrade": {
+              "ticker": "ENSEA5",
+              "data": "2026-08-06",
+              "volume": 60889800,
+              "taxaMed": "8.2910",
+              "spreadFmt": "B35 +22bps",
+              "vsAnbima": 9
+            },
+            "trades": [
+              {
+                "ticker": "ENSEA5",
+                "data": "2026-08-06",
+                "volume": 60889800,
+                "taxaMed": "8.2910",
+                "spreadFmt": "B35 +22bps",
+                "vsAnbima": 9
               },
               {
-                "ticker": "ERDVA6",
-                "data": "2026-08-05",
-                "volume": 27086488,
-                "taxaMed": "0.8293",
-                "spreadFmt": "CDI +0.83%",
-                "vsAnbima": -0.01
+                "ticker": "SAELB8",
+                "data": "2026-08-06",
+                "volume": 33808815,
+                "taxaMed": "8.2910",
+                "spreadFmt": "B35 +22bps",
+                "vsAnbima": 10
               }
             ]
           },
@@ -1281,6 +1466,48 @@
             ]
           },
           {
+            "grupo": "Vibra",
+            "emissores": [
+              "VIBRA ENERGIA S.A"
+            ],
+            "ativos": [
+              "VBBR17",
+              "VBBR16"
+            ],
+            "volumeTotal": 44116280,
+            "nTrades": 2,
+            "datas": [
+              "2026-08-05"
+            ],
+            "enquadramento": "Tradicional",
+            "maiorTrade": {
+              "ticker": "VBBR17",
+              "data": "2026-08-05",
+              "volume": 24108761,
+              "taxaMed": "0.7400",
+              "spreadFmt": "CDI +0.74%",
+              "vsAnbima": -0.03
+            },
+            "trades": [
+              {
+                "ticker": "VBBR17",
+                "data": "2026-08-05",
+                "volume": 24108761,
+                "taxaMed": "0.7400",
+                "spreadFmt": "CDI +0.74%",
+                "vsAnbima": -0.03
+              },
+              {
+                "ticker": "VBBR16",
+                "data": "2026-08-05",
+                "volume": 20007519,
+                "taxaMed": "0.7400",
+                "spreadFmt": "CDI +0.74%",
+                "vsAnbima": -0.06
+              }
+            ]
+          },
+          {
             "grupo": "VLI",
             "emissores": [
               "VLI MULTIMODAL S.A."
@@ -1314,44 +1541,68 @@
             ]
           },
           {
-            "grupo": "Vibra",
+            "grupo": "Neoenergia",
             "emissores": [
-              "VIBRA ENERGIA S.A"
+              "CIA. DE ELETRIC. DO EST. DA BAHIA-COELBA"
             ],
             "ativos": [
-              "VBBR17",
-              "VBBR16"
+              "CEEBD1"
             ],
-            "volumeTotal": 40015615,
-            "nTrades": 2,
+            "volumeTotal": 30949985,
+            "nTrades": 1,
+            "datas": [
+              "2026-08-06"
+            ],
+            "enquadramento": "12.431",
+            "maiorTrade": {
+              "ticker": "CEEBD1",
+              "data": "2026-08-06",
+              "volume": 30949985,
+              "taxaMed": "14.0673",
+              "spreadFmt": "DI −0.29%",
+              "vsAnbima": -14.42
+            },
+            "trades": [
+              {
+                "ticker": "CEEBD1",
+                "data": "2026-08-06",
+                "volume": 30949985,
+                "taxaMed": "14.0673",
+                "spreadFmt": "DI −0.29%",
+                "vsAnbima": -14.42
+              }
+            ]
+          },
+          {
+            "grupo": "Prio Forte",
+            "emissores": [
+              "PRIO FORTE S.A."
+            ],
+            "ativos": [
+              "PFOR26"
+            ],
+            "volumeTotal": 25565144,
+            "nTrades": 1,
             "datas": [
               "2026-08-05"
             ],
             "enquadramento": "Tradicional",
             "maiorTrade": {
-              "ticker": "VBBR17",
+              "ticker": "PFOR26",
               "data": "2026-08-05",
-              "volume": 20008096,
-              "taxaMed": "0.7400",
-              "spreadFmt": "CDI +0.74%",
-              "vsAnbima": -0.03
+              "volume": 25565144,
+              "taxaMed": "1.4900",
+              "spreadFmt": "CDI +1.49%",
+              "vsAnbima": 0
             },
             "trades": [
               {
-                "ticker": "VBBR17",
+                "ticker": "PFOR26",
                 "data": "2026-08-05",
-                "volume": 20008096,
-                "taxaMed": "0.7400",
-                "spreadFmt": "CDI +0.74%",
-                "vsAnbima": -0.03
-              },
-              {
-                "ticker": "VBBR16",
-                "data": "2026-08-05",
-                "volume": 20007519,
-                "taxaMed": "0.7400",
-                "spreadFmt": "CDI +0.74%",
-                "vsAnbima": -0.06
+                "volume": 25565144,
+                "taxaMed": "1.4900",
+                "spreadFmt": "CDI +1.49%",
+                "vsAnbima": 0
               }
             ]
           },
@@ -1396,7 +1647,7 @@
             "ativos": [
               "RDORD7"
             ],
-            "volumeTotal": 21096176,
+            "volumeTotal": 22186505,
             "nTrades": 1,
             "datas": [
               "2026-08-06"
@@ -1405,8 +1656,8 @@
             "maiorTrade": {
               "ticker": "RDORD7",
               "data": "2026-08-06",
-              "volume": 21096176,
-              "taxaMed": "0.9790",
+              "volume": 22186505,
+              "taxaMed": "0.9780",
               "spreadFmt": "CDI +0.98%",
               "vsAnbima": -0.01
             },
@@ -1414,8 +1665,8 @@
               {
                 "ticker": "RDORD7",
                 "data": "2026-08-06",
-                "volume": 21096176,
-                "taxaMed": "0.9790",
+                "volume": 22186505,
+                "taxaMed": "0.9780",
                 "spreadFmt": "CDI +0.98%",
                 "vsAnbima": -0.01
               }
@@ -1462,7 +1713,7 @@
             "ativos": [
               "CIEL19"
             ],
-            "volumeTotal": 20012482,
+            "volumeTotal": 20012548,
             "nTrades": 1,
             "datas": [
               "2026-08-05"
@@ -1471,7 +1722,7 @@
             "maiorTrade": {
               "ticker": "CIEL19",
               "data": "2026-08-05",
-              "volume": 20012482,
+              "volume": 20012548,
               "taxaMed": "0.3350",
               "spreadFmt": "CDI +0.34%",
               "vsAnbima": -0.02
@@ -1480,7 +1731,7 @@
               {
                 "ticker": "CIEL19",
                 "data": "2026-08-05",
-                "volume": 20012482,
+                "volume": 20012548,
                 "taxaMed": "0.3350",
                 "spreadFmt": "CDI +0.34%",
                 "vsAnbima": -0.02
@@ -1648,7 +1899,7 @@
       },
       "sintese": [
         "12.431: captação líquida −R$ 235,9 mi (2 d.u.), emissão CVM R$ 0.",
-        "Tradicional: captação líquida −R$ 1,28 bi (2 d.u.), emissão CVM R$ 2,2 bi."
+        "Tradicional: captação líquida −R$ 1,28 bi (2 d.u.), emissão CVM R$ 2,58 bi."
       ],
       "trad": {
         "captacaoBruta": {
@@ -1679,10 +1930,10 @@
           "dataFonte": "2026-08-04"
         },
         "volumeEmitidoCVM": {
-          "valor": 2199245000,
+          "valor": 2582973901,
           "anterior": 6210000000,
-          "variacaoNominal": -4010755000,
-          "variacaoPct": -0.6458542673107891,
+          "variacaoNominal": -3627026099,
+          "variacaoPct": -0.5840621737520129,
           "media4Semanas": 7157890902,
           "diasUteis": null,
           "dataFonte": "2026-08-09"
@@ -1814,6 +2065,10 @@
           {
             "nome": "Vert Companhia Securitizadora",
             "volume": 699245000
+          },
+          {
+            "nome": "RTT PARTS S.A.",
+            "volume": 161825957
           }
         ],
         "porEmissor": [
@@ -1824,10 +2079,14 @@
           {
             "nome": "VERT COMPANHIA  SECURITIZADORA",
             "volume": 699245000
+          },
+          {
+            "nome": "RTT PARTS S.A.",
+            "volume": 161825957
           }
         ],
         "volume12431": 0,
-        "volumeTradicional": 2199245000
+        "volumeTradicional": 2361070957
       }
     }
   }

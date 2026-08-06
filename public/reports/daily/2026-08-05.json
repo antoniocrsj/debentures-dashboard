@@ -3,7 +3,7 @@
   "label": "05/08/2026",
   "previousDate": "2026-08-04",
   "sourceDates": {
-    "debentures": "2026-08-04",
+    "debentures": "2026-08-05",
     "cap12431": "2026-08-03",
     "capTrad": "2026-08-03",
     "perf12431": "2026-08-03",
@@ -13,13 +13,17 @@
     "fundos": "2026-08-03"
   },
   "novoPorFonte": {
-    "debentures": false,
+    "debentures": true,
     "cap": true,
     "anbima": true,
     "fundos": true,
     "blc": false
   },
   "summary": [
+    {
+      "texto": "4 nova(s) debênture(s) cadastrada(s)",
+      "tom": "pos"
+    },
     {
       "texto": "Captação líquida Incentivados: −R$ 132 mi",
       "tom": "neg"
@@ -51,7 +55,64 @@
   ],
   "sections": {
     "debentures": {
-      "novas": [],
+      "novas": [
+        {
+          "ticker": "RTTP11",
+          "empresa": "RTT PARTS S.A.",
+          "grupo": "",
+          "cnpj": "62762501000162",
+          "dataRegistro": "05/08/2026",
+          "dataEmissao": "03/07/2026",
+          "vencimento": "30/12/2030",
+          "indexador": "DI",
+          "taxa": "6",
+          "volumeEmitido": 28481,
+          "incentivada": false,
+          "coordenador": "GALAPAGOS CAPITAL DTVM S.A"
+        },
+        {
+          "ticker": "RTTP51",
+          "empresa": "RTT PARTS S.A.",
+          "grupo": "",
+          "cnpj": "62762501000162",
+          "dataRegistro": "05/08/2026",
+          "dataEmissao": "03/07/2026",
+          "vencimento": "30/12/2030",
+          "indexador": "DI",
+          "taxa": "",
+          "volumeEmitido": 38440838,
+          "incentivada": false,
+          "coordenador": "GALAPAGOS CAPITAL DTVM S.A"
+        },
+        {
+          "ticker": "RTTP61",
+          "empresa": "RTT PARTS S.A.",
+          "grupo": "",
+          "cnpj": "62762501000162",
+          "dataRegistro": "05/08/2026",
+          "dataEmissao": "03/07/2026",
+          "vencimento": "30/12/2030",
+          "indexador": "DI",
+          "taxa": "",
+          "volumeEmitido": 50586,
+          "incentivada": false,
+          "coordenador": "GALAPAGOS CAPITAL DTVM S.A"
+        },
+        {
+          "ticker": "RTTP71",
+          "empresa": "RTT PARTS S.A.",
+          "grupo": "",
+          "cnpj": "62762501000162",
+          "dataRegistro": "05/08/2026",
+          "dataEmissao": "03/07/2026",
+          "vencimento": "30/12/2030",
+          "indexador": "DI",
+          "taxa": "",
+          "volumeEmitido": 111425,
+          "incentivada": false,
+          "coordenador": "GALAPAGOS CAPITAL DTVM S.A"
+        }
+      ],
       "saidas": [],
       "temSnapshotAnterior": false
     },
@@ -1529,7 +1590,12 @@
       ]
     },
     "inclusoes": {
-      "novosDebentures": [],
+      "novosDebentures": [
+        "RTTP11",
+        "RTTP51",
+        "RTTP61",
+        "RTTP71"
+      ],
       "novosBlc": [],
       "temSnapshotBlc": true
     },
