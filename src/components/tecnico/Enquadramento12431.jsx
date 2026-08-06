@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect } from 'react'
-import { BarChart, Bar, ComposedChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LabelList, Cell } from 'recharts'
+import { Bar, ComposedChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts'
 
 // Enquadramento 12.431 (aba Técnico) — DOIS gráficos:
 //  1. Ranking da compra necessária consolidado por GESTORA (clicar numa barra
@@ -46,7 +46,6 @@ function MesTip({ active, payload }) {
 }
 
 export default function Enquadramento12431({ rows, serie, serieGestora, gestor }) {
-  const [h, setH] = useState(6)
   const [sel, setSel] = useState(null)   // gestora selecionada (filtra tabela + mensal)
   useEffect(() => { setSel(gestor || null) }, [gestor])
 
@@ -55,26 +54,23 @@ export default function Enquadramento12431({ rows, serie, serieGestora, gestor }
   const dataM = rows?.[0]?.dataM || null                                    // 'AAAAMM' do BLC fechado
   const mBLC = dataM ? mesLabel(`${dataM.slice(0, 4)}-${dataM.slice(4, 6)}`) : null
 
-  const d = useMemo(() => {
+  // Tabela por gestora: compra necessária somada, nos horizontes de 6 e 12 meses.
+  const gestoras = useMemo(() => {
     if (!base) return null
-    const enquad = base.filter(r => r.compra[h] <= 0).length
-    const totalCompra = base.reduce((s, r) => s + Math.max(0, r.compra[h]), 0)
     const g = {}
     for (const r of base) {
-      if (r.compra[h] <= 0) continue
-      const k = r.gestor || '—'; const o = g[k] || (g[k] = { c: 0, n: 0 })
-      o.c += r.compra[h]; o.n++
+      const k = r.gestor || '—'; const o = g[k] || (g[k] = { nome: k, c6: 0, c12: 0 })
+      o.c6 += Math.max(0, r.compra[6]); o.c12 += Math.max(0, r.compra[12])
     }
-    const top = Object.entries(g).map(([k, o]) => ({ nome: k, rot: short(k), compraH: o.c, sub: `${o.n} fundo${o.n > 1 ? 's' : ''} desenquadrado${o.n > 1 ? 's' : ''}` }))
-      .sort((a, b) => b.compraH - a.compraH).slice(0, 20)
-    return { universo: base.length, enquad, totalCompra, top, algumEstimado: base.some(r => r.amortEstimada) }
-  }, [base, h])
+    const lista = Object.values(g).filter(o => o.c6 > 0 || o.c12 > 0).sort((a, b) => b.c6 - a.c6)
+    return { lista, algumEstimado: base.some(r => r.amortEstimada) }
+  }, [base])
 
   const fundos = useMemo(() => {
     if (!base || !sel) return null
-    const lista = base.filter(r => (r.gestor || '—') === sel).sort((a, b) => b.compra[h] - a.compra[h])
-    return { lista, soma: lista.reduce((s, r) => s + Math.max(0, r.compra[h]), 0), nDes: lista.filter(r => r.compra[h] > 0).length }
-  }, [base, sel, h])
+    const lista = base.filter(r => (r.gestor || '—') === sel).sort((a, b) => b.compra[6] - a.compra[6])
+    return { lista, soma6: lista.reduce((s, r) => s + Math.max(0, r.compra[6]), 0), nDes: lista.filter(r => r.compra[6] > 0).length }
+  }, [base, sel])
 
   // Mensal: barras = demanda NOVA por mês (fluxo), linha = acumulado. Reflete a
   // gestora selecionada (série própria) ou o TOTAL.
@@ -90,61 +86,49 @@ export default function Enquadramento12431({ rows, serie, serieGestora, gestor }
     return { data, hojeAcum: hojeP.acum, fimAcum: data[data.length - 1].acum, fimLbl: data[data.length - 1].lbl }
   }, [serie, serieGestora, sel, hojeMes])
 
-  const clickBar = e => { const g = e?.nome ?? e?.payload?.nome; if (g) setSel(s => (s === g ? null : g)) }
+  const toggleSel = g => { if (g) setSel(s => (s === g ? null : g)) }
 
   return (
     <>
-      {/* Gráfico 1: ranking por gestora */}
+      {/* Gráfico 1: tabela por gestora (compra necessária em 6m e 12m) */}
       <div className="grafico-card enq-card-ranking">
-        <p className="tecnico-chart-label">
-          Enquadramento 12.431
-          {d && <span className="grafico-kpi"><b>{d.enquad} de {d.universo}</b><em>enquadrados{d.top.length > 0 ? ` · faltam ${fmtRs(d.totalCompra)}` : ''}</em></span>}
-          <span className="segmented tecnico-unidade" role="tablist" aria-label="Horizonte da projeção">
-            {HORIZONTES.map(o => (
-              <button key={o.id} type="button" role="tab" aria-selected={h === o.id}
-                className={`segmented-btn${h === o.id ? ' active' : ''}`} onClick={() => setH(o.id)}>{o.label}</button>
-            ))}
-          </span>
-        </p>
+        <p className="tecnico-chart-label">Enquadramento 12.431</p>
         <div className="enq-ranking-scroll">
-        {!d ? <div className="caixa-line-empty">Carregando enquadramento…</div>
-          : !d.universo ? <div className="caixa-line-empty">Sem fundos 12.431 no filtro atual.</div>
-            : d.top.length === 0 ? <div className="caixa-line-empty">Todas as gestoras enquadradas no horizonte de {h} meses.</div>
-              : (
-                <div className="enq-plot" style={{ height: d.top.length * 26 + 24 }}>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={d.top} layout="vertical" margin={{ top: 2, right: 40, bottom: 2, left: 2 }}>
-                      <CartesianGrid horizontal={false} stroke={GRID} />
-                      <XAxis type="number" tickFormatter={fmtRsEixo} tick={{ fontSize: 9.5, fill: CARVAO }} axisLine={false} tickLine={false} />
-                      <YAxis type="category" dataKey="rot" width={108} tick={{ fontSize: 9.5, fill: CARVAO }} axisLine={false} tickLine={false} interval={0} />
-                      <Tooltip content={<RankTip />} cursor={{ fill: 'rgba(140,94,58,0.06)' }} />
-                      <Bar dataKey="compraH" radius={[0, 3, 3, 0]} isAnimationActive={false} cursor="pointer" onClick={clickBar}>
-                        {d.top.map((e, i) => <Cell key={i} fill={sel === e.nome ? T_SEL : T} />)}
-                        <LabelList dataKey="compraH" position="right" formatter={fmtRsEixo} style={{ fontSize: 9, fill: MUTED }} />
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-              )}
+        {!gestoras ? <div className="caixa-line-empty">Carregando enquadramento…</div>
+          : gestoras.lista.length === 0 ? <div className="caixa-line-empty">Todas as gestoras enquadradas.</div>
+            : (
+              <table className="enq-table enq-gestora-table">
+                <thead><tr><th>Gestora</th><th className="num">6m</th><th className="num">12m</th></tr></thead>
+                <tbody>
+                  {gestoras.lista.map((g, i) => (
+                    <tr key={i} className={sel === g.nome ? 'sel' : ''} onClick={() => toggleSel(g.nome)}>
+                      <td className="enq-fnome" title={g.nome}>{g.nome}</td>
+                      <td className="num">{g.c6 > 0 ? fmtRs(g.c6) : '—'}</td>
+                      <td className="num">{g.c12 > 0 ? fmtRs(g.c12) : '—'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
 
         {fundos && (
           <div className="enq-fundos">
             <div className="enq-fundos-head">
               <b>{sel}</b>
-              <span>{fundos.nDes} desenquadrado{fundos.nDes === 1 ? '' : 's'} · faltam {fmtRs(fundos.soma)}</span>
+              <span>{fundos.nDes} desenquadrado{fundos.nDes === 1 ? '' : 's'} · faltam {fmtRs(fundos.soma6)} (6m)</span>
               <button type="button" className="enq-close" onClick={() => setSel(null)}>Fechar</button>
             </div>
             <div className="enq-table-wrap">
               <table className="enq-table">
-                <thead><tr><th>Fundo</th><th className="num">Idade</th><th className="num">% atual</th><th className="num">Exigido</th><th className="num">Compra {h}m</th></tr></thead>
+                <thead><tr><th>Fundo</th><th className="num">Idade</th><th className="num">% atual</th><th className="num">6m</th><th className="num">12m</th></tr></thead>
                 <tbody>
                   {fundos.lista.map((f, i) => (
-                    <tr key={i} className={f.compra[h] > 0 ? '' : 'enq-ok'}>
+                    <tr key={i} className={f.compra[6] > 0 ? '' : 'enq-ok'}>
                       <td className="enq-fnome" title={f.fundo}>{f.fundo}</td>
                       <td className="num">{f.idadeMeses}m</td>
                       <td className="num">{pct0(f.pctAtual)}</td>
-                      <td className="num">{pct0(f.pctExig[h])}</td>
-                      <td className="num">{f.compra[h] > 0 ? fmtRs(f.compra[h]) : '—'}</td>
+                      <td className="num">{f.compra[6] > 0 ? fmtRs(f.compra[6]) : '—'}</td>
+                      <td className="num">{f.compra[12] > 0 ? fmtRs(f.compra[12]) : '—'}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -183,10 +167,10 @@ export default function Enquadramento12431({ rows, serie, serieGestora, gestor }
       </div>
 
       <p className="enq-nota">
-        Ranking: compra p/ atingir o mínimo (carência até 6m · 67% dos 6-24m · 85% após 24m) em {h} meses, por gestora
-        (clique numa barra p/ filtrar a tabela e o mensal). Mensal: <b>barras</b> = demanda NOVA por mês; <b>linha</b> =
+        Tabela: compra p/ atingir o mínimo (carência até 6m · 67% dos 6-24m · 85% após 24m) por gestora, nos horizontes de
+        6 e 12 meses (clique numa linha p/ filtrar a tabela de fundos e o mensal). Mensal: <b>barras</b> = demanda NOVA por mês; <b>linha</b> =
         acumulado, a partir de {mesLabel(serie?.[0]?.mes)}{mBLC ? ` (1º mês após o BLC fechado de ${mBLC})` : ''} — barras claras até hoje, escuras projetado.
-        Partindo da última carteira do CDA; elegíveis = só debêntures 12.431 (não capta cotas de FI-Infra){d?.algumEstimado ? '; amortização de alguns papéis estimada' : ''} → valor é um teto.
+        Partindo da última carteira do CDA; elegíveis = só debêntures 12.431 (não capta cotas de FI-Infra){gestoras?.algumEstimado ? '; amortização de alguns papéis estimada' : ''} → valor é um teto.
       </p>
     </>
   )
