@@ -6,12 +6,18 @@ import { useState, useEffect } from 'react'
 // Carrega SOB DEMANDA (`enabled`) — arquivo pequeno, mas segue o padrão do app.
 export function useEnquadramento12431(enabled) {
   const [rows, setRows] = useState(null)
+  const [serie, setSerie] = useState(null)   // série mensal da demanda (do meta)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (!enabled || rows) return
     let cancelled = false
     setLoading(true)
+    // série mensal vem do meta (não trava se faltar)
+    fetch('/data/Enquadramento_12431_meta.json')
+      .then(res => (res.ok ? res.json() : null))
+      .then(j => { if (!cancelled) setSerie(j?.serieMensal || []) })
+      .catch(() => { if (!cancelled) setSerie([]) })
     fetch('/data/Enquadramento_12431.csv')
       .then(res => (res.ok ? res.text() : null))
       .then(txt => {
@@ -48,7 +54,7 @@ export function useEnquadramento12431(enabled) {
     return () => { cancelled = true }
   }, [enabled, rows])
 
-  return { rows, loading }
+  return { rows, serie, loading }
 }
 
 function splitCsvLine(l) {

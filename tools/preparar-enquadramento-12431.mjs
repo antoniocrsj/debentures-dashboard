@@ -126,6 +126,7 @@ function main() {
   // 6) cálculo por fundo
   const HORIZ = [0, 6, 12]
   const linhas = []
+  const fundos = []   // essenciais p/ a série mensal (posições, PL_ref, datas)
   let semCarteira = 0, semDataInicio = 0
   for (const c in cx) {
     const f = cx[c]
@@ -173,11 +174,41 @@ function main() {
       amortEstimada: amortEst ? 1 : 0, semDataInicio: semIni ? 1 : 0, semCarteira: pos.length ? 0 : 1,
     }
     for (const h of HORIZ) {
-      const pct = (idade + h < 24) ? 0.67 : 0.85
+      const ia = idade + h                                  // idade no horizonte
+      const pct = ia < 6 ? 0 : (ia < 24 ? 0.67 : 0.85)      // carência 6m -> 67% -> 85%
       const compra = Math.max(0, plRef * pct - elig[h])
       row[`Eleg_${h}m`] = Math.round(elig[h]); row[`pctExig_${h}m`] = pct; row[`Compra_${h}m`] = Math.round(compra)
     }
     linhas.push(row)
+    if (pos.length) fundos.push({ pos, plRef, iniMs: ini ? msOf(ini) : null, Mms })
+  }
+
+  // 6b) SÉRIE MENSAL da demanda (compra necessária TOTAL) a partir de M, mês a mês,
+  // com o degrau 67->85% e a amortização da carteira agindo em cada mês (PL constante).
+  const mesBaseG = cx[Object.keys(cx)[0]]?.mesBase
+  const serie = []
+  if (mesBaseG) {
+    const baseY = +mesBaseG.slice(0, 4), baseMo = +mesBaseG.slice(4, 6)
+    for (let k = 0; k <= 18; k++) {
+      const ty = baseY + Math.floor((baseMo - 1 + k) / 12)
+      const tm = ((baseMo - 1 + k) % 12) + 1
+      const alvo = Date.UTC(ty, tm, 0)   // último dia do mês-alvo (sem overflow de dia)
+      let total = 0, nDes = 0
+      for (const fd of fundos) {
+        const idadeAlvo = fd.iniMs != null ? monthsBetween(fd.iniMs, alvo) : monthsBetween(hojeMs, alvo)
+        const pctExig = idadeAlvo < 6 ? 0 : (idadeAlvo < 24 ? 0.67 : 0.85)   // carência 6m
+        let elig = 0
+        for (const p of fd.pos) {
+          if (!temAgenda(p.t)) { elig += p.vl; continue }
+          const denM = 1 - cumFrac(p.t, fd.Mms)
+          if (denM <= 1e-6) { elig += p.vl; continue }
+          elig += p.vl * Math.max(0, Math.min(1, (1 - cumFrac(p.t, alvo)) / denM))
+        }
+        const compra = fd.plRef * pctExig - elig
+        if (compra > 0) { total += compra; nDes++ }
+      }
+      serie.push({ mes: `${ty}-${String(tm).padStart(2, '0')}`, compra: Math.round(total), nDesenq: nDes })
+    }
   }
 
   // 7) grava CSV + meta
@@ -197,6 +228,7 @@ function main() {
     geradoEm: new Date().toISOString(), dataM: cx[Object.keys(cx)[0]]?.mesBase || null,
     dataHoje: new Date(hojeMs).toISOString().slice(0, 10),
     premissas: { plConstanteAposHoje: true, media180: 'proxy mensal (últimos ~6 meses)', dataInicio: 'registro CVM (proxy 1ª integralização)', elegiveis: 'só debêntures 12.431 (não capta cotas de FI-Infra)' },
+    serieMensal: serie,
     cobertura: {
       fundos: linhas.length, semCarteira, semDataInicio,
       desenquadrados6m: desenq(6).length, desenquadrados12m: desenq(12).length,

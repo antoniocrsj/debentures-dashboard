@@ -6,8 +6,9 @@ projetado para **hoje, +6 meses e +12 meses**.
 
 ## Regra legal (resumo)
 - Patrimônio de referência = `MIN(PL atual, média do PL dos últimos 180 dias)`.
-- Percentual mínimo de ativos elegíveis: **67%** antes de 24 meses da 1ª integralização,
-  **85%** a partir de 24 meses.
+- Percentual mínimo de ativos elegíveis (STEP, por idade desde a 1ª integralização):
+  **carência até 6 meses** (0% exigido) → **67%** dos 6 aos 24 meses → **85%** a partir
+  de 24 meses. `%exig = idade<6 ? 0 : idade<24 ? 0.67 : 0.85`.
 - Compra necessária = `MAX(0, PL_ref × % − elegíveis)`.
 
 ## Reframe (por que projetamos)
@@ -33,7 +34,7 @@ Compra(h) = MAX(0,  PL_ref(h) × %_exigido(h)  −  Elegíveis(h) )     h ∈ {0
 ## Fórmula da projeção (h = 0/6/12 meses após HOJE)
 ```
 PL_ref(h)     = PL_ref(hoje)                                   # flat após hoje
-%_exigido(h)  = (idade(hoje) + h < 24) ? 67% : 85%
+%_exigido(h)  = (idade+h)<6 ? 0 : (idade+h)<24 ? 67% : 85%   # carência 6m
 Elegíveis(h)  = Σ_posições  VL_ALOCADO_M × (1 − cumFrac(ticker, HOJE+h)) / (1 − cumFrac(ticker, M))
 Compra(h)     = MAX(0, PL_ref(h) × %_exigido(h) − Elegíveis(h))
 ```
@@ -68,7 +69,11 @@ amortEstimada, semDataInicio`. Meta: `asOf, dataM, dataHoje, premissas, cobertur
 Wire: passo isolado no `atualizar-tudo.ps1` (após BLC + Cronograma + Perf_Diario).
 
 ## App
-- Hook `src/hooks/useEnquadramento12431.js` — carrega o CSV sob demanda.
+- Hook `src/hooks/useEnquadramento12431.js` — carrega o CSV (por fundo) + o meta
+  (com a `serieMensal`) sob demanda.
+- **Duas vistas** no card (toggle Gestoras | Mensal): "Mensal" mostra a **série da
+  demanda TOTAL mês a mês a partir de M** (barras claras = até hoje; escuras =
+  projetado) — do `serieMensal` no meta (prep computa 19 meses, M a M+18).
 - Componente `src/components/tecnico/Enquadramento12431.jsx` — **ranking horizontal**
   (Recharts) da **Compra(horizonte)** em R$, desc, top ~20; **CONSOLIDADO POR GESTORA**
   por padrão (soma da compra dos fundos de cada gestora); **clicar numa barra abre a

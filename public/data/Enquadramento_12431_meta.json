@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-08-06T13:45:15.124Z",
+  "geradoEm": "2026-08-06T14:59:10.900Z",
   "dataM": "202606",
   "dataHoje": "2026-08-04",
   "premissas": {
@@ -8,6 +8,103 @@
     "dataInicio": "registro CVM (proxy 1ª integralização)",
     "elegiveis": "só debêntures 12.431 (não capta cotas de FI-Infra)"
   },
+  "serieMensal": [
+    {
+      "mes": "2026-06",
+      "compra": 12695497326,
+      "nDesenq": 578
+    },
+    {
+      "mes": "2026-07",
+      "compra": 13481675579,
+      "nDesenq": 654
+    },
+    {
+      "mes": "2026-08",
+      "compra": 14330454401,
+      "nDesenq": 700
+    },
+    {
+      "mes": "2026-09",
+      "compra": 15267571838,
+      "nDesenq": 760
+    },
+    {
+      "mes": "2026-10",
+      "compra": 15633142565,
+      "nDesenq": 805
+    },
+    {
+      "mes": "2026-11",
+      "compra": 16877103718,
+      "nDesenq": 843
+    },
+    {
+      "mes": "2026-12",
+      "compra": 17685506891,
+      "nDesenq": 883
+    },
+    {
+      "mes": "2027-01",
+      "compra": 18201444578,
+      "nDesenq": 920
+    },
+    {
+      "mes": "2027-02",
+      "compra": 18606544514,
+      "nDesenq": 946
+    },
+    {
+      "mes": "2027-03",
+      "compra": 18966499844,
+      "nDesenq": 988
+    },
+    {
+      "mes": "2027-04",
+      "compra": 19368302035,
+      "nDesenq": 1037
+    },
+    {
+      "mes": "2027-05",
+      "compra": 20468096395,
+      "nDesenq": 1106
+    },
+    {
+      "mes": "2027-06",
+      "compra": 22160051550,
+      "nDesenq": 1192
+    },
+    {
+      "mes": "2027-07",
+      "compra": 23594365471,
+      "nDesenq": 1250
+    },
+    {
+      "mes": "2027-08",
+      "compra": 25703704579,
+      "nDesenq": 1275
+    },
+    {
+      "mes": "2027-09",
+      "compra": 26560295294,
+      "nDesenq": 1328
+    },
+    {
+      "mes": "2027-10",
+      "compra": 28461162553,
+      "nDesenq": 1343
+    },
+    {
+      "mes": "2027-11",
+      "compra": 29362026059,
+      "nDesenq": 1357
+    },
+    {
+      "mes": "2027-12",
+      "compra": 30735061524,
+      "nDesenq": 1373
+    }
+  ],
   "cobertura": {
     "fundos": 1712,
     "semCarteira": 33,
