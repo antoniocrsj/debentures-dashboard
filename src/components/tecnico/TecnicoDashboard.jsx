@@ -17,6 +17,8 @@ import FluxoMonthlyTable from '../fluxo/FluxoMonthlyTable.jsx'
 import CaixaPctPLLine from '../caixa/CaixaPctPLLine.jsx'
 import MonthBars from '../vencimentos/MonthBars.jsx'
 import EmissoesBars from './EmissoesBars.jsx'
+import Enquadramento12431 from './Enquadramento12431.jsx'
+import { useEnquadramento12431 } from '../../hooks/useEnquadramento12431.js'
 import TecnicoGestorTable from './TecnicoGestorTable.jsx'
 import AssetCards from '../AssetCards.jsx'
 import { CaptacaoIcon, VencimentosIcon, CaixaIcon } from '../SectionIcons.jsx'
@@ -30,12 +32,22 @@ function EmissoesNavIcon() {
   )
 }
 
+// Icone do Enquadramento (barras horizontais = ranking de compra por fundo).
+function EnquadraNavIcon() {
+  return (
+    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 14 h22 M12 24 h14 M12 34 h18" />
+    </svg>
+  )
+}
+
 // Barra de graficos (SO' no compacto): escolhe qual grafico + tabela aparece.
 const GRAFICOS = [
   { id: 'captacao',    label: 'Captação',   Icon: CaptacaoIcon },
   { id: 'vencimentos', label: 'Vencim.',    Icon: VencimentosIcon },
   { id: 'emissoes',    label: 'Emissões',   Icon: EmissoesNavIcon },
   { id: 'caixa',       label: 'Caixa',      Icon: CaixaIcon },
+  { id: 'enquadramento', label: 'Enquadr.', Icon: EnquadraNavIcon },
 ]
 import CorteSelector from '../CorteSelector.jsx'
 import { CORTE_OFICIAL, isOficial, cnpjsNoCorte, historicoNoCorte } from '../../utils/corte.js'
@@ -312,6 +324,8 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, e
   // No desktop todos aparecem (grid) -> mostra() e' sempre true.
   const [graficoAtivo, setGraficoAtivo] = useState('captacao')
   const mostra = c => desktop || graficoAtivo === c
+  // Enquadramento 12.431 (compra necessária por fundo) — carrega quando visível.
+  const { rows: enquadRows } = useEnquadramento12431(mostra('enquadramento'))
   // Emissões e Vencimentos dividem a MESMA coluna de drill -> um limpa o outro.
   const toggleEmissaoMes = mes => { setVencMes(null); setEmissaoMes(m => (m === mes ? null : mes)) }
   const toggleVencMes = mes => { setEmissaoMes(null); setVencMes(m => (m === mes ? null : mes)) }
@@ -541,6 +555,17 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, e
               </div>
               )}
             </div>
+
+            {/* Enquadramento 12.431: ranking da compra necessária de debêntures
+                incentivadas por fundo (hoje/6m/12m). Linha própria (largura cheia). */}
+            {mostra('enquadramento') && (
+            <div className="tecnico-enq-row">
+              <div className="grafico-card">
+                <p className="tecnico-chart-label">Enquadramento 12.431</p>
+                <Enquadramento12431 rows={enquadRows} gestor={gestorSel} />
+              </div>
+            </div>
+            )}
           </div>
 
           {(desktop || graficoAtivo !== 'captacao') && (mesDrill ? (

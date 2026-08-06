@@ -935,6 +935,20 @@ try {
   Warn "$($summary.PreDi) (Tx Anbima do PRE fica com o snapshot anterior)"
 }
 
+# 5i. Enquadramento 12.431 (compra necessaria de deb. incentivadas por fundo,
+# hoje/6m/12m). Consome BLC_PorFundo + Cronograma_Amortizacao + Caixa/Perf + Fundos_Atributos
+# (todos ja gerados acima). OPCIONAL e ISOLADO: nao trava a atualizacao.
+Progress 'Enquadramento 12.431'
+try {
+  & node (Join-Path $PSScriptRoot 'preparar-enquadramento-12431.mjs')
+  if ($LASTEXITCODE -ne 0) { throw "node saiu com codigo $LASTEXITCODE" }
+  $summary.Enquadramento = 'OK'
+  Ok 'public\data\Enquadramento_12431.csv atualizado.'
+} catch {
+  $summary.Enquadramento = "FALHOU sem travar: $($_.Exception.Message)"
+  Warn "$($summary.Enquadramento) (grafico de enquadramento fica com o snapshot anterior)"
+}
+
 # 6. Resumo
 Progress 'Resumo'
 $snapshotAfter = Get-DataSnapshot
