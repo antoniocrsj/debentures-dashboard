@@ -950,6 +950,21 @@ try {
   Warn "$($summary.PrimeiraCota) (enquadramento usa o registro CVM como idade)"
 }
 
+# 5h-ter. Media 180 DIAS (diaria, "de cota") do PL por fundo = patrimonio de
+# referencia CORRETO do enquadramento (a media de 6 fotos de fim de mes engana).
+# Le os zips do Informe Diario. OPCIONAL e ISOLADO: se faltar, o enquadramento cai
+# na media das fotos mensais. Roda ANTES do enquadramento.
+Progress 'Media 180d (Informe Diario)'
+try {
+  & node (Join-Path $PSScriptRoot 'preparar-pl-media180.mjs')
+  if ($LASTEXITCODE -ne 0) { throw "node saiu com codigo $LASTEXITCODE" }
+  $summary.Media180 = 'OK'
+  Ok 'public\data\Fundos_PL_Media180.csv atualizado.'
+} catch {
+  $summary.Media180 = "FALHOU sem travar: $($_.Exception.Message)"
+  Warn "$($summary.Media180) (enquadramento usa a media das fotos mensais)"
+}
+
 # 5i. Enquadramento 12.431 (compra necessaria de deb. incentivadas por fundo,
 # hoje/6m/12m). Consome BLC_PorFundo + Cronograma_Amortizacao + Caixa/Perf +
 # Fundos_Atributos + Fundos_PrimeiraCota (todos ja gerados acima). OPCIONAL e ISOLADO.

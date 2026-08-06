@@ -51,22 +51,28 @@ const monthsBetween = (msA, msB) => { const a = new Date(msA), b = new Date(msB)
 const ymKey = ms => { const d = new Date(ms); return `${d.getUTCFullYear()}${String(d.getUTCMonth() + 1).padStart(2, '0')}` }
 const monthOfDia = dia => (dia || '').slice(0, 7).replace('-', '')   // '2026-07-02' -> '202607'
 
-// PL de referência AS OF um mês-alvo (ty, tm): MIN(PL do mês, média ~180d = 6
-// pontos mensais trailing até ele). Reproduz a regra legal em CADA ponto do
-// tempo: um aporte recente entra POUCO na média (é recente), então não dispara
-// exigência prematura — é o que impede o backlog de inflar em fundos que acabaram
-// de captar. Meses >= hoje congelam no PL_ref de hoje (premissa forward, sem
-// forecast). `plMap` = { 'AAAAMM': PL } do histórico mensal do CDA.
-function plRefNoMes(plMap, ty, tm, hojeYm, plRefHoje) {
+// PL de referência AS OF um mês-alvo (ty, tm): MIN(PL do mês, média 180 DIAS).
+// A média 180d é DIÁRIA (média da cota nos últimos 180 dias corridos, do Informe
+// Diário — Fundos_PL_Media180.csv), não a média de 6 fotos de fim de mês (que
+// engana: perde a variação intra-mês e pondera errado quem captou em datas
+// específicas). Reproduz a regra legal em CADA ponto do tempo: um aporte recente
+// entra POUCO na média, então não dispara exigência prematura. Meses >= hoje
+// congelam no PL_ref de hoje (forward, sem forecast). Fallback p/ a média mensal
+// (`plMap`) se faltar o informe daquele mês.
+function plRefNoMes(plMap, mediaDia, ty, tm, hojeYm, plRefHoje) {
   if (ty * 100 + tm >= hojeYm) return plRefHoje
-  const pts = []
-  for (let k = 0; k < 6; k++) {
-    let yy = ty, mm = tm - k; while (mm <= 0) { mm += 12; yy-- }
-    const v = plMap[`${yy}${String(mm).padStart(2, '0')}`]; if (v > 0) pts.push(v)
+  const ref = `${ty}${String(tm).padStart(2, '0')}`
+  let media = mediaDia && mediaDia[ref] > 0 ? mediaDia[ref] : 0
+  if (!media) {   // fallback: média das fotos mensais trailing (6 pontos)
+    const pts = []
+    for (let k = 0; k < 6; k++) {
+      let yy = ty, mm = tm - k; while (mm <= 0) { mm += 12; yy-- }
+      const v = plMap[`${yy}${String(mm).padStart(2, '0')}`]; if (v > 0) pts.push(v)
+    }
+    if (!pts.length) return plRefHoje
+    media = pts.reduce((a, b) => a + b, 0) / pts.length
   }
-  if (!pts.length) return plRefHoje
-  const media = pts.reduce((a, b) => a + b, 0) / pts.length
-  const plAsOf = plMap[`${ty}${String(tm).padStart(2, '0')}`] || pts[0]
+  const plAsOf = plMap[ref] || media
   return Math.min(plAsOf, media)
 }
 
@@ -157,6 +163,17 @@ function main() {
     const iC = pc.header.indexOf('CNPJ'), iD = pc.header.indexOf('PrimeiraCotaData')
     if (iC >= 0 && iD >= 0) for (const r of pc.rows) { const c = digits(r[iC]); const d = (r[iD] || '').trim(); if (d) cotaPorCnpj[c] = d }
   }
+  // média 180 DIAS (diária, "de cota") por fundo x ref — Fundos_PL_Media180.csv
+  // (gerado por preparar-pl-media180.mjs). mediaDiaria[cnpj] = { 'AAAAMM': média
+  // terminando no fim do mês, 'HOJE': média até a última data }.
+  const mediaDiaria = {}
+  { const md = readCsv(path.join(DATA, 'Fundos_PL_Media180.csv'))
+    const iC = md.header.indexOf('CNPJ'), iR = md.header.indexOf('Ref'), iM = md.header.indexOf('Media180')
+    if (iC >= 0 && iR >= 0 && iM >= 0) for (const r of md.rows) {
+      const c = digits(r[iC]); const ref = (r[iR] || '').trim(); const m = num(r[iM])
+      if (c && ref && m > 0) (mediaDiaria[c] || (mediaDiaria[c] = {}))[ref] = m
+    }
+  }
 
   // últimos 6 meses (janela ~180d) terminando no mês de HOJE
   const last6 = []; { let ms = hojeMs; for (let k = 0; k < 6; k++) { last6.push(ymKey(ms)); ms = addMonthsMs(ms, -1) } }
@@ -172,9 +189,12 @@ function main() {
     const mAno = blcMesAno || f.mesBase                    // M = data do BLC (fallback: MesBase)
     const Mms = mAno ? monthEndMs(mAno) : null
     if (!Mms) continue
-    // média 180d (proxy): média dos PLs mensais do CDA nos últimos ~6 meses
+    // média 180d: DIÁRIA da cota (Fundos_PL_Media180, ref HOJE) — a correta.
+    // Fallback = média das 6 fotos mensais do CDA (se faltar informe diário).
+    const md = mediaDiaria[c]
     const pontos = last6.map(mk => plMensal[c]?.[mk]).filter(v => v && v > 0)
-    const media180 = pontos.length ? pontos.reduce((a, b) => a + b, 0) / pontos.length : 0
+    const mediaMensal = pontos.length ? pontos.reduce((a, b) => a + b, 0) / pontos.length : 0
+    const media180 = (md && md.HOJE > 0) ? md.HOJE : mediaMensal
     // PL de hoje: diário fresco do Perf, MAS desprezado se destoa demais do PL de
     // carteira do CDA (glitch de classe/parcial) -> cai no PLDiario são, senão no CDA.
     const ref = f.plCarteira > 0 ? f.plCarteira : media180
@@ -220,7 +240,7 @@ function main() {
       row[`Eleg_${h}m`] = Math.round(elig[h]); row[`pctExig_${h}m`] = pct; row[`Compra_${h}m`] = Math.round(compra)
     }
     linhas.push(row)
-    if (pos.length) fundos.push({ pos, plRef, iniMs: ini ? msOf(ini) : null, Mms, gestor: f.gestor || '—', plMap: plMensal[c] || {} })
+    if (pos.length) fundos.push({ pos, plRef, iniMs: ini ? msOf(ini) : null, Mms, gestor: f.gestor || '—', plMap: plMensal[c] || {}, mediaDia: mediaDiaria[c] || null })
   }
 
   // 6b) SÉRIE MENSAL da demanda (compra necessária TOTAL) a partir de M, mês a mês,
@@ -258,7 +278,7 @@ function main() {
           if (denM <= 1e-6) { elig += p.vl; continue }
           elig += p.vl * Math.max(0, Math.min(1, (1 - cumFrac(p.t, alvo)) / denM))
         }
-        const plRefMes = plRefNoMes(fd.plMap, ty, tm, hojeYm, fd.plRef)   // PL_ref daquele mês
+        const plRefMes = plRefNoMes(fd.plMap, fd.mediaDia, ty, tm, hojeYm, fd.plRef)   // PL_ref daquele mês (média diária 180d)
         const compra = plRefMes * pctExig - elig
         if (compra > 0) {
           total += compra; nDes++

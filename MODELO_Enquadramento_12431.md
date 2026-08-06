@@ -27,7 +27,10 @@ Compra(h) = MAX(0,  PL_ref(h) × %_exigido(h)  −  Elegíveis(h) )     h ∈ {0
   única, conservadora, explícita — nada de extrapolação).
 
 ## Foto de HOJE (o melhor de cada fonte)
-- `PL_ref(hoje) = MIN(PL_hoje observado, média 180d)` — PL real (diário até ~03/ago + mensal).
+- `PL_ref(hoje) = MIN(PL_hoje observado, média 180d)`. A **média 180d é DIÁRIA** (média
+  da cota nos últimos 180 dias corridos, do Informe Diário da CVM), **não** a média de 6
+  fotos de fim de mês — que engana: perde a variação intra-mês e pondera errado quem
+  captou em datas específicas (ex.: PRODHOS −14%). Fonte: `preparar-pl-media180.mjs`.
 - `Elegíveis(hoje) = carteira_M (BLC) rolada pela amortização contratual [M→hoje]`.
 - `idade(hoje) = HOJE − 1ª cota` (1º mês com PL no CDA; **não** o registro CVM — ver abaixo).
 
@@ -63,7 +66,8 @@ Sem filtro novo; sem exclusão de feeder por conta própria (a seleção já é 
 | Flag 12.431 | `public/Debentures.csv` | `Deb. Incent. (Lei 12.431)=S` (join por `Codigo do Ativo`) |
 | Amortização por papel | `public/data/Cronograma_Amortizacao.csv` | `Ticker, Data, FracaoPct, Fonte` (vida inteira) |
 | PL fresco (hoje) | `public/data/Perf_Diario_12431.csv` | `PL` diário |
-| PL p/ média 180d | `public/data/Caixa_Potencial_Fundos_Historico.csv` | `Mes, CNPJ, PL` (mensal) |
+| **Média 180d (diária)** | `public/data/Fundos_PL_Media180.csv` | `CNPJ, Ref, Media180` (Ref = AAAAMM ou HOJE; do Informe Diário) |
+| PL p/ média (fallback) | `public/data/Caixa_Potencial_Fundos_Historico.csv` | `Mes, CNPJ, PL` (mensal — só se faltar informe) |
 | Universo + PL carteira | `public/data/Caixa_Potencial_Fundos.csv` | `Segmento='12431', PL_Carteira` (MesBase **NÃO** é M — é ciclo mais novo, só p/ PL) |
 | **1ª cota (idade)** | `public/data/Fundos_PrimeiraCota.csv` | `CNPJ, PrimeiraCotaData` (1º mês com PL no CDA) |
 | Data início (fallback) | `public/data/Fundos_Atributos.csv` | `Data_Inicio` (registro CVM — só se faltar 1ª cota) |
@@ -121,4 +125,4 @@ Wire: passo isolado no `atualizar-tudo.ps1` (após BLC + Cronograma + Perf_Diari
 - Amortização real (ANBIMA) na maioria; papéis sem agenda = aproximação (marcado).
 - Projeção (h=0/6/12): PL **constante após hoje**. Série mensal: PL_ref **por mês**
   (média 180d trailing daquele mês) nos meses passados; congela no de hoje p/ frente.
-- Média 180d = proxy mensal; idade = 1ª cota (1º mês com PL no CDA), registro CVM só como fallback.
+- Média 180d = **diária** (Informe Diário; média das fotos mensais só como fallback); idade = 1ª cota (1º mês com PL no CDA), registro CVM só como fallback.
