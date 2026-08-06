@@ -180,16 +180,20 @@ function main() {
       row[`Eleg_${h}m`] = Math.round(elig[h]); row[`pctExig_${h}m`] = pct; row[`Compra_${h}m`] = Math.round(compra)
     }
     linhas.push(row)
-    if (pos.length) fundos.push({ pos, plRef, iniMs: ini ? msOf(ini) : null, Mms })
+    if (pos.length) fundos.push({ pos, plRef, iniMs: ini ? msOf(ini) : null, Mms, gestor: f.gestor || '—' })
   }
 
   // 6b) SÉRIE MENSAL da demanda (compra necessária TOTAL) a partir de M, mês a mês,
   // com o degrau 67->85% e a amortização da carteira agindo em cada mês (PL constante).
+  // Além do TOTAL, acumula a série por GESTORA (p/ o gráfico mensal filtrar ao
+  // clicar numa gestora). NMES = nº de meses da série.
+  const NMES = 19
   const mesBaseG = cx[Object.keys(cx)[0]]?.mesBase
   const serie = []
+  const porGestora = {}   // gestora -> [compra por mês]
   if (mesBaseG) {
     const baseY = +mesBaseG.slice(0, 4), baseMo = +mesBaseG.slice(4, 6)
-    for (let k = 0; k <= 18; k++) {
+    for (let k = 0; k < NMES; k++) {
       const ty = baseY + Math.floor((baseMo - 1 + k) / 12)
       const tm = ((baseMo - 1 + k) % 12) + 1
       const alvo = Date.UTC(ty, tm, 0)   // último dia do mês-alvo (sem overflow de dia)
@@ -205,10 +209,15 @@ function main() {
           elig += p.vl * Math.max(0, Math.min(1, (1 - cumFrac(p.t, alvo)) / denM))
         }
         const compra = fd.plRef * pctExig - elig
-        if (compra > 0) { total += compra; nDes++ }
+        if (compra > 0) {
+          total += compra; nDes++
+          const g = porGestora[fd.gestor] || (porGestora[fd.gestor] = new Array(NMES).fill(0))
+          g[k] += compra
+        }
       }
       serie.push({ mes: `${ty}-${String(tm).padStart(2, '0')}`, compra: Math.round(total), nDesenq: nDes })
     }
+    for (const g in porGestora) porGestora[g] = porGestora[g].map(v => Math.round(v))
   }
 
   // 7) grava CSV + meta
@@ -229,6 +238,7 @@ function main() {
     dataHoje: new Date(hojeMs).toISOString().slice(0, 10),
     premissas: { plConstanteAposHoje: true, media180: 'proxy mensal (últimos ~6 meses)', dataInicio: 'registro CVM (proxy 1ª integralização)', elegiveis: 'só debêntures 12.431 (não capta cotas de FI-Infra)' },
     serieMensal: serie,
+    serieMensalGestora: porGestora,
     cobertura: {
       fundos: linhas.length, semCarteira, semDataInicio,
       desenquadrados6m: desenq(6).length, desenquadrados12m: desenq(12).length,

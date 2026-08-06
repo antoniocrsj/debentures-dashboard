@@ -2033,7 +2033,7 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 
 /* Enquadramento 12.431 (ranking de compra necessária, consolidado por gestora) —
    linha própria ABAIXO do grid de cards; header no padrão dos outros gráficos. */
-.tecnico-enq-row { margin-top: 8px; }
+.tecnico-enq-row { margin-top: 8px; display: flex; flex-direction: column; gap: 8px; }
 .tecnico-enq-row > .grafico-card { width: 100%; }
 .enq-plot { width: 100%; }
 .enq-nota { margin: 6px 0 0; font-size: 10.5px; line-height: 1.4; color: var(--text-muted); }

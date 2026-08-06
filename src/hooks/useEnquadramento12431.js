@@ -6,7 +6,8 @@ import { useState, useEffect } from 'react'
 // Carrega SOB DEMANDA (`enabled`) — arquivo pequeno, mas segue o padrão do app.
 export function useEnquadramento12431(enabled) {
   const [rows, setRows] = useState(null)
-  const [serie, setSerie] = useState(null)   // série mensal da demanda (do meta)
+  const [serie, setSerie] = useState(null)          // série mensal TOTAL (do meta)
+  const [serieGestora, setSerieGestora] = useState(null)   // série mensal por gestora
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -16,8 +17,8 @@ export function useEnquadramento12431(enabled) {
     // série mensal vem do meta (não trava se faltar)
     fetch('/data/Enquadramento_12431_meta.json')
       .then(res => (res.ok ? res.json() : null))
-      .then(j => { if (!cancelled) setSerie(j?.serieMensal || []) })
-      .catch(() => { if (!cancelled) setSerie([]) })
+      .then(j => { if (!cancelled) { setSerie(j?.serieMensal || []); setSerieGestora(j?.serieMensalGestora || {}) } })
+      .catch(() => { if (!cancelled) { setSerie([]); setSerieGestora({}) } })
     fetch('/data/Enquadramento_12431.csv')
       .then(res => (res.ok ? res.text() : null))
       .then(txt => {
@@ -54,7 +55,7 @@ export function useEnquadramento12431(enabled) {
     return () => { cancelled = true }
   }, [enabled, rows])
 
-  return { rows, serie, loading }
+  return { rows, serie, serieGestora, loading }
 }
 
 function splitCsvLine(l) {
