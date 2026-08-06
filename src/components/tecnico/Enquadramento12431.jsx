@@ -52,6 +52,8 @@ export default function Enquadramento12431({ rows, serie, serieGestora, gestor }
 
   const base = useMemo(() => (rows ? rows.filter(r => !r.semCarteira && r.plRef > 0) : null), [rows])
   const hojeMes = rows?.[0]?.dataHoje?.slice(0, 7) || null
+  const dataM = rows?.[0]?.dataM || null                                    // 'AAAAMM' do BLC fechado
+  const mBLC = dataM ? mesLabel(`${dataM.slice(0, 4)}-${dataM.slice(4, 6)}`) : null
 
   const d = useMemo(() => {
     if (!base) return null
@@ -178,7 +180,7 @@ export default function Enquadramento12431({ rows, serie, serieGestora, gestor }
       <p className="enq-nota">
         Ranking: compra p/ atingir o mínimo (carência até 6m · 67% dos 6-24m · 85% após 24m) em {h} meses, por gestora
         (clique numa barra p/ filtrar a tabela e o mensal). Mensal: <b>barras</b> = demanda NOVA por mês; <b>linha</b> =
-        acumulado, a partir de M ({mesLabel(serie?.[0]?.mes)}) — barras claras até hoje, escuras projetado.
+        acumulado, a partir de {mesLabel(serie?.[0]?.mes)}{mBLC ? ` (1º mês após o BLC fechado de ${mBLC})` : ''} — barras claras até hoje, escuras projetado.
         Partindo da última carteira do CDA; elegíveis = só debêntures 12.431 (não capta cotas de FI-Infra){d?.algumEstimado ? '; amortização de alguns papéis estimada' : ''} → valor é um teto.
       </p>
     </>

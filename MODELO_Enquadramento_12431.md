@@ -53,11 +53,12 @@ Sem filtro novo; sem exclusão de feeder por conta própria (a seleção já é 
 | Ingrediente | Arquivo | Campo |
 |---|---|---|
 | Carteira em M (mercado) | `public/BLC_PorFundo.csv` | `CNPJ_FUNDO_CLASSE, CD_ATIVO, VL_ALOCADO` |
+| **Data de M (ref. do BLC)** | `public/BLC_maturidade.json` | `mesAno` (AAAAMM) — âncora do roll e início da série |
 | Flag 12.431 | `public/Debentures.csv` | `Deb. Incent. (Lei 12.431)=S` (join por `Codigo do Ativo`) |
 | Amortização por papel | `public/data/Cronograma_Amortizacao.csv` | `Ticker, Data, FracaoPct, Fonte` (vida inteira) |
 | PL fresco (hoje) | `public/data/Perf_Diario_12431.csv` | `PL` diário |
 | PL p/ média 180d | `public/data/Caixa_Potencial_Fundos_Historico.csv` | `Mes, CNPJ, PL` (mensal) |
-| Universo + PL carteira | `public/data/Caixa_Potencial_Fundos.csv` | `Segmento='12431', PL_Carteira, MesBase` |
+| Universo + PL carteira | `public/data/Caixa_Potencial_Fundos.csv` | `Segmento='12431', PL_Carteira` (MesBase **NÃO** é M — é ciclo mais novo, só p/ PL) |
 | Data início | `public/data/Fundos_Atributos.csv` | `Data_Inicio` |
 
 ## Saída do prep

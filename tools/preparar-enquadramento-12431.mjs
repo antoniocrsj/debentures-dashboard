@@ -84,6 +84,16 @@ function main() {
       const c = digits(r[iC]); ;(posPorFundo[c] || (posPorFundo[c] = [])).push({ t, vl: num(r[iV]) })
     }
   }
+  // M = data de referência do BLC/CDA (a foto da carteira). É o âncora do modelo:
+  // as posições (VL_ALOCADO) são desse mês, e a amortização + a série mensal
+  // partem daqui. Fonte: selo public/BLC_maturidade.json (mesAno = AAAAMM). O
+  // MesBase do Caixa_Potencial é um ciclo mais novo (só serve p/ PL) — NÃO usar
+  // como M, senão o denominador da amortização e o início da série ficam errados.
+  let blcMesAno = null
+  try {
+    const selo = JSON.parse(fs.readFileSync(path.join(PUB, 'BLC_maturidade.json'), 'utf8'))
+    if (/^\d{6}$/.test(String(selo.mesAno || ''))) blcMesAno = String(selo.mesAno)
+  } catch { /* sem selo: cai no MesBase do fundo (fallback) */ }
 
   // 4) PL: caixa (universo + carteira/diário), perf diário (fresco), histórico mensal
   const caixa = readCsv(path.join(DATA, 'Caixa_Potencial_Fundos.csv'))
@@ -131,7 +141,8 @@ function main() {
   for (const c in cx) {
     const f = cx[c]
     const pos = posPorFundo[c] || []
-    const Mms = f.mesBase ? monthEndMs(f.mesBase) : null
+    const mAno = blcMesAno || f.mesBase                    // M = data do BLC (fallback: MesBase)
+    const Mms = mAno ? monthEndMs(mAno) : null
     if (!Mms) continue
     // média 180d (proxy): média dos PLs mensais do CDA nos últimos ~6 meses
     const pontos = last6.map(mk => plMensal[c]?.[mk]).filter(v => v && v > 0)
@@ -168,7 +179,7 @@ function main() {
     if (!pos.length) semCarteira++   // fundo da seleção sem posição 12.431 no BLC (aparece 100% desenquadrado)
     const row = {
       CNPJ: c, Fundo: f.nome, Gestor: f.gestor, DataInicio: ini || '',
-      idadeMeses: idade, dataM: f.mesBase, dataHoje: new Date(hojeMs).toISOString().slice(0, 10),
+      idadeMeses: idade, dataM: mAno, dataHoje: new Date(hojeMs).toISOString().slice(0, 10),
       PL_hoje: Math.round(plHoje), PL_medio180: Math.round(media180), PL_ref: Math.round(plRef),
       pctAtual: +(elig[0] / plRef).toFixed(4),
       amortEstimada: amortEst ? 1 : 0, semDataInicio: semIni ? 1 : 0, semCarteira: pos.length ? 0 : 1,
@@ -187,15 +198,19 @@ function main() {
   // com o degrau 67->85% e a amortização da carteira agindo em cada mês (PL constante).
   // Além do TOTAL, acumula a série por GESTORA (p/ o gráfico mensal filtrar ao
   // clicar numa gestora). NMES = nº de meses da série.
-  const NMES = 19
-  const mesBaseG = cx[Object.keys(cx)[0]]?.mesBase
+  // A série começa em M+1: o BLC é o mês FECHADO (foto no fim de M), então o
+  // primeiro mês de projeção é o seguinte. O denominador da amortização (fd.Mms)
+  // continua em M — os VL_ALOCADO são do fechamento de M. O backlog acumulado
+  // aparece na 1ª barra (M+1).
+  const NMES = 21   // M+1 (abr/26) .. dez/27
+  const mesBaseG = blcMesAno || cx[Object.keys(cx)[0]]?.mesBase
   const serie = []
   const porGestora = {}   // gestora -> [compra por mês]
   if (mesBaseG) {
     const baseY = +mesBaseG.slice(0, 4), baseMo = +mesBaseG.slice(4, 6)
     for (let k = 0; k < NMES; k++) {
-      const ty = baseY + Math.floor((baseMo - 1 + k) / 12)
-      const tm = ((baseMo - 1 + k) % 12) + 1
+      const ty = baseY + Math.floor((baseMo + k) / 12)      // baseMo-1+(k+1): parte de M+1
+      const tm = ((baseMo + k) % 12) + 1
       const alvo = Date.UTC(ty, tm, 0)   // último dia do mês-alvo (sem overflow de dia)
       let total = 0, nDes = 0
       for (const fd of fundos) {
@@ -234,7 +249,7 @@ function main() {
 
   const desenq = h => linhas.filter(l => l[`Compra_${h}m`] > 0)
   const meta = {
-    geradoEm: new Date().toISOString(), dataM: cx[Object.keys(cx)[0]]?.mesBase || null,
+    geradoEm: new Date().toISOString(), dataM: blcMesAno || cx[Object.keys(cx)[0]]?.mesBase || null,
     dataHoje: new Date(hojeMs).toISOString().slice(0, 10),
     premissas: { plConstanteAposHoje: true, media180: 'proxy mensal (últimos ~6 meses)', dataInicio: 'registro CVM (proxy 1ª integralização)', elegiveis: 'só debêntures 12.431 (não capta cotas de FI-Infra)' },
     serieMensal: serie,
