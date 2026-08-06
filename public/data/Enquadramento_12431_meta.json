@@ -1,0 +1,20 @@
+{
+  "geradoEm": "2026-08-06T12:53:37.202Z",
+  "dataM": "202606",
+  "dataHoje": "2026-08-04",
+  "premissas": {
+    "plConstanteAposHoje": true,
+    "media180": "proxy mensal (últimos ~6 meses)",
+    "dataInicio": "registro CVM (proxy 1ª integralização)",
+    "elegiveis": "só debêntures 12.431 (não capta cotas de FI-Infra)"
+  },
+  "cobertura": {
+    "fundos": 1712,
+    "semCarteira": 33,
+    "semDataInicio": 16,
+    "desenquadrados6m": 954,
+    "desenquadrados12m": 1285,
+    "compraTotal6m": 20685130419,
+    "compraTotal12m": 26039776020
+  }
+}

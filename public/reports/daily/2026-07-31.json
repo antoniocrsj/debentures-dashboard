@@ -25,7 +25,7 @@
       "tom": "pos"
     },
     {
-      "texto": "Captação líquida Incentivados: −R$ 118 mi",
+      "texto": "Captação líquida Incentivados: −R$ 117 mi",
       "tom": "neg"
     },
     {
@@ -92,10 +92,10 @@
       "12431": {
         "dia": "2026-07-29",
         "captacao": 91600962.08999997,
-        "resgate": 209505685.63000005,
-        "liquido": -117904723.54000008,
-        "pl": 265550844771.10013,
-        "numFundos": 1709,
+        "resgate": 209005685.63000005,
+        "liquido": -117404723.54000008,
+        "pl": 265708329263.84012,
+        "numFundos": 1710,
         "curados": 1737,
         "fechados": 287,
         "anterior": {
@@ -103,7 +103,7 @@
           "captacao": 123571754.23,
           "resgate": 194555716.25000006,
           "liquido": -70983962.02000006,
-          "pl": 266389873240.27994,
+          "pl": 266389808514.32993,
           "numFundos": 1713
         }
       },
@@ -112,7 +112,7 @@
         "captacao": 2820502134.119999,
         "resgate": 2578000912.7400002,
         "liquido": 242501221.37999868,
-        "pl": 1594555805807.4097,
+        "pl": 1594554999216.7095,
         "numFundos": 999,
         "curados": 1014,
         "fechados": 50,
@@ -121,7 +121,7 @@
           "captacao": 3440596233.5799994,
           "resgate": 1904074476.559999,
           "liquido": 1536521757.0200005,
-          "pl": 1593619125911.4507,
+          "pl": 1593618309845.1204,
           "numFundos": 1003
         }
       }
@@ -161,7 +161,7 @@
           "captacao": 1733000,
           "resgate": 0,
           "liquido": 1733000,
-          "pl": 2295510288.93
+          "pl": 2295414628.2
         }
       ],
       "top12431Resgate": [
@@ -1528,14 +1528,6 @@
           "pl": 21214373
         },
         {
-          "cnpj": "64436974000103",
-          "nome": "BB MASTER III RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
-          "gestor": "BB Asset",
-          "segmento": "trad",
-          "retorno": -6.0306,
-          "pl": 1047068248.5
-        },
-        {
           "cnpj": "19770499000144",
           "nome": "EXPLORITAS ALPHA AMERICA LATINA MASTER FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO",
           "gestor": "Exploritas",
@@ -1558,6 +1550,14 @@
           "segmento": "trad",
           "retorno": -1.4198,
           "pl": 14013779.04
+        },
+        {
+          "cnpj": "37467474000158",
+          "nome": "NORTE LONG BIAS MASTER CLASSE DE  INVESTIMENTO MULTIMERCADO - RESP LIMITADA",
+          "gestor": "Norte",
+          "segmento": "trad",
+          "retorno": -1.3328,
+          "pl": 187497910.28
         }
       ]
     },
@@ -1578,7 +1578,7 @@
     "emissoesCVM": null,
     "emissoresFaltantes": null,
     "ofertasSRE": {
-      "asOf": "2026-08-05",
+      "asOf": "2026-08-06",
       "janelaDias": 40,
       "itens": [
         {

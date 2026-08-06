@@ -1,7 +1,7 @@
 {
   "date": "2026-07-30",
   "label": "30/07/2026",
-  "previousDate": "2026-07-29",
+  "previousDate": null,
   "sourceDates": {
     "debentures": "2026-07-30",
     "cap12431": "2026-07-28",
@@ -80,7 +80,7 @@
         "captacao": 123571754.23,
         "resgate": 194555716.25000006,
         "liquido": -70983962.02000006,
-        "pl": 266389873240.27994,
+        "pl": 266389808514.32993,
         "numFundos": 1713,
         "curados": 1737,
         "fechados": 287,
@@ -89,7 +89,7 @@
           "captacao": 119376039.33000001,
           "resgate": 488127763.90999997,
           "liquido": -368751724.5799999,
-          "pl": 264872431847.88013,
+          "pl": 264872415336.41016,
           "numFundos": 1715
         }
       },
@@ -98,7 +98,7 @@
         "captacao": 3440596233.5799994,
         "resgate": 1904074476.559999,
         "liquido": 1536521757.0200005,
-        "pl": 1593619125911.4507,
+        "pl": 1593618309845.1204,
         "numFundos": 1003,
         "curados": 1014,
         "fechados": 50,
@@ -107,7 +107,7 @@
           "captacao": 2231842193.7099996,
           "resgate": 2931527841.389999,
           "liquido": -699685647.6799994,
-          "pl": 1591248516154.631,
+          "pl": 1591247704846.5413,
           "numFundos": 1002
         }
       }
@@ -244,7 +244,7 @@
           "captacao": 25017483.03,
           "resgate": 40325704.86,
           "liquido": -15308221.829999998,
-          "pl": 22593849177.07
+          "pl": 22593020046.89
         },
         {
           "gestor": "Kinea",
@@ -1480,6 +1480,14 @@
           "pl": 38298298.08
         },
         {
+          "cnpj": "39487617000119",
+          "nome": "LEGACY CAPITAL CREDIT FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO - CRÉDITO PRIVADO RESPONSABILIDA",
+          "gestor": "Legacy",
+          "segmento": "trad",
+          "retorno": 0.3812,
+          "pl": 109245213.19
+        },
+        {
           "cnpj": "43636081000123",
           "nome": "MAESTRANZA PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
           "gestor": "XPG",
@@ -1494,17 +1502,17 @@
           "segmento": "trad",
           "retorno": 0.2735,
           "pl": 44043893.86
-        },
-        {
-          "cnpj": "14158932000171",
-          "nome": "FUNDO DE INVESTIMENTO MULTIMERCADO FRATELLI LONGO PRAZO",
-          "gestor": "Scalare",
-          "segmento": "trad",
-          "retorno": 0.2717,
-          "pl": 21357120.92
         }
       ],
       "topTradNeg": [
+        {
+          "cnpj": "64436974000103",
+          "nome": "BB MASTER III RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
+          "gestor": "BB Asset",
+          "segmento": "trad",
+          "retorno": -5.9407,
+          "pl": 1047744080.83
+        },
         {
           "cnpj": "36532178000120",
           "nome": "CHRONOS FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO",
@@ -1536,14 +1544,6 @@
           "segmento": "trad",
           "retorno": -1.2419,
           "pl": 191033991.06
-        },
-        {
-          "cnpj": "52273351000170",
-          "nome": "PORTFOLIO RF II PREV FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO RESPONSABILIDADE LIMITADA",
-          "gestor": "XPG",
-          "segmento": "trad",
-          "retorno": -0.7398,
-          "pl": 10853834.7
         }
       ]
     },
@@ -1563,7 +1563,7 @@
     "emissoesCVM": null,
     "emissoresFaltantes": null,
     "ofertasSRE": {
-      "asOf": "2026-08-05",
+      "asOf": "2026-08-06",
       "janelaDias": 40,
       "itens": [
         {

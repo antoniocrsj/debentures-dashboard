@@ -1,9 +1,9 @@
 {
-  "asOf": "2026-08-05",
-  "geradoEm": "2026-08-05T13:37:48.601Z",
+  "asOf": "2026-08-06",
+  "geradoEm": "2026-08-06T12:12:56.459Z",
   "fonte": "CVM SRE (participantes)",
   "janelaDias": 180,
-  "total": 1126,
+  "total": 1134,
   "itens": {
     "AUT/DEB/PRI/2026/370": {
       "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/370",
@@ -33939,6 +33939,182 @@
           "razaoSocial": "BANCO BRADESCO BBI S.A.",
           "cnpj": "06.271.464/0001-19",
           "lider": false
+        }
+      ],
+      "remuneracaoMaxima": null,
+      "teto": null,
+      "remuneracaoFinal": null,
+      "rating": null,
+      "setorProjeto": null
+    },
+    "AUT/DEB/PRI/2026/380": {
+      "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/380",
+      "idRequerimento": "27286",
+      "cnpjEmissor": "04.237.975/0001-99",
+      "data": "05/08/2026",
+      "lider": {
+        "nome": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+        "cnpj": "04.845.753/0001-59"
+      },
+      "coordenadores": [
+        {
+          "razaoSocial": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+          "cnpj": "04.845.753/0001-59",
+          "lider": true
+        }
+      ],
+      "remuneracaoMaxima": "100% das taxas médias diárias do DI – Depósitos Interfinanceiros de um dia, “over extra-grupo”, expressas na forma percentual ao ano-base 252 Dias Úteis, calculadas e divulgadas diariamente pela B3, no informativo diário disponível em sua página na rede mundial de computadores (www.b3.com.br) (“Taxa DI”), acrescida de spread (sobretaxa) de 1,28% ao ano, base 252",
+      "teto": null,
+      "remuneracaoFinal": "100% das taxas médias diárias do DI – Depósitos Interfinanceiros de um dia, “over extra-grupo”, expressas na forma percentual ao ano-base 252 Dias Úteis, calculadas e divulgadas diariamente pela B3, no informativo diário disponível em sua página na rede mundial de computadores (www.b3.com.br) (“Taxa DI”), acrescida de spread (sobretaxa) de 1,28% ao ano, base 252",
+      "rating": "n/a",
+      "setorProjeto": null
+    },
+    "AUT/DEB/PRI/2026/373": {
+      "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/373;CVM/SRE/AUT/DEB/PRI/2026/374;CVM/SRE/AUT/DEB/PRI/2026/375;CVM/SRE/AUT/DEB/PRI/2026/376;CVM/SRE/AUT/DEB/PRI/2026/377;CVM/SRE/AUT/DEB/PRI/2026/378;CVM/SRE/AUT/DEB/PRI/2026/379",
+      "idRequerimento": "27408",
+      "cnpjEmissor": "62.762.501/0001-62",
+      "data": "05/08/2026",
+      "lider": {
+        "nome": "GALAPAGOS CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A. - GLPG DTVM",
+        "cnpj": "28.650.236/0001-92"
+      },
+      "coordenadores": [
+        {
+          "razaoSocial": "GALAPAGOS CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A. - GLPG DTVM",
+          "cnpj": "28.650.236/0001-92",
+          "lider": true
+        }
+      ],
+      "remuneracaoMaxima": null,
+      "teto": null,
+      "remuneracaoFinal": null,
+      "rating": null,
+      "setorProjeto": null
+    },
+    "AUT/DEB/PRI/2026/374": {
+      "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/373;CVM/SRE/AUT/DEB/PRI/2026/374;CVM/SRE/AUT/DEB/PRI/2026/375;CVM/SRE/AUT/DEB/PRI/2026/376;CVM/SRE/AUT/DEB/PRI/2026/377;CVM/SRE/AUT/DEB/PRI/2026/378;CVM/SRE/AUT/DEB/PRI/2026/379",
+      "idRequerimento": "27408",
+      "cnpjEmissor": "62.762.501/0001-62",
+      "data": "05/08/2026",
+      "lider": {
+        "nome": "GALAPAGOS CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A. - GLPG DTVM",
+        "cnpj": "28.650.236/0001-92"
+      },
+      "coordenadores": [
+        {
+          "razaoSocial": "GALAPAGOS CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A. - GLPG DTVM",
+          "cnpj": "28.650.236/0001-92",
+          "lider": true
+        }
+      ],
+      "remuneracaoMaxima": null,
+      "teto": null,
+      "remuneracaoFinal": null,
+      "rating": null,
+      "setorProjeto": null
+    },
+    "AUT/DEB/PRI/2026/375": {
+      "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/373;CVM/SRE/AUT/DEB/PRI/2026/374;CVM/SRE/AUT/DEB/PRI/2026/375;CVM/SRE/AUT/DEB/PRI/2026/376;CVM/SRE/AUT/DEB/PRI/2026/377;CVM/SRE/AUT/DEB/PRI/2026/378;CVM/SRE/AUT/DEB/PRI/2026/379",
+      "idRequerimento": "27408",
+      "cnpjEmissor": "62.762.501/0001-62",
+      "data": "05/08/2026",
+      "lider": {
+        "nome": "GALAPAGOS CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A. - GLPG DTVM",
+        "cnpj": "28.650.236/0001-92"
+      },
+      "coordenadores": [
+        {
+          "razaoSocial": "GALAPAGOS CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A. - GLPG DTVM",
+          "cnpj": "28.650.236/0001-92",
+          "lider": true
+        }
+      ],
+      "remuneracaoMaxima": null,
+      "teto": null,
+      "remuneracaoFinal": null,
+      "rating": null,
+      "setorProjeto": null
+    },
+    "AUT/DEB/PRI/2026/376": {
+      "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/373;CVM/SRE/AUT/DEB/PRI/2026/374;CVM/SRE/AUT/DEB/PRI/2026/375;CVM/SRE/AUT/DEB/PRI/2026/376;CVM/SRE/AUT/DEB/PRI/2026/377;CVM/SRE/AUT/DEB/PRI/2026/378;CVM/SRE/AUT/DEB/PRI/2026/379",
+      "idRequerimento": "27408",
+      "cnpjEmissor": "62.762.501/0001-62",
+      "data": "05/08/2026",
+      "lider": {
+        "nome": "GALAPAGOS CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A. - GLPG DTVM",
+        "cnpj": "28.650.236/0001-92"
+      },
+      "coordenadores": [
+        {
+          "razaoSocial": "GALAPAGOS CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A. - GLPG DTVM",
+          "cnpj": "28.650.236/0001-92",
+          "lider": true
+        }
+      ],
+      "remuneracaoMaxima": null,
+      "teto": null,
+      "remuneracaoFinal": null,
+      "rating": null,
+      "setorProjeto": null
+    },
+    "AUT/DEB/PRI/2026/377": {
+      "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/373;CVM/SRE/AUT/DEB/PRI/2026/374;CVM/SRE/AUT/DEB/PRI/2026/375;CVM/SRE/AUT/DEB/PRI/2026/376;CVM/SRE/AUT/DEB/PRI/2026/377;CVM/SRE/AUT/DEB/PRI/2026/378;CVM/SRE/AUT/DEB/PRI/2026/379",
+      "idRequerimento": "27408",
+      "cnpjEmissor": "62.762.501/0001-62",
+      "data": "05/08/2026",
+      "lider": {
+        "nome": "GALAPAGOS CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A. - GLPG DTVM",
+        "cnpj": "28.650.236/0001-92"
+      },
+      "coordenadores": [
+        {
+          "razaoSocial": "GALAPAGOS CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A. - GLPG DTVM",
+          "cnpj": "28.650.236/0001-92",
+          "lider": true
+        }
+      ],
+      "remuneracaoMaxima": null,
+      "teto": null,
+      "remuneracaoFinal": null,
+      "rating": null,
+      "setorProjeto": null
+    },
+    "AUT/DEB/PRI/2026/378": {
+      "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/373;CVM/SRE/AUT/DEB/PRI/2026/374;CVM/SRE/AUT/DEB/PRI/2026/375;CVM/SRE/AUT/DEB/PRI/2026/376;CVM/SRE/AUT/DEB/PRI/2026/377;CVM/SRE/AUT/DEB/PRI/2026/378;CVM/SRE/AUT/DEB/PRI/2026/379",
+      "idRequerimento": "27408",
+      "cnpjEmissor": "62.762.501/0001-62",
+      "data": "05/08/2026",
+      "lider": {
+        "nome": "GALAPAGOS CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A. - GLPG DTVM",
+        "cnpj": "28.650.236/0001-92"
+      },
+      "coordenadores": [
+        {
+          "razaoSocial": "GALAPAGOS CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A. - GLPG DTVM",
+          "cnpj": "28.650.236/0001-92",
+          "lider": true
+        }
+      ],
+      "remuneracaoMaxima": null,
+      "teto": null,
+      "remuneracaoFinal": null,
+      "rating": null,
+      "setorProjeto": null
+    },
+    "AUT/DEB/PRI/2026/379": {
+      "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/373;CVM/SRE/AUT/DEB/PRI/2026/374;CVM/SRE/AUT/DEB/PRI/2026/375;CVM/SRE/AUT/DEB/PRI/2026/376;CVM/SRE/AUT/DEB/PRI/2026/377;CVM/SRE/AUT/DEB/PRI/2026/378;CVM/SRE/AUT/DEB/PRI/2026/379",
+      "idRequerimento": "27408",
+      "cnpjEmissor": "62.762.501/0001-62",
+      "data": "05/08/2026",
+      "lider": {
+        "nome": "GALAPAGOS CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A. - GLPG DTVM",
+        "cnpj": "28.650.236/0001-92"
+      },
+      "coordenadores": [
+        {
+          "razaoSocial": "GALAPAGOS CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A. - GLPG DTVM",
+          "cnpj": "28.650.236/0001-92",
+          "lider": true
         }
       ],
       "remuneracaoMaxima": null,

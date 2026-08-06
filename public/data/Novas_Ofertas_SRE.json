@@ -1,14 +1,144 @@
 {
-  "asOf": "2026-08-05",
-  "geradoEm": "2026-08-05T16:49:05.458Z",
+  "asOf": "2026-08-06",
+  "geradoEm": "2026-08-06T12:12:31.658Z",
   "fonte": "CVM SRE (detalhado + participantes + acaoObjeto)",
   "janelaDias": 40,
   "periodo": {
-    "de": "26/06/2026",
-    "ate": "05/08/2026"
+    "de": "27/06/2026",
+    "ate": "06/08/2026"
   },
   "total": 40,
   "itens": [
+    {
+      "idRequerimento": "27286",
+      "data": "2026-08-05",
+      "emissor": "CERAN - COMPANHIA ENERGETICA RIO DAS ANTAS",
+      "cnpj": "04.237.975/0001-99",
+      "valorTotal": 120000000,
+      "valor": 120000000,
+      "status": "Registro Concedido",
+      "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+      "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/380",
+      "numSeries": 1,
+      "rating": "n/a",
+      "sindicato": [
+        {
+          "nome": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+          "lider": true
+        }
+      ],
+      "series": [
+        {
+          "incentivada": false,
+          "final": "DI + 1,28%",
+          "spread": null,
+          "teto": "DI + 1,28%",
+          "venc": "2033-07-24",
+          "tenor": 7,
+          "amort": "amort",
+          "resgate": "Sim",
+          "rating": "n/a"
+        }
+      ]
+    },
+    {
+      "idRequerimento": "27408",
+      "data": "2026-08-05",
+      "emissor": "RTT PARTS S.A.",
+      "cnpj": "62.762.501/0001-62",
+      "valorTotal": 571054940.48,
+      "valor": 571054940.48,
+      "status": "Registro Concedido",
+      "lider": "GALAPAGOS CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A. - GLPG DTVM",
+      "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/373;CVM/SRE/AUT/DEB/PRI/2026/374;CVM/SRE/AUT/DEB/PRI/2026/375;CVM/SRE/AUT/DEB/PRI/2026/376;CVM/SRE/AUT/DEB/PRI/2026/377;CVM/SRE/AUT/DEB/PRI/2026/378;CVM/SRE/AUT/DEB/PRI/2026/379",
+      "numSeries": 7,
+      "rating": null,
+      "sindicato": [
+        {
+          "nome": "GALAPAGOS CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A. - GLPG DTVM",
+          "lider": true
+        }
+      ],
+      "series": [
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": null,
+          "venc": "2030-12-30",
+          "tenor": 4,
+          "amort": "bullet",
+          "resgate": "Não",
+          "rating": null
+        },
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": null,
+          "venc": "2030-12-30",
+          "tenor": 4,
+          "amort": "bullet",
+          "resgate": "Não",
+          "rating": null
+        },
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": null,
+          "venc": "2030-12-30",
+          "tenor": 4,
+          "amort": "bullet",
+          "resgate": "Não",
+          "rating": null
+        },
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": null,
+          "venc": "2030-12-30",
+          "tenor": 4,
+          "amort": "bullet",
+          "resgate": "Não",
+          "rating": null
+        },
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": null,
+          "venc": "2030-12-30",
+          "tenor": 4,
+          "amort": "bullet",
+          "resgate": "Não",
+          "rating": null
+        },
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": null,
+          "venc": "2030-12-30",
+          "tenor": 4,
+          "amort": "bullet",
+          "resgate": "Não",
+          "rating": null
+        },
+        {
+          "incentivada": false,
+          "final": null,
+          "spread": null,
+          "teto": null,
+          "venc": "2030-12-30",
+          "tenor": 4,
+          "amort": "bullet",
+          "resgate": "Não",
+          "rating": null
+        }
+      ]
+    },
     {
       "idRequerimento": "27412",
       "data": "2026-08-05",
@@ -479,38 +609,6 @@
           "amort": "amort",
           "resgate": "Sim",
           "rating": "A"
-        }
-      ]
-    },
-    {
-      "idRequerimento": "27286",
-      "data": "2026-07-27",
-      "emissor": "CERAN - COMPANHIA ENERGETICA RIO DAS ANTAS",
-      "cnpj": "04.237.975/0001-99",
-      "valorTotal": 120000000,
-      "valor": 120000000,
-      "status": "Aguardando Bookbuilding",
-      "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-      "numeroRegistro": null,
-      "numSeries": 1,
-      "rating": "n/a",
-      "sindicato": [
-        {
-          "nome": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-          "lider": true
-        }
-      ],
-      "series": [
-        {
-          "incentivada": false,
-          "final": null,
-          "spread": null,
-          "teto": "DI + 1,28%",
-          "venc": "2033-07-24",
-          "tenor": 7,
-          "amort": "amort",
-          "resgate": "Sim",
-          "rating": "n/a"
         }
       ]
     },
@@ -1137,61 +1235,6 @@
           "amort": "amort",
           "resgate": "Sim",
           "rating": null
-        }
-      ]
-    },
-    {
-      "idRequerimento": "26932",
-      "data": "2026-07-15",
-      "emissor": "AXIA ENERGIA S.A.",
-      "cnpj": "00.001.180/0001-26",
-      "valorTotal": 2000000000,
-      "valor": 2000000000,
-      "status": "Oferta Encerrada",
-      "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-      "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/345;CVM/SRE/AUT/DEB/PRI/2026/346",
-      "numSeries": 2,
-      "rating": "AAA",
-      "sindicato": [
-        {
-          "nome": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-          "lider": true
-        },
-        {
-          "nome": "BANCO SANTANDER (BRASIL) S.A.",
-          "lider": false
-        },
-        {
-          "nome": "UBS BB Corretora de Câmbio, Títulos e Valores Mobiliários S.A.",
-          "lider": false
-        },
-        {
-          "nome": "BANCO BRADESCO BBI S.A.",
-          "lider": false
-        }
-      ],
-      "series": [
-        {
-          "incentivada": false,
-          "final": null,
-          "spread": null,
-          "teto": "CDI + 0,80%",
-          "venc": "2033-07-15",
-          "tenor": 7,
-          "amort": "bullet",
-          "resgate": "Sim",
-          "rating": "AAA"
-        },
-        {
-          "incentivada": false,
-          "final": null,
-          "spread": null,
-          "teto": "CDI + 0,90%",
-          "venc": "2036-07-15",
-          "tenor": 10,
-          "amort": "",
-          "resgate": "Sim",
-          "rating": "AAA"
         }
       ]
     },

@@ -3,7 +3,7 @@
   "label": "04/08/2026",
   "previousDate": "2026-08-03",
   "sourceDates": {
-    "debentures": "2026-08-03",
+    "debentures": "2026-08-04",
     "cap12431": "2026-07-31",
     "capTrad": "2026-07-31",
     "perf12431": "2026-07-31",
@@ -13,7 +13,7 @@
     "fundos": "2026-07-31"
   },
   "novoPorFonte": {
-    "debentures": false,
+    "debentures": true,
     "cap": true,
     "anbima": true,
     "fundos": true,
@@ -21,7 +21,11 @@
   },
   "summary": [
     {
-      "texto": "Captação líquida Incentivados: −R$ 134 mi",
+      "texto": "5 nova(s) debênture(s) cadastrada(s)",
+      "tom": "pos"
+    },
+    {
+      "texto": "Captação líquida Incentivados: −R$ 135 mi",
       "tom": "neg"
     },
     {
@@ -51,17 +55,88 @@
   ],
   "sections": {
     "debentures": {
-      "novas": [],
+      "novas": [
+        {
+          "ticker": "VERTH1",
+          "empresa": "VERT COMPANHIA  SECURITIZADORA",
+          "grupo": "Vert Companhia Securitizadora",
+          "cnpj": "25005683000109",
+          "dataRegistro": "04/08/2026",
+          "dataEmissao": "15/05/2026",
+          "vencimento": "20/08/2029",
+          "indexador": "PRÉ",
+          "taxa": "16,3075",
+          "volumeEmitido": 304424000,
+          "incentivada": false,
+          "coordenador": "XP INVESTIMENTOS CCTVM S/A"
+        },
+        {
+          "ticker": "VERTH2",
+          "empresa": "VERT COMPANHIA  SECURITIZADORA",
+          "grupo": "Vert Companhia Securitizadora",
+          "cnpj": "25005683000109",
+          "dataRegistro": "04/08/2026",
+          "dataEmissao": "15/05/2026",
+          "vencimento": "20/08/2029",
+          "indexador": "DI",
+          "taxa": "2",
+          "volumeEmitido": 330776000,
+          "incentivada": false,
+          "coordenador": "XP INVESTIMENTOS CCTVM S/A"
+        },
+        {
+          "ticker": "VERTH3",
+          "empresa": "VERT COMPANHIA  SECURITIZADORA",
+          "grupo": "Vert Companhia Securitizadora",
+          "cnpj": "25005683000109",
+          "dataRegistro": "04/08/2026",
+          "dataEmissao": "15/05/2026",
+          "vencimento": "20/08/2029",
+          "indexador": "DI",
+          "taxa": "3",
+          "volumeEmitido": 55234000,
+          "incentivada": false,
+          "coordenador": "XP INVESTIMENTOS CCTVM S/A"
+        },
+        {
+          "ticker": "VERTH4",
+          "empresa": "VERT COMPANHIA  SECURITIZADORA",
+          "grupo": "Vert Companhia Securitizadora",
+          "cnpj": "25005683000109",
+          "dataRegistro": "04/08/2026",
+          "dataEmissao": "15/05/2026",
+          "vencimento": "20/08/2029",
+          "indexador": "DI",
+          "taxa": "3,5",
+          "volumeEmitido": 1259000,
+          "incentivada": false,
+          "coordenador": "XP INVESTIMENTOS CCTVM S/A"
+        },
+        {
+          "ticker": "VERTH5",
+          "empresa": "VERT COMPANHIA  SECURITIZADORA",
+          "grupo": "Vert Companhia Securitizadora",
+          "cnpj": "25005683000109",
+          "dataRegistro": "04/08/2026",
+          "dataEmissao": "15/05/2026",
+          "vencimento": "20/08/2029",
+          "indexador": "DI",
+          "taxa": "4",
+          "volumeEmitido": 7552000,
+          "incentivada": false,
+          "coordenador": "XP INVESTIMENTOS CCTVM S/A"
+        }
+      ],
       "saidas": [],
       "temSnapshotAnterior": false
     },
     "captacao": {
       "12431": {
         "dia": "2026-07-31",
-        "captacao": 85472760.58000001,
-        "resgate": 219599070.95000002,
-        "liquido": -134126310.37,
-        "pl": 264375144748.39,
+        "captacao": 85640760.58000001,
+        "resgate": 220199001.52,
+        "liquido": -134558240.94,
+        "pl": 264381266627.05,
         "numFundos": 1704,
         "curados": 1737,
         "fechados": 287,
@@ -70,26 +145,26 @@
           "captacao": 80984033.71000001,
           "resgate": 243721376.24,
           "liquido": -162737342.53,
-          "pl": 264914799332.63998,
-          "numFundos": 1703
+          "pl": 265203434356.82,
+          "numFundos": 1707
         }
       },
       "trad": {
         "dia": "2026-07-31",
-        "captacao": 2465630051.470001,
-        "resgate": 4520799956.640001,
-        "liquido": -2055169905.17,
-        "pl": 1592467729322.0603,
-        "numFundos": 987,
+        "captacao": 2465033144.170001,
+        "resgate": 4527558006.160001,
+        "liquido": -2062524861.9899998,
+        "pl": 1593149482297.39,
+        "numFundos": 991,
         "curados": 1014,
         "fechados": 50,
         "anterior": {
           "dia": "2026-07-30",
           "captacao": 2518824962.7399993,
-          "resgate": 3427972643.0700006,
-          "liquido": -909147680.3300014,
-          "pl": 1594435450540.181,
-          "numFundos": 995
+          "resgate": 3427972552.5500007,
+          "liquido": -909147589.8100014,
+          "pl": 1594627380095.3005,
+          "numFundos": 997
         }
       }
     },
@@ -142,16 +217,16 @@
         {
           "gestor": "BTG WM",
           "captacao": 5623176.75,
-          "resgate": 23210184.79,
-          "liquido": -17587008.04,
-          "pl": 15272578011.29
+          "resgate": 23310184.79,
+          "liquido": -17687008.04,
+          "pl": 15272767158.59
         },
         {
           "gestor": "BRAM",
           "captacao": 1626932.71,
-          "resgate": 17976222.93,
-          "liquido": -16349290.219999999,
-          "pl": 28463595856.09
+          "resgate": 18476222.93,
+          "liquido": -16849290.22,
+          "pl": 28468843408.26
         },
         {
           "gestor": "SAM",
@@ -165,7 +240,7 @@
           "captacao": 17034472.56,
           "resgate": 31456996.04,
           "liquido": -14422523.48,
-          "pl": 55708769112.07
+          "pl": 55708759112.55
         }
       ],
       "topTradCaptacao": [
@@ -174,7 +249,7 @@
           "captacao": 63179671.06,
           "resgate": 32952567.4,
           "liquido": 30227103.660000004,
-          "pl": 29586763055.39
+          "pl": 29586829515.86
         },
         {
           "gestor": "Regia",
@@ -202,7 +277,7 @@
           "captacao": 10836154.82,
           "resgate": 3663569.46,
           "liquido": 7172585.36,
-          "pl": 5741923536.57
+          "pl": 5741964015.89
         }
       ],
       "topTradResgate": [
@@ -222,10 +297,10 @@
         },
         {
           "gestor": "IAM",
-          "captacao": 538144028.83,
-          "resgate": 683020293.91,
-          "liquido": -144876265.07999992,
-          "pl": 457919644643.5
+          "captacao": 537200673.81,
+          "resgate": 685781059.31,
+          "liquido": -148580385.5,
+          "pl": 457913084979.02
         },
         {
           "gestor": "Safra Asset",
@@ -239,7 +314,7 @@
           "captacao": 92623581.71,
           "resgate": 180548661.52,
           "liquido": -87925079.81000002,
-          "pl": 136063818512.84
+          "pl": 136063818512.69
         }
       ]
     },
@@ -1361,14 +1436,6 @@
     "perf": {
       "top12431Pos": [
         {
-          "cnpj": "39723106000159",
-          "nome": "SPARTA INFLAÇÃO MASTER FUNDO INCENTIVADO DE INVEST FINANCEIRO EM INFRA RENDA FIXA - RESP LTDA",
-          "gestor": "Sparta",
-          "segmento": "12431",
-          "retorno": 89.0308,
-          "pl": 1534256412.96
-        },
-        {
           "cnpj": "61141536000111",
           "nome": "BB MASTER RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
           "gestor": "BB Asset",
@@ -1393,15 +1460,31 @@
           "pl": 23290585.13
         },
         {
-          "cnpj": "62360992000115",
-          "nome": "BB MASTER II RENDA FIXA DEBÊNTURES INCENTIVADAS FIF INVESTIMENTO EM INFRAESTRUTURA RESP LIMITADA",
-          "gestor": "BB Asset",
+          "cnpj": "60775750000167",
+          "nome": "G5 ALLOCATION II FUNDO INCENTIVADO DE INVESTIMENTO FINANCEIRO EM INFRAESTRUTURA RENDA FIXA",
+          "gestor": "G5",
           "segmento": "12431",
-          "retorno": 3.5012,
-          "pl": 1713672313.09
+          "retorno": 1.2417,
+          "pl": 46539354.33
+        },
+        {
+          "cnpj": "54005088000163",
+          "nome": "FX FUNDO INCENTIVADO DE INVESTIMENTO EM INFRAESTRUTURA RENDA FIXA",
+          "gestor": "BTG WM",
+          "segmento": "12431",
+          "retorno": 0.9027,
+          "pl": 81309238.7
         }
       ],
       "top12431Neg": [
+        {
+          "cnpj": "39723106000159",
+          "nome": "SPARTA INFLAÇÃO MASTER FUNDO INCENTIVADO DE INVEST FINANCEIRO EM INFRA RENDA FIXA - RESP LTDA",
+          "gestor": "Sparta",
+          "segmento": "12431",
+          "retorno": -46.9544,
+          "pl": 20025090.04
+        },
         {
           "cnpj": "54426679000104",
           "nome": "SPARTA RENDA FI FINANCEIRO INCENTIVADO EM INFRAESTRUTURA RENDA FIXA RESPONSABILIDADE LIMITADA",
@@ -1409,14 +1492,6 @@
           "segmento": "12431",
           "retorno": -22.4656,
           "pl": 1134000.03
-        },
-        {
-          "cnpj": "56154549000195",
-          "nome": "FUNDO DE INVESTIMENTO FINANCEIRO - CI RENDA FIXA INCENTIVADO INVESTIMENTO EM INFRAESTRUTURA G5 TOKYO",
-          "gestor": "G5",
-          "segmento": "12431",
-          "retorno": -5.3493,
-          "pl": 12358301.94
         },
         {
           "cnpj": "59878473000139",
@@ -1469,20 +1544,20 @@
           "pl": 27378760.06
         },
         {
+          "cnpj": "36532178000120",
+          "nome": "CHRONOS FUNDO DE INVESTIMENTO MULTIMERCADO CRÉDITO PRIVADO",
+          "gestor": "XPG",
+          "segmento": "trad",
+          "retorno": 0.7499,
+          "pl": 16122246.02
+        },
+        {
           "cnpj": "51168708000197",
           "nome": "FUNDO DE INVESTIMENTO FINANCEIRO MULTIMERCADO LT",
           "gestor": "BTG Asset",
           "segmento": "trad",
           "retorno": 0.6991,
           "pl": 1140986563.79
-        },
-        {
-          "cnpj": "26664935000166",
-          "nome": "DEVANT AUDAX FUNDO DE INVESTIMENTO FINANCEIRO RESPONSABILIDADE LIMITADA",
-          "gestor": "Devant",
-          "segmento": "trad",
-          "retorno": 0.6968,
-          "pl": 6420616.37
         }
       ],
       "topTradNeg": [
@@ -1493,14 +1568,6 @@
           "segmento": "trad",
           "retorno": -4.4889,
           "pl": 953197965.57
-        },
-        {
-          "cnpj": "39511694000167",
-          "nome": "TULIPA 18 CLASSE DE INVESTIMENTO  MULTIMERCADO CRÉDITO PRIVADO",
-          "gestor": "Brainvest",
-          "segmento": "trad",
-          "retorno": -2.3746,
-          "pl": 13681006.1
         },
         {
           "cnpj": "52333139000150",
@@ -1525,11 +1592,25 @@
           "segmento": "trad",
           "retorno": -0.8119,
           "pl": 16672806.4
+        },
+        {
+          "cnpj": "45683322000110",
+          "nome": "JGP ECOSSISTEMA FI FINANCEIRO MULTIMERCADO CRÉDITO PRIVADO - RESPONSABILIDADE LIMITADA",
+          "gestor": "JGP",
+          "segmento": "trad",
+          "retorno": -0.6201,
+          "pl": 347979905.34
         }
       ]
     },
     "inclusoes": {
-      "novosDebentures": [],
+      "novosDebentures": [
+        "VERTH1",
+        "VERTH2",
+        "VERTH3",
+        "VERTH4",
+        "VERTH5"
+      ],
       "novosBlc": [],
       "temSnapshotBlc": true
     },
@@ -1539,16 +1620,10 @@
         "texto": "74 ativo(s) no BLC sem correspondencia em Debentures.csv"
       }
     ],
-    "emissoesCVM": {
-      "asOf": "2026-08-05",
-      "itens": []
-    },
-    "emissoresFaltantes": {
-      "itens": [],
-      "asOf": "2026-08-05"
-    },
+    "emissoesCVM": null,
+    "emissoresFaltantes": null,
     "ofertasSRE": {
-      "asOf": "2026-08-05",
+      "asOf": "2026-08-06",
       "janelaDias": 40,
       "itens": [
         {

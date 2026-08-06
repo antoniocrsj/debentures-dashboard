@@ -2,42 +2,46 @@
   "periodo": "weekly",
   "formato": "v2",
   "id": "2026-W32",
-  "label": "Semana 32/2026 · Parcial até 03/08",
+  "label": "Semana 32/2026 · Parcial até 04/08",
   "status": "partial",
   "de": "2026-08-03",
-  "ate": "2026-08-03",
+  "ate": "2026-08-04",
   "sourceDates": {
     "fluxo12431": "2026-08-04",
-    "fluxoTrad": "2026-08-03",
-    "anbima": "2026-08-04",
-    "mercado": "2026-08-05",
-    "debentures": "2026-08-03"
+    "fluxoTrad": "2026-08-04",
+    "anbima": "2026-08-05",
+    "mercado": "2026-08-06",
+    "debentures": "2026-08-04"
   },
   "alertas": [
     {
       "tipo": "parcial",
-      "texto": "Semana em andamento — dados até 2026-08-03."
+      "texto": "Semana em andamento — dados até 2026-08-04."
     }
   ],
   "partes": {
     "debentures": {
       "sintese": [
-        "2 oferta(s) nova(s) (2 série(s)) de 1 emissor(es), somando R$ 1,5 bi.",
-        "12.431: R$ 0 · Tradicional: R$ 1,5 bi.",
+        "3 oferta(s) nova(s) (7 série(s)) de 2 emissor(es), somando R$ 2,2 bi.",
+        "12.431: R$ 0 · Tradicional: R$ 2,2 bi.",
         "Maior: IHS Towers (R$ 1,5 bi)."
       ],
       "resumo": {
-        "nOfertas": 2,
-        "nSeries": 2,
-        "nEmissores": 1,
-        "nGrupos": 1,
-        "volumeTotal": 1500000000,
+        "nOfertas": 3,
+        "nSeries": 7,
+        "nEmissores": 2,
+        "nGrupos": 2,
+        "volumeTotal": 2199245000,
         "volume12431": 0,
-        "volumeTradicional": 1500000000,
+        "volumeTradicional": 2199245000,
         "maioresPorGrupo": [
           {
             "nome": "IHS Towers",
             "volume": 1500000000
+          },
+          {
+            "nome": "Vert Companhia Securitizadora",
+            "volume": 699245000
           }
         ],
         "volumeConfiavel": true
@@ -99,6 +103,109 @@
           ]
         },
         {
+          "chave": "25005683000109|042",
+          "cnpj": "25005683000109",
+          "emissao": "042",
+          "registro": "AUT/OTS/PRI/2026/115",
+          "emissor": "VERT COMPANHIA  SECURITIZADORA",
+          "grupo": "Vert Companhia Securitizadora",
+          "setor": "Securitizadora",
+          "coordenador": "XP INVESTIMENTOS CCTVM S/A",
+          "coordenadores": null,
+          "teto": null,
+          "remuneracaoMaxima": null,
+          "rating": null,
+          "dataRegistro": "2026-08-04",
+          "incentivada": false,
+          "volumeOferta": 699245000,
+          "volumeParcial": false,
+          "nSeries": 5,
+          "tickers": [
+            "VERTH1",
+            "VERTH2",
+            "VERTH3",
+            "VERTH4",
+            "VERTH5"
+          ],
+          "series": [
+            {
+              "ticker": "VERTH1",
+              "serie": "001",
+              "volumeSerie": 304424000,
+              "indexador": "PRÉ",
+              "taxaEmissao": "16,3075",
+              "vencimento": "2029-08-20",
+              "garantia": "Quirografária",
+              "amortizacao": "Percentual variável sobre o valor nominal atualizado em períodos não uniformes",
+              "incentivada": false,
+              "resgateAntecipado": "S",
+              "spreadEmissao": "DI +2,11%",
+              "spreadEst": true,
+              "spreadFonte": "base"
+            },
+            {
+              "ticker": "VERTH2",
+              "serie": "002",
+              "volumeSerie": 330776000,
+              "indexador": "DI",
+              "taxaEmissao": "2",
+              "vencimento": "2029-08-20",
+              "garantia": "Quirografária",
+              "amortizacao": "Percentual variável sobre o valor nominal atualizado em períodos não uniformes",
+              "incentivada": false,
+              "resgateAntecipado": "S",
+              "spreadEmissao": "CDI +2,00%",
+              "spreadEst": false,
+              "spreadFonte": "base"
+            },
+            {
+              "ticker": "VERTH3",
+              "serie": "003",
+              "volumeSerie": 55234000,
+              "indexador": "DI",
+              "taxaEmissao": "3",
+              "vencimento": "2029-08-20",
+              "garantia": "Quirografária",
+              "amortizacao": "Percentual variável sobre o valor nominal atualizado em períodos não uniformes",
+              "incentivada": false,
+              "resgateAntecipado": "S",
+              "spreadEmissao": "CDI +3,00%",
+              "spreadEst": false,
+              "spreadFonte": "base"
+            },
+            {
+              "ticker": "VERTH4",
+              "serie": "004",
+              "volumeSerie": 1259000,
+              "indexador": "DI",
+              "taxaEmissao": "3,5",
+              "vencimento": "2029-08-20",
+              "garantia": "Quirografária",
+              "amortizacao": "Percentual variável sobre o valor nominal atualizado em períodos não uniformes",
+              "incentivada": false,
+              "resgateAntecipado": "S",
+              "spreadEmissao": "CDI +3,50%",
+              "spreadEst": false,
+              "spreadFonte": "base"
+            },
+            {
+              "ticker": "VERTH5",
+              "serie": "005",
+              "volumeSerie": 7552000,
+              "indexador": "DI",
+              "taxaEmissao": "4",
+              "vencimento": "2029-08-20",
+              "garantia": "Quirografária",
+              "amortizacao": "Percentual variável sobre o valor nominal atualizado em períodos não uniformes",
+              "incentivada": false,
+              "resgateAntecipado": "S",
+              "spreadEmissao": "CDI +4,00%",
+              "spreadEst": false,
+              "spreadFonte": "base"
+            }
+          ]
+        },
+        {
           "chave": "15811119000111|006",
           "cnpj": "15811119000111",
           "emissao": "006",
@@ -146,16 +253,146 @@
       ],
       "inconsistencias": [],
       "ofertasSRE": {
-        "asOf": "2026-08-05",
-        "geradoEm": "2026-08-05T16:49:05.458Z",
+        "asOf": "2026-08-06",
+        "geradoEm": "2026-08-06T12:12:31.658Z",
         "fonte": "CVM SRE (detalhado + participantes + acaoObjeto)",
         "janelaDias": 40,
         "periodo": {
-          "de": "26/06/2026",
-          "ate": "05/08/2026"
+          "de": "27/06/2026",
+          "ate": "06/08/2026"
         },
         "total": 40,
         "itens": [
+          {
+            "idRequerimento": "27286",
+            "data": "2026-08-05",
+            "emissor": "CERAN - COMPANHIA ENERGETICA RIO DAS ANTAS",
+            "cnpj": "04.237.975/0001-99",
+            "valorTotal": 120000000,
+            "valor": 120000000,
+            "status": "Registro Concedido",
+            "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+            "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/380",
+            "numSeries": 1,
+            "rating": "n/a",
+            "sindicato": [
+              {
+                "nome": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
+                "lider": true
+              }
+            ],
+            "series": [
+              {
+                "incentivada": false,
+                "final": "DI + 1,28%",
+                "spread": null,
+                "teto": "DI + 1,28%",
+                "venc": "2033-07-24",
+                "tenor": 7,
+                "amort": "amort",
+                "resgate": "Sim",
+                "rating": "n/a"
+              }
+            ]
+          },
+          {
+            "idRequerimento": "27408",
+            "data": "2026-08-05",
+            "emissor": "RTT PARTS S.A.",
+            "cnpj": "62.762.501/0001-62",
+            "valorTotal": 571054940.48,
+            "valor": 571054940.48,
+            "status": "Registro Concedido",
+            "lider": "GALAPAGOS CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A. - GLPG DTVM",
+            "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/373;CVM/SRE/AUT/DEB/PRI/2026/374;CVM/SRE/AUT/DEB/PRI/2026/375;CVM/SRE/AUT/DEB/PRI/2026/376;CVM/SRE/AUT/DEB/PRI/2026/377;CVM/SRE/AUT/DEB/PRI/2026/378;CVM/SRE/AUT/DEB/PRI/2026/379",
+            "numSeries": 7,
+            "rating": null,
+            "sindicato": [
+              {
+                "nome": "GALAPAGOS CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A. - GLPG DTVM",
+                "lider": true
+              }
+            ],
+            "series": [
+              {
+                "incentivada": false,
+                "final": null,
+                "spread": null,
+                "teto": null,
+                "venc": "2030-12-30",
+                "tenor": 4,
+                "amort": "bullet",
+                "resgate": "Não",
+                "rating": null
+              },
+              {
+                "incentivada": false,
+                "final": null,
+                "spread": null,
+                "teto": null,
+                "venc": "2030-12-30",
+                "tenor": 4,
+                "amort": "bullet",
+                "resgate": "Não",
+                "rating": null
+              },
+              {
+                "incentivada": false,
+                "final": null,
+                "spread": null,
+                "teto": null,
+                "venc": "2030-12-30",
+                "tenor": 4,
+                "amort": "bullet",
+                "resgate": "Não",
+                "rating": null
+              },
+              {
+                "incentivada": false,
+                "final": null,
+                "spread": null,
+                "teto": null,
+                "venc": "2030-12-30",
+                "tenor": 4,
+                "amort": "bullet",
+                "resgate": "Não",
+                "rating": null
+              },
+              {
+                "incentivada": false,
+                "final": null,
+                "spread": null,
+                "teto": null,
+                "venc": "2030-12-30",
+                "tenor": 4,
+                "amort": "bullet",
+                "resgate": "Não",
+                "rating": null
+              },
+              {
+                "incentivada": false,
+                "final": null,
+                "spread": null,
+                "teto": null,
+                "venc": "2030-12-30",
+                "tenor": 4,
+                "amort": "bullet",
+                "resgate": "Não",
+                "rating": null
+              },
+              {
+                "incentivada": false,
+                "final": null,
+                "spread": null,
+                "teto": null,
+                "venc": "2030-12-30",
+                "tenor": 4,
+                "amort": "bullet",
+                "resgate": "Não",
+                "rating": null
+              }
+            ]
+          },
           {
             "idRequerimento": "27412",
             "data": "2026-08-05",
@@ -476,71 +713,71 @@
     },
     "secundario": {
       "sintese": [
-        "Spread 12.431: movimento misto (mediana +0 bps, 256 abriram / 233 fecharam de 625).",
-        "Spread Tradicional: leve abertura (mediana +1 bps, 12 abriram / 3 fecharam de 21 — amostra pequena).",
-        "Secundário: R$ 1,48 bi em 644 negócio(s) (12.431 R$ 371,8 mi · Trad R$ 1,11 bi).",
-        "15 negócio(s) ≥ R$ 20 mi em 12 grupo(s)."
+        "Spread 12.431: movimento misto (mediana +0 bps, 218 abriram / 308 fecharam de 626).",
+        "Spread Tradicional: leve abertura (mediana +1 bps, 12 abriram / 6 fecharam de 21 — amostra pequena).",
+        "Secundário: R$ 1,65 bi em 810 negócio(s) (12.431 R$ 430,4 mi · Trad R$ 1,22 bi).",
+        "17 negócio(s) ≥ R$ 20 mi em 13 grupo(s)."
       ],
       "tendencia": {
         "semFronteira": false,
         "dataIni": "2026-07-31",
-        "dataFim": "2026-08-04",
+        "dataFim": "2026-08-05",
         "porSegmento": {
           "12431": {
             "classificacao": "movimento misto",
             "motivoInsuf": null,
             "amostraPequena": false,
-            "n": 625,
+            "n": 626,
             "medianaBps": 0,
-            "mediaAparadaBps": 0.1,
-            "abriu": 256,
-            "fechou": 233,
-            "estavel": 136,
-            "pctAbriu": 41,
-            "pctFechou": 37,
-            "pctEstavel": 22,
-            "p25Bps": -1,
+            "mediaAparadaBps": -0.4,
+            "abriu": 218,
+            "fechou": 308,
+            "estavel": 100,
+            "pctAbriu": 35,
+            "pctFechou": 49,
+            "pctEstavel": 16,
+            "p25Bps": -2,
             "p75Bps": 1,
             "maioresAberturas": [
               {
-                "ticker": "CSNAA4",
+                "ticker": "CSNAB4",
                 "emissor": "COMPANHIA SIDERURGICA NACIONAL",
                 "grupo": "CSN",
-                "variacaoBps": 38,
-                "spreadAnteriorBps": 1939,
-                "spreadAtualBps": 1977
+                "variacaoBps": 37,
+                "spreadAnteriorBps": 1162,
+                "spreadAtualBps": 1199
               },
               {
                 "ticker": "SUMI37",
                 "emissor": "GIGA MAIS FIBRA TELECOMUNICACOES S.A.",
                 "grupo": "Giga+",
-                "variacaoBps": 28,
+                "variacaoBps": 37,
                 "spreadAnteriorBps": 571,
-                "spreadAtualBps": 599
+                "spreadAtualBps": 608
               },
               {
-                "ticker": "TIMS12",
-                "emissor": "TIM S.A.",
-                "grupo": "TIM",
+                "ticker": "CSNAA5",
+                "emissor": "COMPANHIA SIDERURGICA NACIONAL",
+                "grupo": "CSN",
+                "variacaoBps": 30,
+                "spreadAnteriorBps": 1173,
+                "spreadAtualBps": 1203
+              },
+              {
+                "ticker": "CSNAA4",
+                "emissor": "COMPANHIA SIDERURGICA NACIONAL",
+                "grupo": "CSN",
                 "variacaoBps": 24,
-                "spreadAnteriorBps": -68,
-                "spreadAtualBps": -44
+                "spreadAnteriorBps": 1939,
+                "spreadAtualBps": 1963
               },
               {
-                "ticker": "ASER12",
-                "emissor": "AGUAS DO SERTAO S.A.",
-                "grupo": "Conasa",
-                "variacaoBps": 18,
-                "spreadAnteriorBps": 385,
-                "spreadAtualBps": 403
-              },
-              {
-                "ticker": "CRMG15",
-                "emissor": "CONCESSIONARIA DA RODOVIA MG-050 S.A.",
-                "grupo": "Via Appia",
-                "variacaoBps": 18,
-                "spreadAnteriorBps": -32,
-                "spreadAtualBps": -14
+                "ticker": "CSNAB5",
+                "emissor": "COMPANHIA SIDERURGICA NACIONAL",
+                "grupo": "CSN",
+                "variacaoBps": 21,
+                "spreadAnteriorBps": 872,
+                "spreadAtualBps": 893
               }
             ],
             "maioresFechamentos": [
@@ -548,48 +785,48 @@
                 "ticker": "EBAS13",
                 "emissor": "EMPRESA BAIANA DE AGUAS E SANEAMENTO SA",
                 "grupo": "Embasa",
-                "variacaoBps": -33,
+                "variacaoBps": -35,
                 "spreadAnteriorBps": 47,
-                "spreadAtualBps": 14
-              },
-              {
-                "ticker": "QMCT14",
-                "emissor": "QMC TELECOM DO BRASIL CESSAO DE INFRAESTRUTURA S/A",
-                "grupo": "QMC Telecom",
-                "variacaoBps": -20,
-                "spreadAnteriorBps": 93,
-                "spreadAtualBps": 73
+                "spreadAtualBps": 12
               },
               {
                 "ticker": "APRB18",
                 "emissor": "AUTOPISTA REGIS BITTENCOURT S/A",
                 "grupo": "Arteris",
-                "variacaoBps": -9,
+                "variacaoBps": -15,
                 "spreadAnteriorBps": 100,
-                "spreadAtualBps": 91
+                "spreadAtualBps": 85
+              },
+              {
+                "ticker": "SAPR10",
+                "emissor": "COMPANHIA DE SANEAMENTO  DO PARANA - SANEPAR",
+                "grupo": "Sanepar",
+                "variacaoBps": -14,
+                "spreadAnteriorBps": -17,
+                "spreadAtualBps": -31
+              },
+              {
+                "ticker": "CMIN22",
+                "emissor": "CSN MINERACAO S.A.",
+                "grupo": "CSN",
+                "variacaoBps": -12,
+                "spreadAnteriorBps": 653,
+                "spreadAtualBps": 641
               },
               {
                 "ticker": "HBSA11",
                 "emissor": "HIDROVIAS DO BRASIL S.A.",
                 "grupo": "Ultrapar",
-                "variacaoBps": -7,
+                "variacaoBps": -12,
                 "spreadAnteriorBps": 13,
-                "spreadAtualBps": 6
-              },
-              {
-                "ticker": "ONZE21",
-                "emissor": "BLOCO DE ONZE AEROPORTOS DO BRASIL S.A",
-                "grupo": "Aena",
-                "variacaoBps": -7,
-                "spreadAnteriorBps": 66,
-                "spreadAtualBps": 59
+                "spreadAtualBps": 1
               }
             ],
             "vsAnbima": {
-              "comparaveis": 467,
-              "acima": 285,
-              "abaixo": 176,
-              "igual": 6
+              "comparaveis": 595,
+              "acima": 368,
+              "abaixo": 217,
+              "igual": 10
             }
           },
           "trad": {
@@ -598,23 +835,39 @@
             "amostraPequena": true,
             "n": 21,
             "medianaBps": 1,
-            "mediaAparadaBps": 1.2,
+            "mediaAparadaBps": 1.6,
             "abriu": 12,
-            "fechou": 3,
-            "estavel": 6,
+            "fechou": 6,
+            "estavel": 3,
             "pctAbriu": 57,
-            "pctFechou": 14,
-            "pctEstavel": 29,
-            "p25Bps": 0,
-            "p75Bps": 3,
+            "pctFechou": 29,
+            "pctEstavel": 14,
+            "p25Bps": -1,
+            "p75Bps": 5,
             "maioresAberturas": [
               {
                 "ticker": "VAMO33",
                 "emissor": "VAMOS LOCACAO DE CAMINHOES MAQUINAS E EQUIPAMENTOS S.A.",
                 "grupo": "Simpar",
-                "variacaoBps": 11,
+                "variacaoBps": 18,
                 "spreadAnteriorBps": 559,
-                "spreadAtualBps": 570
+                "spreadAtualBps": 577
+              },
+              {
+                "ticker": "CSMGE1",
+                "emissor": "COMPANHIA DE SANEAMENTO DE MINAS GERAIS COPASA MG",
+                "grupo": "Copasa",
+                "variacaoBps": 6,
+                "spreadAnteriorBps": 75,
+                "spreadAtualBps": 81
+              },
+              {
+                "ticker": "CSAN33",
+                "emissor": "COSAN S.A.",
+                "grupo": "Cosan",
+                "variacaoBps": 5,
+                "spreadAnteriorBps": 228,
+                "spreadAtualBps": 233
               },
               {
                 "ticker": "CSMGB9",
@@ -625,28 +878,12 @@
                 "spreadAtualBps": 99
               },
               {
-                "ticker": "CSAN33",
-                "emissor": "COSAN S.A.",
-                "grupo": "Cosan",
-                "variacaoBps": 4,
-                "spreadAnteriorBps": 228,
-                "spreadAtualBps": 232
-              },
-              {
-                "ticker": "CSMGE1",
-                "emissor": "COMPANHIA DE SANEAMENTO DE MINAS GERAIS COPASA MG",
-                "grupo": "Copasa",
-                "variacaoBps": 4,
-                "spreadAnteriorBps": 75,
-                "spreadAtualBps": 79
-              },
-              {
-                "ticker": "FEPS11",
-                "emissor": "",
-                "grupo": "",
-                "variacaoBps": 3,
-                "spreadAnteriorBps": 75,
-                "spreadAtualBps": 78
+                "ticker": "LCAMD1",
+                "emissor": "LOCALIZA RENT A CAR S/A",
+                "grupo": "Localiza",
+                "variacaoBps": 5,
+                "spreadAnteriorBps": 152,
+                "spreadAtualBps": 157
               }
             ],
             "maioresFechamentos": [
@@ -659,27 +896,43 @@
                 "spreadAtualBps": 555
               },
               {
-                "ticker": "MSGT13",
-                "emissor": "MATA DE SANTA GENEBRA TRANSMISSAO S/A",
-                "grupo": "Mata de Santa Genebra Transmissão",
-                "variacaoBps": -2,
-                "spreadAnteriorBps": 88,
-                "spreadAtualBps": 86
-              },
-              {
                 "ticker": "JSMLB5",
                 "emissor": "JSL S.A",
                 "grupo": "Simpar",
-                "variacaoBps": -1,
+                "variacaoBps": -5,
                 "spreadAnteriorBps": 517,
-                "spreadAtualBps": 516
+                "spreadAtualBps": 512
+              },
+              {
+                "ticker": "RENTD1",
+                "emissor": "LOCALIZA RENT A CAR S/A",
+                "grupo": "Localiza",
+                "variacaoBps": -2,
+                "spreadAnteriorBps": 165,
+                "spreadAtualBps": 163
+              },
+              {
+                "ticker": "ASAB11",
+                "emissor": "ASA BRANCA HOLDING S.A.",
+                "grupo": "Asa Branca",
+                "variacaoBps": -1,
+                "spreadAnteriorBps": 318,
+                "spreadAtualBps": 317
+              },
+              {
+                "ticker": "LORTA7",
+                "emissor": "LOCALIZA RENT A CAR S/A",
+                "grupo": "Localiza",
+                "variacaoBps": -1,
+                "spreadAnteriorBps": 158,
+                "spreadAtualBps": 157
               }
             ],
             "vsAnbima": {
-              "comparaveis": 133,
-              "acima": 60,
-              "abaixo": 53,
-              "igual": 20
+              "comparaveis": 162,
+              "acima": 84,
+              "abaixo": 50,
+              "igual": 28
             }
           }
         }
@@ -709,34 +962,34 @@
       "trades": {
         "limiar": 20000000,
         "resumo": {
-          "volume": 1476901554,
-          "nTrades": 644,
-          "volume12431": 371843009,
-          "volumeTradicional": 1105058545,
+          "volume": 1654702274,
+          "nTrades": 810,
+          "volume12431": 430352654,
+          "volumeTradicional": 1224349620,
           "anterior": {
-            "volume": 2881683540,
+            "volume": 2881674961,
             "nTrades": 1256
           },
-          "variacaoVolNominal": -1404781986,
-          "variacaoVolPct": -0.4874865565564496,
-          "media4Semanas": 2366012621,
-          "variacaoVs4Pct": -0.3757845833570471,
+          "variacaoVolNominal": -1226972687,
+          "variacaoVolPct": -0.42578455363828244,
+          "media4Semanas": 2358792306.25,
+          "variacaoVs4Pct": -0.2984959847394788,
           "maioresGrupos": [
             {
               "nome": "Equatorial",
-              "volume": 323988585
+              "volume": 325075187
             },
             {
               "nome": "EcoRodovias",
-              "volume": 117006928
+              "volume": 135092578
             },
             {
               "nome": "Axia",
-              "volume": 114776982
+              "volume": 121175817
             },
             {
               "nome": "Auren",
-              "volume": 89849242
+              "volume": 100804615
             },
             {
               "nome": "VLI",
@@ -758,11 +1011,11 @@
             },
             {
               "nome": "CESPA4",
-              "volume": 72066122
+              "volume": 72187199
             },
             {
               "nome": "ECOV17",
-              "volume": 50416971
+              "volume": 50417061
             }
           ]
         },
@@ -815,7 +1068,50 @@
                 "volume": 23830034,
                 "taxaMed": "8.3218",
                 "spreadFmt": "B35 +27bps",
-                "vsAnbima": 12
+                "vsAnbima": 15
+              }
+            ]
+          },
+          {
+            "grupo": "EcoRodovias",
+            "emissores": [
+              "CONCESSIONARIA ECOVIAS DOS IMIGRANTES S.A.",
+              "ECORODOVIAS CONCESSOES E SERVICOS S/A"
+            ],
+            "ativos": [
+              "ECOV17",
+              "ERDVA6"
+            ],
+            "volumeTotal": 77503549,
+            "nTrades": 2,
+            "datas": [
+              "2026-08-05"
+            ],
+            "enquadramento": "Tradicional",
+            "maiorTrade": {
+              "ticker": "ECOV17",
+              "data": "2026-08-05",
+              "volume": 50417061,
+              "taxaMed": "0.6994",
+              "spreadFmt": "CDI +0.70%",
+              "vsAnbima": -0.03
+            },
+            "trades": [
+              {
+                "ticker": "ECOV17",
+                "data": "2026-08-05",
+                "volume": 50417061,
+                "taxaMed": "0.6994",
+                "spreadFmt": "CDI +0.70%",
+                "vsAnbima": -0.03
+              },
+              {
+                "ticker": "ERDVA6",
+                "data": "2026-08-05",
+                "volume": 27086488,
+                "taxaMed": "0.8293",
+                "spreadFmt": "CDI +0.83%",
+                "vsAnbima": -0.01
               }
             ]
           },
@@ -860,7 +1156,7 @@
             "ativos": [
               "CESPA4"
             ],
-            "volumeTotal": 66770840,
+            "volumeTotal": 66891917,
             "nTrades": 1,
             "datas": [
               "2026-08-05"
@@ -869,52 +1165,19 @@
             "maiorTrade": {
               "ticker": "CESPA4",
               "data": "2026-08-05",
-              "volume": 66770840,
+              "volume": 66891917,
               "taxaMed": "0.7500",
               "spreadFmt": "CDI +0.75%",
-              "vsAnbima": -0.04
+              "vsAnbima": -0.01
             },
             "trades": [
               {
                 "ticker": "CESPA4",
                 "data": "2026-08-05",
-                "volume": 66770840,
+                "volume": 66891917,
                 "taxaMed": "0.7500",
                 "spreadFmt": "CDI +0.75%",
-                "vsAnbima": -0.04
-              }
-            ]
-          },
-          {
-            "grupo": "EcoRodovias",
-            "emissores": [
-              "CONCESSIONARIA ECOVIAS DOS IMIGRANTES S.A."
-            ],
-            "ativos": [
-              "ECOV17"
-            ],
-            "volumeTotal": 50416971,
-            "nTrades": 1,
-            "datas": [
-              "2026-08-05"
-            ],
-            "enquadramento": "Tradicional",
-            "maiorTrade": {
-              "ticker": "ECOV17",
-              "data": "2026-08-05",
-              "volume": 50416971,
-              "taxaMed": "0.6994",
-              "spreadFmt": "CDI +0.70%",
-              "vsAnbima": -0.07
-            },
-            "trades": [
-              {
-                "ticker": "ECOV17",
-                "data": "2026-08-05",
-                "volume": 50416971,
-                "taxaMed": "0.6994",
-                "spreadFmt": "CDI +0.70%",
-                "vsAnbima": -0.07
+                "vsAnbima": -0.01
               }
             ]
           },
@@ -938,7 +1201,7 @@
               "volume": 50019026,
               "taxaMed": "0.5400",
               "spreadFmt": "CDI +0.54%",
-              "vsAnbima": 0
+              "vsAnbima": 0.01
             },
             "trades": [
               {
@@ -947,7 +1210,7 @@
                 "volume": 50019026,
                 "taxaMed": "0.5400",
                 "spreadFmt": "CDI +0.54%",
-                "vsAnbima": 0
+                "vsAnbima": 0.01
               }
             ]
           },
@@ -985,44 +1248,35 @@
             ]
           },
           {
-            "grupo": "Vibra",
+            "grupo": "NTS",
             "emissores": [
-              "VIBRA ENERGIA S.A"
+              "NOVA TRANSPORTADORA DO SUDESTE S.A. – NTS"
             ],
             "ativos": [
-              "VBBR17",
-              "VBBR16"
+              "NTSDA2"
             ],
-            "volumeTotal": 44116280,
-            "nTrades": 2,
+            "volumeTotal": 44570230,
+            "nTrades": 1,
             "datas": [
               "2026-08-05"
             ],
             "enquadramento": "Tradicional",
             "maiorTrade": {
-              "ticker": "VBBR17",
+              "ticker": "NTSDA2",
               "data": "2026-08-05",
-              "volume": 24108761,
-              "taxaMed": "0.7400",
-              "spreadFmt": "CDI +0.74%",
-              "vsAnbima": -0.05
+              "volume": 44570230,
+              "taxaMed": "0.6302",
+              "spreadFmt": "CDI +0.63%",
+              "vsAnbima": -0.01
             },
             "trades": [
               {
-                "ticker": "VBBR17",
+                "ticker": "NTSDA2",
                 "data": "2026-08-05",
-                "volume": 24108761,
-                "taxaMed": "0.7400",
-                "spreadFmt": "CDI +0.74%",
-                "vsAnbima": -0.05
-              },
-              {
-                "ticker": "VBBR16",
-                "data": "2026-08-05",
-                "volume": 20007519,
-                "taxaMed": "0.7400",
-                "spreadFmt": "CDI +0.74%",
-                "vsAnbima": -0.05
+                "volume": 44570230,
+                "taxaMed": "0.6302",
+                "spreadFmt": "CDI +0.63%",
+                "vsAnbima": -0.01
               }
             ]
           },
@@ -1046,7 +1300,7 @@
               "volume": 43011244,
               "taxaMed": "7.9389",
               "spreadFmt": "B37 +5bps",
-              "vsAnbima": 4
+              "vsAnbima": 8
             },
             "trades": [
               {
@@ -1055,40 +1309,49 @@
                 "volume": 43011244,
                 "taxaMed": "7.9389",
                 "spreadFmt": "B37 +5bps",
-                "vsAnbima": 4
+                "vsAnbima": 8
               }
             ]
           },
           {
-            "grupo": "NTS",
+            "grupo": "Vibra",
             "emissores": [
-              "NOVA TRANSPORTADORA DO SUDESTE S.A. – NTS"
+              "VIBRA ENERGIA S.A"
             ],
             "ativos": [
-              "NTSDA2"
+              "VBBR17",
+              "VBBR16"
             ],
-            "volumeTotal": 39567322,
-            "nTrades": 1,
+            "volumeTotal": 40015615,
+            "nTrades": 2,
             "datas": [
               "2026-08-05"
             ],
             "enquadramento": "Tradicional",
             "maiorTrade": {
-              "ticker": "NTSDA2",
+              "ticker": "VBBR17",
               "data": "2026-08-05",
-              "volume": 39567322,
-              "taxaMed": "0.6302",
-              "spreadFmt": "CDI +0.63%",
-              "vsAnbima": -0.05
+              "volume": 20008096,
+              "taxaMed": "0.7400",
+              "spreadFmt": "CDI +0.74%",
+              "vsAnbima": -0.03
             },
             "trades": [
               {
-                "ticker": "NTSDA2",
+                "ticker": "VBBR17",
                 "data": "2026-08-05",
-                "volume": 39567322,
-                "taxaMed": "0.6302",
-                "spreadFmt": "CDI +0.63%",
-                "vsAnbima": -0.05
+                "volume": 20008096,
+                "taxaMed": "0.7400",
+                "spreadFmt": "CDI +0.74%",
+                "vsAnbima": -0.03
+              },
+              {
+                "ticker": "VBBR16",
+                "data": "2026-08-05",
+                "volume": 20007519,
+                "taxaMed": "0.7400",
+                "spreadFmt": "CDI +0.74%",
+                "vsAnbima": -0.06
               }
             ]
           },
@@ -1126,6 +1389,39 @@
             ]
           },
           {
+            "grupo": "Rede D'Or",
+            "emissores": [
+              "REDE DOR SAO LUIZ S/A"
+            ],
+            "ativos": [
+              "RDORD7"
+            ],
+            "volumeTotal": 21096176,
+            "nTrades": 1,
+            "datas": [
+              "2026-08-06"
+            ],
+            "enquadramento": "Tradicional",
+            "maiorTrade": {
+              "ticker": "RDORD7",
+              "data": "2026-08-06",
+              "volume": 21096176,
+              "taxaMed": "0.9790",
+              "spreadFmt": "CDI +0.98%",
+              "vsAnbima": -0.01
+            },
+            "trades": [
+              {
+                "ticker": "RDORD7",
+                "data": "2026-08-06",
+                "volume": 21096176,
+                "taxaMed": "0.9790",
+                "spreadFmt": "CDI +0.98%",
+                "vsAnbima": -0.01
+              }
+            ]
+          },
+          {
             "grupo": "Itaúsa",
             "emissores": [
               "ITAUSA S/A"
@@ -1145,7 +1441,7 @@
               "volume": 21015408,
               "taxaMed": "0.4494",
               "spreadFmt": "CDI +0.45%",
-              "vsAnbima": -0.03
+              "vsAnbima": -0.02
             },
             "trades": [
               {
@@ -1154,7 +1450,7 @@
                 "volume": 21015408,
                 "taxaMed": "0.4494",
                 "spreadFmt": "CDI +0.45%",
-                "vsAnbima": -0.03
+                "vsAnbima": -0.02
               }
             ]
           },
@@ -1178,7 +1474,7 @@
               "volume": 20012482,
               "taxaMed": "0.3350",
               "spreadFmt": "CDI +0.34%",
-              "vsAnbima": -0.05
+              "vsAnbima": -0.02
             },
             "trades": [
               {
@@ -1187,7 +1483,7 @@
                 "volume": 20012482,
                 "taxaMed": "0.3350",
                 "spreadFmt": "CDI +0.34%",
-                "vsAnbima": -0.05
+                "vsAnbima": -0.02
               }
             ]
           }
@@ -1197,29 +1493,29 @@
     "tecnico": {
       "12431": {
         "captacaoBruta": {
-          "valor": 224708978.91999996,
-          "anterior": 501005549.93999994,
-          "variacaoNominal": -276296571.02,
-          "variacaoPct": -0.5514840525281388,
-          "media4Semanas": 775829136.9499998,
+          "valor": 278389594.03000003,
+          "anterior": 501173549.93999994,
+          "variacaoNominal": -222783955.9099999,
+          "variacaoPct": -0.4445245682591817,
+          "media4Semanas": 775871136.9499998,
           "diasUteis": 2,
           "dataFonte": "2026-08-04"
         },
         "resgates": {
-          "valor": 253538582.63,
-          "anterior": 1355509612.9800003,
-          "variacaoNominal": -1101971030.3500004,
-          "variacaoPct": -0.8129570014095203,
-          "media4Semanas": 1640226220.8075,
+          "valor": 514243630.44,
+          "anterior": 1355609543.5500002,
+          "variacaoNominal": -841365913.1100001,
+          "variacaoPct": -0.6206550530078703,
+          "media4Semanas": 1640258703.4499998,
           "diasUteis": 2,
           "dataFonte": "2026-08-04"
         },
         "captacaoLiquida": {
-          "valor": -28829603.71000004,
-          "anterior": -854504063.0400003,
-          "variacaoNominal": 825674459.3300003,
-          "variacaoPct": 0.9662615955184165,
-          "media4Semanas": -864397083.8575001,
+          "valor": -235854036.40999997,
+          "anterior": -854435993.6100003,
+          "variacaoNominal": 618581957.2000003,
+          "variacaoPct": 0.7239652376844351,
+          "media4Semanas": -864387566.5000001,
           "diasUteis": 2,
           "dataFonte": "2026-08-04"
         },
@@ -1236,157 +1532,157 @@
           "maioresCaptacoes": [
             {
               "gestor": "IAM",
-              "valor": 187990598
+              "valor": 189020261.36
             },
             {
               "gestor": "Kinea",
-              "valor": 10150000
+              "valor": 10735194.03
+            },
+            {
+              "gestor": "JGP",
+              "valor": 10325059.91
             },
             {
               "gestor": "BRAM",
-              "valor": 7868285.87
+              "valor": 8773094.72
             },
             {
-              "gestor": "Journey",
-              "valor": 3391975.06
-            },
-            {
-              "gestor": "BTG Asset",
-              "valor": 3176224.92
+              "gestor": "BB Asset",
+              "valor": 7774317.03
             }
           ],
           "maioresResgates": [
             {
               "gestor": "IAM",
-              "valor": 62372913.34
+              "valor": 85149410.32000001
             },
             {
-              "gestor": "Kinea",
-              "valor": 25091000
-            },
-            {
-              "gestor": "BTG Asset",
-              "valor": 24802605.14
+              "gestor": "BRAM",
+              "valor": 60986610.49
             },
             {
               "gestor": "SAM",
-              "valor": 23393600
+              "valor": 46714400
             },
             {
-              "gestor": "Absolute",
-              "valor": 23058526.85
+              "gestor": "BB Asset",
+              "valor": 33380616.240000002
+            },
+            {
+              "gestor": "BTG Asset",
+              "valor": 28720364.84
             }
           ],
           "maioresLiquidas": [
             {
               "gestor": "IAM",
-              "valor": 125617684.66
+              "valor": 103870851.04
             },
             {
               "gestor": "Journey",
-              "valor": 3342694.64
+              "valor": 4019803.52
             },
             {
               "gestor": "Bocaina",
-              "valor": 819192.6299999999
+              "valor": 1094192.63
             },
             {
-              "gestor": "Inter",
-              "valor": 342161.36000000004
+              "gestor": "Oriz",
+              "valor": 1070012.13
             },
             {
-              "gestor": "Porto Asset",
-              "valor": 172000
+              "gestor": "SWM",
+              "valor": 1032345.34
             }
           ],
           "pioresLiquidas": [
             {
-              "gestor": "SAM",
-              "valor": -22672747.78
+              "gestor": "BRAM",
+              "valor": -52213515.77
             },
             {
-              "gestor": "Absolute",
-              "valor": -21856639.990000002
+              "gestor": "SAM",
+              "valor": -41912550.39
+            },
+            {
+              "gestor": "BB Asset",
+              "valor": -25606299.21
+            },
+            {
+              "gestor": "ARX",
+              "valor": -24681661.05
             },
             {
               "gestor": "BTG Asset",
-              "valor": -21626380.22
-            },
-            {
-              "gestor": "Kinea",
-              "valor": -14941000
-            },
-            {
-              "gestor": "BRAM",
-              "valor": -14033975.7
+              "valor": -22304661.21
             }
           ],
           "maioresMudancas": [
             {
               "gestor": "IAM",
-              "deltaLiquido": 301078264.45000005,
-              "liquido": 125617684.66
-            },
-            {
-              "gestor": "BRAM",
-              "deltaLiquido": 90122869.14999999,
-              "liquido": -14033975.7
+              "deltaLiquido": 279331430.83000004,
+              "liquido": 103870851.04
             },
             {
               "gestor": "BTG WM",
-              "deltaLiquido": 84322719.65,
-              "liquido": -6849438.33
+              "deltaLiquido": 83219776.65,
+              "liquido": -8052381.33
+            },
+            {
+              "gestor": "BRAM",
+              "deltaLiquido": 52443329.07999999,
+              "liquido": -52213515.77
             },
             {
               "gestor": "Safra Asset",
-              "deltaLiquido": 63580541.97,
-              "liquido": -5798671.36
+              "deltaLiquido": 51693920.03,
+              "liquido": -17685293.299999997
             },
             {
-              "gestor": "SAM",
-              "deltaLiquido": 47385294,
-              "liquido": -22672747.78
+              "gestor": "Absolute",
+              "deltaLiquido": 45577598.11,
+              "liquido": -20224164.020000003
             }
           ]
         }
       },
       "sintese": [
-        "12.431: captação líquida −R$ 28,8 mi (2 d.u.), emissão CVM R$ 0.",
-        "Tradicional: captação líquida −R$ 2,03 bi (1 d.u.), emissão CVM R$ 1,5 bi."
+        "12.431: captação líquida −R$ 235,9 mi (2 d.u.), emissão CVM R$ 0.",
+        "Tradicional: captação líquida −R$ 1,28 bi (2 d.u.), emissão CVM R$ 2,2 bi."
       ],
       "trad": {
         "captacaoBruta": {
-          "valor": 1288951586.76,
-          "anterior": 13477395575.619997,
-          "variacaoNominal": -12188443988.859997,
-          "variacaoPct": -0.9043619681912687,
-          "media4Semanas": 13144492120.362497,
-          "diasUteis": 1,
-          "dataFonte": "2026-08-03"
+          "valor": 4641052389.65,
+          "anterior": 13476798668.319998,
+          "variacaoNominal": -8835746278.669998,
+          "variacaoPct": -0.6556264952922571,
+          "media4Semanas": 13144342893.537498,
+          "diasUteis": 2,
+          "dataFonte": "2026-08-04"
         },
         "resgates": {
-          "valor": 3317376631.5899997,
-          "anterior": 15362375830.399996,
-          "variacaoNominal": -12044999198.809996,
-          "variacaoPct": -0.784058359968946,
-          "media4Semanas": 13735582204.440002,
-          "diasUteis": 1,
-          "dataFonte": "2026-08-03"
+          "valor": 5924006325.74,
+          "anterior": 15369133789.399998,
+          "variacaoNominal": -9445127463.659998,
+          "variacaoPct": -0.6145517107915508,
+          "media4Semanas": 13737271694.190002,
+          "diasUteis": 2,
+          "dataFonte": "2026-08-04"
         },
         "captacaoLiquida": {
-          "valor": -2028425044.8299997,
-          "anterior": -1884980254.7799988,
-          "variacaoNominal": -143444790.0500009,
-          "variacaoPct": -0.07609882898574062,
-          "media4Semanas": -591090084.0775042,
-          "diasUteis": 1,
-          "dataFonte": "2026-08-03"
+          "valor": -1282953936.0900002,
+          "anterior": -1892335121.08,
+          "variacaoNominal": 609381184.9899998,
+          "variacaoPct": 0.3220260397863417,
+          "media4Semanas": -592928800.6525044,
+          "diasUteis": 2,
+          "dataFonte": "2026-08-04"
         },
         "volumeEmitidoCVM": {
-          "valor": 1500000000,
+          "valor": 2199245000,
           "anterior": 6210000000,
-          "variacaoNominal": -4710000000,
-          "variacaoPct": -0.7584541062801933,
+          "variacaoNominal": -4010755000,
+          "variacaoPct": -0.6458542673107891,
           "media4Semanas": 7157890902,
           "diasUteis": null,
           "dataFonte": "2026-08-09"
@@ -1394,117 +1690,117 @@
         "destaques": {
           "maioresCaptacoes": [
             {
+              "gestor": "BB Asset",
+              "valor": 1362236719.3200002
+            },
+            {
               "gestor": "IAM",
-              "valor": 483582968.96
+              "valor": 1008759235.86
             },
             {
               "gestor": "BRAM",
-              "valor": 244219069.71
+              "valor": 953031271.62
             },
             {
               "gestor": "SAM",
-              "valor": 90942336.01
+              "valor": 220165845.18
             },
             {
               "gestor": "Safra Asset",
-              "valor": 53285159.12
-            },
-            {
-              "gestor": "UBS",
-              "valor": 46617674.61
+              "valor": 142313902.34
             }
           ],
           "maioresResgates": [
             {
               "gestor": "IAM",
-              "valor": 1052395862.54
+              "valor": 1562438237.15
+            },
+            {
+              "gestor": "BB Asset",
+              "valor": 1161009300.21
             },
             {
               "gestor": "XPG",
-              "valor": 610380776.69
-            },
-            {
-              "gestor": "SAM",
-              "valor": 451850841.75
+              "valor": 661727921.85
             },
             {
               "gestor": "BRAM",
-              "valor": 438067768.1
+              "valor": 559348073.28
             },
             {
-              "gestor": "Safra Asset",
-              "valor": 153661579.69
+              "gestor": "SAM",
+              "valor": 547527095.04
             }
           ],
           "maioresLiquidas": [
             {
+              "gestor": "BRAM",
+              "valor": 393683198.34000003
+            },
+            {
+              "gestor": "BB Asset",
+              "valor": 201227419.11000013
+            },
+            {
+              "gestor": "Kinea",
+              "valor": 42562296.12
+            },
+            {
               "gestor": "Daycoval",
-              "valor": 29052642.330000002
+              "valor": 29589340.310000002
             },
             {
-              "gestor": "UBS",
-              "valor": 18121492.47
-            },
-            {
-              "gestor": "Icatu",
-              "valor": 16228504.82
-            },
-            {
-              "gestor": "Capitânia",
-              "valor": 11527873
-            },
-            {
-              "gestor": "BTG Asset",
-              "valor": 10412896.079999998
+              "gestor": "BRZ",
+              "valor": 29500000
             }
           ],
           "pioresLiquidas": [
             {
               "gestor": "XPG",
-              "valor": -610357694.99
+              "valor": -632773489.59
             },
             {
               "gestor": "IAM",
-              "valor": -568812893.5799999
+              "valor": -553679001.2900001
             },
             {
               "gestor": "SAM",
-              "valor": -360908505.74
+              "valor": -327361249.85999995
             },
             {
-              "gestor": "BRAM",
-              "valor": -193848698.39000002
+              "gestor": "AZ Quest",
+              "valor": -100359506.73
             },
             {
-              "gestor": "Safra Asset",
-              "valor": -100376420.57
+              "gestor": "CEF Asset",
+              "valor": -99016471.16000001
             }
           ],
           "maioresMudancas": [
             {
+              "gestor": "BRAM",
+              "deltaLiquido": 950451620.6300002,
+              "liquido": 393683198.34000003
+            },
+            {
               "gestor": "IAM",
-              "deltaLiquido": -851637640.7000003,
-              "liquido": -568812893.5799999
+              "deltaLiquido": -832799627.9900004,
+              "liquido": -553679001.2900001
             },
             {
               "gestor": "XPG",
-              "deltaLiquido": -530931141.51,
-              "liquido": -610357694.99
-            },
-            {
-              "gestor": "BRAM",
-              "deltaLiquido": 362919723.9000002,
-              "liquido": -193848698.39000002
+              "deltaLiquido": -553346936.11,
+              "liquido": -632773489.59
             },
             {
               "gestor": "BB Asset",
-              "deltaLiquido": 273628937.8399998,
-              "liquido": -4543294.8999999985
+              "deltaLiquido": 479399651.8499999,
+              "liquido": 201227419.11000013
             },
             {
-              "gestor": "SAM",
-              "deltaLiquido": -246796997.09000015,
-              "liquido": -360908505.74
+              "gestor": "Regia",
+              "deltaLiquido": -246098426.85999995,
+              "liquido": 13422015.8
             }
           ]
         }
@@ -1514,16 +1810,24 @@
           {
             "nome": "IHS Towers",
             "volume": 1500000000
+          },
+          {
+            "nome": "Vert Companhia Securitizadora",
+            "volume": 699245000
           }
         ],
         "porEmissor": [
           {
             "nome": "IHS BRASIL CESSAO DE INFRAESTRUTURAS S.A.",
             "volume": 1500000000
+          },
+          {
+            "nome": "VERT COMPANHIA  SECURITIZADORA",
+            "volume": 699245000
           }
         ],
         "volume12431": 0,
-        "volumeTradicional": 1500000000
+        "volumeTradicional": 2199245000
       }
     }
   }

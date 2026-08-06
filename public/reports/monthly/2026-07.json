@@ -422,10 +422,10 @@
     },
     "captacao": {
       "12431": {
-        "captacao": 3611610407.0199986,
-        "resgate": 7511880842.4800005,
-        "liquido": -3900270435.460002,
-        "pl": 264375144748.39,
+        "captacao": 3611778407.0199986,
+        "resgate": 7512010773.05,
+        "liquido": -3900232366.0300016,
+        "pl": 264381266627.05,
         "numFundos": 1704,
         "dataPl": "2026-07-31",
         "de": "2026-07-01",
@@ -440,11 +440,11 @@
         }
       },
       "trad": {
-        "captacao": 60911217877.02009,
-        "resgate": 63619087625.88002,
-        "liquido": -2707869748.859932,
-        "pl": 1592467729322.0603,
-        "numFundos": 987,
+        "captacao": 60910620969.720085,
+        "resgate": 63625845584.88002,
+        "liquido": -2715224615.159935,
+        "pl": 1593149482297.39,
+        "numFundos": 991,
         "dataPl": "2026-07-31",
         "de": "2026-07-01",
         "ate": "2026-07-31",
@@ -507,7 +507,7 @@
           "captacao": 610178939.48,
           "resgate": 1261857398.5899997,
           "liquido": -651678459.1099997,
-          "pl": 55708769112.07,
+          "pl": 55708759112.55,
           "dias": 23
         },
         {
@@ -529,9 +529,9 @@
         {
           "gestor": "BRAM",
           "captacao": 407816778.90000004,
-          "resgate": 724644146.5,
-          "liquido": -316827367.59999996,
-          "pl": 28463595856.09,
+          "resgate": 725144146.5,
+          "liquido": -317327367.59999996,
+          "pl": 28468843408.26,
           "dias": 23
         },
         {
@@ -562,10 +562,10 @@
         },
         {
           "gestor": "IAM",
-          "captacao": 14909022019.910002,
-          "resgate": 14192175395.130003,
-          "liquido": 716846624.7799988,
-          "pl": 457919644643.5,
+          "captacao": 14908078664.890001,
+          "resgate": 14194936160.530003,
+          "liquido": 713142504.3599987,
+          "pl": 457913084979.02,
           "dias": 23
         },
         {
@@ -573,7 +573,7 @@
           "captacao": 1702909841.3499997,
           "resgate": 1249359372.6499999,
           "liquido": 453550468.6999998,
-          "pl": 10765065715.64,
+          "pl": 10778779320.48,
           "dias": 23
         },
         {
@@ -581,7 +581,7 @@
           "captacao": 1232429518.3400002,
           "resgate": 866381966.2099999,
           "liquido": 366047552.13000023,
-          "pl": 29586763055.39,
+          "pl": 29586829515.86,
           "dias": 23
         }
       ],
@@ -591,7 +591,7 @@
           "captacao": 741828769.62,
           "resgate": 2550334799.0499997,
           "liquido": -1808506029.4299998,
-          "pl": 22436821146.7,
+          "pl": 22471541483.3,
           "dias": 23
         },
         {
@@ -665,28 +665,6 @@
     "perf": {
       "top12431Pos": [
         {
-          "cnpj": "64089192000137",
-          "nome": "TOP DEBÊNTURES 2025 INCENTIVADO…",
-          "gestor": "IAM",
-          "retorno": 9.4483,
-          "obs": 22,
-          "de": "2026-07-02",
-          "ate": "2026-07-31",
-          "pl": 11593051.36,
-          "segmento": "12431"
-        },
-        {
-          "cnpj": "62360992000115",
-          "nome": "BB MASTER II DEBÊNTURES…",
-          "gestor": "BB Asset",
-          "retorno": 4.2857,
-          "obs": 22,
-          "de": "2026-07-02",
-          "ate": "2026-07-31",
-          "pl": 1713672313.09,
-          "segmento": "12431"
-        },
-        {
           "cnpj": "60775750000167",
           "nome": "G5 ALLOCATION II FUNDO…",
           "gestor": "G5",
@@ -718,6 +696,28 @@
           "ate": "2026-07-31",
           "pl": 59462523.09,
           "segmento": "12431"
+        },
+        {
+          "cnpj": "63942021000146",
+          "nome": "OCCAM BB INFRA LINEAR…",
+          "gestor": "Occam",
+          "retorno": 2.1151,
+          "obs": 22,
+          "de": "2026-07-02",
+          "ate": "2026-07-31",
+          "pl": 118090604.5,
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "57613783000104",
+          "nome": "MG FUNDO INCENTIVADO EM…",
+          "gestor": "IAM",
+          "retorno": 1.9867,
+          "obs": 22,
+          "de": "2026-07-02",
+          "ate": "2026-07-31",
+          "pl": 114147230.59,
+          "segmento": "12431"
         }
       ],
       "top12431Neg": [
@@ -726,7 +726,7 @@
           "nome": "L3H2B CRÉDITO PRIVADO…",
           "gestor": "Monte Bravo",
           "retorno": -17.3136,
-          "obs": 21,
+          "obs": 22,
           "de": "2026-07-02",
           "ate": "2026-07-31",
           "pl": 6793991.13,
@@ -755,17 +755,6 @@
           "segmento": "12431"
         },
         {
-          "cnpj": "56154549000195",
-          "nome": "INCENTIVADO INVESTIMENTO EM…",
-          "gestor": "G5",
-          "retorno": -4.3841,
-          "obs": 22,
-          "de": "2026-07-02",
-          "ate": "2026-07-31",
-          "pl": 12358301.94,
-          "segmento": "12431"
-        },
-        {
           "cnpj": "62172231000130",
           "nome": "FAMÍLIA ESPÍRITO SANTO…",
           "gestor": "IAM",
@@ -774,6 +763,17 @@
           "de": "2026-07-02",
           "ate": "2026-07-31",
           "pl": 16959287.07,
+          "segmento": "12431"
+        },
+        {
+          "cnpj": "55701008000177",
+          "nome": "BTG PACTUAL DÍVIDA INFRA CDI…",
+          "gestor": "BTG Asset",
+          "retorno": -1.3755,
+          "obs": 22,
+          "de": "2026-07-02",
+          "ate": "2026-07-31",
+          "pl": 65352374.54,
           "segmento": "12431"
         }
       ],
@@ -839,11 +839,11 @@
           "cnpj": "26703080000135",
           "nome": "PAVILLION",
           "gestor": "BTG WM",
-          "retorno": -18.4252,
+          "retorno": -18.5447,
           "obs": 22,
           "de": "2026-07-02",
           "ate": "2026-07-31",
-          "pl": 21309221.73,
+          "pl": 21277979.47,
           "segmento": "trad"
         },
         {
@@ -880,14 +880,14 @@
           "segmento": "trad"
         },
         {
-          "cnpj": "36532178000120",
-          "nome": "CHRONOS CRÉDITO PRIVADO",
-          "gestor": "XPG",
-          "retorno": -4.7089,
-          "obs": 22,
-          "de": "2026-07-02",
+          "cnpj": "42736995000101",
+          "nome": "ITAÚ DIFERENCIADO CRÉDITO…",
+          "gestor": "IAM",
+          "retorno": -4.2114,
+          "obs": 14,
+          "de": "2026-07-14",
           "ate": "2026-07-31",
-          "pl": 16002245.22,
+          "pl": 953197965.57,
           "segmento": "trad"
         }
       ]
@@ -964,7 +964,7 @@
       },
       {
         "tipo": "perf-cobertura",
-        "texto": "Performance Tradicional: 5 fundo(s) fora por cobertura < 60% e 3 por dado inválido."
+        "texto": "Performance Tradicional: 5 fundo(s) fora por cobertura < 60% e 4 por dado inválido."
       }
     ],
     "perfCobertura": {
@@ -981,20 +981,20 @@
         "diasUteis": 22,
         "excluidos": {
           "insuficiente": 5,
-          "glitch": 3
+          "glitch": 4
         },
-        "avaliados": 998,
+        "avaliados": 997,
         "minCobertura": 0.6
       }
     },
     "ofertasSRE": {
-      "asOf": "2026-08-05",
-      "geradoEm": "2026-08-05T16:49:05.458Z",
+      "asOf": "2026-08-06",
+      "geradoEm": "2026-08-06T12:12:31.658Z",
       "fonte": "CVM SRE (detalhado + participantes + acaoObjeto)",
       "janelaDias": 40,
       "periodo": {
-        "de": "26/06/2026",
-        "ate": "05/08/2026"
+        "de": "27/06/2026",
+        "ate": "06/08/2026"
       },
       "total": 40,
       "itens": [
@@ -1155,38 +1155,6 @@
               "amort": "amort",
               "resgate": "Sim",
               "rating": "A"
-            }
-          ]
-        },
-        {
-          "idRequerimento": "27286",
-          "data": "2026-07-27",
-          "emissor": "CERAN - COMPANHIA ENERGETICA RIO DAS ANTAS",
-          "cnpj": "04.237.975/0001-99",
-          "valorTotal": 120000000,
-          "valor": 120000000,
-          "status": "Aguardando Bookbuilding",
-          "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-          "numeroRegistro": null,
-          "numSeries": 1,
-          "rating": "n/a",
-          "sindicato": [
-            {
-              "nome": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-              "lider": true
-            }
-          ],
-          "series": [
-            {
-              "incentivada": false,
-              "final": null,
-              "spread": null,
-              "teto": "DI + 1,28%",
-              "venc": "2033-07-24",
-              "tenor": 7,
-              "amort": "amort",
-              "resgate": "Sim",
-              "rating": "n/a"
             }
           ]
         },
@@ -1813,61 +1781,6 @@
               "amort": "amort",
               "resgate": "Sim",
               "rating": null
-            }
-          ]
-        },
-        {
-          "idRequerimento": "26932",
-          "data": "2026-07-15",
-          "emissor": "AXIA ENERGIA S.A.",
-          "cnpj": "00.001.180/0001-26",
-          "valorTotal": 2000000000,
-          "valor": 2000000000,
-          "status": "Oferta Encerrada",
-          "lider": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-          "numeroRegistro": "CVM/SRE/AUT/DEB/PRI/2026/345;CVM/SRE/AUT/DEB/PRI/2026/346",
-          "numSeries": 2,
-          "rating": "AAA",
-          "sindicato": [
-            {
-              "nome": "ITAU BBA ASSESSORIA FINANCEIRA S.A",
-              "lider": true
-            },
-            {
-              "nome": "BANCO SANTANDER (BRASIL) S.A.",
-              "lider": false
-            },
-            {
-              "nome": "UBS BB Corretora de Câmbio, Títulos e Valores Mobiliários S.A.",
-              "lider": false
-            },
-            {
-              "nome": "BANCO BRADESCO BBI S.A.",
-              "lider": false
-            }
-          ],
-          "series": [
-            {
-              "incentivada": false,
-              "final": null,
-              "spread": null,
-              "teto": "CDI + 0,80%",
-              "venc": "2033-07-15",
-              "tenor": 7,
-              "amort": "bullet",
-              "resgate": "Sim",
-              "rating": "AAA"
-            },
-            {
-              "incentivada": false,
-              "final": null,
-              "spread": null,
-              "teto": "CDI + 0,90%",
-              "venc": "2036-07-15",
-              "tenor": 10,
-              "amort": "",
-              "resgate": "Sim",
-              "rating": "AAA"
             }
           ]
         },

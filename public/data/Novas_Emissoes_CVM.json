@@ -1,7 +1,16 @@
 {
-    "asOf":  "2026-08-05",
-    "geradoEm":  "2026-08-05T10:37:33",
+    "asOf":  "2026-08-06",
+    "geradoEm":  "2026-08-06T09:12:29",
     "itens":  [
-
+                  {
+                      "dataRegistro":  "2026-08-05",
+                      "dataRequerimento":  "2026-07-27",
+                      "emissor":  "CERAN - COMPANHIA ENERGETICA RIO DAS ANTAS",
+                      "cnpj":  "04237975000199",
+                      "emissao":  2,
+                      "valor":  120000000,
+                      "incentivada":  false,
+                      "lider":  "ITAU BBA ASSESSORIA FINANCEIRA S.A"
+                  }
               ]
 }

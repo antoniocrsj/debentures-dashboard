@@ -837,13 +837,13 @@
       }
     },
     "ofertasSRE": {
-      "asOf": "2026-08-05",
-      "geradoEm": "2026-08-05T16:49:05.458Z",
+      "asOf": "2026-08-06",
+      "geradoEm": "2026-08-06T12:12:31.658Z",
       "fonte": "CVM SRE (detalhado + participantes + acaoObjeto)",
       "janelaDias": 40,
       "periodo": {
-        "de": "26/06/2026",
-        "ate": "05/08/2026"
+        "de": "27/06/2026",
+        "ate": "06/08/2026"
       },
       "total": 40,
       "itens": [
