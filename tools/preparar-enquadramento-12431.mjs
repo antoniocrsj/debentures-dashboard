@@ -222,19 +222,20 @@ function main() {
   // Além do TOTAL, acumula a série por GESTORA (p/ o gráfico mensal filtrar ao
   // clicar numa gestora). NMES = nº de meses da série.
   const hojeYm = +ymKey(hojeMs)
-  // A série começa em M+1: o BLC é o mês FECHADO (foto no fim de M), então o
-  // primeiro mês de projeção é o seguinte. O denominador da amortização (fd.Mms)
-  // continua em M — os VL_ALOCADO são do fechamento de M. O backlog acumulado
-  // aparece na 1ª barra (M+1).
-  const NMES = 21   // M+1 (abr/26) .. dez/27
+  // A série começa em M (o mês FECHADO do BLC). A 1ª barra é o BACKLOG pré-existente
+  // (stock em M = fundos já desenquadrados na foto da carteira). As barras seguintes
+  // (M+1 em diante) são o FLUXO: demanda que SURGE no mês = stock[mês]-stock[mês-1]
+  // (o componente calcula o diff; a 1ª barra fica sendo o stock[M]). O denominador da
+  // amortização (fd.Mms) é M.
+  const NMES = 22   // M (mar/26) .. dez/27
   const mesBaseG = blcMesAno || cx[Object.keys(cx)[0]]?.mesBase
   const serie = []
   const porGestora = {}   // gestora -> [compra por mês]
   if (mesBaseG) {
     const baseY = +mesBaseG.slice(0, 4), baseMo = +mesBaseG.slice(4, 6)
     for (let k = 0; k < NMES; k++) {
-      const ty = baseY + Math.floor((baseMo + k) / 12)      // baseMo-1+(k+1): parte de M+1
-      const tm = ((baseMo + k) % 12) + 1
+      const ty = baseY + Math.floor((baseMo - 1 + k) / 12)   // k=0 -> M (backlog)
+      const tm = ((baseMo - 1 + k) % 12) + 1
       const alvo = Date.UTC(ty, tm, 0)   // último dia do mês-alvo (sem overflow de dia)
       let total = 0, nDes = 0
       for (const fd of fundos) {

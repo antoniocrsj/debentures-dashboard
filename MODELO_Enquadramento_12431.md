@@ -78,11 +78,18 @@ Wire: passo isolado no `atualizar-tudo.ps1` (após BLC + Cronograma + Perf_Diari
   (col 1, mesma largura); (2) **demanda mensal** sob o Emissões (cols 2-3, mesma
   largura). Ambos os cards têm a altura do card da Captação (270px); a tabela rola
   por dentro (100 gestoras). Sem KPI no título.
-  Demanda mensal: barras = demanda NOVA por mês (fluxo) + linha do acumulado, do
-  `serieMensal` no meta — **eixo Y duplo** (esquerdo = fluxo; direito = acumulado,
-  ~5x maior, senão as torres somem). Começa em **M+1** (o BLC é o mês FECHADO) e
-  vai até dez/27 (21 meses). Clicar numa gestora filtra a tabela de fundos (com
-  colunas 6m/12m) E o gráfico mensal (`serieMensalGestora`).
+  Demanda mensal: **1ª barra (M = mar/26) = BACKLOG pré-existente** (stock em M,
+  fundos já desenquadrados na foto do BLC — cor distinta, é estoque, não fluxo);
+  **barras seguintes = FLUXO** (demanda que SURGE no mês = `stock[mês]−stock[mês−1]`,
+  ex.: fundo que faz 6 meses no mês entra com seu gap); linha = acumulado. **Eixo Y
+  duplo** (esquerdo = fluxo; direito = acumulado, ~5x maior). A série sai de
+  `serieMensal` (stock por mês) começando em **M** e vai até dez/27 (22 meses); o
+  componente faz o diff (`novo[0]=stock[0]` = backlog; resto = fluxo). Clicar numa
+  gestora filtra a tabela de fundos E o mensal (`serieMensalGestora`).
+  Nota: a série congela a carteira em M — para os meses passados (abr+, que já têm
+  CDA) isso superestima o backlog dos fundos que deployaram capital depois de M
+  (validado: PRODHOS 41%→89% em abr). Melhoria pendente: usar a carteira real de
+  cada mês do CDA nos meses passados.
 - **PL de referência da série é recalculado MÊS A MÊS** (`plRefNoMes`): a média 180d
   usada em cada mês é a trailing daquele mês, não a de hoje aplicada para trás.
   Sem isso, fundos que captaram há pouco apareceriam com backlog inflado — o aporte

@@ -8,6 +8,7 @@ import { Bar, ComposedChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Respons
 //     a partir de M (com degraus 6m/24m e amortização; PL constante).
 // Modelo em MODELO_Enquadramento_12431.md. Recharts não lê var() -> paleta Luc.
 const T = '#8c5e3a', T_CLARO = '#c8a883', T_SEL = '#5f3d22', CARVAO = '#2a2420', MUTED = '#8a7d6c', GRID = '#e4d5c3'
+const BACKLOG = '#6f4a2e'   // 1ª barra (mês M) = backlog pré-existente (estoque, não fluxo)
 const HORIZONTES = [{ id: 6, label: '6m' }, { id: 12, label: '12m' }]
 const MESES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez']
 const mesLabel = ym => { const [y, m] = (ym || '').split('-'); return m ? `${MESES[+m - 1]}/${y.slice(2)}` : ym }
@@ -38,8 +39,8 @@ function MesTip({ active, payload }) {
   const r = payload[0]?.payload; if (!r) return null
   return (
     <div className="fluxo-tooltip">
-      <div className="fluxo-tooltip-title">{mesLabel(r.mes)}{r.futuro ? ' · projetado' : ''}</div>
-      <div className="fluxo-tooltip-row">Demanda nova: <b>{fmtRs(r.novo)}</b></div>
+      <div className="fluxo-tooltip-title">{mesLabel(r.mes)}{r.backlog ? ' · backlog' : (r.futuro ? ' · projetado' : '')}</div>
+      <div className="fluxo-tooltip-row">{r.backlog ? 'Backlog pré-existente' : 'Demanda nova'}: <b>{fmtRs(r.novo)}</b></div>
       <div className="fluxo-tooltip-row fluxo-tooltip-pl">Acumulado: {fmtRs(r.acum)}</div>
     </div>
   )
@@ -79,6 +80,7 @@ export default function Enquadramento12431({ rows, serie, serieGestora, gestor }
     const stock = sel ? (serieGestora?.[sel] || serie.map(() => 0)) : serie.map(p => p.compra)
     const data = serie.map((p, i) => ({
       mes: p.mes, lbl: mesLabel(p.mes), futuro: hojeMes ? p.mes > hojeMes : false,
+      backlog: i === 0,                                    // 1ª barra = stock em M (backlog pré-existente)
       novo: i === 0 ? stock[0] : Math.max(0, stock[i] - stock[i - 1]),
       acum: stock[i],
     }))
@@ -157,7 +159,7 @@ export default function Enquadramento12431({ rows, serie, serieGestora, gestor }
                 <YAxis yAxisId="acum" orientation="right" tickFormatter={fmtRsEixo} tick={{ fontSize: 10, fill: CARVAO }} axisLine={false} tickLine={false} width={40} />
                 <Tooltip content={<MesTip />} cursor={{ fill: 'rgba(140,94,58,0.06)' }} />
                 <Bar yAxisId="flow" dataKey="novo" isAnimationActive={false} radius={[3, 3, 0, 0]}>
-                  {mensal.data.map((p, i) => <Cell key={i} fill={p.futuro ? T : T_CLARO} />)}
+                  {mensal.data.map((p, i) => <Cell key={i} fill={p.backlog ? BACKLOG : (p.futuro ? T : T_CLARO)} />)}
                 </Bar>
                 <Line yAxisId="acum" type="monotone" dataKey="acum" stroke={CARVAO} strokeWidth={1.6} dot={false} isAnimationActive={false} />
               </ComposedChart>
@@ -168,8 +170,8 @@ export default function Enquadramento12431({ rows, serie, serieGestora, gestor }
 
       <p className="enq-nota">
         Tabela: compra p/ atingir o mínimo (carência até 6m · 67% dos 6-24m · 85% após 24m) por gestora, nos horizontes de
-        6 e 12 meses (clique numa linha p/ filtrar a tabela de fundos e o mensal). Mensal: <b>barras</b> = demanda NOVA por mês; <b>linha</b> =
-        acumulado, a partir de {mesLabel(serie?.[0]?.mes)}{mBLC ? ` (1º mês após o BLC fechado de ${mBLC})` : ''} — barras claras até hoje, escuras projetado.
+        6 e 12 meses (clique numa linha p/ filtrar a tabela de fundos e o mensal). Mensal: <b>1ª barra{mBLC ? ` (${mBLC})` : ''}</b> = backlog
+        pré-existente na foto do BLC; <b>barras seguintes</b> = demanda NOVA que surge no mês (fluxo); <b>linha</b> = acumulado. Barras claras até hoje, escuras projetado.
         Partindo da última carteira do CDA; elegíveis = só debêntures 12.431 (não capta cotas de FI-Infra){gestoras?.algumEstimado ? '; amortização de alguns papéis estimada' : ''} → valor é um teto.
       </p>
     </>
