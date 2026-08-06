@@ -72,10 +72,14 @@ Wire: passo isolado no `atualizar-tudo.ps1` (após BLC + Cronograma + Perf_Diari
 ## App
 - Hook `src/hooks/useEnquadramento12431.js` — carrega o CSV (por fundo) + o meta
   (com a `serieMensal`) sob demanda.
-- **Dois gráficos distintos**: (1) ranking por gestora; (2) **demanda mensal** —
-  barras = demanda NOVA por mês (fluxo) + linha do acumulado, do `serieMensal` no
-  meta. Começa em **M+1** (o BLC é o mês FECHADO) e vai até dez/27 (21 meses).
-  Clicar numa gestora filtra a tabela E o gráfico mensal (`serieMensalGestora`).
+- **Dois gráficos distintos**, numa linha ABAIXO do grid que espelha as colunas
+  da linha de tabelas: **ranking por gestora** sob a tabela Semanas/Mês (col 1,
+  mesma largura) e **demanda mensal** sob o Emissões (cols 2-3, mesma largura).
+  Demanda mensal: barras = demanda NOVA por mês (fluxo) + linha do acumulado, do
+  `serieMensal` no meta — **eixo Y duplo** (esquerdo = fluxo; direito = acumulado,
+  ~5x maior, senão as torres somem). Começa em **M+1** (o BLC é o mês FECHADO) e
+  vai até dez/27 (21 meses). Clicar numa gestora filtra a tabela E o gráfico
+  mensal (`serieMensalGestora`). O card do ranking rola por dentro (top 20).
 - **PL de referência da série é recalculado MÊS A MÊS** (`plRefNoMes`): a média 180d
   usada em cada mês é a trailing daquele mês, não a de hoje aplicada para trás.
   Sem isso, fundos que captaram há pouco apareceriam com backlog inflado — o aporte

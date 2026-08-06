@@ -2036,6 +2036,7 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 .tecnico-enq-row { margin-top: 8px; display: flex; flex-direction: column; gap: 8px; }
 .tecnico-enq-row > .grafico-card { width: 100%; }
 .enq-plot { width: 100%; }
+.enq-plot-mensal { height: 240px; }   /* mobile: altura fixa; desktop vira flex:1 */
 .enq-nota { margin: 6px 0 0; font-size: 10.5px; line-height: 1.4; color: var(--text-muted); }
 /* Tabela dos fundos que compõem a barra da gestora (abre ao clicar) */
 .enq-fundos { margin-top: 8px; border-top: 1px solid var(--linha, #d5c7b0); padding-top: 8px; }
@@ -2264,6 +2265,27 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
     display: flex;
   }
   .app.desktop .tecnico-emissoes-cell > .grafico-card { width: 100%; height: 100%; }
+
+  /* Enquadramento 12.431: linha ABAIXO do grid, espelhando as colunas da linha
+     de tabelas (3x1fr + a coluna de 362px do gestor, aqui vazia). O card do
+     ranking cai sob a tabela Semanas/Mês (col 1) e o Demanda mensal sob o
+     Emissões (cols 2-3), cada um na MESMA largura do card de cima. */
+  .app.desktop .tecnico-enq-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) 362px;
+    gap: 8px;
+    align-items: start;
+    margin-top: 8px;
+  }
+  .app.desktop .tecnico-enq-row > .enq-card-ranking { grid-column: 1; }
+  .app.desktop .tecnico-enq-row > .enq-card-mensal { grid-column: 2 / 4; }
+  .app.desktop .tecnico-enq-row > .enq-nota { grid-column: 1 / -1; }
+  /* Mesma altura p/ os dois cards; o ranking rola por dentro (top 20 gestoras +
+     tabela de fundos ao selecionar), o mensal preenche. */
+  .app.desktop .tecnico-enq-row > .enq-card-ranking,
+  .app.desktop .tecnico-enq-row > .enq-card-mensal { height: 320px; }
+  .app.desktop .enq-ranking-scroll { flex: 1; min-height: 0; overflow-y: auto; }
+  .app.desktop .enq-plot-mensal { height: auto; flex: 1; min-height: 0; }
 }
 
 /* Barra de Emissoes: branca com contorno terracota (serie 1 da paleta). Sem os

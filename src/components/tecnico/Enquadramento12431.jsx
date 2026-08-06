@@ -20,7 +20,7 @@ const fmtRs = v => {
 }
 const fmtRsEixo = v => (Math.abs(v) >= 1e9 ? `${(v / 1e9).toFixed(0)}bi` : `${Math.round(v / 1e6)}mi`)
 const pct0 = v => `${Math.round(v * 100)}%`
-const short = nome => { const s = String(nome || ''); return s.length > 28 ? s.slice(0, 27) + '…' : s }
+const short = nome => { const s = String(nome || ''); return s.length > 15 ? s.slice(0, 14) + '…' : s }
 
 function RankTip({ active, payload }) {
   if (!active || !payload?.length) return null
@@ -95,7 +95,7 @@ export default function Enquadramento12431({ rows, serie, serieGestora, gestor }
   return (
     <>
       {/* Gráfico 1: ranking por gestora */}
-      <div className="grafico-card">
+      <div className="grafico-card enq-card-ranking">
         <p className="tecnico-chart-label">
           Enquadramento 12.431
           {d && <span className="grafico-kpi"><b>{d.enquad} de {d.universo}</b><em>enquadrados{d.top.length > 0 ? ` · faltam ${fmtRs(d.totalCompra)}` : ''}</em></span>}
@@ -106,20 +106,21 @@ export default function Enquadramento12431({ rows, serie, serieGestora, gestor }
             ))}
           </span>
         </p>
+        <div className="enq-ranking-scroll">
         {!d ? <div className="caixa-line-empty">Carregando enquadramento…</div>
           : !d.universo ? <div className="caixa-line-empty">Sem fundos 12.431 no filtro atual.</div>
             : d.top.length === 0 ? <div className="caixa-line-empty">Todas as gestoras enquadradas no horizonte de {h} meses.</div>
               : (
                 <div className="enq-plot" style={{ height: d.top.length * 26 + 24 }}>
                   <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={d.top} layout="vertical" margin={{ top: 2, right: 64, bottom: 2, left: 4 }}>
+                    <BarChart data={d.top} layout="vertical" margin={{ top: 2, right: 40, bottom: 2, left: 2 }}>
                       <CartesianGrid horizontal={false} stroke={GRID} />
-                      <XAxis type="number" tickFormatter={fmtRsEixo} tick={{ fontSize: 10, fill: CARVAO }} axisLine={false} tickLine={false} />
-                      <YAxis type="category" dataKey="rot" width={168} tick={{ fontSize: 10, fill: CARVAO }} axisLine={false} tickLine={false} interval={0} />
+                      <XAxis type="number" tickFormatter={fmtRsEixo} tick={{ fontSize: 9.5, fill: CARVAO }} axisLine={false} tickLine={false} />
+                      <YAxis type="category" dataKey="rot" width={108} tick={{ fontSize: 9.5, fill: CARVAO }} axisLine={false} tickLine={false} interval={0} />
                       <Tooltip content={<RankTip />} cursor={{ fill: 'rgba(140,94,58,0.06)' }} />
                       <Bar dataKey="compraH" radius={[0, 3, 3, 0]} isAnimationActive={false} cursor="pointer" onClick={clickBar}>
                         {d.top.map((e, i) => <Cell key={i} fill={sel === e.nome ? T_SEL : T} />)}
-                        <LabelList dataKey="compraH" position="right" formatter={fmtRs} style={{ fontSize: 10, fill: MUTED }} />
+                        <LabelList dataKey="compraH" position="right" formatter={fmtRsEixo} style={{ fontSize: 9, fill: MUTED }} />
                       </Bar>
                     </BarChart>
                   </ResponsiveContainer>
@@ -151,6 +152,7 @@ export default function Enquadramento12431({ rows, serie, serieGestora, gestor }
             </div>
           </div>
         )}
+        </div>
       </div>
 
       {/* Gráfico 2: demanda mensal (fluxo + acumulado) */}
@@ -160,17 +162,20 @@ export default function Enquadramento12431({ rows, serie, serieGestora, gestor }
           {mensal && <span className="grafico-kpi"><b>{fmtRs(mensal.hojeAcum)}</b><em>acum. hoje → {fmtRs(mensal.fimAcum)} em {mensal.fimLbl}</em></span>}
         </p>
         {!mensal ? <div className="caixa-line-empty">Série mensal indisponível.</div> : (
-          <div className="enq-plot" style={{ height: 240 }}>
+          <div className="enq-plot enq-plot-mensal">
             <ResponsiveContainer width="100%" height="100%">
-              <ComposedChart data={mensal.data} margin={{ top: 8, right: 8, bottom: 2, left: 0 }}>
+              <ComposedChart data={mensal.data} margin={{ top: 8, right: 4, bottom: 2, left: 0 }}>
                 <CartesianGrid vertical={false} stroke={GRID} />
                 <XAxis dataKey="lbl" tick={{ fontSize: 9.5, fill: CARVAO }} axisLine={false} tickLine={false} interval={0} minTickGap={2} />
-                <YAxis tickFormatter={fmtRsEixo} tick={{ fontSize: 10, fill: CARVAO }} axisLine={false} tickLine={false} width={38} />
+                {/* Eixo ESQUERDO = fluxo mensal (barras); DIREITO = acumulado (linha).
+                    Escalas separadas: senão as torres somem sob o acumulado, que é ~5x maior. */}
+                <YAxis yAxisId="flow" tickFormatter={fmtRsEixo} tick={{ fontSize: 10, fill: T }} axisLine={false} tickLine={false} width={38} />
+                <YAxis yAxisId="acum" orientation="right" tickFormatter={fmtRsEixo} tick={{ fontSize: 10, fill: CARVAO }} axisLine={false} tickLine={false} width={40} />
                 <Tooltip content={<MesTip />} cursor={{ fill: 'rgba(140,94,58,0.06)' }} />
-                <Bar dataKey="novo" isAnimationActive={false} radius={[3, 3, 0, 0]}>
+                <Bar yAxisId="flow" dataKey="novo" isAnimationActive={false} radius={[3, 3, 0, 0]}>
                   {mensal.data.map((p, i) => <Cell key={i} fill={p.futuro ? T : T_CLARO} />)}
                 </Bar>
-                <Line type="monotone" dataKey="acum" stroke={CARVAO} strokeWidth={1.6} dot={false} isAnimationActive={false} />
+                <Line yAxisId="acum" type="monotone" dataKey="acum" stroke={CARVAO} strokeWidth={1.6} dot={false} isAnimationActive={false} />
               </ComposedChart>
             </ResponsiveContainer>
           </div>
