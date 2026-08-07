@@ -20,11 +20,11 @@ export function useEnquadramento12431(enabled) {
       .then(res => (res.ok ? res.json() : null))
       .then(j => { if (!cancelled) { setSerie(j?.serieMensal || []); setSerieGestora(j?.serieMensalGestora || {}) } })
       .catch(() => { if (!cancelled) { setSerie([]); setSerieGestora({}) } })
-    // demanda móvel a frente (+3m/+6m por mês-âncora) — arquivo próprio, não trava
+    // demanda móvel a frente (+3m/+6m/+12m por mês-âncora + por gestora) — não trava
     fetch('/data/Demanda_Movel_12431.json')
       .then(res => (res.ok ? res.json() : null))
-      .then(j => { if (!cancelled) setDemandaMovel(j?.serie || []) })
-      .catch(() => { if (!cancelled) setDemandaMovel([]) })
+      .then(j => { if (!cancelled) setDemandaMovel({ serie: j?.serie || [], serieGestora: j?.serieGestora || {} }) })
+      .catch(() => { if (!cancelled) setDemandaMovel({ serie: [], serieGestora: {} }) })
     fetch('/data/Enquadramento_12431.csv')
       .then(res => (res.ok ? res.text() : null))
       .then(txt => {

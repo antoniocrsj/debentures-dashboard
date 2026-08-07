@@ -105,6 +105,7 @@ Wire: passo isolado no `atualizar-tudo.ps1` (após BLC + Cronograma + Perf_Diari
   mês-âncora (jan/25 até o CDA maduro), quanto os FI-Infra precisavam comprar nos
   próximos **3m/6m/12m**, usando a **carteira real de cada mês** (indicador antecedente,
   ao contrário da série que congela em M). **Sem amortização** (necessidade bruta).
+  Clicar numa gestora (na tabela) filtra as curvas p/ ela (`serieGestora`), como o mensal.
   Fonte: `preparar-demanda-movel-12431.mjs`
   → `public/data/Demanda_Movel_12431.json`. Média mensal (6 fotos) nas âncoras
   históricas. Efeito observado: +6m subiu de ~5 bi (jan/25) ao pico ~17 bi (dez/25)

@@ -51,9 +51,9 @@ function MovTip({ active, payload }) {
   return (
     <div className="fluxo-tooltip">
       <div className="fluxo-tooltip-title">âncora {mesLabel(r.mes)}</div>
-      <div className="fluxo-tooltip-row">próx. 12m: <b>{fmtRs(r.c12)}</b> · {r.n12} fundos</div>
-      <div className="fluxo-tooltip-row">próx. 6m: <b>{fmtRs(r.c6)}</b> · {r.n6} fundos</div>
-      <div className="fluxo-tooltip-row fluxo-tooltip-pl">próx. 3m: {fmtRs(r.c3)} · {r.n3} fundos</div>
+      <div className="fluxo-tooltip-row">próx. 12m: <b>{fmtRs(r.c12)}</b>{r.n12 != null ? ` · ${r.n12} fundos` : ''}</div>
+      <div className="fluxo-tooltip-row">próx. 6m: <b>{fmtRs(r.c6)}</b>{r.n6 != null ? ` · ${r.n6} fundos` : ''}</div>
+      <div className="fluxo-tooltip-row fluxo-tooltip-pl">próx. 3m: {fmtRs(r.c3)}{r.n3 != null ? ` · ${r.n3} fundos` : ''}</div>
     </div>
   )
 }
@@ -104,10 +104,16 @@ export default function Enquadramento12431({ rows, serie, serieGestora, demandaM
   // +3m/+6m (carteira real do mês, sem amortização). Indicador antecedente — não
   // filtra por gestora (é visão de mercado). c0 = foto do mês (referência).
   const mov = useMemo(() => {
-    if (!demandaMovel?.length) return null
-    const data = demandaMovel.map(p => ({ mes: p.mes, lbl: mesLabel(p.mes), c3: p.c3, c6: p.c6, c12: p.c12, n3: p.n3, n6: p.n6, n12: p.n12 }))
+    const smov = demandaMovel?.serie
+    if (!smov?.length) return null
+    // gestora selecionada -> série própria (zeros se a gestora não tem demanda); senão TOTAL
+    const g = sel ? (demandaMovel.serieGestora?.[sel] || smov.map(() => ({ c3: 0, c6: 0, c12: 0 }))) : null
+    const data = smov.map((p, i) => {
+      const s = g ? (g[i] || { c3: 0, c6: 0, c12: 0 }) : p
+      return { mes: p.mes, lbl: mesLabel(p.mes), c3: s.c3, c6: s.c6, c12: s.c12, n3: g ? null : p.n3, n6: g ? null : p.n6, n12: g ? null : p.n12 }
+    })
     return { data, last: data[data.length - 1] }
-  }, [demandaMovel])
+  }, [demandaMovel, sel])
 
   const toggleSel = g => { if (g) setSel(s => (s === g ? null : g)) }
 
@@ -193,7 +199,7 @@ export default function Enquadramento12431({ rows, serie, serieGestora, demandaM
       {mov && (
         <div className="grafico-card enq-card-movel">
           <p className="tecnico-chart-label">
-            Demanda móvel a frente
+            Demanda móvel a frente{sel ? ` · ${sel}` : ''}
             <span className="grafico-kpi"><b>+12m {fmtRs(mov.last.c12)}</b><em>+6m {fmtRs(mov.last.c6)} · +3m {fmtRs(mov.last.c3)} · âncora {mov.last.lbl}</em></span>
             <span className="enq-mov-leg">
               <span><i style={{ background: T }} />12m</span>
