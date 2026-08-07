@@ -699,8 +699,8 @@
         "retornoPct": 1.2317,
         "dataIni": "2026-03-31",
         "dataFim": "2026-04-30",
-        "spreadIniBps": 126,
-        "spreadFimBps": 125,
+        "spreadIniBps": 127,
+        "spreadFimBps": 126,
         "variacaoBps": -1,
         "spreadConfiavel": true
       }
@@ -811,7 +811,7 @@
     },
     "ofertasSRE": {
       "asOf": "2026-08-06",
-      "geradoEm": "2026-08-06T23:02:22.429Z",
+      "geradoEm": "2026-08-07T01:02:51.104Z",
       "fonte": "CVM SRE (detalhado + participantes + acaoObjeto)",
       "janelaDias": 40,
       "periodo": {

@@ -731,9 +731,9 @@
         "retornoPct": 1.2262,
         "dataIni": "2026-05-29",
         "dataFim": "2026-06-30",
-        "spreadIniBps": 102,
+        "spreadIniBps": 103,
         "spreadFimBps": 102,
-        "variacaoBps": 0,
+        "variacaoBps": -1,
         "spreadConfiavel": true
       }
     },
@@ -847,7 +847,7 @@
     },
     "ofertasSRE": {
       "asOf": "2026-08-06",
-      "geradoEm": "2026-08-06T23:02:22.429Z",
+      "geradoEm": "2026-08-07T01:02:51.104Z",
       "fonte": "CVM SRE (detalhado + participantes + acaoObjeto)",
       "janelaDias": 40,
       "periodo": {
@@ -933,7 +933,7 @@
       "texto": "IDA-IPCA Infraestrutura rendeu -0,06% no mês."
     },
     {
-      "texto": "IDA-DI rendeu +1,23% no mês, spread estável."
+      "texto": "IDA-DI rendeu +1,23% no mês, spread fechou 1 bps."
     },
     {
       "texto": "Captação líquida 12.431 no mês: −R$ 9,7 bi (capt. R$ 7,7 bi − resg. R$ 17,4 bi, 21 dia(s) útil(eis)).",

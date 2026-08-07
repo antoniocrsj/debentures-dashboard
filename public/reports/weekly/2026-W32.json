@@ -363,7 +363,7 @@
       "inconsistencias": [],
       "ofertasSRE": {
         "asOf": "2026-08-06",
-        "geradoEm": "2026-08-06T23:02:22.429Z",
+        "geradoEm": "2026-08-07T01:02:51.104Z",
         "fonte": "CVM SRE (detalhado + participantes + acaoObjeto)",
         "janelaDias": 40,
         "periodo": {
@@ -1071,8 +1071,8 @@
           "dataIni": "2026-07-31",
           "dataFim": "2026-08-05",
           "spreadIniBps": 98,
-          "spreadFimBps": 96,
-          "variacaoBps": -2,
+          "spreadFimBps": 97,
+          "variacaoBps": -1,
           "spreadConfiavel": true
         }
       },

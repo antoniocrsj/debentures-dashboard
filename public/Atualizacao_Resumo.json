@@ -1,5 +1,5 @@
 {
-    "timestamp":  "2026-08-06T20:05:13",
+    "timestamp":  "2026-08-06T22:07:49",
     "captacaoModo":  "Auto",
     "etapas":  {
                    "Debentures":  "OK",
@@ -42,19 +42,19 @@
                                                                "depois":  "2026-08-03"
                                                            },
                                           "LiquidoRecente":  {
-                                                                 "antes":  -131550832.80000004,
+                                                                 "antes":  -235854036.40999985,
                                                                  "depois":  -235854036.40999985
                                                              },
                                           "CaptacaoRecente":  {
-                                                                  "antes":  250398195.44999996,
+                                                                  "antes":  278342868.0200001,
                                                                   "depois":  278342868.0200001
                                                               },
                                           "ResgateRecente":  {
-                                                                 "antes":  381949028.25,
+                                                                 "antes":  514196904.42999995,
                                                                  "depois":  514196904.42999995
                                                              },
                                           "PLRecente":  {
-                                                            "antes":  262502871773.80997,
+                                                            "antes":  223959916324.57983,
                                                             "depois":  223959916324.57983
                                                         }
                                       },
@@ -64,7 +64,7 @@
                                                          "depois":  54
                                                      },
                                          "Gestores":  {
-                                                          "antes":  148,
+                                                          "antes":  149,
                                                           "depois":  149
                                                       },
                                          "UltimaSemana":  {
@@ -72,19 +72,19 @@
                                                               "depois":  "2026-08-03"
                                                           },
                                          "LiquidoRecente":  {
-                                                                "antes":  -2125661046.0800009,
+                                                                "antes":  -1282953936.0899963,
                                                                 "depois":  -1282953936.0899963
                                                             },
                                          "CaptacaoRecente":  {
-                                                                 "antes":  2227432580.1099997,
+                                                                 "antes":  4641099115.6600037,
                                                                  "depois":  4641099115.6600037
                                                              },
                                          "ResgateRecente":  {
-                                                                "antes":  4353093626.1900005,
+                                                                "antes":  5924053051.75,
                                                                 "depois":  5924053051.75
                                                             },
                                          "PLRecente":  {
-                                                           "antes":  1581728252839.7498,
+                                                           "antes":  1523741693551.5095,
                                                            "depois":  1523741693551.5095
                                                        }
                                      },
@@ -126,7 +126,7 @@
                             },
                     "anbima":  {
                                    "DataRef":  {
-                                                   "antes":  "2026-08-05",
+                                                   "antes":  "2026-08-06",
                                                    "depois":  "2026-08-06"
                                                },
                                    "Tickers":  {
