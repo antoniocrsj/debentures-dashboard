@@ -179,7 +179,7 @@ export default function Enquadramento12431({ rows, serie, serieGestora, demandaM
             <ResponsiveContainer width="100%" height="100%">
               <ComposedChart data={mensal.data} margin={{ top: 8, right: 4, bottom: 2, left: 0 }}>
                 <CartesianGrid vertical={false} stroke={GRID} />
-                <XAxis dataKey="lbl" tick={{ fontSize: 9.5, fill: CARVAO }} axisLine={false} tickLine={false} interval={0} minTickGap={2} />
+                <XAxis dataKey="lbl" tick={{ fontSize: 9, fill: CARVAO }} angle={-45} textAnchor="end" height={40} axisLine={false} tickLine={false} interval={0} />
                 {/* Eixo ESQUERDO = fluxo mensal (barras); DIREITO = acumulado (linha).
                     Escalas separadas: senão as torres somem sob o acumulado, que é ~5x maior. */}
                 <YAxis yAxisId="flow" tickFormatter={fmtRsEixo} tick={{ fontSize: 10, fill: T }} axisLine={false} tickLine={false} width={38} />
@@ -200,7 +200,6 @@ export default function Enquadramento12431({ rows, serie, serieGestora, demandaM
         <div className="grafico-card enq-card-movel">
           <p className="tecnico-chart-label">
             Demanda móvel a frente{sel ? ` · ${sel}` : ''}
-            <span className="grafico-kpi"><b>+12m {fmtRs(mov.last.c12)}</b><em>+6m {fmtRs(mov.last.c6)} · +3m {fmtRs(mov.last.c3)} · âncora {mov.last.lbl}</em></span>
             <span className="enq-mov-leg">
               <span><i style={{ background: T }} />12m</span>
               <span><i style={{ background: T_SEL }} />6m</span>
@@ -211,7 +210,7 @@ export default function Enquadramento12431({ rows, serie, serieGestora, demandaM
             <ResponsiveContainer width="100%" height="100%">
               <ComposedChart data={mov.data} margin={{ top: 8, right: 8, bottom: 2, left: 0 }}>
                 <CartesianGrid vertical={false} stroke={GRID} />
-                <XAxis dataKey="lbl" tick={{ fontSize: 9.5, fill: CARVAO }} axisLine={false} tickLine={false} interval={0} minTickGap={2} />
+                <XAxis dataKey="lbl" tick={{ fontSize: 9, fill: CARVAO }} angle={-45} textAnchor="end" height={40} axisLine={false} tickLine={false} interval={0} />
                 <YAxis tickFormatter={fmtRsEixo} tick={{ fontSize: 10, fill: CARVAO }} axisLine={false} tickLine={false} width={38} />
                 <Tooltip content={<MovTip />} cursor={{ stroke: MUTED, strokeDasharray: '3 3' }} />
                 <Area type="monotone" dataKey="c12" stroke={T} strokeWidth={2} fill="rgba(140,94,58,0.10)" dot={false} isAnimationActive={false} />
