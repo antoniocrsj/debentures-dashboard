@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect } from 'react'
-import { Bar, ComposedChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts'
+import { Bar, ComposedChart, Line, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts'
 
 // Enquadramento 12.431 (aba Técnico) — DOIS gráficos:
 //  1. Ranking da compra necessária consolidado por GESTORA (clicar numa barra
@@ -45,8 +45,20 @@ function MesTip({ active, payload }) {
     </div>
   )
 }
+function MovTip({ active, payload }) {
+  if (!active || !payload?.length) return null
+  const r = payload[0]?.payload; if (!r) return null
+  return (
+    <div className="fluxo-tooltip">
+      <div className="fluxo-tooltip-title">âncora {mesLabel(r.mes)}</div>
+      <div className="fluxo-tooltip-row">próx. 6m: <b>{fmtRs(r.c6)}</b> · {r.n6} fundos</div>
+      <div className="fluxo-tooltip-row">próx. 3m: <b>{fmtRs(r.c3)}</b> · {r.n3} fundos</div>
+      <div className="fluxo-tooltip-row fluxo-tooltip-pl">foto do mês: {fmtRs(r.c0)}</div>
+    </div>
+  )
+}
 
-export default function Enquadramento12431({ rows, serie, serieGestora, gestor }) {
+export default function Enquadramento12431({ rows, serie, serieGestora, demandaMovel, gestor }) {
   const [sel, setSel] = useState(null)   // gestora selecionada (filtra tabela + mensal)
   useEffect(() => { setSel(gestor || null) }, [gestor])
 
@@ -87,6 +99,15 @@ export default function Enquadramento12431({ rows, serie, serieGestora, gestor }
     const hojeP = data.find(x => x.mes === hojeMes) || data[0]
     return { data, hojeAcum: hojeP.acum, fimAcum: data[data.length - 1].acum, fimLbl: data[data.length - 1].lbl }
   }, [serie, serieGestora, sel, hojeMes])
+
+  // Demanda MÓVEL a frente: por mês-âncora, quanto os fundos precisavam comprar em
+  // +3m/+6m (carteira real do mês, sem amortização). Indicador antecedente — não
+  // filtra por gestora (é visão de mercado). c0 = foto do mês (referência).
+  const mov = useMemo(() => {
+    if (!demandaMovel?.length) return null
+    const data = demandaMovel.map(p => ({ mes: p.mes, lbl: mesLabel(p.mes), c0: p.c0, c3: p.c3, c6: p.c6, n3: p.n3, n6: p.n6 }))
+    return { data, last: data[data.length - 1] }
+  }, [demandaMovel])
 
   const toggleSel = g => { if (g) setSel(s => (s === g ? null : g)) }
 
@@ -168,11 +189,40 @@ export default function Enquadramento12431({ rows, serie, serieGestora, gestor }
         )}
       </div>
 
+      {/* Gráfico 3: demanda MÓVEL a frente (+3m/+6m por mês-âncora) — histórico */}
+      {mov && (
+        <div className="grafico-card enq-card-movel">
+          <p className="tecnico-chart-label">
+            Demanda móvel a frente
+            <span className="grafico-kpi"><b>+6m {fmtRs(mov.last.c6)}</b><em>+3m {fmtRs(mov.last.c3)} · âncora {mov.last.lbl}</em></span>
+            <span className="enq-mov-leg">
+              <span><i style={{ background: T }} />6m</span>
+              <span><i style={{ background: T_SEL }} />3m</span>
+              <span><i className="dash" style={{ borderColor: MUTED }} />foto</span>
+            </span>
+          </p>
+          <div className="enq-plot enq-plot-movel">
+            <ResponsiveContainer width="100%" height="100%">
+              <ComposedChart data={mov.data} margin={{ top: 8, right: 8, bottom: 2, left: 0 }}>
+                <CartesianGrid vertical={false} stroke={GRID} />
+                <XAxis dataKey="lbl" tick={{ fontSize: 9.5, fill: CARVAO }} axisLine={false} tickLine={false} interval={0} minTickGap={2} />
+                <YAxis tickFormatter={fmtRsEixo} tick={{ fontSize: 10, fill: CARVAO }} axisLine={false} tickLine={false} width={38} />
+                <Tooltip content={<MovTip />} cursor={{ stroke: MUTED, strokeDasharray: '3 3' }} />
+                <Area type="monotone" dataKey="c6" stroke={T} strokeWidth={2} fill="rgba(140,94,58,0.10)" dot={false} isAnimationActive={false} />
+                <Line type="monotone" dataKey="c3" stroke={T_SEL} strokeWidth={2} dot={false} isAnimationActive={false} />
+                <Line type="monotone" dataKey="c0" stroke={MUTED} strokeWidth={1.3} strokeDasharray="5 4" dot={false} isAnimationActive={false} />
+              </ComposedChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      )}
+
       <p className="enq-nota">
         Tabela: compra p/ atingir o mínimo (carência até 6m · 67% dos 6-24m · 85% após 24m) por gestora, nos horizontes de
         6 e 12 meses (clique numa linha p/ filtrar a tabela de fundos e o mensal). Mensal: <b>1ª barra{mBLC ? ` (${mBLC})` : ''}</b> = backlog
         pré-existente na foto do BLC; <b>barras seguintes</b> = demanda NOVA que surge no mês (fluxo); <b>linha</b> = acumulado. Barras claras até hoje, escuras projetado.
         Partindo da última carteira do CDA; elegíveis = só debêntures 12.431 (não capta cotas de FI-Infra){gestoras?.algumEstimado ? '; amortização de alguns papéis estimada' : ''} → valor é um teto.
+        {mov && <> Móvel a frente: em cada mês-âncora, quanto os fundos precisavam comprar nos próximos <b>3m</b>/<b>6m</b> (carteira real do mês, sem amortização) — indicador antecedente; a <b>foto do mês</b> fica colada no zero (a pressão é toda a frente). Média mensal; âncora até o CDA maduro.</>}
       </p>
     </>
   )

@@ -8,6 +8,7 @@ export function useEnquadramento12431(enabled) {
   const [rows, setRows] = useState(null)
   const [serie, setSerie] = useState(null)          // série mensal TOTAL (do meta)
   const [serieGestora, setSerieGestora] = useState(null)   // série mensal por gestora
+  const [demandaMovel, setDemandaMovel] = useState(null)   // demanda móvel +3m/+6m (histórico)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -19,6 +20,11 @@ export function useEnquadramento12431(enabled) {
       .then(res => (res.ok ? res.json() : null))
       .then(j => { if (!cancelled) { setSerie(j?.serieMensal || []); setSerieGestora(j?.serieMensalGestora || {}) } })
       .catch(() => { if (!cancelled) { setSerie([]); setSerieGestora({}) } })
+    // demanda móvel a frente (+3m/+6m por mês-âncora) — arquivo próprio, não trava
+    fetch('/data/Demanda_Movel_12431.json')
+      .then(res => (res.ok ? res.json() : null))
+      .then(j => { if (!cancelled) setDemandaMovel(j?.serie || []) })
+      .catch(() => { if (!cancelled) setDemandaMovel([]) })
     fetch('/data/Enquadramento_12431.csv')
       .then(res => (res.ok ? res.text() : null))
       .then(txt => {
@@ -55,7 +61,7 @@ export function useEnquadramento12431(enabled) {
     return () => { cancelled = true }
   }, [enabled, rows])
 
-  return { rows, serie, serieGestora, loading }
+  return { rows, serie, serieGestora, demandaMovel, loading }
 }
 
 function splitCsvLine(l) {

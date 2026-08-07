@@ -979,6 +979,20 @@ try {
   Warn "$($summary.Enquadramento) (grafico de enquadramento fica com o snapshot anterior)"
 }
 
+# 5j. Demanda MOVEL a frente (+3m/+6m por mes-ancora, historico jan/25..CDA maduro).
+# Le o CDA (carteira real de cada mes) + 1a cota + selo BLC. OPCIONAL e ISOLADO:
+# se o CDA nao estiver acessivel, o painel fica com o snapshot anterior.
+Progress 'Demanda movel a frente'
+try {
+  & node (Join-Path $PSScriptRoot 'preparar-demanda-movel-12431.mjs')
+  if ($LASTEXITCODE -ne 0) { throw "node saiu com codigo $LASTEXITCODE" }
+  $summary.DemandaMovel = 'OK'
+  Ok 'public\data\Demanda_Movel_12431.json atualizado.'
+} catch {
+  $summary.DemandaMovel = "FALHOU sem travar: $($_.Exception.Message)"
+  Warn "$($summary.DemandaMovel) (painel de demanda movel fica com o snapshot anterior)"
+}
+
 # 6. Resumo
 Progress 'Resumo'
 $snapshotAfter = Get-DataSnapshot

@@ -101,6 +101,14 @@ Wire: passo isolado no `atualizar-tudo.ps1` (após BLC + Cronograma + Perf_Diari
   CDA) isso superestima o backlog dos fundos que deployaram capital depois de M
   (validado: PRODHOS 41%→89% em abr). Melhoria pendente: usar a carteira real de
   cada mês do CDA nos meses passados.
+- **3ª peça — Demanda MÓVEL a frente** (`enq-card-movel`, abaixo do mensal): por
+  mês-âncora (jan/25 até o CDA maduro), quanto os FI-Infra precisavam comprar nos
+  próximos **3m/6m**, usando a **carteira real de cada mês** (indicador antecedente,
+  ao contrário da série que congela em M). **Sem amortização** (necessidade bruta);
+  a linha "foto do mês" fica colada no zero. Fonte: `preparar-demanda-movel-12431.mjs`
+  → `public/data/Demanda_Movel_12431.json`. Média mensal (6 fotos) nas âncoras
+  históricas. Efeito observado: +6m subiu de ~5 bi (jan/25) ao pico ~17 bi (dez/25)
+  e recuou p/ ~11 bi (mar/26) — o mercado dobrou mas ficou sempre enquadrado.
 - **PL de referência da série é recalculado MÊS A MÊS** (`plRefNoMes`): a média 180d
   usada em cada mês é a trailing daquele mês, não a de hoje aplicada para trás.
   Sem isso, fundos que captaram há pouco apareceriam com backlog inflado — o aporte
