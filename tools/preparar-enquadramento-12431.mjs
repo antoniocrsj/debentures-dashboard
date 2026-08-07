@@ -260,14 +260,15 @@ function main() {
   const NMES = 22   // M (mar/26) .. dez/27
   const mesBaseG = blcMesAno || cx[Object.keys(cx)[0]]?.mesBase
   const serie = []
-  const porGestora = {}   // gestora -> [compra por mês]
+  const porGestora = {}       // gestora -> [compra por mês]
+  const porGestoraAniv = {}   // gestora -> [{t6,t24} por mês] (PL_ref que faz aniversário)
   if (mesBaseG) {
     const baseY = +mesBaseG.slice(0, 4), baseMo = +mesBaseG.slice(4, 6)
     for (let k = 0; k < NMES; k++) {
       const ty = baseY + Math.floor((baseMo - 1 + k) / 12)   // k=0 -> M (backlog)
       const tm = ((baseMo - 1 + k) % 12) + 1
       const alvo = Date.UTC(ty, tm, 0)   // último dia do mês-alvo (sem overflow de dia)
-      let total = 0, nDes = 0
+      let total = 0, nDes = 0, trig6 = 0, trig24 = 0
       for (const fd of fundos) {
         const idadeAlvo = fd.iniMs != null ? monthsBetween(fd.iniMs, alvo) : monthsBetween(hojeMs, alvo)
         const pctExig = idadeAlvo < 6 ? 0 : (idadeAlvo < 24 ? 0.67 : 0.85)   // carência 6m
@@ -279,6 +280,12 @@ function main() {
           elig += p.vl * Math.max(0, Math.min(1, (1 - cumFrac(p.t, alvo)) / denM))
         }
         const plRefMes = plRefNoMes(fd.plMap, fd.mediaDia, ty, tm, hojeYm, fd.plRef)   // PL_ref daquele mês (média diária 180d)
+        // GATILHO de alocação: PL_ref que faz aniversário de 6m (carência→67%) ou de
+        // 24m (67%→85%) NESTE mês — a idade cruza o degrau exatamente aqui.
+        if (idadeAlvo === 6 || idadeAlvo === 24) {
+          const ag = porGestoraAniv[fd.gestor] || (porGestoraAniv[fd.gestor] = Array.from({ length: NMES }, () => ({ t6: 0, t24: 0 })))
+          if (idadeAlvo === 6) { trig6 += plRefMes; ag[k].t6 += plRefMes } else { trig24 += plRefMes; ag[k].t24 += plRefMes }
+        }
         const compra = plRefMes * pctExig - elig
         if (compra > 0) {
           total += compra; nDes++
@@ -286,9 +293,10 @@ function main() {
           g[k] += compra
         }
       }
-      serie.push({ mes: `${ty}-${String(tm).padStart(2, '0')}`, compra: Math.round(total), nDesenq: nDes })
+      serie.push({ mes: `${ty}-${String(tm).padStart(2, '0')}`, compra: Math.round(total), nDesenq: nDes, trig6: Math.round(trig6), trig24: Math.round(trig24) })
     }
     for (const g in porGestora) porGestora[g] = porGestora[g].map(v => Math.round(v))
+    for (const g in porGestoraAniv) porGestoraAniv[g] = porGestoraAniv[g].map(o => ({ t6: Math.round(o.t6), t24: Math.round(o.t24) }))
   }
 
   // 7) grava CSV + meta
@@ -310,6 +318,7 @@ function main() {
     premissas: { plConstanteAposHoje: true, media180: 'proxy mensal (últimos ~6 meses)', dataInicio: 'registro CVM (proxy 1ª integralização)', elegiveis: 'só debêntures 12.431 (não capta cotas de FI-Infra)' },
     serieMensal: serie,
     serieMensalGestora: porGestora,
+    serieAniversarioGestora: porGestoraAniv,   // {gestora: [{t6,t24} por mês]} (alinhado com serieMensal)
     cobertura: {
       fundos: linhas.length, semCarteira, semDataInicio,
       desenquadrados6m: desenq(6).length, desenquadrados12m: desenq(12).length,

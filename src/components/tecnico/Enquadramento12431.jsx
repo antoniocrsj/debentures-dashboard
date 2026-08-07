@@ -57,8 +57,19 @@ function MovTip({ active, payload }) {
     </div>
   )
 }
+function AnivTip({ active, payload }) {
+  if (!active || !payload?.length) return null
+  const r = payload[0]?.payload; if (!r) return null
+  return (
+    <div className="fluxo-tooltip">
+      <div className="fluxo-tooltip-title">{mesLabel(r.mes)}{r.futuro ? ' · projetado' : ''}</div>
+      <div className="fluxo-tooltip-row">6m (carência→67%): <b>{fmtRs(r.t6)}</b></div>
+      <div className="fluxo-tooltip-row fluxo-tooltip-pl">24m (67%→85%): {fmtRs(r.t24)}</div>
+    </div>
+  )
+}
 
-export default function Enquadramento12431({ rows, serie, serieGestora, demandaMovel, gestor }) {
+export default function Enquadramento12431({ rows, serie, serieGestora, serieAniv, demandaMovel, gestor }) {
   const [sel, setSel] = useState(null)   // gestora selecionada (filtra tabela + mensal)
   useEffect(() => { setSel(gestor || null) }, [gestor])
 
@@ -99,6 +110,19 @@ export default function Enquadramento12431({ rows, serie, serieGestora, demandaM
     const hojeP = data.find(x => x.mes === hojeMes) || data[0]
     return { data, hojeAcum: hojeP.acum, fimAcum: data[data.length - 1].acum, fimLbl: data[data.length - 1].lbl }
   }, [serie, serieGestora, sel, hojeMes])
+
+  // PL de referência que FAZ ANIVERSÁRIO no mês (gatilho de alocação): 6m
+  // (carência→67%) e 24m (67%→85%). Mesma linha do tempo da série mensal; filtra
+  // por gestora. Total vem do próprio serie (trig6/trig24); por gestora, de serieAniv.
+  const aniv = useMemo(() => {
+    if (!serie?.length) return null
+    const g = sel ? serieAniv?.[sel] : null
+    const data = serie.map((p, i) => {
+      const s = g ? (g[i] || { t6: 0, t24: 0 }) : { t6: p.trig6, t24: p.trig24 }
+      return { mes: p.mes, lbl: mesLabel(p.mes), futuro: hojeMes ? p.mes > hojeMes : false, t6: s.t6 || 0, t24: s.t24 || 0 }
+    })
+    return { data }
+  }, [serie, serieAniv, sel, hojeMes])
 
   // Demanda MÓVEL a frente: por mês-âncora, quanto os fundos precisavam comprar em
   // +3m/+6m (carteira real do mês, sem amortização). Indicador antecedente — não
@@ -194,6 +218,31 @@ export default function Enquadramento12431({ rows, serie, serieGestora, demandaM
           </div>
         )}
       </div>
+
+      {/* Gráfico 2b: PL que faz aniversário (gatilho de alocação 6m/24m) — mesmo eixo x do mensal */}
+      {aniv && (
+        <div className="grafico-card enq-card-aniv">
+          <p className="tecnico-chart-label">
+            PL que faz aniversário{sel ? ` · ${sel}` : ''}
+            <span className="enq-mov-leg">
+              <span><i style={{ background: T_CLARO }} />6m</span>
+              <span><i style={{ background: T_SEL }} />24m</span>
+            </span>
+          </p>
+          <div className="enq-plot enq-plot-aniv">
+            <ResponsiveContainer width="100%" height="100%">
+              <ComposedChart data={aniv.data} margin={{ top: 8, right: 8, bottom: 2, left: 0 }}>
+                <CartesianGrid vertical={false} stroke={GRID} />
+                <XAxis dataKey="lbl" tick={{ fontSize: 9, fill: CARVAO }} angle={-45} textAnchor="end" height={40} axisLine={false} tickLine={false} interval={0} />
+                <YAxis tickFormatter={fmtRsEixo} tick={{ fontSize: 10, fill: CARVAO }} axisLine={false} tickLine={false} width={38} />
+                <Tooltip content={<AnivTip />} cursor={{ fill: 'rgba(140,94,58,0.06)' }} />
+                <Bar dataKey="t6" stackId="a" fill={T_CLARO} isAnimationActive={false} />
+                <Bar dataKey="t24" stackId="a" fill={T_SEL} isAnimationActive={false} radius={[3, 3, 0, 0]} />
+              </ComposedChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      )}
 
       {/* Gráfico 3: demanda MÓVEL a frente (+3m/+6m por mês-âncora) — histórico */}
       {mov && (

@@ -101,6 +101,12 @@ Wire: passo isolado no `atualizar-tudo.ps1` (após BLC + Cronograma + Perf_Diari
   CDA) isso superestima o backlog dos fundos que deployaram capital depois de M
   (validado: PRODHOS 41%→89% em abr). Melhoria pendente: usar a carteira real de
   cada mês do CDA nos meses passados.
+- **PL que faz aniversário** (`enq-card-aniv`, entre o mensal e o móvel, MESMO eixo x
+  do mensal): por mês da série, o **PL de referência que cruza um degrau** — 6m
+  (carência→67%) e 24m (67%→85%). Barras empilhadas (6m claro + 24m escuro) = gatilho
+  de alocação daquele mês. Vem do `serieMensal` (`trig6`/`trig24`) + `serieAniversarioGestora`
+  (filtra por gestora). O 6m cai a zero no fim da série (dependeria de captações futuras
+  que o CDA não conhece — o modelo não prevê lançamentos novos); o 24m é confiável.
 - **3ª peça — Demanda MÓVEL a frente** (`enq-card-movel`, abaixo do mensal): por
   mês-âncora (jan/25 até o CDA maduro), quanto os FI-Infra precisavam comprar nos
   próximos **3m/6m/12m**, usando a **carteira real de cada mês** (indicador antecedente,
