@@ -83,49 +83,42 @@ Wire: passo isolado no `atualizar-tudo.ps1` (após BLC + Cronograma + Perf_Diari
 ## App
 - Hook `src/hooks/useEnquadramento12431.js` — carrega o CSV (por fundo) + o meta
   (com a `serieMensal`) sob demanda.
-- **Duas peças distintas**, numa linha ABAIXO do grid que espelha as colunas da
-  linha de tabelas: (1) **tabela por gestora** (`Gestora · 6m · 12m` = compra
-  necessária somada em cada horizonte, ordenada por 6m) sob a tabela Semanas/Mês
-  (col 1, mesma largura); (2) **demanda mensal** sob o Emissões (cols 2-3, mesma
-  largura). Ambos os cards têm a altura do card da Captação (270px); a tabela rola
-  por dentro (100 gestoras). Sem KPI no título.
-  Demanda mensal = **variação do "estoque do gap"** (stock = Σ max(0, exigência×PL_ref
-  − 12.431); barra = variação MoM do stock, linha = nível do stock). Duas fases no eixo x
-  (jan/25→dez/27):
-  • **Histórico real (jan/25..fev/26)**: usa a carteira 12.431 REAL de cada mês (c0 do
-    `Demanda_Movel_12431.json`, campo `serie[].c0` / `serieGestora`), stock ~1 bi oscilando
-    (fundos comprando de fato); barras pequenas com sinal (sobe/desce).
-  • **Projeção congelada (mar/26 em diante)**: `serieMensal` (`compra`/`serieMensalGestora`),
-    carteira travada em M=mar/26 — só a exigência (idade) avança, então o stock cresce a teto.
-  **Barra com sinal (opção 1)**: `novo[i] = stock[i]−stock[i−1]` SEM `max(0,·)` — quando o
-  estoque do gap encolhe (ex.: ago/26, 24m crossers já ~75% alocados), a barra fica **negativa**
-  (cor MUTED, "Redução do gap"). 1ª barra (jan/25) = backlog inicial (cor BACKLOG). **Eixo Y
-  duplo** (esquerdo = fluxo/variação; direito = nível do stock, ~5x maior). XAxis `interval={2}`
-  (36 meses). Clicar numa gestora filtra tudo (histórico via `serieGestora[sel].c0`, projeção
-  via `serieMensalGestora[sel]`).
-  Nota: a projeção congela a carteira em M — para os meses passados o histórico real (c0) já
-  corrige isso; a partir de mar/26 o congelamento superestima quem deploya capital depois de M
-  (validado: PRODHOS 41%→89% em abr).
-- **PL que faz aniversário** (`enq-card-aniv`, entre o mensal e o móvel, MESMO eixo x
-  do mensal): por mês da série, o **PL de referência que cruza um degrau** — 6m
-  (carência→67%) e 24m (67%→85%). Barras empilhadas (6m claro + 24m escuro) = gatilho
-  de alocação daquele mês. Vem do `serieMensal` (`trig6`/`trig24`) + `serieAniversarioGestora`
-  (filtra por gestora). O 6m cai a zero no fim da série (dependeria de captações futuras
-  que o CDA não conhece — o modelo não prevê lançamentos novos); o 24m é confiável.
-- **PL de referência por idade** (`enq-card-buckets`, entre aniversário e móvel, MESMO
-  eixo x do mensal): 3 linhas do PL_ref por faixa — **0–6m** (carência), **6–24m** (67%),
-  **>24m** (85%). Mostra o PL migrando pelas faixas (universo envelhecendo): a 0–6m
-  drena a zero, a >24m cresce até dominar (~255 bi). Vem do `serieMensal` (`b1`/`b2`/`b3`)
-  + `serieBucketsGestora` (filtra por gestora).
-- **3ª peça — Demanda MÓVEL a frente** (`enq-card-movel`, abaixo do mensal): por
-  mês-âncora (jan/25 até o CDA maduro), quanto os FI-Infra precisavam comprar nos
-  próximos **3m/6m/12m**, usando a **carteira real de cada mês** (indicador antecedente,
-  ao contrário da série que congela em M). **Sem amortização** (necessidade bruta).
-  Clicar numa gestora (na tabela) filtra as curvas p/ ela (`serieGestora`), como o mensal.
-  Fonte: `preparar-demanda-movel-12431.mjs`
-  → `public/data/Demanda_Movel_12431.json`. Média mensal (6 fotos) nas âncoras
-  históricas. Efeito observado: +6m subiu de ~5 bi (jan/25) ao pico ~17 bi (dez/25)
-  e recuou p/ ~11 bi (mar/26) — o mercado dobrou mas ficou sempre enquadrado.
+- **Layout (`.tecnico-enq-row`, ABAIXO do grid)**: DUAS colunas em flex — **ranking por
+  gestora** sticky à esquerda (`enq-card-ranking`, 340px, `Gestora · 6m · 12m` ordenado por
+  6m, rola por dentro; clicar filtra TODOS os gráficos) + **pilha de 5 gráficos**
+  (`enq-charts-stack`) à direita, cada um `enq-chart` de **200px**, um abaixo do outro.
+  **Todos no MESMO eixo x — spine `jan/24 → dez/27`** (`enumMonths`), rótulos inclinados,
+  `interval={2}` — p/ leitura vertical alinhada. A metade **REAL** (jan/24 → mar/26=M) vem do
+  `Demanda_Movel_12431.json`; a **projeção congelada** (M → dez/27) do `serieMensal`. Um único
+  `charts` useMemo monta `data` alinhado ao spine, e cada gráfico lê seus campos.
+- **1. Gap** — variação do **estoque do gap** (barra c/ sinal) + nível (linha). stock =
+  Σ max(0, exigência×PL_ref − 12.431); `novo[i]=stock[i]−stock[i−1]` SEM `max(0,·)` → barra
+  **negativa** (MUTED, "Redução do gap") quando o gap encolhe. Real (mes<M): `c0` do
+  Demanda_Movel; projeção (mes≥M): `compra` do serieMensal. **Eixo Y duplo** (esq = fluxo;
+  dir = nível, ~5x maior). KPI: "estoque hoje → … em dez/27".
+- **2. PL Ref (Fim da Carência)** — PL_ref que **cruza um degrau no mês**: 6m (carência→67%,
+  claro) + 24m (67%→85%, escuro), barras empilhadas. Real: `t6`/`t24` do Demanda_Movel;
+  projeção: `trig6`/`trig24` do serieMensal. (Spike em jan/25 = coorte pré-2023, ver abaixo.)
+- **3. PL Ref (Por Idade)** — 3 linhas do PL_ref por faixa: **0–6m** (carência), **6–24m**
+  (67%), **>24m** (85%). Universo envelhecendo: 0–6m drena, >24m cresce até dominar (~255 bi).
+  Real: `b1`/`b2`/`b3` do Demanda_Movel; projeção: idem do serieMensal.
+- **4. Projeção Gap** — em cada mês-âncora, a compra necessária nos próximos **3/6/12m**
+  (carteira real do mês, **sem amortização**) — indicador antecedente. Só há âncora real até
+  **mar/26** (fim do CDA maduro); de abr/26 a dez/27 o eixo fica **vazio** (`connectNulls={false}`).
+  Fonte: `preparar-demanda-movel-12431.mjs` (`c3`/`c6`/`c12` + `serieGestora`).
+- **5. Captação líquida** — aportes − resgates por faixa de idade (0–6/6–24/>24m), barras
+  **empilhadas com sinal** (`stackOffset="sign"`, negativas abaixo do zero). Fonte:
+  `preparar-captacao-liquida-12431.mjs` (Informe Diário `CAPTC_DIA-RESG_DIA`) →
+  `Captacao_Liquida_12431.json` (`cap1`/`cap2`/`cap3` + `serieGestora`). **Só existe Informe
+  Diário jul/25 → ago/26** localmente (14 meses); o resto do eixo fica vazio (o último mês pode
+  ser parcial). Fluxo real, sem futuro.
+- **Ressalva da idade (afeta t24/b3)**: a 1ª cota só é detectável no CDA desde **jan/23**, então
+  todo fundo nascido antes disso aparece como "jan/23" e **cruza 24m junto em jan/25** — spike
+  artificial no `t24`/`b3` nesse mês. A projeção usa o mesmo piso (consistente); de 2025 em diante
+  (fundos nascidos 2023+) está correto.
+- Nota geral: a projeção congela a carteira em M — a metade real (jan/24→M) já mostra a demanda
+  verdadeira (sempre pequena, 0,4–1,2 bi/mês); de M em diante o congelamento superestima quem
+  deploya capital depois de M (é um teto).
 - **PL de referência da série é recalculado MÊS A MÊS** (`plRefNoMes`): a média 180d
   usada em cada mês é a trailing daquele mês, não a de hoje aplicada para trás.
   Sem isso, fundos que captaram há pouco apareceriam com backlog inflado — o aporte

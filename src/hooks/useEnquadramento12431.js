@@ -10,7 +10,8 @@ export function useEnquadramento12431(enabled) {
   const [serieGestora, setSerieGestora] = useState(null)   // série mensal por gestora
   const [serieAniv, setSerieAniv] = useState(null)         // PL que faz aniversário 6m/24m por gestora
   const [serieBuckets, setSerieBuckets] = useState(null)   // PL_ref por faixa de idade (0-6/6-24/>24) por gestora
-  const [demandaMovel, setDemandaMovel] = useState(null)   // demanda móvel +3m/+6m (histórico)
+  const [demandaMovel, setDemandaMovel] = useState(null)   // demanda móvel + histórico real (gap/aniv/buckets) desde jan/24
+  const [captacao, setCaptacao] = useState(null)           // captação líquida por faixa de idade (Informe Diário)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -22,11 +23,17 @@ export function useEnquadramento12431(enabled) {
       .then(res => (res.ok ? res.json() : null))
       .then(j => { if (!cancelled) { setSerie(j?.serieMensal || []); setSerieGestora(j?.serieMensalGestora || {}); setSerieAniv(j?.serieAniversarioGestora || {}); setSerieBuckets(j?.serieBucketsGestora || {}) } })
       .catch(() => { if (!cancelled) { setSerie([]); setSerieGestora({}); setSerieAniv({}); setSerieBuckets({}) } })
-    // demanda móvel a frente (+3m/+6m/+12m por mês-âncora + por gestora) — não trava
+    // demanda móvel + histórico real (gap c0/+3m/+6m/+12m, aniversário t6/t24, buckets
+    // b1/b2/b3) por mês-âncora desde jan/24, com versões por gestora — não trava
     fetch('/data/Demanda_Movel_12431.json')
       .then(res => (res.ok ? res.json() : null))
-      .then(j => { if (!cancelled) setDemandaMovel({ serie: j?.serie || [], serieGestora: j?.serieGestora || {} }) })
-      .catch(() => { if (!cancelled) setDemandaMovel({ serie: [], serieGestora: {} }) })
+      .then(j => { if (!cancelled) setDemandaMovel({ serie: j?.serie || [], serieGestora: j?.serieGestora || {}, serieAnivGestora: j?.serieAnivGestora || {}, serieBucketGestora: j?.serieBucketGestora || {} }) })
+      .catch(() => { if (!cancelled) setDemandaMovel({ serie: [], serieGestora: {}, serieAnivGestora: {}, serieBucketGestora: {} }) })
+    // captação líquida por faixa de idade (0-6/6-24/>24) — Informe Diário; não trava
+    fetch('/data/Captacao_Liquida_12431.json')
+      .then(res => (res.ok ? res.json() : null))
+      .then(j => { if (!cancelled) setCaptacao({ serie: j?.serie || [], serieGestora: j?.serieGestora || {} }) })
+      .catch(() => { if (!cancelled) setCaptacao({ serie: [], serieGestora: {} }) })
     fetch('/data/Enquadramento_12431.csv')
       .then(res => (res.ok ? res.text() : null))
       .then(txt => {
@@ -63,7 +70,7 @@ export function useEnquadramento12431(enabled) {
     return () => { cancelled = true }
   }, [enabled, rows])
 
-  return { rows, serie, serieGestora, serieAniv, serieBuckets, demandaMovel, loading }
+  return { rows, serie, serieGestora, serieAniv, serieBuckets, demandaMovel, captacao, loading }
 }
 
 function splitCsvLine(l) {

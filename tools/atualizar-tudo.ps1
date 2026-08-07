@@ -993,6 +993,19 @@ try {
   Warn "$($summary.DemandaMovel) (painel de demanda movel fica com o snapshot anterior)"
 }
 
+# 5k. Captacao LIQUIDA por faixa de idade (Informe Diario CAPTC_DIA-RESG_DIA). OPCIONAL
+# e ISOLADO: sem Informe Diario acessivel, o painel fica com o snapshot anterior.
+Progress 'Captacao liquida por idade'
+try {
+  & node (Join-Path $PSScriptRoot 'preparar-captacao-liquida-12431.mjs')
+  if ($LASTEXITCODE -ne 0) { throw "node saiu com codigo $LASTEXITCODE" }
+  $summary.CaptacaoLiquida = 'OK'
+  Ok 'public\data\Captacao_Liquida_12431.json atualizado.'
+} catch {
+  $summary.CaptacaoLiquida = "FALHOU sem travar: $($_.Exception.Message)"
+  Warn "$($summary.CaptacaoLiquida) (painel de captacao liquida fica com o snapshot anterior)"
+}
+
 # 6. Resumo
 Progress 'Resumo'
 $snapshotAfter = Get-DataSnapshot
