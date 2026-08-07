@@ -107,6 +107,11 @@ Wire: passo isolado no `atualizar-tudo.ps1` (após BLC + Cronograma + Perf_Diari
   de alocação daquele mês. Vem do `serieMensal` (`trig6`/`trig24`) + `serieAniversarioGestora`
   (filtra por gestora). O 6m cai a zero no fim da série (dependeria de captações futuras
   que o CDA não conhece — o modelo não prevê lançamentos novos); o 24m é confiável.
+- **PL de referência por idade** (`enq-card-buckets`, entre aniversário e móvel, MESMO
+  eixo x do mensal): 3 linhas do PL_ref por faixa — **0–6m** (carência), **6–24m** (67%),
+  **>24m** (85%). Mostra o PL migrando pelas faixas (universo envelhecendo): a 0–6m
+  drena a zero, a >24m cresce até dominar (~255 bi). Vem do `serieMensal` (`b1`/`b2`/`b3`)
+  + `serieBucketsGestora` (filtra por gestora).
 - **3ª peça — Demanda MÓVEL a frente** (`enq-card-movel`, abaixo do mensal): por
   mês-âncora (jan/25 até o CDA maduro), quanto os FI-Infra precisavam comprar nos
   próximos **3m/6m/12m**, usando a **carteira real de cada mês** (indicador antecedente,

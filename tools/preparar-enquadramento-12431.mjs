@@ -260,15 +260,16 @@ function main() {
   const NMES = 22   // M (mar/26) .. dez/27
   const mesBaseG = blcMesAno || cx[Object.keys(cx)[0]]?.mesBase
   const serie = []
-  const porGestora = {}       // gestora -> [compra por mês]
-  const porGestoraAniv = {}   // gestora -> [{t6,t24} por mês] (PL_ref que faz aniversário)
+  const porGestora = {}         // gestora -> [compra por mês]
+  const porGestoraAniv = {}     // gestora -> [{t6,t24} por mês] (PL_ref que faz aniversário)
+  const porGestoraBucket = {}   // gestora -> [{b1,b2,b3} por mês] (PL_ref por faixa de idade 0-6/6-24/>24)
   if (mesBaseG) {
     const baseY = +mesBaseG.slice(0, 4), baseMo = +mesBaseG.slice(4, 6)
     for (let k = 0; k < NMES; k++) {
       const ty = baseY + Math.floor((baseMo - 1 + k) / 12)   // k=0 -> M (backlog)
       const tm = ((baseMo - 1 + k) % 12) + 1
       const alvo = Date.UTC(ty, tm, 0)   // último dia do mês-alvo (sem overflow de dia)
-      let total = 0, nDes = 0, trig6 = 0, trig24 = 0
+      let total = 0, nDes = 0, trig6 = 0, trig24 = 0, b1 = 0, b2 = 0, b3 = 0
       for (const fd of fundos) {
         const idadeAlvo = fd.iniMs != null ? monthsBetween(fd.iniMs, alvo) : monthsBetween(hojeMs, alvo)
         const pctExig = idadeAlvo < 6 ? 0 : (idadeAlvo < 24 ? 0.67 : 0.85)   // carência 6m
@@ -280,6 +281,9 @@ function main() {
           elig += p.vl * Math.max(0, Math.min(1, (1 - cumFrac(p.t, alvo)) / denM))
         }
         const plRefMes = plRefNoMes(fd.plMap, fd.mediaDia, ty, tm, hojeYm, fd.plRef)   // PL_ref daquele mês (média diária 180d)
+        // PL_ref por FAIXA de idade no mês (0-6m carência / 6-24m 67% / >24m 85%).
+        const bg = porGestoraBucket[fd.gestor] || (porGestoraBucket[fd.gestor] = Array.from({ length: NMES }, () => ({ b1: 0, b2: 0, b3: 0 })))
+        if (idadeAlvo < 6) { b1 += plRefMes; bg[k].b1 += plRefMes } else if (idadeAlvo < 24) { b2 += plRefMes; bg[k].b2 += plRefMes } else { b3 += plRefMes; bg[k].b3 += plRefMes }
         // GATILHO de alocação: PL_ref que faz aniversário de 6m (carência→67%) ou de
         // 24m (67%→85%) NESTE mês — a idade cruza o degrau exatamente aqui.
         if (idadeAlvo === 6 || idadeAlvo === 24) {
@@ -293,10 +297,11 @@ function main() {
           g[k] += compra
         }
       }
-      serie.push({ mes: `${ty}-${String(tm).padStart(2, '0')}`, compra: Math.round(total), nDesenq: nDes, trig6: Math.round(trig6), trig24: Math.round(trig24) })
+      serie.push({ mes: `${ty}-${String(tm).padStart(2, '0')}`, compra: Math.round(total), nDesenq: nDes, trig6: Math.round(trig6), trig24: Math.round(trig24), b1: Math.round(b1), b2: Math.round(b2), b3: Math.round(b3) })
     }
     for (const g in porGestora) porGestora[g] = porGestora[g].map(v => Math.round(v))
     for (const g in porGestoraAniv) porGestoraAniv[g] = porGestoraAniv[g].map(o => ({ t6: Math.round(o.t6), t24: Math.round(o.t24) }))
+    for (const g in porGestoraBucket) porGestoraBucket[g] = porGestoraBucket[g].map(o => ({ b1: Math.round(o.b1), b2: Math.round(o.b2), b3: Math.round(o.b3) }))
   }
 
   // 7) grava CSV + meta
@@ -319,6 +324,7 @@ function main() {
     serieMensal: serie,
     serieMensalGestora: porGestora,
     serieAniversarioGestora: porGestoraAniv,   // {gestora: [{t6,t24} por mês]} (alinhado com serieMensal)
+    serieBucketsGestora: porGestoraBucket,     // {gestora: [{b1,b2,b3} por mês]} (PL_ref por faixa de idade)
     cobertura: {
       fundos: linhas.length, semCarteira, semDataInicio,
       desenquadrados6m: desenq(6).length, desenquadrados12m: desenq(12).length,

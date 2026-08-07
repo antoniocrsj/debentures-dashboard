@@ -2036,7 +2036,7 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
 .tecnico-enq-row { margin-top: 8px; display: flex; flex-direction: column; gap: 8px; }
 .tecnico-enq-row > .grafico-card { width: 100%; }
 .enq-plot { width: 100%; }
-.enq-plot-mensal, .enq-plot-movel, .enq-plot-aniv { height: 240px; }   /* mobile: altura fixa; desktop vira flex:1 */
+.enq-plot-mensal, .enq-plot-movel, .enq-plot-aniv, .enq-plot-buckets { height: 240px; }   /* mobile: altura fixa; desktop vira flex:1 */
 /* Legenda compacta do gráfico de demanda móvel (+6m / +3m / foto). */
 .enq-mov-leg { display: inline-flex; gap: 10px; margin-left: auto; font-size: 11px; color: var(--text-muted); align-items: center; }
 .enq-mov-leg > span { display: inline-flex; align-items: center; gap: 4px; }
@@ -2288,8 +2288,9 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
   }
   .app.desktop .tecnico-enq-row > .enq-card-ranking { grid-column: 1; }
   .app.desktop .tecnico-enq-row > .enq-card-mensal { grid-column: 2 / 4; }
-  /* Aniversário e Demanda móvel: ABAIXO do mensal, mesma coluna (2-3). */
+  /* Aniversário, Faixas de idade e Demanda móvel: ABAIXO do mensal, mesma coluna (2-3). */
   .app.desktop .tecnico-enq-row > .enq-card-aniv { grid-column: 2 / 4; }
+  .app.desktop .tecnico-enq-row > .enq-card-buckets { grid-column: 2 / 4; }
   .app.desktop .tecnico-enq-row > .enq-card-movel { grid-column: 2 / 4; }
   .app.desktop .tecnico-enq-row > .enq-nota { grid-column: 1 / -1; }
   /* Mesma altura p/ os dois cards; o ranking rola por dentro (top 20 gestoras +
@@ -2297,10 +2298,12 @@ table tbody tr.filter-row.is-filter-active .venc-tk {
   .app.desktop .tecnico-enq-row > .enq-card-ranking,
   .app.desktop .tecnico-enq-row > .enq-card-mensal,
   .app.desktop .tecnico-enq-row > .enq-card-aniv,
+  .app.desktop .tecnico-enq-row > .enq-card-buckets,
   .app.desktop .tecnico-enq-row > .enq-card-movel { height: 270px; }   /* = card da Captação */
   .app.desktop .enq-ranking-scroll { flex: 1; min-height: 0; overflow-y: auto; }
   .app.desktop .enq-plot-mensal,
   .app.desktop .enq-plot-aniv,
+  .app.desktop .enq-plot-buckets,
   .app.desktop .enq-plot-movel { height: auto; flex: 1; min-height: 0; }
 }
 

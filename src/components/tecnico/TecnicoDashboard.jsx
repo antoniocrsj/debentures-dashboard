@@ -325,7 +325,7 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, e
   const [graficoAtivo, setGraficoAtivo] = useState('captacao')
   const mostra = c => desktop || graficoAtivo === c
   // Enquadramento 12.431 (compra necessária por fundo) — carrega quando visível.
-  const { rows: enquadRows, serie: enquadSerie, serieGestora: enquadSerieG, serieAniv: enquadAniv, demandaMovel: enquadMovel } = useEnquadramento12431(mostra('enquadramento'))
+  const { rows: enquadRows, serie: enquadSerie, serieGestora: enquadSerieG, serieAniv: enquadAniv, serieBuckets: enquadBuckets, demandaMovel: enquadMovel } = useEnquadramento12431(mostra('enquadramento'))
   // Emissões e Vencimentos dividem a MESMA coluna de drill -> um limpa o outro.
   const toggleEmissaoMes = mes => { setVencMes(null); setEmissaoMes(m => (m === mes ? null : mes)) }
   const toggleVencMes = mes => { setEmissaoMes(null); setVencMes(m => (m === mes ? null : mes)) }
@@ -583,7 +583,7 @@ export default function TecnicoDashboard({ agenda12m, blc, plByGestor, assets, e
             gestora), ABAIXO do grid de cards — largura cheia, próprio label/KPI. */}
         {mostra('enquadramento') && (
           <div className="tecnico-enq-row">
-            <Enquadramento12431 rows={enquadRows} serie={enquadSerie} serieGestora={enquadSerieG} serieAniv={enquadAniv} demandaMovel={enquadMovel} gestor={gestorSel} />
+            <Enquadramento12431 rows={enquadRows} serie={enquadSerie} serieGestora={enquadSerieG} serieAniv={enquadAniv} serieBuckets={enquadBuckets} demandaMovel={enquadMovel} gestor={gestorSel} />
           </div>
         )}
         </>

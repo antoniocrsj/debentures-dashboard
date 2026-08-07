@@ -68,8 +68,20 @@ function AnivTip({ active, payload }) {
     </div>
   )
 }
+function BucketsTip({ active, payload }) {
+  if (!active || !payload?.length) return null
+  const r = payload[0]?.payload; if (!r) return null
+  return (
+    <div className="fluxo-tooltip">
+      <div className="fluxo-tooltip-title">{mesLabel(r.mes)}</div>
+      <div className="fluxo-tooltip-row">&gt;24m (85%): <b>{fmtRs(r.b3)}</b></div>
+      <div className="fluxo-tooltip-row">6–24m (67%): <b>{fmtRs(r.b2)}</b></div>
+      <div className="fluxo-tooltip-row fluxo-tooltip-pl">0–6m (carência): {fmtRs(r.b1)}</div>
+    </div>
+  )
+}
 
-export default function Enquadramento12431({ rows, serie, serieGestora, serieAniv, demandaMovel, gestor }) {
+export default function Enquadramento12431({ rows, serie, serieGestora, serieAniv, serieBuckets, demandaMovel, gestor }) {
   const [sel, setSel] = useState(null)   // gestora selecionada (filtra tabela + mensal)
   useEffect(() => { setSel(gestor || null) }, [gestor])
 
@@ -123,6 +135,18 @@ export default function Enquadramento12431({ rows, serie, serieGestora, serieAni
     })
     return { data }
   }, [serie, serieAniv, sel, hojeMes])
+
+  // PL de referência por FAIXA de idade ao longo da série: 0-6m (carência), 6-24m
+  // (67%), >24m (85%). Mostra o PL migrando pelas faixas. Filtra por gestora.
+  const buckets = useMemo(() => {
+    if (!serie?.length) return null
+    const g = sel ? serieBuckets?.[sel] : null
+    const data = serie.map((p, i) => {
+      const s = g ? (g[i] || { b1: 0, b2: 0, b3: 0 }) : { b1: p.b1, b2: p.b2, b3: p.b3 }
+      return { mes: p.mes, lbl: mesLabel(p.mes), b1: s.b1 || 0, b2: s.b2 || 0, b3: s.b3 || 0 }
+    })
+    return { data }
+  }, [serie, serieBuckets, sel])
 
   // Demanda MÓVEL a frente: por mês-âncora, quanto os fundos precisavam comprar em
   // +3m/+6m (carteira real do mês, sem amortização). Indicador antecedente — não
@@ -238,6 +262,33 @@ export default function Enquadramento12431({ rows, serie, serieGestora, serieAni
                 <Tooltip content={<AnivTip />} cursor={{ fill: 'rgba(140,94,58,0.06)' }} />
                 <Bar dataKey="t6" stackId="a" fill={T_CLARO} isAnimationActive={false} />
                 <Bar dataKey="t24" stackId="a" fill={T_SEL} isAnimationActive={false} radius={[3, 3, 0, 0]} />
+              </ComposedChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      )}
+
+      {/* Gráfico 2c: PL de referência por faixa de idade (0-6/6-24/>24) — mesmo eixo x do mensal */}
+      {buckets && (
+        <div className="grafico-card enq-card-buckets">
+          <p className="tecnico-chart-label">
+            PL de referência por idade{sel ? ` · ${sel}` : ''}
+            <span className="enq-mov-leg">
+              <span><i style={{ background: T_CLARO }} />0–6m</span>
+              <span><i style={{ background: T }} />6–24m</span>
+              <span><i style={{ background: CARVAO }} />&gt;24m</span>
+            </span>
+          </p>
+          <div className="enq-plot enq-plot-buckets">
+            <ResponsiveContainer width="100%" height="100%">
+              <ComposedChart data={buckets.data} margin={{ top: 8, right: 8, bottom: 2, left: 0 }}>
+                <CartesianGrid vertical={false} stroke={GRID} />
+                <XAxis dataKey="lbl" tick={{ fontSize: 9, fill: CARVAO }} angle={-45} textAnchor="end" height={40} axisLine={false} tickLine={false} interval={0} />
+                <YAxis tickFormatter={fmtRsEixo} tick={{ fontSize: 10, fill: CARVAO }} axisLine={false} tickLine={false} width={38} />
+                <Tooltip content={<BucketsTip />} cursor={{ stroke: MUTED, strokeDasharray: '3 3' }} />
+                <Line type="monotone" dataKey="b3" stroke={CARVAO} strokeWidth={2} dot={false} isAnimationActive={false} />
+                <Line type="monotone" dataKey="b2" stroke={T} strokeWidth={2} dot={false} isAnimationActive={false} />
+                <Line type="monotone" dataKey="b1" stroke={T_CLARO} strokeWidth={2} dot={false} isAnimationActive={false} />
               </ComposedChart>
             </ResponsiveContainer>
           </div>
