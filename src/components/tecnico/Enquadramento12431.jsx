@@ -9,7 +9,7 @@ import { Bar, ComposedChart, Line, Area, XAxis, YAxis, CartesianGrid, Tooltip, R
 //   4. Projeção Gap            — demanda a frente +3/+6/+12m por mês-âncora
 //   5. Captação líquida        — captação líquida por faixa de idade (barras empilhadas)
 // Metade REAL (jan/24 → mar/26) vem do Demanda_Movel; projeção congelada (mar/26 →
-// dez/27) vem do serieMensal. Captação é real (Informe Diário, jul/25 → ago/26).
+// dez/27) vem do serieMensal. Captação é real (Informe Diário, jan/24 → ago/26).
 // Modelo em MODELO_Enquadramento_12431.md. Recharts não lê var() -> paleta Luc.
 const T = '#8c5e3a', T_CLARO = '#c8a883', T_SEL = '#5f3d22', CARVAO = '#2a2420', MUTED = '#8a7d6c', GRID = '#e4d5c3'
 const BACKLOG = '#6f4a2e'   // 1ª barra da série (nível inicial do estoque, não fluxo)
@@ -363,7 +363,8 @@ export default function Enquadramento12431({ rows, serie, serieGestora, serieAni
                 <ComposedChart data={charts.data} margin={{ top: 6, right: 8, bottom: 0, left: 0 }} stackOffset="sign">
                   <CartesianGrid vertical={false} stroke={GRID} />
                   {eixoX}
-                  <YAxis tickFormatter={fmtRsEixo} tick={{ fontSize: 9, fill: CARVAO }} axisLine={false} tickLine={false} width={36} />
+                  {/* piso fixo em -15 bi (pedido do usuário); teto auto pelo maior empilhado */}
+                  <YAxis tickFormatter={fmtRsEixo} tick={{ fontSize: 9, fill: CARVAO }} axisLine={false} tickLine={false} width={36} domain={[-15e9, 'dataMax']} />
                   <Tooltip content={<CapTip />} cursor={{ fill: 'rgba(140,94,58,0.06)' }} />
                   <Bar dataKey="cap1" stackId="c" fill={T_CLARO} isAnimationActive={false} />
                   <Bar dataKey="cap2" stackId="c" fill={T} isAnimationActive={false} />
@@ -380,7 +381,7 @@ export default function Enquadramento12431({ rows, serie, serieGestora, serieAni
           <b> Gap</b>: linha = estoque do gap (o que falta comprar); barras = variação no mês (negativa/clara quando encolhe).
           <b> PL Ref (Carência/Idade)</b>: PL de referência (não o PL total) que cruza o degrau / por faixa de idade.
           <b> Projeção Gap</b>: em cada âncora, a compra necessária nos próximos 3/6/12m (sem amortização) — só há âncora real até {charts?.mBLC || 'M'}.
-          <b> Captação líquida</b>: aportes − resgates por faixa (Informe Diário, jul/25 → ago/26; o resto do eixo fica vazio).
+          <b> Captação líquida</b>: aportes − resgates por faixa (Informe Diário, jan/24 → ago/26; só o futuro fica vazio).
           {gestoras?.algumEstimado ? ' Amortização de alguns papéis estimada.' : ''} Idade da 1ª cota (piso jan/23 → coorte pré-2023 cruza 24m junto em jan/25).
         </p>
       </div>
