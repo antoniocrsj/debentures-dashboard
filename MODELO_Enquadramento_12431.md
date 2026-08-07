@@ -89,18 +89,23 @@ Wire: passo isolado no `atualizar-tudo.ps1` (após BLC + Cronograma + Perf_Diari
   (col 1, mesma largura); (2) **demanda mensal** sob o Emissões (cols 2-3, mesma
   largura). Ambos os cards têm a altura do card da Captação (270px); a tabela rola
   por dentro (100 gestoras). Sem KPI no título.
-  Demanda mensal: **1ª barra (M = mar/26) = BACKLOG pré-existente** (stock em M,
-  fundos já desenquadrados na foto do BLC — cor distinta, é estoque, não fluxo);
-  **barras seguintes = FLUXO** (demanda que SURGE no mês = `stock[mês]−stock[mês−1]`,
-  ex.: fundo que faz 6 meses no mês entra com seu gap); linha = acumulado. **Eixo Y
-  duplo** (esquerdo = fluxo; direito = acumulado, ~5x maior). A série sai de
-  `serieMensal` (stock por mês) começando em **M** e vai até dez/27 (22 meses); o
-  componente faz o diff (`novo[0]=stock[0]` = backlog; resto = fluxo). Clicar numa
-  gestora filtra a tabela de fundos E o mensal (`serieMensalGestora`).
-  Nota: a série congela a carteira em M — para os meses passados (abr+, que já têm
-  CDA) isso superestima o backlog dos fundos que deployaram capital depois de M
-  (validado: PRODHOS 41%→89% em abr). Melhoria pendente: usar a carteira real de
-  cada mês do CDA nos meses passados.
+  Demanda mensal = **variação do "estoque do gap"** (stock = Σ max(0, exigência×PL_ref
+  − 12.431); barra = variação MoM do stock, linha = nível do stock). Duas fases no eixo x
+  (jan/25→dez/27):
+  • **Histórico real (jan/25..fev/26)**: usa a carteira 12.431 REAL de cada mês (c0 do
+    `Demanda_Movel_12431.json`, campo `serie[].c0` / `serieGestora`), stock ~1 bi oscilando
+    (fundos comprando de fato); barras pequenas com sinal (sobe/desce).
+  • **Projeção congelada (mar/26 em diante)**: `serieMensal` (`compra`/`serieMensalGestora`),
+    carteira travada em M=mar/26 — só a exigência (idade) avança, então o stock cresce a teto.
+  **Barra com sinal (opção 1)**: `novo[i] = stock[i]−stock[i−1]` SEM `max(0,·)` — quando o
+  estoque do gap encolhe (ex.: ago/26, 24m crossers já ~75% alocados), a barra fica **negativa**
+  (cor MUTED, "Redução do gap"). 1ª barra (jan/25) = backlog inicial (cor BACKLOG). **Eixo Y
+  duplo** (esquerdo = fluxo/variação; direito = nível do stock, ~5x maior). XAxis `interval={2}`
+  (36 meses). Clicar numa gestora filtra tudo (histórico via `serieGestora[sel].c0`, projeção
+  via `serieMensalGestora[sel]`).
+  Nota: a projeção congela a carteira em M — para os meses passados o histórico real (c0) já
+  corrige isso; a partir de mar/26 o congelamento superestima quem deploya capital depois de M
+  (validado: PRODHOS 41%→89% em abr).
 - **PL que faz aniversário** (`enq-card-aniv`, entre o mensal e o móvel, MESMO eixo x
   do mensal): por mês da série, o **PL de referência que cruza um degrau** — 6m
   (carência→67%) e 24m (67%→85%). Barras empilhadas (6m claro + 24m escuro) = gatilho

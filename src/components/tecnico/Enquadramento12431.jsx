@@ -40,8 +40,8 @@ function MesTip({ active, payload }) {
   return (
     <div className="fluxo-tooltip">
       <div className="fluxo-tooltip-title">{mesLabel(r.mes)}{r.backlog ? ' · backlog' : (r.futuro ? ' · projetado' : '')}</div>
-      <div className="fluxo-tooltip-row">{r.backlog ? 'Backlog pré-existente' : 'Demanda nova'}: <b>{fmtRs(r.novo)}</b></div>
-      <div className="fluxo-tooltip-row fluxo-tooltip-pl">Acumulado: {fmtRs(r.acum)}</div>
+      <div className="fluxo-tooltip-row">{r.backlog ? 'Backlog pré-existente' : (r.novo < 0 ? 'Redução do gap' : 'Demanda nova')}: <b>{fmtRs(r.novo)}</b></div>
+      <div className="fluxo-tooltip-row fluxo-tooltip-pl">Estoque do gap: {fmtRs(r.acum)}</div>
     </div>
   )
 }
@@ -112,16 +112,26 @@ export default function Enquadramento12431({ rows, serie, serieGestora, serieAni
   // gestora selecionada (série própria) ou o TOTAL.
   const mensal = useMemo(() => {
     if (!serie?.length) return null
-    const stock = sel ? (serieGestora?.[sel] || serie.map(() => 0)) : serie.map(p => p.compra)
-    const data = serie.map((p, i) => ({
-      mes: p.mes, lbl: mesLabel(p.mes), futuro: hojeMes ? p.mes > hojeMes : false,
-      backlog: i === 0,                                    // 1ª barra = stock em M (backlog pré-existente)
-      novo: i === 0 ? stock[0] : Math.max(0, stock[i] - stock[i - 1]),
-      acum: stock[i],
+    const firstProj = serie[0].mes   // 1º mês projetado (= M, mar/26)
+    // HISTÓRICO (jan/25..M-1): estoque REAL do gap por mês (carteira real de cada
+    // mês, do demanda-movel c0). PROJEÇÃO (M..dez/27): estoque projetado (carteira
+    // congelada em M, do serieMensal). A linha do tempo emenda no mês M.
+    const histSerie = (demandaMovel?.serie || []).filter(p => p.mes < firstProj)
+    const gHist = sel ? demandaMovel?.serieGestora?.[sel] : null
+    const gProj = sel ? (serieGestora?.[sel] || serie.map(() => 0)) : null
+    const stock = [
+      ...histSerie.map((p, i) => ({ mes: p.mes, v: gHist ? (gHist[i]?.c0 || 0) : p.c0, hist: true })),
+      ...serie.map((p, i) => ({ mes: p.mes, v: gProj ? gProj[i] : p.compra, hist: false })),
+    ]
+    const data = stock.map((r, i) => ({
+      mes: r.mes, lbl: mesLabel(r.mes), futuro: hojeMes ? r.mes > hojeMes : false,
+      backlog: i === 0, hist: r.hist,                     // 1ª barra (jan/25) = nível inicial
+      novo: i === 0 ? r.v : (r.v - stock[i - 1].v),       // variação do estoque do gap (pode ser negativa)
+      acum: r.v,
     }))
-    const hojeP = data.find(x => x.mes === hojeMes) || data[0]
+    const hojeP = data.find(x => x.mes === hojeMes) || data[data.length - 1]
     return { data, hojeAcum: hojeP.acum, fimAcum: data[data.length - 1].acum, fimLbl: data[data.length - 1].lbl }
-  }, [serie, serieGestora, sel, hojeMes])
+  }, [serie, serieGestora, demandaMovel, sel, hojeMes])
 
   // PL de referência que FAZ ANIVERSÁRIO no mês (gatilho de alocação): 6m
   // (carência→67%) e 24m (67%→85%). Mesma linha do tempo da série mensal; filtra
@@ -227,14 +237,14 @@ export default function Enquadramento12431({ rows, serie, serieGestora, serieAni
             <ResponsiveContainer width="100%" height="100%">
               <ComposedChart data={mensal.data} margin={{ top: 8, right: 4, bottom: 2, left: 0 }}>
                 <CartesianGrid vertical={false} stroke={GRID} />
-                <XAxis dataKey="lbl" tick={{ fontSize: 9, fill: CARVAO }} angle={-45} textAnchor="end" height={40} axisLine={false} tickLine={false} interval={0} />
+                <XAxis dataKey="lbl" tick={{ fontSize: 9, fill: CARVAO }} angle={-45} textAnchor="end" height={40} axisLine={false} tickLine={false} interval={2} />
                 {/* Eixo ESQUERDO = fluxo mensal (barras); DIREITO = acumulado (linha).
                     Escalas separadas: senão as torres somem sob o acumulado, que é ~5x maior. */}
                 <YAxis yAxisId="flow" tickFormatter={fmtRsEixo} tick={{ fontSize: 10, fill: T }} axisLine={false} tickLine={false} width={38} />
                 <YAxis yAxisId="acum" orientation="right" tickFormatter={fmtRsEixo} tick={{ fontSize: 10, fill: CARVAO }} axisLine={false} tickLine={false} width={40} />
                 <Tooltip content={<MesTip />} cursor={{ fill: 'rgba(140,94,58,0.06)' }} />
                 <Bar yAxisId="flow" dataKey="novo" isAnimationActive={false} radius={[3, 3, 0, 0]}>
-                  {mensal.data.map((p, i) => <Cell key={i} fill={p.backlog ? BACKLOG : (p.futuro ? T : T_CLARO)} />)}
+                  {mensal.data.map((p, i) => <Cell key={i} fill={p.backlog ? BACKLOG : (p.novo < 0 ? MUTED : (p.futuro ? T : T_CLARO))} />)}
                 </Bar>
                 <Line yAxisId="acum" type="monotone" dataKey="acum" stroke={CARVAO} strokeWidth={1.6} dot={false} isAnimationActive={false} />
               </ComposedChart>
@@ -324,8 +334,9 @@ export default function Enquadramento12431({ rows, serie, serieGestora, serieAni
 
       <p className="enq-nota">
         Tabela: compra p/ atingir o mínimo (carência até 6m · 67% dos 6-24m · 85% após 24m) por gestora, nos horizontes de
-        6 e 12 meses (clique numa linha p/ filtrar a tabela de fundos e o mensal). Mensal: <b>1ª barra{mBLC ? ` (${mBLC})` : ''}</b> = backlog
-        pré-existente na foto do BLC; <b>barras seguintes</b> = demanda NOVA que surge no mês (fluxo); <b>linha</b> = acumulado. Barras claras até hoje, escuras projetado.
+        6 e 12 meses (clique numa linha p/ filtrar a tabela de fundos e o mensal). Mensal: <b>linha</b> = estoque do gap (o que
+        falta comprar no total); <b>barras</b> = variação no mês (negativa/clara quando o gap encolhe). <b>Jan/25 até {mBLC || 'M'}</b> = histórico
+        real (carteira de cada mês); de {mBLC || 'M'} em diante = projeção com a carteira <b>congelada</b> (fundos param de comprar → o gap cresce). Barras claras até hoje, escuras projetado.
         Partindo da última carteira do CDA; elegíveis = só debêntures 12.431 (não capta cotas de FI-Infra){gestoras?.algumEstimado ? '; amortização de alguns papéis estimada' : ''} → valor é um teto.
         {mov && <> Móvel a frente: em cada mês-âncora, quanto os fundos precisavam comprar nos próximos <b>3m</b>/<b>6m</b>/<b>12m</b> (carteira real do mês, sem amortização) — indicador antecedente de demanda por incentivadas. Média mensal; âncora até o CDA maduro.</>}
       </p>
