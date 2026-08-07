@@ -88,8 +88,10 @@ async function main() {
     const ai = serie.length; const alvo = ymOf(mes)
     let cap1 = 0, cap2 = 0, cap3 = 0, n = 0
     for (const c in capLiq[mes]) {
-      const v = capLiq[mes][c]; if (!v) continue; n++
-      const fc = firstCota[c]; const idade = fc ? monthsBetween(ymOf(fc), alvo) : 0
+      const v = capLiq[mes][c]; if (!v) continue
+      const fc = firstCota[c]; if (!fc) continue   // sem 1ª cota não dá p/ classificar a idade (fundo fora do Caixa_Potencial); pular em vez de jogar no 0-6m
+      n++
+      const idade = monthsBetween(ymOf(fc), alvo)
       const g = gestoraDe[c] || '—'
       const arr = porGestora[g] || (porGestora[g] = [])
       while (arr.length <= ai) arr.push({ cap1: 0, cap2: 0, cap3: 0 })

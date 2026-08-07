@@ -62,6 +62,14 @@ function main() {
   { const cx = fs.readFileSync(path.join(DATA, 'Caixa_Potencial_Fundos.csv'), 'utf8').split(/\r?\n/).filter(x => x)
     const h = pl(cx[0]); const iC = h.indexOf('CNPJ'), iG = h.indexOf('Gestor')
     if (iC >= 0 && iG >= 0) for (const r of cx.slice(1)) { const c = pl(r); gestoraDe[digits(c[iC])] = (c[iG] || '—').trim() || '—' } }
+  // media 180 DIAS (diaria) por fundo x ref-mes (AAAAMM) — MESMA base do enquadramento
+  // (plRefNoMes). Sem isso a media mensal (6 fotos) SUPERESTIMA fundos novos (0-6m):
+  // o aporte recente entra cheio na media, enquanto a regra legal e' a media de 180d
+  // (dilui o aporte). Cai na media mensal so' onde a diaria nao existe (antes do warmup).
+  const media180 = {}
+  { const f = path.join(DATA, 'Fundos_PL_Media180.csv')
+    if (fs.existsSync(f)) { const L = fs.readFileSync(f, 'utf8').split(/\r?\n/).filter(x => x); const h = L[0].split(','); const iC = h.indexOf('CNPJ'), iR = h.indexOf('Ref'), iM = h.indexOf('Media180')
+      for (const r of L.slice(1)) { const c = r.split(','); const cn = digits(c[iC]); (media180[cn] || (media180[cn] = {}))[(c[iR] || '').trim()] = num(c[iM]) } } }
   // maturidade do BLC -> ultimo mes-ancora confiavel
   let ancoraMax = 202603
   try { const selo = JSON.parse(fs.readFileSync(path.join(PUB, 'BLC_maturidade.json'), 'utf8')); if (/^\d{6}$/.test(String(selo.mesAno || ''))) ancoraMax = +selo.mesAno } catch { /* default */ }
@@ -104,7 +112,8 @@ function main() {
     let t6 = 0, t24 = 0, b1 = 0, b2 = 0, b3 = 0   // aniversário + buckets NO mês-âncora (foto real)
     for (const c in dados[M].pos) {
       const elig = dados[M].pos[c]; const plM = dados[M].plMap[c] || 0; if (plM <= 0) continue
-      const md = media(c, i); const plRef = Math.min(plM, md > 0 ? md : plM)
+      const md180 = media180[c]?.[M]; const md = md180 > 0 ? md180 : media(c, i)   // 180d diaria; fallback mensal
+      const plRef = Math.min(plM, md > 0 ? md : plM)
       const fc = firstCota[c]; let f0 = 0, f3 = 0, f6 = 0, f12 = 0
       for (const h of [0, 3, 6, 12]) {   // h=0 = foto do mês (estoque do gap real do mês)
         const idade = fc ? monthsBetween(ymOf(fc), [y, m + h]) : 0
@@ -113,15 +122,21 @@ function main() {
         if (h === 0) { c0 += cmp; f0 = cmp } else if (h === 3) { c3 += cmp; if (cmp > 0) n3++; f3 = cmp } else if (h === 6) { c6 += cmp; if (cmp > 0) n6++; f6 = cmp } else { c12 += cmp; if (cmp > 0) n12++; f12 = cmp }
       }
       // idade NO mês-âncora (h=0): buckets por faixa + gatilho de aniversário 6m/24m.
-      const idadeM = fc ? monthsBetween(ymOf(fc), [y, m]) : 0
+      // SÓ quem tem 1ª cota (mesma base curada da projeção): sem ela, `idade` cairia em
+      // 0 e um fundo grande/velho (ex.: 27 bi fora do Caixa_Potencial) seria jogado no
+      // 0-6m com PL cheio — inflava o b1 e criava o degrau no seam. Sem 1ª cota, o gap
+      // (h-loop acima) já contribui 0 (idade 0 → carência), então isto não afeta o gap.
       const g = gestoraDe[c] || '—'
-      const bg = porGestoraBucket[g] || (porGestoraBucket[g] = [])
-      while (bg.length <= ai) bg.push({ b1: 0, b2: 0, b3: 0 })
-      if (idadeM < 6) { b1 += plRef; bg[ai].b1 += plRef } else if (idadeM < 24) { b2 += plRef; bg[ai].b2 += plRef } else { b3 += plRef; bg[ai].b3 += plRef }
-      if (idadeM === 6 || idadeM === 24) {
-        const ag = porGestoraAniv[g] || (porGestoraAniv[g] = [])
-        while (ag.length <= ai) ag.push({ t6: 0, t24: 0 })
-        if (idadeM === 6) { t6 += plRef; ag[ai].t6 += plRef } else { t24 += plRef; ag[ai].t24 += plRef }
+      if (fc) {
+        const idadeM = monthsBetween(ymOf(fc), [y, m])
+        const bg = porGestoraBucket[g] || (porGestoraBucket[g] = [])
+        while (bg.length <= ai) bg.push({ b1: 0, b2: 0, b3: 0 })
+        if (idadeM < 6) { b1 += plRef; bg[ai].b1 += plRef } else if (idadeM < 24) { b2 += plRef; bg[ai].b2 += plRef } else { b3 += plRef; bg[ai].b3 += plRef }
+        if (idadeM === 6 || idadeM === 24) {
+          const ag = porGestoraAniv[g] || (porGestoraAniv[g] = [])
+          while (ag.length <= ai) ag.push({ t6: 0, t24: 0 })
+          if (idadeM === 6) { t6 += plRef; ag[ai].t6 += plRef } else { t24 += plRef; ag[ai].t24 += plRef }
+        }
       }
       if (f0 > 0 || f3 > 0 || f6 > 0 || f12 > 0) {
         const arr = porGestora[g] || (porGestora[g] = [])
@@ -145,7 +160,7 @@ function main() {
     porGestoraBucket[g] = arr.map(o => ({ b1: Math.round(o.b1), b2: Math.round(o.b2), b3: Math.round(o.b3) }))
   }
 
-  const meta = { geradoEm: new Date().toISOString(), ancoraMax: `${String(ancoraMax).slice(0, 4)}-${String(ancoraMax).slice(4, 6)}`, media: 'mensal (6 fotos)', semAmortizacao: true, serie, serieGestora: porGestora, serieAnivGestora: porGestoraAniv, serieBucketGestora: porGestoraBucket }
+  const meta = { geradoEm: new Date().toISOString(), ancoraMax: `${String(ancoraMax).slice(0, 4)}-${String(ancoraMax).slice(4, 6)}`, media: '180d diaria (fallback mensal antes do warmup)', semAmortizacao: true, serie, serieGestora: porGestora, serieAnivGestora: porGestoraAniv, serieBucketGestora: porGestoraBucket }
   fs.writeFileSync(OUT, JSON.stringify(meta) + '\n', 'utf8')
   console.log(`[demanda-movel] ${serie.length} ancoras (${serie[0]?.mes}..${serie.at(-1)?.mes}) | ancora max ${meta.ancoraMax}`)
   console.log(`  ultimo: +3m R$ ${((serie.at(-1)?.c3 || 0) / 1e9).toFixed(1)} | +6m R$ ${((serie.at(-1)?.c6 || 0) / 1e9).toFixed(1)} | +12m R$ ${((serie.at(-1)?.c12 || 0) / 1e9).toFixed(1)} bi`)

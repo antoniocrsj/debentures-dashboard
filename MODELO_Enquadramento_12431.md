@@ -102,6 +102,14 @@ Wire: passo isolado no `atualizar-tudo.ps1` (após BLC + Cronograma + Perf_Diari
 - **3. PL Ref (Por Idade)** — 3 linhas do PL_ref por faixa: **0–6m** (carência), **6–24m**
   (67%), **>24m** (85%). Universo envelhecendo: 0–6m drena, >24m cresce até dominar (~255 bi).
   Real: `b1`/`b2`/`b3` do Demanda_Movel; projeção: idem do serieMensal.
+- **Consistência histórico↔projeção no PL_ref (charts 1-3)**: as duas metades tinham degrau em
+  mar/26 (ex.: 0–6m ~93 bi no histórico vs ~24 bi na projeção). Dois furos, corrigidos:
+  (a) o histórico usava **média mensal** (6 fotos, superestima aporte recente); passou a usar a
+  **média 180d diária** (`Fundos_PL_Media180`, mesma base da projeção — Informe Diário estendido
+  a jan/24 dá refs mensais desde jun/24, fallback mensal antes); (b) fundos **sem 1ª cota**
+  (23 fora do Caixa_Potencial, alguns de 27 bi) caíam em `idade=0`→0–6m com PL cheio; agora são
+  **pulados** dos buckets/aniversário (a projeção nem os tem). Resultado: seam casa exato em mar/26
+  (b1/b2/b3/t6/t24 idênticos nas duas metades).
 - **4. Projeção Gap** — em cada mês-âncora, a compra necessária nos próximos **3/6/12m**
   (carteira real do mês, **sem amortização**) — indicador antecedente. Só há âncora real até
   **mar/26** (fim do CDA maduro); de abr/26 a dez/27 o eixo fica **vazio** (`connectNulls={false}`).
