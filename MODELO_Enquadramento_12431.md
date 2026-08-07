@@ -111,12 +111,15 @@ Wire: passo isolado no `atualizar-tudo.ps1` (após BLC + Cronograma + Perf_Diari
   `preparar-captacao-liquida-12431.mjs` (Informe Diário `CAPTC_DIA-RESG_DIA`) →
   `Captacao_Liquida_12431.json` (`cap1`/`cap2`/`cap3` + `serieGestora`). Informe Diário local
   cobre **jan/24 → ago/26** (32 meses; jan/24→jun/25 baixados em ago/26); só o futuro (set/26→
-  dez/27) fica vazio, e o último mês pode ser parcial. Fluxo real, sem futuro. O bucket >24m fica
-  zerado em 2024 pelo mesmo piso de idade (jan/23) — coorte pré-2023 só entra no >24m em jan/25.
-- **Ressalva da idade (afeta t24/b3)**: a 1ª cota só é detectável no CDA desde **jan/23**, então
-  todo fundo nascido antes disso aparece como "jan/23" e **cruza 24m junto em jan/25** — spike
-  artificial no `t24`/`b3` nesse mês. A projeção usa o mesmo piso (consistente); de 2025 em diante
-  (fundos nascidos 2023+) está correto.
+  dez/27) fica vazio, e o último mês pode ser parcial. Fluxo real, sem futuro. Com o piso de idade
+  em jan/21 (backfill), o bucket >24m já aparece populado em 2024 (~0,4–1,9 bi/mês).
+- **Idade da 1ª cota — piso jan/21 (backfill 2021-2022)**: a 1ª cota é o 1º mês com PL>0 no CDA.
+  Antes o CDA local começava em **jan/23** → todo fundo pré-2023 era carimbado "jan/23" e cruzava
+  24m **junto em jan/25** (torre falsa de R$46,6 bi em `t24`, e degrau no `b3`). Corrigido baixando
+  o CDA HIST 2021-2022 (`backfill-pl-hist-cda.mjs`): o piso passou p/ **jan/21**, os cruzamentos se
+  espalharam nos meses reais (jan/25 t24 caiu p/ ~R$0,07 bi; `b3` sobe suave de ~27 bi em jan/24).
+  Fundos ainda mais velhos que jan/21 seguem no piso, mas cruzam 24m em **jan/23** — fora da janela
+  dos gráficos (jan/24→). Reprodução: `backfill-pl-hist-cda.mjs` → `preparar-primeira-cota.mjs`.
 - Nota geral: a projeção congela a carteira em M — a metade real (jan/24→M) já mostra a demanda
   verdadeira (sempre pequena, 0,4–1,2 bi/mês); de M em diante o congelamento superestima quem
   deploya capital depois de M (é um teto).
