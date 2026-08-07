@@ -103,9 +103,9 @@ Wire: passo isolado no `atualizar-tudo.ps1` (após BLC + Cronograma + Perf_Diari
   cada mês do CDA nos meses passados.
 - **3ª peça — Demanda MÓVEL a frente** (`enq-card-movel`, abaixo do mensal): por
   mês-âncora (jan/25 até o CDA maduro), quanto os FI-Infra precisavam comprar nos
-  próximos **3m/6m**, usando a **carteira real de cada mês** (indicador antecedente,
-  ao contrário da série que congela em M). **Sem amortização** (necessidade bruta);
-  a linha "foto do mês" fica colada no zero. Fonte: `preparar-demanda-movel-12431.mjs`
+  próximos **3m/6m/12m**, usando a **carteira real de cada mês** (indicador antecedente,
+  ao contrário da série que congela em M). **Sem amortização** (necessidade bruta).
+  Fonte: `preparar-demanda-movel-12431.mjs`
   → `public/data/Demanda_Movel_12431.json`. Média mensal (6 fotos) nas âncoras
   históricas. Efeito observado: +6m subiu de ~5 bi (jan/25) ao pico ~17 bi (dez/25)
   e recuou p/ ~11 bi (mar/26) — o mercado dobrou mas ficou sempre enquadrado.

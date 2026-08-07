@@ -51,9 +51,9 @@ function MovTip({ active, payload }) {
   return (
     <div className="fluxo-tooltip">
       <div className="fluxo-tooltip-title">âncora {mesLabel(r.mes)}</div>
+      <div className="fluxo-tooltip-row">próx. 12m: <b>{fmtRs(r.c12)}</b> · {r.n12} fundos</div>
       <div className="fluxo-tooltip-row">próx. 6m: <b>{fmtRs(r.c6)}</b> · {r.n6} fundos</div>
-      <div className="fluxo-tooltip-row">próx. 3m: <b>{fmtRs(r.c3)}</b> · {r.n3} fundos</div>
-      <div className="fluxo-tooltip-row fluxo-tooltip-pl">foto do mês: {fmtRs(r.c0)}</div>
+      <div className="fluxo-tooltip-row fluxo-tooltip-pl">próx. 3m: {fmtRs(r.c3)} · {r.n3} fundos</div>
     </div>
   )
 }
@@ -105,7 +105,7 @@ export default function Enquadramento12431({ rows, serie, serieGestora, demandaM
   // filtra por gestora (é visão de mercado). c0 = foto do mês (referência).
   const mov = useMemo(() => {
     if (!demandaMovel?.length) return null
-    const data = demandaMovel.map(p => ({ mes: p.mes, lbl: mesLabel(p.mes), c0: p.c0, c3: p.c3, c6: p.c6, n3: p.n3, n6: p.n6 }))
+    const data = demandaMovel.map(p => ({ mes: p.mes, lbl: mesLabel(p.mes), c3: p.c3, c6: p.c6, c12: p.c12, n3: p.n3, n6: p.n6, n12: p.n12 }))
     return { data, last: data[data.length - 1] }
   }, [demandaMovel])
 
@@ -194,11 +194,11 @@ export default function Enquadramento12431({ rows, serie, serieGestora, demandaM
         <div className="grafico-card enq-card-movel">
           <p className="tecnico-chart-label">
             Demanda móvel a frente
-            <span className="grafico-kpi"><b>+6m {fmtRs(mov.last.c6)}</b><em>+3m {fmtRs(mov.last.c3)} · âncora {mov.last.lbl}</em></span>
+            <span className="grafico-kpi"><b>+12m {fmtRs(mov.last.c12)}</b><em>+6m {fmtRs(mov.last.c6)} · +3m {fmtRs(mov.last.c3)} · âncora {mov.last.lbl}</em></span>
             <span className="enq-mov-leg">
-              <span><i style={{ background: T }} />6m</span>
-              <span><i style={{ background: T_SEL }} />3m</span>
-              <span><i className="dash" style={{ borderColor: MUTED }} />foto</span>
+              <span><i style={{ background: T }} />12m</span>
+              <span><i style={{ background: T_SEL }} />6m</span>
+              <span><i style={{ background: MUTED }} />3m</span>
             </span>
           </p>
           <div className="enq-plot enq-plot-movel">
@@ -208,9 +208,9 @@ export default function Enquadramento12431({ rows, serie, serieGestora, demandaM
                 <XAxis dataKey="lbl" tick={{ fontSize: 9.5, fill: CARVAO }} axisLine={false} tickLine={false} interval={0} minTickGap={2} />
                 <YAxis tickFormatter={fmtRsEixo} tick={{ fontSize: 10, fill: CARVAO }} axisLine={false} tickLine={false} width={38} />
                 <Tooltip content={<MovTip />} cursor={{ stroke: MUTED, strokeDasharray: '3 3' }} />
-                <Area type="monotone" dataKey="c6" stroke={T} strokeWidth={2} fill="rgba(140,94,58,0.10)" dot={false} isAnimationActive={false} />
-                <Line type="monotone" dataKey="c3" stroke={T_SEL} strokeWidth={2} dot={false} isAnimationActive={false} />
-                <Line type="monotone" dataKey="c0" stroke={MUTED} strokeWidth={1.3} strokeDasharray="5 4" dot={false} isAnimationActive={false} />
+                <Area type="monotone" dataKey="c12" stroke={T} strokeWidth={2} fill="rgba(140,94,58,0.10)" dot={false} isAnimationActive={false} />
+                <Line type="monotone" dataKey="c6" stroke={T_SEL} strokeWidth={2} dot={false} isAnimationActive={false} />
+                <Line type="monotone" dataKey="c3" stroke={MUTED} strokeWidth={1.6} dot={false} isAnimationActive={false} />
               </ComposedChart>
             </ResponsiveContainer>
           </div>
@@ -222,7 +222,7 @@ export default function Enquadramento12431({ rows, serie, serieGestora, demandaM
         6 e 12 meses (clique numa linha p/ filtrar a tabela de fundos e o mensal). Mensal: <b>1ª barra{mBLC ? ` (${mBLC})` : ''}</b> = backlog
         pré-existente na foto do BLC; <b>barras seguintes</b> = demanda NOVA que surge no mês (fluxo); <b>linha</b> = acumulado. Barras claras até hoje, escuras projetado.
         Partindo da última carteira do CDA; elegíveis = só debêntures 12.431 (não capta cotas de FI-Infra){gestoras?.algumEstimado ? '; amortização de alguns papéis estimada' : ''} → valor é um teto.
-        {mov && <> Móvel a frente: em cada mês-âncora, quanto os fundos precisavam comprar nos próximos <b>3m</b>/<b>6m</b> (carteira real do mês, sem amortização) — indicador antecedente; a <b>foto do mês</b> fica colada no zero (a pressão é toda a frente). Média mensal; âncora até o CDA maduro.</>}
+        {mov && <> Móvel a frente: em cada mês-âncora, quanto os fundos precisavam comprar nos próximos <b>3m</b>/<b>6m</b>/<b>12m</b> (carteira real do mês, sem amortização) — indicador antecedente de demanda por incentivadas. Média mensal; âncora até o CDA maduro.</>}
       </p>
     </>
   )

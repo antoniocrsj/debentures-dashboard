@@ -86,25 +86,25 @@ function main() {
   const serie = []
   for (let i = 0; i < meses.length; i++) {
     const M = meses[i]; if (+M < ANCORA_INI) continue
-    const [y, m] = ymOf(M); let c0 = 0, c3 = 0, c6 = 0, n3 = 0, n6 = 0
+    const [y, m] = ymOf(M); let c3 = 0, c6 = 0, c12 = 0, n3 = 0, n6 = 0, n12 = 0
     for (const c in dados[M].pos) {
       const elig = dados[M].pos[c]; const plM = dados[M].plMap[c] || 0; if (plM <= 0) continue
       const md = media(c, i); const plRef = Math.min(plM, md > 0 ? md : plM)
       const fc = firstCota[c]
-      for (const h of [0, 3, 6]) {
+      for (const h of [3, 6, 12]) {
         const idade = fc ? monthsBetween(ymOf(fc), [y, m + h]) : 0
         const pct = idade < 6 ? 0 : (idade < 24 ? 0.67 : 0.85)
         const cmp = Math.max(0, plRef * pct - elig)   // SEM amortizacao: elig parado em M
-        if (h === 0) c0 += cmp; else if (h === 3) { c3 += cmp; if (cmp > 0) n3++ } else { c6 += cmp; if (cmp > 0) n6++ }
+        if (h === 3) { c3 += cmp; if (cmp > 0) n3++ } else if (h === 6) { c6 += cmp; if (cmp > 0) n6++ } else { c12 += cmp; if (cmp > 0) n12++ }
       }
     }
-    serie.push({ mes: `${y}-${String(m).padStart(2, '0')}`, c0: Math.round(c0), c3: Math.round(c3), c6: Math.round(c6), n3, n6 })
+    serie.push({ mes: `${y}-${String(m).padStart(2, '0')}`, c3: Math.round(c3), c6: Math.round(c6), c12: Math.round(c12), n3, n6, n12 })
   }
 
   const meta = { geradoEm: new Date().toISOString(), ancoraMax: `${String(ancoraMax).slice(0, 4)}-${String(ancoraMax).slice(4, 6)}`, media: 'mensal (6 fotos)', semAmortizacao: true, serie }
   fs.writeFileSync(OUT, JSON.stringify(meta) + '\n', 'utf8')
   console.log(`[demanda-movel] ${serie.length} ancoras (${serie[0]?.mes}..${serie.at(-1)?.mes}) | ancora max ${meta.ancoraMax}`)
-  console.log(`  ultimo: +3m R$ ${((serie.at(-1)?.c3 || 0) / 1e9).toFixed(1)} bi | +6m R$ ${((serie.at(-1)?.c6 || 0) / 1e9).toFixed(1)} bi`)
+  console.log(`  ultimo: +3m R$ ${((serie.at(-1)?.c3 || 0) / 1e9).toFixed(1)} | +6m R$ ${((serie.at(-1)?.c6 || 0) / 1e9).toFixed(1)} | +12m R$ ${((serie.at(-1)?.c12 || 0) / 1e9).toFixed(1)} bi`)
   console.log(`  -> ${path.relative(path.join(__dirname, '..'), OUT)}`)
 }
 
